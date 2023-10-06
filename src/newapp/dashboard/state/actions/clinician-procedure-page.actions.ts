@@ -1,7 +1,7 @@
-import { createAction, props } from "@ngrx/store";
+import { createAction, props } from '@ngrx/store';
 
 export const loadCpPredictorAnalysis = createAction(
-  "[Clinician Procedure Page] Load cpPredictorAnalysis",
+  '[Clinician Procedure Page] Load cpPredictorAnalysis',
   props<{
     clinicId: number;
     startDate: string;
@@ -12,7 +12,7 @@ export const loadCpPredictorAnalysis = createAction(
 );
 
 export const loadCpPredictorSpecialistAnalysis = createAction(
-  "[Clinician Procedure Page] Load cpPredictorSpecialistAnalysis",
+  '[Clinician Procedure Page] Load cpPredictorSpecialistAnalysis',
   props<{
     clinicId: number;
     startDate: string;
@@ -23,7 +23,7 @@ export const loadCpPredictorSpecialistAnalysis = createAction(
 );
 
 export const loadCpRevPerProcedure = createAction(
-  "[Clinician Procedure Page] Load cpRevPerProcedure",
+  '[Clinician Procedure Page] Load cpRevPerProcedure',
   props<{
     clinicId: number;
     startDate: string;
@@ -34,7 +34,7 @@ export const loadCpRevPerProcedure = createAction(
 );
 
 export const loadCpPredictorRatio = createAction(
-  "[Clinician Procedure Page] Load cpPredictorRatio",
+  '[Clinician Procedure Page] Load cpPredictorRatio',
   props<{
     clinicId: number;
     startDate: string;
@@ -46,7 +46,7 @@ export const loadCpPredictorRatio = createAction(
 );
 
 export const loadCpReferrals = createAction(
-  "[Clinician Procedure Page] Load cpReferrals",
+  '[Clinician Procedure Page] Load cpReferrals',
   props<{
     clinicId: number;
     startDate: string;
@@ -58,16 +58,16 @@ export const loadCpReferrals = createAction(
 );
 
 export const setCpPredictorAnalysisVisibility = createAction(
-  "[Clinician Procedure Page] Set cpPredictorAnalysisVisibility",
-  props<{ value: "general" | "specialist" }>()
+  '[Clinician Procedure Page] Set cpPredictorAnalysisVisibility',
+  props<{ value: 'general' | 'specialist' }>()
 );
 
 export const setCpPredictorRatioVisibility = createAction(
-  "[Clinician Procedure Page] Set cpPredictorRatioVisibility",
+  '[Clinician Procedure Page] Set cpPredictorRatioVisibility',
   props<{ value: number }>()
 );
 
 export const setCpReferralsVisibility = createAction(
-  "[Clinician Procedure Page] Set cpReferralsVisibility",
-  props<{ value: "combined" | "internal" | "external" }>()
+  '[Clinician Procedure Page] Set cpReferralsVisibility',
+  props<{ value: 'combined' | 'internal' | 'external' }>()
 );

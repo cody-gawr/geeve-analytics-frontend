@@ -7,7 +7,7 @@ export const DentistRoutes: Routes = [
     path: '',
     component: DentistComponent,
     data: {
-      title: 'Dentist'
-    }
-  }
+      title: 'Dentist',
+    },
+  },
 ];

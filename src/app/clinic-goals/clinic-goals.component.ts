@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-goals.component.html',
-  styleUrls: ['./clinic-goals.component.scss']
+  styleUrls: ['./clinic-goals.component.scss'],
 })
 /**
  *Clinic Goals component
@@ -77,7 +77,7 @@ export class ClinicGoalsComponent implements OnInit {
     //  this.clinic_id = this.route.snapshot.paramMap.get("id");
     this.options = fb.group({
       hideRequired: false,
-      floatLabel: 'auto'
+      floatLabel: 'auto',
     });
   }
   initiate_clinic() {
@@ -93,7 +93,7 @@ export class ClinicGoalsComponent implements OnInit {
     $('.external_clinic').show();
     //$('.dentist_dropdown').hide();
     $('.header_filters').addClass('flex_direct_mar');
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe(params => {
       if (this._cookieService.get('userid') != '1') {
         this.clinic_id = this.route.snapshot.paramMap.get('id');
         this.initiate_clinic();
@@ -142,7 +142,7 @@ export class ClinicGoalsComponent implements OnInit {
 
       visitproduction: [null, Validators.compose([Validators.required])],
       discount: [null, Validators.compose([Validators.required])],
-      overdueaccount: [null, Validators.compose([Validators.required])]
+      overdueaccount: [null, Validators.compose([Validators.required])],
     });
   }
   // For form validator
@@ -161,7 +161,7 @@ export class ClinicGoalsComponent implements OnInit {
   //get clinic goals for all graphs
   getClinicGoals() {
     this.clinicGoalsService.getClinicGoals(this.clinic_id).subscribe(
-      (res) => {
+      res => {
         if (res.status == 200) {
           this.dentistprod = res.body.data[1].value;
           this.treatmentplan = res.body.data[2].value;
@@ -210,7 +210,7 @@ export class ClinicGoalsComponent implements OnInit {
           this.router.navigateByUrl('/login');
         }
       },
-      (error) => {
+      error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
       }
     );
@@ -262,7 +262,7 @@ export class ClinicGoalsComponent implements OnInit {
     this.clinicGoalsService
       .updateClinicGoals(myJsonString, this.clinic_id)
       .subscribe(
-        (res) => {
+        res => {
           $('.ajax-loader').hide();
           if (res.status == 200) {
             this.toastr.success('Clinic Goals Updated');
@@ -273,7 +273,7 @@ export class ClinicGoalsComponent implements OnInit {
             this.router.navigateByUrl('/login');
           }
         },
-        (error) => {
+        error => {
           this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );

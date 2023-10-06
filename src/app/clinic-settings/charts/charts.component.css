@@ -1,20 +1,20 @@
 .DentistListSecRow td input[readonly] {
-    border-color    : transparent;
-    background-color: transparent;
+  border-color: transparent;
+  background-color: transparent;
 }
 
 .jeeveProviderIdDrop {
-    width: 180px;
+  width: 180px;
 }
 
 .info-button {
-    display: inline-block;
-    padding: 0 6px;
+  display: inline-block;
+  padding: 0 6px;
 }
 
 .mat-column-chart {
-    flex : 0 0 10% !important;
-    width: 60% !important;
+  flex: 0 0 10% !important;
+  width: 60% !important;
 }
 
 /* .info-icon {
@@ -46,6 +46,6 @@
   -webkit-hyphens: auto;
   hyphens: auto;
 }
-.dashmargin{
-    margin-top: 60px;
+.dashmargin {
+  margin-top: 60px;
 }

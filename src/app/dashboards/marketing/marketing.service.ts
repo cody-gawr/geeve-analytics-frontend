@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MarketingService {
   public token: string;
@@ -32,7 +32,7 @@ export class MarketingService {
     let headers = {
       headers: new HttpHeaders(),
       withCredentials: true,
-      observe: 'response' as const
+      observe: 'response' as const,
     };
     return headers;
   }
@@ -55,7 +55,8 @@ export class MarketingService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -67,7 +68,11 @@ export class MarketingService {
 
   // Items Predictor Analysis  trend mode
 
-  mkNewPatientsByReferralTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  mkNewPatientsByReferralTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -75,7 +80,8 @@ export class MarketingService {
           '/Marketing/mkNumPatientsByReferralTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -104,7 +110,8 @@ export class MarketingService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -133,7 +140,8 @@ export class MarketingService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -145,7 +153,11 @@ export class MarketingService {
 
   // Items Predictor Analysis  trend mode
 
-  mkRevenueByReferralTrend(clinic_id, mode = '', queryWhEnabled=0): Observable<any> {
+  mkRevenueByReferralTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -153,7 +165,8 @@ export class MarketingService {
           '/Marketing/mkRevByReferralTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -163,7 +176,11 @@ export class MarketingService {
       );
   }
   //Referral to Other Clinicians Internal / External
-  mkTotalVisitsTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  mkTotalVisitsTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -171,7 +188,8 @@ export class MarketingService {
           '/Marketing/mkTotalVisitsTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -199,7 +217,8 @@ export class MarketingService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -227,7 +246,8 @@ export class MarketingService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -237,7 +257,11 @@ export class MarketingService {
       );
   }
   //Referral to Other Clinicians Internal / External
-  mkNoNewPatientsTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  mkNoNewPatientsTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -245,7 +269,8 @@ export class MarketingService {
           '/Marketing/mkNumNewPatientsTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -255,7 +280,11 @@ export class MarketingService {
       );
   }
 
-  mkNoActivePatientsTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  mkNoActivePatientsTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -263,7 +292,8 @@ export class MarketingService {
           '/Marketing/mkActivePatientsTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -357,7 +387,8 @@ export class MarketingService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration + (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -376,7 +407,8 @@ export class MarketingService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration + (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -404,7 +436,8 @@ export class MarketingService {
             '/Marketing/mkNewPatientAcqTrend?clinic_id=' +
             clinic_id +
             '&mode=' +
-            mode + (queryWhEnabled > 0?'&wh=1': ''),
+            mode +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -419,7 +452,8 @@ export class MarketingService {
             '/Marketing/mkMyobNewPatientAcqTrend?clinic_id=' +
             clinic_id +
             '&mode=' +
-            mode + (queryWhEnabled > 0?'&wh=1': ''),
+            mode +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(

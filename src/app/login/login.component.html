@@ -1,55 +1,91 @@
-
 <app-spinner *ngIf="IsCheckingAuth"></app-spinner>
 <div class="sa_login_blur login-blur"></div>
-<div class="text-center warningTestDemo" *ngIf="apiUrl.includes('test-') || apiUrl.includes('staging-')">
-    <span class="m-t-10 m-b-10">Demo Server Only - Please access your account via <a href="https://analytics.jeeve.com.au">https://analytics.jeeve.com.au </a></span>
+<div
+  class="text-center warningTestDemo"
+  *ngIf="apiUrl.includes('test-') || apiUrl.includes('staging-')">
+  <span class="m-t-10 m-b-10"
+    >Demo Server Only - Please access your account via
+    <a href="https://analytics.jeeve.com.au"
+      >https://analytics.jeeve.com.au
+    </a></span
+  >
 </div>
-<img class="login_abso_logo" src="../assets/images/logo-white.png">
+<img class="login_abso_logo" src="../assets/images/logo-white.png" />
 <div class="login-register login-background-img">
-    <div class="login-register-box">
-        <mat-card> 
-            <mat-card-content>
-                <form [formGroup]="form" (ngSubmit)="onSubmit()">
-                    <div class="text-center">
-                        <img alt="homepage" src="../assets/images/logo-icon.gif">
-                        <h4 class="m-t-10 m-b-10">Login to Jeeve Analytics</h4>
-                    </div>
-                  
+  <div class="login-register-box">
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="text-center">
+            <img alt="homepage" src="../assets/images/logo-icon.gif" />
+            <h4 class="m-t-10 m-b-10">Login to Jeeve Analytics</h4>
+          </div>
 
-                    <div fxLayout="row wrap">
-                        <!-- col full-->
-                        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="dc_input">
-                            <mat-form-field floatLabel="never" >
-                                <input type="email" matInput placeholder="Email" [formControl]="form.controls['uname']">
-                            </mat-form-field>
-                            <small *ngIf="errorForm.email" class="text-danger support-text">Email is required.</small>
-                        </div>
-                        <!-- col full-->
-                        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="dc_input">
-                            <mat-form-field floatLabel="never" >
-                                <input matInput type="password" placeholder="Password" [formControl]="form.controls['password']">
-                            </mat-form-field>
-                            <small *ngIf="errorForm.password" class="text-danger support-text">Password is required.</small>
+          <div fxLayout="row wrap">
+            <!-- col full-->
+            <div
+              fxFlex.gt-sm="100"
+              fxFlex.gt-xs="100"
+              fxFlex="100"
+              class="dc_input">
+              <mat-form-field floatLabel="never">
+                <input
+                  type="email"
+                  matInput
+                  placeholder="Email"
+                  [formControl]="form.controls['uname']" />
+              </mat-form-field>
+              <small *ngIf="errorForm.email" class="text-danger support-text"
+                >Email is required.</small
+              >
+            </div>
+            <!-- col full-->
+            <div
+              fxFlex.gt-sm="100"
+              fxFlex.gt-xs="100"
+              fxFlex="100"
+              class="dc_input">
+              <mat-form-field floatLabel="never">
+                <input
+                  matInput
+                  type="password"
+                  placeholder="Password"
+                  [formControl]="form.controls['password']" />
+              </mat-form-field>
+              <small *ngIf="errorForm.password" class="text-danger support-text"
+                >Password is required.</small
+              >
+            </div>
+            <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+              <small *ngIf="errorLogin" class="text-danger support-text"
+                >Incorrect Email or Password.</small
+              >
+              <small *ngIf="errorforAttmp" class="text-danger support-text"
+                >Your account is blocked due to too many failed logins, please
+                try again in 15 minutes.</small
+              >
+            </div>
+            <!-- col half-->
+            <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+              <!--  [routerLink]="['/authentication/forgot']" -->
+              <a href="/authentication/forgot" class="link">Forgot Password?</a>
+            </div>
+            <!-- col full-->
 
-                        </div>
-                          <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
-                         <small *ngIf="errorLogin" class="text-danger support-text">Incorrect Email or Password.</small>
-                         <small *ngIf="errorforAttmp" class="text-danger support-text">Your account is blocked due to too many failed logins, please try again in 15 minutes.</small>
-                     </div>
-                        <!-- col half-->
-                        <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-                            <!--  [routerLink]="['/authentication/forgot']" -->
-                            <a  href="/authentication/forgot" class="link">Forgot Password?</a>
-                        </div> 
-                        <!-- col full-->
-                      
-                     <div  fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
-                            <button mat-raised-button color="dc" class="btn-block btn-lg m-t-20 m-b-20" type="submit" >Login</button> <!-- [disabled]="!form.valid" -->
-                        </div>
-                        <!-- col full--> 
-                    </div>
-                </form>
-            </mat-card-content>
-        </mat-card>
-    </div>
+            <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+              <button
+                mat-raised-button
+                color="dc"
+                class="btn-block btn-lg m-t-20 m-b-20"
+                type="submit">
+                Login
+              </button>
+              <!-- [disabled]="!form.valid" -->
+            </div>
+            <!-- col full-->
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

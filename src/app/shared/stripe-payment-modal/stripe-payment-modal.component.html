@@ -7,14 +7,15 @@
     <mat-stepper
       [linear]="true"
       #stepper
-      (selectionChange)="selectionChange($event)"
-    >
+      (selectionChange)="selectionChange($event)">
       <mat-step>
         <form [formGroup]="numberOfCreditsFormGroup">
           <ng-template matStepLabel>Number of Credits</ng-template>
           <div style="margin-top: 10px">
-            <p *ngIf="data && data.notify_msg" style="color:red !important;">{{ data.notify_msg }}</p>
-            <mat-form-field floatLabel="never"  >
+            <p *ngIf="data && data.notify_msg" style="color: red !important">
+              {{ data.notify_msg }}
+            </p>
+            <mat-form-field floatLabel="never">
               <mat-label>Enter number of Review credits to purchase</mat-label>
               <input matInput type="number" formControlName="credits" />
               <mat-error
@@ -22,17 +23,17 @@
                   numberOfCreditsFormGroup.controls['credits'].hasError(
                     'required'
                   )
-                "
-              >
+                ">
                 Please enter a valid number of Review credits to purchase
               </mat-error>
             </mat-form-field>
             <div class="cost-summary">
               <div>Cost Per Message: {{ data.costPerSMS | currency }}</div>
-              <div style="line-height: 1.6;text-align: right;">
-                Subtotal: {{ subTotalAmount | currency }} <br>
-                GST: {{ subTotalAmount * 0.1 | currency }} <br>
-                <strong>Total: {{ subTotalAmount * 1.1 | currency }}</strong> <br>
+              <div style="line-height: 1.6; text-align: right">
+                Subtotal: {{ subTotalAmount | currency }} <br />
+                GST: {{ subTotalAmount * 0.1 | currency }} <br />
+                <strong>Total: {{ subTotalAmount * 1.1 | currency }}</strong>
+                <br />
               </div>
             </div>
           </div>
@@ -44,9 +45,10 @@
           <!-- a Stripe Element will be inserted here. -->
         </div>
         <div class="payment-summary">
-          Subtotal: {{ subTotalAmount | currency }}<br>
-          GST: {{ taxAmount | currency }} <br>
-          <strong>Total: {{ totalAmount | currency }}</strong><br>
+          Subtotal: {{ subTotalAmount | currency }}<br />
+          GST: {{ taxAmount | currency }} <br />
+          <strong>Total: {{ totalAmount | currency }}</strong
+          ><br />
         </div>
         <!-- Used to display form errors -->
         <div id="card-errors" role="alert"></div>
@@ -69,8 +71,7 @@
     [disabled]="
       numberOfCreditsFormGroup.controls['credits'].hasError('required')
     "
-    (click)="nextPaymentForm(stepper)"
-  >
+    (click)="nextPaymentForm(stepper)">
     Go to payment
   </button>
   <ng-template #submitPaymentButton>
@@ -81,8 +82,7 @@
       *ngIf="submitPaymentButton"
       [disabled]="disabledSubmit"
       (click)="onSubmitClick($event)"
-      cdkFocusInitial
-    >
+      cdkFocusInitial>
       Submit Payment
     </button>
   </ng-template>

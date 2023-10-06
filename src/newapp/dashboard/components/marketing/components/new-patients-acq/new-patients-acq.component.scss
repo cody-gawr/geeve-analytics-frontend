@@ -1,17 +1,17 @@
-.new-patients-acq-gauge{
-    min-height: 280px;
+.new-patients-acq-gauge {
+  min-height: 280px;
 }
 
 .chart-title {
-    justify-content: space-between;
-    button {
-        height: 22px !important;
-        font-size: 12px;
-        font-weight: 400;
-        font-family: Gilroy-Regular;
-    }
-    .icon-title {
-        display: flex;
-        gap: 5px
-    }
+  justify-content: space-between;
+  button {
+    height: 22px !important;
+    font-size: 12px;
+    font-weight: 400;
+    font-family: Gilroy-Regular;
+  }
+  .icon-title {
+    display: flex;
+    gap: 5px;
+  }
 }

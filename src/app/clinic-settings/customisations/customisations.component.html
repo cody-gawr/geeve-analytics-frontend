@@ -4,160 +4,348 @@
   </mat-expansion-panel-header>
 
   <mat-card-content>
-    <div class="topheading">  
-      <div class="titleheading"><h4 class="clinic-settings-form-title">Morning Huddle</h4></div>  
-        
+    <div class="topheading">
+      <div class="titleheading">
+        <h4 class="clinic-settings-form-title">Morning Huddle</h4>
+      </div>
     </div>
-    <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
-      <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-              
-        <div class="clinic-setting-form flx-width" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
-          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+    <form
+      [formGroup]="form"
+      class="basic-form sa_forms_design"
+      (ngSubmit)="onSubmit()">
+      <div
+        fxLayout="row wrap"
+        fxLayoutGap="20px"
+        fxLayoutGap.md="0px"
+        fxLayoutGap.sm="0px"
+        fxLayoutGap.xs="0">
+        <div
+          class="clinic-setting-form flx-width"
+          fxFlex.md="100"
+          fxFlex.sm="100"
+          fxFlex.xs="100">
+          <div
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="20px"
+            fxLayoutGap.sm="20px"
+            fxLayoutGap.xs="0">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Xray Overdue <div class="info-button">
+                <label _ngcontent-gxr-c371=""
+                  >Xray Overdue
+                  <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipXrayOverdue" src="../assets/images/info-icon.png"
-                        alt="info-icon" class="info-icon" />
-                    </div>
-                  </div></label>
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ xray_overdue_enable }}"
-                  name="xray_overdue_enable" (change)="toggleMH($event, 'xray_overdue_enable')">
-                  <span *ngIf="xray_overdue_enable"><strong>Enabled</strong></span>
-                  <span *ngIf="!xray_overdue_enable"><strong>Disabled</strong></span>
+                      <img
+                        [tooltip]="this.constants.tipXrayOverdue"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
+                        class="info-icon" />
+                    </div></div
+                ></label>
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  checked="{{ xray_overdue_enable }}"
+                  name="xray_overdue_enable"
+                  (change)="toggleMH($event, 'xray_overdue_enable')">
+                  <span *ngIf="xray_overdue_enable"
+                    ><strong>Enabled</strong></span
+                  >
+                  <span *ngIf="!xray_overdue_enable"
+                    ><strong>Disabled</strong></span
+                  >
                 </mat-slide-toggle>
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label>&nbsp;</label>
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['xray_months']"
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['xray_months']"
                   [(ngModel)]="xrayMonths" />
                 <span>months</span>
-                <small *ngIf="
+                <small
+                  *ngIf="
                     form.controls['xray_months'].hasError('required') &&
                     form.controls['xray_months'].touched
-                  " class="text-danger support-text mh-error-align">Field is Required.</small>
+                  "
+                  class="text-danger support-text mh-error-align"
+                  >Field is Required.</small
+                >
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-            </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-            </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-            </div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
           </div>
-          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+          <div
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="20px"
+            fxLayoutGap.sm="20px"
+            fxLayoutGap.xs="0">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">OPG Overdue <div class="info-button">
+                <label _ngcontent-gxr-c371=""
+                  >OPG Overdue
+                  <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipOPGOverdue" src="../assets/images/info-icon.png" alt="info-icon"
+                      <img
+                        [tooltip]="this.constants.tipOPGOverdue"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
                         class="info-icon" />
-                    </div>
-                  </div></label>
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ opg_overdue_enable }}"
-                  name="opg_overdue_enable" (change)="toggleMH($event, 'opg_overdue_enable')">
-                  <span *ngIf="opg_overdue_enable"><strong>Enabled</strong></span>
-                  <span *ngIf="!opg_overdue_enable"><strong>Disabled</strong></span>
+                    </div></div
+                ></label>
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  checked="{{ opg_overdue_enable }}"
+                  name="opg_overdue_enable"
+                  (change)="toggleMH($event, 'opg_overdue_enable')">
+                  <span *ngIf="opg_overdue_enable"
+                    ><strong>Enabled</strong></span
+                  >
+                  <span *ngIf="!opg_overdue_enable"
+                    ><strong>Disabled</strong></span
+                  >
                 </mat-slide-toggle>
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label>&nbsp; </label>
-                <input type="number" min="0" placeholder="" [formControl]="form.controls['opg_months']"
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['opg_months']"
                   [(ngModel)]="opgMonths" />
-                <span>months
-
-                </span>
-                <small *ngIf="
+                <span>months </span>
+                <small
+                  *ngIf="
                     form.controls['opg_months'].hasError('required') &&
                     form.controls['opg_months'].touched
-                  " class="text-danger support-text mh-error-align">Field is Required.</small>
+                  "
+                  class="text-danger support-text mh-error-align"
+                  >Field is Required.</small
+                >
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-            </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-            </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-            </div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
           </div>
-          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+          <div
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="0px"
+            fxLayoutGap.sm="0px"
+            fxLayoutGap.xs="0">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Overdue Recalls <div class="info-button">
+                <label _ngcontent-gxr-c371=""
+                  >Overdue Recalls
+                  <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipRecallCode" src="../assets/images/info-icon.png" alt="info-icon"
+                      <img
+                        [tooltip]="this.constants.tipRecallCode"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
                         class="info-icon" />
-                    </div>
-                  </div></label>
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ recall_overdue_enable }}"
-                  name="recall_overdue_enable" (change)="toggleMH($event, 'recall_overdue_enable')">
-                  <span *ngIf="recall_overdue_enable"><strong>Enabled</strong></span>
-                  <span *ngIf="!recall_overdue_enable"><strong>Disabled</strong></span>
+                    </div></div
+                ></label>
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  checked="{{ recall_overdue_enable }}"
+                  name="recall_overdue_enable"
+                  (change)="toggleMH($event, 'recall_overdue_enable')">
+                  <span *ngIf="recall_overdue_enable"
+                    ><strong>Enabled</strong></span
+                  >
+                  <span *ngIf="!recall_overdue_enable"
+                    ><strong>Disabled</strong></span
+                  >
                 </mat-slide-toggle>
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 1 </label>
-                <input type="text" maxlength="20" placeholder="" [formControl]="form.controls['recall_codes1']"
+                <input
+                  type="text"
+                  maxlength="20"
+                  placeholder=""
+                  [formControl]="form.controls['recall_codes1']"
                   [(ngModel)]="recallCode1" />
 
-                <small *ngIf="
+                <small
+                  *ngIf="
                     form.controls['recall_codes1'].hasError('required') &&
                     form.controls['recall_codes1'].touched
-                  " class="text-danger support-text mh-error-align">Field is Required.</small>
+                  "
+                  class="text-danger support-text mh-error-align"
+                  >Field is Required.</small
+                >
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 2 </label>
-                <input type="text" maxlength="20" placeholder="" [formControl]="form.controls['recall_codes2']"
+                <input
+                  type="text"
+                  maxlength="20"
+                  placeholder=""
+                  [formControl]="form.controls['recall_codes2']"
                   [(ngModel)]="recallCode2" />
-                <small *ngIf="
+                <small
+                  *ngIf="
                     form.controls['recall_codes2'].hasError('required') &&
                     form.controls['recall_codes2'].touched
-                  " class="text-danger support-text mh-error-align">Field is Required.</small>
+                  "
+                  class="text-danger support-text mh-error-align"
+                  >Field is Required.</small
+                >
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Recall Code 3</label>
-                <input type="text" maxlength="20" placeholder="" [formControl]="form.controls['recall_codes3']"
+                <input
+                  type="text"
+                  maxlength="20"
+                  placeholder=""
+                  [formControl]="form.controls['recall_codes3']"
                   [(ngModel)]="recallCode3" />
-                <small *ngIf="
+                <small
+                  *ngIf="
                     form.controls['recall_codes3'].hasError('required') &&
                     form.controls['recall_codes3'].touched
-                  " class="text-danger support-text mh-error-align">Field is Required.</small>
+                  "
+                  class="text-danger support-text mh-error-align"
+                  >Field is Required.</small
+                >
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-            </div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
           </div>
 
-          <div *ngIf="isPmsD4W$ | async" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-            <div  fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+          <div
+            *ngIf="isPmsD4W$ | async"
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="0px"
+            fxLayoutGap.sm="0px"
+            fxLayoutGap.xs="0">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Lab Needed <div class="info-button">
-                    <div class="info-icon-container"> 
-                      <img [tooltip]="this.constants.labCode" src="../assets/images/info-icon.png" alt="info-icon"
+                <label _ngcontent-gxr-c371=""
+                  >Lab Needed
+                  <div class="info-button">
+                    <div class="info-icon-container">
+                      <img
+                        [tooltip]="this.constants.labCode"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
                         class="info-icon" />
-                    </div>
-                  </div></label>
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ lab_needed_enable }}"
-                  name="lab_needed_enable" (change)="toggleMH($event, 'lab_needed_enable')">
-                  <span *ngIf="lab_needed_enable"><strong>Enabled</strong></span>
-                  <span *ngIf="!lab_needed_enable"><strong>Disabled</strong></span>
+                    </div></div
+                ></label>
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  checked="{{ lab_needed_enable }}"
+                  name="lab_needed_enable"
+                  (change)="toggleMH($event, 'lab_needed_enable')">
+                  <span *ngIf="lab_needed_enable"
+                    ><strong>Enabled</strong></span
+                  >
+                  <span *ngIf="!lab_needed_enable"
+                    ><strong>Disabled</strong></span
+                  >
                 </mat-slide-toggle>
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Lab Code 1</label>
-                <input type="text" maxlength="1" placeholder="" [formControl]="form.controls['lab_code1']"
+                <input
+                  type="text"
+                  maxlength="1"
+                  placeholder=""
+                  [formControl]="form.controls['lab_code1']"
                   [(ngModel)]="labCode1" />
                 <!-- <small *ngIf="
                     form.controls['lab_code1'].hasError('required') &&
@@ -165,10 +353,18 @@
                   " class="text-danger support-text mh-error-align">Field is Required.</small> -->
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">Lab Code 2</label>
-                <input type="text" maxlength="1" placeholder="" [formControl]="form.controls['lab_code2']"
+                <input
+                  type="text"
+                  maxlength="1"
+                  placeholder=""
+                  [formControl]="form.controls['lab_code2']"
                   [(ngModel)]="labCode2" />
                 <!-- <small *ngIf="
                     form.controls['lab_code2'].hasError('required') &&
@@ -176,29 +372,61 @@
                   " class="text-danger support-text mh-error-align">Field is Required.</small> -->
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-            </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-            </div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
           </div>
-          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0"
-          *ngIf="apiUrl.includes('test')">
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+          <div
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="0px"
+            fxLayoutGap.sm="0px"
+            fxLayoutGap.xs="0"
+            *ngIf="apiUrl.includes('test')">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
-                <label _ngcontent-gxr-c371="">Status Codes <div class="info-button">
+                <label _ngcontent-gxr-c371=""
+                  >Status Codes
+                  <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.statusCode" src="../assets/images/info-icon.png" alt="info-icon"
+                      <img
+                        [tooltip]="this.constants.statusCode"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
                         class="info-icon" />
-                    </div>
-                  </div></label>
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ status_codes_enable }}"
-                  name="status_codes_enable" (change)="toggleMH($event, 'status_codes_enable')">
-                  <span *ngIf="status_codes_enable"><strong>Enabled</strong></span>
-                  <span *ngIf="!status_codes_enable"><strong>Disabled</strong></span>
+                    </div></div
+                ></label>
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  checked="{{ status_codes_enable }}"
+                  name="status_codes_enable"
+                  (change)="toggleMH($event, 'status_codes_enable')">
+                  <span *ngIf="status_codes_enable"
+                    ><strong>Enabled</strong></span
+                  >
+                  <span *ngIf="!status_codes_enable"
+                    ><strong>Disabled</strong></span
+                  >
                 </mat-slide-toggle>
               </div>
             </div>
-           <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100">
               <div class="sa-form-group mh-align">
                 <label _ngcontent-gxr-c371="">
                   &nbsp;
@@ -208,16 +436,31 @@
                         alt="info-icon" class="info-icon" />
                     </div>
                   </div> -->
-                </label>   
-                <button type="button" class="mat-raised-button mat-green Set-Colours mat-elevation-z" mat-raised-button (click)="openDialog()">Set Colours</button>          
+                </label>
+                <button
+                  type="button"
+                  class="mat-raised-button mat-green Set-Colours mat-elevation-z"
+                  mat-raised-button
+                  (click)="openDialog()">
+                  Set Colours
+                </button>
               </div>
             </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">              
-            </div>           
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-            </div>
-            <div fxFlex="calc(18% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-            </div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
+            <div
+              fxFlex="calc(18% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"></div>
           </div>
         </div>
       </div>
@@ -225,75 +468,136 @@
       <div class="gray_area">
         <div class="working-days">
           <h4 class="clinic-settings-form-title">Dashboards</h4>
-          <div *ngIf="isPMSExact$ | async; else elseBlock" class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
-            fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+          <div
+            *ngIf="isPMSExact$ | async; else elseBlock"
+            class="clinic-setting-form"
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="0px"
+            fxLayoutGap.sm="0px"
+            fxLayoutGap.xs="0">
+            <div
+              fxFlex="calc(32% - 10px)"
+              fxFlex.md="calc(32% - 10px)"
+              fxFlex.sm="calc(32% - 10px)"
+              fxFlex.xs="30">
               <div class="sa-form-group sa-group">
                 <label>Discount Code 1</label>
-                <input type="text" [formControl]="form.controls['disc_code_1']"/>
+                <input
+                  type="text"
+                  [formControl]="form.controls['disc_code_1']" />
               </div>
             </div>
-            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+            <div
+              fxFlex="calc(32% - 10px)"
+              fxFlex.md="calc(32% - 10px)"
+              fxFlex.sm="calc(32% - 10px)"
+              fxFlex.xs="30">
               <div class="sa-form-group sa-group">
                 <label>Discount Code 2</label>
-                <input type="text" [formControl]="form.controls['disc_code_2']"/>
+                <input
+                  type="text"
+                  [formControl]="form.controls['disc_code_2']" />
               </div>
             </div>
-            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+            <div
+              fxFlex="calc(32% - 10px)"
+              fxFlex.md="calc(32% - 10px)"
+              fxFlex.sm="calc(32% - 10px)"
+              fxFlex.xs="30">
               <div class="sa-form-group sa-group">
                 <label>Discount Code 3</label>
-                <input type="text" [formControl]="form.controls['disc_code_3']"/>
+                <input
+                  type="text"
+                  [formControl]="form.controls['disc_code_3']" />
               </div>
             </div>
           </div>
           <ng-template #elseBlock>
-            <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-              <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+            <div
+              class="clinic-setting-form"
+              fxLayout="row wrap"
+              fxLayoutGap="20px"
+              fxLayoutGap.md="0px"
+              fxLayoutGap.sm="0px"
+              fxLayoutGap.xs="0">
+              <div
+                fxFlex="calc(32% - 10px)"
+                fxFlex.md="calc(32% - 10px)"
+                fxFlex.sm="calc(32% - 10px)"
+                fxFlex.xs="30">
                 <div class="sa-form-group sa-group">
-                  <label>New Patients
+                  <label
+                    >New Patients
                     <div class="info-button">
                       <div class="info-icon-container">
-                        <img [tooltip]="this.constants.tipNewPatients" src="../assets/images/info-icon.png"
-                          alt="info-icon" class="info-icon" />
+                        <img
+                          [tooltip]="this.constants.tipNewPatients"
+                          src="../assets/images/info-icon.png"
+                          alt="info-icon"
+                          class="info-icon" />
                       </div>
                     </div>
                   </label>
 
-                  <select [formControl]="form.controls['new_patients']" [(ngModel)]="newPatients">
+                  <select
+                    [formControl]="form.controls['new_patients']"
+                    [(ngModel)]="newPatients">
                     <option value="0">Treatment Provider</option>
                     <option value="1">Main Provider</option>
                   </select>
                 </div>
               </div>
-              <div *ngIf="apiUrl.includes('test')" fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+              <div
+                *ngIf="apiUrl.includes('test')"
+                fxFlex="calc(32% - 10px)"
+                fxFlex.md="calc(32% - 10px)"
+                fxFlex.sm="calc(32% - 10px)"
+                fxFlex.xs="30">
                 <div class="sa-form-group sa-group">
-                  <label>Recall Rate
+                  <label
+                    >Recall Rate
                     <div class="info-button">
                       <div class="info-icon-container">
-                        <img [tooltip]="this.constants.tipCustomisationsRecallRate" src="../assets/images/info-icon.png"
-                          alt="info-icon" class="info-icon" />
+                        <img
+                          [tooltip]="this.constants.tipCustomisationsRecallRate"
+                          src="../assets/images/info-icon.png"
+                          alt="info-icon"
+                          class="info-icon" />
                       </div>
                     </div>
                   </label>
 
-                  <select [formControl]="form.controls['recall_rate_default']" [(ngModel)]="recall_rate_default">
+                  <select
+                    [formControl]="form.controls['recall_rate_default']"
+                    [(ngModel)]="recall_rate_default">
                     <option value="0">Status Code</option>
                     <option value="1">Default</option>
                   </select>
                 </div>
               </div>
-              <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+              <div
+                fxFlex="calc(32% - 10px)"
+                fxFlex.md="calc(32% - 10px)"
+                fxFlex.sm="calc(32% - 10px)"
+                fxFlex.xs="30">
                 <div class="sa-form-group sa-group">
-                  <label>Hourly Rate
+                  <label
+                    >Hourly Rate
                     <div class="info-button">
                       <div class="info-icon-container">
-                        <img [tooltip]="this.constants.tipCustomisationsHourlyRate" src="../assets/images/info-icon.png"
-                          alt="info-icon" class="info-icon" />
+                        <img
+                          [tooltip]="this.constants.tipCustomisationsHourlyRate"
+                          src="../assets/images/info-icon.png"
+                          alt="info-icon"
+                          class="info-icon" />
                       </div>
                     </div>
                   </label>
 
-                  <select [formControl]="form.controls['hourly_rate_appt_hours']" [(ngModel)]="hourly_rate_appt_hours">
+                  <select
+                    [formControl]="form.controls['hourly_rate_appt_hours']"
+                    [(ngModel)]="hourly_rate_appt_hours">
                     <option value="0">Available Hours</option>
                     <option value="1">Appointment Hours</option>
                   </select>
@@ -301,20 +605,36 @@
               </div>
             </div>
           </ng-template>
-          <div *ngIf="visibleMaxBarSetting" class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px"
-          fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
+          <div
+            *ngIf="visibleMaxBarSetting"
+            class="clinic-setting-form"
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="0px"
+            fxLayoutGap.sm="0px"
+            fxLayoutGap.xs="0">
+            <div
+              fxFlex="calc(32% - 10px)"
+              fxFlex.md="calc(32% - 10px)"
+              fxFlex.sm="calc(32% - 10px)"
+              fxFlex.xs="30">
               <div class="sa-form-group sa-group">
-                <label>Max Chart Bars
+                <label
+                  >Max Chart Bars
                   <div class="info-button">
                     <div class="info-icon-container">
-                      <img [tooltip]="this.constants.tipMaxChartBar" src="../assets/images/info-icon.png"
-                        alt="info-icon" class="info-icon" />
+                      <img
+                        [tooltip]="this.constants.tipMaxChartBar"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
+                        class="info-icon" />
                     </div>
                   </div>
                 </label>
 
-                <select [formControl]="form.controls['max_chart_bars']" [(ngModel)]="numberOfRecords">
+                <select
+                  [formControl]="form.controls['max_chart_bars']"
+                  [(ngModel)]="numberOfRecords">
                   <option value="5">5</option>
                   <option value="10">10</option>
                   <option value="15">15</option>
@@ -328,18 +648,24 @@
                 </select>
               </div>
             </div>
-            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
-              <div class="sa-form-group sa-group">
-              </div>
+            <div
+              fxFlex="calc(32% - 10px)"
+              fxFlex.md="calc(32% - 10px)"
+              fxFlex.sm="calc(32% - 10px)"
+              fxFlex.xs="30">
+              <div class="sa-form-group sa-group"></div>
             </div>
-            <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="30">
-              <div class="sa-form-group sa-group">
-              </div>
+            <div
+              fxFlex="calc(32% - 10px)"
+              fxFlex.md="calc(32% - 10px)"
+              fxFlex.sm="calc(32% - 10px)"
+              fxFlex.xs="30">
+              <div class="sa-form-group sa-group"></div>
             </div>
           </div>
         </div>
       </div>
-      
+
       <!-- <div class="gray_area">
         <div class="working-days">
           <h4 class="clinic-settings-form-title">Health Screen</h4>

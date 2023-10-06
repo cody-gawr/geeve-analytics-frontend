@@ -26,13 +26,15 @@ const components = [
   AppTopbarComponent,
   AppLayoutComponent,
   AppSidebarComponent,
-  AppMenuComponent
+  AppMenuComponent,
 ];
 
 const services = [
   AuthFacade,
-  AppLayoutService, ClinicFacade,
-  LayoutFacade, DentistFacade
+  AppLayoutService,
+  ClinicFacade,
+  LayoutFacade,
+  DentistFacade,
 ];
 
 @NgModule({
@@ -44,10 +46,10 @@ const services = [
     StoreModule.forFeature(clinicFeature),
     StoreModule.forFeature(layoutFeature),
     StoreModule.forFeature(dentistFeature),
-    EffectsModule.forFeature([AuthEffects, ClinicEffects, DentistEffects])
+    EffectsModule.forFeature([AuthEffects, ClinicEffects, DentistEffects]),
   ],
   declarations: [...components],
   exports: [AppLayoutComponent],
-  providers: [...services]
+  providers: [...services],
 })
 export class AppLayoutModule {}

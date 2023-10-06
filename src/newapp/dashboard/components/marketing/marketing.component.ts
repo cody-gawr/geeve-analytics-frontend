@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { DashboardFacade } from "../../facades/dashboard.facade";
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { Router } from "@angular/router";
-import moment from "moment";
-import { MarketingFacade } from "../../facades/marketing.facade";
-import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
-import _ from "lodash";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { DashboardFacade } from '../../facades/dashboard.facade';
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { Router } from '@angular/router';
+import moment from 'moment';
+import { MarketingFacade } from '../../facades/marketing.facade';
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
+import _ from 'lodash';
 
 @Component({
-  selector: "dashboard-marketing",
-  templateUrl: "./marketing.component.html",
-  styleUrls: ["./marketing.component.scss"],
+  selector: 'dashboard-marketing',
+  templateUrl: './marketing.component.html',
+  styleUrls: ['./marketing.component.scss'],
 })
 export class MarketingComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
@@ -21,14 +21,14 @@ export class MarketingComponent implements OnInit, OnDestroy {
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
-      map((t) => t !== "off")
+      map(t => t !== 'off')
     );
   }
 
   get authUserId$() {
     return this.authFacade.authUserData$.pipe(
       map(
-        (authUserData) => (authUserData ?? this.authFacade.getAuthUserData()).id
+        authUserData => (authUserData ?? this.authFacade.getAuthUserData()).id
       )
     );
   }
@@ -36,7 +36,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
   get clinicId$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
@@ -58,7 +58,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
       this.dashbordFacade.connectedClinicId$,
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe((params) => {
+      .subscribe(params => {
         const [
           clinicId,
           dateRange,
@@ -70,8 +70,8 @@ export class MarketingComponent implements OnInit, OnDestroy {
         ] = params;
         if (clinicId == null) return;
         const newConnectedId =
-          typeof clinicId == "string"
-            ? _.min(clinicId.split(",").map((c) => parseInt(c)))
+          typeof clinicId == 'string'
+            ? _.min(clinicId.split(',').map(c => parseInt(c)))
             : clinicId;
         if (newConnectedId !== connectedClinicId) {
           return;
@@ -81,14 +81,14 @@ export class MarketingComponent implements OnInit, OnDestroy {
         const duration = dateRange.duration;
 
         this.dashbordFacade.loadChartTips(4, clinicId);
-        const queryWhEnabled = route && parseInt(route.wh ?? "0") == 1 ? 1 : 0;
+        const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
         this.marketingFacade.setErrors([]);
         switch (trend) {
-          case "off":
+          case 'off':
             const params = {
               clinicId: clinicId,
-              startDate: startDate && moment(startDate).format("DD-MM-YYYY"),
-              endDate: endDate && moment(endDate).format("DD-MM-YYYY"),
+              startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
+              endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
               duration: duration,
               queryWhEnabled,
               connectedWith: connectedWith,
@@ -104,46 +104,46 @@ export class MarketingComponent implements OnInit, OnDestroy {
 
             this.marketingFacade.loadTotalVisits(params);
             break;
-          case "current":
-          case "historic":
+          case 'current':
+          case 'historic':
             this.marketingFacade.loadRevByReferralTrend({
               clinicId,
-              mode: trend === "current" ? "c" : "h",
+              mode: trend === 'current' ? 'c' : 'h',
               queryWhEnabled,
             });
             this.marketingFacade.loadMkNewPatientsByReferralTrend({
               clinicId,
-              mode: trend === "current" ? "c" : "h",
+              mode: trend === 'current' ? 'c' : 'h',
               queryWhEnabled,
             });
             this.marketingFacade.loadNewPatientsAcqTrend({
               clinicId,
-              mode: trend === "current" ? "c" : "h",
+              mode: trend === 'current' ? 'c' : 'h',
               queryWhEnabled,
               connectedWith,
             });
             this.marketingFacade.loadNewNumPatientsTrend({
               clinicId,
-              mode: trend === "current" ? "c" : "h",
+              mode: trend === 'current' ? 'c' : 'h',
               queryWhEnabled,
             });
             this.marketingFacade.loadActivePatientsTrend({
               clinicId,
-              mode: trend === "current" ? "c" : "h",
+              mode: trend === 'current' ? 'c' : 'h',
               queryWhEnabled,
             });
 
             this.marketingFacade.loadTotalVisitsTrend({
               clinicId,
-              mode: trend === "current" ? "c" : "h",
+              mode: trend === 'current' ? 'c' : 'h',
               queryWhEnabled,
             });
             break;
         }
 
-        if (connectedWith == "myob") {
+        if (connectedWith == 'myob') {
           this.marketingFacade.loadMkGetMyobAccounts({ clinicId, userId });
-        } else if (connectedWith == "xero") {
+        } else if (connectedWith == 'xero') {
           this.marketingFacade.loadMkGetXeroAccounts({ clinicId, userId });
         }
       });
@@ -174,11 +174,11 @@ export class MarketingComponent implements OnInit, OnDestroy {
   getChartTip(index: number) {
     return this.dashbordFacade.chartTips$.pipe(
       takeUntil(this.destroy$),
-      map((c) => {
+      map(c => {
         if (c && c[index]) {
           return c[index];
         }
-        return "";
+        return '';
       })
     );
   }

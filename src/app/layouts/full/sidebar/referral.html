@@ -1,38 +1,60 @@
 <div class="AddUserPopup referafriend">
-  <h1 mat-dialog-title>Refer a Friend
-    <span>Get 50% off on your Jeeve subscription fees for 2 months for any referral who signs up to Jeeve! *</span>
+  <h1 mat-dialog-title>
+    Refer a Friend
+    <span
+      >Get 50% off on your Jeeve subscription fees for 2 months for any referral
+      who signs up to Jeeve! *</span
+    >
   </h1>
-<div mat-dialog-content class="referafrn_1">
+  <div mat-dialog-content class="referafrn_1">
     <img alt="homepage" src="../assets/images/invite-a-friend.png" />
-</div>
-<div class="referafrn_2">
-  <div mat-dialog-content class="sa_forms_design">
-    <div class="sa-form-group">
-      <label>Name</label>
-      <input [(ngModel)]="data.referFriendName"  class="mat-form-control" required="true" placeholder="Recipient Name">
-      <div *ngIf="referFriendNameError">
-        {{referFriendNameErrorMsg}}
+  </div>
+  <div class="referafrn_2">
+    <div mat-dialog-content class="sa_forms_design">
+      <div class="sa-form-group">
+        <label>Name</label>
+        <input
+          [(ngModel)]="data.referFriendName"
+          class="mat-form-control"
+          required="true"
+          placeholder="Recipient Name" />
+        <div *ngIf="referFriendNameError">{{referFriendNameErrorMsg}}</div>
       </div>
     </div>
-  </div>
 
     <div mat-dialog-content class="sa_forms_design">
       <div class="sa-form-group">
         <label>Email</label>
-        <input type="email" [(ngModel)]="data.referFriendEmail" class="mat-form-control" required="true" placeholder="Recipient Email">
-        <div *ngIf="referFriendNameError">
-          {{referFriendNameErrorMsg}}
-        </div>
+        <input
+          type="email"
+          [(ngModel)]="data.referFriendEmail"
+          class="mat-form-control"
+          required="true"
+          placeholder="Recipient Email" />
+        <div *ngIf="referFriendNameError">{{referFriendNameErrorMsg}}</div>
       </div>
     </div>
-</div>
+  </div>
 
   <div mat-dialog-actions class="justify-between">
-    <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+    <button
+      mat-button
+      (click)="onNoClick()"
+      tabindex="-1"
+      class="mat-raised-button mat-gray">
+      Cancel
+    </button>
     <!-- <button (click)="save(data)"  tabindex="2"
       class="mat-raised-button mat-dc float-right">Save</button> -->
-    <button (click)="save(data)" [disabled]="data.referFriendName == '' || data.referFriendEmail == ''" tabindex="2"
-      class="mat-raised-button mat-dc float-right">Send Invite</button>
+    <button
+      (click)="save(data)"
+      [disabled]="data.referFriendName == '' || data.referFriendEmail == ''"
+      tabindex="2"
+      class="mat-raised-button mat-dc float-right">
+      Send Invite
+    </button>
   </div>
-  <div class="lower-info">* Discount offered on 1 clinic subscription. Max. discount $175/month</div>
+  <div class="lower-info">
+    * Discount offered on 1 clinic subscription. Max. discount $175/month
+  </div>
 </div>

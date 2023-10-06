@@ -1,20 +1,31 @@
-<div class="AddUserPopup setting"> 
-<h1 *ngIf="!data.id" mat-dialog-title>Add Script</h1>
-<h1 *ngIf="data.id" mat-dialog-title>Edit Script</h1>
-<div mat-dialog-content class="sa_forms_design">
-  <div class="sa-form-group">
-    <label>Name</label>
-    <input [(ngModel)]="data.name"  class="mat-form-control" required="true" placeholder="">   
-  </div> 
+<div class="AddUserPopup setting">
+  <h1 *ngIf="!data.id" mat-dialog-title>Add Script</h1>
+  <h1 *ngIf="data.id" mat-dialog-title>Edit Script</h1>
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group">
+      <label>Name</label>
+      <input
+        [(ngModel)]="data.name"
+        class="mat-form-control"
+        required="true"
+        placeholder="" />
+    </div>
 
-<div mat-dialog-content class="sa_forms_design">
-  <div class="sa-form-group">
-    <label>Text <span class="charLimit">{{ charLimit}}</span></label>
-    <textarea maxlength="1500" [(ngModel)]="data.text"  class="mat-form-control" required="true" placeholder="" (keypress) = "countCharDown($event)" (keyup) = "countCharUp($event)"></textarea>   
-  </div> 
-</div>
-<div class="sa-form-group">
-    <label>Followups Type</label>
+    <div mat-dialog-content class="sa_forms_design">
+      <div class="sa-form-group">
+        <label>Text <span class="charLimit">{{ charLimit}}</span></label>
+        <textarea
+          maxlength="1500"
+          [(ngModel)]="data.text"
+          class="mat-form-control"
+          required="true"
+          placeholder=""
+          (keypress)="countCharDown($event)"
+          (keyup)="countCharUp($event)"></textarea>
+      </div>
+    </div>
+    <div class="sa-form-group">
+      <label>Followups Type</label>
       <select id="setNote" [(ngModel)]="data.type">
         <option value="">Select Followups</option>
         <option value="Post Op">Post Op</option>
@@ -25,37 +36,61 @@
         <option value="FTA">FTA</option>
         <option value="UTA">UTA</option>
       </select>
-  </div> 
-  <div class="sa-form-group">
-    <label>Color <span class="clour-span-{{data.colour}} clour-span" *ngIf="data.colour"></span></label>
-        <select  [(ngModel)]="data.colour" name="color" class="colour">
-          <option value="">Default Color</option>
-          <option value="aqua">Aqua</option>
-          <option value="black">Black</option>
-          <option value="blue">Blue</option>
-          <option value="chartreuse">Chartreuse</option>
-          <option value="chocolate">Chocolate</option>
-          <option value="cyan">Cyan</option>
-          <option value="navy">Navy</option>
-          <option value="gray">Gray</option>
-          <option value="green">Green</option>
-          <option value="maroon">Maroon</option>
-          <option value="olive">Olive</option>
-          <option value="orange">Orange</option>
-          <option value="red">Red</option>
-          <option value="silver">Silver</option>
-          <option value="teal">Teal</option>
-          <option value="violet">Violet</option>
-          <option value="white">White</option>
-          <option value="yellow">Yellow</option>                
-        </select>                 
-  </div> 
-</div>
+    </div>
+    <div class="sa-form-group">
+      <label
+        >Color
+        <span
+          class="clour-span-{{data.colour}} clour-span"
+          *ngIf="data.colour"></span
+      ></label>
+      <select [(ngModel)]="data.colour" name="color" class="colour">
+        <option value="">Default Color</option>
+        <option value="aqua">Aqua</option>
+        <option value="black">Black</option>
+        <option value="blue">Blue</option>
+        <option value="chartreuse">Chartreuse</option>
+        <option value="chocolate">Chocolate</option>
+        <option value="cyan">Cyan</option>
+        <option value="navy">Navy</option>
+        <option value="gray">Gray</option>
+        <option value="green">Green</option>
+        <option value="maroon">Maroon</option>
+        <option value="olive">Olive</option>
+        <option value="orange">Orange</option>
+        <option value="red">Red</option>
+        <option value="silver">Silver</option>
+        <option value="teal">Teal</option>
+        <option value="violet">Violet</option>
+        <option value="white">White</option>
+        <option value="yellow">Yellow</option>
+      </select>
+    </div>
+  </div>
 
-<div mat-dialog-actions class="justify-between">
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-  
-  <button *ngIf="!data.id" (click)="save(data)" [disabled] = "data.type == '' || data.name == '' || data.text == ''" tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
-  <button *ngIf="data.id" (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc float-right">Update</button>
-</div>
+  <div mat-dialog-actions class="justify-between">
+    <button
+      mat-button
+      (click)="onNoClick()"
+      tabindex="-1"
+      class="mat-raised-button mat-gray">
+      Cancel
+    </button>
+
+    <button
+      *ngIf="!data.id"
+      (click)="save(data)"
+      [disabled]="data.type == '' || data.name == '' || data.text == ''"
+      tabindex="2"
+      class="mat-raised-button mat-dc float-right">
+      Save
+    </button>
+    <button
+      *ngIf="data.id"
+      (click)="save(data)"
+      tabindex="2"
+      class="mat-raised-button mat-dc float-right">
+      Update
+    </button>
+  </div>
 </div>

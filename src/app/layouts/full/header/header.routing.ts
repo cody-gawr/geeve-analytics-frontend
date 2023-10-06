@@ -7,7 +7,7 @@ export const HeaderRoutes: Routes = [
     path: '',
     component: AppHeaderComponent,
     data: {
-      title: 'Header'
-    }
-  }
+      title: 'Header',
+    },
+  },
 ];

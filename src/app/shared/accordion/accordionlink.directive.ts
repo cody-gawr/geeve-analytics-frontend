@@ -4,13 +4,13 @@ import {
   Inject,
   Input,
   OnInit,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 
 import { AccordionDirective } from './accordion.directive';
 
 @Directive({
-  selector: '[appAccordionLink]'
+  selector: '[appAccordionLink]',
 })
 export class AccordionLinkDirective implements OnInit, OnDestroy {
   @Input()

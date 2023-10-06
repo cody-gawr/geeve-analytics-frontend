@@ -1,106 +1,226 @@
-<div class="setJeeveNames"> 
-<h1 mat-dialog-title class="mat-dialog-title">Set Jeeve Names</h1>
-<div mat-dialog-content class="sa_forms_design">
-  <div class="sa-form-group lable-set-jeeve-names">
-    <label>Jeeve Id 1</label>     
-  </div> 
-   <div class="sa-form-group input-set-jeeve-names"  *ngIf="data.jeeveNames[1] != 'undefined'">
-      <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,1)" value="{{data.jeeveNames['1']}}">  
+<div class="setJeeveNames">
+  <h1 mat-dialog-title class="mat-dialog-title">Set Jeeve Names</h1>
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group lable-set-jeeve-names">
+      <label>Jeeve Id 1</label>
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[1] != 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,1)"
+        value="{{data.jeeveNames['1']}}" />
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[1] == 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,1)"
+        value="" />
+    </div>
   </div>
-  <div class="sa-form-group input-set-jeeve-names"  *ngIf="data.jeeveNames[1] == 'undefined'">
-    <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,1)" value="">  
-</div>
-</div>
-<div mat-dialog-content class="sa_forms_design" >
-  <div class="sa-form-group lable-set-jeeve-names">
-    <label>Jeeve Id 2</label>     
-  </div> 
-   <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[2] != 'undefined'">
-      <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,2)" value="{{data.jeeveNames['2']}}">   
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group lable-set-jeeve-names">
+      <label>Jeeve Id 2</label>
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[2] != 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,2)"
+        value="{{data.jeeveNames['2']}}" />
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[2] == 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,2)"
+        value="" />
+    </div>
   </div>
-  <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[2] == 'undefined'">
-    <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,2)" value="">   
-</div>
-</div>
-<div mat-dialog-content class="sa_forms_design" >
-  <div class="sa-form-group lable-set-jeeve-names">
-    <label>Jeeve Id 3</label>     
-  </div> 
-   <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[3] != 'undefined'">      
-      <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,3)" value="{{data.jeeveNames['3']}}">  
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group lable-set-jeeve-names">
+      <label>Jeeve Id 3</label>
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[3] != 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,3)"
+        value="{{data.jeeveNames['3']}}" />
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[3] == 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,3)"
+        value="" />
+    </div>
   </div>
-  <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[3] == 'undefined'">      
-    <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,3)" value="">  
-</div>
-</div>
-<div mat-dialog-content class="sa_forms_design" >
-  <div class="sa-form-group lable-set-jeeve-names">
-    <label>Jeeve Id 4</label>     
-  </div> 
-   <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[4] != 'undefined'">      
-      <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,4)" value="{{data.jeeveNames['4']}}">  
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group lable-set-jeeve-names">
+      <label>Jeeve Id 4</label>
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[4] != 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,4)"
+        value="{{data.jeeveNames['4']}}" />
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[4] == 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,4)"
+        value="" />
+    </div>
   </div>
-  <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[4] == 'undefined'">      
-    <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,4)" value="">  
-</div>
-</div>
-<div mat-dialog-content class="sa_forms_design" >
-  <div class="sa-form-group lable-set-jeeve-names">
-    <label>Jeeve Id 5</label>     
-  </div> 
-   <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[5] != 'undefined'">      
-      <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,5)" value="{{data.jeeveNames['5']}}">  
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group lable-set-jeeve-names">
+      <label>Jeeve Id 5</label>
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[5] != 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,5)"
+        value="{{data.jeeveNames['5']}}" />
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[5] == 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,5)"
+        value="" />
+    </div>
   </div>
-  <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[5] == 'undefined'">      
-    <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,5)" value="">  
-</div>
-</div>
-<div mat-dialog-content class="sa_forms_design" >
-  <div class="sa-form-group lable-set-jeeve-names">
-    <label>Jeeve Id 6</label>     
-  </div> 
-   <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[6] != 'undefined'">      
-      <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,6)" value="{{data.jeeveNames['6']}}">  
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group lable-set-jeeve-names">
+      <label>Jeeve Id 6</label>
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[6] != 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,6)"
+        value="{{data.jeeveNames['6']}}" />
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[6] == 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,6)"
+        value="" />
+    </div>
   </div>
-  <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[6] == 'undefined'">      
-    <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,6)" value="">  
-</div>
-</div>
-<div mat-dialog-content class="sa_forms_design" >
-  <div class="sa-form-group lable-set-jeeve-names">
-    <label>Jeeve Id 7</label>     
-  </div> 
-   <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[7] != 'undefined'">      
-      <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,7)" value="{{data.jeeveNames['7']}}">  
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group lable-set-jeeve-names">
+      <label>Jeeve Id 7</label>
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[7] != 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,7)"
+        value="{{data.jeeveNames['7']}}" />
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[7] == 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,7)"
+        value="" />
+    </div>
   </div>
-  <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[7] == 'undefined'">      
-    <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,7)" value="">  
-</div>
-</div>
-<div mat-dialog-content class="sa_forms_design" >
-  <div class="sa-form-group lable-set-jeeve-names">
-    <label>Jeeve Id 8</label>     
-  </div> 
-   <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[8] != 'undefined'">      
-      <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,8)" value="{{data.jeeveNames['8']}}">  
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group lable-set-jeeve-names">
+      <label>Jeeve Id 8</label>
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[8] != 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,8)"
+        value="{{data.jeeveNames['8']}}" />
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[8] == 'undefined'">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,8)"
+        value="" />
+    </div>
   </div>
-  <div class="sa-form-group input-set-jeeve-names" *ngIf="data.jeeveNames[8] == 'undefined'">      
-    <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,8)" value="">  
-</div>
-</div>
-<div mat-dialog-content class="sa_forms_design">
-  <div class="sa-form-group lable-set-jeeve-names">
-    <label>Jeeve Id 9</label>     
-  </div> 
-   <div class="sa-form-group input-set-jeeve-names"  *ngIf="data.jeeveNames[9] != 'undefined' ">      
-      <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,9)" value="{{data.jeeveNames['9']}}">  
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group lable-set-jeeve-names">
+      <label>Jeeve Id 9</label>
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[9] != 'undefined' ">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,9)"
+        value="{{data.jeeveNames['9']}}" />
+    </div>
+    <div
+      class="sa-form-group input-set-jeeve-names"
+      *ngIf="data.jeeveNames[9] == 'undefined' ">
+      <input
+        placeholder="Clinician Name"
+        name="jeeve_names"
+        (keyup)="updatevalue($event,9)"
+        value="" />
+    </div>
   </div>
-  <div class="sa-form-group input-set-jeeve-names"  *ngIf="data.jeeveNames[9] == 'undefined' ">      
-    <input placeholder="Clinician Name" name="jeeve_names" (keyup) = "updatevalue($event,9)" value="">  
-</div>
-</div>
-<div mat-dialog-actions class="justify-between">
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-  <button [disabled] ="update" (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
-</div>
+  <div mat-dialog-actions class="justify-between">
+    <button
+      mat-button
+      (click)="onNoClick()"
+      tabindex="-1"
+      class="mat-raised-button mat-gray">
+      Cancel
+    </button>
+    <button
+      [disabled]="update"
+      (click)="save(data)"
+      tabindex="2"
+      class="mat-raised-button mat-dc float-right">
+      Save
+    </button>
+  </div>
 </div>

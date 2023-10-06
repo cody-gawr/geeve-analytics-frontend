@@ -19,13 +19,9 @@ import { ClinicGoalsService } from './clinic-goals.service';
     FormsModule,
     ReactiveFormsModule,
     MatTreeModule,
-    MatDatepickerModule
+    MatDatepickerModule,
   ],
-  providers: [
-    ClinicGoalsService
-  ],
-  declarations: [
-    ClinicGoalsComponent
-  ]
+  providers: [ClinicGoalsService],
+  declarations: [ClinicGoalsComponent],
 })
 export class ClinicGoalsModule {}

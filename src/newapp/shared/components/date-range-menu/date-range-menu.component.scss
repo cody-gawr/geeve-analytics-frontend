@@ -1,41 +1,40 @@
 @import '../../../../assets/layout/styles/layout/mixin';
 .date-range-menu {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  button {
+    color: #919191;
+    font-size: 13px;
+    padding: 10px 0 5px;
+    font-family: Gilroy-Medium;
+    font-weight: 500;
+    margin: 0 8px;
+    border: 0px;
+
+    border-radius: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  button.active {
+    border-bottom: 1px solid #119582;
+    color: #119582;
+  }
+  .menu {
     width: 100%;
-    button {
-      color: #919191;
-      font-size: 13px;
-      padding: 10px 0 5px;
-      font-family: Gilroy-Medium;
-      font-weight: 500;
-      margin: 0 8px;
-      border: 0px;
-  
-      border-radius: none;
-      background: transparent;
-      cursor: pointer;
-
-    }
-    button.active {
-      border-bottom: 1px solid #119582;    
-      color: #119582;
-    }
-    .menu {
-      width: 100%;
-      @include respond-from('tablet-portrait') {
-        display: none;
-      }
-    }
-
-    .dropdown-box{
+    @include respond-from('tablet-portrait') {
       display: none;
-      background-color: white;
-      padding: 5px;
-      width: 100%;
-      @include respond-from('tablet-portrait') {
-        display: flex;
-      }
     }
+  }
+
+  .dropdown-box {
+    display: none;
+    background-color: white;
+    padding: 5px;
+    width: 100%;
+    @include respond-from('tablet-portrait') {
+      display: flex;
+    }
+  }
 }

@@ -1,25 +1,43 @@
 <div class="ExportDataPopup">
   <h1 mat-dialog-title>Export Options</h1>
   <div class="card-loading" *ngIf="loader">
-    <img class="tableLoader" src="../../assets/images/loader.gif">
+    <img class="tableLoader" src="../../assets/images/loader.gif" />
   </div>
-  <div *ngIf="!loader"  mat-dialog-content class="sa_forms_design">
+  <div *ngIf="!loader" mat-dialog-content class="sa_forms_design">
     <div class="sa-form-group">
       <label>Start Date </label>
-      <input class="form-control" placeholder="Select" type="text" matInput ngxDaterangepickerMd
-        [singleDatePicker]="true" [locale]="{applyLabel: 'ok', displayFormat: 'YYYY-MM-DD'}" startKey="start"
-        [(ngModel)]="data.start_date" [showDropdowns]="true" />
-      
+      <input
+        class="form-control"
+        placeholder="Select"
+        type="text"
+        matInput
+        ngxDaterangepickerMd
+        [singleDatePicker]="true"
+        [locale]="{applyLabel: 'ok', displayFormat: 'YYYY-MM-DD'}"
+        startKey="start"
+        [(ngModel)]="data.start_date"
+        [showDropdowns]="true" />
     </div>
     <div class="sa-form-group">
       <label>End Date </label>
-      <input class="form-control" placeholder="Select" type="text" matInput ngxDaterangepickerMd
-      [singleDatePicker]="true"  [locale]="{applyLabel: 'ok', displayFormat: 'YYYY-MM-DD', firstDay: 1 }"  startKey="end"
-        [(ngModel)]="data.end_date" [showDropdowns]="true" />
-      
+      <input
+        class="form-control"
+        placeholder="Select"
+        type="text"
+        matInput
+        ngxDaterangepickerMd
+        [singleDatePicker]="true"
+        [locale]="{applyLabel: 'ok', displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
+        startKey="end"
+        [(ngModel)]="data.end_date"
+        [showDropdowns]="true" />
     </div>
     <div class="sa-form-group">
-      <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="false" [(ngModel)]="data.show_completed">
+      <mat-slide-toggle
+        fxFlex.md="30"
+        fxFlex.xs="100"
+        checked="false"
+        [(ngModel)]="data.show_completed">
         <span><strong>Show Completed</strong></span>
         <!-- <span *ngIf="!compareMode"><strong>Disabled</strong></span> -->
       </mat-slide-toggle>
@@ -33,8 +51,19 @@
       </select>
     </div>
   </div>
-  <div  *ngIf="!loader" mat-dialog-actions class="justify-between">
-    <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-    <button (click)="exportData(data)" tabindex="1" class="mat-raised-button mat-dc float-right">Export &nbsp;<i class="fas fa-file-export"></i></button>
+  <div *ngIf="!loader" mat-dialog-actions class="justify-between">
+    <button
+      mat-button
+      (click)="onNoClick()"
+      tabindex="-1"
+      class="mat-raised-button mat-gray">
+      Cancel
+    </button>
+    <button
+      (click)="exportData(data)"
+      tabindex="1"
+      class="mat-raised-button mat-dc float-right">
+      Export &nbsp;<i class="fas fa-file-export"></i>
+    </button>
   </div>
 </div>

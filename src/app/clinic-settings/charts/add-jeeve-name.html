@@ -1,22 +1,36 @@
 <div class="setJeeveNames">
-  <button (click)="onNoClick()" tabindex="2" class="mat-raised-button mat-gray float-right close-btn">X</button>
-  <h1 mat-dialog-title class="mat-dialog-title">{{data.chartName}} - Enabled Providers</h1>
-  <h5>De-select any providers that you would like to exclude from this calculation</h5>
+  <button
+    (click)="onNoClick()"
+    tabindex="2"
+    class="mat-raised-button mat-gray float-right close-btn">
+    X
+  </button>
+  <h1 mat-dialog-title class="mat-dialog-title">
+    {{data.chartName}} - Enabled Providers
+  </h1>
+  <h5>
+    De-select any providers that you would like to exclude from this calculation
+  </h5>
   <div mat-dialog-content class="sa_forms_design">
     <div *ngFor="let dentist of data.dentistDataList">
       <!-- <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%">
         <label style="padding-top: 10px">{{ dentist.name}}</label>
       </div> -->
       <div class="sa-form-group chart-dentist-list-width">
-        <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" name="main-{{dentist.id}}"
-          (change)="advanceToggle($event,dentist.id,data)" checked="{{dentist.checked}}">
+        <mat-slide-toggle
+          fxFlex.md="30"
+          fxFlex.xs="100"
+          name="main-{{dentist.id}}"
+          (change)="advanceToggle($event,dentist.id,data)"
+          checked="{{dentist.checked}}">
           <span><strong>{{ dentist.name}}</strong></span>
         </mat-slide-toggle>
       </div>
     </div>
-  </div>  
+  </div>
   <!-- <div mat-dialog-actions class=" justify-between">
     <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
     <button [disabled]="update" (click)="save(data)" tabindex="2"
       class="mat-raised-button mat-dc float-right">Save</button>
   </div> -->
+</div>

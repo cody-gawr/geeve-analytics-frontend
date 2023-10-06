@@ -7,7 +7,7 @@ export const XeroRoutes: Routes = [
     path: '',
     component: XeroComponent,
     data: {
-      title: 'Xero'
-    }
-  }
+      title: 'Xero',
+    },
+  },
 ];

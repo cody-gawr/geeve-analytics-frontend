@@ -1,8 +1,8 @@
-import { Clinic } from "../../models/clinic";
-import { Injectable } from "@angular/core";
-import { select, Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { ClinicPageActions } from "../state/actions";
+import { Clinic } from '../../models/clinic';
+import { Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { ClinicPageActions } from '../state/actions';
 import {
   ClinicState,
   selectClinics,
@@ -16,8 +16,8 @@ import {
   selectIsExactCurrentClinics,
   selectIsCoreCurrentClinics,
   selectIsD4wCurrentClinics,
-} from "../state/reducers/clinic.reducer";
-import { combineLatest, map } from "rxjs";
+} from '../state/reducers/clinic.reducer';
+import { combineLatest, map } from 'rxjs';
 
 @Injectable()
 export class ClinicFacade {
@@ -75,7 +75,7 @@ export class ClinicFacade {
     this.store.dispatch(ClinicPageActions.loadClinics());
   }
 
-  public setCurrentSingleClinicId(clinicId: "all" | number | null) {
+  public setCurrentSingleClinicId(clinicId: 'all' | number | null) {
     this.store.dispatch(
       ClinicPageActions.setCurrentSingleClinicId({ clinicId })
     );
@@ -95,15 +95,15 @@ export class ClinicFacade {
     ]).pipe(
       map(([singleId, multiIds, clinics]) => {
         if (isMulti) {
-          return clinics.filter((c) => multiIds.includes(c.id));
+          return clinics.filter(c => multiIds.includes(c.id));
         } else {
-          return singleId === "all"
+          return singleId === 'all'
             ? clinics
-            : [clinics.find((c) => c.id == <number>singleId)];
+            : [clinics.find(c => c.id == <number>singleId)];
         }
       }),
-      map((v) => {
-        return isString ? v.join(",") : v;
+      map(v => {
+        return isString ? v.join(',') : v;
       })
     );
   }

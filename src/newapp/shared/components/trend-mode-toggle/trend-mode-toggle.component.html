@@ -1,16 +1,17 @@
-<div
-class="trend-toggle-box"
->
-    <label>Trend:</label>
-    <mat-button-toggle-group
-        class="custom-toggle-buttons"
-        name="Trend"
-        aria-label="Trends"
-        [value] = "trendMode$ | async"
-        (change)="onChangeTrendMode($event)"
+<div class="trend-toggle-box">
+  <label>Trend:</label>
+  <mat-button-toggle-group
+    class="custom-toggle-buttons"
+    name="Trend"
+    aria-label="Trends"
+    [value]="trendMode$ | async"
+    (change)="onChangeTrendMode($event)">
+    <mat-button-toggle value="off">Off</mat-button-toggle>
+    <mat-button-toggle [disabled]="isLoading$ | async" value="current"
+      >Monthly</mat-button-toggle
     >
-        <mat-button-toggle value="off">Off</mat-button-toggle>
-        <mat-button-toggle [disabled]="isLoading$ | async" value="current">Monthly</mat-button-toggle>
-        <mat-button-toggle [disabled]="isLoading$ | async" value="historic">Annual</mat-button-toggle>
-    </mat-button-toggle-group>
+    <mat-button-toggle [disabled]="isLoading$ | async" value="historic"
+      >Annual</mat-button-toggle
+    >
+  </mat-button-toggle-group>
 </div>

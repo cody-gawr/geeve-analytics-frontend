@@ -1,6 +1,12 @@
 import { JeeveError } from '@/newapp/models';
 import { createAction, props } from '@ngrx/store';
-import { CpPredictorAnalysisApiResponse, CpPredictorRatioApiResponse, CpPredictorSpecialistAnalysisApiResponse, CpReferralsApiResponse, CpRevPerProcedureApiResponse } from '@/newapp/models/dashboard/clinician-procedure';
+import {
+  CpPredictorAnalysisApiResponse,
+  CpPredictorRatioApiResponse,
+  CpPredictorSpecialistAnalysisApiResponse,
+  CpReferralsApiResponse,
+  CpRevPerProcedureApiResponse,
+} from '@/newapp/models/dashboard/clinician-procedure';
 
 export const loadCpPredictorAnalysisSuccess = createAction(
   '[Clinician Procedure API] Load cpPredictorAnalysis Success',
@@ -16,7 +22,9 @@ export const loadCpPredictorAnalysisFailure = createAction(
 
 export const loadCpPredictorSpecialistAnalysisSuccess = createAction(
   '[Clinician Procedure API] Load cpPredictorSpecialistAnalysis Success',
-  props<{ cpPredictorSpecialistAnalysisData: CpPredictorSpecialistAnalysisApiResponse }>()
+  props<{
+    cpPredictorSpecialistAnalysisData: CpPredictorSpecialistAnalysisApiResponse;
+  }>()
 );
 
 export const loadCpPredictorSpecialistAnalysisFailure = createAction(

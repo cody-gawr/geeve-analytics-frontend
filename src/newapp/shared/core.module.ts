@@ -8,7 +8,7 @@ import { throwIfAlreadyLoaded } from './module-import-check';
 @NgModule({
   imports: [SharedModule],
   exports: [CommonModule, SharedModule, RouterModule],
-  declarations: []
+  declarations: [],
 })
 export class CoreModule {
   constructor(

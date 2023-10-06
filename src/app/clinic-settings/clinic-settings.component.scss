@@ -7,14 +7,14 @@
 .example-full-width {
   width: 90%;
 }
-.mat-column-task_name{
-	width:70%;
+.mat-column-task_name {
+  width: 70%;
 }
 .mat-column-action {
-    width: 15% !important; 
+  width: 15% !important;
 }
 
-.xero-text{
+.xero-text {
   line-height: 18px;
   background: #4cc6e7;
   margin-left: 15px;
@@ -24,7 +24,7 @@
   border-radius: 4px;
   font-family: 'Gilroy-Medium';
 }
-.myob-text{
+.myob-text {
   line-height: 18px;
   background: #d082c6;
   margin-left: 15px;
@@ -35,122 +35,122 @@
   font-family: 'Gilroy-Medium';
 }
 .gray_area {
-    width: 100%;
-    display: block;
-    float: left;
-    border: 1px solid #cecece;
-    margin-bottom: 25px;
-    padding: 1%;
-    box-shadow: 0px 7px 9px #cececece;
-    border-radius: 9px;
+  width: 100%;
+  display: block;
+  float: left;
+  border: 1px solid #cecece;
+  margin-bottom: 25px;
+  padding: 1%;
+  box-shadow: 0px 7px 9px #cececece;
+  border-radius: 9px;
 }
 .gray_area .info-button {
-    width: auto;
-    display: inline-block;
+  width: auto;
+  display: inline-block;
 }
 .gray_area_partision {
-    width: 33%;
-    display: inline-block;
-    height: 100%;
-    float: left;
+  width: 33%;
+  display: inline-block;
+  height: 100%;
+  float: left;
 }
 .gray_area_partision.sa-form-group {
-    margin: 0;
+  margin: 0;
 }
 .gray .sa-form-group.clinic-setting-form {
-    background: #e8e8e8;
-    padding: 10px 0 9px 25px;
-    margin: 0px 0;
+  background: #e8e8e8;
+  padding: 10px 0 9px 25px;
+  margin: 0px 0;
 }
 .gray_area_partision.gray {
-    background: #e8e8e8;
+  background: #e8e8e8;
 }
 .gray .mat-slide-toggle {
-   padding: 15px 0 25px 0;
-    margin: 0;
-    display: block;
+  padding: 15px 0 25px 0;
+  margin: 0;
+  display: block;
 }
 
 .gray_area_partision.lable h4.clinic-settings-form-title {
-    margin: 0;
-    padding: 0 21px;
-    color: #6b6b6b;
+  margin: 0;
+  padding: 0 21px;
+  color: #6b6b6b;
 }
 .gray_area_partision.lable .sa-form-group {
-    margin-bottom: 26px;
-    padding: 0 20px;    
+  margin-bottom: 26px;
+  padding: 0 20px;
 }
-.flx-width{
-    width: 100%;
+.flx-width {
+  width: 100%;
 }
-.op-codes{
-    float: left;
-    width: 100%;
+.op-codes {
+  float: left;
+  width: 100%;
 }
-.op-codes input{
-    float: left;
-    width: 25px;
+.op-codes input {
+  float: left;
+  width: 25px;
 }
-.op-codes span{
-    padding: 11px 6px;
-    display: inline-block;
+.op-codes span {
+  padding: 11px 6px;
+  display: inline-block;
 }
-.fta_uta_set{
-    width: 500px;
-    text-align: center;
+.fta_uta_set {
+  width: 500px;
+  text-align: center;
 }
-.cli-set-form{
-    text-align: left;
-    width: 240px;
+.cli-set-form {
+  text-align: left;
+  width: 240px;
 }
-.PostOpCalls{
-    width: 250px;
-    float: left;
+.PostOpCalls {
+  width: 250px;
+  float: left;
 }
-.PostOpCalls input{
-    width: 70px;
+.PostOpCalls input {
+  width: 70px;
 }
-.PostOpCalls span{
-    padding: 0 10px
+.PostOpCalls span {
+  padding: 0 10px;
 }
-.PostOpCalls small{
-    float: left; 
-    width: 100%;
+.PostOpCalls small {
+  float: left;
+  width: 100%;
 }
-.ftaFollowps{
-    width: 250px;
-    float: left;
-    margin-right: 19.8%;
+.ftaFollowps {
+  width: 250px;
+  float: left;
+  margin-right: 19.8%;
 }
-.xero-mat-card{
-    width: 50%; 
-    float: left; 
-    border-right: 3px dotted #cecee5;
+.xero-mat-card {
+  width: 50%;
+  float: left;
+  border-right: 3px dotted #cecee5;
 }
-.xero-from{
-    width: 50%; 
-    float: left; 
-    padding: 5px 40px;
+.xero-from {
+  width: 50%;
+  float: left;
+  padding: 5px 40px;
 }
-.npe-padding{
-    padding: 0px;
+.npe-padding {
+  padding: 0px;
 }
 
-.social-links{
-    display:flex; 
-    align-items:flex-start;
-    gap: 10px;
+.social-links {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
 }
 table {
-    width: 100%;
+  width: 100%;
 }
 
-table .mat-icon{
-    cursor: pointer;
-    margin-right: 5px;
-    color: #18a689;
+table .mat-icon {
+  cursor: pointer;
+  margin-right: 5px;
+  color: #18a689;
 }
 
 table .mat-icon:hover {
-    opacity: 0.5;
+  opacity: 0.5;
 }

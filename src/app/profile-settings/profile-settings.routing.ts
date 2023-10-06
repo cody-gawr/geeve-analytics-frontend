@@ -4,10 +4,10 @@ import { ProfileSettingsComponent } from './profile-settings.component';
 
 export const ProfileSettingsRoutes: Routes = [
   {
-   path: '',
+    path: '',
     component: ProfileSettingsComponent,
     data: {
-      title: 'Profile Settings'
-    }
-  }
+      title: 'Profile Settings',
+    },
+  },
 ];

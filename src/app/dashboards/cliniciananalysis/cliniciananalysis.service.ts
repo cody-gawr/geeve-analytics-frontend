@@ -6,7 +6,7 @@ import { CookieService } from 'ngx-cookie';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClinicianAnalysisService {
   public token: string;
@@ -30,7 +30,7 @@ export class ClinicianAnalysisService {
     let headers = {
       headers: new HttpHeaders(),
       withCredentials: true,
-      observe: 'response' as const
+      observe: 'response' as const,
     };
     return headers;
   }
@@ -57,7 +57,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration + (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -78,7 +79,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician + (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -110,7 +112,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration + (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -132,7 +135,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician + (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -164,7 +168,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -185,7 +190,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -217,7 +223,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -238,7 +245,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -270,7 +278,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -291,7 +300,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -323,7 +333,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -345,7 +356,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -377,7 +389,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -398,7 +411,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -430,7 +444,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -452,7 +467,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -484,7 +500,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -505,7 +522,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -550,7 +568,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -581,7 +600,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -612,7 +632,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -643,7 +664,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -675,7 +697,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -707,7 +730,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -739,7 +763,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -771,7 +796,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -802,7 +828,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -813,7 +840,12 @@ export class ClinicianAnalysisService {
   }
 
   // Dentist Production Single Service
-  caDentistProtectionTrend(dentist_id, clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  caDentistProtectionTrend(
+    dentist_id,
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -823,7 +855,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -848,7 +881,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -873,7 +907,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -883,7 +918,12 @@ export class ClinicianAnalysisService {
       );
   }
   // Dentist Production Single Service
-  caDentistCollectionTrend(dentist_id, clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  caDentistCollectionTrend(
+    dentist_id,
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -893,7 +933,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -919,7 +960,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -944,7 +986,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -970,7 +1013,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -995,7 +1039,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1020,7 +1065,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1053,7 +1099,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -1075,7 +1122,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1107,7 +1155,8 @@ export class ClinicianAnalysisService {
           '&provider_id=' +
           dentist_id +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1140,7 +1189,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -1162,7 +1212,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1194,7 +1245,8 @@ export class ClinicianAnalysisService {
           '&provider_id=' +
           dentist_id +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1220,7 +1272,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1245,7 +1298,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1270,7 +1324,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1312,7 +1367,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -1334,7 +1390,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&provider_id=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1366,7 +1423,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1399,7 +1457,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -1421,7 +1480,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1453,7 +1513,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1486,7 +1547,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -1507,7 +1569,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1517,7 +1580,12 @@ export class ClinicianAnalysisService {
       );
   }
 
-  caReappointRateTrend(dentist_id, clinic_id, mode, queryWhEnabled = 0): Observable<any> {
+  caReappointRateTrend(
+    dentist_id,
+    clinic_id,
+    mode,
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -1527,7 +1595,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1559,7 +1628,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1592,7 +1662,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -1614,7 +1685,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1646,7 +1718,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1678,7 +1751,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -1699,7 +1773,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1729,7 +1804,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1761,7 +1837,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -1783,7 +1860,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1814,7 +1892,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -1836,7 +1915,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1867,7 +1947,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -1889,7 +1970,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1900,7 +1982,12 @@ export class ClinicianAnalysisService {
   }
 
   // Dentist Production Single Service
-  cahourlyRateRateTrend(dentist_id, clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  cahourlyRateRateTrend(
+    dentist_id,
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -1910,7 +1997,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1943,7 +2031,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -1965,7 +2054,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -1996,7 +2086,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -2018,7 +2109,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2049,7 +2141,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -2071,7 +2164,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2102,7 +2196,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2112,7 +2207,12 @@ export class ClinicianAnalysisService {
       );
   }
 
-  collectionHourlyRateTrend(dentist_id, clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  collectionHourlyRateTrend(
+    dentist_id,
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -2122,7 +2222,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2155,7 +2256,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -2177,7 +2279,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2208,7 +2311,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -2230,7 +2334,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2261,7 +2366,8 @@ export class ClinicianAnalysisService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration+ (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -2283,7 +2389,8 @@ export class ClinicianAnalysisService {
           '&duration=' +
           duration +
           '&clinician=' +
-          clinician+ (queryWhEnabled > 0?'&wh=1': ''),
+          clinician +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2299,7 +2406,7 @@ export class ClinicianAnalysisService {
     startDate = '',
     endDate = '',
     duration = '',
-    queryWhEnabled =0
+    queryWhEnabled = 0
   ): Observable<any> {
     var header = this.getHeaders();
     return this.http
@@ -2314,7 +2421,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2339,7 +2447,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2365,7 +2474,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2376,7 +2486,12 @@ export class ClinicianAnalysisService {
   }
 
   // Dentist Production Single Service
-  cahourlyRateChartOhtTrend(dentist_id, clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  cahourlyRateChartOhtTrend(
+    dentist_id,
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -2386,7 +2501,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2397,7 +2513,12 @@ export class ClinicianAnalysisService {
   }
 
   // Dentist Production Single Service
-  canewPatientsRateTrend(dentist_id, clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  canewPatientsRateTrend(
+    dentist_id,
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -2407,7 +2528,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2418,7 +2540,12 @@ export class ClinicianAnalysisService {
   }
 
   // Dentist Production Single Service
-  catreatmentPlanRateTrend(dentist_id, clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  catreatmentPlanRateTrend(
+    dentist_id,
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -2428,7 +2555,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2445,7 +2573,7 @@ export class ClinicianAnalysisService {
     startDate = '',
     endDate = '',
     duration = '',
-    queryWhEnabled =0
+    queryWhEnabled = 0
   ): Observable<any> {
     var header = this.getHeaders();
     return this.http
@@ -2460,7 +2588,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2490,7 +2619,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2520,7 +2650,8 @@ export class ClinicianAnalysisService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration+ (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -2581,7 +2712,12 @@ export class ClinicianAnalysisService {
       );
   }
 
-  cpRecallPrebookRateTrend(dentist_id, clinic_id, mode = '', queryWhEnabled =0): Observable<any> {
+  cpRecallPrebookRateTrend(
+    dentist_id,
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -2591,7 +2727,8 @@ export class ClinicianAnalysisService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id+ (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(

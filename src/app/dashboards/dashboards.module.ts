@@ -26,7 +26,7 @@ import { NgxGaugeModule } from 'ngx-gauge';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
-import { NgxChartsModule } from '@swimlane/ngx-charts';               
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 // import { GaugeChartModule } from 'angular-gauge-chart';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { CurrencySuffixPipe } from '../currency-suffix.pipe';
@@ -46,37 +46,40 @@ import { TermsConditionsDialog } from './morning-huddle/terms-conditions-dialog/
     CdkTableModule,
     ChartsModule,
     NgxChartsModule,
-    NgxGaugeModule,                                                                                                               
-     NgxDaterangepickerMd.forRoot(),
-     MatButtonToggleModule, MatIconModule,
+    NgxGaugeModule,
+    NgxDaterangepickerMd.forRoot(),
+    MatButtonToggleModule,
+    MatIconModule,
     //  GaugeChartModule,
     NgxSmartModalModule.forRoot(),
     SharedModule,
-    DemoMaterialModule
+    DemoMaterialModule,
   ],
   providers: [
-    ClinicianAnalysisService, 
-    MorningHuddleService, 
-    ClinicianProceeduresService, 
-    FinancesService, 
-    DentistService, FrontDeskService, 
-    MarketingService, DatePipe, 
-    DecimalPipe, 
+    ClinicianAnalysisService,
+    MorningHuddleService,
+    ClinicianProceeduresService,
+    FinancesService,
+    DentistService,
+    FrontDeskService,
+    MarketingService,
+    DatePipe,
+    DecimalPipe,
     HealthScreenService,
-    FollowupsService
+    FollowupsService,
   ],
   declarations: [
-    ClinicianAnalysisComponent, 
-    ClinicianProceeduresComponent, 
-    CurrencySuffixPipe, 
-    FinancesComponent, 
-    FrontDeskComponent, 
-    MarketingComponent, 
-    HealthScreenComponent, 
+    ClinicianAnalysisComponent,
+    ClinicianProceeduresComponent,
+    CurrencySuffixPipe,
+    FinancesComponent,
+    FrontDeskComponent,
+    MarketingComponent,
+    HealthScreenComponent,
     DateMenuBarComponent,
     FollowupsComponent,
     SendReviewDialog,
-    TermsConditionsDialog
-  ]
+    TermsConditionsDialog,
+  ],
 })
 export class DashboardsModule {}

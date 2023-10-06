@@ -1,26 +1,63 @@
-<div class="AddUserPopup"> 
-    <h1 mat-dialog-title>Map your location</h1>
-    <div mat-dialog-content class="sa_forms_design">
-      <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
-        <div fxFlex="calc(25% - 20px)" fxFlex.md="calc(25% - 20px)" fxFlex.sm="calc(25% - 20px)" fxFlex.xs="100">
-          <div class="sa-form-group">
-              <h3>{{ data.display_name }}</h3>
-          </div>
+<div class="AddUserPopup">
+  <h1 mat-dialog-title>Map your location</h1>
+  <div mat-dialog-content class="sa_forms_design">
+    <div
+      fxLayout="row wrap"
+      fxLayoutGap="20px"
+      fxLayoutGap.md="20px"
+      fxLayoutGap.sm="20px"
+      fxLayoutGap.xs="0">
+      <div
+        fxFlex="calc(25% - 20px)"
+        fxFlex.md="calc(25% - 20px)"
+        fxFlex.sm="calc(25% - 20px)"
+        fxFlex.xs="100">
+        <div class="sa-form-group">
+          <h3>{{ data.display_name }}</h3>
         </div>
-        <div fxFlex="calc(55% - 10px)" fxFlex.md="calc(55% - 10px)" fxFlex.sm="calc(55% - 10px)" fxFlex.xs="100">
-          <div class="sa-form-group">
-            <label>Select Location</label>
-            <select required="true" class="sa_select mat-form-control" name="clinic_location" [(ngModel)]="selectedLocation" (ngModelChange)="selectLocationChange($event)">
-              <option [ngValue]="null" selected disabled>--- Select Location ---</option>
-              <option *ngFor="let location of data.location" [ngValue]="location.Identifier" [disabled]="checkUserSelection(location)">{{location.LocationName}}</option>
-            </select> 
-          </div>
+      </div>
+      <div
+        fxFlex="calc(55% - 10px)"
+        fxFlex.md="calc(55% - 10px)"
+        fxFlex.sm="calc(55% - 10px)"
+        fxFlex.xs="100">
+        <div class="sa-form-group">
+          <label>Select Location</label>
+          <select
+            required="true"
+            class="sa_select mat-form-control"
+            name="clinic_location"
+            [(ngModel)]="selectedLocation"
+            (ngModelChange)="selectLocationChange($event)">
+            <option [ngValue]="null" selected disabled>
+              --- Select Location ---
+            </option>
+            <option
+              *ngFor="let location of data.location"
+              [ngValue]="location.Identifier"
+              [disabled]="checkUserSelection(location)">
+              {{location.LocationName}}
+            </option>
+          </select>
         </div>
       </div>
     </div>
-    <hr>
-    <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-      <button mat-button (click)="save(selectedLocation)"  tabindex="2" class="mat-raised-button mat-dc">Ok</button>
-    </div>
+  </div>
+  <hr />
+  <div mat-dialog-actions>
+    <button
+      mat-button
+      (click)="onNoClick()"
+      tabindex="-1"
+      class="mat-raised-button mat-gray">
+      Cancel
+    </button>
+    <button
+      mat-button
+      (click)="save(selectedLocation)"
+      tabindex="2"
+      class="mat-raised-button mat-dc">
+      Ok
+    </button>
+  </div>
 </div>

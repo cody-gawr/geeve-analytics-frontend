@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {MatLegacyInputModule as MatInputModule} from '@angular/material/legacy-input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { UsersService } from './users.service';
-import { UsersComponent  } from './users.component';
+import { UsersComponent } from './users.component';
 import { UsersRoutes } from './users.routing';
 import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule } from '@angular/forms';
@@ -16,11 +16,9 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     NgxDatatableModule,
     FormsModule,
-    DemoMaterialModule
+    DemoMaterialModule,
   ],
-  providers: [
-    UsersService
-  ],
-  declarations: [ UsersComponent ]
+  providers: [UsersService],
+  declarations: [UsersComponent],
 })
-export class UsersModule { }
+export class UsersModule {}

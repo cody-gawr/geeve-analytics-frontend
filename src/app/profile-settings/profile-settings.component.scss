@@ -4,32 +4,32 @@
     max-width: 500px;
     width: 100%;
   }
-  
+
   .example-full-width {
     width: 90%;
   }
-  .selectTipCon{
+  .selectTipCon {
     width: 350px !important;
   }
   .selectTipCon .mat-select-value {
-      max-width: 350px;
-      width: 100%;
+    max-width: 350px;
+    width: 100%;
   }
   .selectTipCon .mat-select-arrow-wrapper {
-      display: none !important;
+    display: none !important;
   }
   .hideTip {
     display: none;
   }
-  
+
   .tips-input {
     margin-top: 10px;
     margin-bottom: 20px;
   }
-  .saveBtnPayment{
+  .saveBtnPayment {
     margin-top: 15px;
   }
-  .info-button{
+  .info-button {
     display: inline-block;
   }
 }

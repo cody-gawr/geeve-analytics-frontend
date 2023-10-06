@@ -1,8 +1,8 @@
-import { ChartTip } from "../../../models/dashboard/finance";
-import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
-import { DashboardApiActions, DashboardPageActions } from "../actions";
-import * as _ from "lodash";
-import { JeeveError } from "@/newapp/models";
+import { ChartTip } from '../../../models/dashboard/finance';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import { DashboardApiActions, DashboardPageActions } from '../actions';
+import * as _ from 'lodash';
+import { JeeveError } from '@/newapp/models';
 
 export interface DashboardState {
   isLoadingData: Array<API_ENDPOINTS>;
@@ -21,16 +21,16 @@ const initialState: DashboardState = {
 };
 
 export const dashboardFeature = createFeature({
-  name: "dashboard",
+  name: 'dashboard',
   reducer: createReducer(
     initialState,
     on(DashboardPageActions.loadChartTips, (state, {}): DashboardState => {
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "ctGetPageTips"),
+        errors: _.filter(errors, n => n.api != 'ctGetPageTips'),
         chartTips: null,
-        isLoadingData: _.union(isLoadingData, ["ctGetPageTips"]),
+        isLoadingData: _.union(isLoadingData, ['ctGetPageTips']),
       };
     }),
     on(
@@ -39,9 +39,9 @@ export const dashboardFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "ctGetPageTips"),
+          errors: _.filter(errors, n => n.api != 'ctGetPageTips'),
           chartTips: chartData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "ctGetPageTips"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'ctGetPageTips'),
         };
       }
     ),
@@ -52,8 +52,8 @@ export const dashboardFeature = createFeature({
         return {
           ...state,
           chartTips: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "ctGetPageTips"),
-          errors: [...errors, { ...error, api: "ctGetPageTips" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'ctGetPageTips'),
+          errors: [...errors, { ...error, api: 'ctGetPageTips' }],
         };
       }
     ),
@@ -63,13 +63,10 @@ export const dashboardFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(
-            errors,
-            (n) => n.api != "clinicGetAccountingPlatform"
-          ),
+          errors: _.filter(errors, n => n.api != 'clinicGetAccountingPlatform'),
           connectedWith: null,
           isLoadingData: _.union(isLoadingData, [
-            "clinicGetAccountingPlatform",
+            'clinicGetAccountingPlatform',
           ]),
         };
       }
@@ -80,15 +77,12 @@ export const dashboardFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(
-            errors,
-            (n) => n.api != "clinicGetAccountingPlatform"
-          ),
+          errors: _.filter(errors, n => n.api != 'clinicGetAccountingPlatform'),
           connectedWith: connectWith,
           connectedClinicId: clinicId,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "clinicGetAccountingPlatform"
+            n => n != 'clinicGetAccountingPlatform'
           ),
         };
       }
@@ -102,9 +96,9 @@ export const dashboardFeature = createFeature({
           connectedWith: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "clinicGetAccountingPlatform"
+            n => n != 'clinicGetAccountingPlatform'
           ),
-          errors: [...errors, { ...error, api: "clinicGetAccountingPlatform" }],
+          errors: [...errors, { ...error, api: 'clinicGetAccountingPlatform' }],
         };
       }
     ),
@@ -130,12 +124,12 @@ export const {
 
 export const selectIsLoadingClinicAccountingPlatform = createSelector(
   selectIsLoadingData,
-  (isLoadingData) =>
-    _.findIndex(isLoadingData, (l) => l == "clinicGetAccountingPlatform") >= 0
+  isLoadingData =>
+    _.findIndex(isLoadingData, l => l == 'clinicGetAccountingPlatform') >= 0
 );
 
 export const selectChartTipsError = createSelector(
   selectErrors,
   (errors): JeeveError | undefined =>
-    _.find(errors, (e) => e.api == "ctGetPageTips")
+    _.find(errors, e => e.api == 'ctGetPageTips')
 );

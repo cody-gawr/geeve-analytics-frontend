@@ -6,7 +6,7 @@ import { CookieService } from 'ngx-cookie';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HealthScreenService {
   public token: string;
@@ -31,7 +31,7 @@ export class HealthScreenService {
     let headers = {
       headers: new HttpHeaders(),
       withCredentials: true,
-      observe: 'response' as const
+      observe: 'response' as const,
     };
     return headers;
   }

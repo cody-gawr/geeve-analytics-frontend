@@ -1,44 +1,51 @@
 <div class="chart-container">
-    <mat-icon
-        [tooltip]="toolTip"
-        matTooltipPosition="below"
-        color="primary"
-        class="help-tip"
-        fontIcon="help"
-    ></mat-icon>
-    <div class="chart-title">
-        New Patients By Referral
-    </div>
-    <div class="chart-content">
-        <div class="canvas-wrapper chart-box">
-            <div class="chart-gauge new-patient-by-referral-chart">
-                <spin-loader *ngIf="(isLoading$ | async); else mainElem"></spin-loader>
-                <ng-template #mainElem>
-                    <button *ngIf="isChartClicked" (click)="loadData()" mat-flat-button color="primary">Back</button>
-                    <spin-loader class="empty-placeholder" *ngIf="!hasData; else chartElem1" [disableSpin]="true">
-                        You have no new patients from referral sources in the selected period
-                    </spin-loader>
-                    <ng-template #chartElem1>
-                        <canvas
-                            #mkNewPatientsByReferralCanvas
-                            baseChart
-                            [datasets]="datasets"
-                            [labels]="labels"
-                            [type]="chartType$ | async"
-                            [legend]="false"
-                            [options]="chartOptions$ | async"
-                            (chartClick)="chartClicked($event)"
-                        ></canvas>
-                    </ng-template>
-                </ng-template>
-            </div>
-            <div class="chart-foot" *ngIf="!(isTrend$ | async) && (isMultipleClinic$ | async)">
-                <div class="w-100">
-                    <h3>{{ newPatientsByReferralVal | number: '1.0-0' }}</h3>
-                    <span>Total</span>
-                </div>
-            </div>
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <div class="chart-title">New Patients By Referral</div>
+  <div class="chart-content">
+    <div class="canvas-wrapper chart-box">
+      <div class="chart-gauge new-patient-by-referral-chart">
+        <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
+        <ng-template #mainElem>
+          <button
+            *ngIf="isChartClicked"
+            (click)="loadData()"
+            mat-flat-button
+            color="primary">
+            Back
+          </button>
+          <spin-loader
+            class="empty-placeholder"
+            *ngIf="!hasData; else chartElem1"
+            [disableSpin]="true">
+            You have no new patients from referral sources in the selected
+            period
+          </spin-loader>
+          <ng-template #chartElem1>
+            <canvas
+              #mkNewPatientsByReferralCanvas
+              baseChart
+              [datasets]="datasets"
+              [labels]="labels"
+              [type]="chartType$ | async"
+              [legend]="false"
+              [options]="chartOptions$ | async"
+              (chartClick)="chartClicked($event)"></canvas>
+          </ng-template>
+        </ng-template>
+      </div>
+      <div
+        class="chart-foot"
+        *ngIf="!(isTrend$ | async) && (isMultipleClinic$ | async)">
+        <div class="w-100">
+          <h3>{{ newPatientsByReferralVal | number: '1.0-0' }}</h3>
+          <span>Total</span>
         </div>
-
+      </div>
     </div>
+  </div>
 </div>

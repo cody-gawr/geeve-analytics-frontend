@@ -1,10 +1,10 @@
-import { Component, Directive, OnInit, Inject } from "@angular/core";
+import { Component, Directive, OnInit, Inject } from '@angular/core';
 @Directive({
-  selector: ".tooltip-container",
+  selector: '.tooltip-container',
 })
 export class TooltipContainerDirective {}
 @Component({
-  selector: "app-tooltip",
+  selector: 'app-tooltip',
   template: ` <div class="tooltip-container">
     <div
       [ngClass]="{
@@ -16,15 +16,13 @@ export class TooltipContainerDirective {}
           tooltipData && tooltipData.direction === 'top-right',
         'custom-tooltip-top-right-discount':
           tooltipData && tooltipData.direction === 'top-right-discount'
-      }"
-    >
+      }">
       <div class="tooltip-title-container">
-        <div class="tooltip-title">{{ tooltipData?.title ?? "" }}</div>
+        <div class="tooltip-title">{{ tooltipData?.title ?? '' }}</div>
         <img
           src="../assets/images/white_heart.png"
           class="white-heart-icon"
-          alt="analytics-icon"
-        />
+          alt="analytics-icon" />
       </div>
       <div class="tooltip-info-text" [innerHtml]="tooltipData.info || ''"></div>
     </div>
@@ -35,8 +33,8 @@ export class TooltipComponent implements OnInit {
   // @ViewChild(TooltipContainerDirective, { read: ElementRef })
   // private tooltipContainer;
   constructor(
-    @Inject("tooltipConfig") private config,
-    @Inject("data") public tooltipData
+    @Inject('tooltipConfig') private config,
+    @Inject('data') public tooltipData
   ) {}
 
   ngOnInit() {

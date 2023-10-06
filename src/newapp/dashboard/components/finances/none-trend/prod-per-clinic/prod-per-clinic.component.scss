@@ -1,15 +1,15 @@
 @import '../../../../../../assets/layout/styles/layout/mixin';
 
 .prod-per-clinic-pie-chart {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
-    @include respond-from('big-desktop') {
-        max-height: 280px;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  @include respond-from('big-desktop') {
+    max-height: 280px;
+  }
 
-    @include respond-to('big-desktop') {
-        max-height: auto;
-    }
+  @include respond-to('big-desktop') {
+    max-height: auto;
+  }
 }

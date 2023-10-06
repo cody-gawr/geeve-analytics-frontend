@@ -1,8 +1,6 @@
-<div
-  class="sa_login_blur login-blur"></div>
+<div class="sa_login_blur login-blur"></div>
 <img class="login_abso_logo" src="../assets/images/logo-white.png" />
-<div
-  class="login-register login-background-img">
+<div class="login-register login-background-img">
   <div class="login-register-box">
     <mat-card>
       <mat-card-content>
@@ -17,14 +15,13 @@
 
           <div fxLayout="column" fxLayoutAlign="space-around">
             <div class="pb-1">
-              <mat-form-field floatLabel="never" >
+              <mat-form-field floatLabel="never">
                 <input
                   matInput
                   placeholder="Email address"
                   type="email"
                   [formControl]="form.controls['email']"
-                  [readonly]="successLogin"
-                />
+                  [readonly]="successLogin" />
               </mat-form-field>
               <small
                 *ngIf="
@@ -57,11 +54,8 @@
               <re-captcha
                 *ngIf="showCaptcha"
                 (resolved)="resolved($event)"
-                siteKey="6Le2hskbAAAAAN9H6kFYBN8ySHV2xw9TAE-gW5_4"
-              ></re-captcha>
-              <small
-                *ngIf="capchaError"
-                class="text-danger messg support-text"
+                siteKey="6Le2hskbAAAAAN9H6kFYBN8ySHV2xw9TAE-gW5_4"></re-captcha>
+              <small *ngIf="capchaError" class="text-danger messg support-text"
                 >Please confirm you are not a robot.</small
               >
             </div>
@@ -74,8 +68,7 @@
               color="dc"
               type="submit"
               class="btn-block btn-lg m-t-20"
-              [disabled]="!form.valid"
-            >
+              [disabled]="!form.valid">
               Submit
             </button>
           </div>

@@ -8,9 +8,8 @@ describe('LostOpportunityComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LostOpportunityComponent ]
-    })
-    .compileComponents();
+      declarations: [LostOpportunityComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

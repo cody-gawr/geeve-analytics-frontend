@@ -14,6 +14,7 @@
     "build-test": "ng build -c=test --output-hashing=all",
     "build-staging": "ng build -c=staging --output-hashing=all",
     "build-dev": "ng build -c=dev --output-hashing=all",
+    "format": "prettier --loglevel warn --write src/**/*.{ts,scss,html}",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

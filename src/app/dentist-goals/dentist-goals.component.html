@@ -1,90 +1,128 @@
 <!-- ============================================================== -->
 <!-- Card Grid-->
 <!-- ============================================================== -->
- <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
+<input
+  type="button"
+  id="clinic_initiate"
+  (click)="initiate_clinic()"
+  [style.display]="'none'" />
 
 <div fxLayout="row wrap">
-    <div fxFlex.gt-sm="100" fxFlex="100">
-         <div *ngIf="user_id != '1'">
-      <select class="sa_select internal_dentist"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)" [style.display]="'none'">
-        <option value ="">All Dentists</option>
+  <div fxFlex.gt-sm="100" fxFlex="100">
+    <div *ngIf="user_id != '1'">
+      <select
+        class="sa_select internal_dentist"
+        [(ngModel)]="selectedDentist"
+        (ngModelChange)="loadDentist($event)"
+        [style.display]="'none'">
+        <option value="">All Dentists</option>
         <option *ngFor="let dentist of dentists" [value]="dentist.providerId">
-          {{dentist.name}}
+          {{ dentist.name }}
         </option>
       </select>
-      <input type="button" id="dentist_initiate" (click) = "initiate_dentist()"  [style.display]="'none'">
-    </div> 
-        <mat-card>
-            <mat-card-content>
-                <mat-card-title>Dentist Goals</mat-card-title>
-                <!-- ============================================================== -->
-                <!-- column -->
-                <!-- ============================================================== -->
-                <div fxLayout="row wrap">
-                    <!-- Card column -->
-                    <div fxFlex.gt-sm="100%" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
-
-                        <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
-
-                            <mat-tab-group dynamicHeight>
-                                <mat-tab label="Clinician Analysis">
-                                    <div class="example-small-box mat-elevation-z4">
-                                            <div class="matInput-form-group">
-                                            <!-- column -->
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
-                                                    <input matInput placeholder="Dentist Production value" [formControl]="form.controls['dentistprod']" [(ngModel)]= "dentistprod">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
-                                                    <input matInput placeholder="Treatment Plan Completion Rate" [formControl]="form.controls['treatmentplan']" [(ngModel)]="treatmentplan">
-                                                </mat-form-field>
-                                            </div>
-                                            <!-- <div class="sa-form-group">
+      <input
+        type="button"
+        id="dentist_initiate"
+        (click)="initiate_dentist()"
+        [style.display]="'none'" />
+    </div>
+    <mat-card>
+      <mat-card-content>
+        <mat-card-title>Dentist Goals</mat-card-title>
+        <!-- ============================================================== -->
+        <!-- column -->
+        <!-- ============================================================== -->
+        <div fxLayout="row wrap">
+          <!-- Card column -->
+          <div
+            fxFlex.gt-sm="100%"
+            fxFlex="100"
+            class="sa_mattabs_design sa_matforms_design">
+            <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
+              <mat-tab-group dynamicHeight>
+                <mat-tab label="Clinician Analysis">
+                  <div class="example-small-box mat-elevation-z4">
+                    <div class="matInput-form-group">
+                      <!-- column -->
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="Dentist Production value"
+                            [formControl]="form.controls['dentistprod']"
+                            [(ngModel)]="dentistprod" />
+                        </mat-form-field>
+                      </div>
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="Treatment Plan Completion Rate"
+                            [formControl]="form.controls['treatmentplan']"
+                            [(ngModel)]="treatmentplan" />
+                        </mat-form-field>
+                      </div>
+                      <!-- <div class="sa-form-group">
                                                 <mat-form-field floatLabel="never" >
 
                                                     <input matInput placeholder="Treatment Plan Average Cost value" [formControl]="form.controls['planaverage']" [(ngModel)]="planaverage">
                                                 </mat-form-field>
                                             </div> -->
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
-
-                                                    <input matInput placeholder="Recall Prebook Rate value" [formControl]="form.controls['recallrate']" [(ngModel)]="recallrate">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
-
-                                                    <input matInput placeholder="Treatment Prebook Rate value" [formControl]="form.controls['rebookrate']" [(ngModel)]="rebookrate">
-                                                </mat-form-field>
-                                            </div>
-                                            <!-- <div class="sa-form-group">
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="Recall Prebook Rate value"
+                            [formControl]="form.controls['recallrate']"
+                            [(ngModel)]="recallrate" />
+                        </mat-form-field>
+                      </div>
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="Treatment Prebook Rate value"
+                            [formControl]="form.controls['rebookrate']"
+                            [(ngModel)]="rebookrate" />
+                        </mat-form-field>
+                      </div>
+                      <!-- <div class="sa-form-group">
                                                 <mat-form-field floatLabel="never" >
 
                                                     <input matInput placeholder="No. Patient Complaints value" [formControl]="form.controls['patientcomplaints']" [(ngModel)]="patientcomplaints">
                                                 </mat-form-field>
                                             </div> -->
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="Hourly Rate value"
+                            [formControl]="form.controls['hourlyrate']"
+                            [(ngModel)]="hourlyrate" />
+                        </mat-form-field>
+                      </div>
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="No. New Patients  value"
+                            [formControl]="form.controls['newpatients']"
+                            [(ngModel)]="newpatients" />
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <button
+                      class="m-l-10"
+                      mat-raised-button
+                      color="dc"
+                      type="submit">
+                      Submit
+                    </button>
+                    <!-- column -->
+                  </div>
+                </mat-tab>
 
-                                                    <input matInput placeholder="Hourly Rate value" [formControl]="form.controls['hourlyrate']" [(ngModel)]="hourlyrate">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
-
-                                                    <input matInput placeholder="No. New Patients  value" [formControl]="form.controls['newpatients']" [(ngModel)]="newpatients">
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                            <button class="m-l-10" mat-raised-button color="dc" type="submit">Submit</button>
-                                        <!-- column -->
-                                    </div>
-                                </mat-tab>
-
-
-                                <!-- <mat-tab label="Clinician Procedures & Referrals">
+                <!-- <mat-tab label="Clinician Procedures & Referrals">
                                     <div class="example-small-box mat-elevation-z4">
                                             <div class="matInput-form-group">
                                             <div class="sa-form-group">
@@ -127,41 +165,53 @@
                                             <button class="m-l-10" mat-raised-button color="dc" type="submit">Submit</button>
                                     </div>
                                 </mat-tab> -->
-                                <mat-tab label="Front Desk">
-                                    <div class="example-small-box mat-elevation-z4">
-                                            <div class="matInput-form-group">
-                                            <!-- column -->
-                                            <!-- <div class="sa-form-group">
+                <mat-tab label="Front Desk">
+                  <div class="example-small-box mat-elevation-z4">
+                    <div class="matInput-form-group">
+                      <!-- column -->
+                      <!-- <div class="sa-form-group">
                                                 <mat-form-field floatLabel="never" >
 
                                                     <input matInput placeholder="Items Predictor Analysis  value" [formControl]="form.controls['utilisationrate']" [(ngModel)]= "utilisationrate">
                                                 </mat-form-field>
                                             </div> -->
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
-
-                                                    <input matInput placeholder="Recall prebook rate (%) value" [formControl]="form.controls['recallprebook']" [(ngModel)]="recallprebook">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
-
-                                                    <input matInput placeholder="Treatment prebook rate (%) value" [formControl]="form.controls['treatmentprebook']" [(ngModel)]="treatmentprebook">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
-
-                                                    <input matInput placeholder="FTA ratio (%) value" [formControl]="form.controls['fta']" [(ngModel)]="fta">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
-
-                                                    <input matInput placeholder="UTA ratio (%) value" [formControl]="form.controls['uta']" [(ngModel)]="uta">
-                                                </mat-form-field>
-                                            </div>
-                                            <!-- <div class="sa-form-group">
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="Recall prebook rate (%) value"
+                            [formControl]="form.controls['recallprebook']"
+                            [(ngModel)]="recallprebook" />
+                        </mat-form-field>
+                      </div>
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="Treatment prebook rate (%) value"
+                            [formControl]="form.controls['treatmentprebook']"
+                            [(ngModel)]="treatmentprebook" />
+                        </mat-form-field>
+                      </div>
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="FTA ratio (%) value"
+                            [formControl]="form.controls['fta']"
+                            [(ngModel)]="fta" />
+                        </mat-form-field>
+                      </div>
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="UTA ratio (%) value"
+                            [formControl]="form.controls['uta']"
+                            [(ngModel)]="uta" />
+                        </mat-form-field>
+                      </div>
+                      <!-- <div class="sa-form-group">
                                                 <mat-form-field floatLabel="never" >
 
                                                     <input matInput placeholder="Number of Ticks value" [formControl]="form.controls['noticks']" [(ngModel)]="noticks">
@@ -173,17 +223,23 @@
                                                     <input matInput placeholder="Recall Attendance Rate value" [formControl]="form.controls['attendancerate']" [(ngModel)]="attendancerate">
                                                 </mat-form-field>
                                             </div> -->
-                                        </div>
-                                            <button class="m-l-10" mat-raised-button color="dc" type="submit">Submit</button>
-                                        <!-- column -->
-                                    </div>
-                                </mat-tab>
+                    </div>
+                    <button
+                      class="m-l-10"
+                      mat-raised-button
+                      color="dc"
+                      type="submit">
+                      Submit
+                    </button>
+                    <!-- column -->
+                  </div>
+                </mat-tab>
 
-                                <mat-tab label="Marketing">
-                                    <div class="example-small-box mat-elevation-z4">
-                                            <div class="matInput-form-group">
-                                            <!-- column -->
-                                            <!-- <div class="sa-form-group">
+                <mat-tab label="Marketing">
+                  <div class="example-small-box mat-elevation-z4">
+                    <div class="matInput-form-group">
+                      <!-- column -->
+                      <!-- <div class="sa-form-group">
                                                 <mat-form-field floatLabel="never" >
 
                                                     <input matInput placeholder="No. New Patients By Referral  value" [formControl]="form.controls['referralpatient']" [(ngModel)]= "referralpatient">
@@ -195,31 +251,46 @@
                                                     <input matInput placeholder="Revenue by Referral value" [formControl]="form.controls['revenuereferral']" [(ngModel)]="revenuereferral">
                                                 </mat-form-field>
                                             </div> -->
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="Total Visits value"
+                            [formControl]="form.controls['visits']"
+                            [(ngModel)]="visits" />
+                        </mat-form-field>
+                      </div>
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="No. New Patients value"
+                            [formControl]="form.controls['newpatients2']"
+                            [(ngModel)]="newpatients2" />
+                        </mat-form-field>
+                      </div>
+                      <div class="sa-form-group">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            matInput
+                            placeholder="Cost of New Patient Acquisition value"
+                            [formControl]="form.controls['patientcost']"
+                            [(ngModel)]="patientcost" />
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <button
+                      class="m-l-10"
+                      mat-raised-button
+                      color="dc"
+                      type="submit">
+                      Submit
+                    </button>
+                    <!-- column -->
+                  </div>
+                </mat-tab>
 
-                                                    <input matInput placeholder="Total Visits value" [formControl]="form.controls['visits']" [(ngModel)]="visits">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
-
-                                                    <input matInput placeholder="No. New Patients value" [formControl]="form.controls['newpatients2']" [(ngModel)]="newpatients2">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="sa-form-group">
-                                                <mat-form-field floatLabel="never" >
-
-                                                    <input matInput placeholder="Cost of New Patient Acquisition value" [formControl]="form.controls['patientcost']" [(ngModel)]="patientcost">
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                            <button class="m-l-10" mat-raised-button color="dc" type="submit">Submit</button>
-                                        <!-- column -->
-                                    </div>
-                                </mat-tab>
-
-                                <!-- <mat-tab label="Finances">
+                <!-- <mat-tab label="Finances">
                                     <div class="example-small-box mat-elevation-z4">
                                             <div class="matInput-form-group">
                                             <div class="sa-form-group">
@@ -286,14 +357,11 @@
                                             <button class="m-l-10" mat-raised-button color="dc" type="submit" [disabled]="!dentist_id">Submit</button>
                                     </div>
                                 </mat-tab> -->
-                            </mat-tab-group>
-                        </form>
-
-
-                    </div>
-                </div>
-
-            </mat-card-content>
-        </mat-card>
-    </div>
+              </mat-tab-group>
+            </form>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

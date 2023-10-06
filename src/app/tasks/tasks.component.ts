@@ -5,10 +5,10 @@ import {
   OnInit,
   AfterViewInit,
   Input,
-} from "@angular/core";
-import { extend } from "@syncfusion/ej2-base";
-import { FormControl } from "@angular/forms";
-import { CookieService, CookieOptions } from "ngx-cookie"
+} from '@angular/core';
+import { extend } from '@syncfusion/ej2-base';
+import { FormControl } from '@angular/forms';
+import { CookieService, CookieOptions } from 'ngx-cookie';
 import {
   KanbanComponent,
   CardSettingsModel,
@@ -16,22 +16,22 @@ import {
   SwimlaneSettingsModel,
   ActionEventArgs,
   CardRenderedEventArgs,
-  DialogEventArgs, 
+  DialogEventArgs,
   ColumnsModel,
   DragEventArgs,
-} from "@syncfusion/ej2-angular-kanban";
-import { DataManager, UrlAdaptor, Query } from "@syncfusion/ej2-data";
-import { TasksService } from "./tasks.service";
+} from '@syncfusion/ej2-angular-kanban';
+import { DataManager, UrlAdaptor, Query } from '@syncfusion/ej2-data';
+import { TasksService } from './tasks.service';
 import {
   NgxDaterangepickerMd,
   DaterangepickerComponent,
   DaterangepickerDirective,
-} from "ngx-daterangepicker-material";
-import * as moment from "moment";
-import { DatePipe } from "@angular/common";
-import { MatDatepickerModule } from "@angular/material/datepicker";
-import { environment } from "../../environments/environment";
-import { HeaderService } from "../layouts/full/header/header.service";
+} from 'ngx-daterangepicker-material';
+import * as moment from 'moment';
+import { DatePipe } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { environment } from '../../environments/environment';
+import { HeaderService } from '../layouts/full/header/header.service';
 
 /**** Adoptor Updates ****/
 class CustomAdaptor extends UrlAdaptor {
@@ -43,9 +43,9 @@ class CustomAdaptor extends UrlAdaptor {
 /**** Adoptor Updates ****/
 /**** Component Declare ****/
 @Component({
-  selector: "app-tasks",
-  templateUrl: "./tasks.component.html",
-  styleUrls: ["./tasks.component.scss"],
+  selector: 'app-tasks',
+  templateUrl: './tasks.component.html',
+  styleUrls: ['./tasks.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 /**** Component Declare ****/
@@ -57,14 +57,14 @@ export class TasksComponent implements AfterViewInit, OnInit {
   @ViewChild(DaterangepickerComponent, { static: false })
   datePicker: DaterangepickerComponent;
   files: any[] = [];
-  showNextPage:boolean=false;
-  @ViewChild("kanbanObj") kanbanObj: KanbanComponent; //kanban component bind
+  showNextPage: boolean = false;
+  @ViewChild('kanbanObj') kanbanObj: KanbanComponent; //kanban component bind
   /**** Card Setting ***/
-  public swimlaneSettings: SwimlaneSettingsModel = { keyField: "group_by" };
+  public swimlaneSettings: SwimlaneSettingsModel = { keyField: 'group_by' };
   public cardSettings: CardSettingsModel = {
-    template: "cardSettingsTemplate",
-    contentField: "description",
-    headerField: "id",
+    template: 'cardSettingsTemplate',
+    contentField: 'description',
+    headerField: 'id',
     showHeader: true,
     // footerCssField:"id"
   };
@@ -77,15 +77,14 @@ export class TasksComponent implements AfterViewInit, OnInit {
   /**** Card Setting ***/
   /**** Card Setting ***/
   public dialogSettings: DialogSettingsModel = {
-    
-    template: "dialogSettingsTemplate",
+    template: 'dialogSettingsTemplate',
     // model: {
     //   showCloseIcon: true,
     //   cssClass: 'task-modal',
     //   width: 670,
     // },
     fields: [
-      { text: "ID", key: "Id" },
+      { text: 'ID', key: 'Id' },
       // { key: "Status", type: "DropDown" },
       // {
       //   key: "Estimate",
@@ -93,19 +92,17 @@ export class TasksComponent implements AfterViewInit, OnInit {
       //   validationRules: { range: [0, 1000] },
       // },
       {
-        key: "description",
-        type: "TextArea",
+        key: 'description',
+        type: 'TextArea',
         validationRules: { required: true },
       },
-      { key: "title", validationRules: { required: true } },
-      { key: "due_date", validationRules: { required: true } },
-      { key: "clinic_id" },
-      { key: "assignee_group" },
-      { key: "assignee_user" },
-      { key: "user_type" },
-      
+      { key: 'title', validationRules: { required: true } },
+      { key: 'due_date', validationRules: { required: true } },
+      { key: 'clinic_id' },
+      { key: 'assignee_group' },
+      { key: 'assignee_user' },
+      { key: 'user_type' },
     ],
-    
   };
 
   public step: number = 1;
@@ -117,49 +114,48 @@ export class TasksComponent implements AfterViewInit, OnInit {
     this.dataManager = new DataManager({
       url:
         environment.apiUrl +
-        "/KanbanTasks/ktGetTasks?clinic_id=" +
+        '/KanbanTasks/ktGetTasks?clinic_id=' +
         this.clinic_id,
-      insertUrl: environment.apiUrl + "/KanbanTasks/ktSaveTasks",
-      updateUrl: environment.apiUrl + "/KanbanTasks/ktSaveTasks",
-      removeUrl: environment.apiUrl + "/KanbanTasks/ktDelete",
+      insertUrl: environment.apiUrl + '/KanbanTasks/ktSaveTasks',
+      updateUrl: environment.apiUrl + '/KanbanTasks/ktSaveTasks',
+      removeUrl: environment.apiUrl + '/KanbanTasks/ktDelete',
       adaptor: new CustomAdaptor(),
       crossDomain: true,
       offline: false,
     });
   }
   /**** Data Manager Setting ***/
-  public clinic_id: any = "";
+  public clinic_id: any = '';
   public user_type: any = null;
   public assignTo: number = 1;
-  public statusData: string[] = ["Open", "InProgress", "Done"];
+  public statusData: string[] = ['Open', 'InProgress', 'Done'];
   public clinicsData: any[] = [];
   // public assigneeData: { [key: string]: Object }[] = [];
   public assigneeData: any = [];
-  public assigneefields: Object = { text: "name", value: "id" };
+  public assigneefields: Object = { text: 'name', value: 'id' };
   public assigneeGroupData: { [key: string]: Object }[] = [
-    { id: 3, name: "Practice Manager" },
-    { id: 4, name: "Clinician" },
-    { id: 5, name: "Staff" },
-    { id: 6, name: "Owner" },
+    { id: 3, name: 'Practice Manager' },
+    { id: 4, name: 'Clinician' },
+    { id: 5, name: 'Staff' },
+    { id: 6, name: 'Owner' },
   ];
 
   // not in use
   public assigneeGroup: { [key: string]: Object }[] = [
-    { id: 0, name: "-- Select group --", checked: false, idval: "" },
-    { id: 1, name: "Clinic", checked: true, idval: "Main1" },
-    { id: 2, name: "Account", checked: false, idval: "Main2" },
-    { id: 3, name: "User", checked: false, idval: "Main3" },
-    { id: 4, name: "Staff", checked: false, idval: "Main4" },
-    { id: 5, name: "St", checked: false, idval: "Main5" },
+    { id: 0, name: '-- Select group --', checked: false, idval: '' },
+    { id: 1, name: 'Clinic', checked: true, idval: 'Main1' },
+    { id: 2, name: 'Account', checked: false, idval: 'Main2' },
+    { id: 3, name: 'User', checked: false, idval: 'Main3' },
+    { id: 4, name: 'Staff', checked: false, idval: 'Main4' },
+    { id: 5, name: 'St', checked: false, idval: 'Main5' },
   ];
-
 
   public recurringData: { [key: string]: Object }[] = [
-    { id: 1, name: "Weekly", },
-    { id: 2, name: "Monthly", },
-    { id: 3, name: "Yearly", },
+    { id: 1, name: 'Weekly' },
+    { id: 2, name: 'Monthly' },
+    { id: 3, name: 'Yearly' },
   ];
-  public assigneeGroupfields: Object = { text: "name", value: "id" };
+  public assigneeGroupfields: Object = { text: 'name', value: 'id' };
   @Input() progress = 0;
   constructor(
     private tasksService: TasksService,
@@ -168,40 +164,39 @@ export class TasksComponent implements AfterViewInit, OnInit {
   ) {
     this.getUsers();
     this.getClinics();
-    
+
     // this.date1 =new FormControl(moment("10-20-2020", "MM-DD-YYYY"));
   }
   public columns: ColumnsModel[] = [
-    { headerText: 'To Do', keyField: 'Open', },
+    { headerText: 'To Do', keyField: 'Open' },
     { headerText: 'In Progress', keyField: 'InProgress' },
-    { headerText: 'Done', keyField: 'Done' }
+    { headerText: 'Done', keyField: 'Done' },
   ];
   ngOnInit() {} //
   ngAfterViewInit() {
     // This is for the topbar search
-    this.user_type = this._cookieService.get("user_type");
+    this.user_type = this._cookieService.get('user_type');
 
     // This is for the megamenu
   }
 
-    /**
+  /**
    * on file drop handler
    */
-     onFileDropped($event) {
-      this.prepareFilesList($event);
-    }
+  onFileDropped($event) {
+    this.prepareFilesList($event);
+  }
 
+  // file from browsing
+  fileBrowseHandler(files) {
+    this.prepareFilesList(files);
+  }
 
-// file from browsing
-    fileBrowseHandler(files) {
-      this.prepareFilesList(files);
-    }
+  deleteFile(index: number) {
+    this.files.splice(index, 1);
+  }
 
-    deleteFile(index: number) {
-      this.files.splice(index, 1);
-    }
-
-      /**
+  /**
    * Simulate the upload process
    */
   uploadFilesSimulator(index: number) {
@@ -249,7 +244,6 @@ export class TasksComponent implements AfterViewInit, OnInit {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
-  
   openDatepicker() {
     this.pickerDirective.open();
   }
@@ -259,29 +253,34 @@ export class TasksComponent implements AfterViewInit, OnInit {
 
   initiate_clinic() {
     // Calls on clinic dropdown change
-    var val = $("#currentClinic").attr("cid");
-    if (val != undefined && val != "all") {
+    var val = $('#currentClinic').attr('cid');
+    if (val != undefined && val != 'all') {
       this.clinic_id = val;
       this.getDatamanger();
     }
-    $("#title").html("Task Manager");
-
+    $('#title').html('Task Manager');
   }
 
   dialogOpen(args: DialogEventArgs): void {
     $('.e-dlg-closeicon-btn').hide();
-    $(".e-dialog-cancel, .e-dialog-add, .e-dialog-edit, .e-dialog-delete").on('click',()=>{
-      this.isIndividual = this.isClinic = this.isGroup = this.isRecurring = false;
-    })
-   
+    $('.e-dialog-cancel, .e-dialog-add, .e-dialog-edit, .e-dialog-delete').on(
+      'click',
+      () => {
+        this.isIndividual =
+          this.isClinic =
+          this.isGroup =
+          this.isRecurring =
+            false;
+      }
+    );
+
     var d = document.getElementsByClassName('e-dialog-cancel');
     $(d).addClass('mat-focus-indicator mat-raised-button mat-gray');
-    
 
     this.step = 1;
-    if (args.requestType == "Edit") {
-      $(".e-dlg-header").text("Edit Task");
-      
+    if (args.requestType == 'Edit') {
+      $('.e-dlg-header').text('Edit Task');
+
       if (args.data.assignee_group != null) {
         this.assignTo = 4;
         this.isGroup = true;
@@ -293,22 +292,26 @@ export class TasksComponent implements AfterViewInit, OnInit {
         this.isClinic = true;
       } else {
         // this.assignTo = 2;
-        this.isClinic = this.isIndividual = this.isGroup = this.isRecurring = false;
+        this.isClinic =
+          this.isIndividual =
+          this.isGroup =
+          this.isRecurring =
+            false;
       }
-    } else if(args.requestType === 'Add'){
-      $(".e-dlg-header").text("Who is this task for?");
+    } else if (args.requestType === 'Add') {
+      $('.e-dlg-header').text('Who is this task for?');
     }
   }
 
   // not in use
-  nextToStep(){
+  nextToStep() {
     this.step = this.step + 1;
-    $(".e-dlg-header").text("Add task");
+    $('.e-dlg-header').text('Add task');
     this.assignTo = 2;
   }
 
   // not in use
-  backToStep(){
+  backToStep() {
     $('.e-dlg-closeicon-btn').click();
     this.isIndividual = false;
     this.isClinic = false;
@@ -320,32 +323,34 @@ export class TasksComponent implements AfterViewInit, OnInit {
 
   getUsers() {
     this.tasksService.getUsers().subscribe(
-      (res) => {
+      res => {
         if (res.status == 200) {
           this.assigneeData.push({
-            id : null,
-            name : "-- select assignee --"
+            id: null,
+            name: '-- select assignee --',
           });
-          res.body.data.forEach((user) => {
-            if (user["displayName"]) {
+          res.body.data.forEach(user => {
+            if (user['displayName']) {
               this.assigneeData.push({
-                id: user["id"],
-                name: user["displayName"],
+                id: user['id'],
+                name: user['displayName'],
               });
             }
           });
         }
       },
-      (error) => {}
+      error => {}
     );
   }
 
   getClinics() {
-    this.headerService.getClinic.subscribe(res=>{
-      if (res.status == 200) {
-        this.clinicsData = res.body.data;
-      }
-    },(error) => {}
+    this.headerService.getClinic.subscribe(
+      res => {
+        if (res.status == 200) {
+          this.clinicsData = res.body.data;
+        }
+      },
+      error => {}
     );
     // this.tasksService.getClinics().subscribe(
     //   (res) => {
@@ -357,27 +362,20 @@ export class TasksComponent implements AfterViewInit, OnInit {
     // );
   }
 
-
-
   addClick(): void {
-    
-    const cardIds = this.kanbanObj.kanbanData.map((obj) =>
-    parseInt(obj.id, 10)
-    );
+    const cardIds = this.kanbanObj.kanbanData.map(obj => parseInt(obj.id, 10));
     const cardCount: number = Math.max.apply(Math, cardIds) + 1;
-    
-    const cardDetails = { Id: cardCount, status: "Open" };
-    this.kanbanObj.openDialog("Add", cardDetails);
+
+    const cardDetails = { Id: cardCount, status: 'Open' };
+    this.kanbanObj.openDialog('Add', cardDetails);
   }
 
   OnActionComplete(args: ActionEventArgs): void {
-    
-    if( args.requestType === "cardCreated"){
+    if (args.requestType === 'cardCreated') {
       var kanbanInstance = this.kanbanObj;
       setTimeout(function () {
         kanbanInstance.refresh();
       }, 600);
-      
     }
     // if (
     //   args.requestType === "cardCreated" ||
@@ -394,44 +392,44 @@ export class TasksComponent implements AfterViewInit, OnInit {
 
   checkIdOverdue(data) {
     var ToDate = new Date();
-    if (new Date(data.due_date) < ToDate && data.status != "Done") {
-      return "warning";
+    if (new Date(data.due_date) < ToDate && data.status != 'Done') {
+      return 'warning';
     }
-    return "";
+    return '';
   }
 
-  onKanbanBDrag(args : DragEventArgs){
-    $(window).one("mousemove",function(e){
-      $('.e-cloned-card').offset({top:e.clientY-50,left:e.clientX-150});
+  onKanbanBDrag(args: DragEventArgs) {
+    $(window).one('mousemove', function (e) {
+      $('.e-cloned-card').offset({
+        top: e.clientY - 50,
+        left: e.clientX - 150,
+      });
     });
-
   }
-  
+
   // -------------------------------------
-  isEnable(val){
-    if(val == 'individual'){
+  isEnable(val) {
+    if (val == 'individual') {
       this.assignTo = 3;
       this.isIndividual = true;
       this.isClinic = false;
       this.isGroup = false;
-    }else if(val == 'group'){
+    } else if (val == 'group') {
       this.assignTo = 4;
       this.isIndividual = false;
       this.isGroup = true;
       this.isClinic = false;
-    }else if(val == 'clinic'){
+    } else if (val == 'clinic') {
       this.assignTo = 1;
       this.isIndividual = false;
       this.isClinic = true;
       this.isGroup = false;
     }
-    
   }
 
-  toggleIsRuccring(){
+  toggleIsRuccring() {
     this.isRecurring = !this.isRecurring;
   }
 
   // -------------------------------------
-
 }

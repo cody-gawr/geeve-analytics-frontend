@@ -10,16 +10,16 @@ export const AuthenticationRoutes: Routes = [
     children: [
       {
         path: 'forgot',
-        component: ForgotComponent
+        component: ForgotComponent,
       },
       {
         path: '404',
-        component: ErrorComponent
+        component: ErrorComponent,
       },
       {
         path: 'reset/:id',
-        component: ResetComponent
-      }
-    ]
-  }
+        component: ResetComponent,
+      },
+    ],
+  },
 ];

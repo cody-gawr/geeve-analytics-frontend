@@ -20,13 +20,9 @@ import { DentistService } from '../dentist/dentist.service';
     FormsModule,
     ReactiveFormsModule,
     MatTreeModule,
-    MatDatepickerModule
+    MatDatepickerModule,
   ],
-  providers: [
-    DentistGoalsService, DentistService
-  ],
-  declarations: [
-    DentistGoalsComponent
-  ]
+  providers: [DentistGoalsService, DentistService],
+  declarations: [DentistGoalsComponent],
 })
 export class DentistGoalsModule {}

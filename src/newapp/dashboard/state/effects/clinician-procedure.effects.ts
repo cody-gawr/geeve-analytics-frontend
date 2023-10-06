@@ -4,8 +4,18 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, withLatestFrom, filter } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ClinicianProcedureService } from '../../services/clinician-procedure.service';
-import { ClinicianProcedureState, selectIsLoadingCpPredictorAnalysis, selectIsLoadingCpPredictorRatio, selectIsLoadingCpPredictorSpecialistAnalysis, selectIsLoadingCpReferrals, selectIsLoadingCpRevPerProcedure } from '../reducers/clinician-procedure.reducer';
-import { ClinicianProcedurePageActions, ClinicianProcedureApiActions } from '../actions';
+import {
+  ClinicianProcedureState,
+  selectIsLoadingCpPredictorAnalysis,
+  selectIsLoadingCpPredictorRatio,
+  selectIsLoadingCpPredictorSpecialistAnalysis,
+  selectIsLoadingCpReferrals,
+  selectIsLoadingCpRevPerProcedure,
+} from '../reducers/clinician-procedure.reducer';
+import {
+  ClinicianProcedurePageActions,
+  ClinicianProcedureApiActions,
+} from '../actions';
 
 @Injectable()
 export class ClinicianProcedureEffects {
@@ -14,7 +24,7 @@ export class ClinicianProcedureEffects {
     private clinicianProcedureService: ClinicianProcedureService,
     private store: Store<ClinicianProcedureState>
   ) {}
-    // cpPredictorAnalysis
+  // cpPredictorAnalysis
   public readonly loadCpPredictorAnalysis$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ClinicianProcedurePageActions.loadCpPredictorAnalysis),
@@ -22,14 +32,15 @@ export class ClinicianProcedureEffects {
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.clinicianProcedureService.cpPredictorAnalysis(params).pipe(
-          map((data) =>
-            ClinicianProcedureApiActions.loadCpPredictorAnalysisSuccess({ 
-              cpPredictorAnalysisData: data })
+          map(data =>
+            ClinicianProcedureApiActions.loadCpPredictorAnalysisSuccess({
+              cpPredictorAnalysisData: data,
+            })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
-                ClinicianProcedureApiActions.loadCpPredictorAnalysisFailure({
-                error: error.error ?? error
+              ClinicianProcedureApiActions.loadCpPredictorAnalysisFailure({
+                error: error.error ?? error,
               })
             )
           )
@@ -41,22 +52,29 @@ export class ClinicianProcedureEffects {
   public readonly loadCpPredictorSpecialistAnalysis$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ClinicianProcedurePageActions.loadCpPredictorSpecialistAnalysis),
-      withLatestFrom(this.store.select(selectIsLoadingCpPredictorSpecialistAnalysis)),
+      withLatestFrom(
+        this.store.select(selectIsLoadingCpPredictorSpecialistAnalysis)
+      ),
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
-        return this.clinicianProcedureService.cpPredictorSpecialistAnalysis(params).pipe(
-          map((data) =>
-            ClinicianProcedureApiActions.loadCpPredictorSpecialistAnalysisSuccess(
-              { cpPredictorSpecialistAnalysisData: data })
-          ),
-          catchError((error: HttpErrorResponse) =>
-            of(
-                ClinicianProcedureApiActions.loadCpPredictorSpecialistAnalysisFailure({
-                error: error.error ?? error
-              })
+        return this.clinicianProcedureService
+          .cpPredictorSpecialistAnalysis(params)
+          .pipe(
+            map(data =>
+              ClinicianProcedureApiActions.loadCpPredictorSpecialistAnalysisSuccess(
+                { cpPredictorSpecialistAnalysisData: data }
+              )
+            ),
+            catchError((error: HttpErrorResponse) =>
+              of(
+                ClinicianProcedureApiActions.loadCpPredictorSpecialistAnalysisFailure(
+                  {
+                    error: error.error ?? error,
+                  }
+                )
+              )
             )
-          )
-        );
+          );
       })
     );
   });
@@ -68,14 +86,15 @@ export class ClinicianProcedureEffects {
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.clinicianProcedureService.cpRevPerProcedure(params).pipe(
-          map((data) =>
-            ClinicianProcedureApiActions.loadCpRevPerProcedureSuccess(
-              { cpRevPerProcedureData: data })
+          map(data =>
+            ClinicianProcedureApiActions.loadCpRevPerProcedureSuccess({
+              cpRevPerProcedureData: data,
+            })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
-                ClinicianProcedureApiActions.loadCpRevPerProcedureFailure({
-                error: error.error ?? error
+              ClinicianProcedureApiActions.loadCpRevPerProcedureFailure({
+                error: error.error ?? error,
               })
             )
           )
@@ -91,14 +110,15 @@ export class ClinicianProcedureEffects {
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.clinicianProcedureService.cpPredictorRatio(params).pipe(
-          map((data) =>
-            ClinicianProcedureApiActions.loadCpPredictorRatioSuccess(
-              { cpPredictorRatioData: data })
+          map(data =>
+            ClinicianProcedureApiActions.loadCpPredictorRatioSuccess({
+              cpPredictorRatioData: data,
+            })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
-                ClinicianProcedureApiActions.loadCpPredictorRatioFailure({
-                error: error.error ?? error
+              ClinicianProcedureApiActions.loadCpPredictorRatioFailure({
+                error: error.error ?? error,
               })
             )
           )
@@ -114,14 +134,15 @@ export class ClinicianProcedureEffects {
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.clinicianProcedureService.cpReferrals(params).pipe(
-          map((data) =>
-            ClinicianProcedureApiActions.loadCpReferralsSuccess(
-              { cpReferralsData: data })
+          map(data =>
+            ClinicianProcedureApiActions.loadCpReferralsSuccess({
+              cpReferralsData: data,
+            })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
-                ClinicianProcedureApiActions.loadCpReferralsFailure({
-                error: error.error ?? error
+              ClinicianProcedureApiActions.loadCpReferralsFailure({
+                error: error.error ?? error,
               })
             )
           )

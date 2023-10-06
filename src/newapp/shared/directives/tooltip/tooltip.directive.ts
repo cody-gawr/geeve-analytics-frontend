@@ -7,8 +7,8 @@ import {
   Input,
   ReflectiveInjector,
   ViewContainerRef,
-} from "@angular/core";
-import { TooltipComponent } from "./tooltip.component";
+} from '@angular/core';
+import { TooltipComponent } from './tooltip.component';
 export interface ITooltipData {
   title: string;
   info?: string;
@@ -16,11 +16,11 @@ export interface ITooltipData {
 }
 
 @Directive({
-  selector: "[tooltip]",
+  selector: '[tooltip]',
 })
 export class TooltipDirective {
   // We can pass string, template or component
-  @Input("tooltip") content: ITooltipData;
+  @Input('tooltip') content: ITooltipData;
   private componentRef: ComponentRef<TooltipComponent>;
 
   constructor(
@@ -29,26 +29,26 @@ export class TooltipDirective {
     private vcr: ViewContainerRef
   ) {}
 
-  @HostListener("mouseenter")
+  @HostListener('mouseenter')
   mouseenter() {
     if (this.componentRef) return;
     const factory = this.resolver.resolveComponentFactory(TooltipComponent);
     const injector = ReflectiveInjector.resolveAndCreate([
       {
-        provide: "tooltipConfig",
+        provide: 'tooltipConfig',
         useValue: {
           host: this.element.nativeElement,
         },
       },
       {
-        provide: "data",
+        provide: 'data',
         useValue: this.content,
       },
     ]);
     this.componentRef = this.vcr.createComponent(factory, 0, injector);
   }
 
-  @HostListener("mouseleave")
+  @HostListener('mouseleave')
   mouseout() {
     this.destroy();
   }

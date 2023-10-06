@@ -1,30 +1,35 @@
 <div class="chart-container">
-    <mat-icon
-        [tooltip]="toolTip"
-        matTooltipPosition="below"
-        color="primary"
-        class="help-tip"
-        fontIcon="help"
-    ></mat-icon>
-    <div class="chart-title">
-        {{ (isMultipleClinic$ | async)? 'Production % Per Clinic':'Production % Per Clinician' }}
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <div class="chart-title">
+    {{
+      (isMultipleClinic$ | async)
+        ? 'Production % Per Clinic'
+        : 'Production % Per Clinician'
+    }}
+  </div>
+  <div class="chart-content">
+    <div class="canvas-wrapper prod-per-clinic-pie-chart">
+      <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+      <ng-template #chartElem>
+        <canvas
+          *ngIf="!(isLoading$ | async) && labels.length > 0"
+          baseChart
+          [datasets]="datasets"
+          [labels]="labels"
+          type="doughnut"
+          [options]="pieChartOptions"></canvas>
+        <spin-loader
+          class="empty-placeholder"
+          *ngIf="labels.length <= 0"
+          [disableSpin]="true">
+          You have no production in the selected period
+        </spin-loader>
+      </ng-template>
     </div>
-    <div class="chart-content">
-        <div class="canvas-wrapper prod-per-clinic-pie-chart">
-            <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-            <ng-template #chartElem>
-                <canvas
-                        *ngIf="!(isLoading$ | async) && labels.length > 0"
-                        baseChart
-                        [datasets]="datasets"
-                        [labels]="labels"
-                        type="doughnut"
-                        [options]="pieChartOptions"
-                ></canvas>
-                <spin-loader class="empty-placeholder" *ngIf="labels.length <= 0" [disableSpin]="true">
-                    You have no production in the selected period
-                </spin-loader>
-            </ng-template>
-        </div>
-    </div>
+  </div>
 </div>

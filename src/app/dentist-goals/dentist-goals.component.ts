@@ -1,10 +1,10 @@
- import { Component,OnInit  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { DentistGoalsService } from './dentist-goals.service';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router } from '@angular/router';
 import { DentistService } from '../dentist/dentist.service';
-import { CookieService } from "ngx-cookie";
+import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
 export interface Dentist {
   providerId: string;
@@ -13,119 +13,117 @@ export interface Dentist {
 @Component({
   selector: 'app-formlayout',
   templateUrl: './dentist-goals.component.html',
-  styleUrls: ['./dentist-goals.component.scss']
+  styleUrls: ['./dentist-goals.component.scss'],
 })
 export class DentistGoalsComponent implements OnInit {
-   public clinic_id:any ={};
-   public dentistCount:any ={};
-    dentists: Dentist[] = [
-       { providerId: 'all', name: 'All Dentists' },
-    ];
-   public form: UntypedFormGroup;
-   public errorLogin = false;
-          private warningMessage: string;
-          public dentistprod:any =0;
-          public treatmentplan =0;
-          public planaverage =0;
-          public recallrate =0;
-          public rebookrate =0;
-          public patientcomplaints =0;
-          public hourlyrate =0;
+  public clinic_id: any = {};
+  public dentistCount: any = {};
+  dentists: Dentist[] = [{ providerId: 'all', name: 'All Dentists' }];
+  public form: UntypedFormGroup;
+  public errorLogin = false;
+  private warningMessage: string;
+  public dentistprod: any = 0;
+  public treatmentplan = 0;
+  public planaverage = 0;
+  public recallrate = 0;
+  public rebookrate = 0;
+  public patientcomplaints = 0;
+  public hourlyrate = 0;
 
-          public newpatients = 0;
-          public itempredictor = 0;
-          public ratio1 =0;
-          public ratio2 =0;
-          public ratio3 =0;
-          public totalrevenue =0;
-          public referralclinician = 0;
+  public newpatients = 0;
+  public itempredictor = 0;
+  public ratio1 = 0;
+  public ratio2 = 0;
+  public ratio3 = 0;
+  public totalrevenue = 0;
+  public referralclinician = 0;
 
-          public utilisationrate = 0;
-          public recallprebook = 0;
-          public treatmentprebook =0;
-          public fta =0;
-          public uta =0;
-          public noticks =0;
-          public attendancerate = 0;
+  public utilisationrate = 0;
+  public recallprebook = 0;
+  public treatmentprebook = 0;
+  public fta = 0;
+  public uta = 0;
+  public noticks = 0;
+  public attendancerate = 0;
 
-          public referralpatient = 0;
-          public revenuereferral = 0;
-          public visits =0;
-          public newpatients2 =0;
-          public patientcost =0;
+  public referralpatient = 0;
+  public revenuereferral = 0;
+  public visits = 0;
+  public newpatients2 = 0;
+  public patientcost = 0;
 
-          public netprofit:any =0;
-          public netprofitxero =0;
-          public netprofitpms =0;
-          public expenses =0;
-          public productionclinician =0;
-          public totalproduction =0;
-          public visitproduction =0;
-          public collection =0;
-          public currentValue:any =0;
+  public netprofit: any = 0;
+  public netprofitxero = 0;
+  public netprofitpms = 0;
+  public expenses = 0;
+  public productionclinician = 0;
+  public totalproduction = 0;
+  public visitproduction = 0;
+  public collection = 0;
+  public currentValue: any = 0;
 
-
-          public discount:any =0;
-          public overdueaccount =0;
-          public dentist_id = '';
-          // public chartData: any[] = [];
-          public chartData:any = {};
-          public user_id;
+  public discount: any = 0;
+  public overdueaccount = 0;
+  public dentist_id = '';
+  // public chartData: any[] = [];
+  public chartData: any = {};
+  public user_id;
   options: UntypedFormGroup;
 
-  constructor(private toastr: ToastrService,private fb: UntypedFormBuilder,  private dentistGoalsService: DentistGoalsService, private route: ActivatedRoute, private dentistService: DentistService,private _cookieService: CookieService, private router: Router) {
-
-    this.clinic_id = this.route.snapshot.paramMap.get("id");
+  constructor(
+    private toastr: ToastrService,
+    private fb: UntypedFormBuilder,
+    private dentistGoalsService: DentistGoalsService,
+    private route: ActivatedRoute,
+    private dentistService: DentistService,
+    private _cookieService: CookieService,
+    private router: Router
+  ) {
+    this.clinic_id = this.route.snapshot.paramMap.get('id');
     this.options = fb.group({
       hideRequired: false,
-      floatLabel: 'auto'
+      floatLabel: 'auto',
     });
   }
-     initiate_clinic() {
+  initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     this.clinic_id = val;
-          this.getDentists();
-
+    this.getDentists();
   }
   ngOnInit() {
+    // $(document).on('keyup','.mat-input-element',function(e){
+    //      this.currentValue = $(this).val();
+    //      if(this.currentValue == 0){
+    //        $(this).val(1);
+    //      } else {
+    //        $(this).val( $(this).val()  );
+    //      }
+    //  });
 
-   // $(document).on('keyup','.mat-input-element',function(e){
-   //      this.currentValue = $(this).val();
-   //      if(this.currentValue == 0){
-   //        $(this).val(1);
-   //      } else {
-   //        $(this).val( $(this).val()  );
-   //      }
-   //  });
+    $('.header_filters').removeClass('hide_header');
+    $('.header_filters').removeClass('flex_direct_mar');
 
-    $('.header_filters').removeClass('hide_header'); 
-    $('.header_filters').removeClass('flex_direct_mar'); 
-    
-    this.user_id = this._cookieService.get("userid");
-     this.route.params.subscribe(params => {
-     this.initiate_clinic(); 
-          
-         
-          if(this.user_id == '1') 
-          {
-             $('.header_filters').addClass('hide_header'); 
-          }
-          else {
-            $('.external_clinic').show();
+    this.user_id = this._cookieService.get('userid');
+    this.route.params.subscribe(params => {
+      this.initiate_clinic();
+
+      if (this.user_id == '1') {
+        $('.header_filters').addClass('hide_header');
+      } else {
+        $('.external_clinic').show();
         //$('.dentist_dropdown').show();
-          }
-        $('#title').html('Dentist Goals');
-         if($('body').find('span#currentDentist').length > 0){
-             var did= $('body').find('span#currentDentist').attr('did');
-             $('.external_dentist').val(did);
-          }
-          else {
-             $('.external_dentist').val('all');
-          }
-        // $('.external_clinic').show();
-        // $('.external_dentist').hide();
-     });
-     this.form = this.fb.group({
+      }
+      $('#title').html('Dentist Goals');
+      if ($('body').find('span#currentDentist').length > 0) {
+        var did = $('body').find('span#currentDentist').attr('did');
+        $('.external_dentist').val(did);
+      } else {
+        $('.external_dentist').val('all');
+      }
+      // $('.external_clinic').show();
+      // $('.external_dentist').hide();
+    });
+    this.form = this.fb.group({
       dentistprod: [null, Validators.compose([Validators.required])],
       treatmentplan: [null, Validators.compose([Validators.required])],
       planaverage: [null, Validators.compose([Validators.required])],
@@ -147,7 +145,7 @@ export class DentistGoalsComponent implements OnInit {
       uta: [null, Validators.compose([Validators.required])],
       noticks: [null, Validators.compose([Validators.required])],
       attendancerate: [null, Validators.compose([Validators.required])],
-            referralpatient: [null, Validators.compose([Validators.required])],
+      referralpatient: [null, Validators.compose([Validators.required])],
       revenuereferral: [null, Validators.compose([Validators.required])],
       visits: [null, Validators.compose([Validators.required])],
       newpatients2: [null, Validators.compose([Validators.required])],
@@ -164,12 +162,9 @@ export class DentistGoalsComponent implements OnInit {
       visitproduction: [null, Validators.compose([Validators.required])],
       discount: [null, Validators.compose([Validators.required])],
       overdueaccount: [null, Validators.compose([Validators.required])],
-
-
     });
   }
   initiate_dentist() {
-
     var val = $('.internal_dentist').val();
     this.loadDentist(val);
   }
@@ -183,140 +178,145 @@ export class DentistGoalsComponent implements OnInit {
     return this.email.hasError('required')
       ? 'You must enter a value'
       : this.email.hasError('email')
-        ? 'Not a valid email'
-        : '';
+      ? 'Not a valid email'
+      : '';
   }
 
-  getDentistGoals(dentist_id ='' ) {
-  this.dentistGoalsService.getDentistGoals(this.clinic_id,dentist_id).subscribe((res) => {
-       if(res.status == 200){
-          this.dentistprod =res.body.data[1].value;
-          this.treatmentplan =res.body.data[2].value;
-          this.planaverage =res.body.data[3].value;
-          this.recallrate =res.body.data[4].value;
-          this.rebookrate =res.body.data[5].value;
-          this.patientcomplaints =res.body.data[6].value;
-          this.hourlyrate =res.body.data[7].value;
-          this.newpatients =res.body.data[8].value;
+  getDentistGoals(dentist_id = '') {
+    this.dentistGoalsService
+      .getDentistGoals(this.clinic_id, dentist_id)
+      .subscribe(
+        res => {
+          if (res.status == 200) {
+            this.dentistprod = res.body.data[1].value;
+            this.treatmentplan = res.body.data[2].value;
+            this.planaverage = res.body.data[3].value;
+            this.recallrate = res.body.data[4].value;
+            this.rebookrate = res.body.data[5].value;
+            this.patientcomplaints = res.body.data[6].value;
+            this.hourlyrate = res.body.data[7].value;
+            this.newpatients = res.body.data[8].value;
 
-          this.itempredictor =res.body.data[9].value;
-          this.ratio1 =res.body.data[10].value;
-          this.ratio2 =res.body.data[11].value;
-          this.ratio3 =res.body.data[12].value;
-          this.totalrevenue =res.body.data[13].value;
-          this.referralclinician =res.body.data[14].value;
+            this.itempredictor = res.body.data[9].value;
+            this.ratio1 = res.body.data[10].value;
+            this.ratio2 = res.body.data[11].value;
+            this.ratio3 = res.body.data[12].value;
+            this.totalrevenue = res.body.data[13].value;
+            this.referralclinician = res.body.data[14].value;
 
-          this.utilisationrate = res.body.data[15].value;
-          this.recallprebook = res.body.data[16].value;
-          this.treatmentprebook = res.body.data[17].value;
-          this.fta = res.body.data[18].value;
-          this.uta = res.body.data[19].value;
-          this.noticks = res.body.data[20].value;
-          this.attendancerate = res.body.data[21].value;
+            this.utilisationrate = res.body.data[15].value;
+            this.recallprebook = res.body.data[16].value;
+            this.treatmentprebook = res.body.data[17].value;
+            this.fta = res.body.data[18].value;
+            this.uta = res.body.data[19].value;
+            this.noticks = res.body.data[20].value;
+            this.attendancerate = res.body.data[21].value;
 
-          this.referralpatient = res.body.data[22].value;
-          this.revenuereferral = res.body.data[23].value;
-          this.visits = res.body.data[24].value;
-          this.newpatients2 = res.body.data[25].value;
-          this.patientcost = res.body.data[26].value;
+            this.referralpatient = res.body.data[22].value;
+            this.revenuereferral = res.body.data[23].value;
+            this.visits = res.body.data[24].value;
+            this.newpatients2 = res.body.data[25].value;
+            this.patientcost = res.body.data[26].value;
 
-          this.netprofit = res.body.data[27].value;
-          this.netprofitxero = res.body.data[28].value;
-          this.netprofitpms = res.body.data[29].value;
-          this.expenses = res.body.data[30].value;
-          this.productionclinician = res.body.data[31].value;
-          this.totalproduction = res.body.data[32].value;
-          this.collection = res.body.data[33].value;
-          this.visitproduction = res.body.data[34].value;
-          this.discount = res.body.data[35].value;
-          this.overdueaccount = res.body.data[36].value;
-
-
-       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
+            this.netprofit = res.body.data[27].value;
+            this.netprofitxero = res.body.data[28].value;
+            this.netprofitpms = res.body.data[29].value;
+            this.expenses = res.body.data[30].value;
+            this.productionclinician = res.body.data[31].value;
+            this.totalproduction = res.body.data[32].value;
+            this.collection = res.body.data[33].value;
+            this.visitproduction = res.body.data[34].value;
+            this.discount = res.body.data[35].value;
+            this.overdueaccount = res.body.data[36].value;
+          }
+        },
+        error => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
 
   onSubmit() {
-  this.chartData[1] = this.form.value.dentistprod;
-  this.chartData[2] = this.form.value.treatmentplan;
-  this.chartData[3] = this.form.value.planaverage;
-  this.chartData[4] = this.form.value.recallrate;
-  this.chartData[5] = this.form.value.rebookrate;
-  this.chartData[6] = this.form.value.patientcomplaints;
-  this.chartData[7] = this.form.value.hourlyrate;
-  this.chartData[8] = this.form.value.newpatients;
+    this.chartData[1] = this.form.value.dentistprod;
+    this.chartData[2] = this.form.value.treatmentplan;
+    this.chartData[3] = this.form.value.planaverage;
+    this.chartData[4] = this.form.value.recallrate;
+    this.chartData[5] = this.form.value.rebookrate;
+    this.chartData[6] = this.form.value.patientcomplaints;
+    this.chartData[7] = this.form.value.hourlyrate;
+    this.chartData[8] = this.form.value.newpatients;
 
-  this.chartData[9] = this.form.value.itempredictor;
-  this.chartData[10] = this.form.value.ratio1;
-  this.chartData[11] = this.form.value.ratio2;
-  this.chartData[12] = this.form.value.ratio3;
-  this.chartData[13] = this.form.value.totalrevenue;
-  this.chartData[14] = this.form.value.referralclinician;
+    this.chartData[9] = this.form.value.itempredictor;
+    this.chartData[10] = this.form.value.ratio1;
+    this.chartData[11] = this.form.value.ratio2;
+    this.chartData[12] = this.form.value.ratio3;
+    this.chartData[13] = this.form.value.totalrevenue;
+    this.chartData[14] = this.form.value.referralclinician;
 
-  this.chartData[15] = this.form.value.utilisationrate;
-  this.chartData[16] = this.form.value.recallprebook;
-  this.chartData[17] = this.form.value.treatmentprebook;
-  this.chartData[18] = this.form.value.fta;
-  this.chartData[19] = this.form.value.uta;
-  this.chartData[20] = this.form.value.noticks;
-  this.chartData[21] = this.form.value.attendancerate;
+    this.chartData[15] = this.form.value.utilisationrate;
+    this.chartData[16] = this.form.value.recallprebook;
+    this.chartData[17] = this.form.value.treatmentprebook;
+    this.chartData[18] = this.form.value.fta;
+    this.chartData[19] = this.form.value.uta;
+    this.chartData[20] = this.form.value.noticks;
+    this.chartData[21] = this.form.value.attendancerate;
 
-  this.chartData[22] = this.form.value.referralpatient;
-  this.chartData[23] = this.form.value.revenuereferral;
-  this.chartData[24] = this.form.value.visits;
-  this.chartData[25] = this.form.value.newpatients2;
-  this.chartData[26] = this.form.value.patientcost;
+    this.chartData[22] = this.form.value.referralpatient;
+    this.chartData[23] = this.form.value.revenuereferral;
+    this.chartData[24] = this.form.value.visits;
+    this.chartData[25] = this.form.value.newpatients2;
+    this.chartData[26] = this.form.value.patientcost;
 
-  this.chartData[27] = this.form.value.netprofit;
-  this.chartData[28] = this.form.value.netprofitxero;
-  this.chartData[29] = this.form.value.netprofitpms;
-  this.chartData[30] = this.form.value.expenses;
-  this.chartData[31] = this.form.value.productionclinician;
-  this.chartData[32] = this.form.value.totalproduction;
-  this.chartData[33] = this.form.value.collection;
-  this.chartData[34] = this.form.value.visitproduction;
-  this.chartData[35] = this.form.value.discount;
-  this.chartData[36] = this.form.value.overdueaccount;
-  var myJsonString = JSON.stringify(this.chartData);
-  $('.ajax-loader').show();
-   this.dentistGoalsService.updateDentistGoals(myJsonString, this.clinic_id, this.dentist_id).subscribe((res) => {
-       $('.ajax-loader').hide();
-       if(res.status == 200){
-         this.toastr.success('Dentist Goals Updated');
-       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
-  } 
-
-    // Get Dentist
-    getDentists() {
-      this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
-           if(res.status == 200){
-              this.dentists= res.body.data;
-              this.dentistCount= res.body.data.length;
-              if(!this.dentist_id)
-                this.dentist_id = res.body.data[0].providerId;
-          this.getDentistGoals(this.dentist_id);
-
-           }
-            else if(res.status == 401){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
-        }, error => {
-          this.warningMessage = "Please Provide Valid Inputs!";
-        }    
-        );
+    this.chartData[27] = this.form.value.netprofit;
+    this.chartData[28] = this.form.value.netprofitxero;
+    this.chartData[29] = this.form.value.netprofitpms;
+    this.chartData[30] = this.form.value.expenses;
+    this.chartData[31] = this.form.value.productionclinician;
+    this.chartData[32] = this.form.value.totalproduction;
+    this.chartData[33] = this.form.value.collection;
+    this.chartData[34] = this.form.value.visitproduction;
+    this.chartData[35] = this.form.value.discount;
+    this.chartData[36] = this.form.value.overdueaccount;
+    var myJsonString = JSON.stringify(this.chartData);
+    $('.ajax-loader').show();
+    this.dentistGoalsService
+      .updateDentistGoals(myJsonString, this.clinic_id, this.dentist_id)
+      .subscribe(
+        res => {
+          $('.ajax-loader').hide();
+          if (res.status == 200) {
+            this.toastr.success('Dentist Goals Updated');
+          }
+        },
+        error => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        }
+      );
   }
-   private loadDentist(newValue) {
+
+  // Get Dentist
+  getDentists() {
+    this.dentistService.getDentists(this.clinic_id).subscribe(
+      res => {
+        if (res.status == 200) {
+          this.dentists = res.body.data;
+          this.dentistCount = res.body.data.length;
+          if (!this.dentist_id) this.dentist_id = res.body.data[0].providerId;
+          this.getDentistGoals(this.dentist_id);
+        } else if (res.status == 401) {
+          this._cookieService.put('username', '');
+          this._cookieService.put('email', '');
+          this._cookieService.put('userid', '');
+          this.router.navigateByUrl('/login');
+        }
+      },
+      error => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      }
+    );
+  }
+  private loadDentist(newValue) {
     this.dentist_id = newValue;
     this.getDentistGoals(newValue);
-   }
+  }
 }

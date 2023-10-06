@@ -4,7 +4,7 @@ import {
   HttpResponse,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
 } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import camelcaseKeys from 'camelcase-keys';
@@ -21,7 +21,7 @@ export class CamelCaseInterceptor implements HttpInterceptor {
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
           const modEvent = event.clone({
-            body: camelcaseKeys(event.body, { deep: true })
+            body: camelcaseKeys(event.body, { deep: true }),
           });
 
           return modEvent;

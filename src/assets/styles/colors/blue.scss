@@ -12,31 +12,31 @@ $blue-app-accent: mat.define-palette($blue-palette, A200, A100, A400);
 $blue-app-warn: mat.define-palette(mat.$pink-palette);
 // Create the theme object (a Sass map containing all of the palettes).
 $blue-theme: mat.define-light-theme(
-    (
-        color: (
-            primary: $blue-app-primary,
-            accent: $blue-app-accent,
-            warn: $blue-app-warn
-        ),
-        density: 0,
+  (
+    color: (
+      primary: $blue-app-primary,
+      accent: $blue-app-accent,
+      warn: $blue-app-warn,
     ),
+    density: 0,
+  )
 );
 
-$themecolor:#18A689;
-$themecolor-alt: #18A689;
-$white:#fff;
+$themecolor: #18a689;
+$themecolor-alt: #18a689;
+$white: #fff;
 #snav {
-    .mat-nav-list .mat-list-item {
-        .mat-list-item-content {
-            &:hover {
-                > a {
-                    color: $themecolor;
-                }
-            }
+  .mat-nav-list .mat-list-item {
+    .mat-list-item-content {
+      &:hover {
+        > a {
+          color: $themecolor;
         }
-        &.selected > .mat-list-item-content > a {
-            background: $themecolor-alt;
-            color: $white;
-        }
+      }
     }
+    &.selected > .mat-list-item-content > a {
+      background: $themecolor-alt;
+      color: $white;
+    }
+  }
 }

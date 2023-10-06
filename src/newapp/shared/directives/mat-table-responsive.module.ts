@@ -3,7 +3,7 @@ import { MatTableResponsiveDirective } from './mat-table-responsive.directive';
 
 @NgModule({
   declarations: [MatTableResponsiveDirective],
-  exports: [MatTableResponsiveDirective]
+  exports: [MatTableResponsiveDirective],
 })
 export class MatTableResponsiveModule {}
 

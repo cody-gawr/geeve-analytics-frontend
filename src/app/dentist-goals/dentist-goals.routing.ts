@@ -4,10 +4,10 @@ import { DentistGoalsComponent } from './dentist-goals.component';
 
 export const DentistGoalsRoutes: Routes = [
   {
-   path: '',
+    path: '',
     component: DentistGoalsComponent,
     data: {
-      title: 'Dentist Goals'
-    }
-  }
+      title: 'Dentist Goals',
+    },
+  },
 ];

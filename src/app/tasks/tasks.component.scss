@@ -3,7 +3,7 @@
     min-height: -moz-calc(100vh - 67px);
     min-height: -webkit-calc(100vh - 67px);
     min-height: calc(100vh - 67px);
-    margin: -15px
+    margin: -15px;
   }
   .header_filters.tasks {
     justify-content: flex-end;
@@ -52,7 +52,7 @@
     margin-right: auto;
     background-image: url(https://syncfusion.atlassian.net/images/icons/priorities/minor.svg);
   }
-  
+
   .e-kanban .e-nancy-davloio,
   .e-kanban .e-andrew-fuller,
   .e-kanban .e-janet-leverling,
@@ -64,7 +64,7 @@
     height: 24px;
     width: 24px;
   }
-  
+
   .date-options {
     left: 44px;
     position: absolute;
@@ -73,13 +73,13 @@
     background: #fff;
     box-shadow: 1px 2px 8px 2px #eee;
   }
-  
+
   .dropdown-select {
     width: 100%;
     display: flex;
     align-items: center;
   }
-  
+
   .dropdown-menu {
     width: 100%;
     border-radius: 4px;
@@ -89,10 +89,10 @@
     font-size: 14px;
     color: #626262;
   }
-  
+
   .dropdown-menu::after {
-    content: "\f078";
-    font-family: "Font Awesome 5 Free";
+    content: '\f078';
+    font-family: 'Font Awesome 5 Free';
     border-radius: 100%;
     font-weight: 900;
     transform: none;
@@ -105,16 +105,16 @@
     float: right;
     transition: 0.3s ease-in-out;
   }
-  
+
   .toggle-down::after {
     transform: rotate(180deg);
   }
   .sa-pull-right.kanban {
-      position: fixed;
-      top: 16px;
-      z-index: 9999;
-      /* right: 15.5%; */
-      right: 25px;
+    position: fixed;
+    top: 16px;
+    z-index: 9999;
+    /* right: 15.5%; */
+    right: 25px;
   }
   .sa-pull-right.kanban button.mat-gray {
     text-transform: capitalize !important;
@@ -127,136 +127,136 @@
   .e-dlg-container.e-dlg-center-center {
     z-index: 10 !important;
   }
-  
+
   .e-lib.e-dialog.e-control.e-kanban-dialog.e-dlg-modal.e-popup.e-popup-open {
-      width: 500px !important;
-      min-height: 440px;
+    width: 500px !important;
+    min-height: 440px;
   }
   table.editaddpopup tr td:first-child {
-      width: 120px !important;
+    width: 120px !important;
   }
   div.groupSelect {
-      display: inline-block;
-      text-align: center;
-      margin-right: 10px;
-      background: #d9ddd9;
-      width: 73px;
-      border: 1px solid #171a18;
-      border-radius: 6px;
+    display: inline-block;
+    text-align: center;
+    margin-right: 10px;
+    background: #d9ddd9;
+    width: 73px;
+    border: 1px solid #171a18;
+    border-radius: 6px;
   }
   .groupSelect label input {
-      display: none;
+    display: none;
   }
   .groupSelect.active {
-      background: #434a44;
-      color: #ffffff;
+    background: #434a44;
+    color: #ffffff;
   }
   table.editaddpopup select {
-      padding: 9px 0;
-      border: 0px solid;
-      border-bottom: 1px solid #767070;
+    padding: 9px 0;
+    border: 0px solid;
+    border-bottom: 1px solid #767070;
   }
   .sa-form-group {
     position: relative;
   }
-  .e-popup.e-popup-open .e-footer-content button{
-      font-size: 16px;
-      text-transform: uppercase;
-      color: #FFF;
-      background-image: linear-gradient(14deg, #17a5aa 0%, #18a689 100%);
-      box-shadow: none !important;
-      border: 0;
-      font-family: 'Gilroy-Medium';
-      border-radius: 5px;
-      height: 35px;
-      margin-left: 10px;
-      margin-right: 10px;
+  .e-popup.e-popup-open .e-footer-content button {
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #fff;
+    background-image: linear-gradient(14deg, #17a5aa 0%, #18a689 100%);
+    box-shadow: none !important;
+    border: 0;
+    font-family: 'Gilroy-Medium';
+    border-radius: 5px;
+    height: 35px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
-  .e-dialog-add{
+  .e-dialog-add {
     color: white !important;
   }
-  .e-dialog-edit{
+  .e-dialog-edit {
     color: white !important;
   }
-  
+
   .e-dialog .e-dlg-header-content {
-      border-bottom: 1px solid #c0c0c0;
+    border-bottom: 1px solid #c0c0c0;
   }
   div.e-dlg-header {
-      padding-left: 15px;
+    padding-left: 15px;
   }
   tr.Due_Date {
-      position: relative;
+    position: relative;
   }
   .Due_Date input {
-      border: 0px solid;
-      padding: 10px 0;
-      border-bottom: 1px solid #8d8989;
-      margin: 0;
+    border: 0px solid;
+    padding: 10px 0;
+    border-bottom: 1px solid #8d8989;
+    margin: 0;
   }
   .Due_Date button.mat-icon-button {
-      position: absolute;
-      top: 0;
-      right: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
-  
+
   .e-card.e-template.e-droppable.e-lib.e-draggable {
-      background: #fff;
-      border-radius: 6px;
-      border: 1px solid #cecece!important;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #cecece !important;
   }
-  
+
   .e-content-row td.e-content-cells {
-      background: #ebebeb !important;    
+    background: #ebebeb !important;
   }
   .task-info-wrap .e-kanban {
     background: #f5f5fb;
   }
   .e-kanban .e-kanban-table .e-header-cells {
-      background-color: #ebebeb;
-      border-radius: 0;
+    background-color: #ebebeb;
+    border-radius: 0;
   }
   .e-kanban .e-kanban-table .e-header-cells {
-      background-color: #ebebeb;
-      border-radius: 0;
-      box-shadow: 0px -2px 1px inset #f5f5fb;
+    background-color: #ebebeb;
+    border-radius: 0;
+    box-shadow: 0px -2px 1px inset #f5f5fb;
   }
   div.groupSelect label {
-      width: 100%;
-      display: block;
-      padding: 5px;
-      cursor: pointer;
+    width: 100%;
+    display: block;
+    padding: 5px;
+    cursor: pointer;
   }
   button.e-control.e-btn.e-lib.e-flat.e-dialog-delete {
-      float: right;
+    float: right;
   }
   button.e-control.e-btn.e-lib.e-flat.e-dialog-cancel {
-      float: left;
+    float: left;
   }
   .e-tooltip-wrap.e-popup {
-      background-color: #f5f4f4;
+    background-color: #f5f4f4;
   }
   table .e-card-wrapper .warning::before {
-      width: 0;
-      height: 0;
-      position: absolute;
-      bottom: 0;
-      z-index: 999999999;
-      content: '';
-      right: 0;
-      border-style: solid;
-      border-width: 0 0 10px 10px;
-      border-color: transparent transparent #ff8686 transparent;
+    width: 0;
+    height: 0;
+    position: absolute;
+    bottom: 0;
+    z-index: 999999999;
+    content: '';
+    right: 0;
+    border-style: solid;
+    border-width: 0 0 10px 10px;
+    border-color: transparent transparent #ff8686 transparent;
   }
-  
+
   .e-card-content td h3 {
-      padding: 0;
-      margin: 0;
-      text-transform: capitalize;
-      font-size: 17px;
-      font-weight: bold;
+    padding: 0;
+    margin: 0;
+    text-transform: capitalize;
+    font-size: 17px;
+    font-weight: bold;
   }
-  .header-bg-shadow{
+  .header-bg-shadow {
     box-shadow: none !important;
   }
   .task-info-wrap .e-kanban .e-kanban-table .e-header-cells {
@@ -282,7 +282,7 @@
     position: relative;
   }
   .task-info-wrap .header-template-wrap.Open:before {
-    content: "";
+    content: '';
     background-image: url('/assets/images/todo-list.png');
     background-position: bottom center;
     background-repeat: no-repeat;
@@ -293,7 +293,7 @@
     width: 134px;
   }
   .task-info-wrap .header-template-wrap.InProgress:before {
-    content: "";
+    content: '';
     background-image: url('/assets/images/in-progress.png');
     background-position: center center;
     background-repeat: no-repeat;
@@ -304,7 +304,7 @@
     width: 134px;
   }
   .task-info-wrap .header-template-wrap.Done:before {
-    content: "";
+    content: '';
     background-image: url('/assets/images/Done.png');
     background-position: center center;
     background-repeat: no-repeat;
@@ -329,14 +329,20 @@
     padding: 10px;
   }
   .task-info-wrap .e-content-row td.e-content-cells {
-    background: #f6fafb!important;
+    background: #f6fafb !important;
     position: relative;
   }
   .task-info-wrap .e-kanban-header,
   .task-info-wrap .e-kanban .e-kanban-content {
     background-color: #fff;
   }
-  .task-info-wrap .e-kanban .e-kanban-content .e-content-row.e-swimlane-row .e-content-cells .e-swimlane-header .e-icons {
+  .task-info-wrap
+    .e-kanban
+    .e-kanban-content
+    .e-content-row.e-swimlane-row
+    .e-content-cells
+    .e-swimlane-header
+    .e-icons {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -344,50 +350,96 @@
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
   }
-  .task-info-wrap .e-kanban .e-kanban-content .e-content-row.e-swimlane-row .e-content-cells {
+  .task-info-wrap
+    .e-kanban
+    .e-kanban-content
+    .e-content-row.e-swimlane-row
+    .e-content-cells {
     background-color: #fff !important;
     padding-bottom: 10px;
     position: relative;
     border-radius: 10px;
   }
-  .task-info-wrap .e-kanban .e-kanban-content .e-content-row.e-swimlane-row .e-content-cells .e-swimlane-header {
+  .task-info-wrap
+    .e-kanban
+    .e-kanban-content
+    .e-content-row.e-swimlane-row
+    .e-content-cells
+    .e-swimlane-header {
     padding: 12px 20px;
     background-color: #f6fafb;
     border-radius: 8px;
     position: relative;
   }
-  .task-info-wrap  .e-kanban .e-kanban-content .e-content-row.e-swimlane-row .e-content-cells .e-swimlane-header .e-item-count {
+  .task-info-wrap
+    .e-kanban
+    .e-kanban-content
+    .e-content-row.e-swimlane-row
+    .e-content-cells
+    .e-swimlane-header
+    .e-item-count {
     display: none;
   }
-  .task-info-wrap .e-kanban-content .e-card.e-template.e-droppable.e-lib.e-draggable {
+  .task-info-wrap
+    .e-kanban-content
+    .e-card.e-template.e-droppable.e-lib.e-draggable {
     border: 0 !important;
     box-shadow: 0 10px 21px rgb(64 120 113 / 14%) !important;
     border-radius: 0;
     margin-bottom: 10px;
   }
-  .task-info-wrap .e-kanban .e-kanban-content .e-content-row:not(.e-swimlane-row) .e-content-cells {
+  .task-info-wrap
+    .e-kanban
+    .e-kanban-content
+    .e-content-row:not(.e-swimlane-row)
+    .e-content-cells {
     border: 0;
     padding: 0;
   }
-  .task-info-wrap .e-kanban .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper {
+  .task-info-wrap
+    .e-kanban
+    .e-kanban-content
+    .e-content-row
+    .e-content-cells
+    .e-card-wrapper {
     padding: 15px 10px 0;
   }
-  .task-info-wrap .e-kanban-content .e-card.e-template.e-droppable.e-lib.e-draggable[data-key="Open"] {
+  .task-info-wrap
+    .e-kanban-content
+    .e-card.e-template.e-droppable.e-lib.e-draggable[data-key='Open'] {
     border-top: 4px solid #796eff !important;
   }
-  .task-info-wrap .e-kanban-content .e-card.e-template.e-droppable.e-lib.e-draggable[data-key="InProgress"] {
+  .task-info-wrap
+    .e-kanban-content
+    .e-card.e-template.e-droppable.e-lib.e-draggable[data-key='InProgress'] {
     border-top: 4px solid #fdc027 !important;
   }
-  .task-info-wrap .e-kanban-content .e-card.e-template.e-droppable.e-lib.e-draggable[data-key="Done"] {
+  .task-info-wrap
+    .e-kanban-content
+    .e-card.e-template.e-droppable.e-lib.e-draggable[data-key='Done'] {
     border-top: 4px solid #0d8e7f !important;
   }
-  .task-info-wrap .e-kanban .e-kanban-content .e-content-row:not(.e-swimlane-row) .e-content-cells:first-child {
+  .task-info-wrap
+    .e-kanban
+    .e-kanban-content
+    .e-content-row:not(.e-swimlane-row)
+    .e-content-cells:first-child {
     padding-left: 5px;
   }
-  .task-info-wrap .e-kanban .e-kanban-content .e-content-row:not(.e-swimlane-row) .e-content-cells:last-child {
+  .task-info-wrap
+    .e-kanban
+    .e-kanban-content
+    .e-content-row:not(.e-swimlane-row)
+    .e-content-cells:last-child {
     padding-right: 5px;
   }
-  .task-info-wrap .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card .e-card-content {
+  .task-info-wrap
+    .e-kanban-content
+    .e-content-row
+    .e-content-cells
+    .e-card-wrapper
+    .e-card
+    .e-card-content {
     padding: 0;
   }
   .card-template-header {
@@ -405,7 +457,11 @@
     font-family: 'Gilroy-Medium';
     line-height: normal;
   }
-  .task-info-wrap .e-kanban-content .e-card.e-template.e-droppable.e-lib.e-draggable .e-card-content .cardDescription {
+  .task-info-wrap
+    .e-kanban-content
+    .e-card.e-template.e-droppable.e-lib.e-draggable
+    .e-card-content
+    .cardDescription {
     padding: 10px 15px;
     color: #454545;
   }
@@ -423,7 +479,7 @@
   .task-modal .sa_datepicker {
     background-color: transparent;
     margin-left: -10px;
-  } 
+  }
   .input-icon {
     position: absolute;
     right: 15px;
@@ -434,10 +490,16 @@
   .task-modal .sa_forms_design label {
     color: #616161;
   }
-  .task-modal .sa_forms_design .mat-select, .task-modal .sa_forms_design input, .task-modal .sa_forms_design select, .task-modal .sa_forms_design textarea {
+  .task-modal .sa_forms_design .mat-select,
+  .task-modal .sa_forms_design input,
+  .task-modal .sa_forms_design select,
+  .task-modal .sa_forms_design textarea {
     border: 2px solid #eeeeee;
   }
-  .task-modal .sa_forms_design .mat-select:focus, .task-modal .sa_forms_design input:focus, .task-modal .sa_forms_design select:focus, .task-modal .sa_forms_design textarea:focus {
+  .task-modal .sa_forms_design .mat-select:focus,
+  .task-modal .sa_forms_design input:focus,
+  .task-modal .sa_forms_design select:focus,
+  .task-modal .sa_forms_design textarea:focus {
     border-color: rgb(13 142 127 / 50%);
   }
   .file-upload {
@@ -516,7 +578,6 @@
     border-radius: 4px;
     background-color: #d3ebe8;
     position: relative;
-  
   }
   .progress {
     width: 0;
@@ -532,22 +593,21 @@
   /* .task-modal .e-footer-content {
     display: none;
   } */
-  
-  
-  .show{
+
+  .show {
     display: block;
   }
-  
+
   @media screen and (max-width: 1919px) {
     .sa-pull-right.kanban {
       /* right: 17%; */
-      right: 25px
+      right: 25px;
     }
   }
   @media screen and (max-width: 1280px) {
     .sa-pull-right.kanban {
       /* right: 18%; */
-      right: 25px
+      right: 25px;
     }
   }
   @media screen and (max-width: 960px) {
@@ -577,25 +637,28 @@
     }
   }
   @media screen and (max-width: 575px) {
-    .task-info-wrap .e-kanban.e-device .e-swimlane-header .e-swimlane-header-toolbar {
+    .task-info-wrap
+      .e-kanban.e-device
+      .e-swimlane-header
+      .e-swimlane-header-toolbar {
       margin-bottom: 15px;
     }
     .task-info-wrap .e-kanban {
       background: transparent;
     }
   }
-  
-  .group_buttons>button{
+
+  .group_buttons > button {
     margin-left: 10px;
     margin-right: 10px;
     width: 50%;
   }
-  
-  .group_buttons{
+
+  .group_buttons {
     display: flex;
     justify-content: center;
   }
-  
+
   .sa_datepicker {
     position: relative;
     width: auto;

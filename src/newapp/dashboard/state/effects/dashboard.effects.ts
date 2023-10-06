@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, mergeMap, of } from "rxjs";
-import { DashboardService } from "../../services/dashboard.service";
-import { DashboardApiActions, DashboardPageActions } from "../actions";
+import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, map, mergeMap, of } from 'rxjs';
+import { DashboardService } from '../../services/dashboard.service';
+import { DashboardApiActions, DashboardPageActions } from '../actions';
 
 @Injectable()
 export class DashboardEffects {
@@ -17,7 +17,7 @@ export class DashboardEffects {
       ofType(DashboardPageActions.loadChartTips),
       mergeMap(({ dashboardId, clinicId }) => {
         return this.dashboardService.getCharts(dashboardId, clinicId).pipe(
-          map((res) =>
+          map(res =>
             DashboardApiActions.loadChartTipsSuccess({ chartData: res.data })
           ),
           catchError((error: HttpErrorResponse) =>
@@ -37,7 +37,7 @@ export class DashboardEffects {
       ofType(DashboardPageActions.loadClinicAccountingPlatform),
       mergeMap(({ clinicId }) => {
         return this.dashboardService.getClinicAccountingPlatform(clinicId).pipe(
-          map((res) =>
+          map(res =>
             DashboardApiActions.clinicAccountingPlatformSuccess({
               connectWith: res.data,
               clinicId,

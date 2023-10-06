@@ -16,8 +16,8 @@ Main sidebar
 }
 #snav {
   box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
-  .mat-drawer-inner-container{
-    overflow:visible;
+  .mat-drawer-inner-container {
+    overflow: visible;
   }
   .mat-nav-list .mat-list-item {
     height: auto;
@@ -222,9 +222,11 @@ use profile section
       margin-left: $mini-sidebar-width;
     }
     &.mat-sidenav {
-      -webkit-transition: width 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+      -webkit-transition:
+        width 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
         transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-      transition: width 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+      transition:
+        width 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
         transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
     }
     &.mat-sidenav:not(:hover) {

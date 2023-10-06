@@ -1,19 +1,19 @@
 $jeeve-palette: (
-  50: #E0F2F1,
-  100: #B2DFDB,
-  200: #80CBC4,
-  300: #4DB6AC,
-  400: #26A69A,
+  50: #e0f2f1,
+  100: #b2dfdb,
+  200: #80cbc4,
+  300: #4db6ac,
+  400: #26a69a,
   500: #009688,
   // Main color
-  600: #00897B,
-  700: #00796B,
-  800: #00695C,
-  900: #004D40,
-  A100: #A7FFEB,
-  A200: #64FFDA,
-  A400: #1DE9B6,
-  A700: #00BFA5,
+  600: #00897b,
+  700: #00796b,
+  800: #00695c,
+  900: #004d40,
+  A100: #a7ffeb,
+  A200: #64ffda,
+  A400: #1de9b6,
+  A700: #00bfa5,
   contrast: (
     50: rgba(black, 0.87),
     100: rgba(black, 0.87),
@@ -28,8 +28,8 @@ $jeeve-palette: (
     A100: rgba(black, 0.87),
     A200: rgba(black, 0.87),
     A400: rgba(black, 0.87),
-    A700: white
-  )
+    A700: white,
+  ),
 );
 
 $jeeve-dark: #1d2a49;

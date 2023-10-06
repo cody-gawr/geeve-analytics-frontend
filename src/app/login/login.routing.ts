@@ -7,7 +7,7 @@ export const LoginRoutes: Routes = [
     path: '',
     component: LoginComponent,
     data: {
-      title: 'Login'
-    }
-  }
+      title: 'Login',
+    },
+  },
 ];

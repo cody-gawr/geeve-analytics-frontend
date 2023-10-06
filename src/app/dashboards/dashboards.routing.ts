@@ -8,59 +8,58 @@ import { MarketingComponent } from './marketing/marketing.component';
 import { HealthScreenComponent } from './healthscreen/healthscreen.component';
 import { FollowupsComponent } from './followups/followups.component';
 
-
 export const DashboardsRoutes: Routes = [
   {
     path: '',
     children: [
       {
         path: 'cliniciananalysis',
-        component: ClinicianAnalysisComponent
+        component: ClinicianAnalysisComponent,
       },
       {
         path: 'clinicianproceedures',
-        component: ClinicianProceeduresComponent
+        component: ClinicianProceeduresComponent,
       },
       {
         path: 'frontdesk',
-        component: FrontDeskComponent
+        component: FrontDeskComponent,
       },
       {
         path: 'marketing',
-        component: MarketingComponent
+        component: MarketingComponent,
       },
       {
         path: 'finances',
-        component: FinancesComponent
+        component: FinancesComponent,
       },
       {
         path: 'followups',
-        component: FollowupsComponent
+        component: FollowupsComponent,
       },
       {
         path: 'healthscreen',
-        component: HealthScreenComponent
+        component: HealthScreenComponent,
       },
       {
         path: 'cliniciananalysis/multi',
-        component: ClinicianAnalysisComponent
+        component: ClinicianAnalysisComponent,
       },
       {
         path: 'clinicianproceedures/multi',
-        component: ClinicianProceeduresComponent
+        component: ClinicianProceeduresComponent,
       },
       {
         path: 'frontdesk/multi',
-        component: FrontDeskComponent
+        component: FrontDeskComponent,
       },
       {
         path: 'marketing/multi',
-        component: MarketingComponent
+        component: MarketingComponent,
       },
       {
         path: 'finances/multi',
-        component: FinancesComponent
-      }
-    ]
-  }
+        component: FinancesComponent,
+      },
+    ],
+  },
 ];

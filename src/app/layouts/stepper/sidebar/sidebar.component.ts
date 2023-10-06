@@ -2,7 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   OnDestroy,
-  AfterViewInit
+  AfterViewInit,
 } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -14,7 +14,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-stepper-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class StepperSidebarComponent implements OnDestroy, AfterViewInit {
   public config: PerfectScrollbarConfigInterface = {};
@@ -70,27 +70,25 @@ export class StepperSidebarComponent implements OnDestroy, AfterViewInit {
 
   logout() {
     this.headerService.logout(this._cookieService.get('userid')).subscribe(
-      (res) => {
+      res => {
         if (res.status == 200) {
           this._cookieService.removeAll();
           this.router.navigate(['/login']);
         }
       },
-      (error) => {}
+      error => {}
     );
   }
   private getClinics() {
-    this.headerService.getClinics().subscribe(
-      {
-        next: (res) => {
-          if (res.status == 200) {
-            this.clinicsData = res.body.data;
-          }
-        },
-        error: (error) => {
-          // this.warningMessage = "Please Provide Valid Inputs!";
+    this.headerService.getClinics().subscribe({
+      next: res => {
+        if (res.status == 200) {
+          this.clinicsData = res.body.data;
         }
-      }
-    );
+      },
+      error: error => {
+        // this.warningMessage = "Please Provide Valid Inputs!";
+      },
+    });
   }
 }

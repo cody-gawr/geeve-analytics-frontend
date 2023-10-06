@@ -3,31 +3,31 @@ import { RouterModule } from '@angular/router';
 import { DemoMaterialModule } from '../demo-material-module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ClinicService } from './clinic.service';
-import { ClinicComponent,
+import {
+  ClinicComponent,
   DialogLocationDialogComponent,
-  DialogOverviewExampleDialogComponent,DialogOverviewExampleLimitDialogComponent  } from './clinic.component';
+  DialogOverviewExampleDialogComponent,
+  DialogOverviewExampleLimitDialogComponent,
+} from './clinic.component';
 import { ClinicRoutes } from './clinic.routing';
 import { SharedMatModule } from '../shared-mat.module';
 import { SetupService } from '../setup/setup.service';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-    imports: [
-        SharedMatModule.forRoot(),
-        RouterModule.forChild(ClinicRoutes),
-        NgxDatatableModule,
-        DemoMaterialModule,
-        FormsModule
-    ],
-    providers: [
-        ClinicService,
-        SetupService
-    ],
-    declarations: [
-        ClinicComponent,
-        DialogOverviewExampleDialogComponent,
-        DialogOverviewExampleLimitDialogComponent,
-        DialogLocationDialogComponent
-    ]
+  imports: [
+    SharedMatModule.forRoot(),
+    RouterModule.forChild(ClinicRoutes),
+    NgxDatatableModule,
+    DemoMaterialModule,
+    FormsModule,
+  ],
+  providers: [ClinicService, SetupService],
+  declarations: [
+    ClinicComponent,
+    DialogOverviewExampleDialogComponent,
+    DialogOverviewExampleLimitDialogComponent,
+    DialogLocationDialogComponent,
+  ],
 })
-export class ClinicModule { }
+export class ClinicModule {}

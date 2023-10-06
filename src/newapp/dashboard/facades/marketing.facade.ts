@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { select, Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { MarketingPageActions } from "../state/actions";
+import { Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { MarketingPageActions } from '../state/actions';
 import {
   MarketingState,
   selectActivePatientsChartData,
@@ -37,7 +37,7 @@ import {
   selectTotalVisitsChartData,
   selectTotalVisitsTrendChartData,
   selectXeroAccounts,
-} from "../state/reducers/marketing.reducer";
+} from '../state/reducers/marketing.reducer';
 
 @Injectable()
 export class MarketingFacade {

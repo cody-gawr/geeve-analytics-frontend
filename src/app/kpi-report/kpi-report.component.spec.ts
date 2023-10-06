@@ -8,9 +8,8 @@ describe('KpiReportComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KpiReportComponent ]
-    })
-    .compileComponents();
+      declarations: [KpiReportComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

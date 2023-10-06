@@ -1,32 +1,43 @@
-.preloader{
+.preloader {
   position: absolute;
   margin: 0 auto;
   width: 100%;
   height: 100%;
- z-index: 100; 
-    background: #fff; text-align:center;
+  z-index: 100;
+  background: #fff;
+  text-align: center;
 }
 .spinner {
   width: 64px;
   height: 62px;
-  top:35%; background:url("../images/loader.gif");
-  background-size:cover;
+  top: 35%;
+  background: url('../images/loader.gif');
+  background-size: cover;
   position: relative;
   margin: 100px auto;
 }
-.spinner img{max-width:100%;}
+.spinner img {
+  max-width: 100%;
+}
 
 @-webkit-keyframes sk-bounce {
-  0%, 100% { -webkit-transform: scale(0.0) }
-  50% { -webkit-transform: scale(1.0) }
+  0%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+  50% {
+    -webkit-transform: scale(1);
+  }
 }
 
 @keyframes sk-bounce {
-  0%, 100% { 
-    transform: scale(0.0);
-    -webkit-transform: scale(0.0);
-  } 50% { 
-    transform: scale(1.0);
-    -webkit-transform: scale(1.0);
+  0%,
+  100% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
   }
 }

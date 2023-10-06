@@ -1,7 +1,7 @@
-import { createAction, props } from "@ngrx/store";
+import { createAction, props } from '@ngrx/store';
 
 export const loadFdUtilisationRate = createAction(
-  "[FrontDesk Page] Load fdUtilisationRate",
+  '[FrontDesk Page] Load fdUtilisationRate',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -12,7 +12,7 @@ export const loadFdUtilisationRate = createAction(
 );
 
 export const loadFdUtilisationRateTrend = createAction(
-  "[FrontDesk Page] Load fdUtilisationRateTrend",
+  '[FrontDesk Page] Load fdUtilisationRateTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -21,7 +21,7 @@ export const loadFdUtilisationRateTrend = createAction(
 );
 
 export const loadFdUtilisationRateByDay = createAction(
-  "[FrontDesk Page] Load fdUtilisationRateByDay",
+  '[FrontDesk Page] Load fdUtilisationRateByDay',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -32,7 +32,7 @@ export const loadFdUtilisationRateByDay = createAction(
 );
 
 export const loadFdRecallRate = createAction(
-  "[FrontDesk Page] Load fdRecallRate",
+  '[FrontDesk Page] Load fdRecallRate',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -43,7 +43,7 @@ export const loadFdRecallRate = createAction(
 );
 
 export const loadFdRecallRateTrend = createAction(
-  "[FrontDesk Page] Load fdRecallRateTrend",
+  '[FrontDesk Page] Load fdRecallRateTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -52,7 +52,7 @@ export const loadFdRecallRateTrend = createAction(
 );
 
 export const loadFdReappointRate = createAction(
-  "[FrontDesk Page] Load fdReappointRate",
+  '[FrontDesk Page] Load fdReappointRate',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -63,7 +63,7 @@ export const loadFdReappointRate = createAction(
 );
 
 export const loadFdReappointRateTrend = createAction(
-  "[FrontDesk Page] Load fdReappointRateTrend",
+  '[FrontDesk Page] Load fdReappointRateTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -72,7 +72,7 @@ export const loadFdReappointRateTrend = createAction(
 );
 
 export const loadFdNumTicks = createAction(
-  "[FrontDesk Page] Load fdNumTicks",
+  '[FrontDesk Page] Load fdNumTicks',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -83,7 +83,7 @@ export const loadFdNumTicks = createAction(
 );
 
 export const loadFdNumTicksTrend = createAction(
-  "[FrontDesk Page] Load fdNumTicksTrend",
+  '[FrontDesk Page] Load fdNumTicksTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -92,7 +92,7 @@ export const loadFdNumTicksTrend = createAction(
 );
 
 export const loadFdFtaRatio = createAction(
-  "[FrontDesk Page] Load fdFtaRatio",
+  '[FrontDesk Page] Load fdFtaRatio',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -103,7 +103,7 @@ export const loadFdFtaRatio = createAction(
 );
 
 export const loadFdFtaRatioTrend = createAction(
-  "[FrontDesk Page] Load fdFtaRatioTrend",
+  '[FrontDesk Page] Load fdFtaRatioTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -112,7 +112,7 @@ export const loadFdFtaRatioTrend = createAction(
 );
 
 export const loadFdUtaRatio = createAction(
-  "[FrontDesk Page] Load fdUtaRatio",
+  '[FrontDesk Page] Load fdUtaRatio',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -123,7 +123,7 @@ export const loadFdUtaRatio = createAction(
 );
 
 export const loadFdUtaRatioTrend = createAction(
-  "[FrontDesk Page] Load fdUtaRatioTrend",
+  '[FrontDesk Page] Load fdUtaRatioTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -132,12 +132,12 @@ export const loadFdUtaRatioTrend = createAction(
 );
 
 export const setIsByDayData = createAction(
-  "[FrontDesk Page] Set isByDayData",
+  '[FrontDesk Page] Set isByDayData',
   props<{ value: boolean }>()
 );
 
 export const setErrors = createAction(
-  "[FrontDesk API] Set Errors",
+  '[FrontDesk API] Set Errors',
   props<{
     errors: JeeveError[];
   }>()

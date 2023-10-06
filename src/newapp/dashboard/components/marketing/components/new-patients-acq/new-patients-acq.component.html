@@ -1,75 +1,101 @@
 <div class="chart-container">
-    <mat-icon
-        [tooltip]="toolTip"
-        matTooltipPosition="below"
-        color="primary"
-        class="help-tip"
-        fontIcon="help"
-    ></mat-icon>
-    <div class="chart-title">
-        <div class="icon-title">
-            <mat-icon 
-            [matTooltip]="(durationTrendLabel$ | async)+': $'+ (newPatientsAcqPrev | number : '1.0-0')"
-            [color]="trendingIcon == 'trending_up'?'primary':'warn'" [fontIcon]="trendingIcon"></mat-icon>
-            <span>
-                New Patient Cost
-            </span>
-        </div>
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <div class="chart-title">
+    <div class="icon-title">
+      <mat-icon
+        [matTooltip]="
+          (durationTrendLabel$ | async) +
+          ': $' +
+          (newPatientsAcqPrev | number: '1.0-0')
+        "
+        [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
+        [fontIcon]="trendingIcon"></mat-icon>
+      <span> New Patient Cost </span>
+    </div>
 
-        <button  *ngIf="!(isMultipleClinic$ | async)" (click)="openAccountsDialog()" mat-flat-button color="primary">Account</button>
-    </div>
-    <div class="chart-content">
-        <div class="canvas-wrapper chart-box">
-            <div class="chart-gauge new-patients-acq-gauge">
-                <spin-loader class="empty-placeholder" 
-                        *ngIf="(!(isConnectedWith$ | async) && !(isMultipleClinic$ | async)) || !(isFullMonthsDateRange$ | async) ; else chartElem1" [disableSpin]="true">
-                    {{!(isFullMonthsDateRange$ | async)?'Please select a date range consisting of full months to view Accounting charts':
-                    'Please connect to Xero/MYOB to display this chart'}}
-                </spin-loader>
-                <ng-template #chartElem1>
-                    <spin-loader *ngIf="(isLoading$ | async); else chartElem2"></spin-loader>
-                    <ng-template #chartElem2>
-                        <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
-                            Unable to determine your cost of new patients for this period
-                        </spin-loader>
-                        <ngx-gauge
-                            *ngIf="!(isMultipleClinic$ | async) && (hasData$ | async) && !(isTrend$ | async)"
-                            type="arch"
-                            [value]="newPatientsAcqVal"
-                            [thick]="20"
-                            prepend="$"
-                            foregroundColor="#4ccfae"
-                            backgroundColor="#f4f0fa"
-                            cap="round"
-                            size="250"
-                            [max]="maxNewPatientsAcqGoal"
-                        >
-                        </ngx-gauge>
-                        <canvas
-                            #mkNewPatientsAcqCanvas
-                            *ngIf="((isMultipleClinic$ | async) || (isTrend$ | async)) && (hasData$ | async)"
-                            baseChart
-                            [datasets]="datasets"
-                            [labels]="labels"
-                            [legend]="false"
-                            type="bar"
-                            [options]="chartOptions$ | async"
-                            [colors]="lineChartColors"
-                        >
-                        </canvas>
-                    </ng-template>
-                </ng-template>
-            </div>
-            <div class="chart-foot"  *ngIf="!(isTrend$ | async)">
-                <div>
-                    <h3>${{ newPatientsAcqVal | number: '1.0-0' }}</h3>
-                    <span>{{ durationLabel$ | async }}</span>
-                </div>
-                <div>
-                    <h3>${{ newPatientsAcqPrev | number: '1.0-0' }}</h3>
-                    <span>{{ durationTrendLabel$ | async }}</span>
-                </div>
-            </div>
+    <button
+      *ngIf="!(isMultipleClinic$ | async)"
+      (click)="openAccountsDialog()"
+      mat-flat-button
+      color="primary">
+      Account
+    </button>
+  </div>
+  <div class="chart-content">
+    <div class="canvas-wrapper chart-box">
+      <div class="chart-gauge new-patients-acq-gauge">
+        <spin-loader
+          class="empty-placeholder"
+          *ngIf="
+            (!(isConnectedWith$ | async) && !(isMultipleClinic$ | async)) ||
+              !(isFullMonthsDateRange$ | async);
+            else chartElem1
+          "
+          [disableSpin]="true">
+          {{
+            !(isFullMonthsDateRange$ | async)
+              ? 'Please select a date range consisting of full months to view Accounting charts'
+              : 'Please connect to Xero/MYOB to display this chart'
+          }}
+        </spin-loader>
+        <ng-template #chartElem1>
+          <spin-loader
+            *ngIf="isLoading$ | async; else chartElem2"></spin-loader>
+          <ng-template #chartElem2>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!(hasData$ | async)"
+              [disableSpin]="true">
+              Unable to determine your cost of new patients for this period
+            </spin-loader>
+            <ngx-gauge
+              *ngIf="
+                !(isMultipleClinic$ | async) &&
+                (hasData$ | async) &&
+                !(isTrend$ | async)
+              "
+              type="arch"
+              [value]="newPatientsAcqVal"
+              [thick]="20"
+              prepend="$"
+              foregroundColor="#4ccfae"
+              backgroundColor="#f4f0fa"
+              cap="round"
+              size="250"
+              [max]="maxNewPatientsAcqGoal">
+            </ngx-gauge>
+            <canvas
+              #mkNewPatientsAcqCanvas
+              *ngIf="
+                ((isMultipleClinic$ | async) || (isTrend$ | async)) &&
+                (hasData$ | async)
+              "
+              baseChart
+              [datasets]="datasets"
+              [labels]="labels"
+              [legend]="false"
+              type="bar"
+              [options]="chartOptions$ | async"
+              [colors]="lineChartColors">
+            </canvas>
+          </ng-template>
+        </ng-template>
+      </div>
+      <div class="chart-foot" *ngIf="!(isTrend$ | async)">
+        <div>
+          <h3>${{ newPatientsAcqVal | number: '1.0-0' }}</h3>
+          <span>{{ durationLabel$ | async }}</span>
         </div>
+        <div>
+          <h3>${{ newPatientsAcqPrev | number: '1.0-0' }}</h3>
+          <span>{{ durationTrendLabel$ | async }}</span>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

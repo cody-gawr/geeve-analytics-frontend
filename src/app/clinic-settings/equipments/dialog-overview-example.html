@@ -1,19 +1,46 @@
-<div class="AddUserPopup setting"> 
-<h1 *ngIf="!data.id" mat-dialog-title>Add Item</h1>
-<h1 *ngIf="data.id" mat-dialog-title>Edit Item</h1>
-<div mat-dialog-content class="sa_forms_design">
-  <div class="sa-form-group">
-    <label>Item Name</label>
-    <input [(ngModel)]="data.item_name"  class="mat-form-control" required="true" placeholder="">   
+<div class="AddUserPopup setting">
+  <h1 *ngIf="!data.id" mat-dialog-title>Add Item</h1>
+  <h1 *ngIf="data.id" mat-dialog-title>Edit Item</h1>
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group">
+      <label>Item Name</label>
+      <input
+        [(ngModel)]="data.item_name"
+        class="mat-form-control"
+        required="true"
+        placeholder="" />
+    </div>
+    <div class="sa-form-group">
+      <label>Quantity</label>
+      <input
+        [(ngModel)]="data.quantity"
+        class="mat-form-control"
+        required="true"
+        placeholder="" />
+    </div>
   </div>
-  <div class="sa-form-group">
-    <label>Quantity</label>
-    <input [(ngModel)]="data.quantity"  class="mat-form-control" required="true" placeholder="">   
-  </div> 
-</div>
-<div mat-dialog-actions class="justify-between">
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-  <button *ngIf="!data.id" (click)="save(data)" [disabled] = "data.quantity == '' || data.item_name == ''"  tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
-  <button *ngIf="data.id" (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc float-right">Update</button>
-</div>
+  <div mat-dialog-actions class="justify-between">
+    <button
+      mat-button
+      (click)="onNoClick()"
+      tabindex="-1"
+      class="mat-raised-button mat-gray">
+      Cancel
+    </button>
+    <button
+      *ngIf="!data.id"
+      (click)="save(data)"
+      [disabled]="data.quantity == '' || data.item_name == ''"
+      tabindex="2"
+      class="mat-raised-button mat-dc float-right">
+      Save
+    </button>
+    <button
+      *ngIf="data.id"
+      (click)="save(data)"
+      tabindex="2"
+      class="mat-raised-button mat-dc float-right">
+      Update
+    </button>
+  </div>
 </div>

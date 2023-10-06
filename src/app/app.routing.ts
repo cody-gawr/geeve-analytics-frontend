@@ -20,109 +20,134 @@ export const AppRoutes: Routes = [
     component: FullComponent,
     children: [
       {
-      
         path: '',
         redirectTo: '/login',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'dashboards',
-        loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule),
-        canActivate: [AuthGuard]
+        loadChildren: () =>
+          import('./dashboards/dashboards.module').then(
+            m => m.DashboardsModule
+          ),
+        canActivate: [AuthGuard],
       },
       {
         path: 'header',
-        loadChildren: () => import('./layouts/full/header/header.module').then(m => m.HeaderModule)
+        loadChildren: () =>
+          import('./layouts/full/header/header.module').then(
+            m => m.HeaderModule
+          ),
       },
       {
         path: 'roles',
-        loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)
+        loadChildren: () =>
+          import('./roles/roles.module').then(m => m.RolesModule),
       },
       {
         path: 'roles-users',
-        loadChildren: () => import('./roles-users/roles-users.module').then(m => m.RolesUsersModule)
+        loadChildren: () =>
+          import('./roles-users/roles-users.module').then(
+            m => m.RolesUsersModule
+          ),
       },
       {
         path: 'clinic',
-        loadChildren: () => import('./clinic/clinic.module').then(m => m.ClinicModule),
-        canActivate: [AuthGuard]
+        loadChildren: () =>
+          import('./clinic/clinic.module').then(m => m.ClinicModule),
+        canActivate: [AuthGuard],
       },
       {
         path: 'users',
-        loadChildren: () => import('./users/users.module').then(m => m.UsersModule),
-        canActivate: [AuthGuard]
+        loadChildren: () =>
+          import('./users/users.module').then(m => m.UsersModule),
+        canActivate: [AuthGuard],
       },
       {
         path: 'plans',
-        loadChildren: () => import('./plans/plans.module').then(m => m.PlansModule),
-        canActivate: [AuthGuard]
+        loadChildren: () =>
+          import('./plans/plans.module').then(m => m.PlansModule),
+        canActivate: [AuthGuard],
       },
       {
         path: 'dentist',
-        loadChildren: () => import('./dentist/dentist.module').then(m => m.DentistModule),
-        canActivate: [AuthGuard]
+        loadChildren: () =>
+          import('./dentist/dentist.module').then(m => m.DentistModule),
+        canActivate: [AuthGuard],
       },
       {
         path: 'clinic-goals',
-        loadChildren: () => import('./clinic-goals/clinic-goals.module').then(m => m.ClinicGoalsModule),
-        canActivate: [AuthGuard]
+        loadChildren: () =>
+          import('./clinic-goals/clinic-goals.module').then(
+            m => m.ClinicGoalsModule
+          ),
+        canActivate: [AuthGuard],
       },
       {
         path: 'morning-huddle',
         component: MorningHuddleComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'staff-meetings',
         component: StaffMeetingsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'kpi-report',
         component: KpiReportComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'lost-opportunity',
         component: LostOpportunityComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'rewards',
         component: RewardsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'tasks',
         component: TasksComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'followups',
         component: FollowupsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'campaigns',
         component: CampaignsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'clinic-settings/:id',
-        loadChildren: () => import('./clinic-settings/clinic-settings.module').then(m => m.ClinicSettingsModule),
-        canActivate: [AuthGuard]
+        loadChildren: () =>
+          import('./clinic-settings/clinic-settings.module').then(
+            m => m.ClinicSettingsModule
+          ),
+        canActivate: [AuthGuard],
       },
       {
         path: 'profile-settings',
-        loadChildren: () => import('./profile-settings/profile-settings.module').then(m => m.ProfileSettingsModule),
-        canActivate: [AuthGuard]
+        loadChildren: () =>
+          import('./profile-settings/profile-settings.module').then(
+            m => m.ProfileSettingsModule
+          ),
+        canActivate: [AuthGuard],
       },
       {
         path: 'dentist-goals',
-        loadChildren: () => import('./dentist-goals/dentist-goals.module').then(m => m.DentistGoalsModule),
-        canActivate: [AuthGuard]
-      }
-    ]
+        loadChildren: () =>
+          import('./dentist-goals/dentist-goals.module').then(
+            m => m.DentistGoalsModule
+          ),
+        canActivate: [AuthGuard],
+      },
+    ],
   },
   {
     path: '',
@@ -130,10 +155,12 @@ export const AppRoutes: Routes = [
     children: [
       {
         path: 'authentication',
-        loadChildren:
-          () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)
-      }
-    ]
+        loadChildren: () =>
+          import('./authentication/authentication.module').then(
+            m => m.AuthenticationModule
+          ),
+      },
+    ],
   },
   {
     path: 'newapp',
@@ -141,10 +168,13 @@ export const AppRoutes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: () => import('../newapp/dashboard/dashboard.module').then(m => m.DashboardModule),
-        canActivate: [AuthGuard]
+        loadChildren: () =>
+          import('../newapp/dashboard/dashboard.module').then(
+            m => m.DashboardModule
+          ),
+        canActivate: [AuthGuard],
       },
-    ]
+    ],
   },
   {
     path: '',
@@ -152,11 +182,11 @@ export const AppRoutes: Routes = [
     children: [
       {
         path: 'setup',
-        loadChildren:
-           () => import('./setup/setup.module').then(m => m.SetupModule),
-        canActivate: [AuthGuard]
-      }
-    ]
+        loadChildren: () =>
+          import('./setup/setup.module').then(m => m.SetupModule),
+        canActivate: [AuthGuard],
+      },
+    ],
   },
   {
     path: '',
@@ -164,23 +194,23 @@ export const AppRoutes: Routes = [
     children: [
       {
         path: 'login',
-        loadChildren:
-          () => import('./login/login.module').then(m => m.LoginModule)
+        loadChildren: () =>
+          import('./login/login.module').then(m => m.LoginModule),
       },
       {
         path: 'xero',
-        loadChildren:
-          () => import('./xero/xero.module').then(m => m.XeroModule)
+        loadChildren: () =>
+          import('./xero/xero.module').then(m => m.XeroModule),
       },
       {
         path: 'xerosignup',
-        loadChildren:
-          () => import('./signup/signup.module').then(m => m.SignupModule)
-      }
-    ]
+        loadChildren: () =>
+          import('./signup/signup.module').then(m => m.SignupModule),
+      },
+    ],
   },
   {
     path: '**',
-    redirectTo: 'authentication/404'
-  }
+    redirectTo: 'authentication/404',
+  },
 ];

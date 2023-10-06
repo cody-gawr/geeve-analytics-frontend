@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
   ViewEncapsulation,
-  Inject
+  Inject,
 } from '@angular/core';
 import { FollowupsService } from './followups.service';
 import { ClinicianAnalysisService } from '../dashboards/cliniciananalysis/cliniciananalysis.service';
@@ -22,11 +22,11 @@ import { AppConstants } from '../app.constants';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
   MatLegacyDialogRef as MatDialogRef,
-  MatLegacyDialog as MatDialog
+  MatLegacyDialog as MatDialog,
 } from '@angular/material/legacy-dialog';
 import {
   NgxDaterangepickerMd,
-  DaterangepickerComponent
+  DaterangepickerComponent,
 } from 'ngx-daterangepicker-material';
 import { ChartstipsService } from '../shared/chartstips.service';
 import { environment } from '../../environments/environment';
@@ -37,7 +37,7 @@ import { LocalStorageService } from '../shared/local-storage.service';
 @Component({
   selector: 'export-data-dialog',
   templateUrl: './export-data.html',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class ExportDataDialogComponent {
   constructor(
@@ -82,7 +82,7 @@ export class ExportDataDialogComponent {
         followuptype
       )
       .subscribe(
-        (res) => {
+        res => {
           if (res.status == 200) {
             this.followupsService
               .exportFollowUp(
@@ -117,13 +117,13 @@ export class ExportDataDialogComponent {
                   this.followupsService
                     .deletefiles(filename, filetype)
                     .subscribe(
-                      (res) => {},
-                      (error) => {
+                      res => {},
+                      error => {
                         console.log('error', error);
                       }
                     );
                 },
-                (error) => {
+                error => {
                   console.log('error', error);
                 }
               );
@@ -133,7 +133,7 @@ export class ExportDataDialogComponent {
             return;
           }
         },
-        (error) => {
+        error => {
           console.log('error', error);
         }
       );
@@ -150,7 +150,7 @@ export class ExportDataDialogComponent {
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class FollowupsDialogComponent {
   constructor(
@@ -181,14 +181,14 @@ export class FollowupsDialogComponent {
         data.treatItem
       )
       .subscribe(
-        (res) => {
+        res => {
           if (res.status == 200) {
             this.dialogRef.close();
           } else if (res.status == 401) {
             this.handleUnAuthorization();
           }
         },
-        (error) => {
+        error => {
           console.log('error', error);
         }
       );
@@ -206,7 +206,7 @@ export class FollowupsDialogComponent {
 @Component({
   selector: 'status-dialog',
   templateUrl: './status.html',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class StatusDialogComponent {
   public nextDate: any = '';
@@ -239,14 +239,14 @@ export class StatusDialogComponent {
         data.type
       )
       .subscribe(
-        (res) => {
+        res => {
           if (res.status == 200) {
             this.dialogRef.close();
           } else if (res.status == 401) {
             this.handleUnAuthorization();
           }
         },
-        (error) => {
+        error => {
           console.log('error', error);
         }
       );
@@ -284,9 +284,8 @@ export class StatusDialogComponent {
               data.original_appt_date,
               data.treatItem
             )
-            .subscribe((update) => {
-              if(update.message === 'already'){
-                
+            .subscribe(update => {
+              if (update.message === 'already') {
               }
             });
         }
@@ -317,7 +316,7 @@ export class StatusDialogComponent {
               data.treatItem,
               event
             )
-            .subscribe((clone) => {
+            .subscribe(clone => {
               if (clone.message == 'already') {
                 this.nextDate = clone.$getRecord.followup_date;
                 this.nextFollowupHave = true;
@@ -342,7 +341,7 @@ export class StatusDialogComponent {
   selector: 'app-morning-huddle',
   templateUrl: './followups.component.html',
   styleUrls: ['./followups.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class FollowupsComponent implements OnInit, OnDestroy {
   selectedTab = 0;
@@ -428,7 +427,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     'dentist',
     'date',
     'followup_date',
-    'status'
+    'status',
   ];
   displayedColumns2: string[] = [
     'name',
@@ -437,7 +436,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     'note',
     'followup_date',
     'book',
-    'status'
+    'status',
   ];
   displayedColumns3: string[] = [
     'name',
@@ -447,7 +446,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     'note',
     'followup_date',
     'book',
-    'status'
+    'status',
   ];
   displayedColumns4: string[] = [
     'name',
@@ -458,7 +457,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     'status',
     'followup_date',
     'notes',
-    'complete'
+    'complete',
   ];
   timezone: string = '+1000';
   months: any = [
@@ -473,7 +472,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     'September',
     'October',
     'November',
-    'December'
+    'December',
   ];
   public get isExactOrCore(): boolean {
     return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
@@ -546,7 +545,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
       this.clinicianAnalysisService
         .getClinicFollowUpSettings(this.clinic_id)
-        .subscribe((data) => {
+        .subscribe(data => {
           //if (data.status == 200) {
           this.isEnablePO = data.data.post_op_enable == 1 ? true : false;
           this.isEnableOR = data.data.recall_enable == 1 ? true : false;
@@ -607,7 +606,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.utaFollowupsScrps = [];
       this.intrFollowupsScrps = [];
       if (res.status && res.status == 200) {
-        res.body.data.forEach((script) => {
+        res.body.data.forEach(script => {
           if (script.followup_type == 'Post Op') {
             this.postOpCallsScrps.push(script);
           } else if (script.followup_type == 'Overdue Recalls') {
@@ -646,7 +645,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               this.followupPostOpCallsInComp = this.followupPostOpCalls;
             } else {
               this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
-                (p) => p.is_complete != true
+                p => p.is_complete != true
               );
             }
             if (
@@ -692,7 +691,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               this.followupOverDueRecallInCMP = this.followupOverDueRecall;
             } else {
               this.followupOverDueRecallInCMP =
-                this.followupOverDueRecall.filter((p) => p.is_complete != true);
+                this.followupOverDueRecall.filter(p => p.is_complete != true);
             }
             if (
               this.followupOverDueRecallInCMP.length <=
@@ -731,7 +730,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
             this.internalReferralRecallInCMP = this.internalReferrals;
           } else {
             this.internalReferralRecallInCMP = this.internalReferrals.filter(
-              (p) => p.is_complete != true
+              p => p.is_complete != true
             );
           }
 
@@ -776,7 +775,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               this.followupTickFollowupsInCMP = this.followupTickFollowups;
             } else {
               this.followupTickFollowupsInCMP =
-                this.followupTickFollowups.filter((p) => p.is_complete != true);
+                this.followupTickFollowups.filter(p => p.is_complete != true);
             }
             if (
               this.followupTickFollowupsInCMP.length <=
@@ -790,10 +789,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               this.followupTickFollowupsInCMP,
               'TH'
             );
-            this.followupTickFollowupsInCMP.forEach((tool) => {
+            this.followupTickFollowupsInCMP.forEach(tool => {
               this.tipDoneCode[tool.patient_id] = {
                 title: 'Outstanding Treatments',
-                info: tool.code
+                info: tool.code,
               };
               var date = this.datepipe.transform(
                 tool.future_appt_date,
@@ -801,7 +800,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               );
               this.tipFutureDate[tool.patient_id] = {
                 title: 'Future Appointment',
-                info: date
+                info: date,
               };
             });
 
@@ -843,7 +842,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
             } else {
               this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(
-                (p) => p.is_complete != true
+                p => p.is_complete != true
               );
             }
             if (
@@ -858,10 +857,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               this.followupFtaFollowupsInCMP,
               'FT'
             );
-            this.followupFtaFollowups.forEach((tool) => {
+            this.followupFtaFollowups.forEach(tool => {
               this.tipFtaDoneCode[tool.patient_id] = {
                 title: 'Outstanding Treatments',
-                info: tool.code
+                info: tool.code,
               };
               var date = this.datepipe.transform(
                 tool.future_appt_date,
@@ -869,7 +868,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               );
               this.tipFtaFutureDate[tool.patient_id] = {
                 title: 'Future Appointment',
-                info: date
+                info: date,
               };
             });
           }
@@ -908,7 +907,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
             } else {
               this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(
-                (p) => p.is_complete != true
+                p => p.is_complete != true
               );
             }
             if (
@@ -923,10 +922,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               this.followupUtaFollowupsInCMP,
               'UT'
             );
-            this.followupUtaFollowups.forEach((tool) => {
+            this.followupUtaFollowups.forEach(tool => {
               this.tipUtaDoneCode[tool.patient_id] = {
                 title: 'Outstanding Treatments',
-                info: tool.code
+                info: tool.code,
               };
               var date = this.datepipe.transform(
                 tool.future_appt_date,
@@ -934,7 +933,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               );
               this.tipUtaFutureDate[tool.patient_id] = {
                 title: 'Future Appointment',
-                info: date
+                info: date,
               };
             });
           }
@@ -1031,10 +1030,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           original_appt_date,
           followup_date,
           nextBussinessDay,
-          treatItem
-        }
+          treatItem,
+        },
       });
-      dialogRef.afterClosed().subscribe((result) => {
+      dialogRef.afterClosed().subscribe(result => {
         if (type == 'tick-follower') {
           this.getTickFollowups('close');
         } else if (type == 'fta-follower') {
@@ -1088,7 +1087,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.endOfDaysTasksInComp = this.endOfDaysTasks;
     } else {
       this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(
-        (p) => p.is_complete != 1
+        p => p.is_complete != 1
       );
     }
   }
@@ -1099,7 +1098,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.followupPostOpCallsInComp = this.followupPostOpCalls;
     } else {
       this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
-        (p) => p.is_complete != true
+        p => p.is_complete != true
       );
     }
     this.currentOpPage = 1;
@@ -1116,7 +1115,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.followupOverDueRecallInCMP = this.followupOverDueRecall;
     } else {
       this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
-        (p) => p.is_complete != true
+        p => p.is_complete != true
       );
     }
     this.currentORPage = 1;
@@ -1133,7 +1132,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.followupTickFollowupsInCMP = this.followupTickFollowups;
     } else {
       this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
-        (p) => p.is_complete != true
+        p => p.is_complete != true
       );
     }
     this.currentThickPage = 1;
@@ -1150,7 +1149,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
     } else {
       this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(
-        (p) => p.is_complete != true
+        p => p.is_complete != true
       );
     }
     this.currentFTPage = 1;
@@ -1167,7 +1166,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
     } else {
       this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(
-        (p) => p.is_complete != true
+        p => p.is_complete != true
       );
     }
     this.currentUTPage = 1;
@@ -1184,7 +1183,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.internalReferralRecallInCMP = this.internalReferrals;
     } else {
       this.internalReferralRecallInCMP = this.internalReferrals.filter(
-        (p) => p.is_complete != true
+        p => p.is_complete != true
       );
     }
     this.currentIRPage = 1;
@@ -1198,7 +1197,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   exportreport(type = 'overdue_recalls'): void {
     let selected = {
       startDate: null,
-      endRaw: null
+      endRaw: null,
     };
     var selmonth: number = parseInt(
       this.datepipe.transform(this.selectedMonthYear, 'M')
@@ -1225,10 +1224,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         type: 'csv',
         followtype: type,
         start_date: start_date,
-        end_date: end_date
-      }
+        end_date: end_date,
+      },
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   openNotes(
@@ -1249,10 +1248,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         old: notes,
         followup_date: followup_date,
         type: type,
-        treatItem: treatItem
-      }
+        treatItem: treatItem,
+      },
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       if (type == 'tick-follower') {
         this.getTickFollowups('close');
       } else if (type == 'recall-overdue') {
@@ -1383,7 +1382,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupOverDueRecallInCMP = this.followupOverDueRecall;
       } else {
         this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
-          (p) => p.is_complete != true
+          p => p.is_complete != true
         );
       }
       this.followupOverDueRecallInCMP = this.setPaginationData(
@@ -1397,7 +1396,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupTickFollowupsInCMP = this.followupTickFollowups;
       } else {
         this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
-          (p) => p.is_complete != true
+          p => p.is_complete != true
         );
       }
       this.followupTickFollowupsInCMP = this.setPaginationData(
@@ -1411,7 +1410,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupPostOpCallsInComp = this.followupPostOpCalls;
       } else {
         this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
-          (p) => p.is_complete != true
+          p => p.is_complete != true
         );
       }
       this.followupPostOpCallsInComp = this.setPaginationData(
@@ -1425,7 +1424,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
       } else {
         this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(
-          (p) => p.is_complete != true
+          p => p.is_complete != true
         );
       }
       this.followupFtaFollowupsInCMP = this.setPaginationData(
@@ -1439,7 +1438,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
       } else {
         this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(
-          (p) => p.is_complete != true
+          p => p.is_complete != true
         );
       }
       this.followupUtaFollowupsInCMP = this.setPaginationData(
@@ -1453,7 +1452,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.internalReferralRecallInCMP = this.internalReferrals;
       } else {
         this.internalReferralRecallInCMP = this.internalReferrals.filter(
-          (p) => p.is_complete != true
+          p => p.is_complete != true
         );
       }
       this.internalReferralRecallInCMP = this.setPaginationData(
@@ -1481,10 +1480,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
   getChartsTips() {
     this.chartstipsService.getCharts(7, this.clinic_id).subscribe(
-      (data) => {
-          this.charTips = data.data;
+      data => {
+        this.charTips = data.data;
       },
-      (error) => {}
+      error => {}
     );
   }
 
@@ -1493,9 +1492,9 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     let statusSpe = {
       'Did not want to book': 'Didn’t want to book',
       'Cant be reached': "Can't be reached",
-      'Cant be reached - left': "Can't be reached - left voicemail"
+      'Cant be reached - left': "Can't be reached - left voicemail",
     };
-    history.forEach((tip) => {
+    history.forEach(tip => {
       let date = this.datepipe.transform(
         new Date(tip.followup_date),
         'MMM dd, yyyy'
@@ -1552,7 +1551,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         top: y + 20,
         left: x - 200,
         visibility: 'visible',
-        opacity: '1'
+        opacity: '1',
       });
     }, 100);
   }

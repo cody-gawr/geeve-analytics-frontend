@@ -1,13 +1,13 @@
-import { map } from "rxjs/operators";
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { CookieService } from "ngx-cookie";
-import { environment } from "../../../environments/environment";
-import { Router } from "@angular/router";
+import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie';
+import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class FollowupsService {
   public token: string;
@@ -22,17 +22,17 @@ export class FollowupsService {
   ) {}
   getHeaders() {
     if (
-      this._cookieService.get("user_type") != "1" &&
-      this._cookieService.get("user_type") != "2"
+      this._cookieService.get('user_type') != '1' &&
+      this._cookieService.get('user_type') != '2'
     ) {
-      this.token_id = this._cookieService.get("childid");
+      this.token_id = this._cookieService.get('childid');
     } else {
-      this.token_id = this._cookieService.get("userid");
+      this.token_id = this._cookieService.get('userid');
     }
     let headers = {
       headers: new HttpHeaders(),
       withCredentials: true,
-      observe: "response" as const,
+      observe: 'response' as const,
     };
     return headers;
   }
@@ -41,19 +41,19 @@ export class FollowupsService {
     clinic_id,
     startDate,
     endDate,
-    duration = ""
+    duration = ''
   ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
         this.apiUrl +
-          "/Followups/fuGetPerUser?clinic_id=" +
+          '/Followups/fuGetPerUser?clinic_id=' +
           clinic_id +
-          "&start_date=" +
+          '&start_date=' +
           startDate +
-          "&end_date=" +
+          '&end_date=' +
           endDate +
-          "&duration=" +
+          '&duration=' +
           duration,
         header
       )
@@ -67,19 +67,19 @@ export class FollowupsService {
     clinic_id,
     startDate,
     endDate,
-    duration = ""
+    duration = ''
   ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
         this.apiUrl +
-          "/Followups/fuGetOutcome?clinic_id=" +
+          '/Followups/fuGetOutcome?clinic_id=' +
           clinic_id +
-          "&start_date=" +
+          '&start_date=' +
           startDate +
-          "&end_date=" +
+          '&end_date=' +
           endDate +
-          "&duration=" +
+          '&duration=' +
           duration,
         header
       )
@@ -89,18 +89,18 @@ export class FollowupsService {
         })
       );
   }
-  getConversion(clinic_id, startDate, endDate, duration = ""): Observable<any> {
+  getConversion(clinic_id, startDate, endDate, duration = ''): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
         this.apiUrl +
-          "/Followups/fuGetConversion?clinic_id=" +
+          '/Followups/fuGetConversion?clinic_id=' +
           clinic_id +
-          "&start_date=" +
+          '&start_date=' +
           startDate +
-          "&end_date=" +
+          '&end_date=' +
           endDate +
-          "&duration=" +
+          '&duration=' +
           duration,
         header
       )
@@ -114,19 +114,19 @@ export class FollowupsService {
     clinic_id,
     startDate,
     endDate,
-    duration = ""
+    duration = ''
   ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
         this.apiUrl +
-          "/Followups/fuGetConversionPerUser?clinic_id=" +
+          '/Followups/fuGetConversionPerUser?clinic_id=' +
           clinic_id +
-          "&start_date=" +
+          '&start_date=' +
           startDate +
-          "&end_date=" +
+          '&end_date=' +
           endDate +
-          "&duration=" +
+          '&duration=' +
           duration,
         header
       )
@@ -140,19 +140,19 @@ export class FollowupsService {
     clinic_id,
     startDate,
     endDate,
-    duration = ""
+    duration = ''
   ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
         this.apiUrl +
-          "/Followups/fuGetFollowupCompletion?clinic_id=" +
+          '/Followups/fuGetFollowupCompletion?clinic_id=' +
           clinic_id +
-          "&start_date=" +
+          '&start_date=' +
           startDate +
-          "&end_date=" +
+          '&end_date=' +
           endDate +
-          "&duration=" +
+          '&duration=' +
           duration,
         header
       )

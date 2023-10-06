@@ -3,7 +3,7 @@ import {
   Input,
   OnDestroy,
   Inject,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import {
   Router,
@@ -11,19 +11,17 @@ import {
   NavigationEnd,
   NavigationCancel,
   NavigationError,
-  Event
+  Event,
 } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-spinner',
   template: `<div class="preloader" *ngIf="isSpinnerVisible">
-        <div class="spinner">
-		
-        </div>
-    </div>`,
+    <div class="spinner"></div>
+  </div>`,
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['../../assets/styles/spinner.scss']
+  styleUrls: ['../../assets/styles/spinner.scss'],
 })
 export class SpinnerComponent implements OnDestroy {
   public isSpinnerVisible = true;

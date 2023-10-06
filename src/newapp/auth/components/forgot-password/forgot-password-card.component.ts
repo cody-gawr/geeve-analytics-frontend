@@ -5,13 +5,13 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators
+  Validators,
 } from '@angular/forms';
 
 @Component({
   selector: 'app-forgot-password-card',
   templateUrl: './forgot-password-card.component.html',
-  styleUrls: ['../login-card/login-card.component.scss']
+  styleUrls: ['../login-card/login-card.component.scss'],
 })
 export class ForgotPasswordCardComponent implements OnInit {
   formGroup: FormGroup<ControlsOf<ForgotPassword>>;
@@ -20,8 +20,8 @@ export class ForgotPasswordCardComponent implements OnInit {
     this.formGroup = this._formBuilder.group({
       email: new FormControl('', {
         nonNullable: true,
-        validators: [Validators.required, Validators.email]
-      })
+        validators: [Validators.required, Validators.email],
+      }),
     });
   }
 

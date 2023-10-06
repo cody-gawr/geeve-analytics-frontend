@@ -1,4 +1,4 @@
-import { JeeveError } from "@/newapp/models";
+import { JeeveError } from '@/newapp/models';
 import {
   FdFtaRatioApiResponse,
   FdFtaRatioTrendApiResponse,
@@ -13,32 +13,32 @@ import {
   FdUtilisationRateApiResponse,
   FdUtilisationRateByDayApiResponse,
   FdUtilisationRateTrendApiResponse,
-} from "@/newapp/models/dashboard/front-desk";
-import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
-import { FrontDeskApiActions, FrontDeskPageActions } from "../actions";
-import _ from "lodash";
-import * as moment from "moment";
+} from '@/newapp/models/dashboard/front-desk';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import { FrontDeskApiActions, FrontDeskPageActions } from '../actions';
+import _ from 'lodash';
+import * as moment from 'moment';
 import {
   selectCurrentClinicId,
   selectCurrentClinics,
-} from "@/newapp/clinic/state/reducers/clinic.reducer";
-import { DoughnutChartColors } from "@/newapp/shared/constants";
-import { selectTrend } from "@/newapp/layout/state/reducers/layout.reducer";
+} from '@/newapp/clinic/state/reducers/clinic.reducer';
+import { DoughnutChartColors } from '@/newapp/shared/constants';
+import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 
 type FrontDeskEndpoints =
-  | "fdUtilisationRate"
-  | "fdUtilisationRateTrend"
-  | "fdUtilisationRateByDay"
-  | "fdRecallRate"
-  | "fdRecallRateTrend"
-  | "fdReappointRate"
-  | "fdReappointRateTrend"
-  | "fdNumTicks"
-  | "fdNumTicksTrend"
-  | "fdFtaRatio"
-  | "fdFtaRatioTrend"
-  | "fdUtaRatio"
-  | "fdUtaRatioTrend";
+  | 'fdUtilisationRate'
+  | 'fdUtilisationRateTrend'
+  | 'fdUtilisationRateByDay'
+  | 'fdRecallRate'
+  | 'fdRecallRateTrend'
+  | 'fdReappointRate'
+  | 'fdReappointRateTrend'
+  | 'fdNumTicks'
+  | 'fdNumTicksTrend'
+  | 'fdFtaRatio'
+  | 'fdFtaRatioTrend'
+  | 'fdUtaRatio'
+  | 'fdUtaRatioTrend';
 
 export interface FrontDeskState {
   isLoadingData: Array<FrontDeskEndpoints>;
@@ -103,7 +103,7 @@ const initialState: FrontDeskState = {
 };
 
 export const frontDeskFeature = createFeature({
-  name: "front-desk",
+  name: 'front-desk',
   reducer: createReducer(
     initialState,
     // FdUtilisationRate
@@ -111,9 +111,9 @@ export const frontDeskFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "fdUtilisationRate"),
+        errors: _.filter(errors, n => n.api != 'fdUtilisationRate'),
         fdUtilisationRateData: null,
-        isLoadingData: _.union(isLoadingData, ["fdUtilisationRate"]),
+        isLoadingData: _.union(isLoadingData, ['fdUtilisationRate']),
       };
     }),
     on(
@@ -122,12 +122,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdUtilisationRate"),
+          errors: _.filter(errors, n => n.api != 'fdUtilisationRate'),
           fdUtilisationRateData,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "fdUtilisationRate"
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtilisationRate'),
         };
       }
     ),
@@ -138,11 +135,8 @@ export const frontDeskFeature = createFeature({
         return {
           ...state,
           fdUtilisationRateData: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "fdUtilisationRate"
-          ),
-          errors: [...errors, { ...error, api: "fdUtilisationRate" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtilisationRate'),
+          errors: [...errors, { ...error, api: 'fdUtilisationRate' }],
         };
       }
     ),
@@ -153,9 +147,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdUtilisationRateTrend"),
+          errors: _.filter(errors, n => n.api != 'fdUtilisationRateTrend'),
           fdUtilisationRateTrendData: null,
-          isLoadingData: _.union(isLoadingData, ["fdUtilisationRateTrend"]),
+          isLoadingData: _.union(isLoadingData, ['fdUtilisationRateTrend']),
         };
       }
     ),
@@ -165,11 +159,11 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdUtilisationRateTrend"),
+          errors: _.filter(errors, n => n.api != 'fdUtilisationRateTrend'),
           fdUtilisationRateTrendData,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "fdUtilisationRateTrend"
+            n => n != 'fdUtilisationRateTrend'
           ),
         };
       }
@@ -183,9 +177,9 @@ export const frontDeskFeature = createFeature({
           fdUtilisationRateTrendData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "fdUtilisationRateTrend"
+            n => n != 'fdUtilisationRateTrend'
           ),
-          errors: [...errors, { ...error, api: "fdUtilisationRateTrend" }],
+          errors: [...errors, { ...error, api: 'fdUtilisationRateTrend' }],
         };
       }
     ),
@@ -196,9 +190,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdUtilisationRateByDay"),
+          errors: _.filter(errors, n => n.api != 'fdUtilisationRateByDay'),
           fdUtilisationRateByDayData: null,
-          isLoadingData: _.union(isLoadingData, ["fdUtilisationRateByDay"]),
+          isLoadingData: _.union(isLoadingData, ['fdUtilisationRateByDay']),
         };
       }
     ),
@@ -208,11 +202,11 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdUtilisationRateByDay"),
+          errors: _.filter(errors, n => n.api != 'fdUtilisationRateByDay'),
           fdUtilisationRateByDayData,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "fdUtilisationRateByDay"
+            n => n != 'fdUtilisationRateByDay'
           ),
         };
       }
@@ -226,9 +220,9 @@ export const frontDeskFeature = createFeature({
           fdUtilisationRateByDayData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "fdUtilisationRateByDay"
+            n => n != 'fdUtilisationRateByDay'
           ),
-          errors: [...errors, { ...error, api: "fdUtilisationRateByDay" }],
+          errors: [...errors, { ...error, api: 'fdUtilisationRateByDay' }],
         };
       }
     ),
@@ -237,9 +231,9 @@ export const frontDeskFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "fdRecallRate"),
+        errors: _.filter(errors, n => n.api != 'fdRecallRate'),
         fdRecallRateData: null,
-        isLoadingData: _.union(isLoadingData, ["fdRecallRate"]),
+        isLoadingData: _.union(isLoadingData, ['fdRecallRate']),
       };
     }),
     on(
@@ -248,9 +242,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdRecallRate"),
+          errors: _.filter(errors, n => n.api != 'fdRecallRate'),
           fdRecallRateData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdRecallRate"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdRecallRate'),
         };
       }
     ),
@@ -261,8 +255,8 @@ export const frontDeskFeature = createFeature({
         return {
           ...state,
           fdRecallRateData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdRecallRate"),
-          errors: [...errors, { ...error, api: "fdRecallRate" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdRecallRate'),
+          errors: [...errors, { ...error, api: 'fdRecallRate' }],
         };
       }
     ),
@@ -271,9 +265,9 @@ export const frontDeskFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "fdRecallRateTrend"),
+        errors: _.filter(errors, n => n.api != 'fdRecallRateTrend'),
         fdRecallRateTrendData: null,
-        isLoadingData: _.union(isLoadingData, ["fdRecallRateTrend"]),
+        isLoadingData: _.union(isLoadingData, ['fdRecallRateTrend']),
       };
     }),
     on(
@@ -282,12 +276,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdRecallRateTrend"),
+          errors: _.filter(errors, n => n.api != 'fdRecallRateTrend'),
           fdRecallRateTrendData,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "fdRecallRateTrend"
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdRecallRateTrend'),
         };
       }
     ),
@@ -298,11 +289,8 @@ export const frontDeskFeature = createFeature({
         return {
           ...state,
           fdRecallRateTrendData: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "fdRecallRateTrend"
-          ),
-          errors: [...errors, { ...error, api: "fdRecallRateTrend" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdRecallRateTrend'),
+          errors: [...errors, { ...error, api: 'fdRecallRateTrend' }],
         };
       }
     ),
@@ -311,9 +299,9 @@ export const frontDeskFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "fdReappointRate"),
+        errors: _.filter(errors, n => n.api != 'fdReappointRate'),
         fdReappointRateData: null,
-        isLoadingData: _.union(isLoadingData, ["fdReappointRate"]),
+        isLoadingData: _.union(isLoadingData, ['fdReappointRate']),
       };
     }),
     on(
@@ -322,9 +310,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdReappointRate"),
+          errors: _.filter(errors, n => n.api != 'fdReappointRate'),
           fdReappointRateData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdReappointRate"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdReappointRate'),
         };
       }
     ),
@@ -335,8 +323,8 @@ export const frontDeskFeature = createFeature({
         return {
           ...state,
           fdReappointRateData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdReappointRate"),
-          errors: [...errors, { ...error, api: "fdReappointRate" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdReappointRate'),
+          errors: [...errors, { ...error, api: 'fdReappointRate' }],
         };
       }
     ),
@@ -347,9 +335,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdReappointRateTrend"),
+          errors: _.filter(errors, n => n.api != 'fdReappointRateTrend'),
           fdReappointRateTrendData: null,
-          isLoadingData: _.union(isLoadingData, ["fdReappointRateTrend"]),
+          isLoadingData: _.union(isLoadingData, ['fdReappointRateTrend']),
         };
       }
     ),
@@ -359,11 +347,11 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdReappointRateTrend"),
+          errors: _.filter(errors, n => n.api != 'fdReappointRateTrend'),
           fdReappointRateTrendData,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "fdReappointRateTrend"
+            n => n != 'fdReappointRateTrend'
           ),
         };
       }
@@ -377,9 +365,9 @@ export const frontDeskFeature = createFeature({
           fdReappointRateTrendData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "fdReappointRateTrend"
+            n => n != 'fdReappointRateTrend'
           ),
-          errors: [...errors, { ...error, api: "fdReappointRateTrend" }],
+          errors: [...errors, { ...error, api: 'fdReappointRateTrend' }],
         };
       }
     ),
@@ -388,9 +376,9 @@ export const frontDeskFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "fdNumTicks"),
+        errors: _.filter(errors, n => n.api != 'fdNumTicks'),
         fdNumTicksData: null,
-        isLoadingData: _.union(isLoadingData, ["fdNumTicks"]),
+        isLoadingData: _.union(isLoadingData, ['fdNumTicks']),
       };
     }),
     on(
@@ -399,9 +387,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdNumTicks"),
+          errors: _.filter(errors, n => n.api != 'fdNumTicks'),
           fdNumTicksData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdNumTicks"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdNumTicks'),
         };
       }
     ),
@@ -412,8 +400,8 @@ export const frontDeskFeature = createFeature({
         return {
           ...state,
           fdNumTicksData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdNumTicks"),
-          errors: [...errors, { ...error, api: "fdNumTicks" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdNumTicks'),
+          errors: [...errors, { ...error, api: 'fdNumTicks' }],
         };
       }
     ),
@@ -422,9 +410,9 @@ export const frontDeskFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "fdNumTicksTrend"),
+        errors: _.filter(errors, n => n.api != 'fdNumTicksTrend'),
         fdNumTicksTrendData: null,
-        isLoadingData: _.union(isLoadingData, ["fdNumTicksTrend"]),
+        isLoadingData: _.union(isLoadingData, ['fdNumTicksTrend']),
       };
     }),
     on(
@@ -433,9 +421,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdNumTicksTrend"),
+          errors: _.filter(errors, n => n.api != 'fdNumTicksTrend'),
           fdNumTicksTrendData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdNumTicksTrend"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdNumTicksTrend'),
         };
       }
     ),
@@ -446,8 +434,8 @@ export const frontDeskFeature = createFeature({
         return {
           ...state,
           fdNumTicksTrendData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdNumTicksTrend"),
-          errors: [...errors, { ...error, api: "fdNumTicksTrend" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdNumTicksTrend'),
+          errors: [...errors, { ...error, api: 'fdNumTicksTrend' }],
         };
       }
     ),
@@ -456,9 +444,9 @@ export const frontDeskFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "fdFtaRatio"),
+        errors: _.filter(errors, n => n.api != 'fdFtaRatio'),
         fdFtaRatioData: null,
-        isLoadingData: _.union(isLoadingData, ["fdFtaRatio"]),
+        isLoadingData: _.union(isLoadingData, ['fdFtaRatio']),
       };
     }),
     on(
@@ -467,9 +455,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdFtaRatio"),
+          errors: _.filter(errors, n => n.api != 'fdFtaRatio'),
           fdFtaRatioData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdFtaRatio"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdFtaRatio'),
         };
       }
     ),
@@ -480,8 +468,8 @@ export const frontDeskFeature = createFeature({
         return {
           ...state,
           fdFtaRatioData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdFtaRatio"),
-          errors: [...errors, { ...error, api: "fdFtaRatio" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdFtaRatio'),
+          errors: [...errors, { ...error, api: 'fdFtaRatio' }],
         };
       }
     ),
@@ -490,9 +478,9 @@ export const frontDeskFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "fdFtaRatioTrend"),
+        errors: _.filter(errors, n => n.api != 'fdFtaRatioTrend'),
         fdFtaRatioTrendData: null,
-        isLoadingData: _.union(isLoadingData, ["fdFtaRatioTrend"]),
+        isLoadingData: _.union(isLoadingData, ['fdFtaRatioTrend']),
       };
     }),
     on(
@@ -501,9 +489,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdFtaRatioTrend"),
+          errors: _.filter(errors, n => n.api != 'fdFtaRatioTrend'),
           fdFtaRatioTrendData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdFtaRatioTrend"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdFtaRatioTrend'),
         };
       }
     ),
@@ -514,8 +502,8 @@ export const frontDeskFeature = createFeature({
         return {
           ...state,
           fdFtaRatioTrendData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdFtaRatioTrend"),
-          errors: [...errors, { ...error, api: "fdFtaRatioTrend" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdFtaRatioTrend'),
+          errors: [...errors, { ...error, api: 'fdFtaRatioTrend' }],
         };
       }
     ),
@@ -524,9 +512,9 @@ export const frontDeskFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "fdUtaRatio"),
+        errors: _.filter(errors, n => n.api != 'fdUtaRatio'),
         fdUtaRatioData: null,
-        isLoadingData: _.union(isLoadingData, ["fdUtaRatio"]),
+        isLoadingData: _.union(isLoadingData, ['fdUtaRatio']),
       };
     }),
     on(
@@ -535,9 +523,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdUtaRatio"),
+          errors: _.filter(errors, n => n.api != 'fdUtaRatio'),
           fdUtaRatioData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdUtaRatio"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtaRatio'),
         };
       }
     ),
@@ -548,8 +536,8 @@ export const frontDeskFeature = createFeature({
         return {
           ...state,
           fdUtaRatioData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdUtaRatio"),
-          errors: [...errors, { ...error, api: "fdUtaRatio" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtaRatio'),
+          errors: [...errors, { ...error, api: 'fdUtaRatio' }],
         };
       }
     ),
@@ -558,9 +546,9 @@ export const frontDeskFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "fdUtaRatioTrend"),
+        errors: _.filter(errors, n => n.api != 'fdUtaRatioTrend'),
         fdUtaRatioTrendData: null,
-        isLoadingData: _.union(isLoadingData, ["fdUtaRatioTrend"]),
+        isLoadingData: _.union(isLoadingData, ['fdUtaRatioTrend']),
       };
     }),
     on(
@@ -569,9 +557,9 @@ export const frontDeskFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "fdUtaRatioTrend"),
+          errors: _.filter(errors, n => n.api != 'fdUtaRatioTrend'),
           fdUtaRatioTrendData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdUtaRatioTrend"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtaRatioTrend'),
         };
       }
     ),
@@ -582,8 +570,8 @@ export const frontDeskFeature = createFeature({
         return {
           ...state,
           fdUtaRatioTrendData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "fdUtaRatioTrend"),
-          errors: [...errors, { ...error, api: "fdUtaRatioTrend" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtaRatioTrend'),
+          errors: [...errors, { ...error, api: 'fdUtaRatioTrend' }],
         };
       }
     ),
@@ -632,60 +620,57 @@ export const {
 
 export const selectIsLoadingFdUtilisationRateData = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "fdUtilisationRate") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdUtilisationRate') >= 0
 );
 export const selectIsLoadingFdUtilisationRateTrendData = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "fdUtilisationRateTrend") >= 0
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'fdUtilisationRateTrend') >= 0
 );
 export const selectIsLoadingFdUtilisationRateByDayData = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "fdUtilisationRateByDay") >= 0
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'fdUtilisationRateByDay') >= 0
 );
 export const selectIsLoadingFdRecallRateData = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "fdRecallRate") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdRecallRate') >= 0
 );
 export const selectIsLoadingFdRecallRateTrendData = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "fdRecallRateTrend") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdRecallRateTrend') >= 0
 );
 export const selectIsLoadingFdReappointRateData = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "fdReappointRate") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdReappointRate') >= 0
 );
 export const selectIsLoadingFdReappointRateTrendData = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "fdReappointRateTrend") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdReappointRateTrend') >= 0
 );
 export const selectIsLoadingFdNumTicksData = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "fdNumTicks") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdNumTicks') >= 0
 );
 export const selectIsLoadingFdNumTicksTrendData = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "fdNumTicksTrend") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdNumTicksTrend') >= 0
 );
 export const selectIsLoadingFdFtaRatioData = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "fdFtaRatio") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdFtaRatio') >= 0
 );
 export const selectIsLoadingFdFtaRatioTrendData = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "fdFtaRatioTrend") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdFtaRatioTrend') >= 0
 );
 export const selectIsLoadingFdUtaRatioData = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "fdUtaRatio") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdUtaRatio') >= 0
 );
 export const selectIsLoadingFdUtaRatioTrendData = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "fdUtaRatioTrend") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdUtaRatioTrend') >= 0
 );
 
 export const selectFdUtilRateChartData = createSelector(
@@ -705,7 +690,7 @@ export const selectFdUtilRateChartData = createSelector(
     const fdUtiData = [],
       chartData = [],
       chartLabels = [];
-    resBody.data.forEach((val) => {
+    resBody.data.forEach(val => {
       fdUtiData.push({
         name: val.appBookName,
         scheduledHours: Math.round(<number>val.plannedHour),
@@ -714,7 +699,7 @@ export const selectFdUtilRateChartData = createSelector(
       });
     });
 
-    resBody.data.slice(0, 20).forEach((val) => {
+    resBody.data.slice(0, 20).forEach(val => {
       chartData.push(Math.round(parseFloat(<string>val.utilRate) * 100));
       chartLabels.push(
         `${val.appBookName}--${val.workedHour}--${val.plannedHour}--${val.clinicName}`
@@ -723,58 +708,58 @@ export const selectFdUtilRateChartData = createSelector(
     const chartDatasets = [
       {
         data: [],
-        label: "",
+        label: '',
         backgroundColor: [
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
         ],
         hoverBackgroundColor: [
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
         ],
       },
     ];
 
-    chartDatasets[0]["data"] = chartData;
+    chartDatasets[0]['data'] = chartData;
     if (clinics.length > 1) {
       let dynamicColors = [],
         legendBackgroundColor = [
-          "#6edbbb",
-          "#b0fffa",
-          "#abb3ff",
-          "#ffb4b5",
-          "#fffcac",
-          "#FFE4E4",
-          "#FFD578",
-          "#54D2FF",
-          "#E58DD7",
-          "#A9AABC",
-          "#F2ECFF",
-          "#5689C9",
-          "#F9F871",
+          '#6edbbb',
+          '#b0fffa',
+          '#abb3ff',
+          '#ffb4b5',
+          '#fffcac',
+          '#FFE4E4',
+          '#FFD578',
+          '#54D2FF',
+          '#E58DD7',
+          '#A9AABC',
+          '#F2ECFF',
+          '#5689C9',
+          '#F9F871',
         ];
 
-      resBody.data.forEach((res) => {
+      resBody.data.forEach(res => {
         clinics.forEach((item, index) => {
           if (res.clinicId == item.id) {
             dynamicColors.push(legendBackgroundColor[index]);
@@ -782,7 +767,7 @@ export const selectFdUtilRateChartData = createSelector(
         });
       });
 
-      chartDatasets[0]["backgroundColor"] = dynamicColors;
+      chartDatasets[0]['backgroundColor'] = dynamicColors;
     }
 
     return {
@@ -798,7 +783,7 @@ export const selectFdUtilRateChartData = createSelector(
 
 export const selectFdUtilRateByDayChartData = createSelector(
   selectFdUtilisationRateByDayData,
-  (resBody) => {
+  resBody => {
     if (resBody == null) {
       return {
         fdUtiByDayData: [],
@@ -812,12 +797,12 @@ export const selectFdUtilRateByDayChartData = createSelector(
       chartLabels = [],
       fdUtiByDayData = [];
     _.chain(resBody.data)
-      .groupBy("day")
+      .groupBy('day')
       .map((items, day) => {
-        const plannedHour = _.sumBy(items, (v) =>
+        const plannedHour = _.sumBy(items, v =>
           parseFloat(<string>v.plannedHour)
         );
-        const workedHour = _.sumBy(items, (v) =>
+        const workedHour = _.sumBy(items, v =>
           parseFloat(<string>v.workedHour)
         );
         return {
@@ -827,7 +812,7 @@ export const selectFdUtilRateByDayChartData = createSelector(
         };
       })
       .value()
-      .forEach((item) => {
+      .forEach(item => {
         const utilRate = _.round((item.workedHour / item.plannedHour) * 100);
         fdUtiByDayData.push({
           day: item.day,
@@ -844,38 +829,38 @@ export const selectFdUtilRateByDayChartData = createSelector(
     const chartDatasets = [
       {
         data: [],
-        label: "",
+        label: '',
         backgroundColor: [
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
         ],
         hoverBackgroundColor: [
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
         ],
       },
     ];
-    chartDatasets[0]["data"] = chartData;
+    chartDatasets[0]['data'] = chartData;
     return {
       fdUtiByDayData,
       datasets: chartDatasets,
@@ -899,16 +884,16 @@ export const selectFdUtilRateTrendChartData = createSelector(
     }
     let chartDatasets = [],
       chartLabels = [];
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       const chartData = [];
       _.chain(resBody.data)
-        .groupBy("yearMonth")
+        .groupBy('yearMonth')
         .map((items, duration) => {
           const plannedHour = _.chain(items)
-            .sumBy((item) => Number(item.plannedHour))
+            .sumBy(item => Number(item.plannedHour))
             .value();
           const workedHour = _.chain(items)
-            .sumBy((item) => Number(item.workedHour))
+            .sumBy(item => Number(item.workedHour))
             .value();
           return {
             duration,
@@ -916,9 +901,9 @@ export const selectFdUtilRateTrendChartData = createSelector(
           };
         })
         .value()
-        .forEach((item) => {
+        .forEach(item => {
           chartData.push(item.utilRate);
-          chartLabels.push(moment(item.duration).format("MMM YYYY"));
+          chartLabels.push(moment(item.duration).format('MMM YYYY'));
         });
       chartDatasets = [
         {
@@ -929,9 +914,9 @@ export const selectFdUtilRateTrendChartData = createSelector(
     } else {
       const chartData = [],
         targetData = [];
-      resBody.data.forEach((item) => {
+      resBody.data.forEach(item => {
         chartData.push(Math.round(parseFloat(<string>item.utilRate) * 100));
-        if (item.goals == -1 || item.goals == "" || item.goals == null) {
+        if (item.goals == -1 || item.goals == '' || item.goals == null) {
           targetData.push([0, 0]);
         } else {
           targetData.push([
@@ -941,8 +926,8 @@ export const selectFdUtilRateTrendChartData = createSelector(
         }
         chartLabels.push(
           `${
-            trendMode == "current"
-              ? moment(item.yearMonth).format("MMM YYYY")
+            trendMode == 'current'
+              ? moment(item.yearMonth).format('MMM YYYY')
               : item.year
           }--${item.workedHour}--${item.plannedHour}`
         );
@@ -950,60 +935,60 @@ export const selectFdUtilRateTrendChartData = createSelector(
       chartDatasets = [
         {
           data: [],
-          label: "",
+          label: '',
           order: 2,
           backgroundColor: [
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
           ],
           shadowOffsetX: 3,
           shadowOffsetY: 2,
           shadowBlur: 3,
-          shadowColor: "rgba(0, 0, 0, 0.3)",
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
           pointBevelWidth: 2,
-          pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
-          pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
+          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
           pointShadowOffsetX: 3,
           pointShadowOffsetY: 3,
           pointShadowBlur: 10,
-          pointShadowColor: "rgba(0, 0, 0, 0.3)",
-          backgroundOverlayMode: "multiply",
+          pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+          backgroundOverlayMode: 'multiply',
         },
         {
           data: [],
-          label: "",
+          label: '',
           shadowOffsetX: 3,
-          backgroundColor: "rgba(255, 0, 128, 1)",
+          backgroundColor: 'rgba(255, 0, 128, 1)',
           order: 1,
         },
       ];
-      chartDatasets[0]["data"] = chartData;
-      if (trendMode === "current") {
-        chartDatasets[0]["label"] = "Actual";
-        chartDatasets[1]["label"] = "Target";
-        chartDatasets[1]["data"] = targetData;
+      chartDatasets[0]['data'] = chartData;
+      if (trendMode === 'current') {
+        chartDatasets[0]['label'] = 'Actual';
+        chartDatasets[1]['label'] = 'Target';
+        chartDatasets[1]['data'] = targetData;
       } else {
-        chartDatasets[0]["label"] = "";
-        chartDatasets[1]["label"] = "";
-        chartDatasets[1]["data"] = [];
+        chartDatasets[0]['label'] = '';
+        chartDatasets[1]['label'] = '';
+        chartDatasets[1]['data'] = [];
       }
     }
     return {
@@ -1028,9 +1013,9 @@ export const selectFdRecallRateChartData = createSelector(
     }
     let chartDatasets = [],
       chartLabels = [];
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       const chartData = [];
-      resBody.data.forEach((item) => {
+      resBody.data.forEach(item => {
         if (item.clinicId) {
           chartData.push(
             Math.round(
@@ -1045,38 +1030,38 @@ export const selectFdRecallRateChartData = createSelector(
       chartDatasets = [
         {
           data: [],
-          label: "",
+          label: '',
           backgroundColor: [
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
           ],
           hoverBackgroundColor: [
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
           ],
         },
       ];
-      chartDatasets[0]["data"] = chartData;
+      chartDatasets[0]['data'] = chartData;
     }
 
     return {
@@ -1102,16 +1087,16 @@ export const selectFdRecallRateTrendChartData = createSelector(
     }
     let chartDatasets = [],
       chartLabels = [];
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       const chartData = [];
       _.chain(resBody.data)
-        .groupBy(trendMode === "current" ? "yearMonth" : "year")
+        .groupBy(trendMode === 'current' ? 'yearMonth' : 'year')
         .map((items, duration) => {
           const totalPatient = _.chain(items)
-            .sumBy((item) => Number(item.totalPatient))
+            .sumBy(item => Number(item.totalPatient))
             .value();
           const recallPatient = _.chain(items)
-            .sumBy((item) => Number(item.recallPatient))
+            .sumBy(item => Number(item.recallPatient))
             .value();
           return {
             duration,
@@ -1119,26 +1104,26 @@ export const selectFdRecallRateTrendChartData = createSelector(
           };
         })
         .value()
-        .forEach((item) => {
+        .forEach(item => {
           chartData.push(item.recallPercent);
           chartLabels.push(
-            trendMode === "current"
-              ? moment(item.duration).format("MMM YYYY")
+            trendMode === 'current'
+              ? moment(item.duration).format('MMM YYYY')
               : item.duration
           );
         });
       chartDatasets = [
-        { data: chartData, backgroundColor: DoughnutChartColors[0], label: "" },
+        { data: chartData, backgroundColor: DoughnutChartColors[0], label: '' },
       ];
     } else {
       const chartData = [],
         targetData = [];
-      resBody.data.forEach((item) => {
+      resBody.data.forEach(item => {
         const recallPercent = Math.round(<number>item.recallPercent);
         if (recallPercent > 0) {
           chartData.push(recallPercent);
         }
-        if (item.goals == -1 || item.goals == null || item.goals == "") {
+        if (item.goals == -1 || item.goals == null || item.goals == '') {
           targetData.push([0, 0]);
         } else {
           targetData.push([
@@ -1147,67 +1132,67 @@ export const selectFdRecallRateTrendChartData = createSelector(
           ]);
         }
         chartLabels.push(
-          trendMode === "current"
-            ? moment(item.yearMonth).format("MMM YYYY")
+          trendMode === 'current'
+            ? moment(item.yearMonth).format('MMM YYYY')
             : item.year
         );
       });
       chartDatasets = [
         {
           data: [],
-          label: "",
+          label: '',
           shadowOffsetX: 3,
           order: 2,
           backgroundColor: [
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
           ],
           shadowOffsetY: 2,
           shadowBlur: 3,
-          shadowColor: "rgba(0, 0, 0, 0.3)",
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
           pointBevelWidth: 2,
-          pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
-          pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
+          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
           pointShadowOffsetX: 3,
           pointShadowOffsetY: 3,
           pointShadowBlur: 10,
-          pointShadowColor: "rgba(0, 0, 0, 0.3)",
-          backgroundOverlayMode: "multiply",
+          pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+          backgroundOverlayMode: 'multiply',
         },
         {
           data: [],
-          label: "",
+          label: '',
           shadowOffsetX: 3,
-          backgroundColor: "rgba(255, 0, 128, 1)",
+          backgroundColor: 'rgba(255, 0, 128, 1)',
           order: 1,
         },
       ];
-      chartDatasets[0]["data"] = chartData;
-      if (trendMode === "current") {
-        chartDatasets[0]["label"] = "Actual";
-        chartDatasets[1]["label"] = "Target";
-        chartDatasets[1]["data"] = targetData;
+      chartDatasets[0]['data'] = chartData;
+      if (trendMode === 'current') {
+        chartDatasets[0]['label'] = 'Actual';
+        chartDatasets[1]['label'] = 'Target';
+        chartDatasets[1]['data'] = targetData;
       } else {
-        chartDatasets[0]["label"] = "";
-        chartDatasets[1]["label"] = "";
-        chartDatasets[1]["data"] = [];
+        chartDatasets[0]['label'] = '';
+        chartDatasets[1]['label'] = '';
+        chartDatasets[1]['data'] = [];
       }
     }
     return {
@@ -1219,7 +1204,7 @@ export const selectFdRecallRateTrendChartData = createSelector(
 
 export const selectFdReappointRateChartData = createSelector(
   selectFdReappointRateData,
-  (resBody) => {
+  resBody => {
     if (resBody == null) {
       return {
         datasets: [],
@@ -1232,7 +1217,7 @@ export const selectFdReappointRateChartData = createSelector(
     const chartData = [],
       chartLabels = [];
     if (resBody.total > 0) {
-      resBody.data.forEach((item) => {
+      resBody.data.forEach(item => {
         chartData.push(Math.round(<number>item.reappointRate));
         chartLabels.push(item.clinicName);
       });
@@ -1241,38 +1226,38 @@ export const selectFdReappointRateChartData = createSelector(
     const chartDatasets = [
       {
         data: [],
-        label: "",
+        label: '',
         backgroundColor: [
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
         ],
         hoverBackgroundColor: [
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
         ],
       },
     ];
-    chartDatasets[0]["data"] = chartData;
+    chartDatasets[0]['data'] = chartData;
     return {
       datasets: chartDatasets,
       labels: chartLabels,
@@ -1296,16 +1281,16 @@ export const selectFdReappointRateTrendChartData = createSelector(
     }
     let chartDatasets = [],
       chartLabels = [];
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       const chartData = [];
       _.chain(resBody.data)
-        .groupBy(trendMode === "current" ? "yearMonth" : "year")
+        .groupBy(trendMode === 'current' ? 'yearMonth' : 'year')
         .map((items, duration) => {
           const totalAppts = _.chain(items)
-            .sumBy((item) => Number(item.totalAppts))
+            .sumBy(item => Number(item.totalAppts))
             .value();
           const reappointments = _.chain(items)
-            .sumBy((item) => Number(item.reappointments))
+            .sumBy(item => Number(item.reappointments))
             .value();
           return {
             duration,
@@ -1313,23 +1298,23 @@ export const selectFdReappointRateTrendChartData = createSelector(
           };
         })
         .value()
-        .forEach((item) => {
+        .forEach(item => {
           chartData.push(item.reappointRate);
           chartLabels.push(
-            trendMode === "current"
-              ? moment(item.duration).format("MMM YYYY")
+            trendMode === 'current'
+              ? moment(item.duration).format('MMM YYYY')
               : item.duration
           );
         });
       chartDatasets = [
-        { data: chartData, label: "", backgroundColor: DoughnutChartColors[0] },
+        { data: chartData, label: '', backgroundColor: DoughnutChartColors[0] },
       ];
     } else {
       const chartData = [],
         targetData = [];
-      resBody.data.forEach((item) => {
+      resBody.data.forEach(item => {
         chartData.push(item.reappointRate);
-        if (item.goals == -1 || item.goals == null || item.goals == "") {
+        if (item.goals == -1 || item.goals == null || item.goals == '') {
           targetData.push([0, 0]);
         } else {
           targetData.push([
@@ -1338,67 +1323,67 @@ export const selectFdReappointRateTrendChartData = createSelector(
           ]);
         }
         chartLabels.push(
-          trendMode === "current"
-            ? moment(item.yearMonth).format("MMM YYYY")
+          trendMode === 'current'
+            ? moment(item.yearMonth).format('MMM YYYY')
             : item.year
         );
       });
       chartDatasets = [
         {
           data: [],
-          label: "",
+          label: '',
           shadowOffsetX: 3,
           order: 2,
           backgroundColor: [
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
           ],
           shadowOffsetY: 2,
           shadowBlur: 3,
-          shadowColor: "rgba(0, 0, 0, 0.3)",
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
           pointBevelWidth: 2,
-          pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
-          pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
+          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
           pointShadowOffsetX: 3,
           pointShadowOffsetY: 3,
           pointShadowBlur: 10,
-          pointShadowColor: "rgba(0, 0, 0, 0.3)",
-          backgroundOverlayMode: "multiply",
+          pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+          backgroundOverlayMode: 'multiply',
         },
         {
           data: [],
-          label: "",
+          label: '',
           shadowOffsetX: 3,
-          backgroundColor: "rgba(255, 0, 128, 1)",
+          backgroundColor: 'rgba(255, 0, 128, 1)',
           order: 1,
         },
       ];
-      chartDatasets[0]["data"] = chartData;
-      if (trendMode == "current") {
-        chartDatasets[0]["label"] = "Actual";
-        chartDatasets[1]["label"] = "Target";
-        chartDatasets[1]["data"] = targetData;
+      chartDatasets[0]['data'] = chartData;
+      if (trendMode == 'current') {
+        chartDatasets[0]['label'] = 'Actual';
+        chartDatasets[1]['label'] = 'Target';
+        chartDatasets[1]['data'] = targetData;
       } else {
-        chartDatasets[0]["label"] = "";
-        chartDatasets[1]["label"] = "";
-        chartDatasets[1]["data"] = [];
+        chartDatasets[0]['label'] = '';
+        chartDatasets[1]['label'] = '';
+        chartDatasets[1]['data'] = [];
       }
     }
     return {
@@ -1421,9 +1406,9 @@ export const selectFdNumTicksChartData = createSelector(
     let chartDatasets = [],
       chartLabels = [],
       chartData = [];
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       if (resBody.total > 0) {
-        resBody.data.forEach((item) => {
+        resBody.data.forEach(item => {
           if (item.clinicId) {
             chartLabels.push(item.clinicName);
             chartData.push(Math.round(<number>item.numTicks));
@@ -1433,38 +1418,38 @@ export const selectFdNumTicksChartData = createSelector(
       chartDatasets = [
         {
           data: [],
-          label: "",
+          label: '',
           backgroundColor: [
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
           ],
           hoverBackgroundColor: [
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
-            "#119582",
-            "#ffb4b5",
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
+            '#119582',
+            '#ffb4b5',
           ],
         },
       ];
-      chartDatasets[0]["data"] = chartData;
+      chartDatasets[0]['data'] = chartData;
     }
 
     return {
@@ -1489,25 +1474,25 @@ export const selectFdNumTicksTrendChartData = createSelector(
     }
     let chartDatasets = [],
       chartLabels = [];
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       chartLabels = _.chain(resBody.data)
-        .groupBy(trendMode === "current" ? "yearMonth" : "year")
+        .groupBy(trendMode === 'current' ? 'yearMonth' : 'year')
         .map((items, duration) => {
-          return trendMode === "current"
-            ? moment(duration).format("MMM YYYY")
+          return trendMode === 'current'
+            ? moment(duration).format('MMM YYYY')
             : duration;
         })
         .value();
       let i = 0;
       chartDatasets = _.chain(resBody.data)
-        .groupBy("clinicId")
-        .map((items) => {
+        .groupBy('clinicId')
+        .map(items => {
           const clinicName = items[0].clinicName;
           const bgColor = DoughnutChartColors[i];
           i++;
           return {
             label: clinicName,
-            data: items.map((val) => Number(val.numTicks)),
+            data: items.map(val => Number(val.numTicks)),
             backgroundColor: bgColor,
             hoverBackgroundColor: bgColor,
           };
@@ -1515,54 +1500,54 @@ export const selectFdNumTicksTrendChartData = createSelector(
         .value();
     } else {
       const chartData = [];
-      resBody.data.forEach((item) => {
+      resBody.data.forEach(item => {
         chartData.push(item.numTicks);
         chartLabels.push(
-          trendMode === "current"
-            ? moment(item.yearMonth).format("MMM YYYY")
+          trendMode === 'current'
+            ? moment(item.yearMonth).format('MMM YYYY')
             : item.year
         );
       });
       chartDatasets = [
         {
           data: [],
-          label: "",
+          label: '',
           shadowOffsetX: 3,
           backgroundColor: [
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
           ],
           shadowOffsetY: 2,
           shadowBlur: 3,
-          shadowColor: "rgba(0, 0, 0, 0.3)",
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
           pointBevelWidth: 2,
-          pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
-          pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
+          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
           pointShadowOffsetX: 3,
           pointShadowOffsetY: 3,
           pointShadowBlur: 10,
-          pointShadowColor: "rgba(0, 0, 0, 0.3)",
-          backgroundOverlayMode: "multiply",
+          pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+          backgroundOverlayMode: 'multiply',
         },
       ];
-      chartDatasets[0]["data"] = chartData;
+      chartDatasets[0]['data'] = chartData;
     }
     return {
       datasets: chartDatasets,
@@ -1573,7 +1558,7 @@ export const selectFdNumTicksTrendChartData = createSelector(
 
 export const selectFdFtaRatioChartData = createSelector(
   selectFdFtaRatioData,
-  (resBody) => {
+  resBody => {
     if (resBody == null) {
       return {
         datasets: [],
@@ -1586,7 +1571,7 @@ export const selectFdFtaRatioChartData = createSelector(
     const chartData = [],
       chartLabels = [];
     if (resBody.total > 0) {
-      resBody.data.forEach((item) => {
+      resBody.data.forEach(item => {
         chartData.push(_.round(<number>item.ftaRatio, 1));
         chartLabels.push(item.clinicName);
       });
@@ -1595,39 +1580,39 @@ export const selectFdFtaRatioChartData = createSelector(
     const chartDatasets = [
       {
         data: [],
-        label: "",
+        label: '',
         backgroundColor: [
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
         ],
         hoverBackgroundColor: [
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
         ],
       },
     ];
 
-    chartDatasets[0]["data"] = chartLabels;
+    chartDatasets[0]['data'] = chartLabels;
 
     return {
       datasets: chartDatasets,
@@ -1653,58 +1638,58 @@ export const selectFdFtaRatioTrendChartData = createSelector(
     let chartDatasets = [];
     const chartData = [],
       chartLabels = [];
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       _.chain(resBody.data)
-        .groupBy(trendMode === "current" ? "yearMonth" : "year")
+        .groupBy(trendMode === 'current' ? 'yearMonth' : 'year')
         .map((items, duration) => {
           const totalFta = _.chain(items)
-            .sumBy((item) => Number(item.totalFta))
+            .sumBy(item => Number(item.totalFta))
             .value();
           const totalAppts = _.chain(items)
-            .sumBy((item) => Number(item.totalAppts))
+            .sumBy(item => Number(item.totalAppts))
             .value();
           return {
             duration:
-              trendMode === "current"
-                ? moment(duration).format("MMM YYYY")
+              trendMode === 'current'
+                ? moment(duration).format('MMM YYYY')
                 : duration,
             ftaRatio: _.round((totalFta / totalAppts) * 100),
           };
         })
         .value()
-        .forEach((item) => {
+        .forEach(item => {
           chartData.push(item.ftaRatio);
           chartLabels.push(item.duration);
         });
-      chartDatasets = [{ data: chartData, label: "" }];
+      chartDatasets = [{ data: chartData, label: '' }];
     } else {
-      resBody.data.forEach((item) => {
+      resBody.data.forEach(item => {
         chartData.push(_.round(<number>item.ftaRatio, 1));
         chartLabels.push(
-          trendMode === "current"
-            ? moment(item.yearMonth).format("MMM YYYY")
+          trendMode === 'current'
+            ? moment(item.yearMonth).format('MMM YYYY')
             : item.year
         );
       });
       chartDatasets = [
         {
           data: [],
-          label: "",
+          label: '',
           shadowOffsetX: 3,
           shadowOffsetY: 2,
           shadowBlur: 3,
-          shadowColor: "rgba(0, 0, 0, 0.3)",
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
           pointBevelWidth: 2,
-          pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
-          pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
+          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
           pointShadowOffsetX: 3,
           pointShadowOffsetY: 3,
           pointShadowBlur: 10,
-          pointShadowColor: "rgba(0, 0, 0, 0.3)",
-          backgroundOverlayMode: "multiply",
+          pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+          backgroundOverlayMode: 'multiply',
         },
       ];
-      chartDatasets[0]["data"] = chartData;
+      chartDatasets[0]['data'] = chartData;
     }
 
     return {
@@ -1716,7 +1701,7 @@ export const selectFdFtaRatioTrendChartData = createSelector(
 
 export const selectFdUtaRatioChartData = createSelector(
   selectFdUtaRatioData,
-  (resBody) => {
+  resBody => {
     if (resBody == null) {
       return {
         datasets: [],
@@ -1729,7 +1714,7 @@ export const selectFdUtaRatioChartData = createSelector(
     const chartData = [],
       chartLabels = [];
     if (resBody.total > 0) {
-      resBody.data.forEach((item) => {
+      resBody.data.forEach(item => {
         chartData.push(_.round(<number>item.utaRatio, 1));
         chartLabels.push(item.clinicName);
       });
@@ -1738,39 +1723,39 @@ export const selectFdUtaRatioChartData = createSelector(
     const chartDatasets = [
       {
         data: [],
-        label: "",
+        label: '',
         backgroundColor: [
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
         ],
         hoverBackgroundColor: [
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
-          "#119582",
-          "#ffb4b5",
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
+          '#119582',
+          '#ffb4b5',
         ],
       },
     ];
 
-    chartDatasets[0]["data"] = chartLabels;
+    chartDatasets[0]['data'] = chartLabels;
 
     return {
       datasets: chartDatasets,
@@ -1796,58 +1781,58 @@ export const selectFdUtaRatioTrendChartData = createSelector(
     let chartDatasets = [];
     const chartData = [],
       chartLabels = [];
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       _.chain(resBody.data)
-        .groupBy(trendMode === "current" ? "yearMonth" : "year")
+        .groupBy(trendMode === 'current' ? 'yearMonth' : 'year')
         .map((items, duration) => {
           const totalUta = _.chain(items)
-            .sumBy((item) => Number(item.totalUta))
+            .sumBy(item => Number(item.totalUta))
             .value();
           const totalAppts = _.chain(items)
-            .sumBy((item) => Number(item.totalAppts))
+            .sumBy(item => Number(item.totalAppts))
             .value();
           return {
             duration:
-              trendMode === "current"
-                ? moment(duration).format("MMM YYYY")
+              trendMode === 'current'
+                ? moment(duration).format('MMM YYYY')
                 : duration,
             utaRatio: _.round((totalUta / totalAppts) * 100),
           };
         })
         .value()
-        .forEach((item) => {
+        .forEach(item => {
           chartData.push(item.utaRatio);
           chartLabels.push(item.duration);
         });
-      chartDatasets = [{ data: chartData, label: "" }];
+      chartDatasets = [{ data: chartData, label: '' }];
     } else {
-      resBody.data.forEach((item) => {
+      resBody.data.forEach(item => {
         chartData.push(_.round(<number>item.utaRatio, 1));
         chartLabels.push(
-          trendMode === "current"
-            ? moment(item.yearMonth).format("MMM YYYY")
+          trendMode === 'current'
+            ? moment(item.yearMonth).format('MMM YYYY')
             : item.year
         );
       });
       chartDatasets = [
         {
           data: [],
-          label: "",
+          label: '',
           shadowOffsetX: 3,
           shadowOffsetY: 2,
           shadowBlur: 3,
-          shadowColor: "rgba(0, 0, 0, 0.3)",
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
           pointBevelWidth: 2,
-          pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
-          pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
+          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
           pointShadowOffsetX: 3,
           pointShadowOffsetY: 3,
           pointShadowBlur: 10,
-          pointShadowColor: "rgba(0, 0, 0, 0.3)",
-          backgroundOverlayMode: "multiply",
+          pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+          backgroundOverlayMode: 'multiply',
         },
       ];
-      chartDatasets[0]["data"] = chartData;
+      chartDatasets[0]['data'] = chartData;
     }
 
     return {

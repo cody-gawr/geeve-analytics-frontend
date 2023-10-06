@@ -19,7 +19,7 @@ $breakpoints: (
   'desktop': 1280px,
   'mid-desktop': 1350px,
   'large-desktop': 1550px,
-  'big-desktop': 1920px
+  'big-desktop': 1920px,
 ) !default;
 
 @mixin respond-to($breakpoint) {

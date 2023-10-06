@@ -2,8 +2,7 @@
   fxLayout="row"
   fxLayoutAlign="center center"
   fxFlexFill
-  [hidden]="!isExact"
->
+  [hidden]="!isExact">
   <h3>Coming Soon</h3>
 </div>
 <div [hidden]="isExact">
@@ -12,13 +11,12 @@
       <div class="header-section">
         <div class="header-caption">
           <h2>
-            Total Production : ${{ production | number : '1.0-0' }}
+            Total Production : ${{ production | number: '1.0-0' }}
             <span class="uptrend" *ngIf="productionImp">
               <img
                 src="../assets/images/uptrend-production.png"
-                alt="uptrend-production"
-              />
-              +${{ productionImp | number : '1.0-0' }}
+                alt="uptrend-production" />
+              +${{ productionImp | number: '1.0-0' }}
             </span>
           </h2>
           <p>
@@ -36,14 +34,12 @@
         type="button"
         id="clinic_initiate"
         (click)="initiate_clinic()"
-        [style.display]="'none'"
-      />
+        [style.display]="'none'" />
       <input
         type="text"
         id="page_title"
         value="Lost Opportunity"
-        [style.display]="'none'"
-      />
+        [style.display]="'none'" />
 
       <div class="card-loading" *ngIf="isLoading">
         <img class="tableLoader" src="../../assets/images/loader.gif" />
@@ -57,7 +53,7 @@
         <h2>
           Total Lost Opportunity :
           <span id="TotalLostOpportunity"
-            >${{ lostOpportunity | number : '1.0-0' }}</span
+            >${{ lostOpportunity | number: '1.0-0' }}</span
           >
         </h2>
       </div>
@@ -70,29 +66,25 @@
                 [tooltip]="charTips['46']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
             <div class="production_images opertunity-img">
               <img
                 src="../assets/images/total-discount-1.png"
-                alt="total-discount"
-              />
+                alt="total-discount" />
             </div>
             <div
-              class="production_description oppertunity-description dowan-trend-display"
-            >
+              class="production_description oppertunity-description dowan-trend-display">
               <h4>Total Discounts</h4>
               <div class="price-section oppertunity-discount">
                 <h2 class="right-lo-content" id="TotalDiscounts">
-                  ${{ discounts | number : '1.0-0' }}
+                  ${{ discounts | number: '1.0-0' }}
                 </h2>
                 <span
                   *ngIf="discountsImp"
                   class="dowan-trend"
-                  id="TotalDiscountsImprovement"
-                >
-                  +${{ discountsImp | number : '1.0-0' }}</span
+                  id="TotalDiscountsImprovement">
+                  +${{ discountsImp | number: '1.0-0' }}</span
                 >
               </div>
             </div>
@@ -105,29 +97,25 @@
                 [tooltip]="charTips['47']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
             <div class="production_images opertunity-img">
               <img
                 src="../assets/images/oppertunity-payment.png"
-                alt="oppertunity-payment"
-              />
+                alt="oppertunity-payment" />
             </div>
             <div
-              class="production_description oppertunity-description dowan-trend-display"
-            >
+              class="production_description oppertunity-description dowan-trend-display">
               <h4>Collection vs Production</h4>
               <div class="price-section oppertunity-discount">
                 <h2 class="right-lo-content" id="CollectionProduction">
-                  ${{ collectionProduction | number : '1.0-0' }}
+                  ${{ collectionProduction | number: '1.0-0' }}
                 </h2>
                 <span
                   *ngIf="collectionProductionImp"
                   class="dowan-trend"
-                  id="CollectionProductionImprovement"
-                >
-                  +${{ collectionProductionImp | number : '1.0-0' }}</span
+                  id="CollectionProductionImprovement">
+                  +${{ collectionProductionImp | number: '1.0-0' }}</span
                 >
               </div>
             </div>
@@ -140,29 +128,25 @@
                 [tooltip]="charTips['48']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
             <div class="production_images opertunity-img">
               <img
                 src="../assets/images/opertunity-case.png"
-                alt="opertunity-case"
-              />
+                alt="opertunity-case" />
             </div>
             <div
-              class="production_description oppertunity-description dowan-trend-display"
-            >
+              class="production_description oppertunity-description dowan-trend-display">
               <h4>Case Acceptance</h4>
               <div class="price-section oppertunity-discount">
                 <h2 class="right-lo-content" id="CaseAcceptance">
-                  ${{ caseAcceptance | number : '1.0-0' }}
+                  ${{ caseAcceptance | number: '1.0-0' }}
                 </h2>
                 <span
                   *ngIf="caseAcceptanceImp"
                   class="dowan-trend"
-                  id="CaseAcceptanceImprovement"
-                >
-                  +${{ caseAcceptanceImp | number : '1.0-0' }}</span
+                  id="CaseAcceptanceImprovement">
+                  +${{ caseAcceptanceImp | number: '1.0-0' }}</span
                 >
               </div>
             </div>
@@ -184,8 +168,7 @@
           value="{{ improvement }}"
           (slideend)="sliderOnChange(mySlider.value)"
           (pointerup)="sliderOnChange(mySlider.value)"
-          (input)="sliderOnChange(mySlider.value)"
-        ></mat-slider>
+          (input)="sliderOnChange(mySlider.value)"></mat-slider>
       </div>
     </mat-card-content>
 

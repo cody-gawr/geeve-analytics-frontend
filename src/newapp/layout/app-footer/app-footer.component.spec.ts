@@ -11,9 +11,8 @@ describe('AppFooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppFooterComponent ]
-    })
-    .compileComponents();
+      declarations: [AppFooterComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

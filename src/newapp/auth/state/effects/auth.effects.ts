@@ -7,7 +7,7 @@ import {
   AuthApiActions,
   AuthPageActions,
   RolesApiActions,
-  RolesPageActions
+  RolesPageActions,
 } from '../actions';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -16,7 +16,7 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private cookieService: CookieService,
+    private cookieService: CookieService
   ) {}
 
   public readonly login$ = createEffect(() => {
@@ -24,9 +24,9 @@ export class AuthEffects {
       ofType(AuthPageActions.login),
       mergeMap(({ form }) => {
         return this.authService.login(form).pipe(
-          map((res) => res.data.data),
-          map((authUserData) => {
-            return AuthApiActions.loginSuccess({authUserData});
+          map(res => res.data.data),
+          map(authUserData => {
+            return AuthApiActions.loginSuccess({ authUserData });
           }),
           catchError((error: HttpErrorResponse) =>
             of(AuthApiActions.loginFailure({ error: error.message }))
@@ -41,7 +41,7 @@ export class AuthEffects {
       ofType(AuthPageActions.logout),
       mergeMap(() => {
         return this.authService.logout().pipe(
-          map((res) => {
+          map(res => {
             this.cookieService.delete('is_logged_in');
             return AuthApiActions.logoutSuccess();
           }),
@@ -58,7 +58,7 @@ export class AuthEffects {
       ofType(RolesPageActions.getRoles),
       mergeMap(() => {
         return this.authService.getRoles().pipe(
-          map((res) => {
+          map(res => {
             return RolesApiActions.getRolesSuccess({ userRoles: res });
           }),
           catchError((error: HttpErrorResponse) =>
@@ -74,15 +74,15 @@ export class AuthEffects {
       ofType(RolesPageActions.getRolesIndividual),
       mergeMap(() => {
         return this.authService.getRolesIndividual(clinicId).pipe(
-          map((res) => {
+          map(res => {
             return RolesApiActions.getRolesIndividualSuccess({
-              userRolesIndividual: res
+              userRolesIndividual: res,
             });
           }),
           catchError((error: HttpErrorResponse) =>
             of(
               RolesApiActions.getRolesIndividualFailure({
-                error: error.error ?? error
+                error: error.error ?? error,
               })
             )
           )

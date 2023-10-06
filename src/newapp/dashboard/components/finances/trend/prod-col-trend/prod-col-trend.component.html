@@ -1,32 +1,31 @@
 <div class="chart-container">
-    <mat-icon
-        [tooltip]="toolTip"
-        matTooltipPosition="below"
-        color="primary"
-        class="help-tip"
-        fontIcon="help"
-    ></mat-icon>
-    <div class="chart-title">
-        Production & Collection
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <div class="chart-title">Production & Collection</div>
+  <div class="chart-content">
+    <div class="prod-collection-trend-chart">
+      <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+      <ng-template #chartElem>
+        <canvas
+          *ngIf="hasData"
+          baseChart
+          [datasets]="datasets"
+          [labels]="labels"
+          [options]="labelBarOptions"
+          [legend]="true"
+          type="bar">
+        </canvas>
+        <spin-loader
+          class="empty-placeholder"
+          *ngIf="!hasData && !(isLoading$ | async)"
+          [disableSpin]="true">
+          You have no data in the selected period
+        </spin-loader>
+      </ng-template>
     </div>
-    <div class="chart-content">
-        <div class="prod-collection-trend-chart">
-            <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-            <ng-template #chartElem>
-                <canvas
-                    *ngIf="hasData"
-                    baseChart
-                    [datasets]="datasets"
-                    [labels]="labels"
-                    [options]="labelBarOptions"
-                    [legend]="true"
-                    type="bar"
-                >
-                </canvas>
-                <spin-loader class="empty-placeholder" *ngIf="!hasData && !(isLoading$ | async)" [disableSpin]="true">
-                    You have no data in the selected period
-                </spin-loader>
-            </ng-template>
-        </div>
-    </div>
+  </div>
 </div>

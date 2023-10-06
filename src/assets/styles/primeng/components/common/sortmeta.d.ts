@@ -1,4 +1,4 @@
 export interface SortMeta {
-    field: string;
-    order: number;
+  field: string;
+  order: number;
 }

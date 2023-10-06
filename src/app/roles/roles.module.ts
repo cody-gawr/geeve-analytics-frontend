@@ -19,13 +19,9 @@ import { RolesService } from './roles.service';
     ReactiveFormsModule,
     MatTreeModule,
     MatDatepickerModule,
-    DemoMaterialModule
+    DemoMaterialModule,
   ],
-  providers: [
-    RolesService
-  ],
-  declarations: [
-    RolesComponent
-  ]
+  providers: [RolesService],
+  declarations: [RolesComponent],
 })
 export class RolesModule {}

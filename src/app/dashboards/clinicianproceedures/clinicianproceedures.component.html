@@ -6,8 +6,7 @@
   class="sa_select internal_dentist"
   [(ngModel)]="selectedDentist"
   (ngModelChange)="loadDentist($event)"
-  [style.display]="'none'"
->
+  [style.display]="'none'">
   <option value="all">All Dentist</option>
   <option *ngFor="let dentist of dentists" [value]="dentist.providerId">
     {{ dentist.name }}
@@ -17,20 +16,17 @@
   type="button"
   id="dentist_initiate"
   (click)="initiate_dentist()"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <input
   type="button"
   id="clinic_initiate"
   (click)="initiate_clinic()"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <input
   type="text"
   id="page_title"
   value="Clinician Procedures & Referrals"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <div class="sa_dashboard_inner_content sa_dentist_graphs_area">
   <div class="sa_card topbar-strip">
     <div
@@ -39,14 +35,12 @@
       fxLayoutGap="0px"
       fxLayoutGap.md="0"
       fxLayoutGap.sm="0"
-      fxLayoutGap.xs="0"
-    >
+      fxLayoutGap.xs="0">
       <div fxFlex>
         <app-date-menu-bar
           #dateBar
           (filter)="filterDate($event)"
-          (changeDate)="choosedDate($event)"
-        >
+          (changeDate)="choosedDate($event)">
         </app-date-menu-bar>
       </div>
 
@@ -57,30 +51,26 @@
             #group="matButtonToggleGroup"
             name="fontStyle"
             class="trendToggle sa_toogle_group2 toggle_switcher"
-            aria-label="Font Style"
-          >
+            aria-label="Font Style">
             <mat-button-toggle
               checked
               value="off"
               class="target_off target_filter"
-              (click)="toggleFilter('off')"
-            >
+              (click)="toggleFilter('off')">
               <span>Off</span>
             </mat-button-toggle>
             <mat-button-toggle
               value="current"
               class="target_current target_filter"
               [disabled]="Apirequest <= 0 ? false : true"
-              (click)="Apirequest <= 0 ? toggleFilter('current') : false"
-            >
+              (click)="Apirequest <= 0 ? toggleFilter('current') : false">
               <span>Monthly</span>
             </mat-button-toggle>
             <mat-button-toggle
               value="historic"
               class="target_historic target_filter"
               [disabled]="Apirequest <= 0 ? false : true"
-              (click)="Apirequest <= 0 ? toggleFilter('historic') : false"
-            >
+              (click)="Apirequest <= 0 ? toggleFilter('historic') : false">
               <span>Annual</span>
             </mat-button-toggle>
           </mat-button-toggle-group>
@@ -94,14 +84,12 @@
     fxLayoutGap="20px"
     fxLayoutGap.md="0"
     fxLayoutGap.sm="0"
-    fxLayoutGap.xs="0"
-  >
+    fxLayoutGap.xs="0">
     <div
       fxFlex="100"
       fxFlex.sm="100"
       fxFlex.xs="100"
-      class="sa_flex_transparent"
-    >
+      class="sa_flex_transparent">
       {{ startDate }}- {{ endDate }}
     </div>
 
@@ -111,8 +99,7 @@
       fxFlex.md="100"
       fxFlex.sm="100"
       fxFlex.xs="100"
-      class="sa_flexbg items_predictor md_mrn"
-    >
+      class="sa_flexbg items_predictor md_mrn">
       <mat-card class="itemsPredictor sa_no_tabs_area">
         <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center"
@@ -133,8 +120,7 @@
                       clinic_id <= 4))
                 "
                 class="fa fa-table fa-margin"
-                (click)="showTable(true)"
-              ></i>
+                (click)="showTable(true)"></i>
               <i
                 *ngIf="
                   !multiclinic &&
@@ -149,36 +135,31 @@
                       clinic_id <= 4))
                 "
                 class="fa fa-table greenIcon fa-margin-color"
-                (click)="showTable(false)"
-              ></i>
+                (click)="showTable(false)"></i>
               <img
                 *ngIf="procedureAnalysisVisibility == 'General'"
                 [tooltip]="charTips['9']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
               <img
                 *ngIf="procedureAnalysisVisibility == 'Specialist'"
                 [tooltip]="charTips['50']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
           </mat-card-title>
           <div class="card-body">
             <div
               fxLayout="row wrap"
               class="sa_tabs_main_sec"
-              fxLayoutAlign="center center"
-            >
+              fxLayoutAlign="center center">
               <div
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="text-center btn-group"
-              >
+                class="text-center btn-group">
                 <small
                   class="sa_tab_btn"
                   [ngClass]="
@@ -192,8 +173,7 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="text-center btn-group"
-              >
+                class="text-center btn-group">
                 <small
                   class="sa_tab_btn"
                   [ngClass]="
@@ -209,13 +189,11 @@
             <!--  Procedure Analysis All dentist General-->
             <div
               class="procedureAnalysisGeneral"
-              *ngIf="procedureAnalysisVisibility == 'General'"
-            >
+              *ngIf="procedureAnalysisVisibility == 'General'">
               <!--  Procedure Analysis All dentist General-->
               <div
                 class="Item_Predictor_clinicianproceedures"
-                *ngIf="dentistMode == false"
-              >
+                *ngIf="dentistMode == false">
                 <div
                   class="chart-item-predictor"
                   *ngIf="
@@ -223,8 +201,7 @@
                     !buildChartLoader &&
                     !showPaTable &&
                     showmulticlinicGenPredictor == false
-                  "
-                >
+                  ">
                   <canvas
                     #myCanvas
                     baseChart
@@ -235,8 +212,7 @@
                     (chartHover)="chartHovered($event)"
                     [legend]="true"
                     [colors]="IPcolors"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -245,8 +221,7 @@
                     !showPaTable &&
                     showmulticlinicGenPredictor == true &&
                     !buildChartLoader
-                  "
-                >
+                  ">
                   <canvas
                     #myCanvas
                     baseChart
@@ -257,14 +232,12 @@
                     (chartHover)="chartHovered($event)"
                     [legend]="true"
                     [colors]="predictorAnalysisChartColors"
-                    (chartClick)="chartClicked($event)"
-                  ></canvas>
+                    (chartClick)="chartClicked($event)"></canvas>
                 </div>
                 <!-- Procedure Analysis General table view -->
                 <div
                   class="paTablecon"
-                  *ngIf="!showTrend && showPaTable && stackedChartDataMax > 0"
-                >
+                  *ngIf="!showTrend && showPaTable && stackedChartDataMax > 0">
                   <table class="paTable">
                     <thead>
                       <tr>
@@ -295,8 +268,9 @@
                       </tr>
                       <tr
                         class="patable-total"
-                        [innerHTML]="generatePaGeneralTotal(paGeneralData)"
-                      ></tr>
+                        [innerHTML]="
+                          generatePaGeneralTotal(paGeneralData)
+                        "></tr>
                     </tbody>
                   </table>
                 </div>
@@ -307,8 +281,7 @@
                     stackedChartDataMax <= 0 &&
                     buildChartLoader == false
                   "
-                  class="fullWidth"
-                >
+                  class="fullWidth">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no Crowns, Splints, RCTs, Perio, Stainless Steel
@@ -323,16 +296,14 @@
               <div
                 fxLayout="row wrap"
                 class="Item_Predictor_clinicianproceedures"
-                *ngIf="dentistMode == true"
-              >
+                *ngIf="dentistMode == true">
                 <div
                   class="item-predic"
                   *ngIf="
                     itemPredictedChartDataMax > 0 &&
                     buildChartDentistLoader == false &&
                     showTrend == false
-                  "
-                >
+                  ">
                   <canvas
                     baseChart
                     [datasets]="itemPredictedChartData"
@@ -342,8 +313,7 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [colors]="IPcolors"
-                    (chartClick)="chartClicked($event)"
-                  ></canvas>
+                    (chartClick)="chartClicked($event)"></canvas>
                 </div>
                 <!-- Trend Mode -->
                 <div
@@ -352,8 +322,7 @@
                     stackedChartDataMax > 0 &&
                     !buildChartDentistLoader
                   "
-                  class="chart-trend"
-                >
+                  class="chart-trend">
                   <canvas
                     baseChart
                     [datasets]="stackedChartData"
@@ -363,14 +332,12 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [colors]="IPcolors"
-                    (chartClick)="chartClicked($event)"
-                  ></canvas>
+                    (chartClick)="chartClicked($event)"></canvas>
                 </div>
                 <!-- Trend Mode -->
                 <div
                   *ngIf="stackedChartDataMax <= 0 && showTrend == true"
-                  class="fullWidth"
-                >
+                  class="fullWidth">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no Crowns, Splints, RCTs, Perio, Stainless Steel
@@ -384,8 +351,7 @@
                     buildChartDentistLoader == false &&
                     showTrend == false
                   "
-                  class="fullWidth"
-                >
+                  class="fullWidth">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no Crowns, Splints, RCTs, Perio, Stainless Steel
@@ -400,13 +366,11 @@
             <!--  Procedure Analysis All dentist Specialist-->
             <div
               class="procedureAnalysisSpecialist"
-              *ngIf="procedureAnalysisVisibility == 'Specialist'"
-            >
+              *ngIf="procedureAnalysisVisibility == 'Specialist'">
               <!--  Procedure Analysis All dentist Specialist-->
               <div
                 class="Item_Predictor_clinicianproceedures"
-                *ngIf="dentistMode == false"
-              >
+                *ngIf="dentistMode == false">
                 <div
                   class="chart-item-predictor"
                   *ngIf="
@@ -414,8 +378,7 @@
                     !showPaTable &&
                     showmulticlinicItemsPredictor == false &&
                     !predictorAnalysisSpecialLoader
-                  "
-                >
+                  ">
                   <canvas
                     #myCanvas
                     baseChart
@@ -426,13 +389,11 @@
                     (chartHover)="chartHovered($event)"
                     [legend]="true"
                     [colors]="predictorAnalysisChartColors"
-                    (chartClick)="chartClicked($event)"
-                  ></canvas>
+                    (chartClick)="chartClicked($event)"></canvas>
                 </div>
                 <div
                   class="chart-item-predictor"
-                  *ngIf="showmulticlinicItemsPredictor == true && !showPaTable"
-                >
+                  *ngIf="showmulticlinicItemsPredictor == true && !showPaTable">
                   <canvas
                     #myCanvas
                     baseChart
@@ -443,16 +404,14 @@
                     (chartHover)="chartHovered($event)"
                     [legend]="true"
                     [colors]="predictorAnalysisChartColors"
-                    (chartClick)="chartClicked($event)"
-                  ></canvas>
+                    (chartClick)="chartClicked($event)"></canvas>
                 </div>
                 <!-- Procedure Analysis Specialist table view -->
                 <div
                   class="paTablecon"
                   *ngIf="
                     !showTrend && showPaTable && predictorAnalysisDataMax > 0
-                  "
-                >
+                  ">
                   <table class="paTable">
                     <thead>
                       <tr>
@@ -479,8 +438,9 @@
                       </tr>
                       <tr
                         class="patable-total"
-                        [innerHTML]="generatePaSpecialTotal(paSpecialistlData)"
-                      ></tr>
+                        [innerHTML]="
+                          generatePaSpecialTotal(paSpecialistlData)
+                        "></tr>
                     </tbody>
                   </table>
                 </div>
@@ -491,8 +451,7 @@
                     predictorAnalysisDataMax <= 0 &&
                     ItemsPredictorAnalysisSpecialStatus == false
                   "
-                  class="fullWidth"
-                >
+                  class="fullWidth">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no specialist items in this period
@@ -508,8 +467,7 @@
                     procedureSpecialDataMax > 0 &&
                     procedureSpecialDentistLoader == false &&
                     showTrend == false
-                  "
-                >
+                  ">
                   <canvas
                     baseChart
                     [datasets]="itemPredictedChartSpecailData"
@@ -519,8 +477,7 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [colors]="predictorAnalysisChartColors"
-                    (chartClick)="chartClicked($event)"
-                  ></canvas>
+                    (chartClick)="chartClicked($event)"></canvas>
                 </div>
                 <!-- Trend Mode -->
                 <div
@@ -529,8 +486,7 @@
                     stackedChartSpecialDataMax > 0 &&
                     !buildChartDentistSpecLoader
                   "
-                  class="chart-trend"
-                >
+                  class="chart-trend">
                   <canvas
                     baseChart
                     [datasets]="stackedChartDataItemSpecialTrend"
@@ -540,8 +496,7 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [colors]="predictorAnalysisChartColors"
-                    (chartClick)="chartClicked($event)"
-                  ></canvas>
+                    (chartClick)="chartClicked($event)"></canvas>
                 </div>
                 <!-- Trend Mode -->
 
@@ -551,8 +506,7 @@
                     procedureSpecialDentistLoader == false &&
                     showTrend == false
                   "
-                  class="fullWidth"
-                >
+                  class="fullWidth">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no specialist items in this period
@@ -565,8 +519,7 @@
                     buildChartDentistSpecLoader == false &&
                     showTrend == true
                   "
-                  class="fullWidth"
-                >
+                  class="fullWidth">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no specialist items in this period
@@ -586,15 +539,13 @@
               ItemsPredictorAnalysisSpecialStatus ||
               procedureSpecialDentistLoader
             "
-            class="loader_container loader_container_middle"
-          >
+            class="loader_container loader_container_middle">
             <img class="loader_ico" src="../assets/images/720.gif" />
             <div class="loader-text">Calculating...</div>
           </div>
           <div
             *ngIf="buildChartDentistSpecLoader"
-            class="loader_container loader_container_middle"
-          >
+            class="loader_container loader_container_middle">
             <img class="loader_ico" src="../assets/images/720.gif" />
             <div class="loader-text">Calculating...</div>
           </div>
@@ -608,8 +559,7 @@
       fxFlex.md="100"
       fxFlex.sm="100"
       fxFlex.xs="100"
-      class="sa_flexbg last revenue_proceedure"
-    >
+      class="sa_flexbg last revenue_proceedure">
       <mat-card class="revenueProceedure sa_no_tabs_area">
         <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center"
@@ -619,19 +569,16 @@
               <i
                 *ngIf="!showTopVlaues"
                 class="far fa-chart-bar fa-icon-margin"
-                (click)="setTopValues()"
-              ></i>
+                (click)="setTopValues()"></i>
               <i
                 *ngIf="showTopVlaues"
                 class="far fa-chart-bar greenIcon fa-icon-color"
-                (click)="setTopValues()"
-              ></i>
+                (click)="setTopValues()"></i>
               <img
                 [tooltip]="charTips['13']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
           </mat-card-title>
           <div class="card-body">
@@ -641,14 +588,12 @@
               *ngIf="
                 proceedureChartData1.length <= 0 &&
                 buildChartProceedureLoader == false
-              "
-            >
+              ">
               <div
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn prmain1 active"
                   (click)="changeDentistPredictorMain('1')"
@@ -663,8 +608,7 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn prmain2"
                   (click)="changeDentistPredictorMain('2')"
@@ -675,8 +619,7 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn prmain3"
                   (click)="changeDentistPredictorMain('3')"
@@ -690,8 +633,7 @@
                 *ngIf="
                   proceedureChartLabels.length > 0 &&
                   buildChartProceedureLoader == false
-                "
-              >
+                ">
                 <canvas
                   baseChart
                   class="chart"
@@ -701,8 +643,7 @@
                   [legend]="false"
                   [type]="proceedureChartType"
                   (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"
-                ></canvas>
+                  (chartClick)="chartClicked($event)"></canvas>
               </div>
             </div>
             <div
@@ -710,8 +651,7 @@
                 proceedureChartLabels.length <= 0 &&
                 buildChartProceedureLoader == false
               "
-              class="no-data-placeholder"
-            >
+              class="no-data-placeholder">
               <div class="sa_nodata_div"></div>
               <p class="chart-placeholder-text">
                 You have no revenue in the selected period
@@ -725,19 +665,16 @@
             *ngIf="
               proceedureChartLabels.length <= 0 &&
               buildChartProceedureLoader == false
-            "
-          >
+            ">
             <div
               fxLayout="row wrap"
               class="m-t-40 predicted_main predicted1 sa_chart_details_sec"
-              fxLayoutAlign="center center"
-            >
+              fxLayoutAlign="center center">
               <div
                 fxFlex.gt-sm="50%"
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
-                class="text-center"
-              >
+                class="text-center">
                 <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                 <h3 class="m-0 value-num">{{ crowns }}:{{ large_fillings }}</h3>
                 <span class="value-text" *ngIf="currentText != ''"
@@ -752,8 +689,7 @@
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
                 class="text-center"
-                *ngIf="duration != 'custom'"
-              >
+                *ngIf="duration != 'custom'">
                 <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                 <h3 class="m-0 value-num">
                   {{ crowns_ta }}:{{ large_fillings_ta }}
@@ -770,14 +706,12 @@
               fxLayout="row wrap"
               fxLayoutAlign="center center"
               class="m-t-40 predicted_main predicted2 sa_chart_details_sec"
-              [style.display]="'none'"
-            >
+              [style.display]="'none'">
               <div
                 fxFlex.gt-sm="50%"
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
-                class="text-center"
-              >
+                class="text-center">
                 <h3 class="m-0 value-num">
                   {{ root_canals }}:{{ extractions }}
                 </h3>
@@ -793,8 +727,7 @@
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
                 class="text-center"
-                *ngIf="duration != 'custom'"
-              >
+                *ngIf="duration != 'custom'">
                 <h3 class="m-0 value-num">
                   {{ root_canals_ta }}:{{ extractions_ta }}
                 </h3>
@@ -810,14 +743,12 @@
               fxLayout="row wrap"
               fxLayoutAlign="center center"
               class="m-t-40 predicted_main predicted3 sa_chart_details_sec"
-              [style.display]="'none'"
-            >
+              [style.display]="'none'">
               <div
                 fxFlex.gt-sm="50%"
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
-                class="text-center"
-              >
+                class="text-center">
                 <h3 class="m-0 value-num">
                   {{ rct_started }}:{{ rct_completed }}
                 </h3>
@@ -833,8 +764,7 @@
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
                 class="text-center"
-                *ngIf="duration != 'custom'"
-              >
+                *ngIf="duration != 'custom'">
                 <h3 class="m-0 value-num">
                   {{ rct_started_ta }}:{{ rct_completed }}
                 </h3>
@@ -866,21 +796,18 @@
                 [tooltip]="charTips['13']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
           </mat-card-title>
           <div class="card-body">
             <div
               fxLayout="row wrap"
-              class="predictor_ratio_main sa_tabs_main_sec hide-item"
-            >
+              class="predictor_ratio_main sa_tabs_main_sec hide-item">
               <div
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn prmain1 active"
                   (click)="changeDentistPredictorMain('1')"
@@ -895,8 +822,7 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn prmain2"
                   (click)="changeDentistPredictorMain('2')"
@@ -907,8 +833,7 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn prmain3"
                   (click)="changeDentistPredictorMain('3')"
@@ -918,8 +843,7 @@
             </div>
             <div
               class="dentist-mode"
-              *ngIf="proceedureDentistChartLabels.length > 0"
-            >
+              *ngIf="proceedureDentistChartLabels.length > 0">
               <canvas
                 baseChart
                 class="chart"
@@ -929,8 +853,7 @@
                 [legend]="false"
                 [type]="proceedureChartType"
                 (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"
-              ></canvas>
+                (chartClick)="chartClicked($event)"></canvas>
             </div>
             <!-- <div *ngIf="proceedureDentistChartLabels.length <= 0 && buildChartProceedureDentistLoader == false"
           class="sa_nodata_div">
@@ -942,8 +865,7 @@
                 proceedureDentistChartLabels.length <= 0 &&
                 !buildChartProceedureDentistLoader
               "
-              class="no-data-placeholder"
-            >
+              class="no-data-placeholder">
               <div class="sa_nodata_div"></div>
               <p class="chart-placeholder-text">
                 You have no revenue in the selected period
@@ -954,8 +876,7 @@
       </mat-card>
       <div
         *ngIf="buildChartProceedureLoader == true"
-        class="loader_container loader_container_middle"
-      >
+        class="loader_container loader_container_middle">
         <img class="loader_ico" src="../assets/images/720.gif" />
         <div class="loader-text">Calculating...</div>
       </div>
@@ -967,8 +888,7 @@
       fxFlex.md="100"
       fxFlex.sm="100"
       fxFlex.xs="100"
-      class="sa_flexbg predictor_ratio"
-    >
+      class="sa_flexbg predictor_ratio">
       <mat-card class="ratioPredictor">
         <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">
@@ -979,37 +899,32 @@
                 [tooltip]="charTips['10']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
             <div *ngIf="predictorRatioTab == '2'" class="info-icon-container">
               <img
                 [tooltip]="charTips['11']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
             <div *ngIf="predictorRatioTab == '3'" class="info-icon-container">
               <img
                 [tooltip]="charTips['12']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
           </mat-card-title>
           <div class="card-body">
             <div
               fxLayout="row wrap"
-              class="predictor_ratio_main sa_tabs_main_sec"
-            >
+              class="predictor_ratio_main sa_tabs_main_sec">
               <div
                 fxFlex.gt-sm="35.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn prmain1 active"
                   (click)="changeDentistPredictorMain('1')"
@@ -1024,8 +939,7 @@
                 fxFlex.gt-sm="31.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn prmain2"
                   (click)="changeDentistPredictorMain('2')"
@@ -1036,8 +950,7 @@
                 fxFlex.gt-sm="31.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn prmain3"
                   (click)="changeDentistPredictorMain('3')"
@@ -1053,8 +966,7 @@
                 predictorRatioTab == 1 &&
                 showmulticlinicPredictor == true &&
                 !buildChartPredictorLoader
-              "
-            >
+              ">
               <canvas
                 #myCanvas
                 baseChart
@@ -1065,8 +977,7 @@
                 (chartHover)="chartHovered($event)"
                 [legend]="true"
                 [colors]="predictorAnalysisChartColors"
-                (chartClick)="chartClicked($event)"
-              ></canvas>
+                (chartClick)="chartClicked($event)"></canvas>
             </div>
             <div
               *ngIf="
@@ -1074,8 +985,7 @@
                 predictorLabels1.length == 0 &&
                 predictorRatioTab == '1'
               "
-              class="no-data-placeholder"
-            >
+              class="no-data-placeholder">
               <div class="sa_nodata_div"></div>
               <p class="chart-placeholder-text">
                 You have no indirect or large direct fillings in the selected
@@ -1088,8 +998,7 @@
                 predictorLabels2.length > 0 &&
                 predictorRatioTab == 2 &&
                 showmulticlinicPredictor
-              "
-            >
+              ">
               <canvas
                 #myCanvas
                 baseChart
@@ -1100,8 +1009,7 @@
                 (chartHover)="chartHovered($event)"
                 [legend]="true"
                 [colors]="predictorAnalysisChartColors"
-                (chartClick)="chartClicked($event)"
-              ></canvas>
+                (chartClick)="chartClicked($event)"></canvas>
             </div>
             <div
               *ngIf="
@@ -1109,8 +1017,7 @@
                 predictorLabels2.length <= 0 &&
                 predictorRatioTab == '2'
               "
-              class="no-data-placeholder"
-            >
+              class="no-data-placeholder">
               <div class="sa_nodata_div"></div>
               <p class="chart-placeholder-text">
                 You have no RCTs or extractions in the selected period
@@ -1122,8 +1029,7 @@
                 predictorLabels3.length > 0 &&
                 predictorRatioTab == 3 &&
                 showmulticlinicPredictor
-              "
-            >
+              ">
               <canvas
                 #myCanvas
                 baseChart
@@ -1134,8 +1040,7 @@
                 (chartHover)="chartHovered($event)"
                 [legend]="true"
                 [colors]="predictorAnalysisChartColors"
-                (chartClick)="chartClicked($event)"
-              ></canvas>
+                (chartClick)="chartClicked($event)"></canvas>
             </div>
             <div
               *ngIf="
@@ -1143,8 +1048,7 @@
                 predictorLabels3.length == 0 &&
                 predictorRatioTab == '3'
               "
-              class="no-data-placeholder"
-            >
+              class="no-data-placeholder">
               <div class="sa_nodata_div"></div>
               <p class="chart-placeholder-text">
                 You have no RCTs in the selected period
@@ -1158,8 +1062,7 @@
                   predictedstackedChartData[0]['data'].length > 0) ||
                   predictedstackedChartData[1]['data'].length > 0) &&
                 !predictedstackedChartLoader
-              "
-            >
+              ">
               <canvas
                 baseChart
                 class="chart"
@@ -1169,8 +1072,7 @@
                 [type]="stackedChartType"
                 (chartHover)="chartHovered($event)"
                 [colors]="predictorRatioColors"
-                (chartClick)="chartClicked($event)"
-              ></canvas>
+                (chartClick)="chartClicked($event)"></canvas>
             </div>
             <div
               *ngIf="
@@ -1179,8 +1081,7 @@
                 predictedstackedChartData1[1]['data'].length == 0 &&
                 predictorRatioTab == '1'
               "
-              class="no-data-placeholder"
-            >
+              class="no-data-placeholder">
               <div class="sa_nodata_div"></div>
               <p class="chart-placeholder-text">
                 You have no indirect or large direct fillings in the selected
@@ -1195,8 +1096,7 @@
                 predictedstackedChartData2[1]['data'].length <= 0 &&
                 predictorRatioTab == '2'
               "
-              class="no-data-placeholder"
-            >
+              class="no-data-placeholder">
               <div class="sa_nodata_div"></div>
               <p class="chart-placeholder-text">
                 You have no RCTs or extractions in the selected period
@@ -1210,8 +1110,7 @@
                 predictedstackedChartData3[1]['data'].length <= 0 &&
                 predictorRatioTab == '3'
               "
-              class="no-data-placeholder"
-            >
+              class="no-data-placeholder">
               <div class="sa_nodata_div"></div>
               <p class="chart-placeholder-text">
                 You have no RCTs in the selected period
@@ -1228,14 +1127,12 @@
               fxLayout="row wrap"
               class="m-t-40 predicted_main predicted1 sa_chart_details_sec"
               fxLayoutAlign="center center"
-              *ngIf="!buildChartPredictorLoader && predictorRatioTab == '1'"
-            >
+              *ngIf="!buildChartPredictorLoader && predictorRatioTab == '1'">
               <div
                 fxFlex.gt-sm="50%"
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
-                class="text-center"
-              >
+                class="text-center">
                 <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                 <h3 *ngIf="!showmulticlinicPredictor" class="m-0 value-num">
                   {{ predictedstackedChartAvr }}
@@ -1255,8 +1152,7 @@
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
                 class="text-center"
-                *ngIf="duration != 'custom'"
-              >
+                *ngIf="duration != 'custom'">
                 <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                 <h3 class="m-0 value-num">
                   {{ predictedstackedChartLabels1AvrPre }}
@@ -1274,14 +1170,12 @@
               fxLayoutAlign="center center"
               *ngIf="!buildChartPredictorLoader && predictorRatioTab == '2'"
               class="m-t-40 predicted_main predicted2 sa_chart_details_sec"
-              [style.display]="'none'"
-            >
+              [style.display]="'none'">
               <div
                 fxFlex.gt-sm="50%"
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
-                class="text-center"
-              >
+                class="text-center">
                 <h3 *ngIf="!showmulticlinicPredictor" class="m-0 value-num">
                   {{ predictedstackedChartAvr }}
                 </h3>
@@ -1300,8 +1194,7 @@
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
                 class="text-center"
-                *ngIf="duration != 'custom'"
-              >
+                *ngIf="duration != 'custom'">
                 <h3 class="m-0 value-num">
                   {{ predictedstackedChartLabels2AvrPre }}
                 </h3>
@@ -1318,14 +1211,12 @@
               fxLayoutAlign="center center"
               *ngIf="!buildChartPredictorLoader && predictorRatioTab == '3'"
               class="m-t-40 predicted_main predicted3 sa_chart_details_sec"
-              [style.display]="'none'"
-            >
+              [style.display]="'none'">
               <div
                 fxFlex.gt-sm="50%"
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
-                class="text-center"
-              >
+                class="text-center">
                 <h3 *ngIf="!showmulticlinicPredictor" class="m-0 value-num">
                   {{ predictedstackedChartAvr }}
                 </h3>
@@ -1344,8 +1235,7 @@
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
                 class="text-center"
-                *ngIf="duration != 'custom'"
-              >
+                *ngIf="duration != 'custom'">
                 <h3 class="m-0 value-num">
                   {{ predictedstackedChartLabels3AvrPre }}
                 </h3>
@@ -1382,24 +1272,21 @@
                 [tooltip]="charTips['10']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
             <div *ngIf="predictorRatioTab == '2'" class="info-icon-container">
               <img
                 [tooltip]="charTips['11']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
             <div *ngIf="predictorRatioTab == '3'" class="info-icon-container">
               <img
                 [tooltip]="charTips['12']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
           </mat-card-title>
           <div class="card-body">
@@ -1408,8 +1295,7 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn pr1 active"
                   (click)="changeDentistPredictor('1')"
@@ -1424,8 +1310,7 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn pr2"
                   (click)="changeDentistPredictor('2')"
@@ -1436,8 +1321,7 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="btn-group"
-              >
+                class="btn-group">
                 <small
                   class="sa_tab_btn pr3"
                   (click)="changeDentistPredictor('3')"
@@ -1448,8 +1332,7 @@
 
             <div
               class="predictor-ratio-div"
-              *ngIf="toggleChecked == false && gaugeValuePredicted > 0"
-            >
+              *ngIf="toggleChecked == false && gaugeValuePredicted > 0">
               <ngx-gauge
                 class="singleRatio"
                 [type]="gaugeType"
@@ -1460,8 +1343,7 @@
                 [foregroundColor]="foregroundColor"
                 [cap]="cap"
                 [size]="size"
-                [duration]="gaugeDuration"
-              >
+                [duration]="gaugeDuration">
               </ngx-gauge
               >a
             </div>
@@ -1471,8 +1353,7 @@
                 gaugeValuePredicted <= 0 &&
                 buildChartPredictorDentistLoader == false
               "
-              class="sa_nodata_div"
-            >
+              class="sa_nodata_div">
               <h4>You have no predictor ratio in this period</h4>
               <p></p>
             </div>
@@ -1483,8 +1364,7 @@
                 (ratioChartData[0]['data'].length > 0 ||
                   ratioChartData[1]['data'].length) &&
                 !predictorRatioLoader
-              "
-            >
+              ">
               <canvas
                 class="trendRatio"
                 baseChart
@@ -1497,8 +1377,7 @@
                 (chartHover)="chartHovered($event)"
                 [legend]="true"
                 [colors]="IPcolors"
-                (chartClick)="chartClicked($event)"
-              >
+                (chartClick)="chartClicked($event)">
               </canvas>
             </div>
             <div
@@ -1509,8 +1388,7 @@
                 toggleChecked == true &&
                 !predictorRatioLoader
               "
-              class="no-data-placeholder"
-            >
+              class="no-data-placeholder">
               <div class="sa_nodata_div"></div>
               <p class="chart-placeholder-text">
                 You have no indirect or large direct fillings in the selected
@@ -1526,8 +1404,7 @@
                 toggleChecked == true &&
                 !predictorRatioLoader
               "
-              class="no-data-placeholder"
-            >
+              class="no-data-placeholder">
               <div class="sa_nodata_div"></div>
               <p class="chart-placeholder-text">
                 You have no RCTs or extractions in the selected period
@@ -1542,8 +1419,7 @@
                 toggleChecked == true &&
                 !predictorRatioLoader
               "
-              class="no-data-placeholder"
-            >
+              class="no-data-placeholder">
               <div class="sa_nodata_div"></div>
               <p class="chart-placeholder-text">
                 You have no RCTs in the selected period
@@ -1555,16 +1431,14 @@
               fxLayout="row wrap"
               class="predicted1 sa_chart_details_sec predictorRatioDetails"
               *ngIf="toggleChecked == false"
-              fxLayoutAlign="center center"
-            >
+              fxLayoutAlign="center center">
               <div
                 fxFlex.gt-sm="50%"
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
-                class="text-center"
-              >
+                class="text-center">
                 <h3 class="m-0 value-num">
-                  {{ predictedDentistTotal | number : '1.0-0' }}
+                  {{ predictedDentistTotal | number: '1.0-0' }}
                 </h3>
                 <span class="value-text" *ngIf="currentText != ''">{{
                   currentText
@@ -1578,10 +1452,9 @@
                 fxFlex.gt-xs="50%"
                 fxFlex="100"
                 class="text-center"
-                *ngIf="duration != 'custom'"
-              >
+                *ngIf="duration != 'custom'">
                 <h3 class="m-0 value-num">
-                  {{ predictedDentistPrevTotal | number : '1.0-0' }}
+                  {{ predictedDentistPrevTotal | number: '1.0-0' }}
                 </h3>
                 <span class="value-text" *ngIf="trendText != ''">{{
                   trendText
@@ -1594,29 +1467,25 @@
       </mat-card>
       <div
         *ngIf="buildChartPredictorLoader == true"
-        class="loader_container loader_container_middle"
-      >
+        class="loader_container loader_container_middle">
         <img class="loader_ico" src="../assets/images/720.gif" />
         <div class="loader-text">Calculating...</div>
       </div>
       <div
         *ngIf="predictorRatioLoader"
-        class="loader_container loader_container_middle"
-      >
+        class="loader_container loader_container_middle">
         <img class="loader_ico" src="../assets/images/720.gif" />
         <div class="loader-text">Calculating...</div>
       </div>
       <div
         *ngIf="buildChartPredictorDentistLoader == true"
-        class="loader_container loader_container_middle"
-      >
+        class="loader_container loader_container_middle">
         <img class="loader_ico" src="../assets/images/720.gif" />
         <div class="loader-text">Calculating...</div>
       </div>
       <div
         *ngIf="predictedstackedChartLoader"
-        class="loader_container loader_container_middle"
-      >
+        class="loader_container loader_container_middle">
         <img class="loader_ico" src="../assets/images/720.gif" />
         <div class="loader-text">Calculating...</div>
       </div>
@@ -1627,8 +1496,7 @@
       fxFlex.md="100"
       fxFlex.sm="100"
       fxFlex.xs="100"
-      class="sa_flexbg referral_clinicians last"
-    >
+      class="sa_flexbg referral_clinicians last">
       <mat-card>
         <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">
@@ -1640,21 +1508,18 @@
                 [tooltip]="charTips['14']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
           </mat-card-title>
           <div class="card-body">
             <div
               fxLayout="row wrap"
-              class="sa_tabs_main_sec sa_tabs_clinician_referrals"
-            >
+              class="sa_tabs_main_sec sa_tabs_clinician_referrals">
               <div
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="text-center btn-group"
-              >
+                class="text-center btn-group">
                 <small
                   class="sa_tab_btn referall_btn Combined active"
                   (click)="changePieReferral('Combined')"
@@ -1665,8 +1530,7 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="text-center btn-group"
-              >
+                class="text-center btn-group">
                 <small
                   class="sa_tab_btn referall_btn Internal"
                   (click)="changePieReferral('Internal')"
@@ -1677,8 +1541,7 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="text-center btn-group"
-              >
+                class="text-center btn-group">
                 <small
                   class="sa_tab_btn referall_btn External"
                   (click)="changePieReferral('External')"
@@ -1694,19 +1557,17 @@
                   !showTrend &&
                   !clinicianReferralLoader
                 "
-                class="trend-show"
-              >
+                class="trend-show">
                 <canvas
                   baseChart
-                  [datasets]="[{data: pieChartData1}]"
+                  [datasets]="[{ data: pieChartData1 }]"
                   [labels]="pieChartLabels1"
                   [type]="pieChartType"
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)"
                   [legend]="true"
                   [options]="pieChartOptions"
-                  [colors]="doughnutChartColors"
-                >
+                  [colors]="doughnutChartColors">
                 </canvas>
               </div>
               <div
@@ -1715,8 +1576,7 @@
                   showInternal == true &&
                   showTrend == false &&
                   !clinicianReferralLoader
-                "
-              >
+                ">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">
                   You have no internal referrals in the selected period
@@ -1730,18 +1590,16 @@
                   showTrend == false &&
                   !clinicianReferralLoader
                 "
-                class="trend-show"
-              >
+                class="trend-show">
                 <canvas
                   baseChart
-                  [datasets]="[{data: pieChartData2}]"
+                  [datasets]="[{ data: pieChartData2 }]"
                   [labels]="pieChartLabels2"
                   [type]="pieChartType"
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)"
                   [options]="pieChartOptions"
-                  [colors]="doughnutChartColors"
-                >
+                  [colors]="doughnutChartColors">
                 </canvas>
               </div>
               <div
@@ -1750,8 +1608,7 @@
                   showExternal == true &&
                   showTrend == false &&
                   !clinicianReferralLoader
-                "
-              >
+                ">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">
                   You have no external referrals in the selected period
@@ -1765,18 +1622,16 @@
                   showTrend == false &&
                   !clinicianReferralLoader
                 "
-                class="trend-show"
-              >
+                class="trend-show">
                 <canvas
                   baseChart
-                  [datasets]="[{data:pieChartData3}]"
+                  [datasets]="[{ data: pieChartData3 }]"
                   [labels]="pieChartLabels3"
                   [type]="pieChartType"
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)"
                   [options]="pieChartOptions"
-                  [colors]="doughnutChartColors"
-                >
+                  [colors]="doughnutChartColors">
                 </canvas>
               </div>
               <div
@@ -1785,8 +1640,7 @@
                   showCombined == true &&
                   showTrend == false &&
                   !clinicianReferralLoader
-                "
-              >
+                ">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">
                   You have no referrals in the selected period
@@ -1799,8 +1653,7 @@
                   stackedChartTrendDataMax > 0 &&
                   !clinicianReferralLoader
                 "
-                class="chart-trend-show"
-              >
+                class="chart-trend-show">
                 <canvas
                   baseChart
                   [datasets]="stackedChartTrendData"
@@ -1810,8 +1663,7 @@
                   [type]="stackedChartType"
                   (chartHover)="chartHovered($event)"
                   [colors]="stackedChartColors"
-                  (chartClick)="chartClicked($event)"
-                ></canvas>
+                  (chartClick)="chartClicked($event)"></canvas>
               </div>
               <div
                 *ngIf="
@@ -1820,8 +1672,7 @@
                   showInternal == true &&
                   !clinicianReferralLoader
                 "
-                class="no-data-placeholder"
-              >
+                class="no-data-placeholder">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">
                   You have no referrals in the selected period
@@ -1834,8 +1685,7 @@
                   showExternal == true &&
                   !clinicianReferralLoader
                 "
-                class="no-data-placeholder"
-              >
+                class="no-data-placeholder">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">
                   You have no referrals in the selected period
@@ -1847,8 +1697,7 @@
                   showTrend == true &&
                   showCombined == true &&
                   !clinicianReferralLoader
-                "
-              >
+                ">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">
                   You have no referrals in the selected period
@@ -1861,16 +1710,14 @@
               *ngIf="toggleChecked == false"
               fxLayout="row wrap"
               class="m-t-40 sa_chart_details_sec pieChartDetails"
-              fxLayoutAlign="center center"
-            >
+              fxLayoutAlign="center center">
               <div
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="text-center"
-              >
+                class="text-center">
                 <h3 class="m-0 value-num">
-                  {{ pieChartCombinedTotal | number : '1.0-0' }}
+                  {{ pieChartCombinedTotal | number: '1.0-0' }}
                 </h3>
                 <span class="value-text">Total</span>
               </div>
@@ -1878,10 +1725,9 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="text-center"
-              >
+                class="text-center">
                 <h3 class="m-0 value-num">
-                  {{ pieChartInternalTotal | number : '1.0-0' }}
+                  {{ pieChartInternalTotal | number: '1.0-0' }}
                 </h3>
                 <span class="value-text">Internal</span>
               </div>
@@ -1889,10 +1735,9 @@
                 fxFlex.gt-sm="33.33%"
                 fxFlex.gt-xs="33.33%"
                 fxFlex="100"
-                class="text-center"
-              >
+                class="text-center">
                 <h3 class="m-0 value-num">
-                  {{ pieChartExternalTotal | number : '1.0-0' }}
+                  {{ pieChartExternalTotal | number: '1.0-0' }}
                 </h3>
                 <span class="value-text">External</span>
               </div>
@@ -1901,8 +1746,7 @@
         </mat-card-content>
         <div
           *ngIf="clinicianReferralLoader"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -1916,5 +1760,4 @@
   [style.display]="'none'"
   [datasets]="chartData1"
   [labels]="chartLabels1"
-  [type]="stackedChartType"
-></canvas>
+  [type]="stackedChartType"></canvas>

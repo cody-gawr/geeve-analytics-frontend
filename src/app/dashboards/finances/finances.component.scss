@@ -2,7 +2,7 @@
   .align-center {
     align-items: center;
   }
-  
+
   .h-100 {
     height: 100%;
   }
@@ -11,13 +11,13 @@
     padding-right: 2.3rem;
     padding-bottom: 6px;
   }
-  
+
   .mat-card-content {
     &.sa_matcard_content {
       height: 100%;
     }
   }
-  
+
   .sa_matcard_content {
     position: relative;
     .info-button {
@@ -28,14 +28,14 @@
         width: 15px;
       }
     }
-  
+
     .total-dicount-title {
       justify-content: start;
       .title {
         flex-grow: 1;
       }
     }
-  
+
     .chart-spacing {
       display: inline-flex;
       width: 100%;
@@ -43,7 +43,7 @@
       justify-content: space-around;
       padding-right: 32px;
     }
-  
+
     .clinician-center-chart {
       height: 100%;
       display: flex;
@@ -52,11 +52,11 @@
       justify-content: center;
     }
   }
-  
+
   .w-100 {
     width: 100%;
   }
-  
+
   .no-found-data {
     margin: 0 !important;
     max-width: 100%;
@@ -65,7 +65,7 @@
     height: 100%;
     min-height: 100px;
     margin-bottom: -3px !important;
-  
+
     p {
       margin: 0;
       position: absolute;
@@ -76,20 +76,20 @@
       font-size: 18px;
     }
   }
-  
+
   @media (max-width: 991px) {
     .md_mrn {
       margin-bottom: 15px;
     }
   }
-  
+
   .header_filters.finances {
     flex-direction: row-reverse !important;
   }
   .header_filters.multi {
     flex-direction: row-reverse !important;
   }
-  
+
   .custom-tooltip-color {
     display: block;
     height: 15px;
@@ -100,7 +100,7 @@
   .td-custom-tooltip-color {
     width: 10%;
   }
-  
+
   .sa_matcard_content .info-button img.white-heart-icon {
     width: 25px !important;
   }
@@ -127,5 +127,4 @@
   .swal2-styled.swal2-confirm {
     background-color: #18a689;
   }
-  
 }

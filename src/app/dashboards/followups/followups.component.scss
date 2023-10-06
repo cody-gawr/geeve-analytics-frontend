@@ -1,43 +1,45 @@
 .jeeve-legacy-app {
-    .header_filters.followups { flex-direction: row-reverse !important; }
+  .header_filters.followups {
+    flex-direction: row-reverse !important;
+  }
 
-.chart-conversion{
-    height: 350px; 
-    width:100%;
-}
-.chart-completion-rate{
+  .chart-conversion {
     height: 350px;
-}
-.mt-title-text{
+    width: 100%;
+  }
+  .chart-completion-rate {
+    height: 350px;
+  }
+  .mt-title-text {
     padding-left: 30px;
-}
-.chart-followp-outcome{
-    height: 260px; 
+  }
+  .chart-followp-outcome {
+    height: 260px;
     text-align: -webkit-center;
-}
-.conver-per-user{
+  }
+  .conver-per-user {
     height: 350px;
-}
-.chart-folloup-user{
+  }
+  .chart-folloup-user {
     height: 400px;
-    width:100%;
-}
-.folloup-per-user{
+    width: 100%;
+  }
+  .folloup-per-user {
     padding-top: 45px;
-}
-.followups_dashboard .custom-tooltip {
-    position        : absolute;
-    top             : 30px;
-    right           : -6px;
-    width           : 300px;
-    padding         : 8px 20px;
-    box-shadow      : 2px 15px 21px rgba(3, 83, 72, 0.19);
-    border-radius   : 6px;
+  }
+  .followups_dashboard .custom-tooltip {
+    position: absolute;
+    top: 30px;
+    right: -6px;
+    width: 300px;
+    padding: 8px 20px;
+    box-shadow: 2px 15px 21px rgba(3, 83, 72, 0.19);
+    border-radius: 6px;
     background-color: #1daa96;
-    color           : #fff;
-    opacity         : 0;
-    visibility      : hidden;
-    animation       : tooltipIn 0.5s ease-in-out;
-    z-index         : 999;
+    color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    animation: tooltipIn 0.5s ease-in-out;
+    z-index: 999;
   }
 }

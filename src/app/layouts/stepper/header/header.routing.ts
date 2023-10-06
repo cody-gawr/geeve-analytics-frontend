@@ -7,7 +7,7 @@ export const HeaderRoutes: Routes = [
     path: '',
     component: StepperHeaderComponent,
     data: {
-      title: 'Header'
-    }
-  }
+      title: 'Header',
+    },
+  },
 ];

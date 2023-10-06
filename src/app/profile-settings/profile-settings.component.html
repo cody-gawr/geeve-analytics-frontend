@@ -1,252 +1,524 @@
 <mat-accordion class="settings-table-card clinic-expansion-panel" multi="false">
-    <!-- Basic Detail Start -->
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title> My Details</mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-card-content>
-            <!-- section Start -->
-            <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
-                <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
-                    <mat-card fxFlex.xs="100" fxFlex.sm="100" fxFlex="100%">
-                        <mat-card-content>
-                            <div class="basic_details_form">
-                                <form [formGroup]="formSettings" (ngSubmit)="onSubmitBasic()">
-                                    <div fxLayout="row wrap" fxLayoutGap="10%">
-                                     <!--    <div fxFlex.xs="20%" fxFlex.md="120px" fxFlex="150px" class="profile-img-icon">
+  <!-- Basic Detail Start -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title> My Details</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <!-- section Start -->
+      <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
+        <div
+          fxLayout="row wrap"
+          fxLayoutGap="20px"
+          fxLayoutGap.md="20px"
+          fxLayoutGap.sm="20px"
+          fxLayoutGap.xs="0">
+          <mat-card fxFlex.xs="100" fxFlex.sm="100" fxFlex="100%">
+            <mat-card-content>
+              <div class="basic_details_form">
+                <form [formGroup]="formSettings" (ngSubmit)="onSubmitBasic()">
+                  <div fxLayout="row wrap" fxLayoutGap="10%">
+                    <!--    <div fxFlex.xs="20%" fxFlex.md="120px" fxFlex="150px" class="profile-img-icon">
                                             <div class="sa-image_upload_area ps_UpoadImage bd_UpoadImage">
                                                 <div class="clinic_logo"> <img src="{{imageURL}}" *ngIf="imageURL"> <img src="/assets/images/gPZwCbdS.jpg" *ngIf="!imageURL"> </div>
                                             </div>
                                         </div> -->
-                                        <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-                                            <div fxLayout="row wrap" fxLayoutGap="5%">
-                                                <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
-                                                    <div class="sa-form-group">
-                                                        <label>Display Name</label>
-                                                        <input [formControl]="formSettings.controls['displayName']" formControlName="displayName" placeholder="" id="displayName" [(ngModel)]="displayName">
-                                                        <small *ngIf="formSettings.controls['displayName'].hasError('required') && formSettings.controls['displayName'].touched" class="text-danger support-text">Display Name Is Required.</small>
-                                                        <small *ngIf="formSettings.controls['displayName'].hasError('pattern') && formSettings.controls['displayName'].touched" class="text-danger support-text">Display Name should not be blank.</small>
-                                                    </div>
-                                                </div>
-                                                <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10%">
-                                                    <div class="sa-form-group">
-                                                        <label>Email</label>
-                                                        <input formControlName="email" placeholder="" id="email" [formControl]="formSettings.controls['email']" [(ngModel)]="email" [readonly]="true" class="readonly_form">
-                                                        <small *ngIf="formSettings.controls['email'].hasError('pattern') && formSettings.controls['email'].touched" class="text-danger support-text">Please enter valid email.</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                 
-                                        </div>
-                                    </div>
-                                    <mat-card-actions class="text-right">
-                                        <button mat-raised-button color="dc" [disabled]="!formSettings.valid" type="button" (click)="onSubmitBasic()">SAVE</button>
-                                    </mat-card-actions>
-                                </form>
-                            </div>
-                        </mat-card-content>
-                    </mat-card>
-                </div>
-            </div>
-            <!-- section Start -->
-        </mat-card-content>
-    </mat-expansion-panel>
-    <!-- Basic Detail End -->
-    <!-- Change Password Start -->
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>Change Password</mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-card-content>
-            <mat-card-content>
-                <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
-                    <div fxLayout="row wrap" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px" fxLayoutGap="20px">
-                        <div class="ChangePassword-section">
-                            <form [formGroup]="form" class="basic-form change-password-form" (ngSubmit)="onSubmitPassword()">
-                                <div fxLayout="row wrap" fxLayoutGap="10%" fxLayoutGap.xs="0">
-                                    <div fxFlex.xs="20%" fxFlex.md="120px" fxFlex="150px" class="profile-img-icon">
-                                        <div class="change-password-icon"> <img src="/assets/images/change-password-icon.png"> </div>
-                                    </div>
-                                    <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(70% - 10px)" fxFlex.sm="calc(70% - 10px)" fxFlex.xs="100">
-                                        <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
-                                                <div class="sa-form-group">
-                                                    <label>Current Password</label>
-                                                    <input pattern='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~@#$%^&*+=`|{}:;!.?\"()\[\]-]).{10,}$' type="password" placeholder="" [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword"> <small *ngIf="currentPasswordError.required" class="text-danger support-text">You must include current password.</small><small *ngIf="old_password_error" class="text-danger support-text">Wrong current password .</small> </div>
-                                            </div>
-                                        </div>
-                                        <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10%">
-                                                <div class="sa-form-group">
-                                                    <label>New Password</label>
-                                                    <input pattern='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~@#$%^&*+=`|{}:;!.?\"()\[\]-]).{10,}$' type="password" placeholder="" [formControl]="form.controls['newPassword']" [(ngModel)]="newPassword"> <small *ngIf="changePasswordError.required" class="text-danger support-text">You must include password.</small> <small *ngIf="changePasswordError.minlength" class="text-danger support-text">Password should contain minimum 10 characters.</small> <small *ngIf="changePasswordError.pattern" class="text-danger support-text">Password must contain one lowercase letter, one uppercase letter and one special character.</small> </div>
-                                            </div>
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100">
-                                                <div class="sa-form-group">
-                                                    <label>Repeat Password</label>
-                                                    <input type="password" placeholder="" [formControl]="form.controls['repeatPassword']" [(ngModel)]="repeatPassword"> <small *ngIf="changePasswordError.crequired" class="text-danger support-text">You must include confirm password.</small> <small *ngIf="form.controls['repeatPassword'].errors?.equalTo && form.controls['repeatPassword'].touched" class="text-danger support-text">Password and confirmation password do not match.</small> <small *ngIf="confirm_password_error" class="text-danger support-text">{{confirm_password_text}}</small> </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <mat-card-actions class="sa-pull-right">
-                                    <button mat-raised-button color="dc" type="submit">SAVE</button>
-                                </mat-card-actions>
-                            </form>
+                    <div
+                      fxFlex="calc(49% - 10px)"
+                      fxFlex.md="calc(49% - 10px)"
+                      fxFlex.sm="calc(49% - 10px)"
+                      fxFlex.xs="100">
+                      <div fxLayout="row wrap" fxLayoutGap="5%">
+                        <div
+                          fxFlex="calc(45% - 10px)"
+                          fxFlex.md="calc(45% - 10px)"
+                          fxFlex.sm="calc(45% - 10px)"
+                          fxFlex.xs="100"
+                          fxLayoutGap="10px">
+                          <div class="sa-form-group">
+                            <label>Display Name</label>
+                            <input
+                              [formControl]="
+                                formSettings.controls['displayName']
+                              "
+                              formControlName="displayName"
+                              placeholder=""
+                              id="displayName"
+                              [(ngModel)]="displayName" />
+                            <small
+                              *ngIf="
+                                formSettings.controls['displayName'].hasError(
+                                  'required'
+                                ) &&
+                                formSettings.controls['displayName'].touched
+                              "
+                              class="text-danger support-text"
+                              >Display Name Is Required.</small
+                            >
+                            <small
+                              *ngIf="
+                                formSettings.controls['displayName'].hasError(
+                                  'pattern'
+                                ) &&
+                                formSettings.controls['displayName'].touched
+                              "
+                              class="text-danger support-text"
+                              >Display Name should not be blank.</small
+                            >
+                          </div>
                         </div>
+                        <div
+                          fxFlex="calc(45% - 10px)"
+                          fxFlex.md="calc(45% - 10px)"
+                          fxFlex.sm="calc(45% - 10px)"
+                          fxFlex.xs="100"
+                          fxLayoutGap="10%">
+                          <div class="sa-form-group">
+                            <label>Email</label>
+                            <input
+                              formControlName="email"
+                              placeholder=""
+                              id="email"
+                              [formControl]="formSettings.controls['email']"
+                              [(ngModel)]="email"
+                              [readonly]="true"
+                              class="readonly_form" />
+                            <small
+                              *ngIf="
+                                formSettings.controls['email'].hasError(
+                                  'pattern'
+                                ) && formSettings.controls['email'].touched
+                              "
+                              class="text-danger support-text"
+                              >Please enter valid email.</small
+                            >
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                </div>
+                  </div>
+                  <mat-card-actions class="text-right">
+                    <button
+                      mat-raised-button
+                      color="dc"
+                      [disabled]="!formSettings.valid"
+                      type="button"
+                      (click)="onSubmitBasic()">
+                      SAVE
+                    </button>
+                  </mat-card-actions>
+                </form>
+              </div>
             </mat-card-content>
-        </mat-card-content>
-    </mat-expansion-panel>
-    <!-- Change Password End -->
-    <!-- Update Card Details Start -->
-    <mat-expansion-panel [ngClass] ="showCard? 'show': 'hide'">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Payment Method</mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <!-- section Start -->
+    </mat-card-content>
+  </mat-expansion-panel>
+  <!-- Basic Detail End -->
+  <!-- Change Password Start -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Change Password</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <mat-card-content>
+        <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
+          <div
+            fxLayout="row wrap"
+            fxLayoutGap.sm="0px"
+            fxLayoutGap.xs="0px"
+            fxLayoutGap="20px">
+            <div class="ChangePassword-section">
+              <form
+                [formGroup]="form"
+                class="basic-form change-password-form"
+                (ngSubmit)="onSubmitPassword()">
+                <div fxLayout="row wrap" fxLayoutGap="10%" fxLayoutGap.xs="0">
+                  <div
+                    fxFlex.xs="20%"
+                    fxFlex.md="120px"
+                    fxFlex="150px"
+                    class="profile-img-icon">
+                    <div class="change-password-icon">
+                      <img src="/assets/images/change-password-icon.png" />
+                    </div>
+                  </div>
+                  <div
+                    fxFlex="calc(70% - 10px)"
+                    fxFlex.md="calc(70% - 10px)"
+                    fxFlex.sm="calc(70% - 10px)"
+                    fxFlex.xs="100">
+                    <div fxLayout="row wrap" fxLayoutGap="5%">
+                      <div
+                        fxFlex="calc(45% - 10px)"
+                        fxFlex.md="calc(45% - 10px)"
+                        fxFlex.sm="calc(45% - 10px)"
+                        fxFlex.xs="100"
+                        fxLayoutGap="10px">
+                        <div class="sa-form-group">
+                          <label>Current Password</label>
+                          <input
+                            pattern='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~@#$%^&*+=`|{}:;!.?\"()\[\]-]).{10,}$'
+                            type="password"
+                            placeholder=""
+                            [formControl]="form.controls['currentPassword']"
+                            [(ngModel)]="currentPassword" />
+                          <small
+                            *ngIf="currentPasswordError.required"
+                            class="text-danger support-text"
+                            >You must include current password.</small
+                          ><small
+                            *ngIf="old_password_error"
+                            class="text-danger support-text"
+                            >Wrong current password .</small
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="5%">
+                      <div
+                        fxFlex="calc(45% - 10px)"
+                        fxFlex.md="calc(45% - 10px)"
+                        fxFlex.sm="calc(45% - 10px)"
+                        fxFlex.xs="100"
+                        fxLayoutGap="10%">
+                        <div class="sa-form-group">
+                          <label>New Password</label>
+                          <input
+                            pattern='^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~@#$%^&*+=`|{}:;!.?\"()\[\]-]).{10,}$'
+                            type="password"
+                            placeholder=""
+                            [formControl]="form.controls['newPassword']"
+                            [(ngModel)]="newPassword" />
+                          <small
+                            *ngIf="changePasswordError.required"
+                            class="text-danger support-text"
+                            >You must include password.</small
+                          >
+                          <small
+                            *ngIf="changePasswordError.minlength"
+                            class="text-danger support-text"
+                            >Password should contain minimum 10
+                            characters.</small
+                          >
+                          <small
+                            *ngIf="changePasswordError.pattern"
+                            class="text-danger support-text"
+                            >Password must contain one lowercase letter, one
+                            uppercase letter and one special character.</small
+                          >
+                        </div>
+                      </div>
+                      <div
+                        fxFlex="calc(45% - 10px)"
+                        fxFlex.md="calc(45% - 10px)"
+                        fxFlex.sm="calc(45% - 10px)"
+                        fxFlex.xs="100">
+                        <div class="sa-form-group">
+                          <label>Repeat Password</label>
+                          <input
+                            type="password"
+                            placeholder=""
+                            [formControl]="form.controls['repeatPassword']"
+                            [(ngModel)]="repeatPassword" />
+                          <small
+                            *ngIf="changePasswordError.crequired"
+                            class="text-danger support-text"
+                            >You must include confirm password.</small
+                          >
+                          <small
+                            *ngIf="
+                              form.controls['repeatPassword'].errors?.equalTo &&
+                              form.controls['repeatPassword'].touched
+                            "
+                            class="text-danger support-text"
+                            >Password and confirmation password do not
+                            match.</small
+                          >
+                          <small
+                            *ngIf="confirm_password_error"
+                            class="text-danger support-text"
+                            >{{ confirm_password_text }}</small
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <mat-card-actions class="sa-pull-right">
+                  <button mat-raised-button color="dc" type="submit">
+                    SAVE
+                  </button>
+                </mat-card-actions>
+              </form>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card-content>
+  </mat-expansion-panel>
+  <!-- Change Password End -->
+  <!-- Update Card Details Start -->
+  <mat-expansion-panel [ngClass]="showCard ? 'show' : 'hide'">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Payment Method</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <mat-card-content>
+        <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
+          <div
+            fxLayout="row wrap"
+            fxLayoutGap.sm="0px"
+            fxLayoutGap.xs="0px"
+            fxLayoutGap="20px">
+            <div
+              fxFlex.xs="calc(50% - 25px)"
+              fxFlex.md="calc(50% - 25px)"
+              fxFlex="calc(50% - 25px)">
+              <div class="update_card_sec">
+                <div class="last_payment_sec">
+                  <div class="detail_last_payment" *ngIf="last_invoic_id">
+                    <strong
+                      ><i class="fas fa-exclamation-triangle"></i> Failed
+                      Invoice ID :</strong
+                    >
+                    {{ last_invoic_id }}
+                  </div>
+                  <div class="detail_last_payment">
+                    <strong
+                      ><i class="far fa-credit-card"></i> Current Card :</strong
+                    >
+                    xxxx-xxxx-xxxx-{{ last4 }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              fxFlex.xs="calc(50% - 25px)"
+              fxFlex.md="calc(50% - 25px)"
+              fxFlex="calc(50% - 25px)">
+              <div class="card_fields">
+                <div
+                  class="sa_mattabs_design sa_matforms_design sa_payment_form AddCard-main">
+                  <div class="iframe_main">
+                    <div class="fieldset">
+                      <div class="AddCard-box">
+                        <img class="card-c" src="/assets/images/card-c.png" />
+                        <mat-card-title class="mat-card-title text-right"
+                          >Add New Card</mat-card-title
+                        >
+                        <div
+                          id="example3-card-number"
+                          class="field empty iframe_design"></div>
+                        <div class="two_iframe_areas">
+                          <div
+                            id="example3-card-expiry"
+                            class="field empty third-width iframe_design"></div>
+                          <div
+                            id="example3-card-cvc"
+                            class="field empty third-width iframe_design"></div>
+                        </div>
+                      </div>
+                      <div class="fieldset text-right">
+                        <button
+                          type="button"
+                          mat-raised-button
+                          class="btn btn-primary mat-dc saveBtnPayment"
+                          (click)="setupIntent()">
+                          SAVE
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card-content>
+  </mat-expansion-panel>
+  <!-- Update Card Details End -->
+  <!-- Update Card Details Start -->
+  <!-- <mat-expansion-panel *ngIf="false"> -->
+  <mat-expansion-panel *ngIf="showCard">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Chart Tips</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <div
+        class="sa_dentist_graphs_area sa_profile_setting sa_forms_design"
+        *ngIf="chartsTipsLoader">
+        <div class="card-loading">
+          <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+        </div>
+      </div>
+      <div
+        class="sa_dentist_graphs_area sa_profile_setting sa_forms_design"
+        *ngIf="!chartsTipsLoader">
+        <div
+          fxLayout="row wrap"
+          fxLayoutGap.sm="0px"
+          fxLayoutGap.xs="0px"
+          fxLayoutGap="20px">
+          <div class="ChangePassword-section">
+            <!--   <form [formGroup]="form" class="basic-form change-password-form" (ngSubmit)="onSubmitPassword()"> -->
+            <div fxLayout="row wrap" fxLayoutGap="0" fxLayoutGap.xs="0">
+              <div
+                fxFlex="calc(90% - 10px)"
+                fxFlex.md="calc(90% - 10px)"
+                fxFlex.sm="calc(90% - 10px)"
+                fxFlex.xs="100">
+                <mat-form-field floatLabel="never" class="setPreviousDay">
+                  <mat-select
+                    class="selectTipCon"
+                    [(ngModel)]="selectedChartTip"
+                    [(value)]="selectedChartTip">
+                    <mat-option
+                      *ngFor="let dashboard of dashboards | keyvalue"
+                      value="{{ dashboard.key }}"
+                      >{{ dashboard.value }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div
+                fxFlex="calc(90% - 10px)"
+                fxFlex.md="calc(90% - 10px)"
+                fxFlex.sm="calc(90% - 10px)"
+                fxFlex.xs="100"
+                *ngFor="let chartsTip of chartsTips | keyvalue"
+                [ngClass]="
+                  selectedChartTip == chartsTip.key ? 'showTip' : 'hideTip'
+                ">
+                <div *ngFor="let charts of chartsTip.value | keyvalue">
+                  <div fxLayout="row wrap" fxLayoutGap="5%">
+                    <div
+                      fxFlex="calc(50% - 10px)"
+                      fxFlex.md="calc(50% - 10px)"
+                      fxFlex.sm="calc(50% - 10px)"
+                      fxFlex.xs="100"
+                      fxLayoutGap="10px">
+                      <div class="sa-form-group">
+                        <label>{{ charts.value.title }}</label>
+                        <input
+                          (keydown)="checkLenth($event, 'title')"
+                          [(ngModel)]="
+                            chartsTips[chartsTip.key][charts.key]['tip_title']
+                          " />
+                      </div>
+                    </div>
+                    <div
+                      fxFlex="calc(45% - 10px)"
+                      fxFlex.md="calc(45% - 10px)"
+                      fxFlex.sm="calc(45% - 10px)"
+                      fxFlex.xs="100"
+                      fxLayoutGap="5px">
+                      <div class="sa-form-group">
+                        <label>&nbsp;</label>
+                        <input
+                          (keydown)="checkLenth($event, 'discription')"
+                          [(ngModel)]="
+                            chartsTips[chartsTip.key][charts.key]['description']
+                          " />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <mat-card-actions class="sa-pull-right">
+              <button mat-raised-button color="dc" (click)="saveTips()">
+                SAVE
+              </button>
+            </mat-card-actions>
+            <!-- </form> -->
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-expansion-panel>
+  <!-- Update Card Details End -->
+
+  <!-- Health Screen Start -->
+  <mat-expansion-panel
+    *ngIf="
+      (apiUrl.includes('test') || apiUrl.includes('staging-')) && showCard
+    ">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Customisations </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <!-- section Start -->
+      <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
+        <h4 class="clinic-settings-form-title">Health Screen</h4>
+        <div
+          class="clinic-setting-form"
+          fxLayout="row wrap"
+          fxLayoutGap="20px"
+          fxLayoutGap.md="20px"
+          fxLayoutGap.sm="20px"
+          fxLayoutGap.xs="0">
+          <mat-card fxFlex.xs="100" fxFlex.sm="100" fxFlex="100%">
             <mat-card-content>
-                <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
-                    <div fxLayout="row wrap" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px" fxLayoutGap="20px">
-                        <div fxFlex.xs="calc(50% - 25px)" fxFlex.md="calc(50% - 25px)" fxFlex="calc(50% - 25px)">
-                            <div class="update_card_sec">
-                                <div class="last_payment_sec">
-                                    <div class="detail_last_payment" *ngIf="last_invoic_id"> <strong><i class="fas fa-exclamation-triangle"></i> Failed Invoice ID :</strong> {{last_invoic_id}} </div>
-                                    <div class="detail_last_payment"> <strong><i class="far fa-credit-card"></i> Current Card :</strong> xxxx-xxxx-xxxx-{{last4}}</div>
-                                </div>
+              <div class="basic_details_form">
+                <form
+                  [formGroup]="healthSettings"
+                  (ngSubmit)="onSubmitHealthScreen()">
+                  <div fxLayout="row wrap" fxLayoutGap="10%">
+                    <div
+                      fxFlex="calc(49% - 10px)"
+                      fxFlex.md="calc(49% - 10px)"
+                      fxFlex.sm="calc(49% - 10px)"
+                      fxFlex.xs="100">
+                      <div class="sa-form-group sa-group">
+                        <label
+                          >Date Range
+                          <div class="info-button">
+                            <div class="info-icon-container">
+                              <img
+                                [tooltip]="this.constants.tipdateRange"
+                                src="../assets/images/info-icon.png"
+                                alt="info-icon"
+                                class="info-icon" />
                             </div>
-                        </div>
-                        <div fxFlex.xs="calc(50% - 25px)" fxFlex.md="calc(50% - 25px)" fxFlex="calc(50% - 25px)">
-                            <div class="card_fields">
-                                <div class="sa_mattabs_design sa_matforms_design sa_payment_form AddCard-main">
-                                    <div class="iframe_main">
-                                        <div class="fieldset">
-                                            <div class="AddCard-box"> <img class="card-c" src="/assets/images/card-c.png">
-                                                <mat-card-title class="mat-card-title text-right">Add New Card</mat-card-title>
-                                                <div id="example3-card-number" class="field empty iframe_design"></div>
-                                                <div class="two_iframe_areas">
-                                                    <div id="example3-card-expiry" class="field empty third-width iframe_design "></div>
-                                                    <div id="example3-card-cvc" class="field empty third-width iframe_design"></div>
-                                                </div>
-                                            </div>
-                                            <div class="fieldset text-right">
-                                                <button type="button"  mat-raised-button class="btn btn-primary mat-dc saveBtnPayment" (click)="setupIntent()">SAVE</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                          </div>
+                        </label>
+
+                        <select
+                          [formControl]="
+                            healthSettings.controls['health_screen_mtd']
+                          "
+                          formControlName="health_screen_mtd"
+                          [(ngModel)]="health_screen_mtd">
+                          <option value="0">Last 30 Days</option>
+                          <option value="1">Month to Date</option>
+                        </select>
+                      </div>
                     </div>
-                </div>
+                  </div>
+                  <mat-card-actions class="text-right">
+                    <button
+                      mat-raised-button
+                      color="dc"
+                      type="button"
+                      (click)="onSubmitHealthScreen()">
+                      SAVE
+                    </button>
+                  </mat-card-actions>
+                </form>
+              </div>
             </mat-card-content>
-        </mat-card-content>
-    </mat-expansion-panel>
-    <!-- Update Card Details End -->
-    <!-- Update Card Details Start -->
-    <!-- <mat-expansion-panel *ngIf="false"> -->
-    <mat-expansion-panel *ngIf="showCard" >
-        <mat-expansion-panel-header>
-            <mat-panel-title>Chart Tips</mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-card-content>
-            <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design" *ngIf="chartsTipsLoader">
-                <div class="card-loading"><img class="tableLoader" src="../../assets/images/logo-icon.gif"></div>
-            </div>
-                 <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design" *ngIf="!chartsTipsLoader">
-                    <div fxLayout="row wrap" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px" fxLayoutGap="20px">
-                        <div class="ChangePassword-section">
-                          <!--   <form [formGroup]="form" class="basic-form change-password-form" (ngSubmit)="onSubmitPassword()"> -->
-                                <div fxLayout="row wrap" fxLayoutGap="0" fxLayoutGap.xs="0">                                   
-                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100">
-                                        <mat-form-field floatLabel="never" class="setPreviousDay">
-                                            <mat-select class="selectTipCon" [(ngModel)] = "selectedChartTip" [(value)] = "selectedChartTip">
-                                                <mat-option *ngFor="let dashboard of dashboards | keyvalue" value="{{dashboard.key}}">{{dashboard.value}}</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-
-
-                                     <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100" *ngFor="let chartsTip of chartsTips | keyvalue" [ngClass] = "selectedChartTip == chartsTip.key? 'showTip' : 'hideTip' ">
-                                           <div *ngFor="let charts of chartsTip.value | keyvalue">
-                                                <div fxLayout="row wrap" fxLayoutGap="5%">
-                                                    <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
-                                                        <div class="sa-form-group">
-                                                            <label>{{ charts.value.title}}</label>
-                                                            <input (keydown) ="checkLenth( $event,'title')" [(ngModel)]="chartsTips[chartsTip.key][charts.key]['tip_title']">
-                                                        </div>
-                                                    </div>
-                                                      <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
-                                                        <div class="sa-form-group">
-                                                            <label>&nbsp;</label>
-                                                            <input (keydown) ="checkLenth( $event,'discription')" [(ngModel)]="chartsTips[chartsTip.key][charts.key]['description']">
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                           </div> 
-
-                                     </div>
-                                </div>
-                                <mat-card-actions class="sa-pull-right">
-                                    <button mat-raised-button color="dc" (click) = "saveTips()">SAVE</button>
-                                </mat-card-actions>
-                            <!-- </form> -->
-                        </div>
-                    </div>
-                </div>
-        </mat-card-content>
-    </mat-expansion-panel>
-    <!-- Update Card Details End -->   
-    
-     <!-- Health Screen Start -->
-     <mat-expansion-panel *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && showCard">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Customisations </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-card-content>
-            <!-- section Start -->
-            <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
-                <h4 class="clinic-settings-form-title">Health Screen</h4>
-                <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
-                    <mat-card fxFlex.xs="100" fxFlex.sm="100" fxFlex="100%">
-                        <mat-card-content>
-                            <div class="basic_details_form">
-                                <form [formGroup]="healthSettings" (ngSubmit)="onSubmitHealthScreen()">
-                                    <div fxLayout="row wrap" fxLayoutGap="10%">
-                                        <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-                                            <div class="sa-form-group sa-group">
-                                              <label>Date Range
-                                                <div class="info-button">
-                                                  <div class="info-icon-container">
-                                                    <img [tooltip]="this.constants.tipdateRange" src="../assets/images/info-icon.png"
-                                                      alt="info-icon" class="info-icon" />
-                                                  </div>
-                                                </div>
-                                              </label>
-                              
-                                              <select [formControl]="healthSettings.controls['health_screen_mtd']" formControlName="health_screen_mtd" [(ngModel)]="health_screen_mtd">
-                                                <option value="0">Last 30 Days</option>
-                                                <option value="1">Month to Date</option>
-                                              </select>
-                                            </div>
-                                          </div>
-                                    </div>
-                                    <mat-card-actions class="text-right">
-                                        <button mat-raised-button color="dc" type="button" (click)="onSubmitHealthScreen()">SAVE</button>
-                                    </mat-card-actions>
-                                </form>
-                            </div>
-                        </mat-card-content>
-                    </mat-card>
-                </div>
-            </div>
-            <!-- section Start -->
-        </mat-card-content>
-    </mat-expansion-panel>
-    <!-- Health screen End --> 
-
+          </mat-card>
+        </div>
+      </div>
+      <!-- section Start -->
+    </mat-card-content>
+  </mat-expansion-panel>
+  <!-- Health screen End -->
 </mat-accordion>
 <!-- <mat-card  fxFlex.xs="100" fxFlex.sm="100" fxFlex="calc(50% - 10px)">
 <mat-card-content fxLayout.lt-lg="column">

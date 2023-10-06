@@ -9,9 +9,8 @@ describe('AppLayoutComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppLayoutComponent ]
-    })
-    .compileComponents();
+      declarations: [AppLayoutComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

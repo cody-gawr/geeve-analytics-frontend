@@ -2,7 +2,7 @@ import { Directive, HostListener } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Directive({
-  selector: '[formControlName][appTimeMask]'
+  selector: '[formControlName][appTimeMask]',
 })
 export class TimeMaskDirective {
   constructor(public ngControl: NgControl) {}

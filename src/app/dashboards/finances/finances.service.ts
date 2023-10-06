@@ -55,7 +55,8 @@ export class FinancesService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -83,7 +84,8 @@ export class FinancesService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -113,7 +115,8 @@ export class FinancesService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration + (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -132,7 +135,8 @@ export class FinancesService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration + (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -164,7 +168,8 @@ export class FinancesService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration + (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -183,7 +188,8 @@ export class FinancesService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration + (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -215,7 +221,8 @@ export class FinancesService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration + (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -234,7 +241,8 @@ export class FinancesService {
             '&end_date=' +
             endDate +
             '&duration=' +
-            duration + (queryWhEnabled > 0?'&wh=1': ''),
+            duration +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -264,7 +272,8 @@ export class FinancesService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -293,7 +302,8 @@ export class FinancesService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -321,7 +331,8 @@ export class FinancesService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -350,7 +361,8 @@ export class FinancesService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -379,7 +391,8 @@ export class FinancesService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -408,7 +421,8 @@ export class FinancesService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -419,7 +433,11 @@ export class FinancesService {
   }
 
   // finProductionByClinician
-  finProductionByClinicianTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  finProductionByClinicianTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -427,7 +445,8 @@ export class FinancesService {
           '/Finance/fnProductionByClinicianTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -438,7 +457,11 @@ export class FinancesService {
   }
 
   // finTotalDiscounts
-  finTotalDiscountsTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  finTotalDiscountsTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -446,7 +469,8 @@ export class FinancesService {
           '/Finance/fnDiscountsTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -456,7 +480,11 @@ export class FinancesService {
       );
   }
   // finTotalDiscounts
-  finOverdueAccountsTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  finOverdueAccountsTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -464,7 +492,8 @@ export class FinancesService {
           '/Finance/overduesTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode  + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -475,7 +504,11 @@ export class FinancesService {
   }
 
   // finTotalProductionTrend
-  finTotalProductionTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  finTotalProductionTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -483,7 +516,8 @@ export class FinancesService {
           '/Finance/fnTotalProductionTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -493,7 +527,11 @@ export class FinancesService {
       );
   }
 
-  finCollectionTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  finCollectionTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -501,7 +539,8 @@ export class FinancesService {
           '/Finance/fnTotalCollectionTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode  + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -511,7 +550,11 @@ export class FinancesService {
       );
   }
 
-  finProductionPerVisitTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  finProductionPerVisitTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -519,7 +562,8 @@ export class FinancesService {
           '/Finance/fnProductionPerVisitTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode  + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -538,7 +582,8 @@ export class FinancesService {
           '/Finance/finNetProfitTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode  + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -549,7 +594,11 @@ export class FinancesService {
   }
 
   // finNetProfitPercentTrend
-  finNetProfitPercentTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  finNetProfitPercentTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -557,7 +606,8 @@ export class FinancesService {
           '/Finance/finNetProfitPercentTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode  + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -582,7 +632,8 @@ export class FinancesService {
             '/Finance/fnNetProfitTrend?clinic_id=' +
             clinic_id +
             '&mode=' +
-            mode  + (queryWhEnabled > 0?'&wh=1': ''),
+            mode +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -597,7 +648,8 @@ export class FinancesService {
             '/Finance/fnNetProfitMyobTrend?clinic_id=' +
             clinic_id +
             '&mode=' +
-            mode  + (queryWhEnabled > 0?'&wh=1': ''),
+            mode +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -624,7 +676,8 @@ export class FinancesService {
             '/Finance/fnNetProfitPercentageTrend?clinic_id=' +
             clinic_id +
             '&mode=' +
-            mode + (queryWhEnabled > 0?'&wh=1': ''),
+            mode +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -639,7 +692,8 @@ export class FinancesService {
             '/Finance/fnNetProfitPercentageMyobTrend?clinic_id=' +
             clinic_id +
             '&mode=' +
-            mode + (queryWhEnabled > 0?'&wh=1': ''),
+            mode +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -665,7 +719,8 @@ export class FinancesService {
             '/Finance/fnExpensesTrend?clinic_id=' +
             clinic_id +
             '&mode=' +
-            mode + (queryWhEnabled > 0?'&wh=1': ''),
+            mode +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -680,7 +735,8 @@ export class FinancesService {
             '/Finance/fnExpensesMyobTrend?clinic_id=' +
             clinic_id +
             '&mode=' +
-            mode + (queryWhEnabled > 0?'&wh=1': ''),
+            mode +
+            (queryWhEnabled > 0 ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -692,7 +748,11 @@ export class FinancesService {
     return null;
   }
   // finExpensesByCategoryMktTrend
-  finExpensesByCategoryMktTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  finExpensesByCategoryMktTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -700,7 +760,8 @@ export class FinancesService {
           '/Finance/fnExpensesTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(

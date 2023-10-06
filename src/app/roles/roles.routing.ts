@@ -4,10 +4,10 @@ import { RolesComponent } from './roles.component';
 
 export const RolesRoutes: Routes = [
   {
-   path: '',
+    path: '',
     component: RolesComponent,
     data: {
-      title: 'Roles'
-    }
-  }
+      title: 'Roles',
+    },
+  },
 ];

@@ -8,9 +8,8 @@ describe('MorningHuddleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MorningHuddleComponent ]
-    })
-    .compileComponents();
+      declarations: [MorningHuddleComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -2,8 +2,7 @@
   class="sa_select internal_dentist"
   [(ngModel)]="selectedDentist"
   (ngModelChange)="loadDentist($event)"
-  [style.display]="'none'"
->
+  [style.display]="'none'">
   <option value="all">All Dentist</option>
   <option *ngFor="let dentist of dentists" [value]="dentist.providerId">
     {{ dentist.name }}
@@ -13,23 +12,19 @@
   type="button"
   id="dentist_initiate"
   (click)="initiate_dentist()"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <input
   type="button"
   id="clinic_initiate"
   (click)="initiate_clinic()"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <input
   type="text"
   id="page_title"
   value="Clinician Procedures & Referrals"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <div
-  class="sa_dashboard_inner_content sa_frontdesk_graph sa_dentist_graphs_area"
->
+  class="sa_dashboard_inner_content sa_frontdesk_graph sa_dentist_graphs_area">
   <div class="sa_card topbar-strip">
     <div
       class="dashboard-top-header"
@@ -37,14 +32,12 @@
       fxLayoutGap="0px"
       fxLayoutGap.md="0"
       fxLayoutGap.sm="0"
-      fxLayoutGap.xs="0"
-    >
+      fxLayoutGap.xs="0">
       <div class="sa_frontdesk_left-ratio" fxFlex>
         <app-date-menu-bar
           #dateBar
           (filter)="filterDate($event)"
-          (changeDate)="choosedDate($event)"
-        >
+          (changeDate)="choosedDate($event)">
         </app-date-menu-bar>
       </div>
       <div class="sa_frontdesk_target dh-target">
@@ -55,30 +48,26 @@
               #group="matButtonToggleGroup"
               name="fontStyle"
               class="trendToggle sa_toogle_group2 toggle_switcher"
-              aria-label="Font Style"
-            >
+              aria-label="Font Style">
               <mat-button-toggle
                 checked
                 value="off"
                 class="target_off target_filter"
-                (click)="toggleFilter('off')"
-              >
+                (click)="toggleFilter('off')">
                 <span>Off</span>
               </mat-button-toggle>
               <mat-button-toggle
                 value="current"
                 class="target_current target_filter"
                 [disabled]="Apirequest <= 0 ? false : true"
-                (click)="Apirequest <= 0 ? toggleFilter('current') : false"
-              >
+                (click)="Apirequest <= 0 ? toggleFilter('current') : false">
                 <span>Monthly</span>
               </mat-button-toggle>
               <mat-button-toggle
                 value="historic"
                 class="target_historic target_filter"
                 [disabled]="Apirequest <= 0 ? false : true"
-                (click)="Apirequest <= 0 ? toggleFilter('historic') : false"
-              >
+                (click)="Apirequest <= 0 ? toggleFilter('historic') : false">
                 <span>Annual</span>
               </mat-button-toggle>
             </mat-button-toggle-group>
@@ -94,14 +83,12 @@
       fxLayoutGap="20px"
       fxLayoutGap.md="0"
       fxLayoutGap.sm="0"
-      fxLayoutGap.xs="0"
-    >
+      fxLayoutGap.xs="0">
       <div
         fxFlex.sm="100"
         fxFlex.xs="100"
         fxFlex="100"
-        class="sa_flex_transparent"
-      >
+        class="sa_flex_transparent">
         {{ startDate }}- {{ endDate }}
       </div>
 
@@ -111,8 +98,7 @@
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg items_predictor md_mrn"
-      >
+        class="sa_flexbg items_predictor md_mrn">
         <mat-card class="itemsPredictor">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -140,16 +126,14 @@
                       (!showTopVlaues && !showUtiTable && utilShow == 2)
                     "
                     class="far fa-chart-bar fa-margin"
-                    (click)="setTopValues()"
-                  ></i>
+                    (click)="setTopValues()"></i>
                   <i
                     *ngIf="
                       (showTopVlaues && !showUtiTable && !showTrend) ||
                       (showTopVlaues && !showUtiTable && utilShow == 2)
                     "
                     class="far fa-chart-bar greenIcon fa-margin-color"
-                    (click)="setTopValues()"
-                  ></i>
+                    (click)="setTopValues()"></i>
                   <!-- top values Ions -->
                   <!-- Show Table -->
                   <i
@@ -158,31 +142,27 @@
                       (!showUtiTable && utilShow == 2)
                     "
                     class="fa fa-table fa-margin"
-                    (click)="showTable(true)"
-                  ></i>
+                    (click)="showTable(true)"></i>
                   <i
                     *ngIf="
                       (showUtiTable && !showTrend) ||
                       (showUtiTable && utilShow == 2)
                     "
                     class="fa fa-table greenIcon fa-margin-color"
-                    (click)="showTable(false)"
-                  ></i>
+                    (click)="showTable(false)"></i>
                   <!-- Show Table -->
                   <img
                     [tooltip]="charTips['15']"
                     src="../assets/images/info-icon.png"
                     alt="info-icon"
-                    class="info-icon"
-                  />
+                    class="info-icon" />
                 </div>
               </ng-template>
             </mat-card-title>
             <div class="card-body">
               <div
                 class="no-data-placeholder"
-                *ngIf="isExact || isCore; else nonExactTemplate"
-              >
+                *ngIf="isExact || isCore; else nonExactTemplate">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">Coming Soon...</p>
               </div>
@@ -192,14 +172,12 @@
                   fxLayout="row wrap"
                   class="sa_tabs_main_sec"
                   fxLayoutAlign="center"
-                  [ngClass]="{ hidden: isCancellationRatioContainerVisible }"
-                >
+                  [ngClass]="{ hidden: isCancellationRatioContainerVisible }">
                   <div
                     fxFlex.gt-sm="49.33%"
                     fxFlex.gt-xs="50%"
                     fxFlex="100"
-                    class="btn-group"
-                  >
+                    class="btn-group">
                     <small
                       class="sa_tab_btn"
                       [ngClass]="utilShow == 1 ? 'active' : ''"
@@ -211,8 +189,7 @@
                     fxFlex.gt-sm="49.33%"
                     fxFlex.gt-xs="50%"
                     fxFlex="100"
-                    class="btn-group"
-                  >
+                    class="btn-group">
                     <small
                       class="sa_tab_btn"
                       [ngClass]="utilShow == 2 ? 'active' : ''"
@@ -233,8 +210,7 @@
                         ) &&
                         workTimeData1.length > 0 &&
                         utilShow == 1
-                      "
-                    >
+                      ">
                       <canvas
                         *ngIf="
                           !(
@@ -252,8 +228,7 @@
                         [type]="'bar'"
                         (chartHover)="chartHovered($event)"
                         [legend]="isAllClinic"
-                        (chartClick)="chartClicked($event)"
-                      >
+                        (chartClick)="chartClicked($event)">
                       </canvas>
                       <div
                         *ngIf="
@@ -262,8 +237,7 @@
                           !(utilityratemessage || fdWorkTimeAnalysisLoader) &&
                           showUtiTable
                         "
-                        class="utiTablecon"
-                      >
+                        class="utiTablecon">
                         <table class="utiTable">
                           <thead>
                             <tr>
@@ -291,8 +265,7 @@
                         utilShow == 2 &&
                         byDayLabels.length > 0 &&
                         !(byDayLoader || showTrend)
-                      "
-                    >
+                      ">
                       <canvas
                         *ngIf="!showUtiTable"
                         #myCanvas
@@ -303,13 +276,11 @@
                         [type]="'bar'"
                         (chartHover)="chartHovered($event)"
                         [legend]="false"
-                        (chartClick)="chartClicked($event)"
-                      >
+                        (chartClick)="chartClicked($event)">
                       </canvas>
                       <div
                         *ngIf="byDayData.length > 0 && showUtiTable"
-                        class="utiTablecon"
-                      >
+                        class="utiTablecon">
                         <table class="utiTable">
                           <thead>
                             <tr>
@@ -341,8 +312,7 @@
                         ) &&
                         showTrend &&
                         wtaChartTrend1.length > 0
-                      "
-                    >
+                      ">
                       <canvas
                         *ngIf="
                           !(
@@ -361,8 +331,7 @@
                         [type]="stackedChartType"
                         (chartHover)="chartHovered($event)"
                         [legend]="false"
-                        (chartClick)="chartClicked($event)"
-                      >
+                        (chartClick)="chartClicked($event)">
                         <!-- [colors]="predictedChartColors"  -->
                       </canvas>
                     </div>
@@ -374,8 +343,7 @@
                         uRChartTrendMultiLabels.length > 0 &&
                         !utilityratemessage &&
                         !fdwtaRatioTrendLoader
-                      "
-                    >
+                      ">
                       <canvas
                         *ngIf="
                           showByclinicUR &&
@@ -392,8 +360,7 @@
                         [type]="stackedChartType"
                         (chartHover)="chartHovered($event)"
                         [legend]="false"
-                        (chartClick)="chartClicked($event)"
-                      >
+                        (chartClick)="chartClicked($event)">
                         <!-- [colors]="predictedChartColors"  -->
                       </canvas>
                     </div>
@@ -408,8 +375,7 @@
                         ) &&
                         workTimeData1.length <= 0 &&
                         utilShow == 1
-                      "
-                    >
+                      ">
                       <div class="sa_nodata_div"></div>
                       <p class="chart-placeholder-text">
                         You have no appointments in the selected period
@@ -419,8 +385,7 @@
                       class="no-data-placeholder"
                       *ngIf="
                         utilShow == 2 && byDayLabels.length <= 0 && !byDayLoader
-                      "
-                    >
+                      ">
                       <div class="sa_nodata_div"></div>
                       <p class="chart-placeholder-text">
                         You have no appointments in the selected period
@@ -431,8 +396,7 @@
                       *ngIf="
                         !(showTrend || fdWorkTimeAnalysisLoader) &&
                         utilityratemessage
-                      "
-                    >
+                      ">
                       <div class="sa_nodata_div"></div>
                       <p class="chart-placeholder-text">
                         Utilisation Rate shows currently Active appointment
@@ -448,8 +412,7 @@
                         !(fdwtaRatioTrendLoader || utilityratemessage) &&
                         uRChartTrendMultiLabels.length == 0 &&
                         wtaChartTrend1.length == 0
-                      "
-                    >
+                      ">
                       <div class="sa_nodata_div"></div>
                       <p class="chart-placeholder-text">
                         You have no appointments in the selected period
@@ -461,8 +424,7 @@
                         showTrend &&
                         utilityratemessage &&
                         !fdwtaRatioTrendLoader
-                      "
-                    >
+                      ">
                       <div class="sa_nodata_div"></div>
                       <p class="chart-placeholder-text">
                         Utilisation Rate shows currently Active appointment
@@ -479,15 +441,13 @@
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
                 class="m-t-40 predicted_main predicted1 sa_chart_details_sec"
-                *ngIf="!showTrend"
-              >
+                *ngIf="!showTrend">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="utilShow == 1 && !showTrend"
-                >
+                  *ngIf="utilShow == 1 && !showTrend">
                   <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                   <h3 class="m-0 value-num">
                     {{ (workTimeTotal > 100 ? 100 : workTimeTotal) | number }}%
@@ -500,8 +460,7 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="utilShow == 2"
-                >
+                  *ngIf="utilShow == 2">
                   <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                   <h3 class="m-0 value-num">
                     {{ (byTotal > 100 ? 100 : byTotal) | number }}%
@@ -515,8 +474,7 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom' && utilShow == 1 && !showTrend"
-                >
+                  *ngIf="duration != 'custom' && utilShow == 1 && !showTrend">
                   <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                   <h3 class="m-0 value-num">
                     {{
@@ -532,8 +490,7 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom' && utilShow == 2"
-                >
+                  *ngIf="duration != 'custom' && utilShow == 2">
                   <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                   <h3 class="m-0 value-num">
                     {{
@@ -556,8 +513,7 @@
                     !showTrend &&
                     showGoals == true &&
                     showMultiClinicUR == false
-                  "
-                >
+                  ">
                   <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                   <h3 class="m-0 value-num" *ngIf="workTimeGoal">
                     {{ (workTimeGoal > 100 ? 100 : workTimeGoal) | number }}%
@@ -570,22 +526,19 @@
         </mat-card>
         <div
           *ngIf="fdWorkTimeAnalysisLoader && utilShow == 1 && !isExact"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
         <div
           *ngIf="byDayLoader && utilShow == 2 && !isExact"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
         <div
           *ngIf="fdwtaRatioTrendLoader && !isExact"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -595,8 +548,7 @@
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg referral_clinicians"
-      >
+        class="sa_flexbg referral_clinicians">
         <mat-card>
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -617,8 +569,7 @@
                   [tooltip]="charTips['16']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -630,8 +581,7 @@
                     recallPrebookTotal > 0 &&
                     !fdRecallPrebookRateLoader
                   "
-                  class="chart-recall-rate"
-                >
+                  class="chart-recall-rate">
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
@@ -642,8 +592,7 @@
                     [cap]="cap"
                     [max]="maxrecallPrebookGoal"
                     [append]="gaugeAppendText"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                 </div>
                 <canvas
@@ -661,8 +610,7 @@
                   [type]="'bar'"
                   (chartHover)="chartHovered($event)"
                   [legend]="false"
-                  (chartClick)="chartClicked($event)"
-                >
+                  (chartClick)="chartClicked($event)">
                 </canvas>
 
                 <div
@@ -670,8 +618,7 @@
                     !showTrend &&
                     recallPrebookTotal <= 0 &&
                     !fdRecallPrebookRateLoader
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no recall prebookings in the selected period
@@ -685,8 +632,7 @@
                     recallPrebookChartTrend1.length > 0 &&
                     !fdRecallPrebookRateTrendLoader
                   "
-                  class="chart-utilisation-rate"
-                >
+                  class="chart-utilisation-rate">
                   <canvas
                     #myCanvas
                     baseChart
@@ -696,8 +642,7 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                     <!-- [colors]="predictedChartColors"  -->
                   </canvas>
                 </div>
@@ -708,8 +653,7 @@
                     rPChartTrendMultiLabels.length > 0 &&
                     !fdRecallPrebookRateTrendLoader
                   "
-                  class="chart-utilisation-rate"
-                >
+                  class="chart-utilisation-rate">
                   <canvas
                     #myCanvas
                     baseChart
@@ -719,8 +663,7 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                     <!-- [colors]="predictedChartColors"  -->
                   </canvas>
                 </div>
@@ -731,8 +674,7 @@
                     rPChartTrendMultiLabels.length == 0 &&
                     recallPrebookChartTrend1.length == 0 &&
                     !fdRecallPrebookRateTrendLoader
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no recall prebookings in the selected period
@@ -745,14 +687,12 @@
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
                 class="m-t-40 sa_chart_details_sec pieChartDetails"
-                *ngIf="showTrend == false"
-              >
+                *ngIf="showTrend == false">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">{{ recallPrebookTotal }}%</h3>
                   <small *ngIf="currentText != ''">{{ currentText }}</small>
                   <small *ngIf="currentText == ''">Current</small>
@@ -762,8 +702,7 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom'"
-                >
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">{{ recallPrebookPrevTotal }}%</h3>
                   <small *ngIf="trendText != ''">{{ trendText }}</small>
                   <small *ngIf="trendText == ''">Previous</small>
@@ -778,8 +717,7 @@
                     recallPrebookGoal != null &&
                     showGoals == true &&
                     showmulticlinicPrebook == false
-                  "
-                >
+                  ">
                   <h3 class="m-0 value-num" *ngIf="recallPrebookGoal">
                     {{ recallPrebookGoal > 100 ? 100 : recallPrebookGoal }}%
                   </h3>
@@ -791,15 +729,13 @@
         </mat-card>
         <div
           *ngIf="fdRecallPrebookRateLoader"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
         <div
           *ngIf="fdRecallPrebookRateTrendLoader"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -810,8 +746,7 @@
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg referral_clinicians last"
-      >
+        class="sa_flexbg referral_clinicians last">
         <mat-card>
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -836,8 +771,7 @@
                   [tooltip]="charTips['17']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -848,8 +782,7 @@
                     treatmentPrebookTotal > 0 &&
                     !fdtreatmentPrebookRateLoader
                   "
-                  class="chart-recall-rate"
-                >
+                  class="chart-recall-rate">
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
@@ -860,8 +793,7 @@
                     [cap]="cap"
                     [max]="maxtreatmentPrebookGoal"
                     [append]="gaugeAppendText"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                 </div>
                 <canvas
@@ -878,16 +810,14 @@
                   [type]="'bar'"
                   (chartHover)="chartHovered($event)"
                   [legend]="false"
-                  (chartClick)="chartClicked($event)"
-                >
+                  (chartClick)="chartClicked($event)">
                 </canvas>
 
                 <div
                   *ngIf="
                     !(showTrend || fdtreatmentPrebookRateLoader) &&
                     treatmentPrebookTotal <= 0
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no reappointments in the selected period
@@ -901,8 +831,7 @@
                     treatmentPrebookChartTrend1.length > 0 &&
                     !fdTreatmentPrebookRateTrendLoader
                   "
-                  class="chart-utilisation-rate"
-                >
+                  class="chart-utilisation-rate">
                   <canvas
                     #myCanvas
                     baseChart
@@ -912,8 +841,7 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                     <!-- [colors]="predictedChartColors" -->
                   </canvas>
                 </div>
@@ -924,8 +852,7 @@
                     tPChartTrendMultiLabels.length > 0 &&
                     !fdTreatmentPrebookRateTrendLoader
                   "
-                  class="chart-utilisation-rate"
-                >
+                  class="chart-utilisation-rate">
                   <canvas
                     #myCanvas
                     baseChart
@@ -935,8 +862,7 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                     <!-- [colors]="predictedChartColors" -->
                   </canvas>
                 </div>
@@ -947,8 +873,7 @@
                     tPChartTrendMultiLabels.length == 0 &&
                     treatmentPrebookChartTrend1.length == 0 &&
                     !fdTreatmentPrebookRateTrendLoader
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no reappointments in the selected period
@@ -961,14 +886,12 @@
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
                 class="m-t-40 sa_chart_details_sec pieChartDetails"
-                *ngIf="showTrend == false"
-              >
+                *ngIf="showTrend == false">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">{{ treatmentPrebookTotal }}%</h3>
                   <small *ngIf="currentText != ''">{{ currentText }}</small>
                   <small *ngIf="currentText == ''">Current</small>
@@ -978,8 +901,7 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom'"
-                >
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">
                     {{ treatmentPrebookPrevTotal }}%
                   </h3>
@@ -996,8 +918,7 @@
                     treatmentPrebookGoal != null &&
                     showGoals == true &&
                     showmulticlinicReappointRate == false
-                  "
-                >
+                  ">
                   <h3 class="m-0 value-num" *ngIf="treatmentPrebookGoal">
                     {{
                       treatmentPrebookGoal > 100 ? 100 : treatmentPrebookGoal
@@ -1011,15 +932,13 @@
         </mat-card>
         <div
           *ngIf="fdtreatmentPrebookRateLoader && !showTrend"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
         <div
           *ngIf="fdTreatmentPrebookRateTrendLoader && showTrend"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -1030,8 +949,7 @@
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg referral_clinicians"
-      >
+        class="sa_flexbg referral_clinicians">
         <mat-card>
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -1052,8 +970,7 @@
                   [tooltip]="charTips['20']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1067,8 +984,7 @@
                       fdNumberOfTicksLoader
                     )
                   "
-                  class="chart-recall-rate"
-                >
+                  class="chart-recall-rate">
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
@@ -1077,8 +993,7 @@
                     [foregroundColor]="foregroundColor"
                     [backgroundColor]="backgroundColor"
                     [cap]="cap"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                 </div>
                 <canvas
@@ -1095,14 +1010,12 @@
                   [type]="'bar'"
                   (chartHover)="chartHovered($event)"
                   [legend]="false"
-                  (chartClick)="chartClicked($event)"
-                >
+                  (chartClick)="chartClicked($event)">
                 </canvas>
                 <div
                   *ngIf="
                     !showTrend && ticksTotal <= 0 && !fdNumberOfTicksLoader
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no TICKs in the selected period
@@ -1115,8 +1028,7 @@
                     tickChartTrend1.length > 0 &&
                     !(showByclinictic || fdNumberOfTicksTrendLoader)
                   "
-                  class="chart-recall-rate-trend"
-                >
+                  class="chart-recall-rate-trend">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1126,8 +1038,7 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                     <!-- [colors]="predictedChartColors" -->
                   </canvas>
                 </div>
@@ -1138,8 +1049,7 @@
                     ticChartTrendMultiLabels.length > 0 &&
                     !fdNumberOfTicksTrendLoader
                   "
-                  class="chart-recall-rate-trend"
-                >
+                  class="chart-recall-rate-trend">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1149,8 +1059,7 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                     <!-- [colors]="predictedChartColors" -->
                   </canvas>
                 </div>
@@ -1160,8 +1069,7 @@
                     tickChartTrend1.length == 0 &&
                     ticChartTrendMultiLabels.length == 0 &&
                     !fdNumberOfTicksTrendLoader
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no TICKs in the selected period
@@ -1174,14 +1082,12 @@
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
                 class="m-t-40 sa_chart_details_sec pieChartDetails"
-                *ngIf="showTrend == false"
-              >
+                *ngIf="showTrend == false">
                 <div
                   fxFlex.gt-sm="50%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">{{ ticksTotal }}</h3>
                   <small *ngIf="currentText != ''">{{ currentText }}</small>
                   <small *ngIf="currentText == ''">Current</small>
@@ -1191,8 +1097,7 @@
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom'"
-                >
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">{{ ticksPrevTotal }}</h3>
                   <small *ngIf="trendText != ''">{{ trendText }}</small>
                   <small *ngIf="trendText == ''">Previous</small>
@@ -1203,15 +1108,13 @@
         </mat-card>
         <div
           *ngIf="fdNumberOfTicksLoader"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
         <div
           *ngIf="fdNumberOfTicksTrendLoader"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -1222,8 +1125,7 @@
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg referral_clinicians"
-      >
+        class="sa_flexbg referral_clinicians">
         <mat-card>
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -1244,8 +1146,7 @@
                   [tooltip]="charTips['18']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1255,8 +1156,7 @@
                     !(showmulticlinicFta || showTrend || fdFtaRatioLoader) &&
                     ftaTotal > 0
                   "
-                  class="chart-recall-rate"
-                >
+                  class="chart-recall-rate">
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
@@ -1267,8 +1167,7 @@
                     [append]="gaugeAppendText"
                     [max]="maxftaGoal"
                     [cap]="cap"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                 </div>
                 <canvas
@@ -1285,8 +1184,7 @@
                   [type]="'bar'"
                   (chartHover)="chartHovered($event)"
                   [legend]="false"
-                  (chartClick)="chartClicked($event)"
-                >
+                  (chartClick)="chartClicked($event)">
                 </canvas>
                 <div *ngIf="!(showTrend || fdFtaRatioLoader) && ftaTotal <= 0">
                   <div class="sa_nodata_div"></div>
@@ -1301,8 +1199,7 @@
                     showTrend &&
                     ftaChartTrend1.length > 0
                   "
-                  class="chart-recall-rate-trend"
-                >
+                  class="chart-recall-rate-trend">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1313,8 +1210,7 @@
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
                     [colors]="predictedChartColors"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -1324,8 +1220,7 @@
                     ftaTrendMultiLabels.length > 0 &&
                     !fdFtaRatioTrendLoader
                   "
-                  class="chart-utilisation-rate"
-                >
+                  class="chart-utilisation-rate">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1335,8 +1230,7 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -1345,8 +1239,7 @@
                     ftaChartTrend1.length <= 0 &&
                     ftaTrendMultiLabels.length <= 0 &&
                     !fdFtaRatioTrendLoader
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no FTA's in the selected period
@@ -1359,16 +1252,14 @@
                 *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
-                class="m-t-40 sa_chart_details_sec pieChartDetails"
-              >
+                class="m-t-40 sa_chart_details_sec pieChartDetails">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
-                    {{ (ftaTotal > 100 ? 100 : ftaTotal) | number : '1.0-1' }}%
+                    {{ (ftaTotal > 100 ? 100 : ftaTotal) | number: '1.0-1' }}%
                   </h3>
                   <small *ngIf="currentText != ''">{{ currentText }}</small>
                   <small *ngIf="currentText == ''">Current</small>
@@ -1378,12 +1269,11 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom'"
-                >
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">
                     {{
                       (ftaPrevTotal > 100 ? 100 : ftaPrevTotal)
-                        | number : '1.0-1'
+                        | number: '1.0-1'
                     }}%
                   </h3>
                   <small *ngIf="trendText != ''">{{ trendText }}</small>
@@ -1399,10 +1289,9 @@
                     ftaGoal != null &&
                     showGoals == true &&
                     showmulticlinicFta == false
-                  "
-                >
+                  ">
                   <h3 class="m-0 value-num" *ngIf="ftaGoal">
-                    {{ (ftaGoal > 100 ? 100 : ftaGoal) | number : '1.0-1' }}%
+                    {{ (ftaGoal > 100 ? 100 : ftaGoal) | number: '1.0-1' }}%
                   </h3>
                   <small>Goal</small>
                 </div>
@@ -1412,15 +1301,13 @@
         </mat-card>
         <div
           *ngIf="fdFtaRatioLoader"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
         <div
           *ngIf="fdFtaRatioTrendLoader"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -1432,8 +1319,7 @@
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg referral_clinicians last"
-      >
+        class="sa_flexbg referral_clinicians last">
         <mat-card>
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -1458,8 +1344,7 @@
                   [tooltip]="charTips['19']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1472,8 +1357,7 @@
                       isLoadingCancellationRatioChartData
                     ) && cancellationRatioTotal > 0
                   "
-                  class="chart-recall-rate"
-                >
+                  class="chart-recall-rate">
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
@@ -1484,8 +1368,7 @@
                     [append]="gaugeAppendText"
                     [max]="maxCancellationRatioGoal"
                     [cap]="cap"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                 </div>
                 <canvas
@@ -1502,15 +1385,13 @@
                   [type]="'bar'"
                   (chartHover)="chartHovered($event)"
                   [legend]="false"
-                  (chartClick)="chartClicked($event)"
-                >
+                  (chartClick)="chartClicked($event)">
                 </canvas>
                 <div
                   *ngIf="
                     cancellationRatioTotal <= 0 &&
                     !(showTrend || isLoadingCancellationRatioChartData)
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no Cancellation's in the selected period
@@ -1523,8 +1404,7 @@
                     cancellationRatioTrendChartLabels.length > 0 &&
                     !isLoadingCancellationRatioTrendChartData
                   "
-                  class="chart-recall-rate-trend"
-                >
+                  class="chart-recall-rate-trend">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1543,8 +1423,7 @@
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
                     [colors]="predictedChartColors"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -1552,8 +1431,7 @@
                     showTrend &&
                     cancellationRatioTrendChartLabels.length == 0 &&
                     !isLoadingCancellationRatioTrendChartData
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no Cancellation's in the selected period
@@ -1566,20 +1444,18 @@
                 *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
-                class="m-t-40 sa_chart_details_sec pieChartDetails"
-              >
+                class="m-t-40 sa_chart_details_sec pieChartDetails">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
                     {{
                       (cancellationRatioTotal > 100
                         ? 100
                         : cancellationRatioTotal
-                      ) | number : '1.0-1'
+                      ) | number: '1.0-1'
                     }}%
                   </h3>
                   <small *ngIf="currentText == ''; else unEqualToEmptyTemplate"
@@ -1594,14 +1470,13 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom'"
-                >
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">
                     {{
                       (cancellationRatioPrevTotal > 100
                         ? 100
                         : cancellationRatioPrevTotal
-                      ) | number : '1.0-1'
+                      ) | number: '1.0-1'
                     }}%
                   </h3>
                   <small *ngIf="trendText == ''; else unEqualToEmptyTemplate"
@@ -1620,14 +1495,13 @@
                     cancellationRatioGoal >= 0 &&
                     showGoals &&
                     !isCancellationRatioMultiChartVisible
-                  "
-                >
+                  ">
                   <h3 class="m-0 value-num" *ngIf="utaGoal">
                     {{
                       (cancellationRatioGoal > 100
                         ? 100
                         : cancellationRatioGoal
-                      ) | number : '1.0-1'
+                      ) | number: '1.0-1'
                     }}%
                   </h3>
                   <small>Goal</small>
@@ -1641,8 +1515,7 @@
             isLoadingCancellationRatioChartData ||
             isLoadingCancellationRatioTrendChartData
           "
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -1653,8 +1526,7 @@
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg referral_clinicians last"
-      >
+        class="sa_flexbg referral_clinicians last">
         <mat-card>
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -1675,8 +1547,7 @@
                   [tooltip]="charTips['19']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1686,8 +1557,7 @@
                     !(showmulticlinicUta || showTrend || fdUtaRatioLoader) &&
                     utaTotal > 0
                   "
-                  class="chart-recall-rate"
-                >
+                  class="chart-recall-rate">
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
@@ -1698,8 +1568,7 @@
                     [append]="gaugeAppendText"
                     [max]="maxutaGoal"
                     [cap]="cap"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                 </div>
                 <canvas
@@ -1717,8 +1586,7 @@
                   [type]="'bar'"
                   (chartHover)="chartHovered($event)"
                   [legend]="false"
-                  (chartClick)="chartClicked($event)"
-                >
+                  (chartClick)="chartClicked($event)">
                 </canvas>
                 <div *ngIf="!showTrend && utaTotal <= 0 && !fdUtaRatioLoader">
                   <div class="sa_nodata_div"></div>
@@ -1733,8 +1601,7 @@
                     utaChartTrend1.length > 0 &&
                     !(showByclinicUta || fdUtaRatioTrendLoader)
                   "
-                  class="chart-recall-rate-trend"
-                >
+                  class="chart-recall-rate-trend">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1745,8 +1612,7 @@
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
                     [colors]="predictedChartColors"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -1756,8 +1622,7 @@
                     utaTrendMultiLabels.length > 0 &&
                     !fdUtaRatioTrendLoader
                   "
-                  class="chart-utilisation-rate"
-                >
+                  class="chart-utilisation-rate">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1767,8 +1632,7 @@
                     [type]="stackedChartType"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -1777,8 +1641,7 @@
                     utaChartTrend1.length <= 0 &&
                     utaTrendMultiLabels.length <= 0 &&
                     !fdUtaRatioTrendLoader
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no UTA's in the selected period
@@ -1791,16 +1654,14 @@
                 *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
-                class="m-t-40 sa_chart_details_sec pieChartDetails"
-              >
+                class="m-t-40 sa_chart_details_sec pieChartDetails">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
-                    {{ (utaTotal > 100 ? 100 : utaTotal) | number : '1.0-1' }}%
+                    {{ (utaTotal > 100 ? 100 : utaTotal) | number: '1.0-1' }}%
                   </h3>
                   <small *ngIf="currentText != ''">{{ currentText }}</small>
                   <small *ngIf="currentText == ''">Current</small>
@@ -1810,12 +1671,11 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom'"
-                >
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">
                     {{
                       (utaPrevTotal > 100 ? 100 : utaPrevTotal)
-                        | number : '1.0-1'
+                        | number: '1.0-1'
                     }}%
                   </h3>
                   <small *ngIf="trendText != ''">{{ trendText }}</small>
@@ -1831,10 +1691,9 @@
                     utaGoal != null &&
                     showGoals == true &&
                     showmulticlinicUta == false
-                  "
-                >
+                  ">
                   <h3 class="m-0 value-num" *ngIf="utaGoal">
-                    {{ (utaGoal > 100 ? 100 : utaGoal) | number : '1.0-1' }}%
+                    {{ (utaGoal > 100 ? 100 : utaGoal) | number: '1.0-1' }}%
                   </h3>
                   <small>Goal</small>
                 </div>
@@ -1844,15 +1703,13 @@
         </mat-card>
         <div
           *ngIf="fdUtaRatioLoader"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
         <div
           *ngIf="fdUtaRatioTrendLoader"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -1866,5 +1723,4 @@
   [style.display]="'none'"
   [datasets]="chartData1"
   [labels]="chartLabels1"
-  [type]="stackedChartType"
-></canvas>
+  [type]="stackedChartType"></canvas>

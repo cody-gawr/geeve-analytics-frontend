@@ -1,55 +1,56 @@
 @import '../../../../../assets/layout/styles/layout/mixin';
 
 .none-trend-finances {
-    gap: 30px;
+  gap: 30px;
+  display: flex;
+  flex-direction: column;
+
+  .chart-list {
+    gap: 15px;
     display: flex;
-    flex-direction: column;
-
-    .chart-list{
-        gap: 15px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        .expenses-chart {
-            width: calc(70% - 7.5px);
-            display: flex;
-            flex-direction: column;
-            @include respond-from('tablet-portrait') {
-                width: 100%;
-            }
-        }
-        .prod-per-clinic-chart {
-            display: flex;
-            flex-direction: column;
-            width: calc(30% - 7.5px);
-            @include respond-from('tablet-portrait') {
-                width: 100%;
-            }
-        }
-        .prod-per-visit-chart, .total-discount-chart {
-            width: calc(50% - 7.5px);
-            display: flex;
-            flex-direction: column;
-            @include respond-from('tablet-portrait') {
-                width: 100%;
-            }
-        }
-    
-        .prod-collection-chart {
-            width: 100%;
-        }
+    flex-direction: row;
+    flex-wrap: wrap;
+    .expenses-chart {
+      width: calc(70% - 7.5px);
+      display: flex;
+      flex-direction: column;
+      @include respond-from('tablet-portrait') {
+        width: 100%;
+      }
+    }
+    .prod-per-clinic-chart {
+      display: flex;
+      flex-direction: column;
+      width: calc(30% - 7.5px);
+      @include respond-from('tablet-portrait') {
+        width: 100%;
+      }
+    }
+    .prod-per-visit-chart,
+    .total-discount-chart {
+      width: calc(50% - 7.5px);
+      display: flex;
+      flex-direction: column;
+      @include respond-from('tablet-portrait') {
+        width: 100%;
+      }
     }
 
-    .stats-card-list {
-        display: flex;
-        flex-direction: row;
-        gap: 25px;
-        justify-content: space-around;
-        @include respond-from('phone') {
-          flex-direction: column;
-        }
-        .stats-card-finance {
-          flex: 1;
-        }
+    .prod-collection-chart {
+      width: 100%;
     }
+  }
+
+  .stats-card-list {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    justify-content: space-around;
+    @include respond-from('phone') {
+      flex-direction: column;
+    }
+    .stats-card-finance {
+      flex: 1;
+    }
+  }
 }

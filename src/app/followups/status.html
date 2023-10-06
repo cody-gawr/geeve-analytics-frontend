@@ -1,42 +1,81 @@
-<div class="AddUserPopup center" *ngIf=" data.event == 'Wants another follow-up' "> 
-<h1 mat-dialog-title>Schedule new follow-up for: <strong>{{ data.firstname }} {{ data.surname }}</strong></h1>
-<ngx-daterangepicker-material
-  [singleDatePicker]="true"
-  [showDropdowns]="true"
-  [autoApply] = "true"
-  [locale]= "{displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
-  (choosedDate)="updateNext($event)"
->
-</ngx-daterangepicker-material>     
-<div class="sa-form-group-btn flw-up-status">
-  <button class="save-button flw-up-status-button" type="submit" (click)="onNoClick()">Cancel</button>
-    <button class="save-button" type="submit" (click) ="updateNextfollowUp(data)">Save</button>
-</div>
-</div>
-
-
-
-<div class="AddUserPopup center" *ngIf="data.event.includes('t be reached')"> 
-  <span class="followUpClose" (click)="onNoClick()" >x</span>
-<h1 mat-dialog-title>Do you want to create another followup for <strong>{{ data.firstname }} {{ data.surname }}</strong>?</h1>
-<div class="sa-form-group-btn cnt-reached-btns">
-  <button class="save-button btn-nxt-business-day" type="submit" (click)="updateNextReached(data,'next-business')" >NEXT BUSINESS DAY<br/><span>{{ data.nextBussinessDay | date:'E d MMMM'}}</span></button>
-  <button  class="save-button btn-chose-date" type="submit" (click)="showCalender()">CHOOSE DATE</button>
-  <button class="save-button btn-no" type="submit" (click) ="updateNextReached(data,'no')">No</button>
-</div>
-<span *ngIf="nextFollowupHave" class="alreadyHaveFol"><strong>{{ data.firstname }} {{ data.surname }}</strong> already has a followup scheduled on {{ nextDate | date:'E d MMMM'}}</span>
-
-<div *ngIf="nextCustomFollowup" class="nextCustomFollowup-align">
+<div
+  class="AddUserPopup center"
+  *ngIf=" data.event == 'Wants another follow-up' ">
+  <h1 mat-dialog-title>
+    Schedule new follow-up for:
+    <strong>{{ data.firstname }} {{ data.surname }}</strong>
+  </h1>
   <ngx-daterangepicker-material
     [singleDatePicker]="true"
     [showDropdowns]="true"
-    [autoApply] = "true"
-    [locale]= "{displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
-    (choosedDate)="updateNext($event)"
-  >
+    [autoApply]="true"
+    [locale]="{displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
+    (choosedDate)="updateNext($event)">
   </ngx-daterangepicker-material>
-  <div class="sa-form-group-btn nextCustomFollowup-btn-align">
-    <button class="save-button" type="submit" (click)="updateNextReached(data,'yes')">Save</button>
+  <div class="sa-form-group-btn flw-up-status">
+    <button
+      class="save-button flw-up-status-button"
+      type="submit"
+      (click)="onNoClick()">
+      Cancel
+    </button>
+    <button
+      class="save-button"
+      type="submit"
+      (click)="updateNextfollowUp(data)">
+      Save
+    </button>
   </div>
 </div>
+
+<div class="AddUserPopup center" *ngIf="data.event.includes('t be reached')">
+  <span class="followUpClose" (click)="onNoClick()">x</span>
+  <h1 mat-dialog-title>
+    Do you want to create another followup for
+    <strong>{{ data.firstname }} {{ data.surname }}</strong>?
+  </h1>
+  <div class="sa-form-group-btn cnt-reached-btns">
+    <button
+      class="save-button btn-nxt-business-day"
+      type="submit"
+      (click)="updateNextReached(data,'next-business')">
+      NEXT BUSINESS DAY<br /><span
+        >{{ data.nextBussinessDay | date:'E d MMMM'}}</span
+      >
+    </button>
+    <button
+      class="save-button btn-chose-date"
+      type="submit"
+      (click)="showCalender()">
+      CHOOSE DATE
+    </button>
+    <button
+      class="save-button btn-no"
+      type="submit"
+      (click)="updateNextReached(data,'no')">
+      No
+    </button>
+  </div>
+  <span *ngIf="nextFollowupHave" class="alreadyHaveFol"
+    ><strong>{{ data.firstname }} {{ data.surname }}</strong> already has a
+    followup scheduled on {{ nextDate | date:'E d MMMM'}}</span
+  >
+
+  <div *ngIf="nextCustomFollowup" class="nextCustomFollowup-align">
+    <ngx-daterangepicker-material
+      [singleDatePicker]="true"
+      [showDropdowns]="true"
+      [autoApply]="true"
+      [locale]="{displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
+      (choosedDate)="updateNext($event)">
+    </ngx-daterangepicker-material>
+    <div class="sa-form-group-btn nextCustomFollowup-btn-align">
+      <button
+        class="save-button"
+        type="submit"
+        (click)="updateNextReached(data,'yes')">
+        Save
+      </button>
+    </div>
+  </div>
 </div>

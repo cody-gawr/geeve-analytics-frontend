@@ -55,7 +55,7 @@ const MENUITEMS = [
     type: 'link-healthscreen',
     icon: 'fas fa-home',
     role: ['2'],
-    param2: 'dashboards'
+    param2: 'dashboards',
   },
   {
     state: 'lost-opportunity',
@@ -63,7 +63,7 @@ const MENUITEMS = [
     type: 'link-lost-opportunity',
     icon: 'fas fa-arrow-up',
     role: ['2'],
-    param2: ''
+    param2: '',
   },
   {
     state: 'morning-huddle',
@@ -71,7 +71,7 @@ const MENUITEMS = [
     type: 'link-morning-huddle',
     icon: 'fas fa-sun',
     role: ['2'],
-    param2: ''
+    param2: '',
   },
   {
     state: 'dashboards',
@@ -83,48 +83,48 @@ const MENUITEMS = [
       {
         state: 'clinicianproceedures',
         name: 'Clinician Procedures & Referrals',
-        type: 'link'
+        type: 'link',
       },
       { state: 'frontdesk', name: 'Front Desk', type: 'link' },
       { state: 'marketing', name: 'Marketing', type: 'link' },
-      { state: 'finances', name: 'Finances', type: 'link', icon: '' }
+      { state: 'finances', name: 'Finances', type: 'link', icon: '' },
     ],
-    param: '1'
+    param: '1',
   },
   {
     state: 'clinic',
     name: 'Clinics',
     type: 'link-noparam',
     icon: 'fas fa-home',
-    role: ['2']
+    role: ['2'],
   },
   {
     state: 'dentist',
     name: 'Dentists',
     type: 'link',
     icon: 'fas fa-tooth',
-    role: ['2']
+    role: ['2'],
   },
   {
     state: 'users',
     name: 'Registered Users',
     type: 'link-noparam',
     icon: 'fas fa-users',
-    role: ['1']
+    role: ['1'],
   },
   {
     state: 'plans',
     name: 'Subscription Plans',
     type: 'link-noparam',
     icon: 'fas fa-receipt',
-    role: ['1']
+    role: ['1'],
   },
   {
     state: 'roles-users',
     name: 'Roles Management',
     type: 'link',
     icon: 'fas fa-user-tag',
-    role: ['2']
+    role: ['2'],
   },
   {
     state: '',
@@ -133,17 +133,17 @@ const MENUITEMS = [
     icon: 'fas fa-cog',
     children: [
       { state: 'clinic-goals', name: 'Clinic Goals', type: 'link' },
-      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link' }
+      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link' },
     ],
-    role: ['1', '2']
+    role: ['1', '2'],
   },
   {
     state: 'profile-settings',
     name: 'Profile Settings',
     type: 'link',
     icon: 'fas fa-user-cog',
-    role: ['1', '2']
-  }
+    role: ['1', '2'],
+  },
 ];
 
 @Injectable()
@@ -183,7 +183,7 @@ export class MenuItems {
       type: 'link-healthscreen',
       icon: 'fas fa-clinic-medical',
       role: this.healthscreenrole,
-      param2: 'dashboards'
+      param2: 'dashboards',
     },
     {
       state: 'morning-huddle',
@@ -191,7 +191,7 @@ export class MenuItems {
       type: 'link-morning-huddle',
       icon: 'fas fa-coffee',
       role: this.morninghuddlerole,
-      param2: ''
+      param2: '',
     },
     {
       state: 'dashboards',
@@ -203,35 +203,35 @@ export class MenuItems {
           state: 'cliniciananalysis',
           name: 'Clinician Analysis',
           type: 'link',
-          role: this.dashboard1role
+          role: this.dashboard1role,
         },
         {
           state: 'clinicianproceedures',
           name: 'Clinician Procedures & Referrals',
           type: 'link',
-          role: this.dashboard2role
+          role: this.dashboard2role,
         },
         {
           state: 'frontdesk',
           name: 'Front Desk',
           type: 'link',
-          role: this.dashboard3role
+          role: this.dashboard3role,
         },
         {
           state: 'marketing',
           name: 'Marketing',
           type: 'link',
-          role: this.dashboard4role
+          role: this.dashboard4role,
         },
         {
           state: 'finances',
           name: 'Finances',
           type: 'link',
           icon: '',
-          role: this.dashboard5role
-        }
+          role: this.dashboard5role,
+        },
       ],
-      role: ['2', '3', '4', '5']
+      role: ['2', '3', '4', '5'],
     },
     {
       state: 'lost-opportunity',
@@ -239,7 +239,7 @@ export class MenuItems {
       type: 'link-lost-opportunity',
       icon: 'fas fa-briefcase',
       role: this.lostoppurtunityrole,
-      param2: ''
+      param2: '',
     },
     {
       state: 'Settings',
@@ -251,30 +251,30 @@ export class MenuItems {
           state: 'clinic',
           name: 'Clinics',
           type: 'link',
-          role: this.profilesettingsrole
+          role: this.profilesettingsrole,
         },
         {
           state: 'roles-users',
           name: 'Users',
           type: 'link',
-          role: this.profilesettingsrole
+          role: this.profilesettingsrole,
         },
         {
           state: 'profile-settings',
           name: 'Profile Settings',
           type: 'link',
-          role: ['2', '3', '4', '5']
-        }
+          role: ['2', '3', '4', '5'],
+        },
       ],
-      role: ['2', '3', '4', '5']
-    }
+      role: ['2', '3', '4', '5'],
+    },
   ];
   getRoles() {
     this.rolesUsersService.getRoles().subscribe(
-      (res) => {
+      res => {
         if (res.status == 200) {
           res.body.data.forEach((item: any) => {
-            if(item.permisions){
+            if (item.permisions) {
               var dashboards = item.permisions.split(',');
               if (dashboards.includes('dashboard1'))
                 this.dashboard1role.push(item.role_id.toString());
@@ -298,7 +298,7 @@ export class MenuItems {
           });
         }
       },
-      (error) => {
+      error => {
         console.error('getRoles', error);
       }
     );

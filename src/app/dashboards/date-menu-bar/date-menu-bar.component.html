@@ -1,69 +1,89 @@
 <div class="sa_tabs_design sa_responsive_tabs">
   <div class="sa_tabs_list" fxHide [fxShow.gt-sm]="true">
     <div class="sa_tabs_data">
-      <button (click)="filterDate('m')" class="filter_m filter sa_filter_span" 
-      [ngClass]="{'active': currentSelectedPeriod==='m'}">
+      <button
+        (click)="filterDate('m')"
+        class="filter_m filter sa_filter_span"
+        [ngClass]="{ active: currentSelectedPeriod === 'm' }">
         This Month
       </button>
-      <button (click)="filterDate('lm')" class="filter_lm filter sa_filter_span"
-      [ngClass]="{'active': currentSelectedPeriod==='lm'}">
+      <button
+        (click)="filterDate('lm')"
+        class="filter_lm filter sa_filter_span"
+        [ngClass]="{ active: currentSelectedPeriod === 'lm' }">
         Last Month
       </button>
-      <button (click)="filterDate('q')" class="filter_q filter sa_filter_span"
-      [ngClass]="{'active': currentSelectedPeriod==='q'}">
+      <button
+        (click)="filterDate('q')"
+        class="filter_q filter sa_filter_span"
+        [ngClass]="{ active: currentSelectedPeriod === 'q' }">
         This Quarter
       </button>
-      <button (click)="filterDate('lq')" class="filter_lq filter sa_filter_span"
-      [ngClass]="{'active': currentSelectedPeriod==='lq'}">
+      <button
+        (click)="filterDate('lq')"
+        class="filter_lq filter sa_filter_span"
+        [ngClass]="{ active: currentSelectedPeriod === 'lq' }">
         Last Quarter
       </button>
-      <button (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span"
-      [ngClass]="{'active': currentSelectedPeriod==='cytd'}">
+      <button
+        (click)="filterDate('cytd')"
+        class="filter_cytd filter sa_filter_span"
+        [ngClass]="{ active: currentSelectedPeriod === 'cytd' }">
         Calendar Year
       </button>
-      <button (click)="filterDate('lcytd')" class="filter_lcytd filter sa_filter_span"
-      [ngClass]="{'active': currentSelectedPeriod==='lcytd'}">
+      <button
+        (click)="filterDate('lcytd')"
+        class="filter_lcytd filter sa_filter_span"
+        [ngClass]="{ active: currentSelectedPeriod === 'lcytd' }">
         Last Calendar Year
       </button>
-      <button (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span"
-      [ngClass]="{'active': currentSelectedPeriod==='fytd'}">
+      <button
+        (click)="filterDate('fytd')"
+        class="filter_fytd filter sa_filter_span"
+        [ngClass]="{ active: currentSelectedPeriod === 'fytd' }">
         Financial Year
       </button>
-      <button (click)="filterDate('lfytd')" class="filter_lfytd filter sa_filter_span"
-      [ngClass]="{'active': currentSelectedPeriod==='lfytd'}">
+      <button
+        (click)="filterDate('lfytd')"
+        class="filter_lfytd filter sa_filter_span"
+        [ngClass]="{ active: currentSelectedPeriod === 'lfytd' }">
         Last Financial Year
       </button>
     </div>
   </div>
   <div class="sa_tabs_list" [fxHide.gt-sm]="true">
     <div class="sa_tabs_data">
-      <div class="sa_mat_select_topbar dropdown-select ">
-        <mat-select class="external_clinic"  
-          [(value)]="currentSelectedPeriod"  
+      <div class="sa_mat_select_topbar dropdown-select">
+        <mat-select
+          class="external_clinic"
+          [(value)]="currentSelectedPeriod"
           (selectionChange)="handleSelection($event)">
-          <mat-option *ngFor="let clinicData of DateOptions" [value]="clinicData.value" >
-              {{ clinicData.name }}
+          <mat-option
+            *ngFor="let clinicData of DateOptions"
+            [value]="clinicData.value">
+            {{ clinicData.name }}
           </mat-option>
         </mat-select>
-      </div>     
+      </div>
     </div>
   </div>
-  <div class="date-menu-bar custom_date" [hidden]="isAllClinic" [ngClass]="{'date-picker active': currentSelectedPeriod==='custom'}">
+  <div
+    class="date-menu-bar custom_date"
+    [hidden]="isAllClinic"
+    [ngClass]="{ 'date-picker active': currentSelectedPeriod === 'custom' }">
     <input
       class="filter_custom filter sa_datepicker"
       id="sa_datepicker"
       value=""
       placeholder=""
-      readonly
-    />
+      readonly />
     <ngx-daterangepicker-material
       class="customRange"
       id="customRange"
       (choosedDate)="choosedDate($event)"
       [style.display]="'none'"
       [locale]="{ applyLabel: 'ok', displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
-      [showDropdowns]="true"
-    >
+      [showDropdowns]="true">
     </ngx-daterangepicker-material>
   </div>
 </div>

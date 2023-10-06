@@ -7,7 +7,7 @@ export const SetupRoutes: Routes = [
     path: '',
     component: SetupComponent,
     data: {
-      title: 'Setup'
-    }
-  }
+      title: 'Setup',
+    },
+  },
 ];

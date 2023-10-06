@@ -4,7 +4,7 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-  Renderer2
+  Renderer2,
 } from '@angular/core';
 import {
   BehaviorSubject,
@@ -12,11 +12,11 @@ import {
   map,
   mapTo,
   Subject,
-  takeUntil
+  takeUntil,
 } from 'rxjs';
 
 @Directive({
-  selector: '[appMatTableResponsive]'
+  selector: '[appMatTableResponsive]',
 })
 export class MatTableResponsiveDirective
   implements OnInit, AfterViewInit, OnDestroy
@@ -37,7 +37,10 @@ export class MatTableResponsiveDirective
     this.tbodyChanged.next(true)
   );
 
-  constructor(private table: ElementRef, private renderer: Renderer2) {}
+  constructor(
+    private table: ElementRef,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {
     this.thead = this.table.nativeElement.querySelector('thead');
@@ -45,7 +48,7 @@ export class MatTableResponsiveDirective
 
     this.theadObserver.observe(this.thead, {
       characterData: true,
-      subtree: true
+      subtree: true,
     });
     this.tbodyObserver.observe(this.tbody, { childList: true });
   }
@@ -60,15 +63,15 @@ export class MatTableResponsiveDirective
         mapTo({ headRow: this.thead.rows.item(0)!, bodyRows: this.tbody.rows }),
         map(({ headRow, bodyRows }) => ({
           columnNames: Array.from(headRow.children).map(
-            (headerCell) => headerCell.textContent!
+            headerCell => headerCell.textContent!
           ),
-          rows: Array.from(bodyRows).map((row) => Array.from(row.children))
+          rows: Array.from(bodyRows).map(row => Array.from(row.children)),
         })),
         takeUntil(this.destroy$)
       )
       .subscribe(({ columnNames, rows }) =>
-        rows.forEach((rowCells) =>
-          rowCells.forEach((cell) =>
+        rows.forEach(rowCells =>
+          rowCells.forEach(cell =>
             this.renderer.setAttribute(
               cell,
               'data-column-name',

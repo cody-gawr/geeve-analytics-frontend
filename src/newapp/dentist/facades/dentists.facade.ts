@@ -1,16 +1,16 @@
-import { Injectable } from "@angular/core";
-import { select, Store } from "@ngrx/store";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import {
   DentistState,
   selectCurrentDentistId,
   selectDentists,
   selectDentistsError,
   selectDentistsLoading,
-} from "../state/reducers/dentist.reducer";
-import { Dentist } from "@/newapp/models/dentist";
-import { JeeveError } from "@/newapp/models";
-import { DentistPageActions } from "../state/actions";
+} from '../state/reducers/dentist.reducer';
+import { Dentist } from '@/newapp/models/dentist';
+import { JeeveError } from '@/newapp/models';
+import { DentistPageActions } from '../state/actions';
 @Injectable()
 export class DentistFacade {
   constructor(private readonly store: Store<DentistState>) {}

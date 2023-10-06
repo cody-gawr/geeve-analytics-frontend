@@ -1,51 +1,133 @@
 <h1 mat-dialog-title>Add Clinic</h1>
 <div mat-dialog-content class="sa_forms_design">
- 
   <div class="sa-form-group">
     <label>Clinic Name</label>
-    <input tabindex="1" [(ngModel)]="data.name" [formControl]="form.controls['name']" class="form-control-dialog" placeholder="" required>
-    <small *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched" class="text-danger support-text">Name is Required.</small>
-    <small *ngIf="form.controls['name'].hasError('pattern') && form.controls['name'].touched" class="text-danger support-text">Invalid Name !</small>
+    <input
+      tabindex="1"
+      [(ngModel)]="data.name"
+      [formControl]="form.controls['name']"
+      class="form-control-dialog"
+      placeholder=""
+      required />
+    <small
+      *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched"
+      class="text-danger support-text"
+      >Name is Required.</small
+    >
+    <small
+      *ngIf="form.controls['name'].hasError('pattern') && form.controls['name'].touched"
+      class="text-danger support-text"
+      >Invalid Name !</small
+    >
   </div>
 
-  
   <div class="sa-form-group">
     <label>Address</label>
-    <input tabindex="1" [(ngModel)]="data.address" [formControl]="form.controls['address']" class="form-control-dialog" placeholder="" required>
-    <small *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched" class="text-danger support-text">Address is Required.</small>
-    <small *ngIf="form.controls['address'].hasError('pattern') && form.controls['address'].touched" class="text-danger support-text">Invalid Address !</small>
+    <input
+      tabindex="1"
+      [(ngModel)]="data.address"
+      [formControl]="form.controls['address']"
+      class="form-control-dialog"
+      placeholder=""
+      required />
+    <small
+      *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched"
+      class="text-danger support-text"
+      >Address is Required.</small
+    >
+    <small
+      *ngIf="form.controls['address'].hasError('pattern') && form.controls['address'].touched"
+      class="text-danger support-text"
+      >Invalid Address !</small
+    >
   </div>
-    
-  
+
   <div class="sa-form-group">
     <label>Contact Name</label>
-    <input tabindex="1" [(ngModel)]="data.contact_name" [formControl]="form.controls['contact_name']" class="form-control-dialog"  placeholder="" required>
-    <small *ngIf="form.controls['contact_name'].hasError('required') && form.controls['contact_name'].touched" class="text-danger support-text">Contact Name is Required.</small>
-    <small *ngIf="form.controls['contact_name'].hasError('pattern') && form.controls['contact_name'].touched" class="text-danger support-text">Invalid Contact Name !</small>
+    <input
+      tabindex="1"
+      [(ngModel)]="data.contact_name"
+      [formControl]="form.controls['contact_name']"
+      class="form-control-dialog"
+      placeholder=""
+      required />
+    <small
+      *ngIf="form.controls['contact_name'].hasError('required') && form.controls['contact_name'].touched"
+      class="text-danger support-text"
+      >Contact Name is Required.</small
+    >
+    <small
+      *ngIf="form.controls['contact_name'].hasError('pattern') && form.controls['contact_name'].touched"
+      class="text-danger support-text"
+      >Invalid Contact Name !</small
+    >
     <!--  <input type="file" (change)="onChange($event)"> -->
   </div>
 
   <div class="sa-form-group">
     <label>Select PMS</label>
-    <select class="form-control" (ngModelChange)="selectPMS($event)" [(ngModel)]="data.pms" [formControl]="form.controls['pms']" required="true" class="sa_select form-control" name="pms">
-      <option value ="d4w">D4w</option>
-      <option value ="core">Core Practice</option>
-      <option value ="exact">Exact</option>
-  </select> 
-    <small *ngIf="form.controls['pms'].hasError('required') && form.controls['pms'].touched" class="text-danger support-text">PMS is Required.</small>
+    <select
+      class="form-control"
+      (ngModelChange)="selectPMS($event)"
+      [(ngModel)]="data.pms"
+      [formControl]="form.controls['pms']"
+      required="true"
+      class="sa_select form-control"
+      name="pms">
+      <option value="d4w">D4w</option>
+      <option value="core">Core Practice</option>
+      <option value="exact">Exact</option>
+    </select>
+    <small
+      *ngIf="form.controls['pms'].hasError('required') && form.controls['pms'].touched"
+      class="text-danger support-text"
+      >PMS is Required.</small
+    >
   </div>
 
   <div *ngIf="showConnectButton" class="sa-form-group">
-    <input tabindex="1" name="coreURL" [(ngModel)]="data.coreURL" placeholder="Your Core URL" class="form-control-dialog" [formControl]="form.controls['coreURL']" >
-    <small *ngIf="form.controls['coreURL'].hasError('required') && form.controls['coreURL'].touched" class="text-danger support-text">Core URL is Required.</small>
-      <small *ngIf="form.controls['coreURL'].hasError('pattern') && form.controls['coreURL'].touched" class="text-danger support-text">Core URL must valid !</small>
+    <input
+      tabindex="1"
+      name="coreURL"
+      [(ngModel)]="data.coreURL"
+      placeholder="Your Core URL"
+      class="form-control-dialog"
+      [formControl]="form.controls['coreURL']" />
+    <small
+      *ngIf="form.controls['coreURL'].hasError('required') && form.controls['coreURL'].touched"
+      class="text-danger support-text"
+      >Core URL is Required.</small
+    >
+    <small
+      *ngIf="form.controls['coreURL'].hasError('pattern') && form.controls['coreURL'].touched"
+      class="text-danger support-text"
+      >Core URL must valid !</small
+    >
   </div>
-
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-   <button *ngIf="!showConnectButton" mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid">Ok</button>
-   <button *ngIf="showConnectButton" mat-button class="mat-raised-button mat-dc" (click)="save(data)" [disabled]="!form.valid">
+  <button
+    mat-button
+    (click)="onNoClick()"
+    tabindex="-1"
+    class="mat-raised-button mat-gray">
+    Cancel
+  </button>
+  <button
+    *ngIf="!showConnectButton"
+    mat-button
+    (click)="save(data)"
+    tabindex="2"
+    class="mat-raised-button mat-dc"
+    [disabled]="!form.valid">
+    Ok
+  </button>
+  <button
+    *ngIf="showConnectButton"
+    mat-button
+    class="mat-raised-button mat-dc"
+    (click)="save(data)"
+    [disabled]="!form.valid">
     CONNECT TO CORE
   </button>
 </div>

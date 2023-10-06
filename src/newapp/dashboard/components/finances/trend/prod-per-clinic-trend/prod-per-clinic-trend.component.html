@@ -1,32 +1,40 @@
 <div class="chart-container">
-    <mat-icon
-        [tooltip]="toolTip"
-        matTooltipPosition="below"
-        color="primary"
-        class="help-tip"
-        fontIcon="help"
-    ></mat-icon>
-    <div class="chart-title">
-        {{ (isMultiClinic$ | async)? 'Production % Per Clinic': 'Production % Per Clinician' }}
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <div class="chart-title">
+    {{
+      (isMultiClinic$ | async)
+        ? 'Production % Per Clinic'
+        : 'Production % Per Clinician'
+    }}
+  </div>
+  <div class="chart-content">
+    <div class="prod-per-clinic-trend-chart">
+      <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+      <ng-template #chartElem>
+        <canvas
+          *ngIf="datasets.length > 0 && datasets[0].data.length > 0"
+          baseChart
+          [datasets]="datasets"
+          [labels]="labels"
+          [options]="labelBarPercentOptionsStacked"
+          [legend]="legend$"
+          type="bar">
+        </canvas>
+        <spin-loader
+          class="empty-placeholder"
+          *ngIf="
+            !(datasets.length > 0 && datasets[0].data.length > 0) &&
+            !(isLoading$ | async)
+          "
+          [disableSpin]="true">
+          You have no data in the selected period
+        </spin-loader>
+      </ng-template>
     </div>
-    <div class="chart-content">
-        <div class="prod-per-clinic-trend-chart">
-            <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-            <ng-template #chartElem>
-                <canvas
-                    *ngIf="datasets.length > 0 && datasets[0].data.length > 0"
-                    baseChart
-                    [datasets]="datasets"
-                    [labels]="labels"
-                    [options]="labelBarPercentOptionsStacked"
-                    [legend]="legend$"
-                    type="bar"
-                >
-                </canvas>
-                <spin-loader class="empty-placeholder" *ngIf="!(datasets.length > 0 && datasets[0].data.length > 0) && !(isLoading$ | async)" [disableSpin]="true">
-                    You have no data in the selected period
-                </spin-loader>
-            </ng-template>
-        </div>
-    </div>
+  </div>
 </div>

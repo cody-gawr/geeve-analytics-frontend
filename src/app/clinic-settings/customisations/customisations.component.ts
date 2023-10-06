@@ -4,38 +4,42 @@ import {
   Component,
   Input,
   ViewEncapsulation,
-} from "@angular/core";
-import { Router } from "@angular/router";
-import { CookieService } from "ngx-cookie";
-import { ToastrService } from "ngx-toastr";
-import { BehaviorSubject, map } from "rxjs";
-import { CustomisationsService } from "./customisations.service";
-import { BaseComponent } from "../base/base.component";
-import { environment } from "../../../environments/environment";
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie';
+import { ToastrService } from 'ngx-toastr';
+import { BehaviorSubject, map } from 'rxjs';
+import { CustomisationsService } from './customisations.service';
+import { BaseComponent } from '../base/base.component';
+import { environment } from '../../../environments/environment';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
-} from "@angular/forms";
-import { ClinicSettingsService } from "../clinic-settings.service";
-import { AppConstants } from "../../app.constants";
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef, MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { HeaderService } from "../../layouts/full/header/header.service";
+} from '@angular/forms';
+import { ClinicSettingsService } from '../clinic-settings.service';
+import { AppConstants } from '../../app.constants';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialog as MatDialog,
+} from '@angular/material/legacy-dialog';
+import { HeaderService } from '../../layouts/full/header/header.service';
 
 @Component({
   selector: 'app-dialog-setColors-dialog',
   templateUrl: './dialog-setColors.html',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
-
 export class DialogSetColorsDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<DialogSetColorsDialogComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data: any, private _cookieService: CookieService, 
-    private CustomisationsService: CustomisationsService, 
+    public dialogRef: MatDialogRef<DialogSetColorsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _cookieService: CookieService,
+    private CustomisationsService: CustomisationsService,
     private router: Router
-  ) { }
-  
+  ) {}
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -44,60 +48,77 @@ export class DialogSetColorsDialogComponent {
     if (data.status_code == '') {
       return false;
     }
-  
-    this.CustomisationsService.addStatusColors(data.clinic_id,data.status_code, data.bgcolour, data.colour ).subscribe((res) => {
-      if (res.status == 200) {
-        this.CustomisationsService.getStatusCodeList(data.clinic_id).subscribe((res) => {
-          if (res.status == 200) {
-            this.dialogRef.componentInstance.data.status_code = "";
-            this.dialogRef.componentInstance.data.bgcolour = "";
-            this.dialogRef.componentInstance.data.colour = "";
-            this.dialogRef.componentInstance.data.statusCodeList = res.body.data;
-          }
-        });
-        //this.dialogRef.close();
-      } else if (res.status == 401) {
-        this.handleUnAuthorization();
+
+    this.CustomisationsService.addStatusColors(
+      data.clinic_id,
+      data.status_code,
+      data.bgcolour,
+      data.colour
+    ).subscribe(
+      res => {
+        if (res.status == 200) {
+          this.CustomisationsService.getStatusCodeList(
+            data.clinic_id
+          ).subscribe(res => {
+            if (res.status == 200) {
+              this.dialogRef.componentInstance.data.status_code = '';
+              this.dialogRef.componentInstance.data.bgcolour = '';
+              this.dialogRef.componentInstance.data.colour = '';
+              this.dialogRef.componentInstance.data.statusCodeList =
+                res.body.data;
+            }
+          });
+          //this.dialogRef.close();
+        } else if (res.status == 401) {
+          this.handleUnAuthorization();
+        }
+      },
+      error => {
+        console.log('error', error);
       }
-    }, error => {
-      console.log('error', error)
-    });
+    );
     return true;
   }
 
   removeItem(i) {
-    
     let data = this.dialogRef.componentInstance.data.statusCodeList[i];
     if (data) {
-      this.CustomisationsService.deleteStatusCode(data.clinic_id,data.status_code).subscribe((res) => {
-        if (res.status == 200) {
-          this.dialogRef.componentInstance.data.statusCodeList.splice(i, 1);
-        } else if (res.status == 401) {
-          this.handleUnAuthorization();
+      this.CustomisationsService.deleteStatusCode(
+        data.clinic_id,
+        data.status_code
+      ).subscribe(
+        res => {
+          if (res.status == 200) {
+            this.dialogRef.componentInstance.data.statusCodeList.splice(i, 1);
+          } else if (res.status == 401) {
+            this.handleUnAuthorization();
+          }
+        },
+        error => {
+          console.log('error', error);
         }
-      }, error => {
-        console.log('error', error)
-      });
+      );
     }
   }
 
   handleUnAuthorization() {
-    this._cookieService.put("username", '');
-    this._cookieService.put("email", '');
-    this._cookieService.put("userid", '');
+    this._cookieService.put('username', '');
+    this._cookieService.put('email', '');
+    this._cookieService.put('userid', '');
     this.router.navigateByUrl('/login');
   }
 }
 
 @Component({
-  selector: "app-customisations-settings",
-  templateUrl: "./customisations.component.html",
-  styleUrls: ["./customisations.component.scss"],
+  selector: 'app-customisations-settings',
+  templateUrl: './customisations.component.html',
+  styleUrls: ['./customisations.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class CustomisationsComponent
   extends BaseComponent
-  implements AfterViewInit {
+  implements AfterViewInit
+{
   clinic_id$ = new BehaviorSubject<any>(null);
   clinic_pms$ = new BehaviorSubject<string>(null);
 
@@ -158,9 +179,10 @@ export class CustomisationsComponent
       disc_code_1: '',
       disc_code_2: '',
       disc_code_3: '',
-      max_chart_bars: this.visibleMaxBarSetting?null: [null, Validators.compose([Validators.required])],
+      max_chart_bars: this.visibleMaxBarSetting
+        ? null
+        : [null, Validators.compose([Validators.required])],
     });
-
   }
 
   ngOnInit() {
@@ -177,21 +199,21 @@ export class CustomisationsComponent
     return this.clinic_pms$.pipe(map(pms => pms == 'd4w'));
   }
 
-  ngAfterViewInit() { }
+  ngAfterViewInit() {}
 
   /********Recall codes code */
   fieldArray = [
     {
-      name: "Default Name 1",
+      name: 'Default Name 1',
     },
     {
-      name: "Default Name 2",
+      name: 'Default Name 2',
     },
   ];
   newAttribute: any = {};
 
   firstField = true;
-  firstFieldName = "First Item name";
+  firstFieldName = 'First Item name';
   isEditItems: boolean;
 
   addFieldValue(index) {
@@ -205,9 +227,8 @@ export class CustomisationsComponent
       // if (index == 2) {
       //   this.newAttribute = { recall_code3: "" };
       // }
-      this.newAttribute = { name: "" };
+      this.newAttribute = { name: '' };
 
-     
       this.fieldArray.push(this.newAttribute);
       this.newAttribute = {};
     } else {
@@ -224,51 +245,50 @@ export class CustomisationsComponent
   /********Recall codes code End */
 
   public toggleMH(event, type) {
-
-    if (type == "recall_overdue_enable") {
+    if (type == 'recall_overdue_enable') {
       this.recall_overdue_enable = event.checked;
-    } else if (type == "lab_needed_enable") {
+    } else if (type == 'lab_needed_enable') {
       this.lab_needed_enable = event.checked;
-    } else if (type == "opg_overdue_enable") {
+    } else if (type == 'opg_overdue_enable') {
       this.opg_overdue_enable = event.checked;
-    } else if (type == "xray_overdue_enable") {
+    } else if (type == 'xray_overdue_enable') {
       this.xray_overdue_enable = event.checked;
-    }else if (type == "status_codes_enable") {
+    } else if (type == 'status_codes_enable') {
       this.status_codes_enable = event.checked;
     }
-    let val = (event.checked) ? 1 : 0
+    let val = event.checked ? 1 : 0;
     this.manageOverdue(type, val);
   }
 
   manageOverdue(type, value) {
-    $(".ajax-loader").show();
+    $('.ajax-loader').show();
     let data = {
       clinic_id: Number(this.clinic_id$.value),
       type: type,
-      value: value
+      value: value,
     };
     this.customisationsService.clinicHuddleNotificationsSave(data).subscribe(
-      (res) => {
-        $(".ajax-loader").hide();
+      res => {
+        $('.ajax-loader').hide();
         if (res.status == 200) {
           if (res.status == 200) {
-            this.toastr.success("Clinic Customisations Updated");
-          } else if (res.status == "401") {
+            this.toastr.success('Clinic Customisations Updated');
+          } else if (res.status == '401') {
             this.handleUnAuthorization();
           }
         }
       },
-      (error) => {
-        console.log("error", error);
+      error => {
+        console.log('error', error);
         this.toastr.error(error);
-        $(".ajax-loader").hide();
+        $('.ajax-loader').hide();
       }
     );
     // console.log("huddles", huddles);
     // console.log("dashboard", dashboard);
   }
 
-  setVisibilityOfMaxBar(){
+  setVisibilityOfMaxBar() {
     this.headerService.getClinic.subscribe(res => {
       this.visibleMaxBarSetting = res.body.data.length > 1;
     });
@@ -278,38 +298,54 @@ export class CustomisationsComponent
     this.customisationsService
       .getclinicHuddleNotifications(this.clinic_id$.value)
       .subscribe(
-        (res) => {
-          $(".ajax-loader").hide();
+        res => {
+          $('.ajax-loader').hide();
           if (res.status == 200) {
             if (res.body.data) {
-              this.recall_overdue_enable = (res.body.data.recall_overdue_enable) ? true : false;
-              this.lab_needed_enable = (res.body.data.lab_needed_enable) ? true : false;
-              this.opg_overdue_enable = (res.body.data.opg_overdue_enable) ? true : false;
-              this.xray_overdue_enable = (res.body.data.xray_overdue_enable) ? true : false;
-              this.status_codes_enable = (res.body.data.status_codes_enable) ? true : false;
+              this.recall_overdue_enable = res.body.data.recall_overdue_enable
+                ? true
+                : false;
+              this.lab_needed_enable = res.body.data.lab_needed_enable
+                ? true
+                : false;
+              this.opg_overdue_enable = res.body.data.opg_overdue_enable
+                ? true
+                : false;
+              this.xray_overdue_enable = res.body.data.xray_overdue_enable
+                ? true
+                : false;
+              this.status_codes_enable = res.body.data.status_codes_enable
+                ? true
+                : false;
             }
           }
         },
-        (error) => {
-          console.log("error", error);
-          $(".ajax-loader").hide();
+        error => {
+          console.log('error', error);
+          $('.ajax-loader').hide();
         }
       );
   }
 
   getCustomiseSettings() {
     this.clinicSettingsService.getClincsSetting.subscribe({
-     next: res=>{
-      $(".ajax-loader").hide();
+      next: res => {
+        $('.ajax-loader').hide();
         if (res.status) {
           if (res.body.data) {
             this.recallCode1 = res.body.data.recall_code1;
             this.recallCode2 = res.body.data.recall_code2;
             this.recallCode3 = res.body.data.recall_code3;
 
-            this.form.controls['disc_code_1'].setValue(res.body.data.disc_code_1??'');
-            this.form.controls['disc_code_2'].setValue(res.body.data.disc_code_2??'');
-            this.form.controls['disc_code_3'].setValue(res.body.data.disc_code_3??'');
+            this.form.controls['disc_code_1'].setValue(
+              res.body.data.disc_code_1 ?? ''
+            );
+            this.form.controls['disc_code_2'].setValue(
+              res.body.data.disc_code_2 ?? ''
+            );
+            this.form.controls['disc_code_3'].setValue(
+              res.body.data.disc_code_3 ?? ''
+            );
 
             this.labCode1 = res.body.data.lab_code1;
             this.labCode2 = res.body.data.lab_code2;
@@ -325,10 +361,10 @@ export class CustomisationsComponent
           }
         }
       },
-      error:(error) => {
-        console.log("error", error);
-        $(".ajax-loader").hide();
-      }
+      error: error => {
+        console.log('error', error);
+        $('.ajax-loader').hide();
+      },
     });
     // this.customisationsService.getCustomiseSettings(this.clinic_id$.value).subscribe(
     //     (res) => {
@@ -359,10 +395,10 @@ export class CustomisationsComponent
   }
 
   onSubmit() {
-    $(".ajax-loader").show();
-    if(this.apiUrl.includes('test')){
+    $('.ajax-loader').show();
+    if (this.apiUrl.includes('test')) {
       this.recall_rate_default = this.form.value.recall_rate_default;
-    }else{
+    } else {
       this.recall_rate_default = 1;
     }
     let data = {
@@ -376,35 +412,33 @@ export class CustomisationsComponent
       disc_code_2: this.form.value.disc_code_2,
       disc_code_3: this.form.value.disc_code_3,
       new_patients: this.form.value.new_patients,
-     // health_screen_mtd: this.form.value.health_screen_mtd,
+      // health_screen_mtd: this.form.value.health_screen_mtd,
       recall_rate_default: this.recall_rate_default,
       hourly_rate_appt_hours: this.form.value.hourly_rate_appt_hours,
       lab_code1: this.form.value.lab_code1,
       lab_code2: this.form.value.lab_code2,
-      max_chart_bars: this.form.value.max_chart_bars
+      max_chart_bars: this.form.value.max_chart_bars,
     };
 
-    
-
     this.customisationsService.updateCustomiseSettings(data).subscribe(
-      (res) => {
-        $(".ajax-loader").hide();
+      res => {
+        $('.ajax-loader').hide();
         if (res.status == 200) {
           if (res.body.data) {
             this.xrayMonths = data.xray_months;
             this.opgMonths = data.opg_months;
           }
           if (res.status == 200) {
-            this.toastr.success("Clinic Customisations Updated");
-          } else if (res.status == "401") {
+            this.toastr.success('Clinic Customisations Updated');
+          } else if (res.status == '401') {
             this.handleUnAuthorization();
           }
         }
       },
-      (error) => {
-        console.log("error", error);
+      error => {
+        console.log('error', error);
         this.toastr.error(error);
-        $(".ajax-loader").hide();
+        $('.ajax-loader').hide();
       }
     );
     // console.log("huddles", huddles);
@@ -413,28 +447,36 @@ export class CustomisationsComponent
 
   //
   handleUnAuthorization() {
-    this._cookieService.put("username", "");
-    this._cookieService.put("email", "");
-    this._cookieService.put("userid", "");
-    this.router.navigateByUrl("/login");
+    this._cookieService.put('username', '');
+    this._cookieService.put('email', '');
+    this._cookieService.put('userid', '');
+    this.router.navigateByUrl('/login');
   }
 
   openDialog(status_code = '', colour = '', bgcolour = ''): void {
-      this.customisationsService.getStatusCodeList(this.clinic_id$.value).subscribe((res) => {
-        if (res.status == 200) {
-          const dialogRef = this.dialog.open(DialogSetColorsDialogComponent, {
-            width: '500px',
-            data: {clinic_id: this.clinic_id$.value,statusCodeList: res.body.data ,status_code:status_code,colour:colour,bgcolour:bgcolour}
-          });
-          dialogRef.afterClosed().subscribe(result => {
-           
-          });
+    this.customisationsService
+      .getStatusCodeList(this.clinic_id$.value)
+      .subscribe(
+        res => {
+          if (res.status == 200) {
+            const dialogRef = this.dialog.open(DialogSetColorsDialogComponent, {
+              width: '500px',
+              data: {
+                clinic_id: this.clinic_id$.value,
+                statusCodeList: res.body.data,
+                status_code: status_code,
+                colour: colour,
+                bgcolour: bgcolour,
+              },
+            });
+            dialogRef.afterClosed().subscribe(result => {});
+          } else if (res.status == 401) {
+            this.handleUnAuthorization();
+          }
+        },
+        error => {
+          console.log('error', error);
         }
-        else if (res.status == 401) {
-          this.handleUnAuthorization();
-        }
-      }, error => {
-        console.log('error', error)
-      });
+      );
   }
 }

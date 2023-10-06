@@ -1,31 +1,31 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { DashboardFacade } from "@/newapp/dashboard/facades/dashboard.facade";
-import { MarketingFacade } from "@/newapp/dashboard/facades/marketing.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
-import { DecimalPipe } from "@angular/common";
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ChartOptions, LegendOptions, ChartDataset } from "chart.js";
-import { _DeepPartialObject } from "chart.js/dist/types/utils";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
+import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
+import { DecimalPipe } from '@angular/common';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
-  selector: "mk-total-visits-chart",
-  templateUrl: "./total-visits.component.html",
-  styleUrls: ["./total-visits.component.scss"],
+  selector: 'mk-total-visits-chart',
+  templateUrl: './total-visits.component.html',
+  styleUrls: ['./total-visits.component.scss'],
 })
 export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
   get trendingIcon() {
     if (this.totalVisitsVal >= this.totalVisitsPrev) {
-      return "trending_up";
+      return 'trending_up';
     }
-    return "trending_down";
+    return 'trending_down';
   }
 
   get maxTotalVisitsGoal() {
@@ -39,7 +39,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
   get isActivePatients$() {
     return this.marketingFacade.isActivePatients$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
@@ -66,42 +66,42 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => typeof v == "string")
+      map(v => typeof v == 'string')
     );
   }
 
   get durationLabel$() {
     return this.layoutFacade.durationLabel$.pipe(
       takeUntil(this.destroy$),
-      map((val) => val)
+      map(val => val)
     );
   }
 
   get durationTrendLabel$() {
     return this.layoutFacade.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
-      map((l) => l)
+      map(l => l)
     );
   }
 
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
-      map((t) => t !== "off")
+      map(t => t !== 'off')
     );
   }
 
   get isConnectedWith$() {
     return this.dashboardFacade.connectedWith$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v && v != "none")
+      map(v => v && v != 'none')
     );
   }
 
   get isFullMonthsDateRange$() {
     return this.layoutFacade.isFullMonthsDateRange$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
@@ -163,14 +163,14 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
 
   public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
-    position: "bottom",
+    position: 'bottom',
     labels: {
       boxWidth: 8,
       usePointStyle: true,
-      generateLabels: (chart) => {
+      generateLabels: chart => {
         let labels = [];
         let bg_color = {};
-        chart.data.datasets.forEach((item) => {
+        chart.data.datasets.forEach(item => {
           item.data.forEach((val: number) => {
             if (val > 0) {
               labels.push(item.label);
@@ -180,7 +180,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
         });
         labels = [...new Set(labels)];
         labels = labels.splice(0, 10);
-        return labels.map((item) => ({
+        return labels.map(item => ({
           text: item,
           strokeStyle: bg_color[item],
           fillStyle: bg_color[item],
@@ -189,12 +189,12 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     },
   };
 
-  public stackedChartOptions: ChartOptions<"bar"> = {
+  public stackedChartOptions: ChartOptions<'bar'> = {
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
     },
@@ -202,7 +202,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -220,31 +220,31 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
         display: true,
       },
       tooltip: {
-        mode: "x",
+        mode: 'x',
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
-          label: (tooltipItems) => {
+          label: tooltipItems => {
             return (
               tooltipItems.label +
-              ": " +
+              ': ' +
               this.decimalPipe.transform(tooltipItems.parsed.y)
             );
           },
           title: function () {
-            return "";
+            return '';
           },
         },
       },
     },
   };
-  public stackedChartOptionsMulti: ChartOptions<"bar"> = {
+  public stackedChartOptionsMulti: ChartOptions<'bar'> = {
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
     },
@@ -254,7 +254,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     // barThickness: 10,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -275,19 +275,19 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     plugins: {
       legend: this.stackLegendGenerator,
       tooltip: {
-        mode: "x",
+        mode: 'x',
         callbacks: {
           label: function (tooltipItems) {
             if (tooltipItems.parsed.y > 0) {
               return (
-                tooltipItems.dataset.label + ": " + tooltipItems.formattedValue
+                tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue
               );
             } else {
-              return "";
+              return '';
             }
           },
-          title: (tooltipItems) => {
-            const sumV = _.sumBy(tooltipItems, (t) => t.parsed.y);
+          title: tooltipItems => {
+            const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
             return `${tooltipItems[0].label}: ${this.decimalPipe.transform(
               sumV
             )}`;
@@ -298,27 +298,27 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
   };
 
   barChartColors = [
-    { backgroundColor: "#39acac" },
-    { backgroundColor: "#48daba" },
+    { backgroundColor: '#39acac' },
+    { backgroundColor: '#48daba' },
   ];
 
   lineChartColors = [
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
   ];
 }

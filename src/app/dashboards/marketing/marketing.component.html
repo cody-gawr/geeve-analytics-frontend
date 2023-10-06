@@ -2,8 +2,7 @@
   class="sa_select internal_dentist"
   [(ngModel)]="selectedDentist"
   (ngModelChange)="loadDentist($event)"
-  [style.display]="'none'"
->
+  [style.display]="'none'">
   <option value="all">All Dentist</option>
   <option *ngFor="let dentist of dentists" [value]="dentist.providerId">
     {{ dentist.name }}
@@ -13,20 +12,17 @@
   type="button"
   id="dentist_initiate"
   (click)="initiate_dentist()"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <input
   type="button"
   id="clinic_initiate"
   (click)="initiate_clinic()"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <input
   type="text"
   id="page_title"
   value="Clinician Procedures & Referrals"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <div class="sa_dashboard_inner_content sa_dentist_graphs_area">
   <div class="sa_card topbar-strip">
     <div
@@ -35,14 +31,12 @@
       fxLayoutGap="0px"
       fxLayoutGap.md="0"
       fxLayoutGap.sm="0"
-      fxLayoutGap.xs="0"
-    >
+      fxLayoutGap.xs="0">
       <div fxFlex>
         <app-date-menu-bar
           #dateBar
           (filter)="filterDate($event)"
-          (changeDate)="choosedDate($event)"
-        >
+          (changeDate)="choosedDate($event)">
         </app-date-menu-bar>
       </div>
 
@@ -53,31 +47,27 @@
             #group="matButtonToggleGroup"
             name="fontStyle"
             class="trendToggle sa_toogle_group2 toggle_switcher"
-            aria-label="Font Style"
-          >
+            aria-label="Font Style">
             <mat-button-toggle
               checked
               value="off"
               [disabled]="Apirequest <= 0 ? false : true"
               class="target_off target_filter"
-              (click)="Apirequest <= 0 ? toggleFilter('off') : false"
-            >
+              (click)="Apirequest <= 0 ? toggleFilter('off') : false">
               <span>Off</span>
             </mat-button-toggle>
             <mat-button-toggle
               value="current"
               class="target_current target_filter"
               [disabled]="Apirequest <= 0 ? false : true"
-              (click)="Apirequest <= 0 ? toggleFilter('current') : false"
-            >
+              (click)="Apirequest <= 0 ? toggleFilter('current') : false">
               <span>Monthly</span>
             </mat-button-toggle>
             <mat-button-toggle
               value="historic"
               class="target_historic target_filter"
               [disabled]="Apirequest <= 0 ? false : true"
-              (click)="Apirequest <= 0 ? toggleFilter('historic') : false"
-            >
+              (click)="Apirequest <= 0 ? toggleFilter('historic') : false">
               <span>Annual</span>
             </mat-button-toggle>
           </mat-button-toggle-group>
@@ -92,14 +82,12 @@
       fxLayoutGap="20px"
       fxLayoutGap.md="0px"
       fxLayoutGap.sm="0"
-      fxLayoutGap.xs="0"
-    >
+      fxLayoutGap.xs="0">
       <div
         fxFlex.sm="100"
         fxFlex.xs="100"
         fxFlex="100"
-        class="sa_flex_transparent"
-      >
+        class="sa_flex_transparent">
         {{ startDate }}- {{ endDate }}
       </div>
 
@@ -109,8 +97,7 @@
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg items_predictor md_mrn"
-      >
+        class="sa_flexbg items_predictor md_mrn">
         <mat-card class="itemsPredictor">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -121,8 +108,7 @@
                   [tooltip]="charTips['23']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -133,8 +119,7 @@
                     isNewPatientsByReferralBackVisible &&
                     newPatientsTimeLabels.length > 0 &&
                     !(mkNewPatientsByReferralLoader || showTrend)
-                  "
-                >
+                  ">
                   <span (click)="changeLevel('newPatient')">Back</span>
                 </div>
                 <canvas
@@ -147,14 +132,13 @@
                   "
                   #myCanvas2
                   baseChart
-                  [datasets]="[{ data: newPatientsTimeData} ]"
+                  [datasets]="[{ data: newPatientsTimeData }]"
                   [labels]="newPatientsTimeLabels"
                   [type]="pieChartType"
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event, 'newPatients')"
                   [options]="noNewPatientsByReferralChartOptions"
-                  [colors]="pieChartColors"
-                >
+                  [colors]="pieChartColors">
                 </canvas>
                 <canvas
                   *ngIf="
@@ -170,8 +154,7 @@
                   [legend]="false"
                   [type]="stackedChartType"
                   (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"
-                >
+                  (chartClick)="chartClicked($event)">
                 </canvas>
 
                 <div
@@ -180,8 +163,7 @@
                     !(showTrend || mkNewPatientsByReferralLoader) &&
                     newPatientsTimeLabels.length == 0 &&
                     mkNewPatientsByReferalLabels == 0
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no new patients from referral sources in the
@@ -205,8 +187,7 @@
                   [legend]="false"
                   [type]="stackedChartType"
                   (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"
-                >
+                  (chartClick)="chartClicked($event)">
                 </canvas>
                 <div
                   class="no-data-placeholder"
@@ -214,8 +195,7 @@
                     showTrend &&
                     newPatientsTimeLabelsTrend.length == 0 &&
                     !mkNewPatientsByReferralLoader
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no new patients from referral sources in the
@@ -229,16 +209,14 @@
                 *ngIf="!showTrend && showmulticlinicNewPatients"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
-                class="m-t-40 sa_chart_details_sec pieChartDetails"
-              >
+                class="m-t-40 sa_chart_details_sec pieChartDetails">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
-                    {{ totalNewPatientsReferral | number : '1.0-0' }}
+                    {{ totalNewPatientsReferral | number: '1.0-0' }}
                   </h3>
                   <span class="value-text">Total</span>
                 </div>
@@ -248,8 +226,7 @@
         </mat-card>
         <div
           *ngIf="mkNewPatientsByReferralLoader == true"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -260,8 +237,7 @@
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg items_predictor md_mrn last"
-      >
+        class="sa_flexbg items_predictor md_mrn last">
         <mat-card class="itemsPredictor">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -272,8 +248,7 @@
                   [tooltip]="charTips['24']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -284,8 +259,7 @@
                     isNewPatientRevenueByReferralBackVisible &&
                     revenueReferralLabels.length > 0 &&
                     !(mkRevenueByReferralLoader || showTrend)
-                  "
-                >
+                  ">
                   <span (click)="changeLevel('revenue')">Back</span>
                 </div>
                 <canvas
@@ -299,14 +273,13 @@
                     )
                   "
                   baseChart
-                  [datasets]="[{data: revenueReferralData}]"
+                  [datasets]="[{ data: revenueReferralData }]"
                   [labels]="revenueReferralLabels"
                   [type]="pieChartType"
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event, 'revenue')"
                   [options]="pieChartOptions"
-                  [colors]="pieChartColors"
-                >
+                  [colors]="pieChartColors">
                 </canvas>
                 <canvas
                   *ngIf="
@@ -323,8 +296,7 @@
                   [legend]="false"
                   [type]="stackedChartType"
                   (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"
-                >
+                  (chartClick)="chartClicked($event)">
                 </canvas>
                 <div
                   class="no-data-placeholder"
@@ -332,8 +304,7 @@
                     revenueReferralLabels.length == 0 &&
                     mkNewPatientsByReferalRevLabels.length == 0 &&
                     !(showTrend || mkRevenueByReferralLoader)
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no revenue from referral sources in the selected
@@ -357,8 +328,7 @@
                   [legend]="false"
                   [type]="stackedChartType"
                   (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"
-                >
+                  (chartClick)="chartClicked($event)">
                 </canvas>
                 <!-- labelBarmkRevenueByReferralOptionsStacked -->
                 <div
@@ -367,8 +337,7 @@
                     showTrend &&
                     revenueReferralLabelsTrend.length == 0 &&
                     !mkRevenueByReferralLoader
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no revenue from referral sources in the selected
@@ -382,16 +351,14 @@
                 *ngIf="!showTrend && showmulticlinicNewPatientsRev"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
-                class="m-t-40 sa_chart_details_sec pieChartDetails"
-              >
+                class="m-t-40 sa_chart_details_sec pieChartDetails">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
-                    ${{ totalNewPatientsReferralRev | number : '1.0-0' }}
+                    ${{ totalNewPatientsReferralRev | number: '1.0-0' }}
                   </h3>
                   <span class="value-text">Total</span>
                 </div>
@@ -401,8 +368,7 @@
         </mat-card>
         <div
           *ngIf="mkRevenueByReferralLoader == true"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -414,15 +380,13 @@
       fxLayoutGap="20px"
       fxLayoutGap.md="0px"
       fxLayoutGap.sm="0"
-      fxLayoutGap.xs="0"
-    >
+      fxLayoutGap.xs="0">
       <div
         fxFlex="calc(32% - 10px)"
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg referral_clinicians"
-      >
+        class="sa_flexbg referral_clinicians">
         <mat-card *ngIf="isVisibleAccountGraphs">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -431,7 +395,7 @@
                   *ngIf="!(showTrend || activePatients) && trendText"
                   class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
                   matTooltip="{{ trendText }} : {{
-                    newPatientsPrevTotal | number : '1.0-0'
+                    newPatientsPrevTotal | number: '1.0-0'
                   }}"
                   ><img
                     class="trend_ico"
@@ -441,7 +405,7 @@
                   *ngIf="activePatients && trendText && !showTrend"
                   class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
                   matTooltip="{{ trendText }} : {{
-                    fdActivePatientsTa | number : '1.0-0'
+                    fdActivePatientsTa | number: '1.0-0'
                   }}"
                   ><img
                     class="trend_ico"
@@ -458,29 +422,25 @@
                   [tooltip]="charTips['36']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
                 <img
                   *ngIf="activePatients"
                   [tooltip]="charTips['61']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
               <div
                 fxLayout="row wrap"
                 class="sa_tabs_main_sec"
-                fxLayoutAlign="center"
-              >
+                fxLayoutAlign="center">
                 <div
                   fxFlex.gt-sm="49.33%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
-                  class="btn-group"
-                >
+                  class="btn-group">
                   <small
                     class="sa_tab_btn"
                     [ngClass]="!activePatients ? 'active' : ''"
@@ -492,8 +452,7 @@
                   fxFlex.gt-sm="49.33%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
-                  class="btn-group"
-                >
+                  class="btn-group">
                   <small
                     class="sa_tab_btn"
                     [ngClass]="activePatients ? 'active' : ''"
@@ -511,8 +470,7 @@
                     newPatientsTotal > 0 &&
                     !fdnewPatientsRatioLoader &&
                     !activePatients
-                  "
-                >
+                  ">
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
@@ -522,8 +480,7 @@
                     [backgroundColor]="backgroundColor"
                     [cap]="cap"
                     [max]="maxnewPatientsGoal"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                 </div>
                 <div
@@ -534,8 +491,7 @@
                     newPatientsTotal > 0 &&
                     !fdnewPatientsRatioLoader &&
                     !activePatients
-                  "
-                >
+                  ">
                   <canvas
                     #myCanvas
                     baseChart
@@ -546,8 +502,7 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
 
@@ -557,8 +512,7 @@
                     activePatients == true &&
                     !(showAPBar || showTrend || fdActivePatientLoader) &&
                     fdActivePatients > 0
-                  "
-                >
+                  ">
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
@@ -568,8 +522,7 @@
                     [backgroundColor]="backgroundColor"
                     [cap]="cap"
                     [max]="fdActivePatient"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                 </div>
                 <div
@@ -580,8 +533,7 @@
                     activePatients &&
                     fdActivePatients > 0 &&
                     !fdActivePatientLoader
-                  "
-                >
+                  ">
                   <canvas
                     #myCanvas
                     baseChart
@@ -592,16 +544,14 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
                   *ngIf="
                     newPatientsTotal <= 0 &&
                     !(showTrend || fdnewPatientsRatioLoader || activePatients)
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no new patients in the selected period
@@ -613,8 +563,7 @@
                     !(showTrend || fdActivePatientLoader) &&
                     fdActivePatients <= 0 &&
                     activePatients
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no active patients in the selected period
@@ -628,8 +577,7 @@
                     newPatientsChartTrend1.length > 0 &&
                     !showNPclinic
                   "
-                  class="chart-Trend1-patients trendH"
-                >
+                  class="chart-Trend1-patients trendH">
                   <canvas
                     #myCanvas
                     baseChart
@@ -640,8 +588,7 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -652,8 +599,7 @@
                     showNPclinic &&
                     !fdnewPatientsRatioLoader
                   "
-                  class="chart-Trend1-patients trendH"
-                >
+                  class="chart-Trend1-patients trendH">
                   <canvas
                     #myCanvas
                     baseChart
@@ -664,8 +610,7 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="true"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
 
@@ -675,8 +620,7 @@
                     activePatients &&
                     activePatientsChartTrend1.length > 0
                   "
-                  class="chart-Trend1-patients trendH"
-                >
+                  class="chart-Trend1-patients trendH">
                   <canvas
                     #myCanvas
                     baseChart
@@ -687,8 +631,7 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -698,8 +641,7 @@
                     newAPatientsMultiLabels.length > 0 &&
                     showAPclinic
                   "
-                  class="chart-Trend1-patients trendH"
-                >
+                  class="chart-Trend1-patients trendH">
                   <canvas
                     #myCanvas
                     baseChart
@@ -710,8 +652,7 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="true"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
 
@@ -722,8 +663,7 @@
                     !activePatients &&
                     newPatientsChartTrend.length == 0 &&
                     newPatientsMultiLabels.length == 0
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no new patients in the selected period
@@ -736,8 +676,7 @@
                     activePatients &&
                     activePatientsChartTrend.length <= 0 &&
                     newAPatientsMultiLabels.length <= 0
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no active patients in the selected period
@@ -750,16 +689,14 @@
                 *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
-                class="m-t-40 sa_chart_details_sec pieChartDetails"
-              >
+                class="m-t-40 sa_chart_details_sec pieChartDetails">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
-                    {{ newPatientsTotal | number : '1.0-0' }}
+                    {{ newPatientsTotal | number: '1.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="currentText != ''">{{
                     currentText
@@ -773,10 +710,9 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom'"
-                >
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">
-                    {{ newPatientsPrevTotal | number : '1.0-0' }}
+                    {{ newPatientsPrevTotal | number: '1.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="trendText != ''">{{
                     trendText
@@ -794,10 +730,9 @@
                     newPatientsGoal >= 0 &&
                     newPatientsGoal != null &&
                     showGoals == true
-                  "
-                >
+                  ">
                   <h3 class="m-0 value-num">
-                    {{ newPatientsGoal * goalCount | number : '1.0-0' }}
+                    {{ newPatientsGoal * goalCount | number: '1.0-0' }}
                   </h3>
                   <span class="value-text">Goal</span>
                 </div>
@@ -808,16 +743,14 @@
                 *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
-                class="m-t-40 sa_chart_details_sec pieChartDetails"
-              >
+                class="m-t-40 sa_chart_details_sec pieChartDetails">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
-                    {{ fdActivePatients | number : '1.0-0' }}
+                    {{ fdActivePatients | number: '1.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="currentText != ''">{{
                     currentText
@@ -831,10 +764,9 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom'"
-                >
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">
-                    {{ fdActivePatientsTa | number : '1.0-0' }}
+                    {{ fdActivePatientsTa | number: '1.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="trendText != ''">{{
                     trendText
@@ -856,7 +788,7 @@
                   *ngIf="!showTrend && trendText"
                   class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
                   matTooltip="{{ trendText }} : {{
-                    newPatientsPrevTotal | number : '1.0-0'
+                    newPatientsPrevTotal | number: '1.0-0'
                   }}"
                   ><img
                     class="trend_ico"
@@ -870,8 +802,7 @@
                   [tooltip]="charTips['36']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -881,8 +812,7 @@
                   *ngIf="
                     !(showNPBar || showTrend || fdnewPatientsRatioLoader) &&
                     newPatientsTotal > 0
-                  "
-                >
+                  ">
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
@@ -892,8 +822,7 @@
                     [backgroundColor]="backgroundColor"
                     [cap]="cap"
                     [max]="maxnewPatientsGoal"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                 </div>
                 <div
@@ -902,8 +831,7 @@
                     showNPBar &&
                     !(showTrend || fdnewPatientsRatioLoader) &&
                     newPatientsTotal > 0
-                  "
-                >
+                  ">
                   <canvas
                     #myCanvas
                     baseChart
@@ -914,16 +842,14 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
                   *ngIf="
                     newPatientsTotal <= 0 &&
                     !(showTrend || fdnewPatientsRatioLoader)
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no new patients in the selected period
@@ -936,8 +862,7 @@
                     newPatientsChartTrend1.length > 0 &&
                     !showNPclinic
                   "
-                  class="chart-Trend1-patients trendH"
-                >
+                  class="chart-Trend1-patients trendH">
                   <canvas
                     #myCanvas
                     baseChart
@@ -948,8 +873,7 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <p>
@@ -965,8 +889,7 @@
                     newPatientsMultiLabels.length > 0 &&
                     showNPclinic
                   "
-                  class="chart-Trend1-patients trendH"
-                >
+                  class="chart-Trend1-patients trendH">
                   <canvas
                     #myCanvas
                     baseChart
@@ -977,8 +900,7 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -988,8 +910,7 @@
                     !activePatients &&
                     newPatientsChartTrend.length == 0 &&
                     newPatientsMultiLabels.length == 0
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no new patients in the selected period
@@ -1002,16 +923,14 @@
                 *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
-                class="m-t-40 sa_chart_details_sec pieChartDetails"
-              >
+                class="m-t-40 sa_chart_details_sec pieChartDetails">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
-                    {{ newPatientsTotal | number : '1.0-0' }}
+                    {{ newPatientsTotal | number: '1.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="currentText != ''">{{
                     currentText
@@ -1025,10 +944,9 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom'"
-                >
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">
-                    {{ newPatientsPrevTotal | number : '1.0-0' }}
+                    {{ newPatientsPrevTotal | number: '1.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="trendText != ''">{{
                     trendText
@@ -1046,10 +964,9 @@
                     newPatientsGoal >= 0 &&
                     newPatientsGoal != null &&
                     showGoals == true
-                  "
-                >
+                  ">
                   <h3 class="m-0 value-num">
-                    {{ newPatientsGoal * goalCount | number : '1.0-0' }}
+                    {{ newPatientsGoal * goalCount | number: '1.0-0' }}
                   </h3>
                   <span class="value-text">Goal</span>
                 </div>
@@ -1059,15 +976,13 @@
         </mat-card>
         <div
           *ngIf="fdnewPatientsRatioLoader && !activePatients"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
         <div
           *ngIf="fdActivePatientLoader && activePatients"
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -1077,8 +992,7 @@
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg referral_clinicians"
-      >
+        class="sa_flexbg referral_clinicians">
         <mat-card *ngIf="isVisibleAccountGraphs">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -1105,8 +1019,7 @@
                     !(showTrend || newAcqValueError || multipleClinicsSelected)
                   "
                   class="mat-button-sm mat-green-button"
-                  (click)="ngxSmartModalService.getModal('myModal').open()"
-                >
+                  (click)="ngxSmartModalService.getModal('myModal').open()">
                   {{ (isAccountButtonToggle$ | async) ? 'Acct' : 'Account' }}
                 </button>
                 <div class="info-icon-container float-right-space">
@@ -1114,8 +1027,7 @@
                     [tooltip]="charTips['37']"
                     src="../assets/images/info-icon.png"
                     alt="info-icon"
-                    class="info-icon"
-                  />
+                    class="info-icon" />
                 </div>
               </div>
             </mat-card-title>
@@ -1123,20 +1035,17 @@
               <div
                 fxLayout="row wrap"
                 class="sa_tabs_main_sec"
-                fxLayoutAlign="center"
-              >
+                fxLayoutAlign="center">
                 <div
                   fxFlex.gt-sm="49.33%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
-                  class="btn-group"
-                ></div>
+                  class="btn-group"></div>
                 <div
                   fxFlex.gt-sm="49.33%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
-                  class="btn-group"
-                ></div>
+                  class="btn-group"></div>
               </div>
               <div class="chart py-2 trendchart">
                 <div>
@@ -1151,8 +1060,7 @@
                       (xeroConnect || myobConnect) &&
                       isCompleteMonth
                     "
-                    class="chart-trend"
-                  >
+                    class="chart-trend">
                     <ngx-gauge
                       class="singleRatio"
                       [type]="gaugeType"
@@ -1163,8 +1071,7 @@
                       [cap]="cap"
                       [prepend]="gaugePrependText"
                       [size]="size"
-                      [max]="newAcqValueMax"
-                    >
+                      [max]="newAcqValueMax">
                     </ngx-gauge>
                   </div>
                   <div
@@ -1179,8 +1086,7 @@
                       (xeroConnect || myobConnect) &&
                       isCompleteMonth
                     "
-                    class="chart-Trend1-patients"
-                  >
+                    class="chart-Trend1-patients">
                     <canvas
                       baseChart
                       [datasets]="newPatientCostsChartData"
@@ -1190,8 +1096,7 @@
                       (chartHover)="chartHovered($event)"
                       [legend]="false"
                       [colors]="lineChartColors"
-                      (chartClick)="chartClicked($event)"
-                    >
+                      (chartClick)="chartClicked($event)">
                     </canvas>
                   </div>
                   <div
@@ -1200,8 +1105,7 @@
                       (xeroConnect || myobConnect) &&
                       !newAcqValueError
                     "
-                    class="loader_container loader_container_middle"
-                  >
+                    class="loader_container loader_container_middle">
                     <img class="loader_ico" src="../assets/images/720.gif" />
                     <div class="loader-text">Calculating...</div>
                   </div>
@@ -1212,8 +1116,7 @@
                       (xeroConnect || myobConnect) &&
                       !newAcqValueError
                     "
-                    class="chart-Trend1-patients"
-                  >
+                    class="chart-Trend1-patients">
                     <canvas
                       #myCanvas
                       baseChart
@@ -1224,8 +1127,7 @@
                       [colors]="lineChartColors"
                       (chartHover)="chartHovered($event)"
                       [legend]="multipleClinicsSelected"
-                      (chartClick)="chartClicked($event)"
-                    >
+                      (chartClick)="chartClicked($event)">
                     </canvas>
                   </div>
                   <div
@@ -1236,8 +1138,7 @@
                       (xeroConnect || myobConnect) &&
                       !newAcqValueError &&
                       !multipleClinicsSelected
-                    "
-                  >
+                    ">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">
                       Unable to determine your cost of new patients for this
@@ -1245,8 +1146,7 @@
                     </p>
                   </div>
                   <div
-                    *ngIf="!(xeroConnect || myobConnect) || newAcqValueError"
-                  >
+                    *ngIf="!(xeroConnect || myobConnect) || newAcqValueError">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">
                       Please ensure your Xero/MYOB account is connected
@@ -1261,8 +1161,7 @@
                         fdnewPatientsAcqLoader ||
                         showTrend
                       )
-                    "
-                  >
+                    ">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">
                       Please select a date range consisting of full months to
@@ -1276,16 +1175,14 @@
               <div
                 *ngIf="!showTrend && isCompleteMonth"
                 fxLayout="row wrap"
-                class="pieChartDetails sa_chart_details_sec"
-              >
+                class="pieChartDetails sa_chart_details_sec">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
-                    $ {{ newAcqValue | number : '0.0-0' }}
+                    $ {{ newAcqValue | number: '0.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="currentText != ''">{{
                     currentText
@@ -1298,10 +1195,9 @@
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
-                    $ {{ newAcqValuePrev | number : '0.0-0' }}
+                    $ {{ newAcqValuePrev | number: '0.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="trendText != ''">{{
                     trendText
@@ -1319,8 +1215,7 @@
                     newAcqValueGoal >= 0 &&
                     newAcqValueGoal != '' &&
                     showGoals == true
-                  "
-                >
+                  ">
                   <h3 class="m-0 value-num">${{ newAcqValueGoal }}</h3>
                   <span class="value-text">Goal</span>
                 </div>
@@ -1337,7 +1232,7 @@
                   *ngIf="!showTrend && trendText"
                   class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
                   matTooltip="{{ trendText }} : {{
-                    fdActivePatientsTa | number : '1.0-0'
+                    fdActivePatientsTa | number: '1.0-0'
                   }}"
                   ><img
                     class="trend_ico"
@@ -1353,8 +1248,7 @@
                   [tooltip]="charTips['61']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1364,8 +1258,7 @@
                   *ngIf="
                     fdActivePatients > 0 &&
                     !(showAPBar || showTrend || fdActivePatientLoader)
-                  "
-                >
+                  ">
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
@@ -1375,8 +1268,7 @@
                     [backgroundColor]="backgroundColor"
                     [cap]="cap"
                     [max]="fdActivePatient"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                 </div>
                 <div
@@ -1386,8 +1278,7 @@
                     !showTrend &&
                     fdActivePatients > 0 &&
                     !fdActivePatientLoader
-                  "
-                >
+                  ">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1398,8 +1289,7 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
 
@@ -1407,8 +1297,7 @@
                   *ngIf="
                     !(showTrend || fdActivePatientLoader) &&
                     fdActivePatients <= 0
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no active patients in the selected period
@@ -1416,8 +1305,7 @@
                 </div>
                 <div
                   *ngIf="showTrend && activePatientsChartTrend1.length > 0"
-                  class="chart-Trend1-patients trendH"
-                >
+                  class="chart-Trend1-patients trendH">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1428,8 +1316,7 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -1438,8 +1325,7 @@
                     newAPatientsMultiLabels.length > 0 &&
                     showAPclinic
                   "
-                  class="chart-Trend1-patients trendH"
-                >
+                  class="chart-Trend1-patients trendH">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1450,8 +1336,7 @@
                     [colors]="lineChartColors"
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -1460,8 +1345,7 @@
                     showTrend &&
                     activePatientsChartTrend1.length <= 0 &&
                     newAPatientsMultiLabels1.length <= 0
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no active patients in the selected period
@@ -1474,16 +1358,14 @@
                 *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
-                class="m-t-40 sa_chart_details_sec pieChartDetails"
-              >
+                class="m-t-40 sa_chart_details_sec pieChartDetails">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
-                    {{ fdActivePatients | number : '1.0-0' }}
+                    {{ fdActivePatients | number: '1.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="currentText != ''">{{
                     currentText
@@ -1497,10 +1379,9 @@
                   fxFlex.gt-xs="33.33%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom'"
-                >
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">
-                    {{ fdActivePatientsTa | number : '1.0-0' }}
+                    {{ fdActivePatientsTa | number: '1.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="trendText != ''">{{
                     trendText
@@ -1514,8 +1395,7 @@
           </mat-card-content>
           <div
             *ngIf="fdActivePatientLoader"
-            class="loader_container loader_container_middle"
-          >
+            class="loader_container loader_container_middle">
             <img class="loader_ico" src="../assets/images/720.gif" />
             <div class="loader-text">Calculating...</div>
           </div>
@@ -1526,8 +1406,7 @@
         fxFlex.md="100"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="sa_flexbg referral_clinicians last"
-      >
+        class="sa_flexbg referral_clinicians last">
         <mat-card>
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -1548,34 +1427,29 @@
                   [tooltip]="charTips['25']"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon"
-                />
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
               <div
                 fxLayout="row wrap"
                 class="sa_tabs_main_sec"
-                fxLayoutAlign="center"
-              >
+                fxLayoutAlign="center">
                 <div
                   fxFlex.gt-sm="49.33%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
-                  class="btn-group"
-                ></div>
+                  class="btn-group"></div>
                 <div
                   fxFlex.gt-sm="49.33%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
-                  class="btn-group"
-                ></div>
+                  class="btn-group"></div>
               </div>
               <div class="chart py-2 trendchart">
                 <div
                   class="chart-num-patients"
-                  *ngIf="visitsTotal > 0 && !(showTrend || showBar)"
-                >
+                  *ngIf="visitsTotal > 0 && !(showTrend || showBar)">
                   <ngx-gauge
                     class="singleRatio"
                     [type]="gaugeType"
@@ -1584,14 +1458,12 @@
                     [foregroundColor]="foregroundColor"
                     [backgroundColor]="backgroundColor"
                     [cap]="cap"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                 </div>
                 <div
                   class="chart-Trend1-patients"
-                  *ngIf="!showTrend && visitsTotal > 0 && showBar"
-                >
+                  *ngIf="!showTrend && visitsTotal > 0 && showBar">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1602,15 +1474,13 @@
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
                     [colors]="lineChartColors"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
                   *ngIf="
                     visitsTotal == 0 && !(showTrend || fdvisitsRatioLoader)
-                  "
-                >
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no visits in the selected period
@@ -1621,8 +1491,7 @@
                   *ngIf="
                     showTrend && visitsChartTrend1.length > 0 && !showByclinic
                   "
-                  class="chart-Trend1-patients"
-                >
+                  class="chart-Trend1-patients">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1633,8 +1502,7 @@
                     (chartHover)="chartHovered($event)"
                     [legend]="false"
                     [colors]="lineChartColors"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
                 <div
@@ -1643,8 +1511,7 @@
                     totalVisitMultiLabels.length > 0 &&
                     showByclinic
                   "
-                  class="chart-Trend1-patients"
-                >
+                  class="chart-Trend1-patients">
                   <canvas
                     #myCanvas
                     baseChart
@@ -1655,8 +1522,7 @@
                     (chartHover)="chartHovered($event)"
                     [legend]="true"
                     [colors]="lineChartColors"
-                    (chartClick)="chartClicked($event)"
-                  >
+                    (chartClick)="chartClicked($event)">
                   </canvas>
                 </div>
               </div>
@@ -1667,8 +1533,7 @@
                   visitsChartTrend1.length == 0 &&
                   totalVisitMultiLabels.length == 0
                 "
-                class="no-data-placeholder"
-              >
+                class="no-data-placeholder">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">
                   You have no visits in the selected period
@@ -1680,16 +1545,14 @@
                 *ngIf="!showTrend"
                 fxLayout="row wrap"
                 fxLayoutAlign="center center"
-                class="m-t-40 sa_chart_details_sec pieChartDetails"
-              >
+                class="m-t-40 sa_chart_details_sec pieChartDetails">
                 <div
                   fxFlex.gt-sm="33.33%"
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
-                  class="text-center"
-                >
+                  class="text-center">
                   <h3 class="m-0 value-num">
-                    {{ visitsTotal | number : '1.0-0' }}
+                    {{ visitsTotal | number: '1.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="currentText != ''">{{
                     currentText
@@ -1703,10 +1566,9 @@
                   fxFlex.gt-xs="50%"
                   fxFlex="100"
                   class="text-center"
-                  *ngIf="duration != 'custom'"
-                >
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">
-                    {{ visitsPrevTotal | number : '1.0-0' }}
+                    {{ visitsPrevTotal | number: '1.0-0' }}
                   </h3>
                   <span class="value-text" *ngIf="trendText != ''">{{
                     trendText
@@ -1722,10 +1584,9 @@
                   class="text-center"
                   *ngIf="
                     visitsGoal >= 0 && visitsGoal != null && showGoals == true
-                  "
-                >
+                  ">
                   <h3 class="m-0 value-num">
-                    {{ visitsGoal * goalCount | number : '1.0-0' }}
+                    {{ visitsGoal * goalCount | number: '1.0-0' }}
                   </h3>
                   <span class="value-text">Goal</span>
                 </div>
@@ -1737,8 +1598,7 @@
           *ngIf="
             fdvisitsRatioLoader == true || fdvisitsRatioTrendLoader == true
           "
-          class="loader_container loader_container_middle"
-        >
+          class="loader_container loader_container_middle">
           <img class="loader_ico" src="../assets/images/720.gif" />
           <div class="loader-text">Calculating...</div>
         </div>
@@ -1755,15 +1615,13 @@
     fxLayoutGap="20px"
     fxLayoutGap.md="20px"
     fxLayoutGap.sm="0"
-    fxLayoutGap.xs="0"
-  >
+    fxLayoutGap.xs="0">
     <div
       fxFlex="calc(50% - 10px)"
       fxFlex.md="calc(50% - 10px)"
       fxFlex.sm="50"
       fxFlex.xs="50"
-      class="SelectCategories sa_flexbg referral_clinicians"
-    >
+      class="SelectCategories sa_flexbg referral_clinicians">
       <h5 class="mt-0">Selected Accounts</h5>
       <ul class="list-categories">
         <li *ngFor="let category of selectedAccounts; let i = index">
@@ -1777,8 +1635,7 @@
       fxFlex.md="calc(50% - 10px)"
       fxFlex.sm="50"
       fxFlex.xs="50"
-      class="SelectCategories sa_flexbg referral_clinicians"
-    >
+      class="SelectCategories sa_flexbg referral_clinicians">
       <h5 class="mt-0 other_cat">Other Accounts</h5>
       <ul class="list-categories">
         <li *ngFor="let category of Accounts; let i = index">
@@ -1791,8 +1648,7 @@
   <button
     class="mat-raised-button mat-dc float-right"
     mat-raised-button
-    (click)="save_account()"
-  >
+    (click)="save_account()">
     Save
   </button>
   <button (click)="myModal.close()" class="close_modal close-btn">Close</button>
@@ -1803,5 +1659,4 @@
   [style.display]="'none'"
   [datasets]="chartData1"
   [labels]="chartLabels1"
-  [type]="pieChartType"
-></canvas>
+  [type]="pieChartType"></canvas>

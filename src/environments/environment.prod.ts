@@ -2,8 +2,9 @@ export const environment = {
   production: true,
   // apiUrl : "http://localhost/jeeveanalytics/server/",
   // homeUrl:"http://localhost/jeeveanalytics/client2/"
-  apiUrl: "https://api.jeeve.com.au/analytics",
-  homeUrl: "https://analytics.jeeve.com.au/",
-  solutionsUrl: "https://api.jeeve.com.au/solutions",
-  stripeKey: "pk_live_51IwzWzDUubFKxLHp2MqYQ5j2CjhYBJ0wjhtllafbqMot3JctJ4dD6VWA1FUsDl2AIl8ELT1za1YBtTNSIo0otf6a007W0C05yH"
+  apiUrl: 'https://api.jeeve.com.au/analytics',
+  homeUrl: 'https://analytics.jeeve.com.au/',
+  solutionsUrl: 'https://api.jeeve.com.au/solutions',
+  stripeKey:
+    'pk_live_51IwzWzDUubFKxLHp2MqYQ5j2CjhYBJ0wjhtllafbqMot3JctJ4dD6VWA1FUsDl2AIl8ELT1za1YBtTNSIo0otf6a007W0C05yH',
 };

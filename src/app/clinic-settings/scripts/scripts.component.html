@@ -1,98 +1,141 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
-    <mat-panel-title>
-     Followups Scripts
-    </mat-panel-title>
+    <mat-panel-title> Followups Scripts </mat-panel-title>
   </mat-expansion-panel-header>
   <div>
-    <mat-form-field floatLabel="never"   class="denstist-search-form-field search-width">
+    <mat-form-field
+      floatLabel="never"
+      class="denstist-search-form-field search-width">
       <mat-icon matPrefix>search</mat-icon>
       <input
         matInput
         type="search"
         placeholder="Search here..."
         class="search-input"
-        (keyup)="doFilter($event.target.value)"
-      />     
+        (keyup)="doFilter($event.target.value)" />
     </mat-form-field>
-     <button class="mat-raised-button mat-green addScriptBtn" mat-raised-button (click)="openDialog()">Add Script</button>    
+    <button
+      class="mat-raised-button mat-green addScriptBtn"
+      mat-raised-button
+      (click)="openDialog()">
+      Add Script
+    </button>
   </div>
   <div class="DentistListSecRow mh-table patient_data-table_responsive">
     <div class="card-loading d-none">
       <img class="tableLoader" src="../../assets/images/loader.gif" />
     </div>
     <div class="respopnsive-table-set">
-      <table mat-table [dataSource]="scriptList" class="mat-elevation-z8" matSort >
-          <ng-container matColumnDef="script_title">
+      <table
+        mat-table
+        [dataSource]="scriptList"
+        class="mat-elevation-z8"
+        matSort>
+        <ng-container matColumnDef="script_title">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-          <td mat-cell *matCellDef="let element; let i=index">
+          <td mat-cell *matCellDef="let element; let i = index">
             {{ element.script_title }}
           </td>
-        </ng-container>         
-          <ng-container matColumnDef="followup_type">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Followup Type</th>
-          <td mat-cell *matCellDef="let element; let i=index">
+        </ng-container>
+        <ng-container matColumnDef="followup_type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Followup Type
+          </th>
+          <td mat-cell *matCellDef="let element; let i = index">
             <mat-form-field floatLabel="never">
-                <mat-select [(value)]="element.followup_type" (selectionChange)="updateScript($event.value,element.record_id,'followup_type')">
-                  <mat-option value="Post Op">Post Op</mat-option>
-                  <mat-option value="Overdue Recalls">Overdue Recalls</mat-option>
-                  <mat-option value="Ticks">Ticks</mat-option>
-                  <!-- <mat-option value="Cancellations">Cancellations</mat-option> -->
-                  <mat-option value="Internal Referrals">Internal Referrals</mat-option>
-                  <mat-option value="FTA">FTA</mat-option>
-                  <mat-option value="UTA">UTA</mat-option>
-                </mat-select>
-              </mat-form-field>
+              <mat-select
+                [(value)]="element.followup_type"
+                (selectionChange)="
+                  updateScript($event.value, element.record_id, 'followup_type')
+                ">
+                <mat-option value="Post Op">Post Op</mat-option>
+                <mat-option value="Overdue Recalls">Overdue Recalls</mat-option>
+                <mat-option value="Ticks">Ticks</mat-option>
+                <!-- <mat-option value="Cancellations">Cancellations</mat-option> -->
+                <mat-option value="Internal Referrals"
+                  >Internal Referrals</mat-option
+                >
+                <mat-option value="FTA">FTA</mat-option>
+                <mat-option value="UTA">UTA</mat-option>
+              </mat-select>
+            </mat-form-field>
           </td>
         </ng-container>
         <ng-container matColumnDef="colour">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Color</th>
-          <td mat-cell *matCellDef="let element; let i=index">
+          <td mat-cell *matCellDef="let element; let i = index">
             <mat-form-field floatLabel="never" class="scriptsColors">
-                <mat-select  [(value)]="element.colour" [ngClass]="element.colour" (selectionChange)="updateScript($event.value,element.record_id,'colour')">
-                  <mat-option value="aqua">Aqua</mat-option>
-                  <mat-option value="black">Black</mat-option>
-                  <mat-option value="blue">Blue</mat-option>
-                  <mat-option value="chartreuse">Chartreuse</mat-option>
-                  <mat-option value="chocolate">Chocolate</mat-option>
-                  <mat-option value="cyan">Cyan</mat-option>
-                  <mat-option value="navy">Navy</mat-option>
-                  <mat-option value="gray">Gray</mat-option>
-                  <mat-option value="green">Green</mat-option>
-                  <mat-option value="maroon">Maroon</mat-option>
-                  <mat-option value="olive">Olive</mat-option>
-                  <mat-option value="orange">Orange</mat-option>
-                  <mat-option value="red">Red</mat-option>
-                  <mat-option value="silver">Silver</mat-option>
-                  <mat-option value="teal">Teal</mat-option>
-                  <mat-option value="violet">Violet</mat-option>
-                  <mat-option value="white">White</mat-option>
-                  <mat-option value="yellow">Yellow</mat-option>                
-                </mat-select>                 
-              </mat-form-field>                  
+              <mat-select
+                [(value)]="element.colour"
+                [ngClass]="element.colour"
+                (selectionChange)="
+                  updateScript($event.value, element.record_id, 'colour')
+                ">
+                <mat-option value="aqua">Aqua</mat-option>
+                <mat-option value="black">Black</mat-option>
+                <mat-option value="blue">Blue</mat-option>
+                <mat-option value="chartreuse">Chartreuse</mat-option>
+                <mat-option value="chocolate">Chocolate</mat-option>
+                <mat-option value="cyan">Cyan</mat-option>
+                <mat-option value="navy">Navy</mat-option>
+                <mat-option value="gray">Gray</mat-option>
+                <mat-option value="green">Green</mat-option>
+                <mat-option value="maroon">Maroon</mat-option>
+                <mat-option value="olive">Olive</mat-option>
+                <mat-option value="orange">Orange</mat-option>
+                <mat-option value="red">Red</mat-option>
+                <mat-option value="silver">Silver</mat-option>
+                <mat-option value="teal">Teal</mat-option>
+                <mat-option value="violet">Violet</mat-option>
+                <mat-option value="white">White</mat-option>
+                <mat-option value="yellow">Yellow</mat-option>
+              </mat-select>
+            </mat-form-field>
           </td>
         </ng-container>
-        
+
         <ng-container matColumnDef="is_active">
           <th mat-header-cell *matHeaderCellDef>Enabled</th>
-          <td mat-cell *matCellDef="let element; let i=index">            
-             <span class="action">
-              <mat-slide-toggle [checked]="element.is_active == 0? false : true" name="status" (change)="updateScript($event.checked,element.record_id,'is_active')"></mat-slide-toggle>        
-              </span>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <span class="action">
+              <mat-slide-toggle
+                [checked]="element.is_active == 0 ? false : true"
+                name="status"
+                (change)="
+                  updateScript($event.checked, element.record_id, 'is_active')
+                "></mat-slide-toggle>
+            </span>
           </td>
         </ng-container>
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>Action</th>
-          <td mat-cell *matCellDef="let element; let i=index">                        
-              <span class="action">
-                <a title="Edit" class="action_btn golden ng-star-inserted" (click)="openDialog( element.record_id, element.script_title, element.script_text, element.followup_type, element.colour)"><i class="ti-pencil m-r-10"></i></a>
-              </span>
-              <span class="action">
-                <a title="Delete" class="action_btn danger  ng-star-inserted" (click)="deleteScript( element.record_id )"><i class="ti-trash m-r-10"></i></a>
-              </span>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <span class="action">
+              <a
+                title="Edit"
+                class="action_btn golden ng-star-inserted"
+                (click)="
+                  openDialog(
+                    element.record_id,
+                    element.script_title,
+                    element.script_text,
+                    element.followup_type,
+                    element.colour
+                  )
+                "
+                ><i class="ti-pencil m-r-10"></i
+              ></a>
+            </span>
+            <span class="action">
+              <a
+                title="Delete"
+                class="action_btn danger ng-star-inserted"
+                (click)="deleteScript(element.record_id)"
+                ><i class="ti-trash m-r-10"></i
+              ></a>
+            </span>
           </td>
         </ng-container>
-
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
@@ -100,14 +143,12 @@
       <mat-paginator
         hidePageSize
         [pageSize]="dentistPageSize"
-        [style.display]="'none'"
-      ></mat-paginator>
+        [style.display]="'none'"></mat-paginator>
     </div>
 
     <ul
       class="main_pagination settings-table-pagination"
-      *ngIf="dentistTablePages.length"
-    >
+      *ngIf="dentistTablePages.length">
       <li *ngFor="let page of dentistTablePages">
         <button
           [ngClass]="{ active: page === currentPage, page: true }"
@@ -118,10 +159,18 @@
     </ul>
 
     <div class="data-loading-main">
-      <div class="no-data" [ngClass]="scriptList.data.length == 0 && !scriptsLoader ? 'show' : 'hide'">
-       You have no follow-up scripts
+      <div
+        class="no-data"
+        [ngClass]="
+          scriptList.data.length == 0 && !scriptsLoader ? 'show' : 'hide'
+        ">
+        You have no follow-up scripts
       </div>
-      <div class="loader" [ngClass]="scriptList.data.length == 0 && scriptsLoader ? 'show' : 'hide'">
+      <div
+        class="loader"
+        [ngClass]="
+          scriptList.data.length == 0 && scriptsLoader ? 'show' : 'hide'
+        ">
         <img class="tableLoader" src="../../../assets/images/loader.gif" />
       </div>
     </div>

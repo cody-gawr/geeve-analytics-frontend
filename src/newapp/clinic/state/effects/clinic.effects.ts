@@ -17,10 +17,10 @@ export class ClinicEffects {
       ofType(ClinicPageActions.loadClinics),
       mergeMap(() => {
         return this.clinicService.getClinics().pipe(
-          map((res) =>
+          map(res =>
             ClinicApiActions.loadClinicsSuccess({
               clinics: res.data,
-              hasPrimeClinics: res.hasPrimeClinics
+              hasPrimeClinics: res.hasPrimeClinics,
             })
           ),
           catchError((error: HttpErrorResponse) =>

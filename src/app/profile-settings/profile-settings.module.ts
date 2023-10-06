@@ -25,11 +25,7 @@ import { SharedModule } from '../shared/shared.module';
     NgxStripeModule.forRoot(''),
     SharedModule,
   ],
-  providers: [
-    ProfileSettingsService
-  ],
-  declarations: [
-    ProfileSettingsComponent
-  ]
+  providers: [ProfileSettingsService],
+  declarations: [ProfileSettingsComponent],
 })
 export class ProfileSettingsModule {}

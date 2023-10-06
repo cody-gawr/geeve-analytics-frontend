@@ -111,8 +111,8 @@ File: scss
   border: 1px solid $border;
 }
 .email-sidebar {
-  .mat-drawer-inner-container{
-    overflow:visible;
+  .mat-drawer-inner-container {
+    overflow: visible;
   }
   border-right: 1px solid $border;
   width: 300px;
@@ -349,9 +349,10 @@ Chartis tooltip scss
 
 /*# sourceMappingURL=chartist-plugin-tooltip.css.map */
 .no-wrap {
-  td, .ng-star-inserted{
-  white-space:nowrap;
-}
+  td,
+  .ng-star-inserted {
+    white-space: nowrap;
+  }
 }
 /*******************
 Smart table
@@ -359,7 +360,7 @@ Smart table
 .smart-table tr td,
 .smart-table tr th {
   padding: 15px !important;
-  text-align:left;
+  text-align: left;
 }
 .ng2-smart-action-add-add {
   color: $white !important;
@@ -379,8 +380,8 @@ Smart table
   border-radius: 0.25rem;
   min-height: 38px;
 }
-.form-control{
-  border:1px solid $border;
+.form-control {
+  border: 1px solid $border;
 }
 /**********************
 Overall Responsive table
@@ -389,7 +390,7 @@ Overall Responsive table
 .responsive-table {
   display: flex;
   flex-direction: column;
-  overflow:auto;
+  overflow: auto;
   .mat-cell:first-of-type,
   .mat-footer-cell:first-of-type,
   .mat-header-cell:first-of-type {
@@ -403,8 +404,8 @@ Overall Responsive table
     max-height: 100%;
   }
 }
-.table-responsive{
-  overflow:auto;
+.table-responsive {
+  overflow: auto;
 }
 .pagination {
   display: -ms-flexbox;

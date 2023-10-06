@@ -4,13 +4,25 @@
   <div mat-dialog-content class="sa_forms_design">
     <div class="sa-form-group">
       <label>Date Range </label>
-      <input class="form-control" placeholder="Select" type="text" matInput ngxDaterangepickerMd
-        [showClearButton]="true" [locale]="{applyLabel: 'ok', displayFormat: 'YYYY-MM-DD', firstDay: 1 }" startKey="start" endKey="end"
-        [(ngModel)]="data.range" [showDropdowns]="true" />
-      
+      <input
+        class="form-control"
+        placeholder="Select"
+        type="text"
+        matInput
+        ngxDaterangepickerMd
+        [showClearButton]="true"
+        [locale]="{applyLabel: 'ok', displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
+        startKey="start"
+        endKey="end"
+        [(ngModel)]="data.range"
+        [showDropdowns]="true" />
     </div>
     <div class="sa-form-group">
-      <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="false" [(ngModel)]="data.show_completed">
+      <mat-slide-toggle
+        fxFlex.md="30"
+        fxFlex.xs="100"
+        checked="false"
+        [(ngModel)]="data.show_completed">
         <span><strong>Show Completed</strong></span>
         <!-- <span *ngIf="!compareMode"><strong>Disabled</strong></span> -->
       </mat-slide-toggle>
@@ -25,7 +37,18 @@
     </div>
   </div>
   <div mat-dialog-actions class="justify-between">
-    <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-    <button (click)="exportData(data)" tabindex="1" class="mat-raised-button mat-dc float-right">Ok</button>
+    <button
+      mat-button
+      (click)="onNoClick()"
+      tabindex="-1"
+      class="mat-raised-button mat-gray">
+      Cancel
+    </button>
+    <button
+      (click)="exportData(data)"
+      tabindex="1"
+      class="mat-raised-button mat-dc float-right">
+      Ok
+    </button>
   </div>
 </div>

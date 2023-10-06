@@ -1,4 +1,4 @@
-import { environment } from "@/environments/environment";
+import { environment } from '@/environments/environment';
 import {
   CpPredictorAnalysisApiResponse,
   CpPredictorRatioApiResponse,
@@ -6,14 +6,14 @@ import {
   CpPredictorSpecialistAnalysisDataItem,
   CpReferralsApiResponse,
   CpRevPerProcedureApiResponse,
-} from "@/newapp/models/dashboard/clinician-procedure";
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import camelcaseKeys from "camelcase-keys";
-import { map } from "rxjs";
+} from '@/newapp/models/dashboard/clinician-procedure';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import camelcaseKeys from 'camelcase-keys';
+import { map } from 'rxjs';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ClinicianProcedureService {
   private apiUrl = environment.apiUrl;
@@ -39,7 +39,7 @@ export class ClinicianProcedureService {
       })
       .pipe(
         map(
-          (resBody) =>
+          resBody =>
             <CpPredictorAnalysisApiResponse>(
               camelcaseKeys(resBody, { deep: true })
             )
@@ -65,7 +65,7 @@ export class ClinicianProcedureService {
       })
       .pipe(
         map(
-          (resBody) =>
+          resBody =>
             <CpPredictorAnalysisApiResponse>(
               camelcaseKeys(resBody, { deep: true })
             )
@@ -93,7 +93,7 @@ export class ClinicianProcedureService {
       })
       .pipe(
         map(
-          (resBody) =>
+          resBody =>
             <CpPredictorSpecialistAnalysisApiResponse>(
               camelcaseKeys(resBody, { deep: true })
             )
@@ -124,7 +124,7 @@ export class ClinicianProcedureService {
       )
       .pipe(
         map(
-          (resBody) =>
+          resBody =>
             <CpPredictorSpecialistAnalysisDataItem>(
               camelcaseKeys(resBody, { deep: true })
             )
@@ -152,7 +152,7 @@ export class ClinicianProcedureService {
       })
       .pipe(
         map(
-          (resBody) =>
+          resBody =>
             <CpRevPerProcedureApiResponse>camelcaseKeys(resBody, { deep: true })
         )
       );
@@ -180,7 +180,7 @@ export class ClinicianProcedureService {
       })
       .pipe(
         map(
-          (resBody) =>
+          resBody =>
             <CpPredictorRatioApiResponse>camelcaseKeys(resBody, { deep: true })
         )
       );
@@ -204,7 +204,7 @@ export class ClinicianProcedureService {
       })
       .pipe(
         map(
-          (resBody) =>
+          resBody =>
             <CpPredictorAnalysisApiResponse>(
               camelcaseKeys(resBody, { deep: true })
             )
@@ -234,7 +234,7 @@ export class ClinicianProcedureService {
       })
       .pipe(
         map(
-          (resBody) =>
+          resBody =>
             <CpReferralsApiResponse>camelcaseKeys(resBody, { deep: true })
         )
       );
@@ -258,7 +258,7 @@ export class ClinicianProcedureService {
       })
       .pipe(
         map(
-          (resBody) =>
+          resBody =>
             <CpReferralsApiResponse>camelcaseKeys(resBody, { deep: true })
         )
       );

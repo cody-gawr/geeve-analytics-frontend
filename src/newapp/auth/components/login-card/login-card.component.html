@@ -14,8 +14,7 @@
           <input
             matInput
             placeholder="example@domain.com"
-            formControlName="email"
-          />
+            formControlName="email" />
           <mat-error>{{ getErrorMessage('email') }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -24,8 +23,7 @@
             matInput
             type="password"
             placeholder="******"
-            formControlName="password"
-          />
+            formControlName="password" />
           <mat-error>{{ getErrorMessage('password') }}</mat-error>
         </mat-form-field>
         <a [routerLink]="['/login/forgot']">Forgot Password?</a>
@@ -34,8 +32,7 @@
           mat-raised-button
           color="primary"
           type="submit"
-          [disabled]="isSubmitDisabled || (isLoading$ | async)"
-        >
+          [disabled]="isSubmitDisabled || (isLoading$ | async)">
           <span>Login</span>
           <mat-icon [hidden]="!(isLoading$ | async)"
             ><mat-spinner color="primary" diameter="20"> </mat-spinner

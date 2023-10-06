@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import * as CryptoJS from "crypto-js";
+import { Injectable } from '@angular/core';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class LocalStorageService {
-  private key = "jeeve-analytics-key";
+  private key = 'jeeve-analytics-key';
 
   constructor() {}
 
@@ -24,7 +24,7 @@ export class LocalStorageService {
   }
 
   public getData(key: string) {
-    let data = localStorage.getItem(key) || "";
+    let data = localStorage.getItem(key) || '';
     return this.decrypt(data);
   }
   public removeData(key: string) {
@@ -41,72 +41,72 @@ export class LocalStorageService {
 
   public getObject<T>(key: string): T {
     try {
-      return <T>JSON.parse(this.getData(key) ?? "{}");
+      return <T>JSON.parse(this.getData(key) ?? '{}');
     } catch (e) {
       return null;
     }
   }
 
   public getClinicData(clinicId: string) {
-    const clinics = this.getObject<any[]>("clinics") || [];
-    return clinics.find((c) => c.id == parseInt(clinicId));
+    const clinics = this.getObject<any[]>('clinics') || [];
+    return clinics.find(c => c.id == parseInt(clinicId));
   }
 
   public isEachClinicExact(clinicId: string | string[]): boolean {
-    let clinics = this.getObject<any[]>("clinics") || [];
-    if (typeof clinicId == "string") {
-      clinics = clinics.filter((c) => c.id == parseInt(clinicId));
+    let clinics = this.getObject<any[]>('clinics') || [];
+    if (typeof clinicId == 'string') {
+      clinics = clinics.filter(c => c.id == parseInt(clinicId));
     } else if (Array.isArray(clinicId)) {
-      clinics = clinics.filter((c) =>
-        (<string[]>clinicId).map((cId) => parseInt(cId)).includes(c.id)
+      clinics = clinics.filter(c =>
+        (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id)
       );
     }
 
-    return clinics.every((c) => ["exact", "core"].includes(c.pms));
+    return clinics.every(c => ['exact', 'core'].includes(c.pms));
   }
 
   public isEachClinicPmsExactOrCore(clinicId: string | string[]): boolean {
-    let clinics = this.getObject<any[]>("clinics") || [];
-    if (typeof clinicId == "string") {
-      clinics = clinics.filter((c) => c.id == parseInt(clinicId));
+    let clinics = this.getObject<any[]>('clinics') || [];
+    if (typeof clinicId == 'string') {
+      clinics = clinics.filter(c => c.id == parseInt(clinicId));
     } else if (Array.isArray(clinicId)) {
-      clinics = clinics.filter((c) =>
-        (<string[]>clinicId).map((cId) => parseInt(cId)).includes(c.id)
+      clinics = clinics.filter(c =>
+        (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id)
       );
     }
-    return clinics.every((c) => ["exact", "core"].includes(c.pms));
+    return clinics.every(c => ['exact', 'core'].includes(c.pms));
   }
 
   public isEachClinicPmsCore(clinicId: string | string[]): boolean {
-    let clinics = this.getObject<any[]>("clinics") || [];
-    if (typeof clinicId == "string") {
-      clinics = clinics.filter((c) => c.id == parseInt(clinicId));
+    let clinics = this.getObject<any[]>('clinics') || [];
+    if (typeof clinicId == 'string') {
+      clinics = clinics.filter(c => c.id == parseInt(clinicId));
     } else if (Array.isArray(clinicId)) {
-      clinics = clinics.filter((c) =>
-        (<string[]>clinicId).map((cId) => parseInt(cId)).includes(c.id)
+      clinics = clinics.filter(c =>
+        (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id)
       );
     }
-    return clinics.every((c) => ["core"].includes(c.pms));
+    return clinics.every(c => ['core'].includes(c.pms));
   }
 
   public isEachClinicPmsD4w(clinicId: string | string[]): boolean {
-    let clinics = this.getObject<any[]>("clinics") || [];
-    if (typeof clinicId == "string") {
-      clinics = clinics.filter((c) => c.id == parseInt(clinicId));
+    let clinics = this.getObject<any[]>('clinics') || [];
+    if (typeof clinicId == 'string') {
+      clinics = clinics.filter(c => c.id == parseInt(clinicId));
     } else if (Array.isArray(clinicId)) {
-      clinics = clinics.filter((c) =>
-        (<string[]>clinicId).map((cId) => parseInt(cId)).includes(c.id)
+      clinics = clinics.filter(c =>
+        (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id)
       );
     }
-    return clinics.every((c) => c.pms == "d4w");
+    return clinics.every(c => c.pms == 'd4w');
   }
 
   public isClinicPmsType(
     clinicId: number | string,
-    pms: "d4w" | "exact" | "core"
+    pms: 'd4w' | 'exact' | 'core'
   ) {
-    let clinics = this.getObject<any[]>("clinics") || [];
-    const clinic = clinics.find((c) => c.id == parseInt(<string>clinicId));
+    let clinics = this.getObject<any[]>('clinics') || [];
+    const clinic = clinics.find(c => c.id == parseInt(<string>clinicId));
     return clinic.pms && clinic.pms == pms;
   }
 }

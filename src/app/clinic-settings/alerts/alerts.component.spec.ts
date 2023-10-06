@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AlertsComponent } from './goals.component';
+import { AlertsComponent } from './alerts.component';
 
 describe('AlertsComponent', () => {
   let component: AlertsComponent;
@@ -8,9 +8,8 @@ describe('AlertsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AlertsComponent ]
-    })
-    .compileComponents();
+      declarations: [AlertsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

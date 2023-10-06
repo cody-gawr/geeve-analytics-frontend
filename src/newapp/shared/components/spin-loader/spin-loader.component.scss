@@ -1,26 +1,25 @@
 .spin-loader {
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    .spin-content{
-        .spin-box{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            .spin {
-                max-width: 50%;
-            }
-            .spin-label {
-                font-size: 15px;
-                text-align: center;
-            }
-            p {
-                text-align: center;
-            }
-        }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  .spin-content {
+    .spin-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .spin {
+        max-width: 50%;
+      }
+      .spin-label {
+        font-size: 15px;
+        text-align: center;
+      }
+      p {
+        text-align: center;
+      }
     }
+  }
 }

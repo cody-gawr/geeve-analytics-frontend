@@ -10,7 +10,7 @@ import {
 // import { Clinic } from '../../models/clinic';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AppLayoutService {
   // public readonly currentClinicId$: Observable<number | null> =

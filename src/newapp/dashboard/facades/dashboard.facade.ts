@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { select, Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { DashboardPageActions } from "../state/actions";
+import { Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { DashboardPageActions } from '../state/actions';
 import {
   DashboardState,
   selectChartTips,
@@ -9,8 +9,8 @@ import {
   selectConnectedWith,
   selectErrors,
   selectIsLoadingClinicAccountingPlatform,
-} from "../state/reducers/dashboard.reducer";
-import { JeeveError } from "@/newapp/models";
+} from '../state/reducers/dashboard.reducer';
+import { JeeveError } from '@/newapp/models';
 
 @Injectable()
 export class DashboardFacade {

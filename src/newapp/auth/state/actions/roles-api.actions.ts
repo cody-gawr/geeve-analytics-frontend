@@ -1,6 +1,9 @@
 /* NgRx */
 import { JeeveError } from '@/newapp/models';
-import { RolesApiResponse, RolesIndividualApiResponse } from '../../../models/user';
+import {
+  RolesApiResponse,
+  RolesIndividualApiResponse,
+} from '../../../models/user';
 import { createAction, props } from '@ngrx/store';
 
 export const getRolesIndividualSuccess = createAction(

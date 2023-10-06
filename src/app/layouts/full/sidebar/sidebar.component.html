@@ -23,8 +23,7 @@
       user_type == 2 ||
       permisions.indexOf('healthscreen') >= 0 ||
       user_type == 7
-    "
-  >
+    ">
     <a appAccordionToggle [routerLink]="['/dashboards/healthscreen']">
       <i class="fa-clinic-medical fas"></i>
       <span *ngIf="user_type != 4">Clinic Health</span>
@@ -40,8 +39,7 @@
       user_type == 2 ||
       permisions.indexOf('morninghuddle') >= 0 ||
       user_type == 7
-    "
-  >
+    ">
     <a class="" appAccordionToggle [routerLink]="['/morning-huddle']">
       <i class="fa-coffee fas"></i>
       <span>Morning Huddle</span>
@@ -55,8 +53,7 @@
     group="string"
     *ngIf="
       user_type == 2 || permisions.indexOf('followups') >= 0 || user_type == 7
-    "
-  >
+    ">
     <a class="" appAccordionToggle [routerLink]="['/followups']">
       <i class="fa fa-phone"></i>
       <span>Follow Ups</span>
@@ -72,9 +69,9 @@
       (user_type == 2 ||
         permisions.indexOf('campaigns') >= 0 ||
         user_type == 7) &&
-      apiUrl.includes('test') && false
-    "
-  >
+      apiUrl.includes('test') &&
+      false
+    ">
     <a class="" appAccordionToggle [routerLink]="['/campaigns']">
       <i class="fas fa-users"></i>
       <span>Campaigns</span>
@@ -88,15 +85,13 @@
     group="string"
     *ngIf="
       user_type == 2 || permisions.indexOf('dashboard') >= 0 || user_type == 7
-    "
-  >
+    ">
     <a
       class=""
       appAccordionToggle
       href="javascript: void(0);"
       (click)="clickEvent('dashboards')"
-      [ngClass]="status ? 'selected' : ''"
-    >
+      [ngClass]="status ? 'selected' : ''">
       <i class="fa-chart-area fas"></i>
       <span>Dashboards</span>
       <span fxFlex></span>
@@ -113,13 +108,11 @@
             user_type == 2 ||
             permisions.indexOf('dashboard1') >= 0 ||
             user_type == 7
-          "
-        >
+          ">
           <a
             class="relative"
             appAccordionToggle
-            [routerLink]="['/dashboards/cliniciananalysis']"
-          >
+            [routerLink]="['/dashboards/cliniciananalysis']">
             <i></i>
             <span>Clinician Analysis</span>
             <span fxFlex></span>
@@ -134,13 +127,11 @@
               permisions.indexOf('dashboard2') >= 0 ||
               user_type == 7) &&
             userPlan != 'lite'
-          "
-        >
+          ">
           <a
             class="relative"
             appAccordionToggle
-            [routerLink]="['/dashboards/clinicianproceedures']"
-          >
+            [routerLink]="['/dashboards/clinicianproceedures']">
             <i></i>
             <span>Clinician Procedures & Referrals</span>
             <span fxFlex></span>
@@ -154,13 +145,11 @@
             user_type == 2 ||
             permisions.indexOf('dashboard3') >= 0 ||
             user_type == 7
-          "
-        >
+          ">
           <a
             class=""
             appAccordionToggle
-            [routerLink]="['/dashboards/frontdesk']"
-          >
+            [routerLink]="['/dashboards/frontdesk']">
             <i></i>
             <span>Front Desk</span>
             <span fxFlex></span>
@@ -175,13 +164,11 @@
             user_type == 2 ||
             permisions.indexOf('dashboard6') >= 0 ||
             user_type == 7
-          "
-        >
+          ">
           <a
             class=""
             appAccordionToggle
-            [routerLink]="['/dashboards/followups']"
-          >
+            [routerLink]="['/dashboards/followups']">
             <i></i>
             <span>Follow Ups</span>
             <span fxFlex></span>
@@ -197,13 +184,11 @@
               permisions.indexOf('dashboard4') >= 0 ||
               user_type == 7) &&
             userPlan != 'lite'
-          "
-        >
+          ">
           <a
             class=""
             appAccordionToggle
-            [routerLink]="['/dashboards/marketing']"
-          >
+            [routerLink]="['/dashboards/marketing']">
             <i></i>
             <span>Marketing</span>
             <span fxFlex></span>
@@ -217,13 +202,8 @@
             user_type == 2 ||
             permisions.indexOf('dashboard5') >= 0 ||
             user_type == 7
-          "
-        >
-          <a
-            class=""
-            appAccordionToggle
-            href="/newapp/dashboard/finances"
-          >
+          ">
+          <a class="" appAccordionToggle href="/newapp/dashboard/finances">
             <i></i>
             <span>Finances</span>
             <span fxFlex></span>
@@ -241,9 +221,9 @@
       (user_type == 2 ||
         permisions.indexOf('staffmeeting') >= 0 ||
         user_type == 7) &&
-      apiUrl.includes('test') && false
-    "
-  >
+      apiUrl.includes('test') &&
+      false
+    ">
     <!-- *ngIf="apiUrl.includes('test')"> -->
     <a class="" appAccordionToggle [routerLink]="['/staff-meetings']">
       <i class="fas fa-id-card"></i>
@@ -260,8 +240,7 @@
       (hasPrimeClinics == 'yes' && user_type == 2) ||
       (hasPrimeClinics == 'yes' && permisions.indexOf('kpireport') >= 0) ||
       user_type == 7
-    "
-  >
+    ">
     <a class="" appAccordionToggle [routerLink]="['/kpi-report']">
       <i class="fas fa-file"></i>
       <span>Prime KPI Report</span>
@@ -276,8 +255,7 @@
       user_type == 2 ||
       permisions.indexOf('lostopportunity') >= 0 ||
       user_type == 7
-    "
-  >
+    ">
     <a class="" appAccordionToggle [routerLink]="['/lost-opportunity']">
       <i class="fas fa-hand-holding-usd"></i>
       <span>Lost Opportunity</span>
@@ -288,8 +266,7 @@
     appAccordionLink
     routerLinkActive="selected"
     group="string"
-    *ngIf="apiUrl.includes('test') && false"
-  >
+    *ngIf="apiUrl.includes('test') && false">
     <a class="" appAccordionToggle [routerLink]="['/rewards']">
       <i class="fas fa-hand-holding-usd"></i>
       <span>Rewards</span>
@@ -314,8 +291,7 @@
     appAccordionLink
     routerLinkActive="selected"
     group="string"
-    *ngIf="user_type != 7 && apiUrl.includes('test') && false"
-  >
+    *ngIf="user_type != 7 && apiUrl.includes('test') && false">
     <a class="" appAccordionToggle [routerLink]="['/tasks']">
       <i class="fa-briefcase fas"></i>
       <span>Tasks</span>
@@ -337,8 +313,7 @@
       appAccordionToggle
       href="javascript: void(0);"
       (click)="clickEvent('setting')"
-      [ngClass]="status ? 'selected' : ''"
-    >
+      [ngClass]="status ? 'selected' : ''">
       <i class="fa-cog fas"></i>
       <span>Settings</span>
       <span fxFlex></span>
@@ -354,8 +329,7 @@
             user_type == 2 ||
             permisions.indexOf('profilesettings') >= 0 ||
             user_type == 7
-          "
-        >
+          ">
           <a class="relative" appAccordionToggle [routerLink]="['/clinic']">
             <i></i>
             <span>Clinics</span>
@@ -368,13 +342,11 @@
           *ngIf="
             (user_type == 2 || permisions.indexOf('profilesettings') >= 0) &&
             user_type != 7
-          "
-        >
+          ">
           <a
             class="relative"
             appAccordionToggle
-            [routerLink]="['/roles-users']"
-          >
+            [routerLink]="['/roles-users']">
             <i></i>
             <span>Users</span>
             <span fxFlex></span>
@@ -394,8 +366,7 @@
     <a
       appAccordionToggle
       href="https://jeeve.crunch.help/jeeve-analytics"
-      target="_blank"
-    >
+      target="_blank">
       <i class="fas fa-question"></i>
       <span>Help</span>
       <span fxFlex></span>
@@ -406,8 +377,7 @@
       <img
         class="logout-icon"
         src="assets/images/logout.png"
-        alt="logout-icon"
-      />Logout
+        alt="logout-icon" />Logout
     </button>
   </div>
 </mat-nav-list>

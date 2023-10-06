@@ -1,18 +1,18 @@
-import { Moment } from "moment";
+import { Moment } from 'moment';
 
 type CLINIC_TIMEZONE =
-  | "Australia/Lord_Howe"
-  | "Australia/Hobart"
-  | "Australia/Currie"
-  | "Australia/Melbourne"
-  | "Australia/Sydney"
-  | "Australia/Broken_Hill"
-  | "Australia/Brisbane"
-  | "Australia/Lindeman"
-  | "Australia/Adelaide"
-  | "Australia/Darwin"
-  | "Australia/Perth"
-  | "Australia/Eucla";
+  | 'Australia/Lord_Howe'
+  | 'Australia/Hobart'
+  | 'Australia/Currie'
+  | 'Australia/Melbourne'
+  | 'Australia/Sydney'
+  | 'Australia/Broken_Hill'
+  | 'Australia/Brisbane'
+  | 'Australia/Lindeman'
+  | 'Australia/Adelaide'
+  | 'Australia/Darwin'
+  | 'Australia/Perth'
+  | 'Australia/Eucla';
 
 export interface Clinic {
   acceptedSmsTerms: number;
@@ -106,7 +106,7 @@ export interface ClinicsListApiResponse {
   message: string;
   status: string;
   total: number;
-  hasPrimeClinics: "yes" | "no";
+  hasPrimeClinics: 'yes' | 'no';
 }
 
 export interface MasterUsersListApiResponse {

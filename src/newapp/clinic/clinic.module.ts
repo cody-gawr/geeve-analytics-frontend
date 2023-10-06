@@ -20,9 +20,9 @@ const services = [ClinicService, ClinicFacade];
     ClinicsRoutingModule,
     StoreModule.forFeature(clinicFeature),
     EffectsModule.forFeature([ClinicEffects]),
-    MatStepperModule
+    MatStepperModule,
   ],
   declarations: [ClinicComponent],
-  providers: [...services]
+  providers: [...services],
 })
 export class ClinicModule {}

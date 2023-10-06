@@ -17,7 +17,7 @@ import { ForgotPasswordCardComponent } from './components/forgot-password/forgot
 const components = [
   LoginComponent,
   LoginCardComponent,
-  ForgotPasswordCardComponent
+  ForgotPasswordCardComponent,
 ];
 const services = [AuthService, AuthFacade];
 
@@ -27,9 +27,9 @@ const services = [AuthService, AuthFacade];
     AuthRoutingModule,
     SharedModule,
     StoreModule.forFeature(authFeature),
-    EffectsModule.forFeature([AuthEffects])
+    EffectsModule.forFeature([AuthEffects]),
   ],
   declarations: [...components],
-  providers: [...services]
+  providers: [...services],
 })
 export class AuthModule {}

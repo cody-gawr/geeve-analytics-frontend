@@ -8,9 +8,8 @@ describe('DateMenuBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DateMenuBarComponent ]
-    })
-    .compileComponents();
+      declarations: [DateMenuBarComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

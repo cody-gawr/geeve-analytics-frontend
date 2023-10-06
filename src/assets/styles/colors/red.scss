@@ -13,33 +13,36 @@ $red-app-primary: mat.define-palette($red-palette);
 $red-app-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
 $red-app-warn: mat.define-palette(mat.$pink-palette);
 // Create the theme object (a Sass map containing all of the palettes).
-$danger-theme: mat.define-light-theme( (
+$danger-theme: mat.define-light-theme(
+  (
     color: (
-        primary: $red-app-primary,
-        accent: $red-app-accent,
-        warn: $red-app-warn
+      primary: $red-app-primary,
+      accent: $red-app-accent,
+      warn: $red-app-warn,
     ),
-    typography: mat.define-typography-config( 
-        $font-family: 'Gilroy-Regular'
-    ),
+    typography:
+      mat.define-typography-config(
+        $font-family: 'Gilroy-Regular',
+      ),
     density: 0,
-));
+  )
+);
 
-$themecolor:#F44336;
-$themecolor-alt: #E53935;
-$white:#fff;
+$themecolor: #f44336;
+$themecolor-alt: #e53935;
+$white: #fff;
 #snav {
-    .mat-nav-list .mat-list-item {
-        .mat-list-item-content {
-            &:hover {
-                > a {
-                    color: $themecolor;
-                }
-            }
+  .mat-nav-list .mat-list-item {
+    .mat-list-item-content {
+      &:hover {
+        > a {
+          color: $themecolor;
         }
-        &.selected > .mat-list-item-content > a {
-            background: $themecolor-alt;
-            color: $white;
-        }
+      }
     }
+    &.selected > .mat-list-item-content > a {
+      background: $themecolor-alt;
+      color: $white;
+    }
+  }
 }

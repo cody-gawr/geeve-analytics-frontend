@@ -1,35 +1,34 @@
 .procedure-analysis-gauge {
-    min-height: 420px;
+  min-height: 420px;
 }
 
 .active-toggle {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    gap: 10px;
-    button {
-        height: 28px !important;
-        width: 44%;
-        font-size: 12px;
-        font-weight: 400;
-        font-family: Gilroy-Regular;
-    }
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 10px;
+  button {
+    height: 28px !important;
+    width: 44%;
+    font-size: 12px;
+    font-weight: 400;
+    font-family: Gilroy-Regular;
+  }
 }
 .pa-table {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 .pa-table table {
-    width: 100%;
-    height: 100%;
-    thead tr th {
-        text-align: left;
-        font-size: 13px;
-    }
-    tbody tr td {
-        padding: 5px;
-        font-size: 13px;
-    }
+  width: 100%;
+  height: 100%;
+  thead tr th {
+    text-align: left;
+    font-size: 13px;
+  }
+  tbody tr td {
+    padding: 5px;
+    font-size: 13px;
+  }
 }
-

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import {Chart} from 'chart.js';
+import { Chart } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 
 // const plugin1 = {
@@ -50,9 +50,7 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 //     }
 //   }
 // }
-
 export class AppComponent {
-
   constructor() {
     Chart.defaults.font.family = 'Gilroy-Regular';
     Chart.register(annotationPlugin);

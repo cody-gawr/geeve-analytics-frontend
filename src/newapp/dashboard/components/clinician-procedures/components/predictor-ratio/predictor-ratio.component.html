@@ -1,98 +1,101 @@
 <div class="chart-container">
   <mat-icon
-      [tooltip]="toolTip"
-      matTooltipPosition="below"
-      color="primary"
-      class="help-tip"
-      fontIcon="help"
-  ></mat-icon>
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
   <div class="chart-title">
-      <span>
-        Conversion Predictor Ratio
-      </span>
+    <span> Conversion Predictor Ratio </span>
   </div>
   <div class="chart-content">
-      <div class="canvas-wrapper chart-box">
-          <div class="active-toggle" *ngIf="!(isTrend$ | async)">
-              <button 
-                  mat-flat-button
-                  *ngIf="(visibility$ | async) === 1; else elem1" 
-                  (click)="setVisibility(1)" 
-                  color="primary">
-                  {{
-                    (isLargeOrSmall$ | async)
-                      ? 'Indirect to Large Direct'
-                      : 'Indirect to Large Direct Fillings'
-                  }}
-                </button>
-              <ng-template #elem1>
-                  <button 
-                      mat-stroked-button 
-                      (click)="setVisibility(1)"
-                  >
-                  {{
-                    (isLargeOrSmall$ | async)
-                      ? 'Indirect to Large Direct'
-                      : 'Indirect to Large Direct Fillings'
-                  }}
-                </button>
-              </ng-template>
+    <div class="canvas-wrapper chart-box">
+      <div class="active-toggle" *ngIf="!(isTrend$ | async)">
+        <button
+          mat-flat-button
+          *ngIf="(visibility$ | async) === 1; else elem1"
+          (click)="setVisibility(1)"
+          color="primary">
+          {{
+            (isLargeOrSmall$ | async)
+              ? 'Indirect to Large Direct'
+              : 'Indirect to Large Direct Fillings'
+          }}
+        </button>
+        <ng-template #elem1>
+          <button mat-stroked-button (click)="setVisibility(1)">
+            {{
+              (isLargeOrSmall$ | async)
+                ? 'Indirect to Large Direct'
+                : 'Indirect to Large Direct Fillings'
+            }}
+          </button>
+        </ng-template>
 
-              <button 
-                  (click)="setVisibility(2)" 
-                  *ngIf="(visibility$ | async) === 2; else elem2" 
-                  color="primary"
-                  mat-flat-button>RCT to Extraction</button>
-              <ng-template #elem2>
-                  <button (click)="setVisibility(2)" mat-stroked-button>RCT to Extraction</button>
-              </ng-template>
+        <button
+          (click)="setVisibility(2)"
+          *ngIf="(visibility$ | async) === 2; else elem2"
+          color="primary"
+          mat-flat-button>
+          RCT to Extraction
+        </button>
+        <ng-template #elem2>
+          <button (click)="setVisibility(2)" mat-stroked-button>
+            RCT to Extraction
+          </button>
+        </ng-template>
 
-              
-              <button 
-                  (click)="setVisibility(3)" 
-                  *ngIf="(visibility$ | async) === 3; else elem3" 
-                  color="primary"
-                  mat-flat-button>RCT Conversion</button>
-              <ng-template #elem3>
-                  <button (click)="setVisibility(3)" mat-stroked-button>RCT Conversion</button>
-              </ng-template>
+        <button
+          (click)="setVisibility(3)"
+          *ngIf="(visibility$ | async) === 3; else elem3"
+          color="primary"
+          mat-flat-button>
+          RCT Conversion
+        </button>
+        <ng-template #elem3>
+          <button (click)="setVisibility(3)" mat-stroked-button>
+            RCT Conversion
+          </button>
+        </ng-template>
+      </div>
+      <div class="chart-gauge predictor-ratio-gauge">
+        <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+        <ng-template #chartElem>
+          <canvas
+            *ngIf="!(isLoading$ | async) && hasData"
+            baseChart
+            [datasets]="datasets"
+            [labels]="labels"
+            [legend]="legend$"
+            type="bar"
+            [options]="chartOptions$ | async">
+          </canvas>
+          <spin-loader
+            class="empty-placeholder"
+            *ngIf="!hasData"
+            [disableSpin]="true">
+            {{ noDataAlertMessage$ | async }}
+          </spin-loader>
+        </ng-template>
+      </div>
+      <div class="chart-foot">
+        <div *ngIf="!(isMultipleClinic$ | async); else otherEl">
+          <h3>{{ predictorRatioValue }}</h3>
+          <span>{{ durationLabel$ | async }} Average</span>
+        </div>
+        <ng-template #otherEl>
+          <div>
+            <h3>{{ multifulRatio }}</h3>
+            <span>{{ durationLabel$ | async }} Average</span>
           </div>
-          <div class="chart-gauge predictor-ratio-gauge">
-              <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-              <ng-template #chartElem>
-                  <canvas
-                      *ngIf="!(isLoading$ | async) && hasData"
-                      baseChart
-                      [datasets]="datasets"
-                      [labels]="labels"
-                      [legend]="legend$"
-                      type="bar"
-                      [options]="chartOptions$ | async"
-                  >
-                  </canvas>                    
-                  <spin-loader class="empty-placeholder" *ngIf="!hasData" [disableSpin]="true">
-                      {{ noDataAlertMessage$ | async }}
-                  </spin-loader>
-              </ng-template>
-          </div>
-          <div class="chart-foot">
-            <div *ngIf="!(isMultipleClinic$ | async); else otherEl">
-                <h3>{{ predictorRatioValue }}</h3>
-                <span>{{ durationLabel$ | async }} Average</span>
-            </div>
-            <ng-template #otherEl>
-                <div>
-                    <h3>{{ multifulRatio }}</h3>
-                    <span>{{ durationLabel$ | async }} Average</span>
-                </div>
-            </ng-template>
-            <div *ngIf="(duration$ | async) !== 'custom'">
-                <h3>
-                    {{ predictorRatioPrev }}
-                </h3>
-                <span>{{ durationTrendLabel$ | async }} Average</span>
-            </div>
+        </ng-template>
+        <div *ngIf="(duration$ | async) !== 'custom'">
+          <h3>
+            {{ predictorRatioPrev }}
+          </h3>
+          <span>{{ durationTrendLabel$ | async }} Average</span>
         </div>
       </div>
+    </div>
   </div>
 </div>

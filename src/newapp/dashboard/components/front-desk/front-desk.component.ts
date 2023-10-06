@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { DashboardFacade } from "../../facades/dashboard.facade";
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { Router } from "@angular/router";
-import moment from "moment";
-import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
-import { FrontDeskFacade } from "../../facades/front-desk.facade";
-import _ from "lodash";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { DashboardFacade } from '../../facades/dashboard.facade';
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { Router } from '@angular/router';
+import moment from 'moment';
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
+import { FrontDeskFacade } from '../../facades/front-desk.facade';
+import _ from 'lodash';
 
 @Component({
-  selector: "dashboard-front-desk",
-  templateUrl: "./front-desk.component.html",
-  styleUrls: ["./front-desk.component.scss"],
+  selector: 'dashboard-front-desk',
+  templateUrl: './front-desk.component.html',
+  styleUrls: ['./front-desk.component.scss'],
 })
 export class FrontDeskComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
@@ -21,14 +21,14 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
-      map((t) => t !== "off")
+      map(t => t !== 'off')
     );
   }
 
   get authUserId$() {
     return this.authFacade.authUserData$.pipe(
       map(
-        (authUserData) => (authUserData ?? this.authFacade.getAuthUserData()).id
+        authUserData => (authUserData ?? this.authFacade.getAuthUserData()).id
       )
     );
   }
@@ -36,7 +36,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
   get clinicId$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
@@ -57,7 +57,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
       this.dashbordFacade.connectedClinicId$,
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe((params) => {
+      .subscribe(params => {
         const [
           clinicId,
           dateRange,
@@ -69,8 +69,8 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
         if (clinicId == null) return;
         //if (typeof clinicId !== "string" && connectedWith == null) return;
         const newConnectedId =
-          typeof clinicId == "string"
-            ? _.min(clinicId.split(",").map((c) => parseInt(c)))
+          typeof clinicId == 'string'
+            ? _.min(clinicId.split(',').map(c => parseInt(c)))
             : clinicId;
         if (newConnectedId !== connectedClinicId) {
           return;
@@ -81,14 +81,14 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
         const duration = dateRange.duration;
 
         this.dashbordFacade.loadChartTips(3, clinicId);
-        const queryWhEnabled = route && parseInt(route.wh ?? "0") == 1 ? 1 : 0;
+        const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
         this.frontDeskFacade.setErrors([]);
         switch (trend) {
-          case "off":
+          case 'off':
             const params = {
               clinicId: clinicId,
-              startDate: startDate && moment(startDate).format("DD-MM-YYYY"),
-              endDate: endDate && moment(endDate).format("DD-MM-YYYY"),
+              startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
+              endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
               duration: duration,
               queryWhEnabled,
               connectedWith: connectedWith,
@@ -102,36 +102,36 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
             this.frontDeskFacade.loadFdFtaRatio(params);
             this.frontDeskFacade.loadFdUtaRatio(params);
             break;
-          case "current":
-          case "historic":
+          case 'current':
+          case 'historic':
             this.frontDeskFacade.loadFdUtilisationRateTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
             this.frontDeskFacade.loadFdRecallRateTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
             this.frontDeskFacade.loadFdReappointRateTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
             this.frontDeskFacade.loadFdNumTicksTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
             this.frontDeskFacade.loadFdFtaRatioTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
             this.frontDeskFacade.loadFdUtaRatioTrend(
               clinicId,
-              trend === "current" ? "c" : "h",
+              trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
             break;
@@ -148,11 +148,11 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
   getChartTip(index: number) {
     return this.dashbordFacade.chartTips$.pipe(
       takeUntil(this.destroy$),
-      map((c) => {
+      map(c => {
         if (c && c[index]) {
           return c[index];
         }
-        return "";
+        return '';
       })
     );
   }

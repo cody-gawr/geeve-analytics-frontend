@@ -2,24 +2,21 @@
   type="button"
   id="clinic_initiate"
   (click)="initiate_clinic()"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <div class="sa_dashboard_inner_content morning-huddle side">
   <div class="morning-huddle-date topModel followuppage">
     <mat-icon
       (click)="setDate('subtract')"
       role="img"
       class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       arrow_back_ios</mat-icon
-    >{{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}
+    >{{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}
     <mat-icon
       (click)="setDate('add')"
       role="img"
       class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       arrow_forward_ios</mat-icon
     >
   </div>
@@ -35,8 +32,7 @@
                 [tooltip]="charTips['44']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
           </div>
           <div
@@ -44,12 +40,10 @@
             *ngIf="
               (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
               followupOverDueRecall.length > 0
-            "
-          >
+            ">
             <i
               class="fas fa-file-export"
-              (click)="exportreport('overdue_recalls')"
-            >
+              (click)="exportreport('overdue_recalls')">
               Export</i
             >
           </div>
@@ -72,8 +66,7 @@
                 (mouseover)="historyPosChips($event, chips.colour)"
                 class="example-box"
                 *ngFor="let chips of overdueRecallsScrps"
-                [color]="chips.colour"
-              >
+                [color]="chips.colour">
                 <span class="chipText">{{ chips.script_title }}</span>
               </mat-chip>
             </mat-chip-list>
@@ -87,8 +80,7 @@
           <table
             mat-table
             [dataSource]="followupOverDueRecallInCMP"
-            class="mat-elevation-z8 customWidth thick"
-          >
+            class="mat-elevation-z8 customWidth thick">
             <!-- Name Column -->
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Patient Name</th>
@@ -104,8 +96,7 @@
                 <div class="phone_align_center">
                   <img
                     src="../assets/images/follow-up-call.png"
-                    alt="follow-up-call"
-                  />
+                    alt="follow-up-call" />
                   <span class="phone_no" *ngIf="element.patients.mobile">{{
                     formatPhoneNumber(element.patients.mobile)
                   }}</span>
@@ -113,16 +104,14 @@
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_work) }}
                   </span>
                   <span
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && !element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_home) }}
                   </span>
                 </div>
@@ -133,15 +122,13 @@
             <ng-container matColumnDef="code">
               <th mat-header-cell *matHeaderCellDef>Last Recall Date</th>
               <td mat-cell *matCellDef="let element">
-                {{
-                  element.original_appt_date | date : 'MMM d, y' : 'timezone'
-                }}
+                {{ element.original_appt_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
             <ng-container matColumnDef="followup_date">
               <th mat-header-cell *matHeaderCellDef>Follow-Up Date</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.followup_date | date : 'MMM d, y' : 'timezone' }}
+                {{ element.followup_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
             <ng-container matColumnDef="book">
@@ -149,8 +136,7 @@
               <td mat-cell *matCellDef="let element">
                 <span
                   (mouseover)="historyPos($event)"
-                  class="info-icon-container tick historyTip"
-                >
+                  class="info-icon-container tick historyTip">
                   <i
                     [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
@@ -165,16 +151,14 @@
                         element.followup_date,
                         'recall-overdue'
                       )
-                    "
-                  ></i>
+                    "></i>
                 </span>
                 <div class="historyTip history">
                   <i
                     (mouseover)="historyPos($event)"
                     [tooltip]="formatHistory(element.history)"
                     class="fa fa-history"
-                    *ngIf="element.history.length > 0"
-                  ></i>
+                    *ngIf="element.history.length > 0"></i>
                 </div>
               </td>
             </ng-container>
@@ -199,8 +183,7 @@
                         'recall-overdue',
                         nextBussinessDay
                       )
-                    "
-                  >
+                    ">
                     <mat-option value="">Select Status</mat-option>
                     <mat-option value="Booked">Booked</mat-option>
                     <mat-option value="Already booked"
@@ -239,23 +222,21 @@
                       'recall-overdue',
                       element.status
                     )
-                  "
-                >
+                  ">
                 </mat-slide-toggle>
               </td>
             </ng-container>
             <ng-container matColumnDef="isDataAvailable1">
               <mat-footer-cell
                 *matFooterCellDef
-                [attr.colspan]="displayedColumns2.length"
-              >
+                [attr.colspan]="displayedColumns2.length">
                 <span *ngIf="isEnableOR && followupOverDueRecall.length <= 0"
                   >You have no overdue recalls for
-                  {{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}</span
+                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
                 <span *ngIf="isEnableOR && followupOverDueRecall.length > 0"
                   >All overdue recalls have been completed for
-                  {{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}</span
+                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
                 <span *ngIf="!isEnableOR"
                   >Overdue Recalls are not enabled - this can be configured in
@@ -269,19 +250,16 @@
               *matFooterRowDef="['isDataAvailable1']"
               [ngClass]="
                 followupOverDueRecallInCMP.length <= 0 ? 'show' : 'hide'
-              "
-            ></mat-footer-row>
+              "></mat-footer-row>
           </table>
         </div>
         <ul
           class="main_pagination settings-table-pagination followup"
-          *ngIf="orTablePages.length"
-        >
+          *ngIf="orTablePages.length">
           <li *ngFor="let page of orTablePages">
             <button
               [ngClass]="{ active: page === currentORPage, page: true }"
-              (click)="handlePageChange(page, 'OR')"
-            >
+              (click)="handlePageChange(page, 'OR')">
               {{ page }}
             </button>
           </li>
@@ -290,8 +268,7 @@
         <div class="follow-ups-card" *ngIf="followupOverDueRecallInCMP.length">
           <mat-card
             class="huddle-card"
-            *ngFor="let element of followupOverDueRecallInCMP"
-          >
+            *ngFor="let element of followupOverDueRecallInCMP">
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Patient :</div>
               <div fxFlex="60">
@@ -307,9 +284,7 @@
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Last Recall Date :</div>
               <div fxFlex="60">
-                {{
-                  element.original_appt_date | date : 'MMM d, y' : 'timezone'
-                }}
+                {{ element.original_appt_date | date: 'MMM d, y' : 'timezone' }}
               </div>
             </div>
             <div fxLayout="row" class="huddle-card-row">
@@ -333,8 +308,7 @@
                         'recall-overdue',
                         nextBussinessDay
                       )
-                    "
-                  >
+                    ">
                     <mat-option value="">Select Status</mat-option>
                     <mat-option value="Booked">Booked</mat-option>
                     <mat-option value="Already booked"
@@ -360,7 +334,7 @@
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Follow-Up Date :</div>
               <div fxFlex="60">
-                {{ element.followup_date | date : 'MMM d, y' : 'timezone' }}
+                {{ element.followup_date | date: 'MMM d, y' : 'timezone' }}
               </div>
             </div>
             <div fxLayout="row" class="huddle-card-row">
@@ -368,8 +342,7 @@
               <div fxFlex="60">
                 <div
                   (mouseover)="historyPos($event)"
-                  class="info-icon-container tick historyTip"
-                >
+                  class="info-icon-container tick historyTip">
                   <i
                     [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
@@ -384,16 +357,14 @@
                         element.followup_date,
                         'recall-overdue'
                       )
-                    "
-                  ></i>
+                    "></i>
                 </div>
                 <div class="historyTip history">
                   <i
                     (mouseover)="historyPos($event)"
                     [tooltip]="formatHistory(element.history)"
                     class="fa fa-history"
-                    *ngIf="element.history.length > 0"
-                  ></i>
+                    *ngIf="element.history.length > 0"></i>
                 </div>
               </div>
             </div>
@@ -413,8 +384,7 @@
                       'recall-overdue',
                       element.status
                     )
-                  "
-                >
+                  ">
                 </mat-slide-toggle>
               </div>
             </div>
@@ -437,8 +407,7 @@
                 [tooltip]="charTips['45']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
           </div>
 
@@ -447,12 +416,10 @@
             *ngIf="
               (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
               followupTickFollowups.length > 0
-            "
-          >
+            ">
             <i
               class="fas fa-file-export"
-              (click)="exportreport('tick_followups')"
-            >
+              (click)="exportreport('tick_followups')">
               Export</i
             >
           </div>
@@ -461,8 +428,7 @@
             <mat-checkbox
               name="status"
               [checked]="showCompleteTick"
-              (change)="updateToCompleteTF($event)"
-            >
+              (change)="updateToCompleteTF($event)">
               Show Complete
             </mat-checkbox>
           </div>
@@ -477,8 +443,7 @@
                 (mouseover)="historyPosChips($event, chips.colour)"
                 class="example-box"
                 *ngFor="let chips of tickFollowupsScrps"
-                [color]="chips.colour"
-              >
+                [color]="chips.colour">
                 <span class="chipText">{{ chips.script_title }}</span>
               </mat-chip>
             </mat-chip-list>
@@ -492,8 +457,7 @@
           <table
             mat-table
             [dataSource]="followupTickFollowupsInCMP"
-            class="mat-elevation-z8 customWidth thick"
-          >
+            class="mat-elevation-z8 customWidth thick">
             <!-- Name Column -->
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Patient Name</th>
@@ -509,8 +473,7 @@
                 <div class="phone_align_center">
                   <img
                     src="../assets/images/follow-up-call.png"
-                    alt="follow-up-call"
-                  />
+                    alt="follow-up-call" />
                   <span class="phone_no" *ngIf="element.patients.mobile">{{
                     formatPhoneNumber(element.patients.mobile)
                   }}</span>
@@ -518,16 +481,14 @@
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_work) }}
                   </span>
                   <span
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && !element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_home) }}
                   </span>
                 </div>
@@ -538,9 +499,7 @@
             <ng-container matColumnDef="code">
               <th mat-header-cell *matHeaderCellDef>Treatment Date</th>
               <td mat-cell *matCellDef="let element">
-                {{
-                  element.original_appt_date | date : 'MMM d, y' : 'timezone'
-                }}
+                {{ element.original_appt_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
 
@@ -554,7 +513,7 @@
             <ng-container matColumnDef="followup_date">
               <th mat-header-cell *matHeaderCellDef>Follow-Up Date</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.followup_date | date : 'MMM d, y' : 'timezone' }}
+                {{ element.followup_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
 
@@ -579,8 +538,7 @@
                         'tick-follower',
                         nextBussinessDay
                       )
-                    "
-                  >
+                    ">
                     <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                     <mat-option value="">Select Status</mat-option>
                     <mat-option value="Booked">Booked</mat-option>
@@ -609,8 +567,7 @@
               <td mat-cell *matCellDef="let element">
                 <span
                   (mouseover)="historyPos($event)"
-                  class="info-icon-container tick historyTip"
-                >
+                  class="info-icon-container tick historyTip">
                   <i
                     [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
@@ -625,8 +582,7 @@
                         element.followup_date,
                         'tick-follower'
                       )
-                    "
-                  ></i>
+                    "></i>
                 </span>
                 <span
                   (mouseover)="historyPos($event)"
@@ -634,26 +590,22 @@
                   class="info-icon-container tick historyTip"
                   ><i
                     class="fas fa-notes-medical notes"
-                    [tooltip]="tipDoneCode[element.patient_id]"
-                  ></i
+                    [tooltip]="tipDoneCode[element.patient_id]"></i
                 ></span>
                 <span
                   (mouseover)="historyPos($event)"
                   *ngIf="element.future_date_show"
-                  class="info-icon-container tick historyTip"
-                >
+                  class="info-icon-container tick historyTip">
                   <i
                     class="fas fa-calendar-check notes"
-                    [tooltip]="tipFutureDate[element.patient_id]"
-                  ></i>
+                    [tooltip]="tipFutureDate[element.patient_id]"></i>
                 </span>
                 <div class="historyTip history">
                   <i
                     (mouseover)="historyPos($event)"
                     [tooltip]="formatHistory(element.history)"
                     class="fa fa-history"
-                    *ngIf="element.history.length > 0"
-                  ></i>
+                    *ngIf="element.history.length > 0"></i>
                 </div>
               </td>
             </ng-container>
@@ -674,23 +626,21 @@
                       'tick-follower',
                       element.status
                     )
-                  "
-                >
+                  ">
                 </mat-slide-toggle>
               </td>
             </ng-container>
             <ng-container matColumnDef="isDataAvailable1">
               <mat-footer-cell
                 *matFooterCellDef
-                [attr.colspan]="displayedColumns3.length"
-              >
+                [attr.colspan]="displayedColumns3.length">
                 <span *ngIf="isEnableTH && followupTickFollowups.length <= 0"
                   >You have no tick followups for
-                  {{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}</span
+                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
                 <span *ngIf="isEnableTH && followupTickFollowups.length > 0"
                   >All tick followups have been completed for
-                  {{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}</span
+                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
                 <span *ngIf="!isEnableTH"
                   >Tick Followup are not enabled - this can be configured in
@@ -704,19 +654,16 @@
               *matFooterRowDef="['isDataAvailable1']"
               [ngClass]="
                 followupTickFollowupsInCMP.length <= 0 ? 'show' : 'hide'
-              "
-            ></mat-footer-row>
+              "></mat-footer-row>
           </table>
         </div>
         <ul
           class="main_pagination settings-table-pagination followup"
-          *ngIf="thikTablePages.length"
-        >
+          *ngIf="thikTablePages.length">
           <li *ngFor="let page of thikTablePages">
             <button
               [ngClass]="{ active: page === currentThickPage, page: true }"
-              (click)="handlePageChange(page, 'TH')"
-            >
+              (click)="handlePageChange(page, 'TH')">
               {{ page }}
             </button>
           </li>
@@ -725,8 +672,7 @@
         <div class="follow-ups-card" *ngIf="followupTickFollowupsInCMP.length">
           <mat-card
             class="huddle-card"
-            *ngFor="let element of followupTickFollowupsInCMP"
-          >
+            *ngFor="let element of followupTickFollowupsInCMP">
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Patient :</div>
               <div fxFlex="60">
@@ -742,9 +688,7 @@
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Treatment Date :</div>
               <div fxFlex="60">
-                {{
-                  element.original_appt_date | date : 'MMM d, y' : 'timezone'
-                }}
+                {{ element.original_appt_date | date: 'MMM d, y' : 'timezone' }}
               </div>
             </div>
             <div fxLayout="row" class="huddle-card-row">
@@ -774,8 +718,7 @@
                         'tick-follower',
                         nextBussinessDay
                       )
-                    "
-                  >
+                    ">
                     <mat-option value="">Select Status</mat-option>
                     <mat-option value="Booked">Booked</mat-option>
                     <mat-option value="Already booked"
@@ -801,7 +744,7 @@
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Follow-Up Date :</div>
               <div fxFlex="60">
-                {{ element.followup_date | date : 'MMM d, y' : 'timezone' }}
+                {{ element.followup_date | date: 'MMM d, y' : 'timezone' }}
               </div>
             </div>
             <div fxLayout="row" class="huddle-card-row">
@@ -809,8 +752,7 @@
               <div fxFlex="60">
                 <span
                   (mouseover)="historyPos($event)"
-                  class="info-icon-container tick historyTip"
-                >
+                  class="info-icon-container tick historyTip">
                   <i
                     [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
@@ -825,8 +767,7 @@
                         element.followup_date,
                         'tick-follower'
                       )
-                    "
-                  ></i>
+                    "></i>
                 </span>
                 <span
                   (mouseover)="historyPos($event)"
@@ -834,26 +775,22 @@
                   class="info-icon-container tick historyTip"
                   ><i
                     class="fas fa-notes-medical notes"
-                    [tooltip]="tipDoneCode[element.patient_id]"
-                  ></i
+                    [tooltip]="tipDoneCode[element.patient_id]"></i
                 ></span>
                 <span
                   (mouseover)="historyPos($event)"
                   *ngIf="element.future_date_show"
-                  class="info-icon-container tick historyTip"
-                >
+                  class="info-icon-container tick historyTip">
                   <i
                     class="fas fa-calendar-check notes"
-                    [tooltip]="tipFutureDate[element.patient_id]"
-                  ></i>
+                    [tooltip]="tipFutureDate[element.patient_id]"></i>
                 </span>
                 <div class="historyTip history">
                   <i
                     (mouseover)="historyPos($event)"
                     [tooltip]="formatHistory(element.history)"
                     class="fa fa-history"
-                    *ngIf="element.history.length > 0"
-                  ></i>
+                    *ngIf="element.history.length > 0"></i>
                 </div>
               </div>
             </div>
@@ -873,8 +810,7 @@
                       'tick-follower',
                       element.status
                     )
-                  "
-                >
+                  ">
                 </mat-slide-toggle>
               </div>
             </div>
@@ -896,8 +832,7 @@
                 [tooltip]="charTips['43']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
           </div>
           <div
@@ -905,8 +840,7 @@
             *ngIf="
               (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
               followupPostOpCalls.length > 0
-            "
-          >
+            ">
             <i class="fas fa-file-export" (click)="exportreport('post_op')">
               Export</i
             >
@@ -915,8 +849,7 @@
             <mat-checkbox
               name="status"
               [checked]="postopCallsPostOp"
-              (change)="updateToCompleteOP($event)"
-            >
+              (change)="updateToCompleteOP($event)">
               Show Complete</mat-checkbox
             >
           </div>
@@ -930,8 +863,7 @@
                 (mouseover)="historyPosChips($event, chips.colour)"
                 class="example-box"
                 *ngFor="let chips of postOpCallsScrps"
-                [color]="chips.colour"
-              >
+                [color]="chips.colour">
                 <span class="chipText">{{ chips.script_title }}</span>
               </mat-chip>
             </mat-chip-list>
@@ -945,8 +877,7 @@
           <table
             mat-table
             [dataSource]="followupPostOpCallsInComp"
-            class="mat-elevation-z8 customWidth PostOp"
-          >
+            class="mat-elevation-z8 customWidth PostOp">
             <!-- Name Column -->
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Patient Name</th>
@@ -962,8 +893,7 @@
                 <div class="phone_align_center">
                   <img
                     src="../assets/images/follow-up-call.png"
-                    alt="follow-up-call"
-                  />
+                    alt="follow-up-call" />
                   <span class="phone_no" *ngIf="element.patients.mobile">{{
                     formatPhoneNumber(element.patients.mobile)
                   }}</span>
@@ -971,16 +901,14 @@
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_work) }}
                   </span>
                   <span
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && !element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_home) }}
                   </span>
                 </div>
@@ -989,9 +917,7 @@
             <ng-container matColumnDef="code">
               <th mat-header-cell *matHeaderCellDef>Treatment Date</th>
               <td mat-cell *matCellDef="let element">
-                {{
-                  element.original_appt_date | date : 'MMM d, y' : 'timezone'
-                }}
+                {{ element.original_appt_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
             <ng-container matColumnDef="dentist">
@@ -1011,7 +937,7 @@
             <ng-container matColumnDef="followup_date">
               <th mat-header-cell *matHeaderCellDef>Follow-Up Date</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.followup_date | date : 'MMM d, y' : 'timezone' }}
+                {{ element.followup_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
             <ng-container matColumnDef="status">
@@ -1029,23 +955,21 @@
                       element.patients.clinic_id,
                       'post-op-calls'
                     )
-                  "
-                >
+                  ">
                 </mat-slide-toggle>
               </td>
             </ng-container>
             <ng-container matColumnDef="isDataAvailable1">
               <mat-footer-cell
                 *matFooterCellDef
-                [attr.colspan]="displayedColumns1.length"
-              >
+                [attr.colspan]="displayedColumns1.length">
                 <span *ngIf="isEnablePO && followupPostOpCalls.length <= 0"
                   >You have no post op calls for
-                  {{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}</span
+                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
                 <span *ngIf="isEnablePO && followupPostOpCalls.length > 0"
                   >All post op calls have been completed for
-                  {{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}</span
+                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
                 <span *ngIf="!isEnablePO"
                   >Post Op calls are not enabled - this can be configured in
@@ -1059,19 +983,16 @@
               *matFooterRowDef="['isDataAvailable1']"
               [ngClass]="
                 followupPostOpCallsInComp.length <= 0 ? 'show' : 'hide'
-              "
-            ></mat-footer-row>
+              "></mat-footer-row>
           </table>
         </div>
         <ul
           class="main_pagination settings-table-pagination followup"
-          *ngIf="opTablePages.length"
-        >
+          *ngIf="opTablePages.length">
           <li *ngFor="let page of opTablePages">
             <button
               [ngClass]="{ active: page === currentOpPage, page: true }"
-              (click)="handlePageChange(page, 'OP')"
-            >
+              (click)="handlePageChange(page, 'OP')">
               {{ page }}
             </button>
           </li>
@@ -1080,8 +1001,7 @@
         <div class="follow-ups-card" *ngIf="followupPostOpCallsInComp.length">
           <mat-card
             class="huddle-card"
-            *ngFor="let element of followupPostOpCallsInComp"
-          >
+            *ngFor="let element of followupPostOpCallsInComp">
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Patient :</div>
               <div fxFlex="60">
@@ -1097,9 +1017,7 @@
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Treatment Date :</div>
               <div fxFlex="60">
-                {{
-                  element.original_appt_date | date : 'MMM d, y' : 'timezone'
-                }}
+                {{ element.original_appt_date | date: 'MMM d, y' : 'timezone' }}
               </div>
             </div>
             <div fxLayout="row" class="huddle-card-row">
@@ -1115,7 +1033,7 @@
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Follow-Up Date :</div>
               <div fxFlex="60">
-                {{ element.followup_date | date : 'MMM d, y' : 'timezone' }}
+                {{ element.followup_date | date: 'MMM d, y' : 'timezone' }}
               </div>
             </div>
             <!-- <div fxLayout="row" class="huddle-card-row">
@@ -1139,8 +1057,7 @@
                       element.patients.clinic_id,
                       'post-op-calls'
                     )
-                  "
-                >
+                  ">
                 </mat-slide-toggle>
               </div>
             </div>
@@ -1163,8 +1080,7 @@
                 [tooltip]="charTips['52']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
           </div>
           <div
@@ -1172,12 +1088,10 @@
             *ngIf="
               (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
               followupFtaFollowups.length > 0
-            "
-          >
+            ">
             <i
               class="fas fa-file-export"
-              (click)="exportreport('fta_followups')"
-            >
+              (click)="exportreport('fta_followups')">
               Export</i
             >
           </div>
@@ -1185,8 +1099,7 @@
             <mat-checkbox
               name="status"
               [checked]="showCompleteFta"
-              (change)="updateToCompleteFT($event)"
-            >
+              (change)="updateToCompleteFT($event)">
               Show Complete
             </mat-checkbox>
           </div>
@@ -1200,8 +1113,7 @@
                 (mouseover)="historyPosChips($event, chips.colour)"
                 class="example-box"
                 *ngFor="let chips of ftaFollowupsScrps"
-                [color]="chips.colour"
-              >
+                [color]="chips.colour">
                 <span class="chipText">{{ chips.script_title }}</span>
               </mat-chip>
             </mat-chip-list>
@@ -1215,8 +1127,7 @@
           <table
             mat-table
             [dataSource]="followupFtaFollowupsInCMP"
-            class="mat-elevation-z8 customWidth thick"
-          >
+            class="mat-elevation-z8 customWidth thick">
             <!-- Name Column -->
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Patient Name</th>
@@ -1232,8 +1143,7 @@
                 <div class="phone_align_center">
                   <img
                     src="../assets/images/follow-up-call.png"
-                    alt="follow-up-call"
-                  />
+                    alt="follow-up-call" />
                   <span class="phone_no" *ngIf="element.patients.mobile">{{
                     formatPhoneNumber(element.patients.mobile)
                   }}</span>
@@ -1241,16 +1151,14 @@
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_work) }}
                   </span>
                   <span
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && !element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_home) }}
                   </span>
                 </div>
@@ -1261,9 +1169,7 @@
             <ng-container matColumnDef="code">
               <th mat-header-cell *matHeaderCellDef>Treatment Date</th>
               <td mat-cell *matCellDef="let element">
-                {{
-                  element.original_appt_date | date : 'MMM d, y' : 'timezone'
-                }}
+                {{ element.original_appt_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
             <ng-container matColumnDef="dentist">
@@ -1275,7 +1181,7 @@
             <ng-container matColumnDef="followup_date">
               <th mat-header-cell *matHeaderCellDef>Follow-Up Date</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.followup_date | date : 'MMM d, y' : 'timezone' }}
+                {{ element.followup_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
 
@@ -1300,8 +1206,7 @@
                         'fta-follower',
                         nextBussinessDay
                       )
-                    "
-                  >
+                    ">
                     <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                     <mat-option value="">Select Status</mat-option>
                     <mat-option value="Booked">Booked</mat-option>
@@ -1330,8 +1235,7 @@
               <td mat-cell *matCellDef="let element">
                 <span
                   class="info-icon-container tick historyTip"
-                  (mouseover)="historyPos($event)"
-                >
+                  (mouseover)="historyPos($event)">
                   <i
                     [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
@@ -1346,8 +1250,7 @@
                         element.followup_date,
                         'fta-follower'
                       )
-                    "
-                  ></i>
+                    "></i>
                 </span>
                 <span
                   (mouseover)="historyPos($event)"
@@ -1355,26 +1258,22 @@
                   class="info-icon-container tick historyTip"
                   ><i
                     class="fas fa-notes-medical notes"
-                    [tooltip]="tipFtaDoneCode[element.patient_id]"
-                  ></i
+                    [tooltip]="tipFtaDoneCode[element.patient_id]"></i
                 ></span>
                 <span
                   (mouseover)="historyPos($event)"
                   *ngIf="element.future_date_show"
-                  class="info-icon-container tick historyTip"
-                >
+                  class="info-icon-container tick historyTip">
                   <i
                     class="fas fa-calendar-check notes"
-                    [tooltip]="tipFtaFutureDate[element.patient_id]"
-                  ></i>
+                    [tooltip]="tipFtaFutureDate[element.patient_id]"></i>
                 </span>
                 <div class="historyTip history">
                   <i
                     (mouseover)="historyPos($event)"
                     [tooltip]="formatHistory(element.history)"
                     class="fa fa-history"
-                    *ngIf="element.history.length > 0"
-                  ></i>
+                    *ngIf="element.history.length > 0"></i>
                 </div>
               </td>
             </ng-container>
@@ -1395,23 +1294,21 @@
                       'fta-follower',
                       element.status
                     )
-                  "
-                >
+                  ">
                 </mat-slide-toggle>
               </td>
             </ng-container>
             <ng-container matColumnDef="isDataAvailable1">
               <mat-footer-cell
                 *matFooterCellDef
-                [attr.colspan]="displayedColumns3.length"
-              >
+                [attr.colspan]="displayedColumns3.length">
                 <span *ngIf="isEnableFT && followupFtaFollowups.length <= 0"
                   >You have no FTA followups for
-                  {{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}</span
+                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
                 <span *ngIf="isEnableFT && followupFtaFollowups.length > 0"
                   >All FTA followups have been completed for
-                  {{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}</span
+                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
                 <span *ngIf="!isEnableFT"
                   >FTA Followup are not enabled - this can be configured in your
@@ -1425,19 +1322,16 @@
               *matFooterRowDef="['isDataAvailable1']"
               [ngClass]="
                 followupFtaFollowupsInCMP.length <= 0 ? 'show' : 'hide'
-              "
-            ></mat-footer-row>
+              "></mat-footer-row>
           </table>
         </div>
         <ul
           class="main_pagination settings-table-pagination followup"
-          *ngIf="ftTablePages.length"
-        >
+          *ngIf="ftTablePages.length">
           <li *ngFor="let page of ftTablePages">
             <button
               [ngClass]="{ active: page === currentFTPage, page: true }"
-              (click)="handlePageChange(page, 'FT')"
-            >
+              (click)="handlePageChange(page, 'FT')">
               {{ page }}
             </button>
           </li>
@@ -1446,8 +1340,7 @@
         <div class="follow-ups-card" *ngIf="followupFtaFollowupsInCMP.length">
           <mat-card
             class="huddle-card"
-            *ngFor="let element of followupFtaFollowupsInCMP"
-          >
+            *ngFor="let element of followupFtaFollowupsInCMP">
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Patient :</div>
               <div fxFlex="60">
@@ -1463,9 +1356,7 @@
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Treatment Date :</div>
               <div fxFlex="60">
-                {{
-                  element.original_appt_date | date : 'MMM d, y' : 'timezone'
-                }}
+                {{ element.original_appt_date | date: 'MMM d, y' : 'timezone' }}
               </div>
             </div>
             <div fxLayout="row" class="huddle-card-row">
@@ -1496,8 +1387,7 @@
                         'fta-follower',
                         nextBussinessDay
                       )
-                    "
-                  >
+                    ">
                     <mat-option value="">Select Status</mat-option>
                     <mat-option value="Booked">Booked</mat-option>
                     <mat-option value="Already booked"
@@ -1523,7 +1413,7 @@
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Follow-Up Date :</div>
               <div fxFlex="60">
-                {{ element.followup_date | date : 'MMM d, y' : 'timezone' }}
+                {{ element.followup_date | date: 'MMM d, y' : 'timezone' }}
               </div>
             </div>
             <div fxLayout="row" class="huddle-card-row">
@@ -1531,8 +1421,7 @@
               <div fxFlex="60">
                 <span
                   class="info-icon-container tick historyTip"
-                  (mouseover)="historyPos($event)"
-                >
+                  (mouseover)="historyPos($event)">
                   <i
                     [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
@@ -1547,8 +1436,7 @@
                         element.followup_date,
                         'fta-follower'
                       )
-                    "
-                  ></i>
+                    "></i>
                 </span>
                 <span
                   (mouseover)="historyPos($event)"
@@ -1556,26 +1444,22 @@
                   class="info-icon-container tick historyTip"
                   ><i
                     class="fas fa-notes-medical notes"
-                    [tooltip]="tipFtaDoneCode[element.patient_id]"
-                  ></i
+                    [tooltip]="tipFtaDoneCode[element.patient_id]"></i
                 ></span>
                 <span
                   (mouseover)="historyPos($event)"
                   *ngIf="element.future_date_show"
-                  class="info-icon-container tick historyTip"
-                >
+                  class="info-icon-container tick historyTip">
                   <i
                     class="fas fa-calendar-check notes"
-                    [tooltip]="tipFtaFutureDate[element.patient_id]"
-                  ></i>
+                    [tooltip]="tipFtaFutureDate[element.patient_id]"></i>
                 </span>
                 <div class="historyTip history">
                   <i
                     (mouseover)="historyPos($event)"
                     [tooltip]="formatHistory(element.history)"
                     class="fa fa-history"
-                    *ngIf="element.history.length > 0"
-                  ></i>
+                    *ngIf="element.history.length > 0"></i>
                 </div>
               </div>
             </div>
@@ -1595,8 +1479,7 @@
                       'fta-follower',
                       element.status
                     )
-                  "
-                >
+                  ">
                 </mat-slide-toggle>
               </div>
             </div>
@@ -1614,8 +1497,7 @@
                 [tooltip]="charTips['60']"
                 src="../assets/images/info-icon.png"
                 alt="info-icon"
-                class="info-icon"
-              />
+                class="info-icon" />
             </div>
           </div>
 
@@ -1624,12 +1506,10 @@
             *ngIf="
               (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
               followupUtaFollowups.length > 0
-            "
-          >
+            ">
             <i
               class="fas fa-file-export"
-              (click)="exportreport('uta_followups')"
-            >
+              (click)="exportreport('uta_followups')">
               Export</i
             >
           </div>
@@ -1637,8 +1517,7 @@
             <mat-checkbox
               name="status"
               [checked]="showCompleteUta"
-              (change)="updateToCompleteUT($event)"
-            >
+              (change)="updateToCompleteUT($event)">
               Show Complete
             </mat-checkbox>
           </div>
@@ -1652,8 +1531,7 @@
                 (mouseover)="historyPosChips($event, chips.colour)"
                 class="example-box"
                 *ngFor="let chips of utaFollowupsScrps"
-                [color]="chips.colour"
-              >
+                [color]="chips.colour">
                 <span class="chipText">{{ chips.script_title }}</span>
               </mat-chip>
             </mat-chip-list>
@@ -1667,8 +1545,7 @@
           <table
             mat-table
             [dataSource]="followupUtaFollowupsInCMP"
-            class="mat-elevation-z8 customWidth thick"
-          >
+            class="mat-elevation-z8 customWidth thick">
             <!-- Name Column -->
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Patient Name</th>
@@ -1684,8 +1561,7 @@
                 <div class="phone_align_center">
                   <img
                     src="../assets/images/follow-up-call.png"
-                    alt="follow-up-call"
-                  />
+                    alt="follow-up-call" />
                   <span class="phone_no" *ngIf="element.patients.mobile">{{
                     formatPhoneNumber(element.patients.mobile)
                   }}</span>
@@ -1693,16 +1569,14 @@
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_work) }}
                   </span>
                   <span
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && !element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_home) }}
                   </span>
                 </div>
@@ -1713,9 +1587,7 @@
             <ng-container matColumnDef="code">
               <th mat-header-cell *matHeaderCellDef>Treatment Date</th>
               <td mat-cell *matCellDef="let element">
-                {{
-                  element.original_appt_date | date : 'MMM d, y' : 'timezone'
-                }}
+                {{ element.original_appt_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
             <ng-container matColumnDef="dentist">
@@ -1727,7 +1599,7 @@
             <ng-container matColumnDef="followup_date">
               <th mat-header-cell *matHeaderCellDef>Follow-Up Date</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.followup_date | date : 'MMM d, y' : 'timezone' }}
+                {{ element.followup_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
 
@@ -1752,8 +1624,7 @@
                         'uta-follower',
                         nextBussinessDay
                       )
-                    "
-                  >
+                    ">
                     <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                     <mat-option value="">Select Status</mat-option>
                     <mat-option value="Booked">Booked</mat-option>
@@ -1782,8 +1653,7 @@
               <td mat-cell *matCellDef="let element">
                 <span
                   class="info-icon-container tick historyTip"
-                  (mouseover)="historyPos($event)"
-                >
+                  (mouseover)="historyPos($event)">
                   <i
                     [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
@@ -1798,8 +1668,7 @@
                         element.followup_date,
                         'uta-follower'
                       )
-                    "
-                  ></i>
+                    "></i>
                 </span>
                 <span
                   (mouseover)="historyPos($event)"
@@ -1807,26 +1676,22 @@
                   class="info-icon-container tick historyTip"
                   ><i
                     class="fas fa-notes-medical notes"
-                    [tooltip]="tipUtaDoneCode[element.patient_id]"
-                  ></i
+                    [tooltip]="tipUtaDoneCode[element.patient_id]"></i
                 ></span>
                 <span
                   (mouseover)="historyPos($event)"
                   *ngIf="element.future_date_show"
-                  class="info-icon-container tick historyTip"
-                >
+                  class="info-icon-container tick historyTip">
                   <i
                     class="fas fa-calendar-check notes"
-                    [tooltip]="tipFtaFutureDate[element.patient_id]"
-                  ></i>
+                    [tooltip]="tipFtaFutureDate[element.patient_id]"></i>
                 </span>
                 <div class="historyTip history">
                   <i
                     (mouseover)="historyPos($event)"
                     [tooltip]="formatHistory(element.history)"
                     class="fa fa-history"
-                    *ngIf="element.history.length > 0"
-                  ></i>
+                    *ngIf="element.history.length > 0"></i>
                 </div>
               </td>
             </ng-container>
@@ -1847,23 +1712,21 @@
                       'uta-follower',
                       element.status
                     )
-                  "
-                >
+                  ">
                 </mat-slide-toggle>
               </td>
             </ng-container>
             <ng-container matColumnDef="isDataAvailable1">
               <mat-footer-cell
                 *matFooterCellDef
-                [attr.colspan]="displayedColumns3.length"
-              >
+                [attr.colspan]="displayedColumns3.length">
                 <span *ngIf="isEnableUT && followupUtaFollowups.length <= 0"
                   >You have no UTA followups for
-                  {{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}</span
+                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
                 <span *ngIf="isEnableUT && followupUtaFollowups.length <= 0"
                   >All UTA followups have been completed for
-                  {{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}</span
+                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
                 <span *ngIf="!isEnableUT"
                   >UTA Followup are not enabled - this can be configured in your
@@ -1877,19 +1740,16 @@
               *matFooterRowDef="['isDataAvailable1']"
               [ngClass]="
                 followupFtaFollowupsInCMP.length <= 0 ? 'show' : 'hide'
-              "
-            ></mat-footer-row>
+              "></mat-footer-row>
           </table>
         </div>
         <ul
           class="main_pagination settings-table-pagination followup"
-          *ngIf="utTablePages.length"
-        >
+          *ngIf="utTablePages.length">
           <li *ngFor="let page of utTablePages">
             <button
               [ngClass]="{ active: page === currentUTPage, page: true }"
-              (click)="handlePageChange(page, 'UT')"
-            >
+              (click)="handlePageChange(page, 'UT')">
               {{ page }}
             </button>
           </li>
@@ -1898,8 +1758,7 @@
         <div class="follow-ups-card" *ngIf="followupUtaFollowupsInCMP.length">
           <mat-card
             class="huddle-card"
-            *ngFor="let element of followupUtaFollowupsInCMP"
-          >
+            *ngFor="let element of followupUtaFollowupsInCMP">
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Patient :</div>
               <div fxFlex="60">
@@ -1915,9 +1774,7 @@
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Treatment Date :</div>
               <div fxFlex="60">
-                {{
-                  element.original_appt_date | date : 'MMM d, y' : 'timezone'
-                }}
+                {{ element.original_appt_date | date: 'MMM d, y' : 'timezone' }}
               </div>
             </div>
             <div fxLayout="row" class="huddle-card-row">
@@ -1948,8 +1805,7 @@
                         'uta-follower',
                         nextBussinessDay
                       )
-                    "
-                  >
+                    ">
                     <mat-option value="">Select Status</mat-option>
                     <mat-option value="Booked">Booked</mat-option>
                     <mat-option value="Already booked"
@@ -1975,7 +1831,7 @@
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Follow-Up Date :</div>
               <div fxFlex="60">
-                {{ element.followup_date | date : 'MMM d, y' : 'timezone' }}
+                {{ element.followup_date | date: 'MMM d, y' : 'timezone' }}
               </div>
             </div>
             <div fxLayout="row" class="huddle-card-row">
@@ -1983,8 +1839,7 @@
               <div fxFlex="60">
                 <span
                   class="info-icon-container tick historyTip"
-                  (mouseover)="historyPos($event)"
-                >
+                  (mouseover)="historyPos($event)">
                   <i
                     [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
@@ -1999,8 +1854,7 @@
                         element.followup_date,
                         'uta-follower'
                       )
-                    "
-                  ></i>
+                    "></i>
                 </span>
                 <span
                   (mouseover)="historyPos($event)"
@@ -2008,26 +1862,22 @@
                   class="info-icon-container tick historyTip"
                   ><i
                     class="fas fa-notes-medical notes"
-                    [tooltip]="tipUtaDoneCode[element.patient_id]"
-                  ></i
+                    [tooltip]="tipUtaDoneCode[element.patient_id]"></i
                 ></span>
                 <span
                   (mouseover)="historyPos($event)"
                   *ngIf="element.future_date_show"
-                  class="info-icon-container tick historyTip"
-                >
+                  class="info-icon-container tick historyTip">
                   <i
                     class="fas fa-calendar-check notes"
-                    [tooltip]="tipFtaFutureDate[element.patient_id]"
-                  ></i>
+                    [tooltip]="tipFtaFutureDate[element.patient_id]"></i>
                 </span>
                 <div class="historyTip history">
                   <i
                     (mouseover)="historyPos($event)"
                     [tooltip]="formatHistory(element.history)"
                     class="fa fa-history"
-                    *ngIf="element.history.length > 0"
-                  ></i>
+                    *ngIf="element.history.length > 0"></i>
                 </div>
               </div>
             </div>
@@ -2047,8 +1897,7 @@
                       'uta-follower',
                       element.status
                     )
-                  "
-                >
+                  ">
                 </mat-slide-toggle>
               </div>
             </div>
@@ -2065,8 +1914,7 @@
       label="Internal Referrals"
       *ngIf="
         clinic_id == 1 || clinic_id == 2 || clinic_id == 3 || clinic_id == 4
-      "
-    >
+      ">
       <div class="follow-up">
         <mat-card-title>
           <div class="title-follow-up d-inline-block">
@@ -2080,12 +1928,10 @@
             *ngIf="
               (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
               internalReferrals.length > 0
-            "
-          >
+            ">
             <i
               class="fas fa-file-export"
-              (click)="exportreport('internal_referrals')"
-            >
+              (click)="exportreport('internal_referrals')">
               Export</i
             >
           </div>
@@ -2106,8 +1952,7 @@
           <table
             mat-table
             [dataSource]="internalReferralRecallInCMP"
-            class="mat-elevation-z8 customWidth InternalReferrals"
-          >
+            class="mat-elevation-z8 customWidth InternalReferrals">
             <!-- Name Column -->
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Patient Name</th>
@@ -2123,8 +1968,7 @@
                 <div class="phone_align_center">
                   <img
                     src="../assets/images/follow-up-call.png"
-                    alt="Phone Number"
-                  />
+                    alt="Phone Number" />
                   <span class="phone_no" *ngIf="element.patients.mobile">{{
                     formatPhoneNumber(element.patients.mobile)
                   }}</span>
@@ -2132,16 +1976,14 @@
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_work) }}
                   </span>
                   <span
                     class="phone_no"
                     *ngIf="
                       !element.patients.mobile && !element.patients.phone_work
-                    "
-                  >
+                    ">
                     {{ formatPhoneNumber(element.patients.phone_home) }}
                   </span>
                 </div>
@@ -2152,9 +1994,7 @@
             <ng-container matColumnDef="referral">
               <th mat-header-cell *matHeaderCellDef>Referral Date</th>
               <td mat-cell *matCellDef="let element">
-                {{
-                  element.original_appt_date | date : 'MMM d, y' : 'timezone'
-                }}
+                {{ element.original_appt_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
 
@@ -2197,8 +2037,7 @@
                         nextBussinessDay,
                         element.treat_item
                       )
-                    "
-                  >
+                    ">
                     <mat-option value="">Select Status</mat-option>
                     <mat-option value="Booked">Booked</mat-option>
                     <mat-option value="Already booked"
@@ -2225,7 +2064,7 @@
             <ng-container matColumnDef="followup_date">
               <th mat-header-cell *matHeaderCellDef>Follow-Up Date</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.followup_date | date : 'MMM d, y' : 'timezone' }}
+                {{ element.followup_date | date: 'MMM d, y' : 'timezone' }}
               </td>
             </ng-container>
             <!-- Notes Column -->
@@ -2234,8 +2073,7 @@
               <td mat-cell *matCellDef="let element">
                 <span
                   (mouseover)="historyPos($event)"
-                  class="info-icon-container tick historyTip"
-                >
+                  class="info-icon-container tick historyTip">
                   <i
                     [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
@@ -2251,16 +2089,14 @@
                         'internal-referrals',
                         element.treat_item
                       )
-                    "
-                  ></i>
+                    "></i>
                 </span>
                 <div class="historyTip history">
                   <i
                     (mouseover)="historyPos($event)"
                     [tooltip]="formatHistory(element.history)"
                     class="fa fa-history"
-                    *ngIf="element.history.length > 0"
-                  ></i>
+                    *ngIf="element.history.length > 0"></i>
                 </div>
               </td>
             </ng-container>
@@ -2282,19 +2118,17 @@
                       element.status,
                       element.treat_item
                     )
-                  "
-                >
+                  ">
                 </mat-slide-toggle>
               </td>
             </ng-container>
             <ng-container matColumnDef="isDataAvailable1">
               <mat-footer-cell
                 *matFooterCellDef
-                [attr.colspan]="displayedColumns4.length"
-              >
+                [attr.colspan]="displayedColumns4.length">
                 <span *ngIf="internalReferrals.length <= 0"
                   >You have no internal referrals for
-                  {{ selectedMonthYear | date : 'MMMM y' : 'timezone' }}</span
+                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
               </mat-footer-cell>
             </ng-container>
@@ -2304,19 +2138,16 @@
               *matFooterRowDef="['isDataAvailable1']"
               [ngClass]="
                 internalReferralRecallInCMP.length <= 0 ? 'show' : 'hide'
-              "
-            ></mat-footer-row>
+              "></mat-footer-row>
           </table>
         </div>
         <ul
           class="main_pagination settings-table-pagination followup"
-          *ngIf="irTablePages.length"
-        >
+          *ngIf="irTablePages.length">
           <li *ngFor="let page of irTablePages">
             <button
               [ngClass]="{ active: page === currentIRPage, page: true }"
-              (click)="handlePageChange(page, 'IR')"
-            >
+              (click)="handlePageChange(page, 'IR')">
               {{ page }}
             </button>
           </li>

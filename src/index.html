@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -8,21 +8,19 @@
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.png" />
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
+      rel="stylesheet" />
     <link
       rel="stylesheet"
       type="text/css"
-      href="../assets/styles/primeicons/primeicons.css"
-    />
+      href="../assets/styles/primeicons/primeicons.css" />
     <script type="text/javascript" src="../assets/js/jquery.min.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script type="text/javascript">
-      var div = $("<div/>");
-      $(document).on("keyup", "input,textarea", function () {
+      var div = $('<div/>');
+      $(document).on('keyup', 'input,textarea', function () {
         var str = $(this).val();
         var regex = /(<([^>]+)>)/gi;
-        var result = str.replace(regex, "");
+        var result = str.replace(regex, '');
         $(this).val(result);
       });
     </script>

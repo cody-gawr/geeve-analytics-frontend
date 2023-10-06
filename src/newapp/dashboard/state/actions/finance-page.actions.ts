@@ -1,8 +1,8 @@
-import { JeeveError } from "@/newapp/models";
-import { createAction, props } from "@ngrx/store";
+import { JeeveError } from '@/newapp/models';
+import { createAction, props } from '@ngrx/store';
 
 export const loadFnTotalProduction = createAction(
-  "[Fanance Page] Load fnTotalProduction",
+  '[Fanance Page] Load fnTotalProduction',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -13,7 +13,7 @@ export const loadFnTotalProduction = createAction(
 );
 
 export const loadFnTotalProductionTrend = createAction(
-  "[Fanance Page] Load fnTotalProductionTrend",
+  '[Fanance Page] Load fnTotalProductionTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -21,7 +21,7 @@ export const loadFnTotalProductionTrend = createAction(
   }>()
 );
 export const loadFnTotalCollection = createAction(
-  "[Fanance Page] Load fnTotalCollection",
+  '[Fanance Page] Load fnTotalCollection',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -32,7 +32,7 @@ export const loadFnTotalCollection = createAction(
 );
 
 export const loadFnTotalCollectionTrend = createAction(
-  "[Fanance Page] Load fnTotalCollectionTrend",
+  '[Fanance Page] Load fnTotalCollectionTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -41,7 +41,7 @@ export const loadFnTotalCollectionTrend = createAction(
 );
 
 export const loadFnNetProfit = createAction(
-  "[Fanance Page] load fnNetProfit",
+  '[Fanance Page] load fnNetProfit',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -53,7 +53,7 @@ export const loadFnNetProfit = createAction(
 );
 
 export const loadFnNetProfitTrend = createAction(
-  "[Fanance Page] load fnNetProfitTrend",
+  '[Fanance Page] load fnNetProfitTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -63,7 +63,7 @@ export const loadFnNetProfitTrend = createAction(
 );
 
 export const loadFnNetProfitPercentageTrend = createAction(
-  "[Fanance Page] load fnNetProfitPercentageTrend",
+  '[Fanance Page] load fnNetProfitPercentageTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -73,7 +73,7 @@ export const loadFnNetProfitPercentageTrend = createAction(
 );
 
 export const loadFnNetProfitPercentage = createAction(
-  "[Fanance Page] load fnNetProfitPercentage",
+  '[Fanance Page] load fnNetProfitPercentage',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -85,7 +85,7 @@ export const loadFnNetProfitPercentage = createAction(
 );
 
 export const loadFnExpenses = createAction(
-  "[Fanance Page] load fnExpenses",
+  '[Fanance Page] load fnExpenses',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -97,7 +97,7 @@ export const loadFnExpenses = createAction(
 );
 
 export const loadFnExpensesTrend = createAction(
-  "[Fanance Page] load fnExpensesTrend",
+  '[Fanance Page] load fnExpensesTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -107,7 +107,7 @@ export const loadFnExpensesTrend = createAction(
 );
 
 export const loadFnProductionByClinician = createAction(
-  "[Fanance Page] load fnProductionByClinician",
+  '[Fanance Page] load fnProductionByClinician',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -118,7 +118,7 @@ export const loadFnProductionByClinician = createAction(
 );
 
 export const loadFnProdByClinicianTrend = createAction(
-  "[Fanance Page] load fnProductionByClinicianTrend",
+  '[Fanance Page] load fnProductionByClinicianTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -127,7 +127,7 @@ export const loadFnProdByClinicianTrend = createAction(
 );
 
 export const loadFnProductionPerVisit = createAction(
-  "[Fanance Page] load fnProductionPerVisit",
+  '[Fanance Page] load fnProductionPerVisit',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -138,7 +138,7 @@ export const loadFnProductionPerVisit = createAction(
 );
 
 export const loadFnProdPerVisitTrend = createAction(
-  "[Fanance Page] load fnProductionPerVisitTrend",
+  '[Fanance Page] load fnProductionPerVisitTrend',
   props<{
     clinicId: string | number;
     mode: string;
@@ -147,7 +147,7 @@ export const loadFnProdPerVisitTrend = createAction(
 );
 
 export const loadFnTotalDiscounts = createAction(
-  "[Fanance Page] load fnTotalDiscounts",
+  '[Fanance Page] load fnTotalDiscounts',
   props<{
     clinicId: number | string;
     startDate: string;
@@ -158,7 +158,7 @@ export const loadFnTotalDiscounts = createAction(
 );
 
 export const loadFnTotalDiscountsTrend = createAction(
-  "[Fanance Page] load fnTotalDiscountsTrend",
+  '[Fanance Page] load fnTotalDiscountsTrend',
   props<{
     clinicId: number | string;
     mode: string;
@@ -167,14 +167,14 @@ export const loadFnTotalDiscountsTrend = createAction(
 );
 
 export const setTrendProfitChart = createAction(
-  "[Fanance Page] load Trend Profit Chart",
+  '[Fanance Page] load Trend Profit Chart',
   props<{
     chartName: string;
   }>()
 );
 
 export const setErrors = createAction(
-  "[Fanance Page] set Errors",
+  '[Fanance Page] set Errors',
   props<{
     errors: JeeveError[];
   }>()

@@ -8,7 +8,7 @@ export interface CaDentistProductionDataItem {
   production: string | number;
   providerId: string | number;
   providerName: string;
-  providerType: "OHT" | string;
+  providerType: 'OHT' | string;
   week: unknown;
   weekEnd: unknown;
   weekStart: unknown;

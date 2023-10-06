@@ -1,23 +1,23 @@
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import moment from "moment";
-import { Subject, takeUntil, map } from "rxjs";
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import moment from 'moment';
+import { Subject, takeUntil, map } from 'rxjs';
 
 export const DateRangeMenus: { range: DATE_RANGE_DURATION; label: string }[] = [
-  { range: "m", label: "This Month" },
-  { range: "lm", label: "Last Month" },
-  { range: "q", label: "This Quarter" },
-  { range: "lq", label: "Last Quarter" },
-  { range: "cytd", label: "Calendar Year" },
-  { range: "lcytd", label: "Last Calendar Year" },
-  { range: "fytd", label: "Financial Year" },
-  { range: "lfytd", label: "Last Financial Year" },
+  { range: 'm', label: 'This Month' },
+  { range: 'lm', label: 'Last Month' },
+  { range: 'q', label: 'This Quarter' },
+  { range: 'lq', label: 'Last Quarter' },
+  { range: 'cytd', label: 'Calendar Year' },
+  { range: 'lcytd', label: 'Last Calendar Year' },
+  { range: 'fytd', label: 'Financial Year' },
+  { range: 'lfytd', label: 'Last Financial Year' },
 ];
 
 @Component({
-  selector: "date-range-menu",
-  templateUrl: "./date-range-menu.component.html",
-  styleUrls: ["./date-range-menu.component.scss"],
+  selector: 'date-range-menu',
+  templateUrl: './date-range-menu.component.html',
+  styleUrls: ['./date-range-menu.component.scss'],
 })
 export class DateRangeMenuComponent implements OnInit, OnDestroy {
   dateRangeMenus = DateRangeMenus;
@@ -27,17 +27,15 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
   selectedMenu: DATE_RANGE_DURATION;
 
   constructor(private layoutFacade: LayoutFacade) {
-    this.layoutFacade.dateRange$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((v) => {
-        this.selectedMenu = v.duration;
-      });
+    this.layoutFacade.dateRange$.pipe(takeUntil(this.destroy$)).subscribe(v => {
+      this.selectedMenu = v.duration;
+    });
   }
 
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v.duration)
+      map(v => v.duration)
     );
   }
 
@@ -49,51 +47,51 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
 
   setDuration(duration: DATE_RANGE_DURATION) {
     switch (duration) {
-      case "w":
+      case 'w':
         break;
-      case "m":
+      case 'm':
         this.layoutFacade.saveDateRange(
-          moment().startOf("month"),
+          moment().startOf('month'),
           moment(),
-          "m"
+          'm'
         );
         break;
-      case "lm":
+      case 'lm':
         this.layoutFacade.saveDateRange(
-          moment().subtract(1, "months").startOf("month"),
-          moment().subtract(1, "months").endOf("month"),
+          moment().subtract(1, 'months').startOf('month'),
+          moment().subtract(1, 'months').endOf('month'),
           duration
         );
         break;
-      case "q":
+      case 'q':
         this.layoutFacade.saveDateRange(
-          moment().startOf("quarter"),
-          moment(),
-          duration
-        );
-        break;
-      case "lq":
-        this.layoutFacade.saveDateRange(
-          moment().subtract(1, "quarters").startOf("quarter"),
-          moment().subtract(1, "quarters").endOf("quarter"),
-          duration
-        );
-        break;
-      case "cytd":
-        this.layoutFacade.saveDateRange(
-          moment().startOf("year"),
+          moment().startOf('quarter'),
           moment(),
           duration
         );
         break;
-      case "lcytd":
+      case 'lq':
         this.layoutFacade.saveDateRange(
-          moment().subtract(1, "years").startOf("year"),
-          moment().subtract(1, "years").endOf("year"),
+          moment().subtract(1, 'quarters').startOf('quarter'),
+          moment().subtract(1, 'quarters').endOf('quarter'),
           duration
         );
         break;
-      case "fytd":
+      case 'cytd':
+        this.layoutFacade.saveDateRange(
+          moment().startOf('year'),
+          moment(),
+          duration
+        );
+        break;
+      case 'lcytd':
+        this.layoutFacade.saveDateRange(
+          moment().subtract(1, 'years').startOf('year'),
+          moment().subtract(1, 'years').endOf('year'),
+          duration
+        );
+        break;
+      case 'fytd':
         if (moment().month() >= 6) {
           this.layoutFacade.saveDateRange(
             moment().month(6).date(1),
@@ -102,23 +100,23 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
           );
         } else {
           this.layoutFacade.saveDateRange(
-            moment().subtract(1, "years").month(6).date(1),
+            moment().subtract(1, 'years').month(6).date(1),
             moment(),
             duration
           );
         }
         break;
-      case "lfytd":
+      case 'lfytd':
         if (moment().month() >= 5) {
           this.layoutFacade.saveDateRange(
-            moment().subtract(1, "years").month(6).date(1),
+            moment().subtract(1, 'years').month(6).date(1),
             moment().month(5).date(30),
             duration
           );
         } else {
           this.layoutFacade.saveDateRange(
-            moment().subtract(2, "years").month(6).date(1),
-            moment().subtract(1, "years").month(5).date(30),
+            moment().subtract(2, 'years').month(6).date(1),
+            moment().subtract(1, 'years').month(5).date(30),
             duration
           );
         }

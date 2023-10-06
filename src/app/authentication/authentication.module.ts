@@ -15,8 +15,8 @@ import { ErrorComponent } from './error/error.component';
 import { ForgotComponent } from './forgot/forgot.component';
 import { ResetComponent } from './reset/reset.component';
 import { LoginService } from '../login/login.service';
-import { RecaptchaModule } from "ng-recaptcha";
-import { RECAPTCHA_NONCE } from "ng-recaptcha";
+import { RecaptchaModule } from 'ng-recaptcha';
+import { RECAPTCHA_NONCE } from 'ng-recaptcha';
 
 @NgModule({
   imports: [
@@ -30,19 +30,15 @@ import { RECAPTCHA_NONCE } from "ng-recaptcha";
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    RecaptchaModule
+    RecaptchaModule,
   ],
   providers: [
     LoginService,
     {
       provide: RECAPTCHA_NONCE,
-      useValue: "IbBkVHsydYPDr9AUKkljYF6z9kOl1361",
+      useValue: 'IbBkVHsydYPDr9AUKkljYF6z9kOl1361',
     },
-  ],  
-  declarations: [
-    ErrorComponent,
-    ForgotComponent,
-    ResetComponent
-  ]
+  ],
+  declarations: [ErrorComponent, ForgotComponent, ResetComponent],
 })
 export class AuthenticationModule {}

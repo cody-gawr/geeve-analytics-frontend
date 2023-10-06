@@ -1,9 +1,9 @@
-import { environment } from "@/environments/environment";
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import camelcaseKeys from "camelcase-keys";
-import moment, { Moment } from "moment";
-import { map } from "rxjs";
+import { environment } from '@/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import camelcaseKeys from 'camelcase-keys';
+import moment, { Moment } from 'moment';
+import { map } from 'rxjs';
 
 export interface CaNoneTrendQueryParams {
   clinicId: string | number;
@@ -23,7 +23,7 @@ export interface CaTrendQueryParams {
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ClinicianAnalysisService {
   private apiUrl = environment.apiUrl;
@@ -37,28 +37,28 @@ export class ClinicianAnalysisService {
     const params = {
       clinic_id: queryParams.clinicId,
       start_date: moment.isMoment(queryParams.startDate)
-        ? queryParams.startDate.format("YYYY-MM-DD")
+        ? queryParams.startDate.format('YYYY-MM-DD')
         : queryParams.startDate,
       end_date: moment.isMoment(queryParams.endDate)
-        ? queryParams.endDate.format("YYYY-MM-DD")
+        ? queryParams.endDate.format('YYYY-MM-DD')
         : queryParams.endDate,
       duration: queryParams.duration,
       wh: queryParams.queryWhEnabled ?? 0,
     };
 
     if (queryParams.clinician) {
-      params["clinician"] = queryParams.clinician;
+      params['clinician'] = queryParams.clinician;
     }
 
     if (queryParams.dentistId) {
-      params["provider_id"] = queryParams.dentistId;
+      params['provider_id'] = queryParams.dentistId;
     }
     return this.http
       .get(`${this.apiUrl}/ClinicianAnalysis/${api}`, {
         params: params,
         withCredentials: true,
       })
-      .pipe(map((resBody) => <any>camelcaseKeys(resBody, { deep: true })));
+      .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
   }
 
   caTrendApiRequest(
@@ -75,7 +75,7 @@ export class ClinicianAnalysisService {
         },
         withCredentials: true,
       })
-      .pipe(map((resBody) => <any>camelcaseKeys(resBody, { deep: true })));
+      .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
   }
 
   // getAccountingDentist

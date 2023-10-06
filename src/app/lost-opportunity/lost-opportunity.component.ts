@@ -12,7 +12,7 @@ import { LocalStorageService } from '../shared/local-storage.service';
   selector: 'app-lost-opportunity',
   templateUrl: './lost-opportunity.component.html',
   styleUrls: ['./lost-opportunity.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class LostOpportunityComponent implements OnInit, OnDestroy {
   public clinic_id: any = '';
@@ -103,7 +103,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
           }, 500);
         }
       },
-      (error) => {
+      error => {
         //alert('Something Went Wrong.');
       }
     );
@@ -144,10 +144,10 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
   }
   getChartsTips() {
     this.chartstipsService.getCharts(8, this.clinic_id).subscribe(
-      (res) => {
-          this.charTips = res.data;
+      res => {
+        this.charTips = res.data;
       },
-      (error) => {}
+      error => {}
     );
   }
 }

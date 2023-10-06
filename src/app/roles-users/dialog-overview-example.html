@@ -1,77 +1,141 @@
-<div class="AddUserPopup users">  
-<h1 mat-dialog-title>Add User 
-  <div class="info-icon-container addUserTip ">
-    <img (mouseout)="showtooltip=false" (mouseover)="showtooltip=true" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
-  </div>
-</h1>
+<div class="AddUserPopup users">
+  <h1 mat-dialog-title>
+    Add User
+    <div class="info-icon-container addUserTip">
+      <img
+        (mouseout)="showtooltip=false"
+        (mouseover)="showtooltip=true"
+        src="../assets/images/info-icon.png"
+        alt="info-icon"
+        class="info-icon" />
+    </div>
+  </h1>
 
-<div class="roleTip" *ngIf="showtooltip" >
-  <div class="roleTipCon">
+  <div class="roleTip" *ngIf="showtooltip">
+    <div class="roleTipCon">
       <h1>{{data.permisions.title}}</h1>
       <div *ngFor="let rl of data.permisions.info" class="perCon">
-          <h2>{{ rl.role }}</h2>
-          <h5 *ngFor="let prms of rl.permisions" [style.display]="rolesAll[prms] != undefined ? 'inline' : 'none'" >{{ rolesAll[prms] }} </h5>
+        <h2>{{ rl.role }}</h2>
+        <h5
+          *ngFor="let prms of rl.permisions"
+          [style.display]="rolesAll[prms] != undefined ? 'inline' : 'none'">
+          {{ rolesAll[prms] }}
+        </h5>
       </div>
+    </div>
   </div>
-</div>
-<div mat-dialog-content class="sa_forms_design">
-  <div class="sa-form-group">
-    <label>Display Name</label>
-    <input tabindex="1" [(ngModel)]="data.display_name" (keyup)="display_name_error = $event.target.value == ''" class="mat-form-control" required="true"placeholder="">
-    <mat-error class="none-zero-error" *ngIf="display_name_error">
-      Please enter display name.
-    </mat-error>
+  <div mat-dialog-content class="sa_forms_design">
+    <div class="sa-form-group">
+      <label>Display Name</label>
+      <input
+        tabindex="1"
+        [(ngModel)]="data.display_name"
+        (keyup)="display_name_error = $event.target.value == ''"
+        class="mat-form-control"
+        required="true"
+        placeholder="" />
+      <mat-error class="none-zero-error" *ngIf="display_name_error">
+        Please enter display name.
+      </mat-error>
+    </div>
+    <div class="sa-form-group">
+      <label>Email</label>
+      <input
+        type="email"
+        tabindex="1"
+        [(ngModel)]="data.email"
+        (keyup)="checkEmail($event.target.value)"
+        class="mat-form-control"
+        required="true"
+        placeholder="" />
+      <mat-error class="none-zero-error" *ngIf="email_error">
+        please enter email.
+      </mat-error>
+      <mat-error class="none-zero-error" *ngIf="validMailError">
+        please enter valid email.
+      </mat-error>
+    </div>
+    <div class="sa-form-group">
+      <label>Select Role</label>
+      <select
+        required="true"
+        class="sa_select mat-form-control"
+        name="user_type"
+        [(ngModel)]="data.user_type"
+        (ngModelChange)="loadDentist($event)">
+        <option value="6" *ngIf="loginUserType == '2'">Owner</option>
+        <!-- <option value ="7" *ngIf="data.hasPrimeClinics == 'yes'" >Consultant</option> -->
+        <option value="7">Consultant</option>
+        <option value="3">Practice Manager</option>
+        <option value="4">Clinician</option>
+        <option value="5">Staff</option>
+      </select>
+    </div>
+    <div class="sa-form-group">
+      <label>Select Clinics</label>
+      <mat-select
+        #matSelect
+        [formControl]="selectedClinics"
+        multiple
+        (openedChange)="clinicSelect($event)"
+        class="user_add">
+        <mat-option *ngFor="let clinics of data.clinics" [value]="clinics.id"
+          >{{clinics.clinicName}}</mat-option
+        >
+        <button
+          class="mat-raised-button mat-dc float-right addUserSelectClinicBtn"
+          (click)="matSelect.close()">
+          OK
+        </button>
+      </mat-select>
+      <mat-error class="none-zero-error" *ngIf="select_clinic_error">
+        Please choose clinic.
+      </mat-error>
+    </div>
+    <div class="sa-form-group" *ngIf="show_dentist == true">
+      <div
+        class="selectedClinicProviders"
+        *ngFor="let clinicProviders of selectedClinicProviders; let i=index"
+        [ngClass]="checkColumn(i)">
+        <label>{{clinicProviders.clinicName}}</label>
+        <span>
+          <select
+            (change)="selectedDentist($event.target.value,i,clinicProviders.id)"
+            class="sa_select sa_select_set_roles mat-form-control"
+            name="dentist_id"
+            required="true"
+            *ngIf="clinicProviders.config_dentists.length>0">
+            <option value="0">Select Dentist</option>
+            <option
+              *ngFor="let dentist of clinicProviders.config_dentists"
+              value="{{dentist.providerId}}">
+              {{dentist.name}}
+            </option>
+          </select>
+          <span *ngIf="clinicProviders.config_dentists.length <= 0">
+            - No Dentist</span
+          >
+        </span>
+      </div>
+      <mat-error class="none-zero-error" *ngIf="select_dentist_error">
+        please choose dentist.
+      </mat-error>
+    </div>
   </div>
-  <div class="sa-form-group">
-    <label>Email</label>
-    <input type="email" tabindex="1" [(ngModel)]="data.email" (keyup)="checkEmail($event.target.value)" class="mat-form-control" required="true"placeholder="">
-    <mat-error class="none-zero-error" *ngIf="email_error">
-      please enter email.
-    </mat-error>
-    <mat-error class="none-zero-error" *ngIf="validMailError">
-      please enter valid email.
-    </mat-error>
+  <div mat-dialog-actions class="justify-between">
+    <button
+      mat-button
+      (click)="onNoClick()"
+      tabindex="-1"
+      class="mat-raised-button mat-gray">
+      Cancel
+    </button>
+    <!-- <button *ngIf="data.user_type == 4" (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc float-right">Add</button> -->
+    <button
+      (click)="save(data)"
+      tabindex="2"
+      class="mat-raised-button mat-dc float-right">
+      Add
+    </button>
   </div>
-  <div class="sa-form-group">
-    <label>Select Role</label>
-     <select required="true" class="sa_select mat-form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadDentist($event)">
-      <option value ="6" *ngIf="loginUserType == '2'">Owner</option>
-      <!-- <option value ="7" *ngIf="data.hasPrimeClinics == 'yes'" >Consultant</option> -->
-      <option value ="7">Consultant</option>
-      <option value ="3">Practice Manager</option>
-      <option value ="4">Clinician</option>
-      <option value ="5">Staff</option>
-   </select> 
-</div>
- <div class="sa-form-group">
-    <label>Select Clinics</label>  
-    <mat-select #matSelect  [formControl]="selectedClinics" multiple (openedChange)="clinicSelect($event)" class="user_add">
-      <mat-option *ngFor="let clinics of data.clinics" [value]="clinics.id">{{clinics.clinicName}}</mat-option>
-      <button class="mat-raised-button mat-dc float-right addUserSelectClinicBtn" (click)="matSelect.close()">OK</button>
-    </mat-select>
-    <mat-error class="none-zero-error" *ngIf="select_clinic_error">
-      Please choose clinic.
-    </mat-error>
-</div>
-<div class="sa-form-group" *ngIf="show_dentist == true">
-  <div class="selectedClinicProviders"  *ngFor="let clinicProviders of selectedClinicProviders; let i=index" [ngClass] = "checkColumn(i)" >
-    <label>{{clinicProviders.clinicName}}</label>
-    <span>  
-      <select (change)="selectedDentist($event.target.value,i,clinicProviders.id)" class="sa_select sa_select_set_roles mat-form-control" name="dentist_id" required="true" *ngIf="clinicProviders.config_dentists.length>0">
-        <option value ="0">Select Dentist</option>
-        <option *ngFor="let dentist of clinicProviders.config_dentists" value ="{{dentist.providerId}}">{{dentist.name}}</option>
-    </select>
-    <span *ngIf="clinicProviders.config_dentists.length <= 0"> - No Dentist</span>
-    </span>
-  </div>
-  <mat-error class="none-zero-error" *ngIf="select_dentist_error">
-    please choose dentist.
-  </mat-error>
-</div> 
-</div>
-<div mat-dialog-actions class="justify-between">
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-  <!-- <button *ngIf="data.user_type == 4" (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc float-right">Add</button> -->
-  <button (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc float-right">Add</button>
-</div>
 </div>

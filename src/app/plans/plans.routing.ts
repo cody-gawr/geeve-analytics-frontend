@@ -7,7 +7,7 @@ export const PlansRoutes: Routes = [
     path: '',
     component: PlansComponent,
     data: {
-      title: 'Plans'
-    }
-  }
+      title: 'Plans',
+    },
+  },
 ];

@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { select, Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { JeeveError } from "@/newapp/models";
+import { Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { JeeveError } from '@/newapp/models';
 import {
   ClinicianProcedureState,
   selectCpPredictorAnalysisChartData,
@@ -18,8 +18,8 @@ import {
   selectIsLoadingCpPredictorSpecialistAnalysis,
   selectIsLoadingCpReferrals,
   selectIsLoadingCpRevPerProcedure,
-} from "../state/reducers/clinician-procedure.reducer";
-import { ClinicianProcedurePageActions } from "../state/actions";
+} from '../state/reducers/clinician-procedure.reducer';
+import { ClinicianProcedurePageActions } from '../state/actions';
 
 @Injectable()
 export class ClinicianProcedureFacade {
@@ -175,7 +175,7 @@ export class ClinicianProcedureFacade {
     );
   }
 
-  public setCpPredictorAnalysisVisibility(value: "general" | "specialist") {
+  public setCpPredictorAnalysisVisibility(value: 'general' | 'specialist') {
     this.store.dispatch(
       ClinicianProcedurePageActions.setCpPredictorAnalysisVisibility({ value })
     );
@@ -187,7 +187,7 @@ export class ClinicianProcedureFacade {
     );
   }
 
-  public setCpReferralsVisibility(value: "combined" | "internal" | "external") {
+  public setCpReferralsVisibility(value: 'combined' | 'internal' | 'external') {
     this.store.dispatch(
       ClinicianProcedurePageActions.setCpReferralsVisibility({ value })
     );

@@ -1,20 +1,20 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { DashboardFacade } from "@/newapp/dashboard/facades/dashboard.facade";
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
+import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 export interface DialogData {
   selectedData: any[];
   unSelectedData: any[];
 }
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: "mk-select-expenses-modal",
-  templateUrl: "select-expenses-modal.component.html",
-  styleUrls: ["select-expenses-modal.component.scss"],
+  selector: 'mk-select-expenses-modal',
+  templateUrl: 'select-expenses-modal.component.html',
+  styleUrls: ['select-expenses-modal.component.scss'],
 })
 export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
@@ -46,7 +46,7 @@ export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
   get connectedWith$() {
     return this.dashboardFacade.connectedWith$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
@@ -167,10 +167,10 @@ export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
   addToSelected(index: number) {
     if (this.selectedData.length >= 20) {
       Swal.fire({
-        icon: "error",
-        title: "Oops....",
+        icon: 'error',
+        title: 'Oops....',
         text:
-          "You can select a maximum of " + 20 + " expense accounts at a time",
+          'You can select a maximum of ' + 20 + ' expense accounts at a time',
       });
     } else {
       this.selectedData.push(this.unSelectedData[index]);
@@ -184,9 +184,9 @@ export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
       this.selectedData.splice(index, 1);
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Oops....",
-        text: "Minimum " + 2 + " expense account will remain selected",
+        icon: 'error',
+        title: 'Oops....',
+        text: 'Minimum ' + 2 + ' expense account will remain selected',
       });
     }
   }

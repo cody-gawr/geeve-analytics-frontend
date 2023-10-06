@@ -3,7 +3,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators
+  Validators,
 } from '@angular/forms';
 
 import { ControlsOf } from '../../../models';
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login-card',
   templateUrl: './login-card.component.html',
-  styleUrls: ['./login-card.component.scss']
+  styleUrls: ['./login-card.component.scss'],
 })
 export class LoginCardComponent implements OnInit, OnDestroy {
   formGroup: FormGroup<ControlsOf<Login>>;
@@ -33,24 +33,24 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     this.formGroup = this._formBuilder.group({
       email: new FormControl('demo@jeeve.com.au', {
         nonNullable: true,
-        validators: [Validators.required, Validators.email]
+        validators: [Validators.required, Validators.email],
       }),
       password: new FormControl('JulDemoCDC1!', {
         nonNullable: true,
-        validators: [Validators.required]
-      })
+        validators: [Validators.required],
+      }),
     });
 
     this.authFacade.success$
       .pipe(
         takeUntil(this.destroy$),
-        filter((s) => s)
+        filter(s => s)
       )
       .subscribe(() => {
         this.router.navigateByUrl('/');
       });
 
-    this.authFacade.error$.pipe(takeUntil(this.destroy$)).subscribe((error) => {
+    this.authFacade.error$.pipe(takeUntil(this.destroy$)).subscribe(error => {
       this.toastr.error(error);
     });
   }

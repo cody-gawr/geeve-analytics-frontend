@@ -1,8 +1,7 @@
 <select
   class="sa_select internal_dentist"
   [(ngModel)]="selectedDentist"
-  [style.display]="'none'"
->
+  [style.display]="'none'">
   <option value="all">All Dentist</option>
   <option *ngFor="let dentist of dentists" [value]="dentist.providerId">
     {{ dentist.name }}
@@ -13,14 +12,12 @@
   type="button"
   id="clinic_initiate"
   (click)="initiate_clinic()"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 <input
   type="text"
   id="page_title"
   value="Clinician Procedures & Referrals"
-  [style.display]="'none'"
-/>
+  [style.display]="'none'" />
 
 <div class="sa_dashboard_inner_content" *ngIf="user_type == 4">
   <div class="sa_first_section">
@@ -38,8 +35,7 @@
           fxLayoutGap.lg="30px"
           fxLayoutGap.md="16px"
           fxLayoutGap.sm="0"
-          fxLayoutGap.xs="0"
-        >
+          fxLayoutGap.xs="0">
           <div
             fxFlex="calc(31% - 20px)"
             fxFlex.lg="calc(31% - 20px)"
@@ -51,28 +47,24 @@
               'arrow-up': production_dif >= 0,
               'arrow-down': production_dif < 0,
               'hccard-container': true
-            }"
-          >
+            }">
             <mat-card class="dentistProduction card-box sa_hccard">
               <mat-card-content class="sa_matcard_content">
                 <div class="prodction_main_box">
                   <div class="production_images clinic-health-top-icon">
                     <img
                       src="../assets/images/product-chart.png"
-                      alt="product-chart"
-                    />
+                      alt="product-chart" />
                   </div>
                   <div
                     *ngIf="dentistProductionLoader; else productionCard"
-                    class="production_description production_description-grow"
-                  >
+                    class="production_description production_description-grow">
                     <h4>Production</h4>
                     <b class="loader-text">Calculating...</b>
                   </div>
                   <ng-template #productionCard>
                     <div
-                      class="production_description production_description-grow"
-                    >
+                      class="production_description production_description-grow">
                       <h4>Production</h4>
                       <span class="change_value">
                         {{ dentistProduction >= 0 ? ' ' : '- ' }}
@@ -80,15 +72,16 @@
                           (dentistProduction < 0
                             ? dentistProduction.toString().split('-').join('')
                             : dentistProduction
-                          ) | number : '1.0-0'
+                          ) | number: '1.0-0'
                         }}
                       </span>
                     </div>
                     <div class="prodction_main_box_label" fxFlexAlign="start">
                       <div
-                        [ngClass]="dentistProductionDiff > 0 ? 'plus' : 'minus'"
-                      >
-                        Last Month: ${{ dentistProductionTa | number : '1.' }}
+                        [ngClass]="
+                          dentistProductionDiff > 0 ? 'plus' : 'minus'
+                        ">
+                        Last Month: ${{ dentistProductionTa | number: '1.' }}
                       </div>
                     </div>
                   </ng-template>
@@ -110,39 +103,36 @@
               'arrow-up': production_dif >= 0,
               'arrow-down': production_dif < 0,
               'hccard-container': true
-            }"
-          >
+            }">
             <mat-card class="treatmentPlan sa_hccard">
               <mat-card-content class="sa_matcard_content">
                 <div class="prodction_main_box">
                   <div class="production_images clinic-health-top-icon">
                     <img
                       src="../assets/images/profit.png"
-                      alt="product-chart"
-                    />
+                      alt="product-chart" />
                   </div>
                   <div
                     *ngIf="dentistHourlyRateLoader; else dentistHourlyRateCard"
-                    class="production_description production_description-grow"
-                  >
+                    class="production_description production_description-grow">
                     <h4>Hourly Rate</h4>
                     <b class="loader-text">Calculating...</b>
                   </div>
                   <ng-template #dentistHourlyRateCard>
                     <div
-                      class="production_description production_description-grow"
-                    >
+                      class="production_description production_description-grow">
                       <h4>Hourly Rate</h4>
                       <span class="change_value">
                         {{ dentistHourlyRate >= 0 ? ' ' : '- ' }}
-                        ${{ dentistHourlyRate | number : '1.0-0' }}
+                        ${{ dentistHourlyRate | number: '1.0-0' }}
                       </span>
                     </div>
                     <div class="prodction_main_box_label" fxFlexAlign="start">
                       <div
-                        [ngClass]="dentistHourlyRateDiff > 0 ? 'plus' : 'minus'"
-                      >
-                        Last Month: ${{ dentistHourlyRateTa | number : '1.' }}
+                        [ngClass]="
+                          dentistHourlyRateDiff > 0 ? 'plus' : 'minus'
+                        ">
+                        Last Month: ${{ dentistHourlyRateTa | number: '1.' }}
                       </div>
                     </div>
                   </ng-template>
@@ -163,31 +153,27 @@
               'arrow-up': visits_dif >= 0,
               'arrow-down': visits_dif <= 0,
               'hccard-container': true
-            }"
-          >
+            }">
             <mat-card class="noPatients sa_hccard">
               <mat-card-content class="sa_matcard_content">
                 <div class="prodction_main_box">
                   <div class="production_images clinic-health-top-icon">
                     <img
                       src="../assets/images/total-visit.png"
-                      alt="total-visit"
-                    />
+                      alt="total-visit" />
                   </div>
                   <div
                     *ngIf="
                       dentistReappointRateLoader;
                       else dentistReappointRateTemplate
                     "
-                    class="production_description production_description-grow"
-                  >
+                    class="production_description production_description-grow">
                     <h4>Reappointment Rate</h4>
                     <b class="loader-text">Calculating...</b>
                   </div>
                   <ng-template #dentistReappointRateTemplate>
                     <div
-                      class="production_description production_description-grow"
-                    >
+                      class="production_description production_description-grow">
                       <h4>Reappointment Rate</h4>
                       <span class="change_value"
                         >{{ dentistReappointRate }}%</span
@@ -197,10 +183,9 @@
                       <div
                         [ngClass]="
                           dentistReappointRateDiff >= 0 ? 'minus' : 'minus'
-                        "
-                      >
+                        ">
                         Last Month:
-                        {{ dentistReappointRateTa | number : '1.' }}%
+                        {{ dentistReappointRateTa | number: '1.' }}%
                       </div>
                     </div>
                   </ng-template>
@@ -231,8 +216,7 @@
           fxLayoutGap.lg="20px"
           fxLayoutGap.md="15px"
           fxLayoutGap.sm="0"
-          fxLayoutGap.xs="0"
-        >
+          fxLayoutGap.xs="0">
           <div
             fxFlex="calc(33% - 15px)"
             fxFlex.lg="calc(33% - 10px)"
@@ -244,21 +228,18 @@
               'arrow-up': production_dif >= 0,
               'arrow-down': production_dif < 0,
               'hccard-container': true
-            }"
-          >
+            }">
             <mat-card class="dentistProduction card-box sa_hccard">
               <mat-card-content class="sa_matcard_content">
                 <div class="prodction_main_box">
                   <div class="production_images clinic-health-top-icon">
                     <img
                       src="../assets/images/product-chart.png"
-                      alt="product-chart"
-                    />
+                      alt="product-chart" />
                   </div>
                   <div
                     *ngIf="productionstats; else loadingProductionTemplate"
-                    class="production_description production_description-grow"
-                  >
+                    class="production_description production_description-grow">
                     <h4>Production</h4>
                     <span class="change_value grid">
                       {{ production_c >= 0 ? ' ' : '- ' }}
@@ -266,17 +247,16 @@
                         (production_c < 0
                           ? production_c.toString().split('-').join('')
                           : production_c
-                        ) | number : '1.0-0'
+                        ) | number: '1.0-0'
                       }}
                       <span class="daily">
-                        Daily Avg: ${{ production_c_avg | number : '1.' }}
+                        Daily Avg: ${{ production_c_avg | number: '1.' }}
                       </span>
                     </span>
                   </div>
                   <ng-template #loadingProductionTemplate>
                     <div
-                      class="production_description production_description-grow"
-                    >
+                      class="production_description production_description-grow">
                       <h4>Production</h4>
                       <b class="loader-text">Calculating...</b>
                     </div>
@@ -284,10 +264,9 @@
                   <div
                     class="prodction_main_box_label"
                     fxFlexAlign="start"
-                    *ngIf="production_dif && productionstats"
-                  >
+                    *ngIf="production_dif && productionstats">
                     <div [ngClass]="production_dif > 0 ? 'plus' : 'minus'">
-                      {{ mtdInnText }} : ${{ production_p | number : '1.' }}
+                      {{ mtdInnText }} : ${{ production_p | number: '1.' }}
                     </div>
                   </div>
                 </div>
@@ -308,16 +287,14 @@
               'arrow-up': production_dif >= 0,
               'arrow-down': production_dif < 0,
               'hccard-container': true
-            }"
-          >
+            }">
             <mat-card class="treatmentPlan sa_hccard">
               <mat-card-content class="sa_matcard_content">
                 <div class="prodction_main_box">
                   <div class="production_images clinic-health-top-icon">
                     <img
                       src="../assets/images/profit.png"
-                      alt="product-chart"
-                    />
+                      alt="product-chart" />
                   </div>
 
                   <div
@@ -325,20 +302,18 @@
                       prodpervisitstats;
                       else calculatinProdPerVisitTemplate
                     "
-                    class="production_description production_description-grow"
-                  >
+                    class="production_description production_description-grow">
                     <h4>Prod. Per Visit</h4>
                     <span class="change_value" *ngIf="productionVal"
                       >{{ productionVal >= 0 ? ' ' : '- ' }} ${{
-                        productionVal | number : '1.0-0'
+                        productionVal | number: '1.0-0'
                       }}</span
                     >
                     <span class="change_value" *ngIf="!productionVal">$0</span>
                   </div>
                   <ng-template #calculatinProdPerVisitTemplate>
                     <div
-                      class="production_description production_description-grow"
-                    >
+                      class="production_description production_description-grow">
                       <h4>Prod. Per Visit</h4>
                       <b class="loader-text">Calculating...</b>
                     </div>
@@ -346,10 +321,9 @@
                   <div
                     class="prodction_main_box_label"
                     fxFlexAlign="start"
-                    *ngIf="production_dif && prodpervisitstats"
-                  >
+                    *ngIf="production_dif && prodpervisitstats">
                     <div [ngClass]="production_dif > 0 ? 'plus' : 'minus'">
-                      {{ mtdInnText }} : ${{ productionPrev | number : '1.' }}
+                      {{ mtdInnText }} : ${{ productionPrev | number: '1.' }}
                     </div>
                   </div>
                 </div>
@@ -369,8 +343,7 @@
               'arrow-up': visits_dif >= 0,
               'arrow-down': visits_dif <= 0,
               'hccard-container': true
-            }"
-          >
+            }">
             <mat-card class="noPatients sa_hccard">
               <mat-card-content class="sa_matcard_content">
                 <!-- <div *ngIf="clinic_id == 'all' && visits_c > 0" class="AllClinicHltp">
@@ -382,26 +355,23 @@
                   <div class="production_images clinic-health-top-icon">
                     <img
                       src="../assets/images/total-visit.png"
-                      alt="total-visit"
-                    />
+                      alt="total-visit" />
                   </div>
 
                   <div
                     *ngIf="totalvisitstats; else loadingTotalVisitsTemplate"
-                    class="production_description production_description-grow"
-                  >
+                    class="production_description production_description-grow">
                     <h4>Total Visits</h4>
                     <span class="change_value grid"
                       >{{ visits_c }}
                       <span class="daily">
-                        Daily Avg: {{ visits_c_avg | number : '1.' }}
+                        Daily Avg: {{ visits_c_avg | number: '1.' }}
                       </span>
                     </span>
                   </div>
                   <ng-template #loadingTotalVisitsTemplate>
                     <div
-                      class="production_description production_description-grow"
-                    >
+                      class="production_description production_description-grow">
                       <h4>Total Visits</h4>
                       <b class="loader-text">Calculating...</b>
                     </div>
@@ -409,10 +379,9 @@
                   <div
                     class="prodction_main_box_label"
                     fxFlexAlign="start"
-                    *ngIf="visits_dif && totalvisitstats"
-                  >
+                    *ngIf="visits_dif && totalvisitstats">
                     <div [ngClass]="visits_dif >= 0 ? 'minus' : 'minus'">
-                      {{ mtdInnText }} : {{ visits_p | number : '1.' }}
+                      {{ mtdInnText }} : {{ visits_p | number: '1.' }}
                     </div>
                   </div>
                 </div>
@@ -432,16 +401,14 @@
           fxLayoutGap.lg="20px"
           fxLayoutGap.md="0"
           fxLayoutGap.sm="0"
-          fxLayoutGap.xs="0"
-        >
+          fxLayoutGap.xs="0">
           <div
             fxFlex="calc(39% - 10px)"
             fxFlex.lg="calc(39% - 10px)"
             fxFlex.md="100"
             fxFlex.sm="100"
             fxFlex.xs="100"
-            class="sa_flexbg"
-          >
+            class="sa_flexbg">
             <mat-card class="dentistProduction">
               <mat-card-content class="sa_matcard_content">
                 <mat-card-title class="text-center mb-0"
@@ -451,23 +418,20 @@
                       [tooltip]="charTips['38']"
                       src="../assets/images/info-icon.png"
                       alt="info-icon"
-                      class="info-icon"
-                    />
+                      class="info-icon" />
                   </div>
                 </mat-card-title>
                 <div class="card-body">
                   <div
                     class="user_rate_listing"
-                    *ngIf="hourlyRateChartData.length > 0 && hoursrateleaders"
-                  >
+                    *ngIf="hourlyRateChartData.length > 0 && hoursrateleaders">
                     <ul>
                       <div>
                         <li
                           *ngFor="
                             let hourlyRateChartD of hourlyRateChartData;
                             let i = index
-                          "
-                        >
+                          ">
                           <div class="hourly-rate-li-hover">
                             <div class="ur_users">
                               <div class="ur_rank">{{ i + 1 }}</div>
@@ -478,8 +442,7 @@
                                   class="user-icon"
                                   [ngStyle]="{
                                     'background-color': mockupColors[i]
-                                  }"
-                                >
+                                  }">
                                   {{
                                     getShortNameLeader(
                                       hourlyRateChartD.provider_name
@@ -495,8 +458,7 @@
                               </div>
                               <div class="ur_users_number">
                                 ${{
-                                  hourlyRateChartD.hourly_rate
-                                    | number : '1.0-0'
+                                  hourlyRateChartD.hourly_rate | number: '1.0-0'
                                 }}
                               </div>
                             </div>
@@ -507,16 +469,14 @@
                   </div>
                   <div
                     *ngIf="!hoursrateleaders"
-                    class="loader_container loader_container_middle"
-                  >
+                    class="loader_container loader_container_middle">
                     <img class="loader_ico" src="../assets/images/720.gif" />
                     <div class="loader-text">Calculating...</div>
                   </div>
 
                   <div
                     *ngIf="hoursrateleaders && hourlyRateChartData.length == 0"
-                    class="no-data-placeholder"
-                  >
+                    class="no-data-placeholder">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">
                       No hourly rates have been calculated yet this month
@@ -533,8 +493,7 @@
             fxFlex.md="100"
             fxFlex.sm="100"
             fxFlex.xs="100"
-            class="sa_flexbg last"
-          >
+            class="sa_flexbg last">
             <mat-card class="treatmentPlan">
               <mat-card-content class="sa_matcard_content">
                 <mat-card-title class="text-center"
@@ -544,23 +503,20 @@
                       [tooltip]="charTips['39']"
                       src="../assets/images/info-icon.png"
                       alt="info-icon"
-                      class="info-icon"
-                    />
+                      class="info-icon" />
                   </div>
                 </mat-card-title>
                 <div class="card-body">
                   <div
                     class="user_rate_listing"
-                    *ngIf="newPatientsTimeData.length > 0 && refreralleaders"
-                  >
+                    *ngIf="newPatientsTimeData.length > 0 && refreralleaders">
                     <ul>
                       <div>
                         <li
                           *ngFor="
                             let newPatientsTimeD of newPatientsTimeData;
                             let i = index
-                          "
-                        >
+                          ">
                           <div class="hourly-rate-li-hover">
                             <div class="ur_users">
                               <div class="ur_rank">{{ i + 1 }}</div>
@@ -571,8 +527,7 @@
                                   class="user-icon"
                                   [ngStyle]="{
                                     'background-color': mockupColors[i]
-                                  }"
-                                >
+                                  }">
                                   {{
                                     getShortName(newPatientsTimeD.referral_name)
                                   }}
@@ -581,7 +536,7 @@
                                   {{
                                     newPatientsTimeD.referral_name.length > 35
                                       ? (newPatientsTimeD.referral_name
-                                          | slice : 0 : 35) + ' ...'
+                                          | slice: 0 : 35) + ' ...'
                                       : newPatientsTimeD.referral_name
                                   }}</span
                                 >
@@ -600,15 +555,13 @@
                   </div>
                   <div
                     *ngIf="!refreralleaders"
-                    class="loader_container loader_container_middle"
-                  >
+                    class="loader_container loader_container_middle">
                     <img class="loader_ico" src="../assets/images/720.gif" />
                     <div class="loader-text">Calculating...</div>
                   </div>
                   <div
                     *ngIf="refreralleaders && newPatientsTimeData.length == 0"
-                    class="no-data-placeholder"
-                  >
+                    class="no-data-placeholder">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">
                       You have no referrals this month
@@ -636,16 +589,14 @@
         fxLayoutGap.lg="20px"
         fxLayoutGap.md="20px"
         fxLayoutGap.sm="0"
-        fxLayoutGap.xs="0"
-      >
+        fxLayoutGap.xs="0">
         <div
           fxFlex="calc(33% - 10px)"
           fxFlex.lg="calc(33% - 10px)"
           fxFlex.md="calc(32% - 10px)"
           fxFlex.sm="100"
           fxFlex.xs="100"
-          class="sa_flexbg next-month-green"
-        >
+          class="sa_flexbg next-month-green">
           <mat-card class="dentistProduction">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center"
@@ -655,8 +606,7 @@
                     [tooltip]="charTips['40']"
                     src="../assets/images/info-icon.png"
                     alt="info-icon"
-                    class="info-icon"
-                  />
+                    class="info-icon" />
                 </div>
               </mat-card-title>
               <div class="chart card-body no-data-placeholder">
@@ -668,13 +618,11 @@
                   [thick]="canvasWidth"
                   [foregroundColor]="foregroundColor"
                   [backgroundColor]="backgroundColor"
-                  [size]="size"
-                >
+                  [size]="size">
                 </ngx-gauge>
                 <div
                   *ngIf="!prebookedvisitchart"
-                  class="loader_container loader_container_middle"
-                >
+                  class="loader_container loader_container_middle">
                   <img class="loader_ico" src="../assets/images/720.gif" />
                   <div class="loader-text">Calculating...</div>
                 </div>
@@ -695,8 +643,7 @@
           fxFlex.md="calc(32% - 10px)"
           fxFlex.sm="100"
           fxFlex.xs="100"
-          class="sa_flexbg next-month-green"
-        >
+          class="sa_flexbg next-month-green">
           <mat-card class="treatmentPlan">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center"
@@ -706,8 +653,7 @@
                     [tooltip]="charTips['41']"
                     src="../assets/images/info-icon.png"
                     alt="info-icon"
-                    class="info-icon"
-                  />
+                    class="info-icon" />
                 </div>
               </mat-card-title>
               <div *ngIf="isExact || isCore; else nonExactTemplate">
@@ -725,13 +671,11 @@
                     [foregroundColor]="foregroundColor1"
                     [backgroundColor]="backgroundColor"
                     [append]="'%'"
-                    [size]="size"
-                  >
+                    [size]="size">
                   </ngx-gauge>
                   <div
                     *ngIf="!chairutilrate"
-                    class="loader_container loader_container_middle"
-                  >
+                    class="loader_container loader_container_middle">
                     <img class="loader_ico" src="../assets/images/720.gif" />
                     <div class="loader-text">Calculating...</div>
                   </div>
@@ -753,8 +697,7 @@
           fxFlex.md="calc(32% - 10px)"
           fxFlex.sm="100"
           fxFlex.xs="100"
-          class="sa_flexbg next-month-green last"
-        >
+          class="sa_flexbg next-month-green last">
           <mat-card class="noPatients">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center"
@@ -764,8 +707,7 @@
                     [tooltip]="charTips['42']"
                     src="../assets/images/info-icon.png"
                     alt="info-icon"
-                    class="info-icon"
-                  />
+                    class="info-icon" />
                 </div>
               </mat-card-title>
               <div class="chart card-body no-data-placeholder">
@@ -779,19 +721,18 @@
                   [backgroundColor]="backgroundColor"
                   [append]="'K'"
                   [prepend]="'$'"
-                  [size]="size"
-                >
+                  [size]="size">
                 </ngx-gauge>
                 <div
                   *ngIf="!unscheduledproduction"
-                  class="loader_container loader_container_middle"
-                >
+                  class="loader_container loader_container_middle">
                   <img class="loader_ico" src="../assets/images/720.gif" />
                   <div class="loader-text">Calculating...</div>
                 </div>
                 <div
-                  *ngIf="unscheduledproduction && unscheduled_production_f <= 0"
-                >
+                  *ngIf="
+                    unscheduledproduction && unscheduled_production_f <= 0
+                  ">
                   <div class="sa_nodata_div"></div>
                   <p class="chart-placeholder-text">
                     You have no unscheduled production in the next 7 days

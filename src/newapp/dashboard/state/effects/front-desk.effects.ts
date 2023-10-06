@@ -4,7 +4,22 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, withLatestFrom, filter } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { FrontDeskService } from '../../services/front-desk.service';
-import { FrontDeskState, selectIsLoadingFdFtaRatioData, selectIsLoadingFdFtaRatioTrendData, selectIsLoadingFdNumTicksData, selectIsLoadingFdNumTicksTrendData, selectIsLoadingFdReappointRateData, selectIsLoadingFdReappointRateTrendData, selectIsLoadingFdRecallRateData, selectIsLoadingFdRecallRateTrendData, selectIsLoadingFdUtaRatioData, selectIsLoadingFdUtaRatioTrendData, selectIsLoadingFdUtilisationRateByDayData, selectIsLoadingFdUtilisationRateData, selectIsLoadingFdUtilisationRateTrendData } from '../reducers/front-desk.reducer';
+import {
+  FrontDeskState,
+  selectIsLoadingFdFtaRatioData,
+  selectIsLoadingFdFtaRatioTrendData,
+  selectIsLoadingFdNumTicksData,
+  selectIsLoadingFdNumTicksTrendData,
+  selectIsLoadingFdReappointRateData,
+  selectIsLoadingFdReappointRateTrendData,
+  selectIsLoadingFdRecallRateData,
+  selectIsLoadingFdRecallRateTrendData,
+  selectIsLoadingFdUtaRatioData,
+  selectIsLoadingFdUtaRatioTrendData,
+  selectIsLoadingFdUtilisationRateByDayData,
+  selectIsLoadingFdUtilisationRateData,
+  selectIsLoadingFdUtilisationRateTrendData,
+} from '../reducers/front-desk.reducer';
 import { FrontDeskApiActions, FrontDeskPageActions } from '../actions';
 
 @Injectable()
@@ -14,7 +29,7 @@ export class FrontDeskEffects {
     private frontDeskService: FrontDeskService,
     private store: Store<FrontDeskState>
   ) {}
-    // FdUtilisationRate
+  // FdUtilisationRate
   public readonly loadFdUtilisationRate$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdUtilisationRate),
@@ -22,14 +37,15 @@ export class FrontDeskEffects {
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.frontDeskService.fdUtilisationRate(params).pipe(
-          map((data) =>
-            FrontDeskApiActions.fdUtilisationRateSuccess({ 
-              fdUtilisationRateData: data })
+          map(data =>
+            FrontDeskApiActions.fdUtilisationRateSuccess({
+              fdUtilisationRateData: data,
+            })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
-                FrontDeskApiActions.fdUtilisationRateFailure({
-                error: error.error ?? error
+              FrontDeskApiActions.fdUtilisationRateFailure({
+                error: error.error ?? error,
               })
             )
           )
@@ -41,22 +57,27 @@ export class FrontDeskEffects {
   public readonly loadFdUtilisationRateTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdUtilisationRateTrend),
-      withLatestFrom(this.store.select(selectIsLoadingFdUtilisationRateTrendData)),
+      withLatestFrom(
+        this.store.select(selectIsLoadingFdUtilisationRateTrendData)
+      ),
       filter(([action, isLoading]) => isLoading),
-      mergeMap(([{clinicId, mode, queryWhEnabled}]) => {
-        return this.frontDeskService.fdUtilisationRateTrend(clinicId, mode, queryWhEnabled).pipe(
-          map((res) =>
-            FrontDeskApiActions.fdUtilisationRateTrendSuccess({ 
-              fdUtilisationRateTrendData: res })
-          ),
-          catchError((error: HttpErrorResponse) =>
-            of(
-              FrontDeskApiActions.fdUtilisationRateTrendFailure({
-                error: error.error ?? error
+      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+        return this.frontDeskService
+          .fdUtilisationRateTrend(clinicId, mode, queryWhEnabled)
+          .pipe(
+            map(res =>
+              FrontDeskApiActions.fdUtilisationRateTrendSuccess({
+                fdUtilisationRateTrendData: res,
               })
+            ),
+            catchError((error: HttpErrorResponse) =>
+              of(
+                FrontDeskApiActions.fdUtilisationRateTrendFailure({
+                  error: error.error ?? error,
+                })
+              )
             )
-          )
-        );
+          );
       })
     );
   });
@@ -64,18 +85,21 @@ export class FrontDeskEffects {
   public readonly loadFdUtilisationRateByDay$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdUtilisationRateByDay),
-      withLatestFrom(this.store.select(selectIsLoadingFdUtilisationRateByDayData)),
+      withLatestFrom(
+        this.store.select(selectIsLoadingFdUtilisationRateByDayData)
+      ),
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.frontDeskService.fdUtilisationRateByDay(params).pipe(
-          map((data) =>
-            FrontDeskApiActions.fdUtilisationRateByDaySuccess({ 
-              fdUtilisationRateByDayData: data })
+          map(data =>
+            FrontDeskApiActions.fdUtilisationRateByDaySuccess({
+              fdUtilisationRateByDayData: data,
+            })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
-                FrontDeskApiActions.fdUtilisationRateByDayFailure({
-                error: error.error ?? error
+              FrontDeskApiActions.fdUtilisationRateByDayFailure({
+                error: error.error ?? error,
               })
             )
           )
@@ -91,15 +115,15 @@ export class FrontDeskEffects {
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.frontDeskService.fdRecallRate(params).pipe(
-          map((data) =>
-            FrontDeskApiActions.fdRecallRateSuccess({ 
-              fdRecallRateData: data 
+          map(data =>
+            FrontDeskApiActions.fdRecallRateSuccess({
+              fdRecallRateData: data,
             })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
-                FrontDeskApiActions.fdRecallRateFailure({
-                error: error.error ?? error
+              FrontDeskApiActions.fdRecallRateFailure({
+                error: error.error ?? error,
               })
             )
           )
@@ -113,21 +137,23 @@ export class FrontDeskEffects {
       ofType(FrontDeskPageActions.loadFdRecallRateTrend),
       withLatestFrom(this.store.select(selectIsLoadingFdRecallRateTrendData)),
       filter(([action, isLoading]) => isLoading),
-      mergeMap(([{clinicId, mode, queryWhEnabled}]) => {
-        return this.frontDeskService.fdRecallRateTrend(clinicId, mode, queryWhEnabled).pipe(
-          map((res) =>
-            FrontDeskApiActions.fdRecallRateTrendSuccess({
-              fdRecallRateTrendData: res 
-            })
-          ),
-          catchError((error: HttpErrorResponse) =>
-            of(
-              FrontDeskApiActions.fdRecallRateTrendFailure({
-                error: error.error ?? error
+      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+        return this.frontDeskService
+          .fdRecallRateTrend(clinicId, mode, queryWhEnabled)
+          .pipe(
+            map(res =>
+              FrontDeskApiActions.fdRecallRateTrendSuccess({
+                fdRecallRateTrendData: res,
               })
+            ),
+            catchError((error: HttpErrorResponse) =>
+              of(
+                FrontDeskApiActions.fdRecallRateTrendFailure({
+                  error: error.error ?? error,
+                })
+              )
             )
-          )
-        );
+          );
       })
     );
   });
@@ -140,15 +166,15 @@ export class FrontDeskEffects {
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.frontDeskService.fdReappointRate(params).pipe(
-          map((data) =>
-            FrontDeskApiActions.fdReappointRateSuccess({ 
-              fdReappointRateData: data 
+          map(data =>
+            FrontDeskApiActions.fdReappointRateSuccess({
+              fdReappointRateData: data,
             })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
-                FrontDeskApiActions.fdReappointRateFailure({
-                error: error.error ?? error
+              FrontDeskApiActions.fdReappointRateFailure({
+                error: error.error ?? error,
               })
             )
           )
@@ -160,23 +186,27 @@ export class FrontDeskEffects {
   public readonly loadFdReappointRateTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdReappointRateTrend),
-      withLatestFrom(this.store.select(selectIsLoadingFdReappointRateTrendData)),
+      withLatestFrom(
+        this.store.select(selectIsLoadingFdReappointRateTrendData)
+      ),
       filter(([action, isLoading]) => isLoading),
-      mergeMap(([{clinicId, mode, queryWhEnabled}]) => {
-        return this.frontDeskService.fdReappointRateTrend(clinicId, mode, queryWhEnabled).pipe(
-          map((res) =>
-            FrontDeskApiActions.fdReappointRateTrendSuccess({
-              fdReappointRateTrendData: res 
-            })
-          ),
-          catchError((error: HttpErrorResponse) =>
-            of(
-              FrontDeskApiActions.fdReappointRateTrendFailure({
-                error: error.error ?? error
+      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+        return this.frontDeskService
+          .fdReappointRateTrend(clinicId, mode, queryWhEnabled)
+          .pipe(
+            map(res =>
+              FrontDeskApiActions.fdReappointRateTrendSuccess({
+                fdReappointRateTrendData: res,
               })
+            ),
+            catchError((error: HttpErrorResponse) =>
+              of(
+                FrontDeskApiActions.fdReappointRateTrendFailure({
+                  error: error.error ?? error,
+                })
+              )
             )
-          )
-        );
+          );
       })
     );
   });
@@ -189,15 +219,15 @@ export class FrontDeskEffects {
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.frontDeskService.fdNumTicks(params).pipe(
-          map((data) =>
-            FrontDeskApiActions.fdNumTicksSuccess({ 
-              fdNumTicksData: data 
+          map(data =>
+            FrontDeskApiActions.fdNumTicksSuccess({
+              fdNumTicksData: data,
             })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
-                FrontDeskApiActions.fdNumTicksFailure({
-                error: error.error ?? error
+              FrontDeskApiActions.fdNumTicksFailure({
+                error: error.error ?? error,
               })
             )
           )
@@ -211,21 +241,23 @@ export class FrontDeskEffects {
       ofType(FrontDeskPageActions.loadFdNumTicksTrend),
       withLatestFrom(this.store.select(selectIsLoadingFdNumTicksTrendData)),
       filter(([action, isLoading]) => isLoading),
-      mergeMap(([{clinicId, mode, queryWhEnabled}]) => {
-        return this.frontDeskService.fdNumTicksTrend(clinicId, mode, queryWhEnabled).pipe(
-          map((res) =>
-            FrontDeskApiActions.fdNumTicksTrendSuccess({
-              fdNumTicksTrendData: res 
-            })
-          ),
-          catchError((error: HttpErrorResponse) =>
-            of(
-              FrontDeskApiActions.fdNumTicksTrendFailure({
-                error: error.error ?? error
+      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+        return this.frontDeskService
+          .fdNumTicksTrend(clinicId, mode, queryWhEnabled)
+          .pipe(
+            map(res =>
+              FrontDeskApiActions.fdNumTicksTrendSuccess({
+                fdNumTicksTrendData: res,
               })
+            ),
+            catchError((error: HttpErrorResponse) =>
+              of(
+                FrontDeskApiActions.fdNumTicksTrendFailure({
+                  error: error.error ?? error,
+                })
+              )
             )
-          )
-        );
+          );
       })
     );
   });
@@ -237,15 +269,15 @@ export class FrontDeskEffects {
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.frontDeskService.fdFtaRatio(params).pipe(
-          map((data) =>
-            FrontDeskApiActions.fdFtaRatioSuccess({ 
-              fdFtaRatioData: data 
+          map(data =>
+            FrontDeskApiActions.fdFtaRatioSuccess({
+              fdFtaRatioData: data,
             })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
-                FrontDeskApiActions.fdFtaRatioFailure({
-                error: error.error ?? error
+              FrontDeskApiActions.fdFtaRatioFailure({
+                error: error.error ?? error,
               })
             )
           )
@@ -259,21 +291,23 @@ export class FrontDeskEffects {
       ofType(FrontDeskPageActions.loadFdFtaRatioTrend),
       withLatestFrom(this.store.select(selectIsLoadingFdFtaRatioTrendData)),
       filter(([action, isLoading]) => isLoading),
-      mergeMap(([{clinicId, mode, queryWhEnabled}]) => {
-        return this.frontDeskService.fdFtaRatioTrend(clinicId, mode, queryWhEnabled).pipe(
-          map((res) =>
-            FrontDeskApiActions.fdFtaRatioTrendSuccess({
-              fdFtaRatioTrendData: res 
-            })
-          ),
-          catchError((error: HttpErrorResponse) =>
-            of(
-              FrontDeskApiActions.fdFtaRatioTrendFailure({
-                error: error.error ?? error
+      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+        return this.frontDeskService
+          .fdFtaRatioTrend(clinicId, mode, queryWhEnabled)
+          .pipe(
+            map(res =>
+              FrontDeskApiActions.fdFtaRatioTrendSuccess({
+                fdFtaRatioTrendData: res,
               })
+            ),
+            catchError((error: HttpErrorResponse) =>
+              of(
+                FrontDeskApiActions.fdFtaRatioTrendFailure({
+                  error: error.error ?? error,
+                })
+              )
             )
-          )
-        );
+          );
       })
     );
   });
@@ -285,15 +319,15 @@ export class FrontDeskEffects {
       filter(([action, isLoading]) => isLoading),
       mergeMap(([params]) => {
         return this.frontDeskService.fdUtaRatio(params).pipe(
-          map((data) =>
-            FrontDeskApiActions.fdUtaRatioSuccess({ 
-              fdUtaRatioData: data 
+          map(data =>
+            FrontDeskApiActions.fdUtaRatioSuccess({
+              fdUtaRatioData: data,
             })
           ),
           catchError((error: HttpErrorResponse) =>
             of(
-                FrontDeskApiActions.fdUtaRatioFailure({
-                error: error.error ?? error
+              FrontDeskApiActions.fdUtaRatioFailure({
+                error: error.error ?? error,
               })
             )
           )
@@ -307,21 +341,23 @@ export class FrontDeskEffects {
       ofType(FrontDeskPageActions.loadFdUtaRatioTrend),
       withLatestFrom(this.store.select(selectIsLoadingFdUtaRatioTrendData)),
       filter(([action, isLoading]) => isLoading),
-      mergeMap(([{clinicId, mode, queryWhEnabled}]) => {
-        return this.frontDeskService.fdUtaRatioTrend(clinicId, mode, queryWhEnabled).pipe(
-          map((res) =>
-            FrontDeskApiActions.fdUtaRatioTrendSuccess({
-              fdUtaRatioTrendData: res 
-            })
-          ),
-          catchError((error: HttpErrorResponse) =>
-            of(
-              FrontDeskApiActions.fdUtaRatioTrendFailure({
-                error: error.error ?? error
+      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+        return this.frontDeskService
+          .fdUtaRatioTrend(clinicId, mode, queryWhEnabled)
+          .pipe(
+            map(res =>
+              FrontDeskApiActions.fdUtaRatioTrendSuccess({
+                fdUtaRatioTrendData: res,
               })
+            ),
+            catchError((error: HttpErrorResponse) =>
+              of(
+                FrontDeskApiActions.fdUtaRatioTrendFailure({
+                  error: error.error ?? error,
+                })
+              )
             )
-          )
-        );
+          );
       })
     );
   });

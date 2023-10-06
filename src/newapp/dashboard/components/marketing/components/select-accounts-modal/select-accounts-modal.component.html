@@ -1,47 +1,52 @@
 <div class="dialog-header">
-    <h1 mat-dialog-title>Select Accounts ({{connectedWith$ | async | uppercase}})</h1>
-    <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
+  <h1 mat-dialog-title>
+    Select Accounts ({{ connectedWith$ | async | uppercase }})
+  </h1>
+  <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
+</div>
+<div mat-dialog-content>
+  <div class="items-move">
+    <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
+    <ng-template #mainElem>
+      <div class="selected">
+        <h4>Selected Accounts</h4>
+        <div class="board">
+          <button
+            *ngFor="let item of selectedAccounts"
+            (click)="removeAccount(item)"
+            mat-stroked-button
+            color="primary"
+            extended>
+            <mat-icon>close</mat-icon>
+            {{ item }}
+          </button>
+        </div>
+      </div>
+      <div class="none-selected">
+        <h4>Other Accounts</h4>
+        <div class="board">
+          <button
+            *ngFor="let item of unselectedAccounts"
+            (click)="addAccount(item)"
+            mat-stroked-button
+            color="primary"
+            extended>
+            <mat-icon>add</mat-icon>
+            {{ item }}
+          </button>
+        </div>
+      </div>
+    </ng-template>
   </div>
-  <div mat-dialog-content>
-    <div class="items-move">
-        <spin-loader *ngIf="(isLoading$ | async); else mainElem"></spin-loader>
-        <ng-template #mainElem>
-            <div class="selected">
-                <h4>Selected Accounts</h4>
-                <div class="board">
-                    <button 
-                            *ngFor="let item of selectedAccounts;" 
-                            (click)="removeAccount(item)" 
-                            mat-stroked-button color="primary" extended
-                    >
-                        <mat-icon>close</mat-icon>
-                        {{item}}
-                    </button>
-                </div>
-            </div>
-            <div class="none-selected">
-                <h4>Other Accounts</h4>
-                <div class="board">
-                    <button 
-                        *ngFor="let item of unselectedAccounts;" 
-                        (click)="addAccount(item)" 
-                        mat-stroked-button color="primary" extended
-                    >
-                        <mat-icon>add</mat-icon>
-                        {{item}}
-                    </button>
-                </div>
-            </div>
-        </ng-template>
-    </div>
-  </div>
-  <div mat-dialog-actions class="justify-between">
-      <button mat-stroked-button 
-        (click)="onNoClick()">Cancel</button>
-      <button 
-        mat-flat-button
-        color="primary"
-        [disabled]="(isLoading$ | async) || (isWaiting$ | async)"
-        (click)="onSubmitClick()"
-        cdkFocusInitial>Save</button>
-  </div>
+</div>
+<div mat-dialog-actions class="justify-between">
+  <button mat-stroked-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="(isLoading$ | async) || (isWaiting$ | async)"
+    (click)="onSubmitClick()"
+    cdkFocusInitial>
+    Save
+  </button>
+</div>

@@ -1,46 +1,77 @@
-
 <h1 mat-dialog-title>Add plan</h1>
 <div mat-dialog-content class="sa_forms_design">
- 
- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.xs="0"> 
-   <div fxFlex="calc(49% - 10px)" fxFlex.xs="100">
-  <div class="sa-form-group">
-    <label>Plan Name</label>
-    <input tabindex="1" [(ngModel)]="data.plan" class="form-control" required="true" placeholder="" >
+  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.xs="0">
+    <div fxFlex="calc(49% - 10px)" fxFlex.xs="100">
+      <div class="sa-form-group">
+        <label>Plan Name</label>
+        <input
+          tabindex="1"
+          [(ngModel)]="data.plan"
+          class="form-control"
+          required="true"
+          placeholder="" />
+      </div>
+
+      <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.xs="0">
+        <div fxFlex="calc(69% - 10px)" fxFlex.xs="100">
+          <div class="sa-form-group">
+            <label>Allowed Clinics</label>
+            <input
+              tabindex="1"
+              [(ngModel)]="data.allowedClinics"
+              class="form-control"
+              required="true"
+              placeholder="" />
+          </div>
+        </div>
+        <div fxFlex="calc(29% - 10px)" fxFlex.xs="100">
+          <div class="sa-form-group">
+            <label>Amount($)</label>
+            <input
+              tabindex="1"
+              [(ngModel)]="data.amount"
+              class="form-control"
+              required="true"
+              placeholder="" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxFlex="calc(49% - 10px)" fxFlex.xs="100">
+      <div class="sa-form-group">
+        <label
+          >Description
+          <small>(Please press enter after each line)</small></label
+        >
+        <textarea
+          tabindex="1"
+          [(ngModel)]="data.description"
+          class="form-control"
+          required="true"
+          placeholder=""></textarea>
+      </div>
+    </div>
   </div>
 
-   <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.xs="0"> 
-   <div fxFlex="calc(69% - 10px)" fxFlex.xs="100">
-  <div class="sa-form-group">
-    <label>Allowed Clinics</label>
-    <input tabindex="1" [(ngModel)]="data.allowedClinics" class="form-control" required="true" placeholder="">
-  </div>
-</div>
-<div fxFlex="calc(29% - 10px)" fxFlex.xs="100">
-<div class="sa-form-group">
-    <label>Amount($)</label>
-    <input tabindex="1" [(ngModel)]="data.amount" class="form-control" required="true"  placeholder="">
-  </div>
-</div>
-
-  </div>
-</div>
-   <div fxFlex="calc(49% - 10px)" fxFlex.xs="100">
-  <div class="sa-form-group">
-    <label>Description <small>(Please press enter after each line)</small></label>
-    <textarea tabindex="1" [(ngModel)]="data.description" class="form-control" required="true" placeholder=""></textarea>
-  </div>
-</div>
-</div>
-  
-
-<!--   
+  <!--   
   <mat-form-field floatLabel="never" >
     <input matInput tabindex="1" [(ngModel)]="data.discount" class="form-control" required="true" placeholder="Discount">
   </mat-form-field> -->
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
 <div mat-dialog-actions class="justify-between">
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button
+    mat-button
+    (click)="onNoClick()"
+    tabindex="-1"
+    class="mat-raised-button mat-gray">
+    Cancel
+  </button>
+  <button
+    mat-button
+    (click)="save(data)"
+    tabindex="2"
+    class="mat-raised-button mat-dc">
+    Ok
+  </button>
 </div>

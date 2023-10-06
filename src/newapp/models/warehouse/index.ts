@@ -1,4 +1,4 @@
-import { Clinic } from "../clinic";
+import { Clinic } from '../clinic';
 
 export interface DailyScheduleItem {
   index?: number;
@@ -85,7 +85,7 @@ export interface WarehouseValidatorHistoryItem {
 }
 
 export interface WarehouseSchedulerInfo {
-  clinics?: Pick<Clinic, "id" | "clinicName">[];
+  clinics?: Pick<Clinic, 'id' | 'clinicName'>[];
   procedures?: WarehouseProcedureItem[];
 }
 

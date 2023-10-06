@@ -1,112 +1,111 @@
 .jeeve-legacy-app {
+  .AddUserPopup {
+    text-align: left !important;
+  }
+  .AddUserPopup .mat-select-trigger {
+    width: 106% !important;
+  }
+  .AddUserPopup .mat-select-arrow {
+    border: 0px solid !important;
+  }
+  .AddUserPopup .sa_select {
+    cursor: pointer;
+  }
 
-    .AddUserPopup{
-        text-align :left !important;;
-    }
-    .AddUserPopup .mat-select-trigger{
-        width: 106% !important;
-    }
-    .AddUserPopup .mat-select-arrow{
-        border: 0px solid !important;
-    }
-    .AddUserPopup .sa_select{
-        cursor: pointer;
-    }
-
-    .roleTip {
+  .roleTip {
     background: #fff;
-        color: #000;
-        opacity: 1;
-        position: absolute;
-        z-index: 99;
-        box-shadow: 1px 0px 5px;
-        width: 600px;
-        padding: 15px 0;
-        border: 1px solid #279b8e;
-        border-radius: 13px;
-        left: calc(50% - 300px);
-    }
-    .roleTipCon:after {
-        border: 8px solid transparent;
-        border-top-color: #1daa96;
-        right: 24px;
-        bottom: -17px;
-        top: unset;
-    }
-    .roleTipCon {
-        padding: 5px 0 5px 30px;
-        font-family: 'Gilroy-Regular';
-    }
-    .roleTipCon h1 {
-        font-size: 20px;
-        margin: 0 0 0 -6px;
-        padding: 0;
-        color: #279b8e;
-        font-weight: bold;
-        font-family: 'Gilroy-Medium';
-    }
-    .roleTipCon h2 {
-        font-size: 18px;
-        margin: 0px 0 0 -7px;
-        padding: 0;
-        width: 100%;
-        float: left;
-    }
-    .roleTipCon h5 {
+    color: #000;
+    opacity: 1;
+    position: absolute;
+    z-index: 99;
+    box-shadow: 1px 0px 5px;
+    width: 600px;
+    padding: 15px 0;
+    border: 1px solid #279b8e;
+    border-radius: 13px;
+    left: calc(50% - 300px);
+  }
+  .roleTipCon:after {
+    border: 8px solid transparent;
+    border-top-color: #1daa96;
+    right: 24px;
+    bottom: -17px;
+    top: unset;
+  }
+  .roleTipCon {
+    padding: 5px 0 5px 30px;
+    font-family: 'Gilroy-Regular';
+  }
+  .roleTipCon h1 {
+    font-size: 20px;
+    margin: 0 0 0 -6px;
+    padding: 0;
+    color: #279b8e;
+    font-weight: bold;
+    font-family: 'Gilroy-Medium';
+  }
+  .roleTipCon h2 {
+    font-size: 18px;
+    margin: 0px 0 0 -7px;
+    padding: 0;
+    width: 100%;
+    float: left;
+  }
+  .roleTipCon h5 {
     font-size: 13px;
-        display: inline-block;
-        padding: 0 2px;
-        text-transform: capitalize;
-        margin: 2px;
-        text-align: justify;
-        width: auto;
-        font-family: sans-serif;
-    }
-    .roleTipCon h5:after {
-        // content: ",";
-    }
-    .perCon h5:last-child:after {
-        display: none;
-    }
-    .dashboardsRoles h2 {
-        font-size: 18px;
-        margin-bottom: 0;
-    }
-    .dashboardsRolesCon {
-        box-shadow: 0px 0px 2px inset;
-        background-color: #f1f1f1;
-        margin-bottom: 20px;
-        border-radius: 6px;
-    }
-    .addUserTip{
-        float: right; 
-        z-index: 999;
-    }
-    .addUserSelectClinicBtn{
-        margin: 0 15px 15px 0;
-    }
-    .selectedClinicProviders{
-        margin-bottom:10px;
-    }
-    .sa_selectDentist{
-        margin-bottom: 10px;
-    }
-    .datatable-row-center.datatable-row-group.ng-star-inserted{
-        cursor: pointer !important;
-    }
-    .usrtoggle{
-        font-size: 14px;
-        margin-left: 155px;
-        margin-top: 5px;
-    }
-    .search_user.mat-form-field {
-        width: 50%;
-    }
+    display: inline-block;
+    padding: 0 2px;
+    text-transform: capitalize;
+    margin: 2px;
+    text-align: justify;
+    width: auto;
+    font-family: sans-serif;
+  }
+  .roleTipCon h5:after {
+    // content: ",";
+  }
+  .perCon h5:last-child:after {
+    display: none;
+  }
+  .dashboardsRoles h2 {
+    font-size: 18px;
+    margin-bottom: 0;
+  }
+  .dashboardsRolesCon {
+    box-shadow: 0px 0px 2px inset;
+    background-color: #f1f1f1;
+    margin-bottom: 20px;
+    border-radius: 6px;
+  }
+  .addUserTip {
+    float: right;
+    z-index: 999;
+  }
+  .addUserSelectClinicBtn {
+    margin: 0 15px 15px 0;
+  }
+  .selectedClinicProviders {
+    margin-bottom: 10px;
+  }
+  .sa_selectDentist {
+    margin-bottom: 10px;
+  }
+  .datatable-row-center.datatable-row-group.ng-star-inserted {
+    cursor: pointer !important;
+  }
+  .usrtoggle {
+    font-size: 14px;
+    margin-left: 155px;
+    margin-top: 5px;
+  }
+  .search_user.mat-form-field {
+    width: 50%;
+  }
 
-    .search_user .mat-form-field-underline {
-        position: absolute;
-        width: 200%;
-        pointer-events: none;
-        transform: scale3d(1, 1.0001, 1);
-    }
+  .search_user .mat-form-field-underline {
+    position: absolute;
+    width: 200%;
+    pointer-events: none;
+    transform: scale3d(1, 1.0001, 1);
+  }
 }

@@ -1,7 +1,7 @@
-import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
-import * as _ from "lodash";
-import { JeeveError } from "@/newapp/models";
-import { MarketingApiActions, MarketingPageActions } from "../actions";
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import * as _ from 'lodash';
+import { JeeveError } from '@/newapp/models';
+import { MarketingApiActions, MarketingPageActions } from '../actions';
 import {
   MkActivePatientsApiResponse,
   MkActivePatientsTrendApiResponse,
@@ -20,31 +20,31 @@ import {
   MkTotalVisitsApiResponse,
   MkTotalVisitsTrendApiResponse,
   MkXeroOrMyobAccountsApiResponse,
-} from "@/newapp/models/dashboard/marketing";
-import { selectCurrentClinicId } from "@/newapp/clinic/state/reducers/clinic.reducer";
-import { DoughnutChartColors } from "@/newapp/shared/constants";
-import { selectTrend } from "@/newapp/layout/state/reducers/layout.reducer";
-import moment from "moment";
-import { ChartDataset } from "chart.js";
-import { selectConnectedWith } from "./dashboard.reducer";
+} from '@/newapp/models/dashboard/marketing';
+import { selectCurrentClinicId } from '@/newapp/clinic/state/reducers/clinic.reducer';
+import { DoughnutChartColors } from '@/newapp/shared/constants';
+import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
+import moment from 'moment';
+import { ChartDataset } from 'chart.js';
+import { selectConnectedWith } from './dashboard.reducer';
 
 type MarketingEndpoints =
-  | "mkNumPatientsByReferral"
-  | "mkRevByReferral"
-  | "mkNumNewPatients"
-  | "mkNewPatientAcq"
-  | "mkTotalVisits"
-  | "mkNumPatientsByReferralTrend"
-  | "mkRevByReferralTrend"
-  | "mkTotalVisitsTrend"
-  | "mkNumNewPatientsTrend"
-  | "mkNewPatientAcqTrend"
-  | "mkActivePatients"
-  | "mkActivePatientsTrend"
-  | "mkGetXeroAcct"
-  | "mkGetMyobAcct"
-  | "mkSaveAcctMyob"
-  | "mkSaveAcctXero";
+  | 'mkNumPatientsByReferral'
+  | 'mkRevByReferral'
+  | 'mkNumNewPatients'
+  | 'mkNewPatientAcq'
+  | 'mkTotalVisits'
+  | 'mkNumPatientsByReferralTrend'
+  | 'mkRevByReferralTrend'
+  | 'mkTotalVisitsTrend'
+  | 'mkNumNewPatientsTrend'
+  | 'mkNewPatientAcqTrend'
+  | 'mkActivePatients'
+  | 'mkActivePatientsTrend'
+  | 'mkGetXeroAcct'
+  | 'mkGetMyobAcct'
+  | 'mkSaveAcctMyob'
+  | 'mkSaveAcctXero';
 
 export interface MarketingState {
   isLoadingData: Array<MarketingEndpoints>;
@@ -89,7 +89,7 @@ const initialState: MarketingState = {
 };
 
 export const marketingFeature = createFeature({
-  name: "marketing",
+  name: 'marketing',
   reducer: createReducer(
     initialState,
     on(
@@ -101,9 +101,9 @@ export const marketingFeature = createFeature({
           newPatientsByReferralData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkNumPatientsByReferral"
+            n => n != 'mkNumPatientsByReferral'
           ),
-          errors: [...errors, { ...error, api: "mkNumPatientsByReferral" }],
+          errors: [...errors, { ...error, api: 'mkNumPatientsByReferral' }],
         };
       }
     ),
@@ -115,8 +115,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           newPatientsByReferralData: null,
-          errors: _.filter(errors, (n) => n.api != "mkNumPatientsByReferral"),
-          isLoadingData: _.union(isLoadingData, ["mkNumPatientsByReferral"]),
+          errors: _.filter(errors, n => n.api != 'mkNumPatientsByReferral'),
+          isLoadingData: _.union(isLoadingData, ['mkNumPatientsByReferral']),
         };
       }
     ),
@@ -126,11 +126,11 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkNumPatientsByReferral"),
+          errors: _.filter(errors, n => n.api != 'mkNumPatientsByReferral'),
           newPatientsByReferralData,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkNumPatientsByReferral"
+            n => n != 'mkNumPatientsByReferral'
           ),
         };
       }
@@ -160,10 +160,10 @@ export const marketingFeature = createFeature({
           newPatientsByReferralTrendData: null,
           errors: _.filter(
             errors,
-            (n) => n.api != "mkNumPatientsByReferralTrend"
+            n => n.api != 'mkNumPatientsByReferralTrend'
           ),
           isLoadingData: _.union(isLoadingData, [
-            "mkNumPatientsByReferralTrend",
+            'mkNumPatientsByReferralTrend',
           ]),
         };
       }
@@ -176,12 +176,12 @@ export const marketingFeature = createFeature({
           ...state,
           errors: _.filter(
             errors,
-            (n) => n.api != "mkNumPatientsByReferralTrend"
+            n => n.api != 'mkNumPatientsByReferralTrend'
           ),
           newPatientsByReferralTrendData,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkNumPatientsByReferralTrend"
+            n => n != 'mkNumPatientsByReferralTrend'
           ),
         };
       }
@@ -195,11 +195,11 @@ export const marketingFeature = createFeature({
           newPatientsByReferralTrendData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkNumPatientsByReferralTrend"
+            n => n != 'mkNumPatientsByReferralTrend'
           ),
           errors: [
             ...errors,
-            { ...error, api: "mkNumPatientsByReferralTrend" },
+            { ...error, api: 'mkNumPatientsByReferralTrend' },
           ],
         };
       }
@@ -212,8 +212,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           revenueByReferralData: null,
-          errors: _.filter(errors, (n) => n.api != "mkRevByReferral"),
-          isLoadingData: _.union(isLoadingData, ["mkRevByReferral"]),
+          errors: _.filter(errors, n => n.api != 'mkRevByReferral'),
+          isLoadingData: _.union(isLoadingData, ['mkRevByReferral']),
         };
       }
     ),
@@ -223,9 +223,9 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkRevByReferral"),
+          errors: _.filter(errors, n => n.api != 'mkRevByReferral'),
           revenueByReferralData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "mkRevByReferral"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkRevByReferral'),
         };
       }
     ),
@@ -236,8 +236,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           revenueByReferralData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "mkRevByReferral"),
-          errors: [...errors, { ...error, api: "mkRevByReferral" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkRevByReferral'),
+          errors: [...errors, { ...error, api: 'mkRevByReferral' }],
         };
       }
     ),
@@ -250,8 +250,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           revenueByReferralTrendData: null,
-          errors: _.filter(errors, (n) => n.api != "mkRevByReferralTrend"),
-          isLoadingData: _.union(isLoadingData, ["mkRevByReferralTrend"]),
+          errors: _.filter(errors, n => n.api != 'mkRevByReferralTrend'),
+          isLoadingData: _.union(isLoadingData, ['mkRevByReferralTrend']),
         };
       }
     ),
@@ -261,11 +261,11 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkRevByReferralTrend"),
+          errors: _.filter(errors, n => n.api != 'mkRevByReferralTrend'),
           revenueByReferralTrendData,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkRevByReferralTrend"
+            n => n != 'mkRevByReferralTrend'
           ),
         };
       }
@@ -279,9 +279,9 @@ export const marketingFeature = createFeature({
           revenueByReferralTrendData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkRevByReferralTrend"
+            n => n != 'mkRevByReferralTrend'
           ),
-          errors: [...errors, { ...error, api: "mkRevByReferralTrend" }],
+          errors: [...errors, { ...error, api: 'mkRevByReferralTrend' }],
         };
       }
     ),
@@ -292,8 +292,8 @@ export const marketingFeature = createFeature({
       return {
         ...state,
         newNumPatientsData: null,
-        errors: _.filter(errors, (n) => n.api != "mkNumNewPatients"),
-        isLoadingData: _.union(isLoadingData, ["mkNumNewPatients"]),
+        errors: _.filter(errors, n => n.api != 'mkNumNewPatients'),
+        isLoadingData: _.union(isLoadingData, ['mkNumNewPatients']),
       };
     }),
     on(
@@ -302,12 +302,9 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkNumNewPatients"),
+          errors: _.filter(errors, n => n.api != 'mkNumNewPatients'),
           newNumPatientsData: newPatientsRatioData,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "mkNumNewPatients"
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkNumNewPatients'),
         };
       }
     ),
@@ -318,11 +315,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           newNumPatientsData: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "mkNumNewPatients"
-          ),
-          errors: [...errors, { ...error, api: "mkNumNewPatients" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkNumNewPatients'),
+          errors: [...errors, { ...error, api: 'mkNumNewPatients' }],
         };
       }
     ),
@@ -335,8 +329,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           newNumPatientsTrendData: null,
-          errors: _.filter(errors, (n) => n.api != "mkNumNewPatientsTrend"),
-          isLoadingData: _.union(isLoadingData, ["mkNumNewPatientsTrend"]),
+          errors: _.filter(errors, n => n.api != 'mkNumNewPatientsTrend'),
+          isLoadingData: _.union(isLoadingData, ['mkNumNewPatientsTrend']),
         };
       }
     ),
@@ -346,11 +340,11 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkNumNewPatientsTrend"),
+          errors: _.filter(errors, n => n.api != 'mkNumNewPatientsTrend'),
           newNumPatientsTrendData: numNewPatientsTrendData,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkNumNewPatientsTrend"
+            n => n != 'mkNumNewPatientsTrend'
           ),
         };
       }
@@ -364,9 +358,9 @@ export const marketingFeature = createFeature({
           newNumPatientsTrendData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkNumNewPatientsTrend"
+            n => n != 'mkNumNewPatientsTrend'
           ),
-          errors: [...errors, { ...error, api: "mkNumNewPatientsTrend" }],
+          errors: [...errors, { ...error, api: 'mkNumNewPatientsTrend' }],
         };
       }
     ),
@@ -377,8 +371,8 @@ export const marketingFeature = createFeature({
       return {
         ...state,
         activePatientsData: null,
-        errors: _.filter(errors, (n) => n.api != "mkActivePatients"),
-        isLoadingData: _.union(isLoadingData, ["mkActivePatients"]),
+        errors: _.filter(errors, n => n.api != 'mkActivePatients'),
+        isLoadingData: _.union(isLoadingData, ['mkActivePatients']),
       };
     }),
     on(
@@ -387,12 +381,9 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkActivePatients"),
+          errors: _.filter(errors, n => n.api != 'mkActivePatients'),
           activePatientsData: activePatientsData,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "mkActivePatients"
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkActivePatients'),
         };
       }
     ),
@@ -403,11 +394,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           activePatientsData: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            (n) => n != "mkActivePatients"
-          ),
-          errors: [...errors, { ...error, api: "mkActivePatients" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkActivePatients'),
+          errors: [...errors, { ...error, api: 'mkActivePatients' }],
         };
       }
     ),
@@ -420,8 +408,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           activePatientsTrendData: null,
-          errors: _.filter(errors, (n) => n.api != "mkActivePatientsTrend"),
-          isLoadingData: _.union(isLoadingData, ["mkActivePatientsTrend"]),
+          errors: _.filter(errors, n => n.api != 'mkActivePatientsTrend'),
+          isLoadingData: _.union(isLoadingData, ['mkActivePatientsTrend']),
         };
       }
     ),
@@ -431,11 +419,11 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkActivePatientsTrend"),
+          errors: _.filter(errors, n => n.api != 'mkActivePatientsTrend'),
           activePatientsTrendData: activePatientsTrendData,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkActivePatientsTrend"
+            n => n != 'mkActivePatientsTrend'
           ),
         };
       }
@@ -449,9 +437,9 @@ export const marketingFeature = createFeature({
           activePatientsTrendData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkActivePatientsTrend"
+            n => n != 'mkActivePatientsTrend'
           ),
-          errors: [...errors, { ...error, api: "mkActivePatientsTrend" }],
+          errors: [...errors, { ...error, api: 'mkActivePatientsTrend' }],
         };
       }
     ),
@@ -462,8 +450,8 @@ export const marketingFeature = createFeature({
       return {
         ...state,
         newPatientAcqData: null,
-        errors: _.filter(errors, (n) => n.api != "mkNewPatientAcq"),
-        isLoadingData: _.union(isLoadingData, ["mkNewPatientAcq"]),
+        errors: _.filter(errors, n => n.api != 'mkNewPatientAcq'),
+        isLoadingData: _.union(isLoadingData, ['mkNewPatientAcq']),
       };
     }),
     on(
@@ -472,9 +460,9 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkNewPatientAcq"),
+          errors: _.filter(errors, n => n.api != 'mkNewPatientAcq'),
           newPatientAcqData: newPatientAcqdata,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "mkNewPatientAcq"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkNewPatientAcq'),
         };
       }
     ),
@@ -485,8 +473,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           newPatientAcqData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "mkNewPatientAcq"),
-          errors: [...errors, { ...error, api: "mkNewPatientAcq" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkNewPatientAcq'),
+          errors: [...errors, { ...error, api: 'mkNewPatientAcq' }],
         };
       }
     ),
@@ -499,8 +487,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           newPatientAcqTrendData: null,
-          errors: _.filter(errors, (n) => n.api != "mkNewPatientAcqTrend"),
-          isLoadingData: _.union(isLoadingData, ["mkNewPatientAcqTrend"]),
+          errors: _.filter(errors, n => n.api != 'mkNewPatientAcqTrend'),
+          isLoadingData: _.union(isLoadingData, ['mkNewPatientAcqTrend']),
         };
       }
     ),
@@ -510,11 +498,11 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkNewPatientAcqTrend"),
+          errors: _.filter(errors, n => n.api != 'mkNewPatientAcqTrend'),
           newPatientAcqTrendData: newPatientAcqTrenddata,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkNewPatientAcqTrend"
+            n => n != 'mkNewPatientAcqTrend'
           ),
         };
       }
@@ -528,9 +516,9 @@ export const marketingFeature = createFeature({
           newPatientAcqTrendData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkNewPatientAcqTrend"
+            n => n != 'mkNewPatientAcqTrend'
           ),
-          errors: [...errors, { ...error, api: "mkNewPatientAcqTrend" }],
+          errors: [...errors, { ...error, api: 'mkNewPatientAcqTrend' }],
         };
       }
     ),
@@ -541,8 +529,8 @@ export const marketingFeature = createFeature({
       return {
         ...state,
         totalVisitsData: null,
-        errors: _.filter(errors, (n) => n.api != "mkTotalVisits"),
-        isLoadingData: _.union(isLoadingData, ["mkTotalVisits"]),
+        errors: _.filter(errors, n => n.api != 'mkTotalVisits'),
+        isLoadingData: _.union(isLoadingData, ['mkTotalVisits']),
       };
     }),
     on(
@@ -551,9 +539,9 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkTotalVisits"),
+          errors: _.filter(errors, n => n.api != 'mkTotalVisits'),
           totalVisitsData: mkTotalVisitsData,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "mkTotalVisits"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkTotalVisits'),
         };
       }
     ),
@@ -564,8 +552,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           totalVisitsData: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "mkTotalVisits"),
-          errors: [...errors, { ...error, api: "mkTotalVisits" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkTotalVisits'),
+          errors: [...errors, { ...error, api: 'mkTotalVisits' }],
         };
       }
     ),
@@ -576,8 +564,8 @@ export const marketingFeature = createFeature({
       return {
         ...state,
         totalVisitsTrendData: null,
-        errors: _.filter(errors, (n) => n.api != "mkTotalVisitsTrend"),
-        isLoadingData: _.union(isLoadingData, ["mkTotalVisitsTrend"]),
+        errors: _.filter(errors, n => n.api != 'mkTotalVisitsTrend'),
+        isLoadingData: _.union(isLoadingData, ['mkTotalVisitsTrend']),
       };
     }),
     on(
@@ -586,11 +574,11 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkTotalVisitsTrend"),
+          errors: _.filter(errors, n => n.api != 'mkTotalVisitsTrend'),
           totalVisitsTrendData: mkTotalVisitsTrendData,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkTotalVisitsTrend"
+            n => n != 'mkTotalVisitsTrend'
           ),
         };
       }
@@ -604,9 +592,9 @@ export const marketingFeature = createFeature({
           totalVisitsTrendData: null,
           isLoadingData: _.filter(
             isLoadingData,
-            (n) => n != "mkTotalVisitsTrend"
+            n => n != 'mkTotalVisitsTrend'
           ),
-          errors: [...errors, { ...error, api: "mkTotalVisitsTrend" }],
+          errors: [...errors, { ...error, api: 'mkTotalVisitsTrend' }],
         };
       }
     ),
@@ -616,8 +604,8 @@ export const marketingFeature = createFeature({
       return {
         ...state,
         xeroAccounts: null,
-        errors: _.filter(errors, (n) => n.api != "mkGetXeroAcct"),
-        isLoadingData: _.union(isLoadingData, ["mkGetXeroAcct"]),
+        errors: _.filter(errors, n => n.api != 'mkGetXeroAcct'),
+        isLoadingData: _.union(isLoadingData, ['mkGetXeroAcct']),
       };
     }),
     on(
@@ -626,9 +614,9 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(errors, (n) => n.api != "mkGetXeroAcct"),
+          errors: _.filter(errors, n => n.api != 'mkGetXeroAcct'),
           xeroAccounts,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "mkGetXeroAcct"),
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkGetXeroAcct'),
         };
       }
     ),
@@ -639,8 +627,8 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           xeroAccounts: null,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "mkGetXeroAcct"),
-          errors: [...errors, { ...error, api: "mkGetXeroAcct" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkGetXeroAcct'),
+          errors: [...errors, { ...error, api: 'mkGetXeroAcct' }],
         };
       }
     ),
@@ -649,16 +637,16 @@ export const marketingFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "mkSaveAcctMyob"),
-        isLoadingData: _.union(isLoadingData, ["mkSaveAcctMyob"]),
+        errors: _.filter(errors, n => n.api != 'mkSaveAcctMyob'),
+        isLoadingData: _.union(isLoadingData, ['mkSaveAcctMyob']),
       };
     }),
     on(MarketingApiActions.mkSaveAcctMyobSuccess, (state): MarketingState => {
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "mkSaveAcctMyob"),
-        isLoadingData: _.filter(isLoadingData, (n) => n != "mkSaveAcctMyob"),
+        errors: _.filter(errors, n => n.api != 'mkSaveAcctMyob'),
+        isLoadingData: _.filter(isLoadingData, n => n != 'mkSaveAcctMyob'),
       };
     }),
     on(
@@ -667,8 +655,8 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "mkSaveAcctMyob"),
-          errors: [...errors, { ...error, api: "mkSaveAcctMyob" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkSaveAcctMyob'),
+          errors: [...errors, { ...error, api: 'mkSaveAcctMyob' }],
         };
       }
     ),
@@ -677,16 +665,16 @@ export const marketingFeature = createFeature({
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "mkSaveAcctXero"),
-        isLoadingData: _.union(isLoadingData, ["mkSaveAcctXero"]),
+        errors: _.filter(errors, n => n.api != 'mkSaveAcctXero'),
+        isLoadingData: _.union(isLoadingData, ['mkSaveAcctXero']),
       };
     }),
     on(MarketingApiActions.mkSaveAcctXeroSuccess, (state): MarketingState => {
       const { isLoadingData, errors } = state;
       return {
         ...state,
-        errors: _.filter(errors, (n) => n.api != "mkSaveAcctXero"),
-        isLoadingData: _.filter(isLoadingData, (n) => n != "mkSaveAcctXero"),
+        errors: _.filter(errors, n => n.api != 'mkSaveAcctXero'),
+        isLoadingData: _.filter(isLoadingData, n => n != 'mkSaveAcctXero'),
       };
     }),
     on(
@@ -695,8 +683,8 @@ export const marketingFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          isLoadingData: _.filter(isLoadingData, (n) => n != "mkSaveAcctXero"),
-          errors: [...errors, { ...error, api: "mkSaveAcctXero" }],
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkSaveAcctXero'),
+          errors: [...errors, { ...error, api: 'mkSaveAcctXero' }],
         };
       }
     ),
@@ -741,89 +729,86 @@ export const {
 // Loading State
 export const selectIsLoadingMkNewPatientsByReferral = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "mkNumPatientsByReferral") >= 0
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'mkNumPatientsByReferral') >= 0
 );
 
 export const selectIsLoadingMkNewPatientsByReferralTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "mkNumPatientsByReferralTrend") >= 0
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'mkNumPatientsByReferralTrend') >= 0
 );
 
 export const selectIsLoadingMkRevByReferral = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "mkRevByReferral") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkRevByReferral') >= 0
 );
 
 export const selectIsLoadingMkRevByReferralTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "mkRevByReferralTrend") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkRevByReferralTrend') >= 0
 );
 
 export const selectIsLoadingMkNumNewPatients = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "mkNumNewPatients") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkNumNewPatients') >= 0
 );
 
 export const selectIsLoadingMkActivePatients = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "mkActivePatients") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkActivePatients') >= 0
 );
 
 export const selectIsLoadingMkActivePatientsTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "mkActivePatientsTrend") >= 0
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'mkActivePatientsTrend') >= 0
 );
 
 export const selectIsLoadingMkNumNewPatientsTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "mkNumNewPatientsTrend") >= 0
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'mkNumNewPatientsTrend') >= 0
 );
 
 export const selectIsLoadingMkNewPatientAcq = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "mkNewPatientAcq") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkNewPatientAcq') >= 0
 );
 
 export const selectIsLoadingMkNewPatientAcqTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "mkNewPatientAcqTrend") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkNewPatientAcqTrend') >= 0
 );
 
 export const selectIsLoadingMkTotalVisits = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "mkTotalVisits") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkTotalVisits') >= 0
 );
 
 export const selectIsLoadingMkTotalVisitsTrend = createSelector(
   selectIsLoadingData,
-  (loadingData) =>
-    _.findIndex(loadingData, (l) => l == "mkTotalVisitsTrend") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkTotalVisitsTrend') >= 0
 );
 
 export const selectIsLoadingMkXeroAccounts = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "mkGetXeroAcct") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkGetXeroAcct') >= 0
 );
 
 export const selectIsLoadingMkMyobAccounts = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "mkGetMyobAcct") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkGetMyobAcct') >= 0
 );
 
 export const selectIsLoadingMkSaveAcctMyob = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "mkSaveAcctMyob") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkSaveAcctMyob') >= 0
 );
 
 export const selectIsLoadingMkSaveAcctXero = createSelector(
   selectIsLoadingData,
-  (loadingData) => _.findIndex(loadingData, (l) => l == "mkSaveAcctXero") >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'mkSaveAcctXero') >= 0
 );
 
 // Chart Data
@@ -846,12 +831,12 @@ export const selectNewPatientsByReferralChartData = createSelector(
         datasets: [],
       };
     }
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       const data = <MkNewPatientsByReferralMultiItem[]>(
         newPatientsByReferralData.data
       );
       const chartLables = _.chain(data)
-        .map((item) => item.clinicName)
+        .map(item => item.clinicName)
         .value();
       return {
         newPatientsByReferralVal: Math.round(
@@ -859,13 +844,13 @@ export const selectNewPatientsByReferralChartData = createSelector(
         ),
         labels: chartLables,
         datasets: _.chain(data)
-          .map((v) => v.val)
+          .map(v => v.val)
           .flatten()
-          .groupBy("reftypeName")
+          .groupBy('reftypeName')
           .map((items, refTypeName) => {
             return {
-              data: chartLables.map((clinicName) => {
-                const item = items.find((i) => i.clinicName == clinicName);
+              data: chartLables.map(clinicName => {
+                const item = items.find(i => i.clinicName == clinicName);
                 return item ? item.patientsVisits : 0;
               }),
               label: refTypeName,
@@ -878,7 +863,7 @@ export const selectNewPatientsByReferralChartData = createSelector(
       const chartData = [],
         chartLabels = [];
       if (data.patientsReftype) {
-        data.patientsReftype.slice(0, 15).forEach((v) => {
+        data.patientsReftype.slice(0, 15).forEach(v => {
           chartData.push(v.patientsVisits);
           chartLabels.push(v.reftypeName);
         });
@@ -908,13 +893,13 @@ export const selectNewPatientsByReferralTrendChartData = createSelector(
     let i = 0;
     const chartLabels = [];
     const datasets = _.chain(trendChartData.data)
-      .map((v) => {
+      .map(v => {
         chartLabels.push(
-          trendMode === "current"
-            ? moment(v.duration).format("MMM YYYY")
+          trendMode === 'current'
+            ? moment(v.duration).format('MMM YYYY')
             : v.duration
         );
-        return v.val.map((v1) => {
+        return v.val.map(v1 => {
           return {
             duration: v.duration,
             ...v1,
@@ -922,12 +907,12 @@ export const selectNewPatientsByReferralTrendChartData = createSelector(
         });
       })
       .flatten()
-      .groupBy("itemName")
+      .groupBy('itemName')
       .map((v, itemName) => {
         const bgColor = DoughnutChartColors[i];
         i++;
         return {
-          data: v.map((v1) => v1.numReferrals),
+          data: v.map(v1 => v1.numReferrals),
           label: itemName,
           backgroundColor: bgColor,
           hoverBackgroundColor: bgColor,
@@ -960,22 +945,22 @@ export const selectRevByReferralChartData = createSelector(
         datasets: [],
       };
     }
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       const data = <MkRevByReferralMultiItem[]>revByReferralData.data;
       const chartLables = _.chain(data)
-        .map((item) => item.clinicName)
+        .map(item => item.clinicName)
         .value();
       return {
         revByReferralVal: Math.round(revByReferralData.total ?? 0),
         labels: chartLables,
         datasets: _.chain(data)
-          .map((v) => v.val)
+          .map(v => v.val)
           .flatten()
-          .groupBy("reftypeName")
+          .groupBy('reftypeName')
           .map((items, refTypeName) => {
             return {
-              data: chartLables.map((clinicName) => {
-                const item = items.find((i) => i.clinicName == clinicName);
+              data: chartLables.map(clinicName => {
+                const item = items.find(i => i.clinicName == clinicName);
                 return item ? item.invoiceAmount : 0;
               }),
               label: refTypeName,
@@ -1021,13 +1006,13 @@ export const selectRevByReferralTrendChartData = createSelector(
     let i = 0;
     const chartLabels = [];
     const datasets = _.chain(trendChartData.data)
-      .map((v) => {
+      .map(v => {
         chartLabels.push(
-          trendMode === "current"
-            ? moment(v.duration).format("MMM YYYY")
+          trendMode === 'current'
+            ? moment(v.duration).format('MMM YYYY')
             : v.duration
         );
-        return v.val.map((v1) => {
+        return v.val.map(v1 => {
           return {
             duration: v.duration,
             ...v1,
@@ -1035,12 +1020,12 @@ export const selectRevByReferralTrendChartData = createSelector(
         });
       })
       .flatten()
-      .groupBy("itemName")
+      .groupBy('itemName')
       .map((v, itemName) => {
         const bgColor = DoughnutChartColors[i];
         i++;
         return {
-          data: v.map((v1) => v1.invoiceAmount),
+          data: v.map(v1 => v1.invoiceAmount),
           label: itemName,
           backgroundColor: bgColor,
           hoverBackgroundColor: bgColor,
@@ -1078,45 +1063,45 @@ export const selectNumNewPatientsChartData = createSelector(
 
     const chartData = [],
       chartLabels = [];
-    newNumPatientsData.data.forEach((v) => {
+    newNumPatientsData.data.forEach(v => {
       chartData.push(Math.round(parseFloat(<string>v.newPatients)));
       chartLabels.push(v.clinicName);
     });
     const chartDatasets = [
       {
         data: [],
-        label: "",
+        label: '',
         shadowOffsetX: 3,
         backgroundColor: [
-          "#119682",
-          "#EEEEF8",
-          "#119682",
-          "#EEEEF8",
-          "#119682",
-          "#EEEEF8",
-          "#119682",
-          "#EEEEF8",
-          "#119682",
-          "#EEEEF8",
-          "#119682",
-          "#EEEEF8",
-          "#119682",
+          '#119682',
+          '#EEEEF8',
+          '#119682',
+          '#EEEEF8',
+          '#119682',
+          '#EEEEF8',
+          '#119682',
+          '#EEEEF8',
+          '#119682',
+          '#EEEEF8',
+          '#119682',
+          '#EEEEF8',
+          '#119682',
         ],
         shadowOffsetY: 2,
         shadowBlur: 3,
         // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
-        shadowColor: "rgba(0, 0, 0, 0.3)",
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
         pointBevelWidth: 2,
-        pointBevelHighlightColor: "rgba(255, 255, 255, 0.75)",
-        pointBevelShadowColor: "rgba(0, 0, 0, 0.3)",
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
         pointShadowOffsetX: 3,
         pointShadowOffsetY: 3,
         pointShadowBlur: 10,
-        pointShadowColor: "rgba(0, 0, 0, 0.3)",
-        backgroundOverlayMode: "multiply",
+        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundOverlayMode: 'multiply',
       },
     ];
-    chartDatasets[0]["data"] = chartData;
+    chartDatasets[0]['data'] = chartData;
     return {
       newNumPatientsVal: newNumPatientsData.total,
       newNumPatientsPrev: newNumPatientsData.totalTa,
@@ -1142,25 +1127,25 @@ export const selectNumNewPatientsTrendChartData = createSelector(
         labels: [],
       };
     }
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       const chartLabels = _.chain(newNumPatientsTrendData.data)
-        .groupBy(trendMode == "current" ? "yearMonth" : "year")
+        .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
         .map((items, duration: string) =>
-          trendMode == "current"
-            ? moment(duration).format("MMM YYYY")
+          trendMode == 'current'
+            ? moment(duration).format('MMM YYYY')
             : duration
         )
         .value();
 
       let i = 0;
       const chartDatasets = _.chain(newNumPatientsTrendData.data)
-        .groupBy("clinicId")
-        .map((items) => {
+        .groupBy('clinicId')
+        .map(items => {
           const bgColor = DoughnutChartColors[i];
           i++;
           return {
-            data: items.map((item) => _.round(<number>item.newPatients)),
-            label: items.length > 0 ? items[0].clinicName : "",
+            data: items.map(item => _.round(<number>item.newPatients)),
+            label: items.length > 0 ? items[0].clinicName : '',
             backgroundColor: bgColor,
             hoverBackgroundColor: bgColor,
           };
@@ -1178,11 +1163,11 @@ export const selectNumNewPatientsTrendChartData = createSelector(
       newNumPatientsTrendData.data.forEach((v, index) => {
         chartData.push(v.newPatients);
         chartLabels.push(
-          trendMode === "current"
-            ? moment(v.yearMonth).format("MMM YYYY")
+          trendMode === 'current'
+            ? moment(v.yearMonth).format('MMM YYYY')
             : v.year
         );
-        bgColors.push(index % 2 == 0 ? "#119682" : "#EEEEF8");
+        bgColors.push(index % 2 == 0 ? '#119682' : '#EEEEF8');
       });
       return {
         datasets: [
@@ -1199,7 +1184,7 @@ export const selectNumNewPatientsTrendChartData = createSelector(
 
 export const selectActivePatientsChartData = createSelector(
   selectActivePatientsData,
-  (activePatientsData) => {
+  activePatientsData => {
     if (activePatientsData == null) {
       return {
         activePatientsVal: 0,
@@ -1211,7 +1196,7 @@ export const selectActivePatientsChartData = createSelector(
     }
     const chartData = [],
       chartLabels = [];
-    activePatientsData.data.forEach((v) => {
+    activePatientsData.data.forEach(v => {
       chartData.push(Math.round(parseFloat(<string>v.activePatients)));
       chartLabels.push(v.clinicName);
     });
@@ -1236,25 +1221,25 @@ export const selectActivePatientsTrendChartData = createSelector(
         labels: [],
       };
     }
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       const chartLabels = _.chain(activePatientsTrendData.data)
-        .groupBy(trendMode == "current" ? "yearMonth" : "year")
+        .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
         .map((items, duration: string) =>
-          trendMode == "current"
-            ? moment(duration).format("MMM YYYY")
+          trendMode == 'current'
+            ? moment(duration).format('MMM YYYY')
             : duration
         )
         .value();
 
       let i = 0;
       const chartDatasets = _.chain(activePatientsTrendData.data)
-        .groupBy("clinicId")
-        .map((items) => {
+        .groupBy('clinicId')
+        .map(items => {
           const bgColor = DoughnutChartColors[i];
           i++;
           return {
-            data: items.map((item) => _.round(<number>item.activePatients)),
-            label: items.length > 0 ? items[0].clinicName : "",
+            data: items.map(item => _.round(<number>item.activePatients)),
+            label: items.length > 0 ? items[0].clinicName : '',
             backgroundColor: bgColor,
             hoverBackgroundColor: bgColor,
           };
@@ -1272,11 +1257,11 @@ export const selectActivePatientsTrendChartData = createSelector(
       activePatientsTrendData.data.forEach((v, index) => {
         chartData.push(v.activePatients);
         chartLabels.push(
-          trendMode === "current"
-            ? moment(v.yearMonth).format("MMM YYYY")
+          trendMode === 'current'
+            ? moment(v.yearMonth).format('MMM YYYY')
             : v.year
         );
-        bgColors.push(index % 2 == 0 ? "#119682" : "#EEEEF8");
+        bgColors.push(index % 2 == 0 ? '#119682' : '#EEEEF8');
       });
       return {
         datasets: [
@@ -1293,7 +1278,7 @@ export const selectActivePatientsTrendChartData = createSelector(
 
 export const selectNewPatientAcqChartData = createSelector(
   selectNewPatientAcqData,
-  (newPatientAcqData) => {
+  newPatientAcqData => {
     if (newPatientAcqData == null) {
       return {
         newPatientAcqVal: 0,
@@ -1305,34 +1290,34 @@ export const selectNewPatientAcqChartData = createSelector(
     }
     const newPatientAcqVal = _.round(
       _.chain(newPatientAcqData.data)
-        .sumBy((v) => v.cost)
+        .sumBy(v => v.cost)
         .value() /
         _.chain(newPatientAcqData.data)
-          .sumBy((v) => parseFloat(<string>v.newPatients))
+          .sumBy(v => parseFloat(<string>v.newPatients))
           .value()
     );
     return {
       newPatientAcqVal: newPatientAcqVal,
       newPatientAcqPrev: Math.round(newPatientAcqData.dataTa),
       newPatientAcqGoal: newPatientAcqData.goals,
-      labels: newPatientAcqData.data.map((v) => v.clinicName),
+      labels: newPatientAcqData.data.map(v => v.clinicName),
       datasets: [
         {
-          data: newPatientAcqData.data.map((v) => _.round(v.costPerPatient)),
+          data: newPatientAcqData.data.map(v => _.round(v.costPerPatient)),
           backgroundColor: [
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
-            "#EEEEF8",
-            "#119682",
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
+            '#EEEEF8',
+            '#119682',
           ],
         },
       ],
@@ -1351,20 +1336,20 @@ export const selectNewPatientAcqTrendChartData = createSelector(
       };
     }
     const chartLabels = _.chain(newPatientAcqTrendData.data)
-      .groupBy(trendMode == "current" ? "yearMonth" : "year")
+      .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
       .map((items, duration) =>
-        trendMode == "current" ? moment(duration).format("MMM YYYY") : duration
+        trendMode == 'current' ? moment(duration).format('MMM YYYY') : duration
       )
       .value();
     let i = 0;
     const chartDatasets = _.chain(newPatientAcqTrendData.data)
-      .groupBy("clinicId")
-      .map((items) => {
+      .groupBy('clinicId')
+      .map(items => {
         const bgColors = DoughnutChartColors[i];
         i++;
         return {
-          data: items.map((item) => _.round(<number>item.costPerPatient)),
-          label: items.length > 0 ? <string>items[0].clinicName : "",
+          data: items.map(item => _.round(<number>item.costPerPatient)),
+          label: items.length > 0 ? <string>items[0].clinicName : '',
           backgroundColor: bgColors,
           hoverBackgroundColor: bgColors,
         };
@@ -1380,7 +1365,7 @@ export const selectNewPatientAcqTrendChartData = createSelector(
 
 export const selectTotalVisitsChartData = createSelector(
   selectTotalVisitsData,
-  (totalVisitsData) => {
+  totalVisitsData => {
     if (totalVisitsData == null) {
       return {
         totalVisitsVal: 0,
@@ -1392,7 +1377,7 @@ export const selectTotalVisitsChartData = createSelector(
     }
     const chartData = [],
       chartLabels = [];
-    totalVisitsData.data.forEach((v) => {
+    totalVisitsData.data.forEach(v => {
       chartData.push(Math.round(<number>v.numVisits));
       chartLabels.push(v.clinicName);
     });
@@ -1418,25 +1403,25 @@ export const selectTotalVisitsTrendChartData = createSelector(
         labels: [],
       };
     }
-    if (typeof clinicId === "string") {
+    if (typeof clinicId === 'string') {
       const chartLabels = _.chain(totalVisitsTrendData.data)
-        .groupBy(trendMode == "current" ? "yearMonth" : "year")
+        .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
         .map((items, duration: string) =>
-          trendMode == "current"
-            ? moment(duration).format("MMM YYYY")
+          trendMode == 'current'
+            ? moment(duration).format('MMM YYYY')
             : duration
         )
         .value();
 
       let i = 0;
       const chartDatasets = _.chain(totalVisitsTrendData.data)
-        .groupBy("clinicId")
-        .map((items) => {
+        .groupBy('clinicId')
+        .map(items => {
           const bgColor = DoughnutChartColors[i];
           i++;
           return {
-            data: items.map((item) => _.round(<number>item.numVisits)),
-            label: items.length > 0 ? items[0].clinicName : "",
+            data: items.map(item => _.round(<number>item.numVisits)),
+            label: items.length > 0 ? items[0].clinicName : '',
             backgroundColor: bgColor,
             hoverBackgroundColor: bgColor,
           };
@@ -1454,11 +1439,11 @@ export const selectTotalVisitsTrendChartData = createSelector(
       totalVisitsTrendData.data.forEach((v, index) => {
         chartData.push(v.numVisits);
         chartLabels.push(
-          trendMode === "current"
-            ? moment(v.yearMonth).format("MMM YYYY")
+          trendMode === 'current'
+            ? moment(v.yearMonth).format('MMM YYYY')
             : v.year
         );
-        bgColors.push(index % 2 == 0 ? "#119682" : "#EEEEF8");
+        bgColors.push(index % 2 == 0 ? '#119682' : '#EEEEF8');
       });
       return {
         datasets: [

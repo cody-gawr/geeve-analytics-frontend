@@ -7,7 +7,7 @@ import camelcaseKeys from 'camelcase-keys';
 import { DentistsListApiResponse } from '@/newapp/models/dentist';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DentistService {
   private apiUrl = environment.apiUrl;
@@ -18,9 +18,13 @@ export class DentistService {
     clinicId: string | number,
     isAll: number
   ): Observable<DentistsListApiResponse> => {
-    return this.http.get<DentistsListApiResponse>(
-      `${this.apiUrl}/Dentists/dentGet?clinic_id=${clinicId}&all=${isAll}`,
-      { withCredentials: true }
-    ).pipe(map(res => <DentistsListApiResponse> camelcaseKeys(res, {deep: true})));
+    return this.http
+      .get<DentistsListApiResponse>(
+        `${this.apiUrl}/Dentists/dentGet?clinic_id=${clinicId}&all=${isAll}`,
+        { withCredentials: true }
+      )
+      .pipe(
+        map(res => <DentistsListApiResponse>camelcaseKeys(res, { deep: true }))
+      );
   };
 }

@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { select, Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { JeeveError } from "@/newapp/models";
+import { Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { JeeveError } from '@/newapp/models';
 import {
   FrontDeskState,
   selectErrors,
@@ -31,8 +31,8 @@ import {
   selectIsLoadingFdUtaRatioTrendData,
   selectIsLoadingFdUtilisationRateData,
   selectIsLoadingFdUtilisationRateTrendData,
-} from "../state/reducers/front-desk.reducer";
-import { FrontDeskPageActions } from "../state/actions";
+} from '../state/reducers/front-desk.reducer';
+import { FrontDeskPageActions } from '../state/actions';
 
 @Injectable()
 export class FrontDeskFacade {
@@ -190,7 +190,7 @@ export class FrontDeskFacade {
 
   public loadFdUtilisationRateTrend(
     clinicId: string | number,
-    mode = "",
+    mode = '',
     queryWhEnabled = 0
   ) {
     this.store.dispatch(
@@ -222,7 +222,7 @@ export class FrontDeskFacade {
 
   public loadFdRecallRateTrend(
     clinicId: string | number,
-    mode = "",
+    mode = '',
     queryWhEnabled = 0
   ) {
     this.store.dispatch(
@@ -254,7 +254,7 @@ export class FrontDeskFacade {
 
   public loadFdReappointRateTrend(
     clinicId: string | number,
-    mode = "",
+    mode = '',
     queryWhEnabled = 0
   ) {
     this.store.dispatch(
@@ -286,7 +286,7 @@ export class FrontDeskFacade {
 
   public loadFdNumTicksTrend(
     clinicId: string | number,
-    mode = "",
+    mode = '',
     queryWhEnabled = 0
   ) {
     this.store.dispatch(
@@ -318,7 +318,7 @@ export class FrontDeskFacade {
 
   public loadFdFtaRatioTrend(
     clinicId: string | number,
-    mode = "",
+    mode = '',
     queryWhEnabled = 0
   ) {
     this.store.dispatch(
@@ -350,7 +350,7 @@ export class FrontDeskFacade {
 
   public loadFdUtaRatioTrend(
     clinicId: string | number,
-    mode = "",
+    mode = '',
     queryWhEnabled = 0
   ) {
     this.store.dispatch(

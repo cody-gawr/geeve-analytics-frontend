@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { Observable, map } from "rxjs";
-import * as _ from "lodash";
-import { environment } from "@/environments/environment";
-import { HttpClient } from "@angular/common/http";
-import { ChartTipsApiResponse } from "../../models/dashboard/finance";
-import camelcaseKeys from "camelcase-keys";
+import { Injectable } from '@angular/core';
+import { Observable, map } from 'rxjs';
+import * as _ from 'lodash';
+import { environment } from '@/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { ChartTipsApiResponse } from '../../models/dashboard/finance';
+import camelcaseKeys from 'camelcase-keys';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class DashboardService {
   private apiUrl = environment.apiUrl;
@@ -34,7 +34,7 @@ export class DashboardService {
         { withCredentials: true }
       )
       .pipe(
-        map((res) => <ChartTipsApiResponse>camelcaseKeys(res, { deep: true }))
+        map(res => <ChartTipsApiResponse>camelcaseKeys(res, { deep: true }))
       );
   };
 
@@ -46,6 +46,6 @@ export class DashboardService {
         `${this.apiUrl}/Clinics/clinicGetAccountingPlatform?clinic_id=${clinicId}`,
         { withCredentials: true }
       )
-      .pipe(map((res) => <any>camelcaseKeys(res, { deep: true })));
+      .pipe(map(res => <any>camelcaseKeys(res, { deep: true })));
   };
 }

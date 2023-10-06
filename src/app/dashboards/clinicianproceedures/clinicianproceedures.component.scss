@@ -1,77 +1,88 @@
 .jeeve-legacy-app {
-    .header_filters.dynamicDropdown4 { flex-direction: row-reverse !important; }
-    .header_filters.dynamicDropdown2.singleD { flex-direction: row-reverse !important; }
-    .header_filters.dynamicDropdown7.singleD { flex-direction: row-reverse !important; }
-    .header_filters.dynamicDropdown3.singleD { flex-direction: row-reverse !important; }
-    .header_filters.dynamicDropdown6.singleD { flex-direction: row-reverse !important; }
+  .header_filters.dynamicDropdown4 {
+    flex-direction: row-reverse !important;
+  }
+  .header_filters.dynamicDropdown2.singleD {
+    flex-direction: row-reverse !important;
+  }
+  .header_filters.dynamicDropdown7.singleD {
+    flex-direction: row-reverse !important;
+  }
+  .header_filters.dynamicDropdown3.singleD {
+    flex-direction: row-reverse !important;
+  }
+  .header_filters.dynamicDropdown6.singleD {
+    flex-direction: row-reverse !important;
+  }
 
-    .fullWidth{
-        width: 100%;
-    }
-    .chart-item-predictor{
-        height: 433px;
-    }
-    .item-predic{
-        height: 474px; 
-        width: 100%;
-    }
-    .chart-trend{
-        height: 370px; 
-        width: 100%;
-    }
-    .dentist-mode{
-        height: 474px;
-    }
-    .fa-icon-margin{
-        margin-right: 10px;
-    }
-    .fa-icon-color{
-        margin-right: 10px; 
-        color: #1aa591;
-    }
-    .chart-predicted-stacked{
-        height: 350px;
-    }
-    .predictor-ratio-div{
-        height: 250px;
-    }
-    .chart-ratio-div{
-        height: 370px;
-    }
-    .trend-show{
-        height: 250px;
-    }
-    .chart-trend-show{
-        height: 340px;
-    }
-    .fa-margin{
-        margin-right: 10px;
-    }
-    .fa-margin-color{
-        margin-right: 10px; color: #1aa591;
-    }
+  .fullWidth {
+    width: 100%;
+  }
+  .chart-item-predictor {
+    height: 433px;
+  }
+  .item-predic {
+    height: 474px;
+    width: 100%;
+  }
+  .chart-trend {
+    height: 370px;
+    width: 100%;
+  }
+  .dentist-mode {
+    height: 474px;
+  }
+  .fa-icon-margin {
+    margin-right: 10px;
+  }
+  .fa-icon-color {
+    margin-right: 10px;
+    color: #1aa591;
+  }
+  .chart-predicted-stacked {
+    height: 350px;
+  }
+  .predictor-ratio-div {
+    height: 250px;
+  }
+  .chart-ratio-div {
+    height: 370px;
+  }
+  .trend-show {
+    height: 250px;
+  }
+  .chart-trend-show {
+    height: 340px;
+  }
+  .fa-margin {
+    margin-right: 10px;
+  }
+  .fa-margin-color {
+    margin-right: 10px;
+    color: #1aa591;
+  }
 
-    .paTablecon {
-        //height: 330px;
-        max-height: 423px;
-        min-height: 415px;
-        width: 100%;
-        overflow: auto; 
-        margin-left: 12px;
-    }
-    table.paTable {
-        width: 100%;
-    }
-    .paTable thead tr th {
-        text-align: left;
-        font-size: 13px;
-    }
-    .paTable tbody tr td {
-        padding: 5px;
-        font-size: 13px;
-    }
-    .patable-total{
-        background-color: #f1efef;
-        font-weight: bold !important;
-    }
+  .paTablecon {
+    //height: 330px;
+    max-height: 423px;
+    min-height: 415px;
+    width: 100%;
+    overflow: auto;
+    margin-left: 12px;
+  }
+  table.paTable {
+    width: 100%;
+  }
+  .paTable thead tr th {
+    text-align: left;
+    font-size: 13px;
+  }
+  .paTable tbody tr td {
+    padding: 5px;
+    font-size: 13px;
+  }
+  .patable-total {
+    background-color: #f1efef;
+    font-weight: bold !important;
+  }
 }

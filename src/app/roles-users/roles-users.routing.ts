@@ -7,7 +7,7 @@ export const RolesUsersRoutes: Routes = [
     path: '',
     component: RolesUsersComponent,
     data: {
-      title: 'Roles Users'
-    }
-  }
+      title: 'Roles Users',
+    },
+  },
 ];

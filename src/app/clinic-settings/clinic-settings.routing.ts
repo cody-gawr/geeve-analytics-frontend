@@ -4,10 +4,10 @@ import { ClinicSettingsComponent } from './clinic-settings.component';
 
 export const ClinicSettingsRoutes: Routes = [
   {
-   path: '',
+    path: '',
     component: ClinicSettingsComponent,
     data: {
-      title: 'Clinic Settings'
-    }
-  }
+      title: 'Clinic Settings',
+    },
+  },
 ];

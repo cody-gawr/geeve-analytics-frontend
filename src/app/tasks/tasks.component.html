@@ -1,22 +1,41 @@
-<input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'" />
+<input
+  type="button"
+  id="clinic_initiate"
+  (click)="initiate_clinic()"
+  [style.display]="'none'" />
 <mat-card class="task-manager-wrap header-bg-shadow">
   <div class="sa-pull-right kanban" *ngIf="user_type == 2">
-    <button ejs-button id="addNew" class="e-dialog-add mat-raised-button mat-gray" (click)="addClick()">
-      Create Task <img src="../../assets/images/add-button.png" alt="plus-icon" />
+    <button
+      ejs-button
+      id="addNew"
+      class="e-dialog-add mat-raised-button mat-gray"
+      (click)="addClick()">
+      Create Task
+      <img src="../../assets/images/add-button.png" alt="plus-icon" />
     </button>
   </div>
   <mat-card-content>
     <div class="control-section">
       <div class="content-wrapper kanban task-info-wrap">
-        <ejs-kanban #kanbanObj keyField="status" [dataSource]="dataManager" [cardSettings]="cardSettings"
-          [dialogSettings]="dialogSettings" (actionComplete)="OnActionComplete($event)"
-          (dialogOpen)="dialogOpen($event)" [swimlaneSettings]="swimlaneSettings" (drag)="onKanbanBDrag($event)">
+        <ejs-kanban
+          #kanbanObj
+          keyField="status"
+          [dataSource]="dataManager"
+          [cardSettings]="cardSettings"
+          [dialogSettings]="dialogSettings"
+          (actionComplete)="OnActionComplete($event)"
+          (dialogOpen)="dialogOpen($event)"
+          [swimlaneSettings]="swimlaneSettings"
+          (drag)="onKanbanBDrag($event)">
           <e-columns>
-            <e-column *ngFor="let column of columns;" headerText={{column.headerText}} keyField='{{column.keyField}}'>
+            <e-column
+              *ngFor="let column of columns"
+              headerText="{{ column.headerText }}"
+              keyField="{{ column.keyField }}">
               <ng-template #template let-data>
-                <div class="header-template-wrap {{data.keyField}}">
-                  <div class="header-task-count">{{data.count}}</div>
-                  <div class="header-text">{{data.headerText}}</div>
+                <div class="header-template-wrap {{ data.keyField }}">
+                  <div class="header-task-count">{{ data.count }}</div>
+                  <div class="header-text">{{ data.headerText }}</div>
                 </div>
               </ng-template>
             </e-column>
@@ -30,8 +49,8 @@
               </div>
               <div class="cardDescription">
                 {{
-                (data.description | slice: 0:100) +
-                (data.description.length > 100 ? "..." : "")
+                  (data.description | slice: 0 : 100) +
+                    (data.description.length > 100 ? '...' : '')
                 }}
               </div>
               <!-- <div class="cardTaskID">Task-{{ data.id }}</div> -->
@@ -41,81 +60,167 @@
           <ng-template #dialogSettingsTemplate let-data>
             <div class="mat-dialog-content sa_forms_design" *ngIf="step === 1">
               <div class="sa-form-group group_buttons">
-                <button type="button"
-                  [ngClass]=" isIndividual ? 'mat-raised-button mat-dc' : 'mat-focus-indicator mat-raised-button mat-gray'"
-                  (click)="isEnable('individual')">Individual</button>
-                <button type="button"
-                  [ngClass]="isGroup ? 'mat-raised-button mat-dc' : 'mat-focus-indicator mat-raised-button mat-gray'"
-                  (click)="isEnable('group')">Groups</button>
-                <button type="button"
-                  [ngClass]="isClinic ? 'mat-raised-button mat-dc' : 'mat-focus-indicator mat-raised-button mat-gray'"
-                  (click)="isEnable('clinic')">Clinic</button>
+                <button
+                  type="button"
+                  [ngClass]="
+                    isIndividual
+                      ? 'mat-raised-button mat-dc'
+                      : 'mat-focus-indicator mat-raised-button mat-gray'
+                  "
+                  (click)="isEnable('individual')">
+                  Individual
+                </button>
+                <button
+                  type="button"
+                  [ngClass]="
+                    isGroup
+                      ? 'mat-raised-button mat-dc'
+                      : 'mat-focus-indicator mat-raised-button mat-gray'
+                  "
+                  (click)="isEnable('group')">
+                  Groups
+                </button>
+                <button
+                  type="button"
+                  [ngClass]="
+                    isClinic
+                      ? 'mat-raised-button mat-dc'
+                      : 'mat-focus-indicator mat-raised-button mat-gray'
+                  "
+                  (click)="isEnable('clinic')">
+                  Clinic
+                </button>
               </div>
               <div class="sa-form-group task-body">
                 <div [hidden]="true">
-                  <input [hidden]="true" class="e-field" id="{{ assignTo }}" name="assign_to" value="{{ assignTo }}" />
+                  <input
+                    [hidden]="true"
+                    class="e-field"
+                    id="{{ assignTo }}"
+                    name="assign_to"
+                    value="{{ assignTo }}" />
                 </div>
-                <input id="Id" name="Id" type="text" class="e-field" value="{{ data.id }}"  [hidden]="true" disabled />
+                <input
+                  id="Id"
+                  name="Id"
+                  type="text"
+                  class="e-field"
+                  value="{{ data.id }}"
+                  [hidden]="true"
+                  disabled />
                 <div class="sa-form-group">
                   <label>Title</label>
                   <!-- <input id="Title" name="title" type="text" class="form-control-dialog" value="{{ data.title }}" [readonly]="user_type != 2" /> -->
-                  <input id="Title" name="title" type="text" class="e-field" value="{{ data.title }}" [readonly]="user_type != 2" />
+                  <input
+                    id="Title"
+                    name="title"
+                    type="text"
+                    class="e-field"
+                    value="{{ data.title }}"
+                    [readonly]="user_type != 2" />
                 </div>
 
                 <div *ngIf="isClinic" class="sa-form-group">
                   <label>Select Clinic</label>
-                  <select [disabled]="user_type != 2" id="Clinics" class="e-field" name="clinic_id"
+                  <select
+                    [disabled]="user_type != 2"
+                    id="Clinics"
+                    class="e-field"
+                    name="clinic_id"
                     ngModel="{{ data.clinic_id }}">
                     <option [value]="null">All Clinic</option>
-                    <option *ngFor="let clinicData of clinicsData" value="{{ clinicData.id }}">
+                    <option
+                      *ngFor="let clinicData of clinicsData"
+                      value="{{ clinicData.id }}">
                       {{ clinicData.clinicName }}
                     </option>
                   </select>
                 </div>
                 <div *ngIf="isGroup" class="sa-form-group">
                   <label>Assignee Group</label>
-                  <select required="true" class="e-field" name="assignee_group"  ngModel="{{ data.assignee_group }}">
-                    <option *ngFor="let option of assigneeGroupData" value="{{ option.id }}">{{ option.name }}</option>
+                  <select
+                    required="true"
+                    class="e-field"
+                    name="assignee_group"
+                    ngModel="{{ data.assignee_group }}">
+                    <option
+                      *ngFor="let option of assigneeGroupData"
+                      value="{{ option.id }}">
+                      {{ option.name }}
+                    </option>
                   </select>
-                  <input id="Clinicids" type="hidden" class="e-field" name="clinic_id" [value]="clinic_id" />
+                  <input
+                    id="Clinicids"
+                    type="hidden"
+                    class="e-field"
+                    name="clinic_id"
+                    [value]="clinic_id" />
                 </div>
                 <div *ngIf="isIndividual" class="sa-form-group">
                   <label>Assignee</label>
-                  <select [disabled]="user_type != 2" id="AssigneeData" class="e-field"
-                    name="assignee_user" ngModel="{{ data.assignee_user }}">
-                    <option value="{{ user.id }}" *ngFor="let user of assigneeData">
+                  <select
+                    [disabled]="user_type != 2"
+                    id="AssigneeData"
+                    class="e-field"
+                    name="assignee_user"
+                    ngModel="{{ data.assignee_user }}">
+                    <option
+                      value="{{ user.id }}"
+                      *ngFor="let user of assigneeData">
                       {{ user.name }}
                     </option>
                   </select>
-                  <input id="Clinicids" type="hidden" class="e-field" name="clinic_id" [value]="clinic_id" />
+                  <input
+                    id="Clinicids"
+                    type="hidden"
+                    class="e-field"
+                    name="clinic_id"
+                    [value]="clinic_id" />
                 </div>
                 <div class="sa-form-group">
                   <label>Description</label>
                   <!-- <textarea id="Description" name="description" type="text" class="form-control-dialog"
                     placeholder="Write here..." [readonly]="user_type != 2">{{ data.description }}</textarea> -->
-                    <textarea id="Description" name="description" type="text" class="e-field"
-                        [readonly]="user_type != 2">{{ data.description }}</textarea>
+                  <textarea
+                    id="Description"
+                    name="description"
+                    type="text"
+                    class="e-field"
+                    [readonly]="user_type != 2"
+                    >{{ data.description }}</textarea
+                  >
                 </div>
                 <div class="sa-form-group">
                   <label>Due Date</label>
-                  <input id="DueDate" name="due_date" value="{{ data.due_date | date: 'M/d/y' }}" class="
-                    sa_datepicker
-                      e-field
-                      datepicker-calendar-icon
-                      filter_custom filter
-                    " autocomplete="false" ngxDaterangepickerMd [closeOnAutoApply]="true" [autoApply]="true"
-                    [singleDatePicker]="true" [linkedCalendars]="true" />
-                  <img class="input-icon" src="../../assets/images/calendar-icon.png" alt="" />
+                  <input
+                    id="DueDate"
+                    name="due_date"
+                    value="{{ data.due_date | date: 'M/d/y' }}"
+                    class="sa_datepicker e-field datepicker-calendar-icon filter_custom filter"
+                    autocomplete="false"
+                    ngxDaterangepickerMd
+                    [closeOnAutoApply]="true"
+                    [autoApply]="true"
+                    [singleDatePicker]="true"
+                    [linkedCalendars]="true" />
+                  <img
+                    class="input-icon"
+                    src="../../assets/images/calendar-icon.png"
+                    alt="" />
                 </div>
                 <div class="sa-form-group">
-                  <mat-checkbox [checked]="isRecurring" (change)="toggleIsRuccring()">
+                  <mat-checkbox
+                    [checked]="isRecurring"
+                    (change)="toggleIsRuccring()">
                     Recurring
                   </mat-checkbox>
                 </div>
                 <div *ngIf="isRecurring" class="sa-form-group">
                   <label>Recurring</label>
                   <select required="true" class="e-field" name="user_type">
-                    <option value="{{ recurring.id }}" *ngFor="let recurring of recurringData">
+                    <option
+                      value="{{ recurring.id }}"
+                      *ngFor="let recurring of recurringData">
                       {{ recurring.name }}
                     </option>
                   </select>

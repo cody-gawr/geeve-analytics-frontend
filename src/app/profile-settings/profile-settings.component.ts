@@ -16,7 +16,7 @@ import { RolesUsersService } from '../roles-users/roles-users.service';
 
 const passwordValidation = new UntypedFormControl('', [
   Validators.required,
-  Validators.minLength(10)
+  Validators.minLength(10),
 ]);
 const confirmPasswordValidation = new UntypedFormControl(
   '',
@@ -27,7 +27,7 @@ const confirmPasswordValidation = new UntypedFormControl(
   selector: 'app-formlayout',
   templateUrl: './profile-settings.component.html',
   styleUrls: ['./profile-settings.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class ProfileSettingsComponent implements OnInit {
   elementsOptions: StripeElementsOptions = {};
@@ -44,26 +44,26 @@ export class ProfileSettingsComponent implements OnInit {
       padding: '10px',
 
       ':focus': {
-        color: '#fff'
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#698aaa'
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#698aaa'
-      }
+        color: '#698aaa',
+      },
     },
     invalid: {
       color: '#fd0404',
       ':focus': {
-        color: '#fd0404'
+        color: '#fd0404',
       },
       '::placeholder': {
-        color: '#fd0404'
-      }
-    }
+        color: '#fd0404',
+      },
+    },
   };
 
   public expStyle = {
@@ -75,26 +75,26 @@ export class ProfileSettingsComponent implements OnInit {
       fontSmoothing: 'antialiased',
 
       ':focus': {
-        color: '#fff'
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#698aaa'
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#698aaa'
-      }
+        color: '#698aaa',
+      },
     },
     invalid: {
       color: '#fd0404',
       ':focus': {
-        color: '#fd0404'
+        color: '#fd0404',
       },
       '::placeholder': {
-        color: '#fd0404'
-      }
-    }
+        color: '#fd0404',
+      },
+    },
   };
 
   public cvcStyle = {
@@ -106,26 +106,26 @@ export class ProfileSettingsComponent implements OnInit {
       fontSmoothing: 'antialiased',
 
       ':focus': {
-        color: '#fff'
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#698aaa'
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#698aaa'
-      }
+        color: '#698aaa',
+      },
     },
     invalid: {
       color: '#fd0404',
       ':focus': {
-        color: '#fd0404'
+        color: '#fd0404',
       },
       '::placeholder': {
-        color: '#fd0404'
-      }
-    }
+        color: '#fd0404',
+      },
+    },
   };
   public token;
   stripeTest: UntypedFormGroup;
@@ -160,18 +160,18 @@ export class ProfileSettingsComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private rolesUsersService: RolesUsersService,
-    public constants: AppConstants,
+    public constants: AppConstants
   ) {
     this.options = fb.group({
       hideRequired: false,
-      floatLabel: 'auto'
+      floatLabel: 'auto',
     });
     this.userType = this._cookieService.get('user_type');
     this.health_screen_mtd = this._cookieService.get('health_screen_mtd');
     this.form = this.fb.group({
       currentPassword: [null, Validators.compose([Validators.required])],
       newPassword: passwordValidation,
-      repeatPassword: confirmPasswordValidation
+      repeatPassword: confirmPasswordValidation,
     });
     this.formSettings = this.fb.group({
       email: [null, Validators.compose([Validators.required])],
@@ -179,38 +179,36 @@ export class ProfileSettingsComponent implements OnInit {
         null,
         Validators.compose([
           Validators.required,
-          Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)
-        ])
-      ]
+          Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),
+        ]),
+      ],
     });
     this.healthSettings = new UntypedFormGroup({
-      health_screen_mtd: new UntypedFormControl()
+      health_screen_mtd: new UntypedFormControl(),
     });
   }
 
   ngOnInit() {
     // this.route.params.subscribe((params) => {
-      this.id = this.route.snapshot.paramMap.get('id');
+    this.id = this.route.snapshot.paramMap.get('id');
 
-      this.displayName = this._cookieService.get('display_name');
-      this.email = this._cookieService.get('email');
-      /*this.imageURL = this._cookieService.get("user_image");   */
-      if (this.userType != '2') this.getRoles();
-      else {
-        this.showCard = true;
-        this.getPaymentDetails();
-      }
+    this.displayName = this._cookieService.get('display_name');
+    this.email = this._cookieService.get('email');
+    /*this.imageURL = this._cookieService.get("user_image");   */
+    if (this.userType != '2') this.getRoles();
+    else {
+      this.showCard = true;
+      this.getPaymentDetails();
+    }
 
-      this.getChartsTips();
-      this.getStripeKey();
+    this.getChartsTips();
+    this.getStripeKey();
 
-      this.stripeTest = this.fb.group({
-        name: ['', [Validators.required]]
-      });
+    this.stripeTest = this.fb.group({
+      name: ['', [Validators.required]],
+    });
     // });
   }
-
-
 
   public stripePublicKey: any = '';
   getStripeKey() {
@@ -224,18 +222,18 @@ export class ProfileSettingsComponent implements OnInit {
   }
 
   getStripeForm() {
-    this.stripeService.elements(this.elementsOptions).subscribe((elements) => {
+    this.stripeService.elements(this.elementsOptions).subscribe(elements => {
       this.elements = elements;
       // Only mount the element the first time
       if (!this.card) {
         this.cardNumber = this.elements.create('cardNumber', {
-          style: this.cardStyle
+          style: this.cardStyle,
         });
         this.cardExpiry = this.elements.create('cardExpiry', {
-          style: this.expStyle
+          style: this.expStyle,
         });
         this.cardCvc = this.elements.create('cardCvc', {
-          style: this.cvcStyle
+          style: this.cvcStyle,
         });
         this.cardNumber.mount('#example3-card-number');
         this.cardExpiry.mount('#example3-card-expiry');
@@ -253,28 +251,26 @@ export class ProfileSettingsComponent implements OnInit {
   public permisions = '';
   public showCard = false;
   getRoles() {
-    this.rolesUsersService.getRoles().subscribe(
-      {
-        next: (res) => {
-          if (res.status == 200) {
-            res.body.data.forEach((result) => {
-              if (result.role_id == this._cookieService.get('user_type'))
-                this.permisions = result.permisions;
-            });
-  
-            if (
-              (this.permisions,
-              this.permisions.split(',').indexOf('profilesettings') >= 0 &&
-                this.userType != '7')
-            ) {
-              this.showCard = true;
-              this.getPaymentDetails();
-            }
+    this.rolesUsersService.getRoles().subscribe({
+      next: res => {
+        if (res.status == 200) {
+          res.body.data.forEach(result => {
+            if (result.role_id == this._cookieService.get('user_type'))
+              this.permisions = result.permisions;
+          });
+
+          if (
+            (this.permisions,
+            this.permisions.split(',').indexOf('profilesettings') >= 0 &&
+              this.userType != '7')
+          ) {
+            this.showCard = true;
+            this.getPaymentDetails();
           }
-        },
-        error: (error) => {}
-      }
-    );
+        }
+      },
+      error: error => {},
+    });
   }
   /* CHECK PERMISSIONS */
   // Sufix and prefix
@@ -283,42 +279,40 @@ export class ProfileSettingsComponent implements OnInit {
   public last_invoic_id;
   buy() {
     const name: any = this.stripeTest.get('name').value;
-    this.stripeService
-      .createToken(this.cardNumber, { name })
-      .subscribe((obj) => {
-        if (obj.token) {
-          this.token = obj.token.id;
-          $('.ajax-loader').show();
-          this.profileSettingsService
-            .updateCardRetryPayment(
-              this.token,
-              this.customer_id,
-              this.last_invoic_id
-            )
-            .subscribe(
-              (res) => {
-                $('.ajax-loader').hide();
-                if (res.status == 200) {
-                  this.getPaymentDetails();
-                  if (res.body.data == 'Payment Generated Successfully!') {
-                    Swal.fire('', 'Payment Generated Succesfully!', 'success');
-                  } else if (res.body.data == 'Card Updated Successfully!') {
-                    Swal.fire('', 'Card Updated Successfully!', 'success');
-                  }
-                } else if (res.body.message == 'error') {
-                  Swal.fire(
-                    '',
-                    'Some issue with your card, Please try again!',
-                    'error'
-                  );
+    this.stripeService.createToken(this.cardNumber, { name }).subscribe(obj => {
+      if (obj.token) {
+        this.token = obj.token.id;
+        $('.ajax-loader').show();
+        this.profileSettingsService
+          .updateCardRetryPayment(
+            this.token,
+            this.customer_id,
+            this.last_invoic_id
+          )
+          .subscribe(
+            res => {
+              $('.ajax-loader').hide();
+              if (res.status == 200) {
+                this.getPaymentDetails();
+                if (res.body.data == 'Payment Generated Successfully!') {
+                  Swal.fire('', 'Payment Generated Succesfully!', 'success');
+                } else if (res.body.data == 'Card Updated Successfully!') {
+                  Swal.fire('', 'Card Updated Successfully!', 'success');
                 }
-              },
-              (error) => {}
-            );
-        } else {
-          console.log('Error comes ');
-        }
-      });
+              } else if (res.body.message == 'error') {
+                Swal.fire(
+                  '',
+                  'Some issue with your card, Please try again!',
+                  'error'
+                );
+              }
+            },
+            error => {}
+          );
+      } else {
+        console.log('Error comes ');
+      }
+    });
   }
 
   retryPayment() {
@@ -326,7 +320,7 @@ export class ProfileSettingsComponent implements OnInit {
     this.profileSettingsService
       .retryPayment(this.customer_id, this.last_invoic_id)
       .subscribe(
-        (res) => {
+        res => {
           $('.ajax-loader').hide();
           if (res.status == 200) {
             this.getPaymentDetails();
@@ -339,13 +333,13 @@ export class ProfileSettingsComponent implements OnInit {
             );
           }
         },
-        (error) => {}
+        error => {}
       );
   }
   public subscription_id = '';
   getPaymentDetails() {
     this.profileSettingsService.getPaymentDetails().subscribe(
-      (res) => {
+      res => {
         if (res.status == 200) {
           this.last_invoic_id = res.body.data.lastinvoiceid;
           this.customer_id = res.body.data.customer_id;
@@ -362,98 +356,94 @@ export class ProfileSettingsComponent implements OnInit {
           this.router.navigateByUrl('/login');
         }
       },
-      (error) => {
+      error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
       }
     );
   }
   public last4;
   getprofileSettings() {
-    this.profileSettingsService.getprofileSettings(this.id).subscribe(
-      {
-        next: (res) => {
-          if (res.status == 200) {
-            this.displayName = res.body.data[0].displayName;
-            this.email = res.body.data[0].email;
-          }
-        },
-        error: (error) => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
+    this.profileSettingsService.getprofileSettings(this.id).subscribe({
+      next: res => {
+        if (res.status == 200) {
+          this.displayName = res.body.data[0].displayName;
+          this.email = res.body.data[0].email;
         }
-      }                                                                           
-    );
+      },
+      error: error => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      },
+    });
   }
   getCardDetails() {
     this.profileSettingsService.getCardDetails(this.customer_id).subscribe(
-      (res) => {
+      res => {
         this.last4 = res.last4;
       },
-      (error) => {}
+      error => {}
     );
   }
 
   setupIntent() {
     const name = this.stripeTest.get('name').value;
-    this.stripeService
-      .createToken(this.cardNumber, { name })
-      .subscribe((obj) => {
-        if (obj.token) {
-          $('.ajax-loader').show();
-          this.profileSettingsService
-            .createSetupIntent(this.customer_id)
-            .subscribe((res) => {
-              if (res.status == 200) {
-                this.stripeService
-                  .confirmCardSetup(res.body.data.client_secret, {
-                    payment_method: {
-                      card: this.cardNumber,
-                      billing_details: {
-                        name: 'dsf'
-                      }
-                    }
-                  })
-                  .subscribe((result) => {
+    this.stripeService.createToken(this.cardNumber, { name }).subscribe(obj => {
+      if (obj.token) {
+        $('.ajax-loader').show();
+        this.profileSettingsService
+          .createSetupIntent(this.customer_id)
+          .subscribe(res => {
+            if (res.status == 200) {
+              this.stripeService
+                .confirmCardSetup(res.body.data.client_secret, {
+                  payment_method: {
+                    card: this.cardNumber,
+                    billing_details: {
+                      name: 'dsf',
+                    },
+                  },
+                })
+                .subscribe(result => {
+                  this.cardNumber.clear();
+                  this.cardCvc.clear();
+                  this.cardExpiry.clear();
+                  if (
+                    result.setupIntent &&
+                    result.setupIntent.status == 'succeeded'
+                  ) {
+                    this.updateCustomerCard();
+                  } else {
+                    $('.ajax-loader').hide();
                     this.cardNumber.clear();
                     this.cardCvc.clear();
                     this.cardExpiry.clear();
-                    if (
-                      result.setupIntent &&
-                      result.setupIntent.status == 'succeeded'
-                    ) {
-                      this.updateCustomerCard();
-                    } else {
-                      $('.ajax-loader').hide();
-                      this.cardNumber.clear();
-                      this.cardCvc.clear();
-                      this.cardExpiry.clear();
-                      Swal.fire(
-                        '',
-                        'There was an issue updating your card details - please contact Jeeve support',
-                        'error'
-                      );
-                    }
-                  });
-              } else if (res.body.message == 'error') {
-                $('.ajax-loader').hide();
-                this.cardNumber.clear();
-                this.cardCvc.clear();
-                this.cardExpiry.clear();
-                Swal.fire(
-                  '',
-                  'There was an issue updating your card details - please contact Jeeve support',
-                  'error'
-                );
-              }
-            });
-        } else {
-          console.log('Error comes ');
-        }
-      });
+                    Swal.fire(
+                      '',
+                      'There was an issue updating your card details - please contact Jeeve support',
+                      'error'
+                    );
+                  }
+                });
+            } else if (res.body.message == 'error') {
+              $('.ajax-loader').hide();
+              this.cardNumber.clear();
+              this.cardCvc.clear();
+              this.cardExpiry.clear();
+              Swal.fire(
+                '',
+                'There was an issue updating your card details - please contact Jeeve support',
+                'error'
+              );
+            }
+          });
+      } else {
+        console.log('Error comes ');
+      }
+    });
   }
   updateCustomerCard() {
     this.profileSettingsService
       .updateCustomerCard(this.customer_id)
-      .subscribe((res) => {
+      .subscribe(res => {
         if (res.status == 200) {
           this.getCardDetails();
           $('.ajax-loader').hide();
@@ -478,7 +468,7 @@ export class ProfileSettingsComponent implements OnInit {
     this.profileSettingsService
       .updateprofileSettings(this.displayName, this.email)
       .subscribe(
-        (res) => {
+        res => {
           $('.ajax-loader').hide();
           if (res.status == 200) {
             let opts = this.constants.cookieOpt as CookieOptions;
@@ -493,7 +483,7 @@ export class ProfileSettingsComponent implements OnInit {
             this.toastr.success('Profile Settings Updated .');
           }
         },
-        (error) => {
+        error => {
           this.warningMessage = 'Please Provide Valid Inputs!';
         }
       );
@@ -503,22 +493,20 @@ export class ProfileSettingsComponent implements OnInit {
     this.health_screen_mtd = this.healthSettings.value.health_screen_mtd;
     this.profileSettingsService
       .updateprofileSettingsHealthScreen(this.health_screen_mtd)
-      .subscribe(
-        {
-          next: (res) => {
-            if (res.status == 200) {
-              this._cookieService.put(
-                'health_screen_mtd',
-                this.health_screen_mtd
-              );
-              this.toastr.success('Profile Settings Updated .');
-            }
-          },
-          error: (error) => {
-            this.warningMessage = 'Please Provide Valid Inputs!';
+      .subscribe({
+        next: res => {
+          if (res.status == 200) {
+            this._cookieService.put(
+              'health_screen_mtd',
+              this.health_screen_mtd
+            );
+            this.toastr.success('Profile Settings Updated .');
           }
-        }
-      );
+        },
+        error: error => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        },
+      });
   }
 
   public errorLogin = false;
@@ -534,7 +522,7 @@ export class ProfileSettingsComponent implements OnInit {
     required: false,
     minlength: false,
     pattern: false,
-    crequired: false
+    crequired: false,
   };
   public currentPasswordError = { required: false };
   onSubmitPassword() {
@@ -542,7 +530,7 @@ export class ProfileSettingsComponent implements OnInit {
       required: false,
       minlength: false,
       pattern: false,
-      crequired: false
+      crequired: false,
     };
     this.currentPasswordError = { required: false };
     if (this.form.controls['currentPassword'].hasError('required')) {
@@ -576,7 +564,7 @@ export class ProfileSettingsComponent implements OnInit {
       this.profileSettingsService
         .updatePassword(this.currentPassword, this.newPassword)
         .subscribe(
-          (res) => {
+          res => {
             if (res.status == 200) {
               this.toastr.success(res.body.data);
               this.form.reset();
@@ -584,7 +572,7 @@ export class ProfileSettingsComponent implements OnInit {
               this.toastr.error(res.body.data);
             }
           },
-          (error) => {
+          error => {
             this.toastr.error('Please Provide Valid Inputs!');
           }
         );
@@ -602,10 +590,10 @@ export class ProfileSettingsComponent implements OnInit {
   getChartsTips() {
     this.chartsTipsLoader = true;
     this.profileSettingsService.getChartsTips().subscribe(
-      (resp) => {
+      resp => {
         this.chartsTipsLoader = false;
         if (resp.status == 200) {
-          resp.body.data.forEach((tip) => {
+          resp.body.data.forEach(tip => {
             if (typeof (this.dashboards[tip.dashboard_id] == 'undefined')) {
               this.dashboards[tip.dashboard_id] = tip.dashboard_name;
 
@@ -627,13 +615,13 @@ export class ProfileSettingsComponent implements OnInit {
               description: tip.tip_description
                 ? tip.tip_description
                 : tip.description,
-              dashboard_id: tip.dashboard_id
+              dashboard_id: tip.dashboard_id,
             };
             this.chartsTips[tip.dashboard_id].push(temp);
           });
         }
       },
-      (error) => {}
+      error => {}
     );
   }
   /******** GET CHARTS TIPS*****/
@@ -643,13 +631,13 @@ export class ProfileSettingsComponent implements OnInit {
     this.chartsTipsLoader = true;
     var tipsData: any = JSON.stringify(this.chartsTips);
     this.profileSettingsService.saveChartsTips(tipsData).subscribe(
-      (resp) => {
+      resp => {
         this.chartsTipsLoader = false;
         if (resp.status == 200) {
           Swal.fire('', 'Chart Tips have been updated successfully', 'success');
         }
       },
-      (error) => {}
+      error => {}
     );
   }
   /******** SAVE CHARTS TIPS*****/

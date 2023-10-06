@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { CancellationRatioResponse } from './frontdesk.interfaces';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FrontDeskService {
   public token: string;
@@ -34,7 +34,7 @@ export class FrontDeskService {
     let headers = {
       headers: new HttpHeaders(),
       withCredentials: true,
-      observe: 'response' as const
+      observe: 'response' as const,
     };
     return headers;
   }
@@ -58,7 +58,8 @@ export class FrontDeskService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -86,7 +87,8 @@ export class FrontDeskService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -115,7 +117,8 @@ export class FrontDeskService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -144,7 +147,8 @@ export class FrontDeskService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -173,7 +177,8 @@ export class FrontDeskService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -183,7 +188,11 @@ export class FrontDeskService {
       );
   }
   //Referral to Other Clinicians Internal / External
-  fdWorkTimeAnalysisTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  fdWorkTimeAnalysisTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -191,7 +200,8 @@ export class FrontDeskService {
           '/FrontDesk/fdUtilisationRateTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -209,7 +219,8 @@ export class FrontDeskService {
           '/FrontDesk/fdFtaRatioTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -227,7 +238,8 @@ export class FrontDeskService {
           '/FrontDesk/fdUtaRatioTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -238,7 +250,11 @@ export class FrontDeskService {
   }
 
   //Referral to Other Clinicians Internal / External
-  fdNumberOfTicksTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  fdNumberOfTicksTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -246,7 +262,8 @@ export class FrontDeskService {
           '/FrontDesk/fdNumTicksTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -275,7 +292,8 @@ export class FrontDeskService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -304,7 +322,8 @@ export class FrontDeskService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration + (queryWhEnabled > 0?'&wh=1': ''),
+          duration +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -315,7 +334,12 @@ export class FrontDeskService {
   }
 
   //Referral to Other Clinicians Internal / External
-  fdRecallPrebookRateTrend(dentist_id, clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  fdRecallPrebookRateTrend(
+    dentist_id,
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -325,7 +349,8 @@ export class FrontDeskService {
           '&mode=' +
           mode +
           '&provider_id=' +
-          dentist_id + (queryWhEnabled > 0?'&wh=1': ''),
+          dentist_id +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -335,7 +360,11 @@ export class FrontDeskService {
       );
   }
 
-  frontdeskdRecallPrebookRateTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  frontdeskdRecallPrebookRateTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -343,7 +372,8 @@ export class FrontDeskService {
           '/FrontDesk/fdRecallRateTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -361,7 +391,11 @@ export class FrontDeskService {
   //                 })
   //     );
   // }
-  fdReappointRateTrend(clinic_id, mode = '', queryWhEnabled = 0): Observable<any> {
+  fdReappointRateTrend(
+    clinic_id,
+    mode = '',
+    queryWhEnabled = 0
+  ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -369,7 +403,8 @@ export class FrontDeskService {
           '/FrontDesk/fdReappointRateTrend?clinic_id=' +
           clinic_id +
           '&mode=' +
-          mode + (queryWhEnabled > 0?'&wh=1': ''),
+          mode +
+          (queryWhEnabled > 0 ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -395,8 +430,8 @@ export class FrontDeskService {
           start_date: startDate,
           end_date: endDate,
           duration,
-          queryWhEnabled: (queryWhEnabled > 0?'&wh=1': '')
-        }
+          queryWhEnabled: queryWhEnabled > 0 ? '&wh=1' : '',
+        },
       })
       .pipe(
         map(
@@ -417,8 +452,8 @@ export class FrontDeskService {
         params: {
           clinic_id: clinicIds,
           mode,
-          queryWhEnabled: (queryWhEnabled > 0?'&wh=1': '')
-        }
+          queryWhEnabled: queryWhEnabled > 0 ? '&wh=1' : '',
+        },
       })
       .pipe(
         map(

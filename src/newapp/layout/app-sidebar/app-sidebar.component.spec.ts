@@ -11,9 +11,8 @@ describe('AppSidebarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppSidebarComponent ]
-    })
-    .compileComponents();
+      declarations: [AppSidebarComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

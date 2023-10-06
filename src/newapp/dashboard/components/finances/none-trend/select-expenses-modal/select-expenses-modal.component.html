@@ -1,47 +1,50 @@
 <div class="dialog-header">
-    <h1 mat-dialog-title>Select Expenses</h1>
-    <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
+  <h1 mat-dialog-title>Select Expenses</h1>
+  <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
+</div>
+<div mat-dialog-content>
+  <div class="items-move">
+    <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
+    <ng-template #mainElem>
+      <div class="selected">
+        <h4>Selected Expenses</h4>
+        <div class="board">
+          <button
+            *ngFor="let category of selectedData; let i = index"
+            (click)="removeFromSelected(i)"
+            mat-stroked-button
+            color="primary"
+            extended>
+            <mat-icon>close</mat-icon>
+            {{ category.name.split('--')[0] }}
+          </button>
+        </div>
+      </div>
+      <div class="none-selected">
+        <h4>Other Expenses</h4>
+        <div class="board">
+          <button
+            *ngFor="let category of unSelectedData; let i = index"
+            (click)="addToSelected(i)"
+            mat-stroked-button
+            color="primary"
+            extended>
+            <mat-icon>add</mat-icon>
+            {{ category.name.split('--')[0] }}
+          </button>
+        </div>
+      </div>
+    </ng-template>
   </div>
-  <div mat-dialog-content>
-    <div class="items-move">
-        <spin-loader *ngIf="(isLoading$ | async); else mainElem"></spin-loader>
-        <ng-template #mainElem>
-            <div class="selected">
-                <h4>Selected Expenses</h4>
-                <div class="board">
-                    <button 
-                        *ngFor="let category of selectedData;let i = index;" 
-                        (click)="removeFromSelected(i)" 
-                        mat-stroked-button color="primary" extended
-                    >
-                        <mat-icon>close</mat-icon>
-                        {{ category.name.split('--')[0] }}
-                    </button>
-                </div>
-            </div>
-            <div class="none-selected">
-                <h4>Other Expenses</h4>
-                <div class="board">
-                    <button 
-                        *ngFor="let category of unSelectedData; let i = index;" 
-                        (click)="addToSelected(i)" 
-                        mat-stroked-button color="primary" extended
-                    >
-                        <mat-icon>add</mat-icon>
-                        {{ category.name.split('--')[0] }}
-                    </button>
-                </div>
-            </div>
-        </ng-template>
-    </div>
-  </div>
-  <div mat-dialog-actions class="justify-between">
-      <button mat-stroked-button 
-        (click)="onNoClick()">Cancel</button>
-      <button 
-        mat-flat-button
-        color="primary"
-        [disabled]="(isLoading$ | async)"
-        (click)="refreshFinanceChart()"
-        cdkFocusInitial>Save</button>
-  </div>
+</div>
+<div mat-dialog-actions class="justify-between">
+  <button mat-stroked-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="isLoading$ | async"
+    (click)="refreshFinanceChart()"
+    cdkFocusInitial>
+    Save
+  </button>
+</div>

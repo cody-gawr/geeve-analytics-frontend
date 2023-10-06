@@ -1,35 +1,35 @@
-import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
-import { DashboardFacade } from "@/newapp/dashboard/facades/dashboard.facade";
-import { FinanceFacade } from "@/newapp/dashboard/facades/finance.facade";
-import { MarketingFacade } from "@/newapp/dashboard/facades/marketing.facade";
-import { LayoutFacade } from "@/newapp/layout/facades/layout.facade";
-import { DateRangeMenus } from "@/newapp/shared/components/date-range-menu/date-range-menu.component";
-import { splitName } from "@/newapp/shared/utils";
-import { DecimalPipe } from "@angular/common";
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { ChartOptions, LegendOptions, ChartDataset } from "chart.js";
-import { _DeepPartialObject } from "chart.js/dist/types/utils";
-import _ from "lodash";
-import { Subject, takeUntil, combineLatest, map } from "rxjs";
-import { MkSelectAccountsModalComponent } from "../select-accounts-modal/select-accounts-modal.component";
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
+import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
+import { splitName } from '@/newapp/shared/utils';
+import { DecimalPipe } from '@angular/common';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import _ from 'lodash';
+import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { MkSelectAccountsModalComponent } from '../select-accounts-modal/select-accounts-modal.component';
 
 @Component({
-  selector: "new-patients-acq-chart",
-  templateUrl: "./new-patients-acq.component.html",
-  styleUrls: ["./new-patients-acq.component.scss"],
+  selector: 'new-patients-acq-chart',
+  templateUrl: './new-patients-acq.component.html',
+  styleUrls: ['./new-patients-acq.component.scss'],
 })
 export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
-  @Input() toolTip = "";
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
   get trendingIcon() {
     if (this.newPatientsAcqVal >= this.newPatientsAcqPrev) {
-      return "trending_up";
+      return 'trending_up';
     }
-    return "trending_down";
+    return 'trending_down';
   }
 
   get maxNewPatientsAcqGoal() {
@@ -43,7 +43,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   get isActivePatients$() {
     return this.marketingFacade.isActivePatients$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
@@ -82,42 +82,42 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map((v) => typeof v == "string")
+      map(v => typeof v == 'string')
     );
   }
 
   get durationLabel$() {
     return this.layoutFacade.durationLabel$.pipe(
       takeUntil(this.destroy$),
-      map((val) => val)
+      map(val => val)
     );
   }
 
   get durationTrendLabel$() {
     return this.layoutFacade.durationTrendLabel$.pipe(
       takeUntil(this.destroy$),
-      map((l) => l)
+      map(l => l)
     );
   }
 
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
-      map((t) => t !== "off")
+      map(t => t !== 'off')
     );
   }
 
   get isConnectedWith$() {
     return this.dashboardFacade.connectedWith$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v && v != "none")
+      map(v => v && v != 'none')
     );
   }
 
   get isFullMonthsDateRange$() {
     return this.layoutFacade.isFullMonthsDateRange$.pipe(
       takeUntil(this.destroy$),
-      map((v) => v)
+      map(v => v)
     );
   }
 
@@ -173,14 +173,14 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
 
   public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
-    position: "bottom",
+    position: 'bottom',
     labels: {
       boxWidth: 8,
       usePointStyle: true,
-      generateLabels: (chart) => {
+      generateLabels: chart => {
         let labels = [];
         let bg_color = {};
-        chart.data.datasets.forEach((item) => {
+        chart.data.datasets.forEach(item => {
           item.data.forEach((val: number) => {
             if (val > 0) {
               labels.push(item.label);
@@ -190,7 +190,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
         });
         labels = [...new Set(labels)];
         labels = labels.splice(0, 10);
-        return labels.map((item) => ({
+        return labels.map(item => ({
           text: item,
           strokeStyle: bg_color[item],
           fillStyle: bg_color[item],
@@ -199,12 +199,12 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     },
   };
 
-  public stackedChartOptions: ChartOptions<"bar"> = {
+  public stackedChartOptions: ChartOptions<'bar'> = {
     elements: {
       point: {
         radius: 5,
         hoverRadius: 7,
-        pointStyle: "rectRounded",
+        pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
     },
@@ -212,7 +212,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     maintainAspectRatio: false,
     animation: {
       duration: 500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     scales: {
       x: {
@@ -230,20 +230,20 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
         display: true,
       },
       tooltip: {
-        mode: "x",
+        mode: 'x',
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
-          label: (tooltipItems) => {
+          label: tooltipItems => {
             return (
               tooltipItems.label +
-              ": " +
+              ': ' +
               this.decimalPipe.transform(tooltipItems.parsed.y)
             );
           },
           title: function () {
-            return "";
+            return '';
           },
         },
       },
@@ -253,7 +253,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     // showLines: false,
     animation: {
       duration: 1500,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
     },
     responsive: true,
     maintainAspectRatio: false,
@@ -269,23 +269,23 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
         ticks: {
           callback: (label: string) => {
             // when the floored value is the same as the value we have a whole number
-            return "$" + this.decimalPipe.transform(label);
+            return '$' + this.decimalPipe.transform(label);
           },
         },
       },
     },
     plugins: {
       tooltip: {
-        mode: "x",
+        mode: 'x',
         // custom: (tooltip: Chart.ChartTooltipModel) => {
         //   tooltip.displayColors = false;
         // },
         callbacks: {
-          label: (tooltipItems) => {
-            return tooltipItems.label + ": $" + tooltipItems.formattedValue;
+          label: tooltipItems => {
+            return tooltipItems.label + ': $' + tooltipItems.formattedValue;
           },
           title: function () {
-            return "";
+            return '';
           },
         },
       },
@@ -294,27 +294,27 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   };
 
   barChartColors = [
-    { backgroundColor: "#39acac" },
-    { backgroundColor: "#48daba" },
+    { backgroundColor: '#39acac' },
+    { backgroundColor: '#48daba' },
   ];
 
   lineChartColors = [
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
-    "#EEEEF8",
-    "#119682",
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
+    '#EEEEF8',
+    '#119682',
   ];
 }

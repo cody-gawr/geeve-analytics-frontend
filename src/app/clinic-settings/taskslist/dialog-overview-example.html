@@ -4,15 +4,24 @@
 
   <div mat-dialog-content class="sa_forms_design tasksList">
     <div *ngIf="!showAddItem">
-
       <div class="sa-form-group">
         <label>Task List Name</label>
-        <input [(ngModel)]="data.list_name" class="mat-form-control" required="true" placeholder="">
+        <input
+          [(ngModel)]="data.list_name"
+          class="mat-form-control"
+          required="true"
+          placeholder="" />
       </div>
       <div class="sa-form-group">
         <label>Assigned To</label>
-        <mat-select [(ngModel)]="data.assigned_roles" placeholder="Assigned Roles" [multiple]="true" #multiSelect>
-          <mat-option #allSelected (click)="toggleAllSelection()" [value]="'0'">All</mat-option>
+        <mat-select
+          [(ngModel)]="data.assigned_roles"
+          placeholder="Assigned Roles"
+          [multiple]="true"
+          #multiSelect>
+          <mat-option #allSelected (click)="toggleAllSelection()" [value]="'0'"
+            >All</mat-option
+          >
           <mat-option *ngFor="let user of assigneeData" [value]="user.id">
             {{user.name}}
           </mat-option>
@@ -22,7 +31,11 @@
     <div *ngIf="showAddItem">
       <div class="sa-form-group">
         <label>Task Name</label>
-        <input [(ngModel)]="data.task_name" class="mat-form-control" required="true" placeholder="">
+        <input
+          [(ngModel)]="data.task_name"
+          class="mat-form-control"
+          required="true"
+          placeholder="" />
       </div>
     </div>
   </div>
@@ -30,21 +43,35 @@
     <div>
       <table class="editTaskList">
         <tr>
-          <th> Item </th>
-          <th> Action </th>
+          <th>Item</th>
+          <th>Action</th>
         </tr>
         <ng-container *ngIf="addTaskInput">
           <tr>
             <td>
-              <input (keydown.enter)="addTaskIn(data)" type="text" #task required autoFocus placeholder="New Task">
+              <input
+                (keydown.enter)="addTaskIn(data)"
+                type="text"
+                #task
+                required
+                autofocus
+                placeholder="New Task" />
               <div class="alert alert-danger task-add-error">
                 <small *ngIf="taskAddErr">Task name required.</small>
               </div>
             </td>
             <td>
               <span class="action">
-                <a (click)="addTaskIn(data)" class="action_btn golden ng-star-inserted"><i class="ti-save m-r-10"></i></a>
-                <a (click)="addTaskInput = false" class="action_btn danger ng-star-inserted"><i class="ti-trash m-r-10"></i></a>
+                <a
+                  (click)="addTaskIn(data)"
+                  class="action_btn golden ng-star-inserted"
+                  ><i class="ti-save m-r-10"></i
+                ></a>
+                <a
+                  (click)="addTaskInput = false"
+                  class="action_btn danger ng-star-inserted"
+                  ><i class="ti-trash m-r-10"></i
+                ></a>
               </span>
             </td>
           </tr>
@@ -53,49 +80,91 @@
           <tr
             *ngFor="let item of data.tasksListItems | paginate: { itemsPerPage: data.itemsPerPage, currentPage: data.currPage ,totalItems: data.totalRecords};let i =index;">
             <td>
-              <input type="text" autoFocus placeholder="New Task" [readonly]="item.readOnly"
-                [(ngModel)]="item.task_name">
+              <input
+                type="text"
+                autofocus
+                placeholder="New Task"
+                [readonly]="item.readOnly"
+                [(ngModel)]="item.task_name" />
             </td>
             <td>
               <span class="action">
-                <a *ngIf="item.readOnly" (click)="markRead(i,data.itemsPerPage,data.currPage)"
-                  class="action_btn golden ng-star-inserted"><i class="ti-pencil m-r-10"></i></a>
-                <a *ngIf="!item.readOnly" (window:keypress)="onKeyPress($event,i,data.itemsPerPage,data.currPage)"
-                  (click)="updateItem(i,data.itemsPerPage,data.currPage)" class="action_btn golden ng-star-inserted"><i
-                    class="ti-save m-r-10"></i></a>
+                <a
+                  *ngIf="item.readOnly"
+                  (click)="markRead(i,data.itemsPerPage,data.currPage)"
+                  class="action_btn golden ng-star-inserted"
+                  ><i class="ti-pencil m-r-10"></i
+                ></a>
+                <a
+                  *ngIf="!item.readOnly"
+                  (window:keypress)="onKeyPress($event,i,data.itemsPerPage,data.currPage)"
+                  (click)="updateItem(i,data.itemsPerPage,data.currPage)"
+                  class="action_btn golden ng-star-inserted"
+                  ><i class="ti-save m-r-10"></i
+                ></a>
               </span>
-              <span class="action" (click)="removeItem(i,data.itemsPerPage,data.currPage)">
-                <a title="Delete" class="action_btn danger ng-star-inserted"><i class="ti-trash m-r-10"></i></a>
+              <span
+                class="action"
+                (click)="removeItem(i,data.itemsPerPage,data.currPage)">
+                <a title="Delete" class="action_btn danger ng-star-inserted"
+                  ><i class="ti-trash m-r-10"></i
+                ></a>
               </span>
             </td>
           </tr>
         </ng-container>
         <tr *ngIf="!data.tasksListItems.length">
           <td colspan="2" align="center">No task list items added yet</td>
-
         </tr>
       </table>
       <div *ngIf="data.totalRecords > 10">
-        <pagination-controls [maxSize]="maxSize" [autoHide]="autoHide" (pageChange)="pageChanged($event)">
+        <pagination-controls
+          [maxSize]="maxSize"
+          [autoHide]="autoHide"
+          (pageChange)="pageChanged($event)">
         </pagination-controls>
       </div>
-       
     </div>
   </div>
   <div mat-dialog-actions class="justify-between list">
     <!-- <i *ngIf="data.list_id" class="fa fa-plus m-r-10" (click)="additemNew(data)">Add Task</i> -->
-    <button *ngIf="!addTaskInput && data.list_id" class="mat-raised-button mat-dc float-right ng-star-inserted"
-      (click)="addTaskInput = true">Add Task</button>
-    <button *ngIf="addTaskInput && data.list_id" class="mat-raised-button mat-dc float-right ng-star-inserted"
-      (click)="addTaskIn(data)">Add Task</button>
+    <button
+      *ngIf="!addTaskInput && data.list_id"
+      class="mat-raised-button mat-dc float-right ng-star-inserted"
+      (click)="addTaskInput = true">
+      Add Task
+    </button>
+    <button
+      *ngIf="addTaskInput && data.list_id"
+      class="mat-raised-button mat-dc float-right ng-star-inserted"
+      (click)="addTaskIn(data)">
+      Add Task
+    </button>
     <!-- <i *ngIf="data.list_id" (click)="additemNew(data)">Add Task</i> -->
   </div>
   <div mat-dialog-actions class="justify-between">
-    <button mat-button (click)="onNoClick()" 
-      tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-    <button *ngIf="!data.list_id" (click)="save(data)" [disabled]="data.list_name == '' || data.assigned_roles == '' "
-      tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
-    <button *ngIf="data.list_id" [disabled]="data.list_name == '' || data.assigned_roles == ''" (click)="update(data)"
-      tabindex="2" class="mat-raised-button mat-dc float-right">Update</button>
+    <button
+      mat-button
+      (click)="onNoClick()"
+      tabindex="-1"
+      class="mat-raised-button mat-gray">
+      Cancel
+    </button>
+    <button
+      *ngIf="!data.list_id"
+      (click)="save(data)"
+      [disabled]="data.list_name == '' || data.assigned_roles == '' "
+      tabindex="2"
+      class="mat-raised-button mat-dc float-right">
+      Save
+    </button>
+    <button
+      *ngIf="data.list_id"
+      [disabled]="data.list_name == '' || data.assigned_roles == ''"
+      (click)="update(data)"
+      tabindex="2"
+      class="mat-raised-button mat-dc float-right">
+      Update
+    </button>
   </div>
 </div>
