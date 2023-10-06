@@ -6,7 +6,7 @@ import { CookieService } from 'ngx-cookie';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MorningHuddleService {
   public token: string;
@@ -32,7 +32,7 @@ export class MorningHuddleService {
     let headers = {
       headers: new HttpHeaders(),
       withCredentials: true,
-      observe: 'response' as const
+      observe: 'response' as const,
     };
     return headers;
   }
@@ -1043,9 +1043,9 @@ export class MorningHuddleService {
     original_appt_date,
     nextReach = ''
   ): Observable<{
-    status: boolean,
-    message: 'success' | 'already'
-    $getRecord: any
+    status: boolean;
+    message: 'success' | 'already';
+    $getRecord: any;
   }> {
     var header = this.getHeaders();
     const formData = new FormData();
@@ -1065,12 +1065,15 @@ export class MorningHuddleService {
       );
   }
   // Users api
-  createPaymentIntent(creditAmount: number, clinic_id: number): Observable<{
+  createPaymentIntent(
+    creditAmount: number,
+    clinic_id: number
+  ): Observable<{
     data: {
-      totalAmount: number,
-      taxAmount: number,
-      clientSecret: string
-    }
+      totalAmount: number;
+      taxAmount: number;
+      clientSecret: string;
+    };
   }> {
     const header = this.getHeaders();
     return this.http
@@ -1078,7 +1081,7 @@ export class MorningHuddleService {
         this.apiUrl + '/reviews/createPaymentIntent',
         {
           amount: creditAmount,
-          clinic_id
+          clinic_id,
         },
         header
       )
@@ -1113,7 +1116,7 @@ export class MorningHuddleService {
         {
           clinic_id: clinic_id,
           appts: appt_ids,
-          date: date
+          date: date,
         },
         header
       )
@@ -1140,7 +1143,7 @@ export class MorningHuddleService {
           patient_id,
           review_msg,
           phone_number,
-          appoint_id
+          appoint_id,
         },
         header
       )

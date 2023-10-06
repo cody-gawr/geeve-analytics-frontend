@@ -55,6 +55,7 @@ import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/
 import * as _ from 'lodash';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { TermsConditionsDialog } from './terms-conditions-dialog/terms-conditions-dialog.component';
+import { HeaderService } from '@/app/layouts/full/header/header.service';
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -480,7 +481,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     private localStorageService: LocalStorageService,
     private morningHuddleService: MorningHuddleService,
     private _cookieService: CookieService,
-    //private headerService: HeaderService,
+    private headerService: HeaderService,
     private router: Router,
     private toastr: ToastrService,
     public constants: AppConstants,
@@ -508,9 +509,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    //console.log(this.homeUrl + "assets/js/jquery.min.js");
-    /*this.dataSource1.sort = this.sort1;
-    this.dataSource2.sort = this.sort2;*/
+    this.getAllClinics();
     const q = new URLSearchParams(window.location.search);
     const tabIndex = parseInt(q.get('tab') ?? '0');
     this.changeTab(tabIndex);
@@ -536,6 +535,15 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.autoCall = setInterval(function () {
       self.refreshDataAuto();
     }, 1000 * 300);
+  }
+
+  public clinics = [];
+  getAllClinics() {
+    this.headerService.getClinic.subscribe(res => {
+      if (res.status == 200) {
+        this.clinics = res.body.data.map(item => item.id);
+      }
+    });
   }
 
   updateCreditStatus() {
@@ -587,17 +595,13 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   initiate_clinic() {
     this.selectDentist = 0;
     this.user_type = this._cookieService.get('user_type');
-    console.log({
-      msg: 'Triggered initiate_clinic of morning.huddle.component.ts',
-      where: 'initiate_clinic',
-    });
-    console.log({ userType: this.user_type, where: 'initiate_clinic' });
 
     $('.external_clinic').show();
     //$('.dentist_dropdown').hide();
     $('.header_filters').addClass('flex_direct_mar');
     $('.header_filters').removeClass('hide_header');
     var val = $('#currentClinic').attr('cid');
+    console.log({ clinicId: val });
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
       $('#title').html('Morning Huddle');
@@ -674,10 +678,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       }
 
       if (this.user_type != '4') {
-        // this.getEndOfDays();
         this.getEquipmentList();
       }
       this.getChartsTips();
+    } else if (val == 'all') {
+      this.clinic_id = this.clinics;
     }
     this.getEndOfDays();
   }
@@ -717,7 +722,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.getFollowupScripts();
     }
     if (this.user_type != '4') {
-      // this.getEndOfDays();
       this.getEquipmentList();
     }
     this.getEndOfDays();
@@ -1355,6 +1359,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.endTaksLoading = true;
     this.futureDateDT = '';
     this.tasklistArray = [];
+    console.log({
+      clinicId: this.clinic_id,
+      previousDays: this.previousDays,
+    });
     this.morningHuddleService
       .getEndOfDays(this.clinic_id, this.previousDays)
       .subscribe(
@@ -1996,7 +2004,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.morningHuddleService
       .updateEndStatus(event.checked, tid, thid, cid, this.previousDays)
       .subscribe((update: any) => {
-        // this.getEndOfDays();
         this.getEndOfDaysUpdatelist();
       });
   }
@@ -2119,8 +2126,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.morningHuddleService
         .updateEquimentList(dataJson, this.clinic_id, this.previousDays)
         .subscribe((update: any) => {
-          // this.getEndOfDays();
-          // this.getEndOfDaysUpdatelist();
           this.getEquipmentList();
         });
     }
