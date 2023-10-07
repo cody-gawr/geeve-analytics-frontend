@@ -24,8 +24,8 @@ export function correctTime(value: string) {
       hh = '0' + hh;
     }
     hh = hh.substring(0, 4);
+
     return hh.replace(/^(\d{0,2})(\d{0,2})/, '$1:$2');
-    //newVal = newVal.replace(/^(\d{0,2})(\d{0,2})/, '$1:$2');
   } else if (hh.length > 2 && s.length > 1) {
     hh = hh.substring(0, 2);
     let mm = s[1].replace(/\D/g, '');
