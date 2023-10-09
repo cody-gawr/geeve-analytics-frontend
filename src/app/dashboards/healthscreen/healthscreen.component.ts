@@ -254,7 +254,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.chTopCards();
       this.chPrebookedVisits();
-      if (this.isCore) {
+      if (!(this.isCore || this.isExact)) {
         this.chUtilisationRate();
       }
       this.chUnscheduledProd();
