@@ -1,9 +1,7 @@
-// import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
-// import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import {
   JeeveLineFillOptions,
-  externalTooltipHandler,
+  externalTooltipHandlerHiddenColorBoxes,
 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
@@ -29,51 +27,6 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
     numVisits: number;
     prodPerVisits: number;
   }[];
-
-  get isLoading$() {
-    return this.financeFacade.isLoadingFnProdPerVisitTrend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
-  }
-
-  get chartOptions() {
-    return this.labelBarOptionsSingleValue;
-  }
-
-  constructor(
-    private financeFacade: FinanceFacade,
-    // private layoutFacade: LayoutFacade,
-    private decimalPipe: DecimalPipe // private clinicFacade: ClinicFacade
-  ) {
-    combineLatest([
-      this.financeFacade.prodPerVisitTrendChartData$,
-      // this.layoutFacade.trend$,
-    ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([chartData]) => {
-        this.datasets = [
-          {
-            data: [],
-            label: '',
-            //shadowOffsetX: 3,
-            //backgroundColor: "rgba(0, 0, 255, 0.2)",
-          },
-        ];
-        this.labels = [];
-        this.chartData = chartData;
-        chartData.forEach(values => {
-          this.datasets[0].data.push(values.value);
-          this.labels.push(values.label);
-        });
-      });
-  }
-
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.destroy.next();
-  }
 
   public labelBarOptionsSingleValue: ChartOptions<'line'> = {
     elements: {
@@ -114,16 +67,16 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
     },
     plugins: {
       legend: {
-        display: true,
+        display: false,
       },
       tooltip: {
         mode: 'x',
-        displayColors(ctx, options) {
+        displayColors: (ctx, options) => {
           return !ctx.tooltip;
         },
         enabled: false,
         position: 'nearest',
-        external: externalTooltipHandler,
+        external: externalTooltipHandlerHiddenColorBoxes,
         callbacks: {
           label: (tooltipItem: TooltipItem<any>) => {
             let label = tooltipItem.label;
@@ -135,7 +88,7 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
                 currency: 'USD',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
-              }).format(Number(tooltipItem.parsed.y))}`
+              }).format(Number(tooltipItem.parsed.y))} Test`
             );
 
             labelItems.push(
@@ -154,14 +107,6 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
               }).format(extraData.numVisits)}`
             );
 
-            // labelItems.push(
-            //   `Production Per Visit : ${new Intl.NumberFormat('en-US', {
-            //     style: 'currency',
-            //     currency: 'USD',
-            //     minimumFractionDigits: 0,
-            //     maximumFractionDigits: 0,
-            //   }).format(extraData.prodPerVisits)}`
-            // );
             return labelItems;
           },
           title: () => '',
@@ -170,97 +115,38 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
     },
   };
 
-  // public barChartOptionsTrend: ChartOptions<'bar'> = {
-  //   // scaleShowVerticalLines: false,
-  //   // cornerRadius: 60,
-  //   hover: { mode: null },
-  //   // curvature: 1,
-  //   animation: {
-  //     duration: 1500,
-  //     easing: 'easeOutSine',
-  //   },
-  //   responsive: true,
-  //   maintainAspectRatio: false,
-  //   // scaleStartValue: 0,
-  //   scales: {
-  //     x: {
-  //       grid: {
-  //         display: true,
-  //         offset: true,
-  //       },
-  //       ticks: {
-  //         autoSkip: false,
-  //       },
-  //       display: false,
-  //       offset: true,
-  //       stacked: true,
-  //     },
-  //     y: {
-  //       suggestedMin: 0,
-  //       min: 0,
-  //       beginAtZero: true,
-  //       ticks: {
-  //         callback: (label: number, index, labels) => {
-  //           // when the floored value is the same as the value we have a whole number
-  //           if (Math.floor(label) === label) {
-  //             return '$' + this.decimalPipe.transform(label);
-  //           }
-  //           return '';
-  //         },
-  //       },
-  //     },
-  //   },
-  //   plugins: {
-  //     tooltip: {
-  //       mode: 'x',
-  //       displayColors(ctx, options) {
-  //         return !ctx.tooltip;
-  //       },
-  //       callbacks: {
-  //         // use label callback to return the desired label
-  //         label: tooltipItem => {
-  //           const v = tooltipItem.parsed.y;
-  //           let Tlable = tooltipItem.dataset.label;
-  //           if (Tlable != '') {
-  //             Tlable = Tlable + ': ';
-  //           }
-  //           //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-  //           let ylable = tooltipItem.parsed._custom
-  //             ? +(
-  //                 tooltipItem.parsed._custom.max +
-  //                 tooltipItem.parsed._custom.min
-  //               ) / 2
-  //             : v;
-  //           if (ylable == 0 && Tlable == 'Target: ') {
-  //             //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
-  //             return '';
-  //           } else {
-  //             return (
-  //               Tlable + splitName(tooltipItem.label).join(' ') + ': $' + ylable
-  //             );
-  //           }
-  //         },
-  //         // remove title
-  //         title: function (tooltipItem) {
-  //           return '';
-  //         },
-  //       },
-  //     },
-  //     legend: {
-  //       position: 'top',
-  //       onClick: function (e, legendItem) {
-  //         var index = legendItem.datasetIndex;
-  //         var ci = this.chart;
-  //         if (index == 0) {
-  //           ci.getDatasetMeta(1).hidden = true;
-  //           ci.getDatasetMeta(index).hidden = false;
-  //         } else if (index == 1) {
-  //           ci.getDatasetMeta(0).hidden = true;
-  //           ci.getDatasetMeta(index).hidden = false;
-  //         }
-  //         ci.update();
-  //       },
-  //     },
-  //   },
-  // };
+  get isLoading$() {
+    return this.financeFacade.isLoadingFnProdPerVisitTrend$.pipe(
+      takeUntil(this.destroy$),
+      map(v => v)
+    );
+  }
+
+  constructor(
+    private financeFacade: FinanceFacade,
+    private decimalPipe: DecimalPipe // private clinicFacade: ClinicFacade
+  ) {}
+
+  ngOnInit(): void {
+    combineLatest([this.financeFacade.prodPerVisitTrendChartData$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([chartData]) => {
+        this.datasets = [
+          {
+            data: [],
+            label: '',
+          },
+        ];
+        this.labels = [];
+        this.chartData = chartData;
+        chartData.forEach(values => {
+          this.datasets[0].data.push(values.value);
+          this.labels.push(values.label);
+        });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+  }
 }

@@ -543,11 +543,8 @@ export class FrontDeskComponent implements AfterViewInit {
       tooltip: {
         mode: 'x',
         enabled: true,
-        // custom: function (tooltip: ChartTooltipModel) {
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
-          return false;
+          return !ctx.tooltip;
         },
         callbacks: {
           label: function (tooltipItems) {
@@ -603,148 +600,8 @@ export class FrontDeskComponent implements AfterViewInit {
       legend: this.stackLegendGenerator,
       tooltip: {
         mode: 'x',
-        // enabled: false,
-        // external: function (t) {
-        //   const tooltip = t.tooltip;
-        //   const chart = t.chart;
-        //   if (!tooltip) return;
-        //   var tooltipEl = document.getElementById('chartjs-tooltip');
-        //   if (!tooltipEl) {
-        //     tooltipEl = document.createElement('div');
-        //     tooltipEl.id = 'chartjs-tooltip';
-        //     tooltipEl.style.backgroundColor = '#FFFFFF';
-        //     tooltipEl.style.borderColor = '#B2BABB';
-        //     tooltipEl.style.borderWidth = 'thin';
-        //     tooltipEl.style.borderStyle = 'solid';
-        //     tooltipEl.style.zIndex = '999999';
-        //     tooltipEl.style.backgroundColor = '#000000';
-        //     tooltipEl.style.color = '#FFFFFF';
-        //     document.body.appendChild(tooltipEl);
-        //   }
-        //   if (tooltip.opacity === 0) {
-        //     tooltipEl.style.opacity = '0';
-        //     return;
-        //   } else {
-        //     tooltipEl.style.opacity = '0.8';
-        //   }
-
-        //   tooltipEl.classList.remove('above', 'below', 'no-transform');
-        //   if (tooltip.yAlign) {
-        //     tooltipEl.classList.add(tooltip.yAlign);
-        //   } else {
-        //     tooltipEl.classList.add('no-transform');
-        //   }
-
-        //   function getBody(bodyItem) {
-        //     let result = [];
-        //     bodyItem.forEach((items) => {
-        //       items.lines.forEach((item) => {
-        //         if (item.split(':')[1].trim() != '$NaN') {
-        //           result.push(items.lines);
-        //         }
-        //       });
-        //     });
-        //     return result;
-        //     // return bodyItem.lines;
-        //   }
-        //   if (tooltip.body) {
-        //     var titleLines = tooltip.title || [];
-        //     var bodyLines = getBody(tooltip.body);
-        //     // var bodyLines = tooltip.body.map(getBody);
-        //     var labelColorscustom = tooltip.labelColors;
-        //     var innerHtml = '<table><thead>';
-        //     innerHtml += '</thead><tbody>';
-
-        //     let total: any = 0;
-        //     bodyLines.forEach(function (body, i) {
-        //       if (!body[0].includes('$0')) {
-        //         var singleval = body[0].split(':');
-        //         if (singleval[1].includes('-')) {
-        //           var temp = singleval[1].split('$');
-        //           var amount = temp[1].replace(/,/g, '');
-        //           total -= parseFloat(amount);
-        //         } else {
-        //           var temp = singleval[1].split('$');
-        //           var amount = temp[1].replace(/,/g, '');
-        //           total += parseFloat(amount);
-        //         }
-        //       }
-        //     });
-        //     total = Math.round(total);
-        //     if (total != 0) {
-        //       var num_parts = total.toString().split('.');
-        //       num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        //       total = num_parts.join('.');
-        //     }
-        //     titleLines.forEach(function (title) {
-        //       innerHtml +=
-        //         '<tr><th colspan="2" style="text-align: left;">' +
-        //         title +
-        //         ': ' +
-        //         total +
-        //         '</th></tr>';
-        //     });
-        //     bodyLines.forEach(function (body, i) {
-        //       if (!body[0].includes('$0')) {
-        //         var body_custom = body[0];
-        //         body_custom = body_custom.split(':');
-        //         if (body_custom[1].includes('-')) {
-        //           var temp_ = body_custom[1].split('$');
-        //           temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-        //           temp_[1] = temp_[1].toString();
-        //           temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-        //           body_custom[1] = temp_.join('');
-        //         } else {
-        //           var temp_ = body_custom[1].split('$');
-        //           temp_[1] = Math.round(temp_.length > 1?temp_[1].replace(/,/g, ''):0);
-        //           temp_[1] = temp_[1].toString();
-        //           temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(',');
-        //           body_custom[1] = temp_.join('');
-        //         }
-
-        //         body[0] = body_custom.join(':');
-        //         innerHtml +=
-        //           '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-        //           labelColorscustom[i].backgroundColor +
-        //           '"></span></td><td style="padding: 0px">' +
-        //           body[0] +
-        //           '</td></tr>';
-        //       }
-        //     });
-        //     innerHtml += '</tbody></table>';
-        //     tooltipEl.innerHTML = innerHtml;
-        //     //tableRoot.innerHTML = innerHtml;
-        //   }
-        //   // disable displaying the color box;
-        //   var position = chart.canvas.getBoundingClientRect();
-        //   // Display, position, and set styles for font
-        //   tooltipEl.style.position = 'fixed';
-        //   tooltipEl.style.left =
-        //     position.left + window.pageXOffset + tooltip.caretX - 70 + 'px';
-        //   tooltipEl.style.top =
-        //     position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        //   // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        //   // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        //   // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        //   // tooltipEl.style.padding =
-        //   //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        //   tooltipEl.style.pointerEvents = 'none';
-        // },
-        // displayColors: false,
         callbacks: {
           label: function (tooltipItems) {
-            // let currency = tooltipItems.formattedValue.toString();
-            // let currencySegs = currency.split('.');
-            // currencySegs[0] = currencySegs[0]
-            //   .split('-')
-            //   .join('')
-            //   .split(/(?=(?:...)*$)/)
-            //   .join(',');
-            // currency = currencySegs.join('.');
-            // return (
-            //   tooltipItems.dataset.label +
-            //   `: ${parseInt(tooltipItems.formattedValue.toString()) < 0 ? '- $' : '$'}${currency}`
-            // );
             return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`;
           },
           title: function (tooltipItems) {
@@ -903,7 +760,6 @@ export class FrontDeskComponent implements AfterViewInit {
       y: {
         min: 0,
         max: 100,
-        // stacked:true,
         ticks: {
           callback: function (label, index, labels) {
             return label + '%';
@@ -914,17 +770,12 @@ export class FrontDeskComponent implements AfterViewInit {
     plugins: {
       tooltip: {
         mode: 'x',
-        // custom: function (tooltip) {
-        //   if (!tooltip) return;
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
           label: function (tooltipItems) {
             let label = tooltipItems.label;
-            //let total = parseInt(tooltipItems.formattedValue.toString()) > 100 ? 100 : tooltipItems.formattedValue;
             if ((<string>tooltipItems.label).indexOf('--') >= 0) {
               let lbl = (<string>tooltipItems.label).split('--');
               if (typeof lbl[3] === 'undefined') {
@@ -1084,15 +935,12 @@ export class FrontDeskComponent implements AfterViewInit {
         hoverBorderWidth: 7,
       },
     },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine',
     },
-    // fill: false,
     scales: {
       x: {
         stacked: true,
@@ -1115,12 +963,7 @@ export class FrontDeskComponent implements AfterViewInit {
     },
     plugins: {
       tooltip: {
-        // custom: function (tooltip) {
-        //   if (!tooltip) return;
-        //   // disable displaying the color box;
-        //   tooltip.displayColors = false;
-        // },
-        displayColors(ctx, options) {
+        displayColors: (ctx, options) => {
           return !ctx.tooltip;
         },
         callbacks: {
@@ -3476,35 +3319,6 @@ export class FrontDeskComponent implements AfterViewInit {
                     ? this.datePipe.transform(item.duration, 'MMM y')
                     : item.duration
                 );
-                // res.body.data.forEach((res) => {
-                //   let reappointSum = 0;
-                //   res.val.forEach((reslt, key) => {
-                //     reappointSum += Math.round(reslt.reappoint_rate);
-                //     // if (typeof (this.tPChartTrendMulti[key]) == 'undefined') {
-                //     //   this.tPChartTrendMulti[key] = { data: [], label: '' };
-                //     // }
-                //     // if (typeof (this.tPChartTrendMulti[key]['data']) == 'undefined') {
-                //     //   this.tPChartTrendMulti[key]['data'] = [];
-                //     // }
-
-                //     //   this.tPChartTrendMulti[key]['data'].push(Math.round(reslt.reappoint_rate));
-                //     //   this.tPChartTrendMulti[key]['label'] = reslt.clinic_name;
-                //     //   this.tPChartTrendMulti[key]['backgroundColor'] = this.doughnutChartColors[key];
-                //     //   this.tPChartTrendMulti[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                //   });
-                //   // this.tPChartTrendMulti[0]['data'].push(Math.round(((reappointSum / res.val.length) + Number.EPSILON) * 100) / 100);
-                //   this.tPChartTrendMulti[0]['data'].push(
-                //     reappointSum / res.val.length
-                //   );
-                //   this.tPChartTrendMulti[0]['backgroundColor'] =
-                //     this.doughnutChartColors[0];
-                //   if (this.trendValue == 'c')
-                //     this.tPChartTrendMultiLabels1.push(
-                //       this.datePipe.transform(res.duration, 'MMM y')
-                //     );
-                //   else this.tPChartTrendMultiLabels1.push(res.duration);
-                // });
-                // this.tPChartTrendMultiLabels = this.tPChartTrendMultiLabels1;
               } else {
                 this.treatmentPrebookChartTrendLabels1 = [];
                 this.treatmentPrebookChartTrend1 = [];
