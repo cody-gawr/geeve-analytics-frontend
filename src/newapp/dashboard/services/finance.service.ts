@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import * as _ from 'lodash';
 import { environment } from '@/environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -353,6 +353,7 @@ export class FinanceService {
         }
       )
       .pipe(
+        tap(res => console.log(res)),
         map(
           res => <FnExpensesTrendApiResponse>camelcaseKeys(res, { deep: true })
         )

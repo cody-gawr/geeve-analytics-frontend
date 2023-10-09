@@ -1249,14 +1249,15 @@ export const selectProdPerVisitTrendChartData = createSelector(
 );
 
 export const selectExpensesTrendChartData = createSelector(
+  selectCurrentClinics,
   selectExpensesTrendData,
   selectExpensesTrendDurations,
   selectTrend,
-  (expensesTrendData, expensesTrendDurations, trendMode) => {
+  (currentClinics, expensesTrendData, expensesTrendDurations, trendMode) => {
     const chartDataset = [];
     return _.chain(expensesTrendData)
-      .groupBy('accountName')
-      .map((values, accountName) => {
+      .groupBy(currentClinics.length > 0 ? 'clinicName' : 'accountName')
+      .map((values, name) => {
         const data = _.chain(values)
           .groupBy(trendMode === 'current' ? 'yearMonth' : 'year')
           .map((subValues, duration) => {
@@ -1272,7 +1273,7 @@ export const selectExpensesTrendChartData = createSelector(
             const item = data.find(d => d.duration == dur);
             return !!item ? Math.round(item.expense) : 0;
           }),
-          label: accountName,
+          label: name,
         };
       })
       .value();

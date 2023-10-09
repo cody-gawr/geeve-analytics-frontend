@@ -43,7 +43,9 @@ export class FinancesComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private router: Router,
     private authFacade: AuthFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -52,21 +54,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
       this.layoutFacade.trend$,
       this.dashbordFacade.connectedClinicId$,
     ])
-      .pipe(
-        takeUntil(this.destroy$)
-        // distinctUntilChanged((prev, curr) => {
-        //   return (
-        //     prev[0] == curr[0] &&
-        //     ((prev[1].duration !== "custom" &&
-        //       prev[1].duration == curr[1].duration) ||
-        //       (prev[1].start?.isSame(curr[1].start) &&
-        //         prev[1].end?.isSame(curr[1].end))) &&
-        //     prev[2] == curr[2] &&
-        //     prev[3] == curr[3] &&
-        //     prev[4] == curr[4]
-        //   );
-        // })
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
         const [
           clinicId,
@@ -195,8 +183,6 @@ export class FinancesComponent implements OnInit, OnDestroy {
         this.noPermission = true;
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

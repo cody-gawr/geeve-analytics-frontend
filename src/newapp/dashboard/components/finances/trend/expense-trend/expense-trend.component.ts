@@ -43,7 +43,9 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
     private financeFacade: FinanceFacade,
     private dashboardFacade: DashboardFacade,
     private layoutFacade: LayoutFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.financeFacade.expensesTrendChartData$,
       this.financeFacade.expensesTrendDurations$,
@@ -71,8 +73,6 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
             : durations;
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();
