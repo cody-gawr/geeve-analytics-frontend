@@ -281,8 +281,6 @@ export const externalTooltipHandler = <T extends ChartType>(
   tooltipEl.style.fontStyle = 'Gilroy-Regular';
   tooltipEl.style.padding =
     tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
-
-  console.log(tooltipEl);
 };
 
 export const externalTooltipHandlerHiddenColorBoxes = <T extends ChartType>(
@@ -365,6 +363,4 @@ export const externalTooltipHandlerHiddenColorBoxes = <T extends ChartType>(
   tooltipEl.style.fontStyle = 'Gilroy-Regular';
   tooltipEl.style.padding =
     tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
-
-  console.log(tooltipEl);
 };

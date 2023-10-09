@@ -108,7 +108,9 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private decimalPipe: DecimalPipe
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.financeFacade.prodPerVisitTotal$,
       this.financeFacade.prodPerVisitTrendTotal$,
@@ -133,13 +135,11 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit(): void {}
-
   ngOnDestroy(): void {
     this.destroy.next();
   }
 
-  public barChartOptionsTrend: ChartOptions<'bar'> = {
+  public barChartOptions: ChartOptions<'bar'> = {
     // scaleShowVerticalLines: false,
     // cornerRadius: 60,
     hover: { mode: null },
@@ -190,13 +190,10 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
         callbacks: {
           // use label callback to return the desired label
           label: tooltipItem => {
-            //const v = tooltipItem.parsed.y;
-            //let Tlable = tooltipItem.dataset.label;
-            let label = tooltipItem.label;
             const extraData = this.chartData[tooltipItem.dataIndex];
             const labelItems = [];
             labelItems.push(
-              `${label} : ${new Intl.NumberFormat('en-US', {
+              `Prod Per Visit : ${new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'USD',
                 minimumFractionDigits: 0,
@@ -220,24 +217,6 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
               }).format(parseFloat(<string>extraData.numVisits))}`
             );
             return labelItems;
-            // if (Tlable != '') {
-            //   Tlable = Tlable + ': ';
-            // }
-            // //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-            // let ylable = tooltipItem.parsed._custom
-            //   ? +(
-            //       tooltipItem.parsed._custom.max +
-            //       tooltipItem.parsed._custom.min
-            //     ) / 2
-            //   : v;
-            // if (ylable == 0 && Tlable == 'Target: ') {
-            //   //return  Tlable + this.splitName(tooltipItem.xLabel).join(' ');
-            //   return '';
-            // } else {
-            //   return (
-            //     Tlable + splitName(tooltipItem.label).join(' ') + ': $' + ylable
-            //   );
-            // }
           },
           // remove title
           title: () => '',
@@ -260,9 +239,4 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
       },
     },
   };
-
-  // barChartColors = [
-  //   { backgroundColor: '#39acac' },
-  //   { backgroundColor: '#48daba' },
-  // ];
 }
