@@ -74,13 +74,6 @@ export class DialogOverviewExampleDialogComponent {
   }
 
   file: File;
-  // onChange(event: EventTarget) {
-  //   let eventObj: MSInputMethodContext = <MSInputMethodContext>event;
-  //   let target: HTMLInputElement = <HTMLInputElement>eventObj.target;
-  //   let files: FileList = target.files;
-  //   this.file = files[0];
-  //   //  this.filedata =this.file;
-  // }
   connectToCore() {
     this.isConnectedCore = true;
   }
