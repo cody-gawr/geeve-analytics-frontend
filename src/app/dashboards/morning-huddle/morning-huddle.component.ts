@@ -1653,9 +1653,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.refreshScheduleTab(this.selectDentist);
               // this.appointmentCards.data = production.data;
             }
-            console.log({
-              res: res.body.data,
-            });
+
             res.body.data.forEach(val => {
               // check for duplicate values
               const dentists = this.clinicDentists.filter(
@@ -1702,10 +1700,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               let a = x.provider_name.toUpperCase(),
                 b = y.provider_name.toUpperCase();
               return a == b ? 0 : a > b ? 1 : -1;
-            });
-
-            console.log({
-              clinicDentists: this.clinicDentists,
             });
           } else if (res.status == 401) {
             this.handleUnAuthorization();
