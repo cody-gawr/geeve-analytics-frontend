@@ -470,11 +470,11 @@
       <div id="mh-dentist-schedule-print">
         <div class="morning-huddle-date">
           <div>
+            AAA
             <mat-form-field
               floatLabel="never"
               class="dentist-select"
               *ngIf="clinicDentists.length > 0 && user_type != '4'">
-              <!-- <mat-label>Select Dentist</mat-label> -->
               <mat-select
                 (selectionChange)="refreshScheduleTab($event.value)"
                 id="setPreviousDay2"
@@ -487,7 +487,6 @@
                 >
               </mat-select>
             </mat-form-field>
-            <!-- <button [useExistingCss]="true" printSectionId="mh-dentist-schedule-print" ngxPrint tabindex="2" class="mat-raised-button mat-dc float-right"><i class="fa fa-print"></i> Print</button> -->
             <button
               id="p-bttom"
               (click)="printDentistScheduleTab()"

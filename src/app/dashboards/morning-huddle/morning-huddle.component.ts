@@ -300,7 +300,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public endOfDaysTasksDate: any = '';
   public endTaksLoading: boolean = true;
   public showComplete: boolean = false;
-  public clinicDentists: any = [];
+  public clinicDentists: any[] = [];
   public currentDentist: any = 0;
   public currentDentistSchedule: any = 0;
 
@@ -647,7 +647,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         /***** Tab 1 ***/
         /***** Tab 2 ***/
         //this.getSchedulePatients(null);
-        console.log('calling getAppointmentCards');
         this.getAppointmentCards(null);
       }
       if (this.user_type != '4') {
@@ -716,8 +715,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   refreshScheduleTab(event) {
-    console.log(event);
-
     this.appointmentCardsLoaders = true;
     this.scheduleNewPatientsLoader = true;
     this.currentDentistSchedule = event;
@@ -1347,10 +1344,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.endTaksLoading = true;
     this.futureDateDT = '';
     this.tasklistArray = [];
-    console.log({
-      clinicId: this.clinic_id,
-      previousDays: this.previousDays,
-    });
     this.morningHuddleService
       .getEndOfDays(this.clinic_id, this.previousDays)
       .subscribe(
@@ -1641,14 +1634,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             if (res.body.lab_needed_enable == 1) {
               this.LabNeeded = true;
             }
+
             this.clinicTotal = res.body.total;
-
-            console.log({
-              data: res.body.data,
-              user_type: this.user_type,
-              currentDentist: this.currentDentist,
-            });
-
             this.appointmentCardsTemp = res.body.data;
 
             if (this.user_type == '4') {
@@ -1666,12 +1653,15 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.refreshScheduleTab(this.selectDentist);
               // this.appointmentCards.data = production.data;
             }
+            console.log({
+              res: res.body.data,
+            });
             res.body.data.forEach(val => {
               // check for duplicate values
-              var isExsist = this.clinicDentists.filter(function (person) {
-                return person.provider_id == val.provider_id;
-              });
-              if (isExsist.length <= 0) {
+              const dentists = this.clinicDentists.filter(
+                person => person.provider_id == val.provider_id
+              );
+              if (dentists.length == 0) {
                 var nm =
                   val.jeeve_name != '' && val.jeeve_name
                     ? val.jeeve_name
@@ -1692,10 +1682,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               ) {
                 const hyg_id = parseInt(val.hyg_id);
                 if (hyg_id > 0) {
-                  var isExsist1 = this.clinicDentists.filter(function (person) {
-                    return person.hyg_id == hyg_id;
-                  });
-                  if (isExsist1.length <= 0) {
+                  const dentists = this.clinicDentists.filter(
+                    person => person.hyg_id == hyg_id
+                  );
+                  if (dentists.length == 0) {
                     var temp1 = {
                       hyg_id: hyg_id,
                       provider_id: null,
@@ -1712,6 +1702,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               let a = x.provider_name.toUpperCase(),
                 b = y.provider_name.toUpperCase();
               return a == b ? 0 : a > b ? 1 : -1;
+            });
+
+            console.log({
+              clinicDentists: this.clinicDentists,
             });
           } else if (res.status == 401) {
             this.handleUnAuthorization();
@@ -1998,7 +1992,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
   updateToComplete(checked) {
     this.showComplete = checked;
-    console.log(`ShowComplete = ${this.showComplete}`);
     if (checked) {
       this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
     } else {
@@ -2041,7 +2034,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   updateToCompleteFT(event: MatCheckboxChange) {
-    console.log('updateToCompleteFT');
     this.showCompleteFta = event.checked;
     if (event.checked) {
       this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
@@ -2050,7 +2042,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         (p: any) => p.is_complete != 1
       );
     }
-    console.log(this.followupFtaFollowupsInCMP);
   }
 
   updateToCompleteUT(event: MatCheckboxChange) {
