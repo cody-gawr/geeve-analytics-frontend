@@ -91,39 +91,83 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
         if (typeof clinicId === 'string') {
           this.datasets = [];
           let i = 0;
+          // _.chain(expenses)
+          //   .groupBy('accountName')
+          //   .map((items, accountName) => {
+          //     return {
+          //       items,
+          //       accountName,
+          //     };
+          //   })
+          //   .value()
+          //   .forEach(v => {
+          //     const bgColor = DoughnutChartColors[i];
+          //     i++;
+          //     this.datasets.push({
+          //       data: _.chain(v.items)
+          //         .orderBy('clinicId', 'asc')
+          //         .value()
+          //         .map(item => {
+          //           const clinicProd = parseFloat(
+          //             <string>(
+          //               resBody.productions.find(
+          //                 p => p.clinicId == item.clinicId
+          //               )?.production
+          //             )
+          //           );
+          //           return ((item.expense / clinicProd) * 100).toFixed(1);
+          //         }),
+          //       label: v.accountName,
+          //       backgroundColor: bgColor,
+          //       hoverBackgroundColor: bgColor,
+          //     });
+          //   });
+
           _.chain(expenses)
-            .groupBy('accountName')
-            .map((items, accountName) => {
+            .orderBy('clinicId', 'asc')
+            .groupBy('clinicId')
+            .map((items, clinicId) => {
               return {
                 items,
-                accountName,
+                clinicId,
+                clinicName: items[0].clinicName,
               };
             })
             .value()
-            .forEach(v => {
-              const bgColor = DoughnutChartColors[i];
-              i++;
-              this.datasets.push({
-                data: _.chain(v.items)
-                  .orderBy('clinicId', 'asc')
-                  .value()
-                  .map(item => {
-                    const clinicProd = parseFloat(
-                      <string>(
-                        resBody.productions.find(
-                          p => p.clinicId == item.clinicId
-                        )?.production
-                      )
-                    );
-                    return ((item.expense / clinicProd) * 100).toFixed(1);
-                  }),
-                label: v.accountName,
-                backgroundColor: bgColor,
-                hoverBackgroundColor: bgColor,
-              });
+            .forEach(row => {
+              _.chain(row.items)
+                .groupBy('accountName')
+                .map((accItems, accountName) => {
+                  return {
+                    accItems,
+                    accountName,
+                  };
+                })
+                .value()
+                .forEach(finalRow => {
+                  const bgColor = DoughnutChartColors[i];
+                  i++;
+                  this.datasets.push({
+                    data: finalRow.accItems.map(item => {
+                      const clinicProd = parseFloat(
+                        <string>(
+                          resBody.productions.find(
+                            p => p.clinicId == item.clinicId
+                          )?.production
+                        )
+                      );
+                      return ((item.expense / clinicProd) * 100).toFixed(1);
+                    }),
+                    label: finalRow.accountName,
+                    backgroundColor: bgColor,
+                    hoverBackgroundColor: bgColor,
+                  });
+                });
             });
+
           this.labels = _.chain(expenses)
-            .unionBy(item => item.clinicName)
+            .orderBy('clinicId', 'asc')
+            .unionBy(item => item.clinicId)
             .value()
             .map(item => item.clinicName);
         } else {
