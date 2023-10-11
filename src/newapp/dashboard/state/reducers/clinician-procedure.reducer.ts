@@ -377,18 +377,32 @@ export const selectCpPredictorAnalysisChartData = createSelector(
         .map(items => {
           return {
             ...items[0],
-            whitening: _.sumBy(items, item => parseInt(<string>item.whitening)),
-            imp_crowns: _.sumBy(items, item =>
-              parseInt(<string>item.impCrowns)
+            whitening: _.sumBy(items, item =>
+              Math.round(parseFloat(<string>item.whitening))
             ),
-            crowns: _.sumBy(items, item => parseInt(<string>item.crowns)),
-            splints: _.sumBy(items, item => parseInt(<string>item.splints)),
-            rct: _.sumBy(items, item => parseInt(<string>item.rct)),
-            perio: _.sumBy(items, item => parseInt(<string>item.perio)),
-            extract: _.sumBy(items, item => parseInt(<string>item.extract)),
-            ss_crowns: _.sumBy(items, item => parseInt(<string>item.ssCrowns)),
+            imp_crowns: _.sumBy(items, item =>
+              Math.round(parseFloat(<string>item.impCrowns))
+            ),
+            crowns: _.sumBy(items, item =>
+              Math.round(parseFloat(<string>item.crowns))
+            ),
+            splints: _.sumBy(items, item =>
+              Math.round(parseFloat(<string>item.splints))
+            ),
+            rct: _.sumBy(items, item =>
+              Math.round(parseFloat(<string>item.rct))
+            ),
+            perio: _.sumBy(items, item =>
+              Math.round(parseFloat(<string>item.perio))
+            ),
+            extract: _.sumBy(items, item =>
+              Math.round(parseFloat(<string>item.extract))
+            ),
+            ss_crowns: _.sumBy(items, item =>
+              Math.round(parseFloat(<string>item.ssCrowns))
+            ),
             comp_veneers: _.sumBy(items, item =>
-              parseInt(<string>item.compVeneers)
+              Math.round(parseFloat(<string>item.compVeneers))
             ),
           };
         })
@@ -431,14 +445,14 @@ export const selectCpPredictorAnalysisChartData = createSelector(
         let ipKey = null;
         if (item.providerName != null) {
           if (
-            parseInt(<string>item.crowns) +
-              parseInt(<string>item.splints) +
-              parseInt(<string>item.rct) +
-              parseInt(<string>item.perio) +
-              parseInt(<string>item.extract) +
-              parseInt(<string>item.ssCrowns) +
-              parseInt(<string>item.compVeneers) +
-              parseInt(<string>item.impCrowns) >
+            Math.round(parseFloat(<string>item.crowns)) +
+              Math.round(parseFloat(<string>item.splints)) +
+              Math.round(parseFloat(<string>item.rct)) +
+              Math.round(parseFloat(<string>item.perio)) +
+              Math.round(parseFloat(<string>item.extract)) +
+              Math.round(parseFloat(<string>item.ssCrowns)) +
+              Math.round(parseFloat(<string>item.compVeneers)) +
+              Math.round(parseFloat(<string>item.impCrowns)) >
             0
           ) {
             stackedChartData1.push(item.crowns);
@@ -459,15 +473,15 @@ export const selectCpPredictorAnalysisChartData = createSelector(
 
         let temp = {
           name: item.providerName,
-          Crowns_Onlays: parseInt(<string>item.crowns),
-          Splints: parseInt(<string>item.splints),
-          RCT: parseInt(<string>item.rct),
-          Perio: parseInt(<string>item.perio),
-          Surg_Ext: parseInt(<string>item.extract),
-          Imp_Crowns: parseInt(<string>item.impCrowns),
-          SS_Crowns: parseInt(<string>item.ssCrowns),
-          Comp_Veneers: parseInt(<string>item.compVeneers),
-          Whitening: parseInt(<string>item.whitening),
+          Crowns_Onlays: Math.round(parseFloat(<string>item.crowns)),
+          Splints: Math.round(parseFloat(<string>item.splints)),
+          RCT: Math.round(parseFloat(<string>item.rct)),
+          Perio: Math.round(parseFloat(<string>item.perio)),
+          Surg_Ext: Math.round(parseFloat(<string>item.extract)),
+          Imp_Crowns: Math.round(parseFloat(<string>item.impCrowns)),
+          SS_Crowns: Math.round(parseFloat(<string>item.ssCrowns)),
+          Comp_Veneers: Math.round(parseFloat(<string>item.compVeneers)),
+          Whitening: Math.round(parseFloat(<string>item.whitening)),
         };
 
         paTableData.push(temp);
@@ -586,12 +600,12 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
         let ipKey = null;
         if (item.providerName != null) {
           if (
-            parseInt(<string>item.impSurg) +
-              parseInt(<string>item.orthoFix) +
-              parseInt(<string>item.sleep) +
-              parseInt(<string>item.orthoAlign) +
-              parseInt(<string>item.perioSurg) +
-              parseInt(<string>item.veneersInd) >
+            Math.round(parseFloat(<string>item.impSurg)) +
+              Math.round(parseFloat(<string>item.orthoFix)) +
+              Math.round(parseFloat(<string>item.sleep)) +
+              Math.round(parseFloat(<string>item.orthoAlign)) +
+              Math.round(parseFloat(<string>item.perioSurg)) +
+              Math.round(parseFloat(<string>item.veneersInd)) >
             0
           ) {
             stackedChartData1.push(item.impSurg);
@@ -610,13 +624,13 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
 
         let temp = {
           name: item.providerName,
-          Implant_Surg: parseInt(<string>item.impSurg),
-          Braces: parseInt(<string>item.orthoFix),
-          Aligners: parseFloat(<string>item.orthoAlign),
-          MAS: parseInt(<string>item.sleep),
-          Perio_Surg: parseInt(<string>item.perioSurg),
-          Endo_Re_treat: parseInt(<string>item.endoRetreat),
-          Veneers_ind: parseInt(<string>item.veneersInd),
+          Implant_Surg: Math.round(parseFloat(<string>item.impSurg)),
+          Braces: Math.round(parseFloat(<string>item.orthoFix)),
+          Aligners: Math.round(parseFloat(<string>item.orthoAlign)),
+          MAS: Math.round(parseFloat(<string>item.sleep)),
+          Perio_Surg: Math.round(parseFloat(<string>item.perioSurg)),
+          Endo_Re_treat: Math.round(parseFloat(<string>item.endoRetreat)),
+          Veneers_ind: Math.round(parseFloat(<string>item.veneersInd)),
         };
 
         paSpecialTableData.push(temp);
@@ -784,8 +798,8 @@ export const selectCpPredictorRatioChartData = createSelector(
                 chartDatasets1[1]['data'].push(ele.secondValue);
                 chartDatasets1[0]['label'] = 'Indirect Restorations';
                 chartDatasets1[1]['label'] = 'Large Direct Restorations';
-                ratio1 += parseInt(<string>ele.firstValue) || 0;
-                ratio2 += parseInt(<string>ele.secondValue) || 0;
+                ratio1 += Math.round(parseFloat(<string>ele.firstValue)) || 0;
+                ratio2 += Math.round(parseFloat(<string>ele.secondValue)) || 0;
                 multifulratio1 = ratio1 + ':' + ratio2;
                 chartLabels1.push(ele.clinicName);
                 break;
@@ -794,8 +808,8 @@ export const selectCpPredictorRatioChartData = createSelector(
                 chartDatasets2[1]['data'].push(ele.secondValue);
                 chartDatasets2[0]['label'] = 'RCT';
                 chartDatasets2[1]['label'] = 'Extractions';
-                ratio3 += parseInt(<string>ele.firstValue) || 0;
-                ratio4 += parseInt(<string>ele.secondValue) || 0;
+                ratio3 += Math.round(parseFloat(<string>ele.firstValue)) || 0;
+                ratio4 += Math.round(parseFloat(<string>ele.secondValue)) || 0;
                 multifulratio2 = ratio3 + ':' + ratio4;
                 chartLabels2.push(ele.clinicName);
                 break;
@@ -804,8 +818,8 @@ export const selectCpPredictorRatioChartData = createSelector(
                 chartDatasets3[1]['data'].push(ele.secondValue);
                 chartDatasets3[0]['label'] = "RCT's Started";
                 chartDatasets3[1]['label'] = "RCT's Completed";
-                ratio5 += parseInt(<string>ele.firstValue) || 0;
-                ratio6 += parseInt(<string>ele.secondValue) || 0;
+                ratio5 += Math.round(parseFloat(<string>ele.firstValue)) || 0;
+                ratio6 += Math.round(parseFloat(<string>ele.secondValue)) || 0;
                 multifulratio3 = ratio5 + ':' + ratio6;
                 chartLabels3.push(ele.clinicName);
                 break;
@@ -862,21 +876,33 @@ export const selectCpPredictorRatioChartData = createSelector(
         let provider = item.providerName ?? '';
         switch (item.type) {
           case 'crown-largefilling':
-            chartDatasets1[0]['data'].push(parseInt(<string>item.firstValue));
-            chartDatasets1[1]['data'].push(parseInt(<string>item.secondValue));
-            cpPredictorRatioAvr1 = parseInt(<string>item.ratio);
+            chartDatasets1[0]['data'].push(
+              Math.round(parseFloat(<string>item.firstValue))
+            );
+            chartDatasets1[1]['data'].push(
+              Math.round(parseFloat(<string>item.secondValue))
+            );
+            cpPredictorRatioAvr1 = Math.round(parseFloat(<string>item.ratio));
             chartLabels1.push(provider);
             break;
           case 'rct-extraction':
-            chartDatasets2[0]['data'].push(parseInt(<string>item.firstValue));
-            chartDatasets2[1]['data'].push(parseInt(<string>item.secondValue));
-            cpPredictorRatioAvr2 = parseInt(<string>item.ratio);
+            chartDatasets2[0]['data'].push(
+              Math.round(parseFloat(<string>item.firstValue))
+            );
+            chartDatasets2[1]['data'].push(
+              Math.round(parseFloat(<string>item.secondValue))
+            );
+            cpPredictorRatioAvr2 = Math.round(parseFloat(<string>item.ratio));
             chartLabels2.push(provider);
             break;
           case 'rctstarted-rctcompleted':
-            chartDatasets3[0]['data'].push(parseInt(<string>item.firstValue));
-            chartDatasets3[1]['data'].push(parseInt(<string>item.secondValue));
-            cpPredictorRatioAvr3 = parseInt(<string>item.ratio);
+            chartDatasets3[0]['data'].push(
+              Math.round(parseFloat(<string>item.firstValue))
+            );
+            chartDatasets3[1]['data'].push(
+              Math.round(parseFloat(<string>item.secondValue))
+            );
+            cpPredictorRatioAvr3 = Math.round(parseFloat(<string>item.ratio));
             chartLabels3.push(provider);
             break;
           default:
@@ -933,12 +959,12 @@ export const selectCpReferralsChartData = createSelector(
       pieChartCombinedPrev = 0;
 
     resData.data.forEach(item => {
-      if (parseFloat(<string>item.total) > 0) {
-        if (parseFloat(<string>item.internal) > 0) {
+      if (Math.round(parseFloat(<string>item.total)) > 0) {
+        if (Math.round(parseFloat(<string>item.internal)) > 0) {
           chartData1.push(item.internal);
           chartLabels1.push(item.treatItemName);
         }
-        if (parseFloat(<string>item.external) > 0) {
+        if (Math.round(parseFloat(<string>item.external)) > 0) {
           chartData2.push(item.external);
           chartLabels2.push(item.treatItemName);
         }
@@ -947,20 +973,23 @@ export const selectCpReferralsChartData = createSelector(
         chartLabels3.push(item.treatItemName);
 
         pieChartInternalTotal =
-          pieChartInternalTotal + parseInt(<string>item.internal);
+          pieChartInternalTotal + Math.round(parseFloat(<string>item.internal));
         pieChartExternalTotal =
-          pieChartExternalTotal + parseInt(<string>item.external);
+          pieChartExternalTotal + Math.round(parseFloat(<string>item.external));
         pieChartCombinedTotal =
-          pieChartCombinedTotal + parseInt(<string>item.total);
+          pieChartCombinedTotal + Math.round(parseFloat(<string>item.total));
       }
     });
 
     pieChartInternalPrev =
-      pieChartInternalPrev + parseInt(<string>resData.totalTa.internal);
+      pieChartInternalPrev +
+      Math.round(parseFloat(<string>resData.totalTa.internal));
     pieChartExternalPrev =
-      pieChartExternalPrev + parseInt(<string>resData.totalTa.external);
+      pieChartExternalPrev +
+      Math.round(parseFloat(<string>resData.totalTa.external));
     pieChartCombinedPrev =
-      pieChartCombinedPrev + parseInt(<string>resData.totalTa.total);
+      pieChartCombinedPrev +
+      Math.round(parseFloat(<string>resData.totalTa.total));
 
     if (visibility === 'internal') {
       return {

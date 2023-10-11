@@ -157,7 +157,9 @@ export class MarketingNewPatientByReferralComponent
               apiResData.patientsRefname[activeLabel]
                 .slice(0, 15)
                 .forEach(item => {
-                  chartData.push(parseInt(<string>item.numReferrals));
+                  chartData.push(
+                    Math.round(parseFloat(<string>item.numReferrals))
+                  );
                   chartLabels.push(item.referralName);
                 });
             }

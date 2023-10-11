@@ -252,10 +252,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           label: function (tooltipItems) {
-            if (
-              parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset.label != ''
-            ) {
+            if (tooltipItems.parsed.y > 0 && tooltipItems.dataset.label != '') {
               if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
@@ -336,10 +333,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           label: function (tooltipItems) {
-            if (
-              parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset.label != ''
-            ) {
+            if (tooltipItems.parsed.y > 0 && tooltipItems.dataset.label != '') {
               if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
@@ -367,31 +361,40 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
 
   generatePaGeneralTotal(palData) {
     const Crowns_Onlays = palData
-      .map(item => parseInt(item.Crowns_Onlays))
+      .map(item => parseFloat(item.Crowns_Onlays))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const Splints = palData
-      .map(item => parseInt(item.Splints))
+      .map(item => parseFloat(item.Splints))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const RCT = palData
-      .map(item => parseInt(item.RCT))
+      .map(item => parseFloat(item.RCT))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const Perio = palData
-      .map(item => parseInt(item.Perio))
+      .map(item => parseFloat(item.Perio))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const Surg_Ext = palData
-      .map(item => parseInt(item.Surg_Ext))
+      .map(item => parseFloat(item.Surg_Ext))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const Imp_Crowns = palData
-      .map(item => parseInt(item.Imp_Crowns))
+      .map(item => parseFloat(item.Imp_Crowns))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const SS_Crowns = palData
-      .map(item => parseInt(item.SS_Crowns))
+      .map(item => parseFloat(item.SS_Crowns))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const Comp_Veneers = palData
-      .map(item => parseInt(item.Comp_Veneers))
+      .map(item => parseFloat(item.Comp_Veneers))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const Whitening = palData
-      .map(item => parseInt(item.Whitening))
+      .map(item => parseFloat(item.Whitening))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     let html = '<td> Total </td>';
     html += '<td>' + Crowns_Onlays + '</td>';
@@ -412,25 +415,32 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
 
   generatePaSpecialTotal(palData) {
     const Implant_Surg = palData
-      .map(item => parseInt(item.Implant_Surg))
+      .map(item => parseFloat(item.Implant_Surg))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const Braces = palData
-      .map(item => parseInt(item.Braces))
+      .map(item => parseFloat(item.Braces))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const Aligners = palData
       .map(item => parseFloat(item.Aligners))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const MAS = palData
-      .map(item => parseInt(item.MAS))
+      .map(item => parseFloat(item.MAS))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const Perio_Surg = palData
-      .map(item => parseInt(item.Perio_Surg))
+      .map(item => parseFloat(item.Perio_Surg))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const Endo_Re_treat = palData
-      .map(item => parseInt(item.Endo_Re_treat))
+      .map(item => parseFloat(item.Endo_Re_treat))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     const Veneers_ind = palData
-      .map(item => parseInt(item.Veneers_ind))
+      .map(item => parseFloat(item.Veneers_ind))
+      .map(v => Math.round(v))
       .reduce((prev, curr) => prev + curr, 0);
     let html = '<td> Total </td>';
     html += '<td>' + Implant_Surg + '</td>';

@@ -239,10 +239,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           label: function (tooltipItems) {
-            if (
-              parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset.label != ''
-            ) {
+            if (tooltipItems.parsed.y > 0 && tooltipItems.dataset.label != '') {
               if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
@@ -323,10 +320,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           label: function (tooltipItems) {
-            if (
-              parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset.label != ''
-            ) {
+            if (tooltipItems.parsed.y > 0 && tooltipItems.dataset.label != '') {
               if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {

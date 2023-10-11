@@ -293,10 +293,10 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           label: function (tooltipItems) {
-            let total =
-              parseInt(tooltipItems.label) > 100
-                ? 100
-                : tooltipItems.formattedValue;
+            // let total =
+            //   parseInt(tooltipItems.label) > 100
+            //     ? 100
+            //     : tooltipItems.formattedValue;
             var Targetlable = '';
             const v = tooltipItems.dataset.data[tooltipItems.dataIndex];
             let Tlable = tooltipItems.dataset.label;
