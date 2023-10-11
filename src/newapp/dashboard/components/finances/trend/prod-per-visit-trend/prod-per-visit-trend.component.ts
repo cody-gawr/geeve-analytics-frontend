@@ -88,7 +88,7 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
                 currency: 'USD',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
-              }).format(Number(tooltipItem.parsed.y))} Test`
+              }).format(Number(tooltipItem.parsed.y))}`
             );
 
             labelItems.push(
