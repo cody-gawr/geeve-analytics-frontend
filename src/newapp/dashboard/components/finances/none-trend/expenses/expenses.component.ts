@@ -124,50 +124,39 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
           //   });
 
           _.chain(expenses)
-            .orderBy('clinicId', 'asc')
-            .groupBy('clinicId')
-            .map((items, clinicId) => {
+            .groupBy('accountName')
+            .map((accItems, accountName) => {
               return {
-                items,
-                clinicId,
-                clinicName: items[0].clinicName,
+                accItems,
+                accountName,
               };
             })
             .value()
-            .forEach(row => {
-              _.chain(row.items)
-                .groupBy('accountName')
-                .map((accItems, accountName) => {
+            .forEach(finalRow => {
+              const bgColor = DoughnutChartColors[i];
+              i++;
+              this.datasets.push({
+                data: finalRow.accItems.map(item => {
+                  const clinicProd = parseFloat(
+                    <string>(
+                      resBody.productions.find(p => p.clinicId == item.clinicId)
+                        ?.production
+                    )
+                  );
                   return {
-                    accItems,
-                    accountName,
+                    x: item.clinicName,
+                    y: ((item.expense / clinicProd) * 100).toFixed(1),
                   };
-                })
-                .value()
-                .forEach(finalRow => {
-                  const bgColor = DoughnutChartColors[i];
-                  i++;
-                  this.datasets.push({
-                    data: finalRow.accItems.map(item => {
-                      const clinicProd = parseFloat(
-                        <string>(
-                          resBody.productions.find(
-                            p => p.clinicId == item.clinicId
-                          )?.production
-                        )
-                      );
-                      return ((item.expense / clinicProd) * 100).toFixed(1);
-                    }),
-                    label: finalRow.accountName,
-                    backgroundColor: bgColor,
-                    hoverBackgroundColor: bgColor,
-                  });
-                });
+                }),
+                label: finalRow.accountName,
+                backgroundColor: bgColor,
+                hoverBackgroundColor: bgColor,
+              });
             });
 
           this.labels = _.chain(expenses)
             .orderBy('clinicId', 'asc')
-            .unionBy(item => item.clinicId)
+            .uniqBy(item => item.clinicName)
             .value()
             .map(item => item.clinicName);
         } else {
