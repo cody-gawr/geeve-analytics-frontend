@@ -60,6 +60,20 @@ export class ClinicService {
       );
   }
 
+  removeClinic(clinicId: string): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('clinic_id', clinicId);
+    var header = this.getHeaders();
+    return this.http
+      .post(this.apiUrl + '/Core/removeCore', formData, header)
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        })
+      );
+  }
+
   // Update Clinic
   updateClinic(clinic_id, value, column): Observable<any> {
     const formData = new FormData();

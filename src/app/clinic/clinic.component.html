@@ -38,7 +38,6 @@
     <ngx-datatable
       #table
       class="material responsive-datatable"
-      (activate)="onActivate($event)"
       [columns]="columns"
       [columnMode]="'force'"
       [headerHeight]="50"
@@ -133,14 +132,23 @@
           let-row="row"
           let-value="value"
           style="width: 266px !important">
-          <a
-            [routerLink]="['/clinic-settings', value]"
-            class="action_btn golden"
-            title="Clinic Settings"
-            ><i class="ti-pencil m-r-10"></i
-          ></a>
+          <div class="action-box">
+            <a
+              [routerLink]="['/clinic-settings', value]"
+              class="action_btn golden"
+              title="Clinic Settings"
+              ><i class="ti-pencil m-r-10"></i
+            ></a>
+            <a
+              *ngIf="row.pms == 'core' && row.cores?.length > 0"
+              (click)="removeCore(value)"
+              class="action_btn danger"
+              title="Clinic Settings"
+              ><i class="ti-minus m-r-10"></i
+            ></a>
+          </div>
           <!--     <button class="action_btn danger" mat-menu-item (click) = "deleteClinic(rowIndex)">
-         <i class="ti-trash text-danger"></i></button> -->
+           <i class="ti-trash text-danger"></i></button> -->
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>

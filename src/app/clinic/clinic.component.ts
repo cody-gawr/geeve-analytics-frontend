@@ -146,6 +146,7 @@ export class ClinicComponent implements AfterViewInit {
     //$('.dentist_dropdown').hide();
     $('.header_filters').addClass('hide_header');
   }
+
   editing = {};
   rows = [];
   temp = [...data];
@@ -472,6 +473,15 @@ export class ClinicComponent implements AfterViewInit {
             }
           });
         });
+      }
+    });
+  }
+
+  removeCore(clinicId) {
+    const clinic = this.rows.find(r => r.id === clinicId);
+    this.clinicService.removeClinic(clinicId).subscribe(res => {
+      if (res.status == 200) {
+        this.toastr.success(`Remove Core for ${clinic.clinicName}`);
       }
     });
   }
