@@ -106,7 +106,6 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
         stacked: true,
         ticks: {
           callback: function (label: number, index, labels) {
-            console.log(label);
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
               let currency =
