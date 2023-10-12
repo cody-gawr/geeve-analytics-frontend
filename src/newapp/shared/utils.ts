@@ -208,9 +208,9 @@ export const externalTooltipHandler = <T extends ChartType>(args: {
     const titleLines = tooltip.title || [];
     const bodyLines = tooltip.body.map(b => b.lines);
     const tableHead = document.createElement('thead');
-    bodyLines[0] = [
-      'long text long text long text long text long text long text',
-    ];
+    // bodyLines[0] = [
+    //   'long text long text long text long text long text long text',
+    // ];
 
     titleLines.forEach(title => {
       const tr = document.createElement('tr');
