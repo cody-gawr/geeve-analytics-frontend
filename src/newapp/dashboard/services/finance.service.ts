@@ -353,7 +353,6 @@ export class FinanceService {
         }
       )
       .pipe(
-        tap(res => console.log(res)),
         map(
           res => <FnExpensesTrendApiResponse>camelcaseKeys(res, { deep: true })
         )
