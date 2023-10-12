@@ -135,12 +135,14 @@
           <div class="action-box">
             <a
               [routerLink]="['/clinic-settings', value]"
+              matTooltip="Edit a clinic"
               class="action_btn golden"
               title="Clinic Settings"
               ><i class="ti-pencil m-r-10"></i
             ></a>
             <a
               *ngIf="row.pms == 'core' && row.cores?.length > 0"
+              matTooltip="Disconnect core"
               (click)="removeCore(value)"
               class="action_btn danger"
               title="Clinic Settings"
