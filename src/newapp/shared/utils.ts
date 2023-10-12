@@ -189,13 +189,10 @@ const getOrCreateTooltip = chart => {
   return tooltipEl;
 };
 
-export const externalTooltipHandler = <T extends ChartType>(
-  args: {
-    chart: Chart;
-    tooltip: TooltipModel<T>;
-  }
-  // isEachColorBoxVisible: boolean
-) => {
+export const externalTooltipHandler = <T extends ChartType>(args: {
+  chart: Chart;
+  tooltip: TooltipModel<T>;
+}) => {
   // Tooltip Element
   const { chart, tooltip } = args;
   const tooltipEl = getOrCreateTooltip(chart);
@@ -210,8 +207,10 @@ export const externalTooltipHandler = <T extends ChartType>(
   if (tooltip.body) {
     const titleLines = tooltip.title || [];
     const bodyLines = tooltip.body.map(b => b.lines);
-
     const tableHead = document.createElement('thead');
+    bodyLines[0] = [
+      'long text long text long text long text long text long text',
+    ];
 
     titleLines.forEach(title => {
       const tr = document.createElement('tr');
@@ -276,11 +275,32 @@ export const externalTooltipHandler = <T extends ChartType>(
 
   // Display, position, and set styles for font
   tooltipEl.style.opacity = 1;
-  tooltipEl.style.left = positionX + tooltip.caretX + 'px';
+  tooltipEl.style.position = 'absolute';
+
+  if (tooltip.caretX - positionX <= chart.canvas.width / 3) {
+    tooltipEl.style.left =
+      positionX +
+      tooltip.caretX +
+      tooltipEl.getBoundingClientRect().width / 2 +
+      'px';
+  } else if (
+    tooltip.caretX - positionX > chart.canvas.width / 3 &&
+    tooltip.caretX - positionX <= (chart.canvas.width * 2) / 3
+  ) {
+    tooltipEl.style.left = positionX + tooltip.caretX + 'px';
+  } else {
+    tooltipEl.style.left =
+      positionX +
+      tooltip.caretX -
+      tooltipEl.getBoundingClientRect().width / 2 +
+      'px';
+  }
+
   tooltipEl.style.top = positionY + tooltip.caretY + 'px';
   tooltipEl.style.fontStyle = 'Gilroy-Regular';
   tooltipEl.style.padding =
     tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
+  tooltipEl.style.pointerEvents = 'none';
 };
 
 export const externalTooltipHandlerHiddenColorBoxes = <T extends ChartType>(
@@ -358,7 +378,25 @@ export const externalTooltipHandlerHiddenColorBoxes = <T extends ChartType>(
 
   // Display, position, and set styles for font
   tooltipEl.style.opacity = 1;
-  tooltipEl.style.left = positionX + tooltip.caretX + 'px';
+  tooltipEl.style.position = 'absolute';
+  if (tooltip.caretX - positionX <= chart.canvas.width / 3) {
+    tooltipEl.style.left =
+      positionX +
+      tooltip.caretX +
+      tooltipEl.getBoundingClientRect().width / 2 +
+      'px';
+  } else if (
+    tooltip.caretX - positionX > chart.canvas.width / 3 &&
+    tooltip.caretX - positionX <= (chart.canvas.width * 2) / 3
+  ) {
+    tooltipEl.style.left = positionX + tooltip.caretX + 'px';
+  } else {
+    tooltipEl.style.left =
+      positionX +
+      tooltip.caretX -
+      tooltipEl.getBoundingClientRect().width / 2 +
+      'px';
+  }
   tooltipEl.style.top = positionY + tooltip.caretY + 'px';
   tooltipEl.style.fontStyle = 'Gilroy-Regular';
   tooltipEl.style.padding =
