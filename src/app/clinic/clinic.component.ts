@@ -477,7 +477,9 @@ export class ClinicComponent implements AfterViewInit {
     });
   }
 
-  removeCore(clinicId) {
+  removeCore(event, clinicId) {
+    event.preventDefault();
+    event.stopPropagation();
     const clinic = this.rows.find(r => r.id === clinicId);
     this.clinicService.removeClinic(clinicId).subscribe(res => {
       if (res.status == 200) {

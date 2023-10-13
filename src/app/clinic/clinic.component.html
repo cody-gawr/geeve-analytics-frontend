@@ -38,6 +38,7 @@
     <ngx-datatable
       #table
       class="material responsive-datatable"
+      (activate)="onActivate($event)"
       [columns]="columns"
       [columnMode]="'force'"
       [headerHeight]="50"
@@ -143,7 +144,7 @@
             <a
               *ngIf="row.pms == 'core' && row.cores?.length > 0"
               matTooltip="Disconnect core"
-              (click)="removeCore(value)"
+              (click)="removeCore($event, value)"
               class="action_btn danger"
               title="Clinic Settings"
               ><i class="ti-minus m-r-10"></i
