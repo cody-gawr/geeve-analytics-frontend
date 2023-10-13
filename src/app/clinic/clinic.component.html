@@ -142,7 +142,7 @@
               ><i class="ti-pencil m-r-10"></i
             ></a>
             <a
-              *ngIf="row.pms == 'core' && row.cores?.length > 0"
+              *ngIf="row.pms == 'core' && row.core_clinics?.length > 0"
               matTooltip="Disconnect core"
               (click)="removeCore($event, value)"
               class="action_btn danger"
