@@ -136,19 +136,17 @@
           <div class="action-box">
             <a
               [routerLink]="['/clinic-settings', value]"
-              matTooltip="Edit a clinic"
               class="action_btn golden"
               title="Clinic Settings"
               ><i class="ti-pencil m-r-10"></i
             ></a>
-            <a
+            <button
               *ngIf="row.pms == 'core' && row.core_clinics?.length > 0"
-              matTooltip="Disconnect core"
+              mat-button
               (click)="removeCore($event, value)"
-              class="action_btn danger"
-              title="Clinic Settings"
-              ><i class="ti-minus m-r-10"></i
-            ></a>
+              color="warn">
+              DISCONNECT
+            </button>
           </div>
           <!--     <button class="action_btn danger" mat-menu-item (click) = "deleteClinic(rowIndex)">
            <i class="ti-trash text-danger"></i></button> -->
