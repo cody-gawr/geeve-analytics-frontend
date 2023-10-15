@@ -233,7 +233,9 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       res => {
         if (res.status == 200) {
           this.dentistListLoading = false;
-          this.getAppBook(id, res.body.data);
+          if (this.isD4w) {
+            this.getAppBook(id, res.body.data);
+          }
           this.jeeveProviderIds = [];
           for (let i = 1; i <= 9; i++) {
             this.jeeveProviderIds.push({ id: i, name: 'Jeeve Provider ' + i });
