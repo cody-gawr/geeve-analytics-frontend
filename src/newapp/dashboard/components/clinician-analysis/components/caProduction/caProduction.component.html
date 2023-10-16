@@ -6,9 +6,45 @@
     class="help-tip"
     fontIcon="help"></mat-icon>
   <div class="chart-title">
-    {{ chartName$ | async }}
+    <mat-icon
+      *ngIf="(duration$ | async) != 'custom'"
+      [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
+      [fontIcon]="trendingIcon"
+      [matTooltip]="getTrendTip$ | async"></mat-icon>
+    <span *ngIf="(userType$ | async) === 4; else prodSelectTitle">{{
+      chartName$ | async
+    }}</span>
+    <ng-template #prodSelectTitle>
+      <mat-select
+        [formControl]="prodSelectShow"
+        *ngIf="(chartName$ | async) === 'Production'">
+        <mat-option value="production_all">Production - All</mat-option>
+        <mat-option value="production_dentists"
+          >Production - Dentists</mat-option
+        >
+        <mat-option value="production_oht">Production - OHT</mat-option>
+      </mat-select>
+      <mat-select
+        [formControl]="colSelectShow"
+        *ngIf="(chartName$ | async) === 'Collection'">
+        <mat-option value="collection_all">Collection - All</mat-option>
+        <mat-option value="collection_dentists"
+          >Collection - Dentists</mat-option
+        >
+        <mat-option value="collection_oht">Collection - OHT</mat-option>
+      </mat-select>
+      <mat-select
+        [formControl]="colExpSelectShow"
+        *ngIf="(chartName$ | async) === 'Collection-Exp'">
+        <mat-option value="collection_exp_all">Collection - All</mat-option>
+        <mat-option value="collection_exp_dentists"
+          >Collection - Dentists</mat-option
+        >
+        <mat-option value="collection_exp_oht">Collection - OHT</mat-option>
+      </mat-select>
+    </ng-template>
   </div>
-  <!-- <div class="chart-content">
+  <div class="chart-content">
     <div class="ca-prod-chart">
       <div class="ca-prod-switch">
         <button
@@ -18,6 +54,44 @@
           {{ chartName }}
         </button>
       </div>
+      <div class="ca-prod-graph">
+        <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+        <ng-template #chartElem>
+          <canvas
+            baseChart
+            *ngIf="hasData"
+            [datasets]="datasets"
+            [labels]="labels"
+            [legend]="legend$ | async"
+            type="bar"
+            [options]="chartOptions$ | async">
+          </canvas>
+          <spin-loader
+            class="empty-placeholder"
+            *ngIf="!hasData"
+            [disableSpin]="true">
+            {{ noDataAlertMessage$ | async }}
+          </spin-loader>
+        </ng-template>
+      </div>
+      <div class="chart-foot" *ngIf="!(avgMode$ | async)">
+        <div>
+          <h3>{{ valTotal$ | async }}</h3>
+          <span>{{ durationLabel$ | async }}</span>
+        </div>
+
+        <div *ngIf="(duration$ | async) !== 'custom'">
+          <h3>
+            {{ valPrev$ | async }}
+          </h3>
+          <span>{{ durationTrendLabel$ | async }}</span>
+        </div>
+        <div *ngIf="(valGoal$ | async) >= 0 && showGoals == true">
+          <h3 *ngIf="(valGoal$ | async) && (goalCount$ | async)">
+            {{ (valGoal$ | async) * (goalCount$ | async) }}
+          </h3>
+        </div>
+      </div>
     </div>
-  </div> -->
+  </div>
 </div>

@@ -1,3 +1,4 @@
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
@@ -7,6 +8,7 @@ import {
   externalTooltipHandler,
 } from '@/newapp/shared/utils';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ChartOptions, LegendOptions, TooltipItem } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
@@ -28,84 +30,120 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     'Collection-Exp',
   ];
 
+  get duration$() {
+    return this.layoutFacade.dateRange$.pipe(
+      takeUntil(this.destroy$),
+      map(v => v.duration)
+    );
+  }
+
+  get trendingIcon() {
+    // if (this.productionVisitVal >= this.productionVisitTrendVal) {
+    //   return 'trending_up';
+    // }
+    return 'trending_down';
+  }
+
+  prodSelectShow = new FormControl('production_all');
+  colSelectShow = new FormControl('collection_all');
+  colExpSelectShow = new FormControl('collection_exp_all');
+
+  get durationLabel$() {
+    return this.layoutFacade.durationLabel$.pipe(
+      takeUntil(this.destroy$),
+      map(val => val)
+    );
+  }
+
+  get durationTrendLabel$() {
+    return this.layoutFacade.durationTrendLabel$.pipe(
+      takeUntil(this.destroy$),
+      map(l => l)
+    );
+  }
+
+  get getTrendTip$() {
+    return this.durationTrendLabel$.pipe(
+      takeUntil(this.destroy$),
+      map(v => {
+        // if (this.productionVisitTrendVal > 0) {
+        //   return (
+        //     v + ': $' + this.decimalPipe.transform(this.productionVisitTrendVal)
+        //   );
+        // }
+        return '';
+      })
+    );
+  }
+
   datasets: any = [{ data: [] }];
   labels = [];
 
-  // get chartOptions$() {
-  //   return combineLatest([
-  //     this.financeFacade.profitTrendChartName$,
-  //     this.clinicFacade.currentClinicId$,
-  //   ]).pipe(
-  //     takeUntil(this.destroy$),
-  //     map(([t, clinicId]) => {
-  //       const isMultiClinic = typeof clinicId == 'string';
+  get legend$() {
+    return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
+      map(([v]) => {
+        return typeof v === 'string' ? true : false;
+      })
+    );
+  }
 
-  //       switch (t) {
-  //         case 'Production':
-  //           return isMultiClinic
-  //             ? this.stackedChartOptionsDiscount
-  //             : this.labelBarOptionsSingleValue;
-  //         case 'Collection':
-  //           return isMultiClinic
-  //             ? this.stackedChartOptionsDiscount
-  //             : this.labelBarOptionsSingleValue;
-  //         case 'Net Profit':
-  //           return isMultiClinic
-  //             ? this.netProfitTrendMultiChartOptions
-  //             : this.labelBarOptionsSingleValue;
-  //         case 'Net Profit %':
-  //           return this.labelBarOptionsSingleValue1;
-  //       }
-  //       return {};
-  //     })
-  //   );
-  // }
+  get isLoading$() {
+    return combineLatest([
+      this.caFacade.prodChartName$,
+      this.caFacade.isLoadingCaProduction$,
+      this.caFacade.isLoadingCaProductionDentist$,
+      this.caFacade.isLoadingCaProductionOht$,
+      this.caFacade.isLoadingCaCollection$,
+      this.caFacade.isLoadingCaCollectionDentists$,
+      this.caFacade.isLoadingCaCollectionOht$,
+      this.caFacade.isLoadingCaCollectionExp$,
+      this.caFacade.isLoadingCaCollectionExpDentists$,
+      this.caFacade.isLoadingCaCollectionExpOht$,
+    ]).pipe(
+      takeUntil(this.destroy$),
+      map(([t, isP1, isP2, isP3, isC1, isC2, isC3, isCE1, isCE2, isCE3]) => {
+        switch (t) {
+          case 'Production':
+            switch (this.prodSelectShow.value) {
+              case 'production_all':
+                return isP1;
+              case 'production_dentists':
+                return isP2;
+              case 'production_oht':
+                return isP3;
+            }
+            break;
+          case 'Collection':
+            switch (this.colSelectShow.value) {
+              case 'collection_all':
+                return isC1;
+              case 'collection_dentists':
+                return isC2;
+              case 'collection_oht':
+                return isC3;
+            }
+            break;
+          case 'Collection-Exp':
+            switch (this.prodSelectShow.value) {
+              case 'collection_exp_all':
+                return isCE1;
+              case 'collection_exp_dentists':
+                return isCE2;
+              case 'collection_exp_oht':
+                return isCE3;
+            }
+        }
+        return false;
+      })
+    );
+  }
 
-  // get legend$() {
-  //   return combineLatest([
-  //     this.clinicFacade.currentClinicId$,
-  //     this.financeFacade.profitTrendChartName$,
-  //   ]).pipe(
-  //     map(([v, chartName]) => {
-  //       if (['Net Profit %', 'Net Profit'].indexOf(chartName) >= 0)
-  //         return false;
-  //       return typeof v === 'string' ? true : false;
-  //     })
-  //   );
-  // }
-
-  // get isLoading$() {
-  //   return combineLatest([
-  //     this.financeFacade.profitTrendChartName$,
-  //     this.financeFacade.isLoadingTotalProductionTrend$,
-  //     this.financeFacade.isLoadingCollectionTrend$,
-  //     this.financeFacade.isLoadingNetProfitTrend$,
-  //     this.financeFacade.isLoadingNetProfitPercentageTrend$,
-  //   ]).pipe(
-  //     takeUntil(this.destroy$),
-  //     map(
-  //       ([
-  //         t,
-  //         isLoadingProdTrend,
-  //         isLoadingColTrend,
-  //         isNetProfitTrend,
-  //         isNetProfitPercentTrend,
-  //       ]) => {
-  //         switch (t) {
-  //           case 'Production':
-  //             return isLoadingProdTrend;
-  //           case 'Collection':
-  //             return isLoadingColTrend;
-  //           case 'Net Profit':
-  //             return isNetProfitTrend;
-  //           case 'Net Profit %':
-  //             return isNetProfitPercentTrend;
-  //         }
-  //         return false;
-  //       }
-  //     )
-  //   );
-  // }
+  get userType$() {
+    return this.authFacade.rolesIndividual$.pipe(
+      takeUntil(this.destroy$),
+      map(v => v.type)
+    );
+  }
 
   get chartName$() {
     return this.caFacade.prodChartName$.pipe(
@@ -118,7 +156,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     private caFacade: ClinicianAnalysisFacade,
     private dashboardFacade: DashboardFacade,
     private layoutFacade: LayoutFacade,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
+    private authFacade: AuthFacade
   ) {
     // combineLatest([
     //   this.caFacade.prodTrendChartData$,
@@ -205,29 +244,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     //   );
   }
 
-  // get chartType$() {
-  //   return combineLatest([
-  //     this.financeFacade.profitTrendChartName$,
-  //     this.clinicFacade.currentClinicId$,
-  //   ]).pipe(
-  //     takeUntil(this.destroy$),
-  //     map(([t, clinicId]) => {
-  //       const isMultiClinic = typeof clinicId == 'string';
-  //       switch (t) {
-  //         case 'Production':
-  //           return isMultiClinic ? 'bar' : 'line';
-  //         case 'Collection':
-  //           return isMultiClinic ? 'bar' : 'line';
-  //         case 'Net Profit':
-  //           return 'line';
-  //         case 'Net Profit %':
-  //           return 'line';
-  //       }
-  //       return 'line';
-  //     })
-  //   );
-  // }
-
   // get isDisconnectedPlatform$() {
   //   return combineLatest([
   //     this.dashboardFacade.connectedWith$,
@@ -250,6 +266,150 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   switchChartName(chartName) {
+    switch (chartName) {
+      case 'Production':
+        this.prodSelectShow.setValue('production_all');
+        break;
+      case 'Collection':
+        this.colSelectShow.setValue('collection_all');
+        break;
+      case 'Collection-Exp':
+        this.colExpSelectShow.setValue('collection_exp_all');
+        break;
+    }
     this.caFacade.setProdChartName(chartName);
+  }
+
+  chartOptions$() {
+    return combineLatest([this.caFacade.prodChartName$, this.userType$]).pipe(
+      takeUntil(this.destroy$),
+      map(([v, userType]) => {
+        switch (v) {
+          case 'Production':
+            switch (this.prodSelectShow.value) {
+              case 'production_all':
+                // data: barChartData
+                // labels: barChartLabels
+                // option: barChartOptionsDP1
+                // legend: isAllClinic
+                // type: barChartType
+                break;
+              case 'production_dentists':
+                // data: barChartDataDentists
+                // labels: barChartDentistLabels
+                // option: barChartOptionsDP1
+                // legend: isAllClinic
+                // type: barChartType
+                break;
+              case 'production_oht':
+                // data: barChartDataOht
+                // labels: barChartOhtLabels
+                // option: barChartOptionsDP1
+                // legend: isAllClinic
+                // type: barChartType
+                break;
+            }
+            break;
+          case 'Collection':
+            switch (this.prodSelectShow.value) {
+              case 'collection_all':
+                // data: collectionData
+                // labels: collectionLabels
+                // legend: isAllClinic
+                // type: barChartType
+                // options: barChartOptionsDP
+                break;
+              case 'collection_dentists':
+                // data: collectionDentistsData
+                // labels: collectionDentistsLabels
+                // legend: isAllClinic
+                // type: barChartType
+                // options: barChartOptionsDP
+                break;
+              case 'collection_oht':
+                // data: collectionOhtData
+                // labels: collectionOhtLabels
+                // legend: isAllClinic
+                // type: barChartType
+                // options: barChartOptionsDP
+                break;
+            }
+            break;
+          case 'Collection-Exp':
+            switch (this.prodSelectShow.value) {
+              case 'collection_exp_all':
+                // data: collectionExpData
+                // labels: collectionLabelsExp
+                // legend: isAllClinic
+                // type: barChartType
+                // options: barChartOptionsDP6
+                break;
+              case 'collection_exp_dentists':
+                // data: collectionExpDentistsData
+                // labels: collectionLabelsDentistsExp
+                // legend: isAllClinic
+                // type: barChartType
+                // options: barChartOptionsDP
+                break;
+              case 'collection_exp_oht':
+                // data: collectionExpOhtData
+                // labels: collectionLabelsOhtExp
+                // legend: isAllClinic
+                // type: barChartType
+                // options: barChartOptionsDP
+                break;
+            }
+            break;
+        }
+      })
+    );
+  }
+
+  get hasData() {
+    return this.datasets[0]?.data.length > 0;
+  }
+
+  get avgMode$() {
+    return this.layoutFacade.average$.pipe(takeUntil(this.destroy$));
+  }
+
+  get noDataAlertMessage$() {
+    return combineLatest([this.caFacade.prodChartName$]).pipe(
+      takeUntil(this.destroy$),
+      map(([visibility]) => {
+        switch (visibility) {
+          case 'Production':
+            switch (this.prodSelectShow.value) {
+              case 'production_all':
+                return 'You have no production in the selected period';
+              case 'production_dentists':
+                return 'You have no Dentist production for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
+              case 'production_oht':
+                return 'You have no OHT production for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
+            }
+            break;
+          case 'Collection':
+            switch (this.colSelectShow.value) {
+              case 'collection_all':
+                return 'You have no Collection in the selected period';
+              case 'collection_dentists':
+                return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
+              case 'collection_oht':
+                return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
+            }
+            break;
+          case 'Collection-Exp':
+            switch (this.colExpSelectShow.value) {
+              case 'collection_exp_all':
+                return 'You have no Collection in the selected period';
+              case 'collection_exp_dentists':
+                return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
+              case 'collection_exp_oht':
+                return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
+            }
+        }
+        return '';
+      })
+    );
   }
 }

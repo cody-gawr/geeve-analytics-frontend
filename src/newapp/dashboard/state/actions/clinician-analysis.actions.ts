@@ -22,12 +22,26 @@ export const loadTrendApiRequest = createAction(
 
 export const loadCaNoneTrendApiRequestSuccess = createAction(
   '[Clinician Analysis API] Load None Trend Api Success',
-  props<{ resBody: any }>()
+  props<{ api: CA_API_ENDPOINTS; resBody: any }>()
+);
+
+export const loadCaNoneTrendApiRequestFailure = createAction(
+  '[Clinician Analysis API] Load None Trend Api Failure',
+  props<{
+    api: CA_API_ENDPOINTS;
+    error: JeeveError;
+  }>()
+);
+
+export const loadCaTrendApiRequestSuccess = createAction(
+  '[Clinician Analysis API] Load Trend Api Success',
+  props<{ api: CA_API_ENDPOINTS_TREND; resBody: any }>()
 );
 
 export const loadCaTrendApiRequestFailure = createAction(
   '[Clinician Analysis API] Load Trend Api Failure',
   props<{
+    api: CA_API_ENDPOINTS_TREND;
     error: JeeveError;
   }>()
 );
