@@ -480,11 +480,23 @@ export class ClinicComponent implements AfterViewInit {
   removeCore(event, clinicId) {
     event.preventDefault();
     event.stopPropagation();
-    const clinic = this.rows.find(r => r.id === clinicId);
-    this.clinicService.removeClinic(clinicId).subscribe(res => {
-      if (res.status == 200) {
-        this.toastr.success(`Remove Core for ${clinic.clinicName}`);
-        this.getClinics();
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete this core data?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    }).then(result => {
+      if (result.value) {
+        const clinic = this.rows.find(r => r.id === clinicId);
+        this.clinicService.removeClinic(clinicId).subscribe(res => {
+          if (res.status == 200) {
+            this.toastr.success(`Remove Core for ${clinic.clinicName}`);
+            this.getClinics();
+          }
+        });
       }
     });
   }
