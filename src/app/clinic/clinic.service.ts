@@ -66,7 +66,7 @@ export class ClinicService {
     formData.append('clinic_id', clinicId);
     var header = this.getHeaders();
     return this.http
-      .post(this.apiUrl + '/Core/removeCore', formData, header)
+      .post(this.apiUrl + '/corepractice/disconnect', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
