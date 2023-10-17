@@ -376,6 +376,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     return combineLatest([this.caFacade.prodChartName$, this.avgMode$]).pipe(
       takeUntil(this.destroy$),
       map(([v, avgMode]) => {
+        let options: ChartOptions = { ...this.barChartOptions };
         switch (v) {
           case 'Production':
             // switch (this.prodSelectShow.value) {
@@ -398,7 +399,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
             //   // legend: isAllClinic
             //   // type: barChartType
             // }
-            let options: ChartOptions = { ...this.barChartOptions };
+
             if (avgMode === 'average') {
               options.plugins.annotation = this.getAvgPluginOptions(
                 this.totalAverage.production
@@ -409,7 +410,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
             } else {
               options.plugins.annotation = {};
             }
-            return options;
+            break;
           case 'Collection':
             // switch (this.prodSelectShow.value) {
             //   case 'collection_all':
@@ -434,18 +435,17 @@ export class CaProductionComponent implements OnInit, OnDestroy {
             //     // options: barChartOptionsDP
             //     break;
             // }
-            let options1: ChartOptions = { ...this.barChartOptions2 };
             if (avgMode === 'average') {
-              options1.plugins.annotation = this.getAvgPluginOptions(
+              options.plugins.annotation = this.getAvgPluginOptions(
                 this.totalAverage.collection
               );
             } else if (avgMode === 'goal') {
               const value = this.valGoal.collection * this.goalCount;
-              options1.plugins.annotation = this.getGoalPluginOptions(value);
+              options.plugins.annotation = this.getGoalPluginOptions(value);
             } else {
-              options1.plugins.annotation = {};
+              options.plugins.annotation = {};
             }
-            return options1;
+            break;
           case 'Collection-Exp':
             // switch (this.prodSelectShow.value) {
             //   case 'collection_exp_all':
@@ -470,19 +470,19 @@ export class CaProductionComponent implements OnInit, OnDestroy {
             //     // options: barChartOptionsDP
             //     break;
             // }
-            let options2: ChartOptions = { ...this.barChartOptions3 };
             if (avgMode === 'average') {
-              options2.plugins.annotation = this.getAvgPluginOptions(
+              options.plugins.annotation = this.getAvgPluginOptions(
                 this.totalAverage.collectionExp
               );
             } else if (avgMode === 'goal') {
               const value = this.valGoal.collectionExp * this.goalCount;
-              options2.plugins.annotation = this.getGoalPluginOptions(value);
+              options.plugins.annotation = this.getGoalPluginOptions(value);
             } else {
-              options2.plugins.annotation = {};
+              options.plugins.annotation = {};
             }
-            return options2;
+            break;
         }
+        return options;
       })
     );
   }
@@ -564,120 +564,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   };
 
   public barChartOptions: ChartOptions<'bar'> = {
-    // borderRadius: 50,
-    hover: { mode: null },
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
-    // curvature: 1,
-    animation: {
-      duration: 1500,
-      easing: 'easeOutSine',
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        grid: {
-          display: true,
-        },
-        ticks: {
-          autoSkip: false,
-          callback: function (tickValue: string | number, index, ticks) {
-            return formatXLabel(this.getLabelForValue(index));
-          },
-        },
-      },
-      y: {
-        suggestedMin: 0,
-        ticks: {
-          callback: (label: number, index, ticks) => {
-            // when the floored value is the same as the value we have a whole number
-            if (typeof label === 'number') {
-              return '$' + this.decimalPipe.transform(label);
-            } else {
-              return `$${label}`;
-            }
-          },
-        },
-      },
-    },
-    plugins: {
-      legend: this.legendGenerator,
-      tooltip: {
-        mode: 'x',
-        bodyFont: {
-          family: 'Gilroy-Regular',
-        },
-        cornerRadius: 0,
-        callbacks: {
-          label: tooltipItem => formatXTooltipLabel(tooltipItem),
-          // remove title
-          title: function () {
-            return '';
-          },
-        },
-      },
-    },
-  };
-
-  public barChartOptions2: ChartOptions<'bar'> = {
-    // borderRadius: 50,
-    hover: { mode: null },
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
-    // curvature: 1,
-    animation: {
-      duration: 1500,
-      easing: 'easeOutSine',
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        grid: {
-          display: true,
-        },
-        ticks: {
-          autoSkip: false,
-          callback: function (tickValue: string | number, index, ticks) {
-            return formatXLabel(this.getLabelForValue(index));
-          },
-        },
-      },
-      y: {
-        suggestedMin: 0,
-        ticks: {
-          callback: (label: number, index, ticks) => {
-            // when the floored value is the same as the value we have a whole number
-            if (typeof label === 'number') {
-              return '$' + this.decimalPipe.transform(label);
-            } else {
-              return `$${label}`;
-            }
-          },
-        },
-      },
-    },
-    plugins: {
-      legend: this.legendGenerator,
-      tooltip: {
-        mode: 'x',
-        bodyFont: {
-          family: 'Gilroy-Regular',
-        },
-        cornerRadius: 0,
-        callbacks: {
-          label: tooltipItem => formatXTooltipLabel(tooltipItem),
-          // remove title
-          title: function () {
-            return '';
-          },
-        },
-      },
-    },
-  };
-
-  public barChartOptions3: ChartOptions<'bar'> = {
     // borderRadius: 50,
     hover: { mode: null },
     // scaleShowVerticalLines: false,
