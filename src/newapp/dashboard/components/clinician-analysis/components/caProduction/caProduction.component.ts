@@ -7,6 +7,7 @@ import {
   JeeveLineFillOptions,
   externalTooltipHandler,
 } from '@/newapp/shared/utils';
+import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ChartOptions, LegendOptions, TooltipItem } from 'chart.js';
@@ -37,11 +38,26 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     );
   }
 
-  get trendingIcon() {
-    // if (this.productionVisitVal >= this.productionVisitTrendVal) {
-    //   return 'trending_up';
-    // }
-    return 'trending_down';
+  get trendingIcon$() {
+    return combineLatest([this.chartName$]).pipe(
+      takeUntil(this.destroy$),
+      map(([chartName]) => {
+        switch (chartName) {
+          case 'Production':
+            if (this.totalVal.production >= this.totalPrev.production) {
+              return 'trending_up';
+            } else return 'trending_down';
+          case 'Collection':
+            if (this.totalVal.collection >= this.totalPrev.collection) {
+              return 'trending_up';
+            } else return 'trending_down';
+          case 'Collection-Exp':
+            if (this.totalVal.collectionExp >= this.totalPrev.collectionExp) {
+              return 'trending_up';
+            } else return 'trending_down';
+        }
+      })
+    );
   }
 
   prodSelectShow = new FormControl('production_all');
@@ -63,21 +79,46 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get getTrendTip$() {
-    return this.durationTrendLabel$.pipe(
+    return combineLatest([this.durationTrendLabel$, this.chartName$]).pipe(
       takeUntil(this.destroy$),
-      map(v => {
-        // if (this.productionVisitTrendVal > 0) {
-        //   return (
-        //     v + ': $' + this.decimalPipe.transform(this.productionVisitTrendVal)
-        //   );
-        // }
-        return '';
+      map(([durTrendLabel, chartName]) => {
+        switch (chartName) {
+          case 'Production':
+            return (
+              durTrendLabel +
+              ': $' +
+              this.decimalPipe.transform(this.totalPrev.production)
+            );
+          case 'Collection':
+            return (
+              durTrendLabel +
+              ': $' +
+              this.decimalPipe.transform(this.totalPrev.collection)
+            );
+          case 'Collection-Exp':
+            return (
+              durTrendLabel +
+              ': $' +
+              this.decimalPipe.transform(this.totalPrev.collectionExp)
+            );
+        }
       })
     );
   }
 
   datasets: any = [{ data: [] }];
   labels = [];
+  totalPrev = {
+    production: 0,
+    collection: 0,
+    collectionExp: 0,
+  };
+
+  totalVal = {
+    production: 0,
+    collection: 0,
+    collectionExp: 0,
+  };
 
   get legend$() {
     return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
@@ -170,7 +211,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     private dashboardFacade: DashboardFacade,
     private layoutFacade: LayoutFacade,
     private clinicFacade: ClinicFacade,
-    private authFacade: AuthFacade
+    private authFacade: AuthFacade,
+    private decimalPipe: DecimalPipe
   ) {
     // combineLatest([
     //   this.caFacade.prodTrendChartData$,
@@ -256,21 +298,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     //     }
     //   );
   }
-
-  // get isDisconnectedPlatform$() {
-  //   return combineLatest([
-  //     this.dashboardFacade.connectedWith$,
-  //     this.financeFacade.profitTrendChartName$,
-  //     // this.clinicFacade.currentClinicId$,
-  //   ]).pipe(
-  //     map(([v, chartName]) => {
-  //       const isDisconnected = !(v && v != 'none');
-  //       // const isMultiClinic = typeof clinicId == "string";
-
-  //       return isDisconnected && chartName !== 'Collection';
-  //     })
-  //   );
-  // }
 
   ngOnInit(): void {}
 
