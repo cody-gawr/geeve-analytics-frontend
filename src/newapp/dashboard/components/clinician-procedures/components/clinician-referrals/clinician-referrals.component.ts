@@ -91,8 +91,9 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
             return 'You have no external referrals in the selected period';
           case 'combined':
             return 'You have no referrals in the selected period';
+          default:
+            return '';
         }
-        return '';
       })
     );
   }
