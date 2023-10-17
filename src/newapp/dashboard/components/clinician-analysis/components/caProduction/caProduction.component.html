@@ -8,8 +8,8 @@
   <div class="chart-title">
     <mat-icon
       *ngIf="(duration$ | async) != 'custom'"
-      [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
-      [fontIcon]="trendingIcon"
+      [color]="(trendingIcon$ | async) == 'trending_up' ? 'primary' : 'warn'"
+      [fontIcon]="trendingIcon$ | async"
       [matTooltip]="getTrendTip$ | async"></mat-icon>
     <span *ngIf="(userType$ | async) === 4; else prodSelectTitle">{{
       chartName$ | async

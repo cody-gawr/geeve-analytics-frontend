@@ -3,14 +3,13 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import {
-  JeeveLineFillOptions,
-  externalTooltipHandler,
-} from '@/newapp/shared/utils';
+import { formatXLabel, formatXTooltipLabel } from '@/newapp/shared/utils';
+import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ChartOptions, LegendOptions, TooltipItem } from 'chart.js';
+import { ChartOptions, LegendOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
@@ -37,11 +36,26 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     );
   }
 
-  get trendingIcon() {
-    // if (this.productionVisitVal >= this.productionVisitTrendVal) {
-    //   return 'trending_up';
-    // }
-    return 'trending_down';
+  get trendingIcon$() {
+    return combineLatest([this.chartName$]).pipe(
+      takeUntil(this.destroy$),
+      map(([chartName]) => {
+        switch (chartName) {
+          case 'Production':
+            if (this.totalVal.production >= this.totalPrev.production) {
+              return 'trending_up';
+            } else return 'trending_down';
+          case 'Collection':
+            if (this.totalVal.collection >= this.totalPrev.collection) {
+              return 'trending_up';
+            } else return 'trending_down';
+          case 'Collection-Exp':
+            if (this.totalVal.collectionExp >= this.totalPrev.collectionExp) {
+              return 'trending_up';
+            } else return 'trending_down';
+        }
+      })
+    );
   }
 
   prodSelectShow = new FormControl('production_all');
@@ -63,21 +77,60 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get getTrendTip$() {
-    return this.durationTrendLabel$.pipe(
+    return combineLatest([this.durationTrendLabel$, this.chartName$]).pipe(
       takeUntil(this.destroy$),
-      map(v => {
-        // if (this.productionVisitTrendVal > 0) {
-        //   return (
-        //     v + ': $' + this.decimalPipe.transform(this.productionVisitTrendVal)
-        //   );
-        // }
-        return '';
+      map(([durTrendLabel, chartName]) => {
+        switch (chartName) {
+          case 'Production':
+            return (
+              durTrendLabel +
+              ': $' +
+              this.decimalPipe.transform(this.totalPrev.production)
+            );
+          case 'Collection':
+            return (
+              durTrendLabel +
+              ': $' +
+              this.decimalPipe.transform(this.totalPrev.collection)
+            );
+          case 'Collection-Exp':
+            return (
+              durTrendLabel +
+              ': $' +
+              this.decimalPipe.transform(this.totalPrev.collectionExp)
+            );
+        }
       })
     );
   }
 
   datasets: any = [{ data: [] }];
   labels = [];
+  totalPrev = {
+    production: 0,
+    collection: 0,
+    collectionExp: 0,
+  };
+
+  totalVal = {
+    production: 0,
+    collection: 0,
+    collectionExp: 0,
+  };
+
+  totalAverage = {
+    production: 0,
+    collection: 0,
+    collectionExp: 0,
+  };
+
+  valGoal = {
+    production: 0,
+    collection: 0,
+    collectionExp: 0,
+  };
+
+  goalCount = 0;
 
   get legend$() {
     return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
@@ -170,7 +223,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     private dashboardFacade: DashboardFacade,
     private layoutFacade: LayoutFacade,
     private clinicFacade: ClinicFacade,
-    private authFacade: AuthFacade
+    private authFacade: AuthFacade,
+    private decimalPipe: DecimalPipe
   ) {
     // combineLatest([
     //   this.caFacade.prodTrendChartData$,
@@ -257,21 +311,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     //   );
   }
 
-  // get isDisconnectedPlatform$() {
-  //   return combineLatest([
-  //     this.dashboardFacade.connectedWith$,
-  //     this.financeFacade.profitTrendChartName$,
-  //     // this.clinicFacade.currentClinicId$,
-  //   ]).pipe(
-  //     map(([v, chartName]) => {
-  //       const isDisconnected = !(v && v != 'none');
-  //       // const isMultiClinic = typeof clinicId == "string";
-
-  //       return isDisconnected && chartName !== 'Collection';
-  //     })
-  //   );
-  // }
-
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
@@ -293,87 +332,157 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     this.caFacade.setProdChartName(chartName);
   }
 
+  getAvgPluginOptions(avgVal): _DeepPartialObject<AnnotationPluginOptions> {
+    return {
+      // drawTime: 'afterDatasetsDraw',
+      annotations: [
+        {
+          drawTime: 'afterDraw',
+          type: 'line',
+          // mode: 'horizontal',
+          scaleID: 'y-axis-0',
+          yMax: avgVal,
+          yMin: avgVal,
+          borderColor: '#0e3459',
+          borderWidth: 2,
+          borderDash: [2, 2],
+          borderDashOffset: 0,
+        },
+      ],
+    };
+  }
+
+  getGoalPluginOptions(goalVal): _DeepPartialObject<AnnotationPluginOptions> {
+    return {
+      // drawTime: 'afterDatasetsDraw',
+      annotations: [
+        {
+          drawTime: 'afterDraw',
+          type: 'line',
+          // mode: 'horizontal',
+          scaleID: 'y-axis-0',
+          yMax: goalVal,
+          yMin: goalVal,
+          borderColor: 'red',
+          borderWidth: 2,
+          borderDash: [2, 2],
+          borderDashOffset: 0,
+        },
+      ],
+    };
+  }
+
   chartOptions$() {
-    return combineLatest([this.caFacade.prodChartName$, this.userType$]).pipe(
+    return combineLatest([this.caFacade.prodChartName$, this.avgMode$]).pipe(
       takeUntil(this.destroy$),
-      map(([v, userType]) => {
+      map(([v, avgMode]) => {
+        let options: ChartOptions = { ...this.barChartOptions };
         switch (v) {
           case 'Production':
-            switch (this.prodSelectShow.value) {
-              case 'production_all':
-                // data: barChartData
-                // labels: barChartLabels
-                // option: barChartOptionsDP1
-                // legend: isAllClinic
-                // type: barChartType
-                break;
-              case 'production_dentists':
-                // data: barChartDataDentists
-                // labels: barChartDentistLabels
-                // option: barChartOptionsDP1
-                // legend: isAllClinic
-                // type: barChartType
-                break;
-              case 'production_oht':
-                // data: barChartDataOht
-                // labels: barChartOhtLabels
-                // option: barChartOptionsDP1
-                // legend: isAllClinic
-                // type: barChartType
-                break;
+            // switch (this.prodSelectShow.value) {
+            //   case 'production_all':
+            //   // data: barChartData
+            //   // labels: barChartLabels
+            //   // option: barChartOptionsDP1
+            //   // legend: isAllClinic
+            //   // type: barChartType
+            //   case 'production_dentists':
+            //   // data: barChartDataDentists
+            //   // labels: barChartDentistLabels
+            //   // option: barChartOptionsDP1
+            //   // legend: isAllClinic
+            //   // type: barChartType
+            //   case 'production_oht':
+            //   // data: barChartDataOht
+            //   // labels: barChartOhtLabels
+            //   // option: barChartOptionsDP1
+            //   // legend: isAllClinic
+            //   // type: barChartType
+            // }
+
+            if (avgMode === 'average') {
+              options.plugins.annotation = this.getAvgPluginOptions(
+                this.totalAverage.production
+              );
+            } else if (avgMode === 'goal') {
+              const value = this.valGoal.production * this.goalCount;
+              options.plugins.annotation = this.getGoalPluginOptions(value);
+            } else {
+              options.plugins.annotation = {};
             }
             break;
           case 'Collection':
-            switch (this.prodSelectShow.value) {
-              case 'collection_all':
-                // data: collectionData
-                // labels: collectionLabels
-                // legend: isAllClinic
-                // type: barChartType
-                // options: barChartOptionsDP
-                break;
-              case 'collection_dentists':
-                // data: collectionDentistsData
-                // labels: collectionDentistsLabels
-                // legend: isAllClinic
-                // type: barChartType
-                // options: barChartOptionsDP
-                break;
-              case 'collection_oht':
-                // data: collectionOhtData
-                // labels: collectionOhtLabels
-                // legend: isAllClinic
-                // type: barChartType
-                // options: barChartOptionsDP
-                break;
+            // switch (this.prodSelectShow.value) {
+            //   case 'collection_all':
+            //     // data: collectionData
+            //     // labels: collectionLabels
+            //     // legend: isAllClinic
+            //     // type: barChartType
+            //     // options: barChartOptionsDP
+            //     break;
+            //   case 'collection_dentists':
+            //     // data: collectionDentistsData
+            //     // labels: collectionDentistsLabels
+            //     // legend: isAllClinic
+            //     // type: barChartType
+            //     // options: barChartOptionsDP
+            //     break;
+            //   case 'collection_oht':
+            //     // data: collectionOhtData
+            //     // labels: collectionOhtLabels
+            //     // legend: isAllClinic
+            //     // type: barChartType
+            //     // options: barChartOptionsDP
+            //     break;
+            // }
+            if (avgMode === 'average') {
+              options.plugins.annotation = this.getAvgPluginOptions(
+                this.totalAverage.collection
+              );
+            } else if (avgMode === 'goal') {
+              const value = this.valGoal.collection * this.goalCount;
+              options.plugins.annotation = this.getGoalPluginOptions(value);
+            } else {
+              options.plugins.annotation = {};
             }
             break;
           case 'Collection-Exp':
-            switch (this.prodSelectShow.value) {
-              case 'collection_exp_all':
-                // data: collectionExpData
-                // labels: collectionLabelsExp
-                // legend: isAllClinic
-                // type: barChartType
-                // options: barChartOptionsDP6
-                break;
-              case 'collection_exp_dentists':
-                // data: collectionExpDentistsData
-                // labels: collectionLabelsDentistsExp
-                // legend: isAllClinic
-                // type: barChartType
-                // options: barChartOptionsDP
-                break;
-              case 'collection_exp_oht':
-                // data: collectionExpOhtData
-                // labels: collectionLabelsOhtExp
-                // legend: isAllClinic
-                // type: barChartType
-                // options: barChartOptionsDP
-                break;
+            // switch (this.prodSelectShow.value) {
+            //   case 'collection_exp_all':
+            //     // data: collectionExpData
+            //     // labels: collectionLabelsExp
+            //     // legend: isAllClinic
+            //     // type: barChartType
+            //     // options: barChartOptionsDP6
+            //     break;
+            //   case 'collection_exp_dentists':
+            //     // data: collectionExpDentistsData
+            //     // labels: collectionLabelsDentistsExp
+            //     // legend: isAllClinic
+            //     // type: barChartType
+            //     // options: barChartOptionsDP
+            //     break;
+            //   case 'collection_exp_oht':
+            //     // data: collectionExpOhtData
+            //     // labels: collectionLabelsOhtExp
+            //     // legend: isAllClinic
+            //     // type: barChartType
+            //     // options: barChartOptionsDP
+            //     break;
+            // }
+            if (avgMode === 'average') {
+              options.plugins.annotation = this.getAvgPluginOptions(
+                this.totalAverage.collectionExp
+              );
+            } else if (avgMode === 'goal') {
+              const value = this.valGoal.collectionExp * this.goalCount;
+              options.plugins.annotation = this.getGoalPluginOptions(value);
+            } else {
+              options.plugins.annotation = {};
             }
             break;
         }
+        return options;
       })
     );
   }
@@ -425,4 +534,89 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       })
     );
   }
+
+  public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
+    display: true,
+    position: 'bottom',
+    labels: {
+      boxWidth: 8,
+      usePointStyle: true,
+      generateLabels: chart => {
+        let bgColor = {};
+        let labels = chart.data.labels.map((value: string, i) => {
+          bgColor[value.split(' - ')[1]] =
+            chart.data.datasets[0].backgroundColor[i];
+          return value.split(' - ')[1];
+        });
+        labels = [...new Set(labels)];
+        labels = labels.splice(0, 10);
+        return labels.map((label, index) => ({
+          text: label,
+          strokeStyle: bgColor[label],
+          fillStyle: bgColor[label],
+        }));
+      },
+    },
+    onClick: (event, legendItem, legend) => {
+      return;
+    },
+    // align : 'start',
+  };
+
+  public barChartOptions: ChartOptions<'bar'> = {
+    // borderRadius: 50,
+    hover: { mode: null },
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine',
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        grid: {
+          display: true,
+        },
+        ticks: {
+          autoSkip: false,
+          callback: function (tickValue: string | number, index, ticks) {
+            return formatXLabel(this.getLabelForValue(index));
+          },
+        },
+      },
+      y: {
+        suggestedMin: 0,
+        ticks: {
+          callback: (label: number, index, ticks) => {
+            // when the floored value is the same as the value we have a whole number
+            if (typeof label === 'number') {
+              return '$' + this.decimalPipe.transform(label);
+            } else {
+              return `$${label}`;
+            }
+          },
+        },
+      },
+    },
+    plugins: {
+      legend: this.legendGenerator,
+      tooltip: {
+        mode: 'x',
+        bodyFont: {
+          family: 'Gilroy-Regular',
+        },
+        cornerRadius: 0,
+        callbacks: {
+          label: tooltipItem => formatXTooltipLabel(tooltipItem),
+          // remove title
+          title: function () {
+            return '';
+          },
+        },
+      },
+    },
+  };
 }
