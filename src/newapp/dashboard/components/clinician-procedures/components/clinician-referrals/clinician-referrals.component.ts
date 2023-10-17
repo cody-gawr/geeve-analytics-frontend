@@ -119,35 +119,23 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
     // private dentistFacade: DentistFacade,
     private cpFacade: ClinicianProcedureFacade,
     private breakpointObserver: BreakpointObserver
-  ) {
-    combineLatest([
-      // this.isTrend$,
-      // this.dentistFacade.currentDentistId$,
-      this.cpFacade.cpReferralsChartData$,
-      // this.isMultipleClinic$
-    ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        ([
-          //isTrend,
-          //dentistId,
-          chartData,
-          // isMultiClinics
-        ]) => {
-          this.datasets = chartData.datasets;
-          this.labels = chartData.labels;
-          this.referralsVal = chartData.referralsVal;
-          this.referralsPrev = chartData.referralsPrev;
-          this.referralsVal2 = chartData.referralsVal2;
-          this.referralsPrev2 = chartData.referralsPrev2;
-          this.referralsVal3 = chartData.referralsVal3;
-          this.referralsPrev3 = chartData.referralsPrev3;
-          this.maxValue = chartData.maxVal;
-        }
-      );
-  }
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    combineLatest([this.cpFacade.cpReferralsChartData$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([chartData]) => {
+        this.datasets = chartData.datasets;
+        this.labels = chartData.labels;
+        this.referralsVal = chartData.referralsVal;
+        this.referralsPrev = chartData.referralsPrev;
+        this.referralsVal2 = chartData.referralsVal2;
+        this.referralsPrev2 = chartData.referralsPrev2;
+        this.referralsVal3 = chartData.referralsVal3;
+        this.referralsPrev3 = chartData.referralsPrev3;
+        this.maxValue = chartData.maxVal;
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy.next();

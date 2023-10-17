@@ -115,10 +115,11 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     private dentistFacade: DentistFacade,
     private cpFacade: ClinicianProcedureFacade,
     private sanitized: DomSanitizer
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.isTrend$,
-      // this.dentistFacade.currentDentistId$,
       this.cpFacade.cpPredictorAnalysisVisibility$,
       this.cpFacade.cpPredictorAnalysisChartData$,
       this.cpFacade.cpPredictorSpecialistAnalysisChartData$,
@@ -128,7 +129,6 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       .subscribe(
         ([
           isTrend,
-          //dentistId,
           visibility,
           chartData,
           specialChartData,
@@ -155,8 +155,6 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       );
   }
 
-  ngOnInit(): void {}
-
   ngOnDestroy(): void {
     this.destroy.next();
   }
@@ -172,20 +170,14 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       this.dentistFacade.currentDentistId$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(
-        ([
-          //isTrend,
-          clinics,
-          dentistId,
-        ]) => {
-          if (clinics.length === 1 && dentistId !== 'all') {
-            // dentistMode
-            return this.stackedChartOptions;
-          } else if (clinics.length > 1) {
-            return this.stackedChartOptionsmulti;
-          } else return this.stackedChartOptions;
-        }
-      )
+      map(([clinics, dentistId]) => {
+        if (clinics.length === 1 && dentistId !== 'all') {
+          // dentistMode
+          return this.stackedChartOptions;
+        } else if (clinics.length > 1) {
+          return this.stackedChartOptionsmulti;
+        } else return this.stackedChartOptions;
+      })
     );
   }
 

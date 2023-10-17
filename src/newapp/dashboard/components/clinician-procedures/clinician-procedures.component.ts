@@ -90,7 +90,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
-      // this.dashbordFacade.connectedWith$,
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
       this.dentistFacade.currentDentistId$,
@@ -126,29 +125,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
         this.clinicianProcedureFacade.loadCpRevPerProcedure(_params);
         this.clinicianProcedureFacade.loadCpPredictorRatio(_params);
         this.clinicianProcedureFacade.loadCpReferrals(_params);
-        // switch (trend) {
-        //   case 'off':
-        //     const params = {
-        //       clinicId: clinicId,
-        //       startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
-        //       endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
-        //       duration: duration,
-        //       queryWhEnabled,
-        //       dentistId: providerId,
-        //     };
-
-        //     this.clinicianProcedureFacade.loadCpPredictorAnalysis(params);
-        //     this.clinicianProcedureFacade.loadCpPredictorSpecialistAnalysis(
-        //       params
-        //     );
-        //     this.clinicianProcedureFacade.loadCpRevPerProcedure(params);
-        //     this.clinicianProcedureFacade.loadCpPredictorRatio(params);
-        //     this.clinicianProcedureFacade.loadCpReferrals(params);
-        //     break;
-        //   case 'current':
-        //   case 'historic':
-        //     break;
-        // }
       });
   }
 

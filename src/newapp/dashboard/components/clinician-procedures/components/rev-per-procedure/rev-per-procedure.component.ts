@@ -59,28 +59,16 @@ export class CpRevPerProcedureComponent implements OnInit, OnDestroy {
     private cpFacade: ClinicianProcedureFacade,
     private sanitized: DomSanitizer,
     private numPipe: DecimalPipe
-  ) {
-    combineLatest([
-      //this.isTrend$,
-      // this.dentistFacade.currentDentistId$,
-      this.cpFacade.cpRevPerProcedureChartData$,
-      //this.isMultipleClinic$
-    ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        ([
-          //isTrend,
-          //dentistId,
-          chartData,
-          //isMultiClinics
-        ]) => {
-          this.datasets = chartData.datasets;
-          this.labels = chartData.labels;
-        }
-      );
-  }
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    combineLatest([this.cpFacade.cpRevPerProcedureChartData$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([chartData]) => {
+        this.datasets = chartData.datasets;
+        this.labels = chartData.labels;
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy.next();

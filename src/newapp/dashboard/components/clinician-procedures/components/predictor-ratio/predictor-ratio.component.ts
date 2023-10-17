@@ -122,39 +122,27 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   constructor(
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
-    // private dentistFacade: DentistFacade,
     private cpFacade: ClinicianProcedureFacade,
     private breakpointObserver: BreakpointObserver
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
-      // this.isTrend$,
-      // this.dentistFacade.currentDentistId$,
-      // this.cpFacade.cpPredictorRatioVisibility$,
       this.cpFacade.cpPredictorRatioChartData$,
       this.isMultipleClinic$,
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        ([
-          //isTrend,
-          //dentistId,
-          // visibility,
-          chartData,
-          isMultiClinics,
-        ]) => {
-          this.datasets = chartData.datasets;
-          this.labels = chartData.labels;
-          if (isMultiClinics) {
-            this.multifulRatio = chartData.multifulRatio;
-          } else {
-            this.predictorRatioValue = chartData.cpPredictorRatioAvr;
-          }
-          this.predictorRatioPrev = chartData.cpPredictorRatioPrev;
+      .subscribe(([chartData, isMultiClinics]) => {
+        this.datasets = chartData.datasets;
+        this.labels = chartData.labels;
+        if (isMultiClinics) {
+          this.multifulRatio = chartData.multifulRatio;
+        } else {
+          this.predictorRatioValue = chartData.cpPredictorRatioAvr;
         }
-      );
+        this.predictorRatioPrev = chartData.cpPredictorRatioPrev;
+      });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

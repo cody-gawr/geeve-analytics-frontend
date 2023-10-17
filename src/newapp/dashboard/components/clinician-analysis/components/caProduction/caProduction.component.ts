@@ -101,40 +101,53 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.caFacade.isLoadingCaCollectionExpOht$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(([t, isP1, isP2, isP3, isC1, isC2, isC3, isCE1, isCE2, isCE3]) => {
-        switch (t) {
-          case 'Production':
-            switch (this.prodSelectShow.value) {
-              case 'production_all':
-                return isP1;
-              case 'production_dentists':
-                return isP2;
-              case 'production_oht':
-                return isP3;
-            }
-            break;
-          case 'Collection':
-            switch (this.colSelectShow.value) {
-              case 'collection_all':
-                return isC1;
-              case 'collection_dentists':
-                return isC2;
-              case 'collection_oht':
-                return isC3;
-            }
-            break;
-          case 'Collection-Exp':
-            switch (this.prodSelectShow.value) {
-              case 'collection_exp_all':
-                return isCE1;
-              case 'collection_exp_dentists':
-                return isCE2;
-              case 'collection_exp_oht':
-                return isCE3;
-            }
+      map(
+        ([
+          prodChartName,
+          isLoadingCaProduction,
+          isLoadingCaProductionDentist,
+          isLoadingCaProductionOht,
+          isLoadingCaCollection,
+          isLoadingCaCollectionDentists,
+          isLoadingCaCollectionOht,
+          isLoadingCaCollectionExp,
+          isLoadingCaCollectionExpDentists,
+          isLoadingCaCollectionExpOht,
+        ]) => {
+          switch (prodChartName) {
+            case 'Production':
+              switch (this.prodSelectShow.value) {
+                case 'production_all':
+                  return isLoadingCaProduction;
+                case 'production_dentists':
+                  return isLoadingCaProductionDentist;
+                case 'production_oht':
+                  return isLoadingCaProductionOht;
+              }
+              break;
+            case 'Collection':
+              switch (this.colSelectShow.value) {
+                case 'collection_all':
+                  return isLoadingCaCollection;
+                case 'collection_dentists':
+                  return isLoadingCaCollectionDentists;
+                case 'collection_oht':
+                  return isLoadingCaCollectionOht;
+              }
+              break;
+            case 'Collection-Exp':
+              switch (this.prodSelectShow.value) {
+                case 'collection_exp_all':
+                  return isLoadingCaCollectionExp;
+                case 'collection_exp_dentists':
+                  return isLoadingCaCollectionExpDentists;
+                case 'collection_exp_oht':
+                  return isLoadingCaCollectionExpOht;
+              }
+          }
+          return false;
         }
-        return false;
-      })
+      )
     );
   }
 
