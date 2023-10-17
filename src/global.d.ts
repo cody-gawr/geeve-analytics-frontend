@@ -31,7 +31,7 @@ declare global {
     | 'Dentist Total'
     | 'Dentist Monthly';
   type T_MODE = 'clinic' | 'provider';
-  type C_AVG_MODE = 'off' | 'on';
+  type C_AVG_MODE = 'off' | 'average' | 'goal';
   type CA_API_ENDPOINTS =
     | 'caDentistProduction' // 1
     | 'caDentistProductionDentist'
