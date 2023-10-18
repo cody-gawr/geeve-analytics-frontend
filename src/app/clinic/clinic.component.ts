@@ -493,7 +493,7 @@ export class ClinicComponent implements AfterViewInit {
         this.clinicService.removeClinic(clinicId).subscribe(res => {
           if (res.status == 200) {
             this.toastr.success(`Remove Core for ${clinic.clinicName}`);
-            this.getClinics();
+            clinic.core_clinics = [];
           }
         });
       }
