@@ -5,6 +5,8 @@ export const USER_STAFF = 5;
 export const USER_OWNER = 6;
 export const CONSULTANT = 7;
 export const COLORS = {
+  odd: '#119682',
+  even: '#EEEEF8',
   doughnutChartColors: [
     '#6cd8ba',
     '#b0fffa',

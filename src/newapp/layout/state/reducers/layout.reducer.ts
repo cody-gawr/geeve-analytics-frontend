@@ -10,10 +10,13 @@ export interface LayoutState {
     start: Moment;
     end: Moment;
     duration: DATE_RANGE_DURATION;
+    goalCount: number;
+    enableGoal: boolean;
   };
   trend: TREND_MODE;
   average: C_AVG_MODE;
   activatedRouteTitle: string;
+  compare: boolean;
 }
 
 const initialState: LayoutState = {
@@ -22,9 +25,12 @@ const initialState: LayoutState = {
     start: getTodayMoment().startOf('month'),
     end: getTodayMoment(),
     duration: 'm',
+    goalCount: 0,
+    enableGoal: false,
   },
   trend: 'off',
   average: 'off',
+  compare: false,
   activatedRouteTitle: '',
 };
 
@@ -34,13 +40,15 @@ export const layoutFeature = createFeature({
     initialState,
     on(
       layoutPageActions.saveDateRange,
-      (state, { start, end, duration }): LayoutState => {
+      (state, { start, end, duration, goalCount, enableGoal }): LayoutState => {
         return {
           ...state,
           dateRange: {
             start,
             end,
             duration,
+            goalCount: goalCount ?? state.dateRange.goalCount,
+            enableGoal: enableGoal ?? state.dateRange.enableGoal,
           },
         };
       }
@@ -55,6 +63,12 @@ export const layoutFeature = createFeature({
       return {
         ...state,
         average: cMode,
+      };
+    }),
+    on(layoutPageActions.setCompareMode, (state, { cMode }): LayoutState => {
+      return {
+        ...state,
+        compare: cMode,
       };
     }),
     on(
@@ -75,6 +89,7 @@ export const {
   selectTrend,
   selectAverage,
   selectActivatedRouteTitle,
+  selectCompare,
 } = layoutFeature;
 
 export const selectIsFullMonthsDateRange = createSelector(

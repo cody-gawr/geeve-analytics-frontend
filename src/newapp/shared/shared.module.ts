@@ -16,6 +16,7 @@ import {
 } from './directives/tooltip/tooltip.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AverageModeToggleComponent } from './components/average-mode-toggle/average-mode-toggle.component';
+import { CompareModeToggleComponent } from './components/compare-mode-toggle/compare-mode-toggle.component';
 
 const modules = [
   AngularMaterialModule,
@@ -31,6 +32,7 @@ const components = [
   DateRangeMenuComponent,
   TrendModeToggleComponent,
   AverageModeToggleComponent,
+  CompareModeToggleComponent,
   SpinLoaderComponent,
 ];
 

@@ -48,47 +48,66 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
   setDuration(duration: DATE_RANGE_DURATION) {
     switch (duration) {
       case 'w':
+        this.layoutFacade.saveDateRange(
+          moment().startOf('week'),
+          moment(),
+          'w',
+          1,
+          false
+        );
         break;
       case 'm':
         this.layoutFacade.saveDateRange(
           moment().startOf('month'),
           moment(),
-          'm'
+          'm',
+          1,
+          true
         );
         break;
       case 'lm':
         this.layoutFacade.saveDateRange(
           moment().subtract(1, 'months').startOf('month'),
           moment().subtract(1, 'months').endOf('month'),
-          duration
+          duration,
+          1,
+          true
         );
         break;
       case 'q':
         this.layoutFacade.saveDateRange(
           moment().startOf('quarter'),
           moment(),
-          duration
+          duration,
+          3,
+          false
         );
         break;
       case 'lq':
         this.layoutFacade.saveDateRange(
           moment().subtract(1, 'quarters').startOf('quarter'),
           moment().subtract(1, 'quarters').endOf('quarter'),
-          duration
+          duration,
+          3,
+          false
         );
         break;
       case 'cytd':
         this.layoutFacade.saveDateRange(
           moment().startOf('year'),
           moment(),
-          duration
+          duration,
+          moment().diff(moment().startOf('year'), 'months', false),
+          false
         );
         break;
       case 'lcytd':
         this.layoutFacade.saveDateRange(
           moment().subtract(1, 'years').startOf('year'),
           moment().subtract(1, 'years').endOf('year'),
-          duration
+          duration,
+          12,
+          false
         );
         break;
       case 'fytd':
@@ -96,13 +115,21 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
           this.layoutFacade.saveDateRange(
             moment().month(6).date(1),
             moment(),
-            duration
+            duration,
+            moment().diff(moment().month(6).date(1), 'months', false),
+            false
           );
         } else {
           this.layoutFacade.saveDateRange(
             moment().subtract(1, 'years').month(6).date(1),
             moment(),
-            duration
+            duration,
+            moment().diff(
+              moment().subtract(1, 'years').month(6).date(1),
+              'months',
+              false
+            ),
+            false
           );
         }
         break;
@@ -111,13 +138,17 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
           this.layoutFacade.saveDateRange(
             moment().subtract(1, 'years').month(6).date(1),
             moment().month(5).date(30),
-            duration
+            duration,
+            12,
+            false
           );
         } else {
           this.layoutFacade.saveDateRange(
             moment().subtract(2, 'years').month(6).date(1),
             moment().subtract(1, 'years').month(5).date(30),
-            duration
+            duration,
+            12,
+            false
           );
         }
         break;

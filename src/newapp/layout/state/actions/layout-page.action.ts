@@ -8,6 +8,8 @@ export const saveDateRange = createAction(
     start: Moment | null;
     end: Moment | null;
     duration: DATE_RANGE_DURATION;
+    goalCount?: number;
+    enableGoal?: boolean;
   }>()
 );
 
@@ -19,6 +21,11 @@ export const setTrend = createAction(
 export const setAvgMode = createAction(
   '[Layout Pages] Set Chart Average Mode',
   props<{ cMode: C_AVG_MODE }>()
+);
+
+export const setCompareMode = createAction(
+  '[Layout Pages] Set Compare Mode',
+  props<{ cMode: boolean }>()
 );
 
 export const setActivatedRouteTitle = createAction(

@@ -1,0 +1,12 @@
+<div class="compare-toggle-box">
+  <label>Compare:</label>
+  <mat-button-toggle-group
+    class="custom-toggle-buttons"
+    name="Compare"
+    aria-label="Compare"
+    [value]="compareMode$ | async"
+    (change)="onChangeCompareMode($event)">
+    <mat-button-toggle value="off">Off</mat-button-toggle>
+    <mat-button-toggle value="on">On</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>

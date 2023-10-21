@@ -8,6 +8,8 @@ import {
 } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { HttpErrorResponse } from '@angular/common/http';
+import { COLORS } from '../constants';
+import { Clinic } from '../models/clinic';
 
 export function splitName(label: string) {
   const regex = /\w+\s\w+(?=\s)|\w+/g;
@@ -402,3 +404,50 @@ export const externalTooltipHandlerHiddenColorBoxes = <T extends ChartType>(
   tooltipEl.style.padding =
     tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
 };
+
+const legendBackgroundColor = [
+  '#6edbbb',
+  '#b0fffa',
+  '#abb3ff',
+  '#ffb4b5',
+  '#fffcac',
+  '#FFE4E4',
+  '#FFD578',
+  '#54D2FF',
+  '#E58DD7',
+  '#A9AABC',
+  '#F2ECFF',
+  '#5689C9',
+  '#F9F871',
+];
+
+export function dynamicBarBackgroundColor(
+  data: any[],
+  labels: string[],
+  isAllClinic: boolean,
+  selectedClinics: Clinic[],
+  showTrend: boolean,
+  averageToggle: boolean
+) {
+  let dynamicColors = [];
+  if (isAllClinic) {
+    dynamicColors = [];
+    data.forEach(res => {
+      selectedClinics.forEach((item, index) => {
+        if (res.clinicId == item.id) {
+          dynamicColors.push(legendBackgroundColor[index]);
+        }
+      });
+    });
+  } else {
+    dynamicColors = [];
+    labels.forEach((label, labelIndex) => {
+      if (!showTrend && averageToggle) {
+        dynamicColors.push(label != 'Anonymous' ? COLORS.odd : COLORS.even);
+      } else {
+        dynamicColors.push(labelIndex % 2 === 0 ? COLORS.odd : COLORS.even);
+      }
+    });
+  }
+  return dynamicColors;
+}

@@ -3,6 +3,7 @@
   <div class="toggle-section">
     <average-mode-toggle *ngIf="isAllDentist$ | async"></average-mode-toggle>
     <trend-mode-toggle *ngIf="!(isAllDentist$ | async)"></trend-mode-toggle>
+    <compare-mode-toggle *ngIf="isEnableCompare$ | async"></compare-mode-toggle>
   </div>
 </div>
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">

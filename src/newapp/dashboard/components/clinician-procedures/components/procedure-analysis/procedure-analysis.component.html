@@ -5,21 +5,12 @@
     color="primary"
     class="help-tip"
     fontIcon="help"></mat-icon>
-  <ng-template [ngIf]="showPaTable" [ngIfElse]="disabledIconBtn">
-    <mat-icon
-      matTooltipPosition="below"
-      color="primary"
-      class="table-info-icon"
-      (click)="toggleShowPaTable()"
-      fontIcon="table_rows"></mat-icon>
-  </ng-template>
-  <ng-template #disabledIconBtn>
-    <mat-icon
-      matTooltipPosition="below"
-      class="table-info-icon"
-      (click)="toggleShowPaTable()"
-      fontIcon="table_rows"></mat-icon>
-  </ng-template>
+  <mat-icon
+    matTooltipPosition="below"
+    [ngClass]="showPaTable ? 'active' : ''"
+    class="table-info-icon"
+    (click)="toggleShowPaTable()"
+    fontIcon="table_rows"></mat-icon>
 
   <div class="chart-title">
     <span> Procedure Analysis </span>

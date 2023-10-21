@@ -1,48 +1,79 @@
 @import '../../../../../../assets/layout/styles/layout/mixin';
 .ca-prod-chart {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 15px;
-  gap: 15px;
   min-height: 280px;
-  max-height: 350px;
-  height: 100%;
-  .ca-prod-switch {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    justify-content: space-around;
+  // max-height: 350px;
+  gap: 15px !important;
+}
 
-    button {
-      border-radius: 4px;
-      text-align: center !important;
-      border: 1px solid #97979e;
-      padding: 2px 0px 2px;
-      font-size: 12px;
-      font-weight: 400;
-      cursor: pointer;
-      display: inline-block;
-      color: #849a99;
-      width: 100%;
-      background-color: #fbfbfb;
-      line-height: 23px;
+.ca-prod-switch {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-around;
+  width: 100%;
+  button {
+    border-radius: 4px;
+    text-align: center !important;
+    border: 1px solid #97979e;
+    padding: 2px 0px 2px;
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+    display: inline-block;
+    color: #849a99;
+    width: 100%;
+    background-color: #fbfbfb;
+    line-height: 23px;
 
-      &.active {
-        color: #fff;
-        border-color: transparent;
-        background: rgb(24, 166, 137);
-        background: linear-gradient(
-          to bottom,
-          rgb(24, 166, 137) 0%,
-          rgb(0, 111, 115) 99%
-        );
-      }
+    &.active {
+      color: #fff !important;
+      border-color: transparent;
+      background: rgb(24, 166, 137);
+      background: linear-gradient(
+        to bottom,
+        rgb(24, 166, 137) 0%,
+        rgb(0, 111, 115) 99%
+      );
     }
   }
+}
 
-  .ca-prod-graph {
-    max-height: 280px;
-    flex: 1;
+.ca-prod-graph {
+  max-height: 280px;
+  flex: 1;
+  width: 100%;
+}
+
+.dropdown-title {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-font {
+  font-family: Gilroy-Bold !important;
+  font-weight: 500 !important;
+  line-height: 23px !important;
+  color: #686d6c !important;
+}
+
+.pa-table {
+  width: 100%;
+  height: 100%;
+}
+.pa-table table {
+  width: 100%;
+  height: 100%;
+  thead tr th {
+    text-align: left;
+    font-size: 13px;
+  }
+  thead th {
+    font-size: 14px;
+  }
+  tbody tr td {
+    padding: 0;
+    font-size: 13px;
   }
 }

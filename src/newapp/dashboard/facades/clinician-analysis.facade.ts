@@ -1,19 +1,13 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { JeeveError } from '@/newapp/models';
 import { ClinicianAnalysisActions } from '../state/actions';
 import {
   ClinicianAnalysisState,
-  selectIsLoadingCaCollection,
-  selectIsLoadingCaCollectionDentists,
-  selectIsLoadingCaCollectionExp,
-  selectIsLoadingCaCollectionExpDentists,
-  selectIsLoadingCaCollectionExpOht,
-  selectIsLoadingCaCollectionOht,
-  selectIsLoadingCaDentistProduction,
-  selectIsLoadingCaDentistProductionDentist,
-  selectIsLoadingCaDentistProductionOht,
+  selectCaProductionChartData,
+  selectColExpSelectTab,
+  selectColSelectTab,
+  selectIsLoadingCaProduction,
+  selectProdSelectTab,
   selectProductionChartName,
 } from '../state/reducers/clinician-analysis.reducer';
 
@@ -25,44 +19,82 @@ export class ClinicianAnalysisFacade {
   );
 
   public readonly isLoadingCaProduction$ = this.store.pipe(
-    select(selectIsLoadingCaDentistProduction)
-  );
-
-  public readonly isLoadingCaProductionDentist$ = this.store.pipe(
-    select(selectIsLoadingCaDentistProductionDentist)
-  );
-
-  public readonly isLoadingCaProductionOht$ = this.store.pipe(
-    select(selectIsLoadingCaDentistProductionOht)
-  );
-
-  public readonly isLoadingCaCollection$ = this.store.pipe(
-    select(selectIsLoadingCaCollection)
-  );
-
-  public readonly isLoadingCaCollectionDentists$ = this.store.pipe(
-    select(selectIsLoadingCaCollectionDentists)
-  );
-
-  public readonly isLoadingCaCollectionOht$ = this.store.pipe(
-    select(selectIsLoadingCaCollectionOht)
-  );
-
-  public readonly isLoadingCaCollectionExp$ = this.store.pipe(
-    select(selectIsLoadingCaCollectionExp)
-  );
-
-  public readonly isLoadingCaCollectionExpDentists$ = this.store.pipe(
-    select(selectIsLoadingCaCollectionExpDentists)
-  );
-
-  public readonly isLoadingCaCollectionExpOht$ = this.store.pipe(
-    select(selectIsLoadingCaCollectionExpOht)
+    select(selectIsLoadingCaProduction)
   );
 
   public setProdChartName(chartName: CA_PROD_CHART_NAME) {
     this.store.dispatch(
       ClinicianAnalysisActions.setProdChartName({ chartName })
+    );
+  }
+
+  public readonly caProductionChartData$ = this.store.pipe(
+    select(selectCaProductionChartData)
+  );
+
+  public readonly prodSelectTab$ = this.store.pipe(select(selectProdSelectTab));
+
+  public readonly colSelectTab$ = this.store.pipe(select(selectColSelectTab));
+
+  public readonly colExpSelectTab$ = this.store.pipe(
+    select(selectColExpSelectTab)
+  );
+
+  public setProdSelectTab(tabName: CA_PROD_SELECT_TAB) {
+    this.store.dispatch(ClinicianAnalysisActions.setProdSelectTab({ tabName }));
+  }
+
+  public setColSelectTab(tabName: CA_COL_SELECT_TAB) {
+    this.store.dispatch(ClinicianAnalysisActions.setColSelectTab({ tabName }));
+  }
+
+  public setColExpSelectTab(tabName: CA_COL_EXP_SELECT_TAB) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.setColExpSelectTab({ tabName })
+    );
+  }
+
+  public loadNoneTrendApiRequest({
+    api,
+    clinicId,
+    startDate,
+    endDate,
+    duration,
+    queryWhEnabled,
+    dentistId = undefined,
+  }) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.loadNoneTrendApiRequest({
+        api: api,
+        params: {
+          clinicId,
+          startDate,
+          endDate,
+          duration,
+          queryWhEnabled,
+          dentistId,
+        },
+      })
+    );
+  }
+
+  public loadTrendApiRequest({
+    api,
+    clinicId,
+    mode,
+    queryWhEnabled,
+    dentistId = undefined,
+  }) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.loadTrendApiRequest({
+        api: api,
+        params: {
+          clinicId: clinicId,
+          dentistId: dentistId,
+          mode,
+          queryWhEnabled,
+        },
+      })
     );
   }
 }

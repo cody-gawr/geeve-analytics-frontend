@@ -280,7 +280,11 @@ export class AppTopbarComponent implements OnInit {
       this.layoutFacade.saveDateRange(
         this.range.controls['start'].value,
         event.value,
-        'custom'
+        'custom',
+        1,
+        this.range.controls['start'].value.date() ==
+          this.range.controls['start'].value.clone().startOf('month').date() &&
+          event.value.date() == event.value.clone().endOf('month').date()
       );
     }
   }

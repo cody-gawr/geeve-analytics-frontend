@@ -52,3 +52,24 @@ export const setProdChartName = createAction(
     chartName: CA_PROD_CHART_NAME;
   }>()
 );
+
+export const setProdSelectTab = createAction(
+  '[Clinician Analysis API] Set Prod Select Tab',
+  props<{
+    tabName: CA_PROD_SELECT_TAB;
+  }>()
+);
+
+export const setColSelectTab = createAction(
+  '[Clinician Analysis API] Set Collection Select Tab',
+  props<{
+    tabName: CA_COL_SELECT_TAB;
+  }>()
+);
+
+export const setColExpSelectTab = createAction(
+  '[Clinician Analysis API] Set CollectionExp Select Tab',
+  props<{
+    tabName: CA_COL_EXP_SELECT_TAB;
+  }>()
+);

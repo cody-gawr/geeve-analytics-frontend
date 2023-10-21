@@ -1,0 +1,12 @@
+@import '../../../../assets/layout/styles/layout/mixin';
+
+.compare-toggle-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  @include respond-from('phone') {
+    justify-content: flex-start;
+  }
+}

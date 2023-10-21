@@ -1,6 +1,6 @@
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil, map } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'average-mode-toggle',
@@ -12,7 +12,7 @@ export class AverageModeToggleComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   constructor(private layoutFacade: LayoutFacade) {
-    this.layoutFacade.setAverage('off');
+    //this.layoutFacade.setAverage('off');
   }
 
   get avgMode$() {

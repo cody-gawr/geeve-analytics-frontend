@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import moment from 'moment';
 import { ClinicianAnalysisFacade } from '../../facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 
 @Component({
   selector: 'clinician-analysis',
@@ -40,13 +41,21 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isEnableCompare$() {
+    return this.authFacade.rolesIndividual$.pipe(
+      takeUntil(this.destroy$),
+      map(v => v?.type == 4 && v?.plan != 'lite')
+    );
+  }
+
   constructor(
     private dashbordFacade: DashboardFacade,
     private clinicFacade: ClinicFacade,
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,
     private router: Router,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
+    private authFacade: AuthFacade
   ) {}
 
   ngOnInit(): void {
@@ -56,10 +65,12 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
       this.dentistFacade.currentDentistId$,
+      this.isAllDentist$,
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
-        const [clinicId, dateRange, route, trend, dentistId] = params;
+        const [clinicId, dateRange, route, trend, dentistId, isAllClinic] =
+          params;
         if (clinicId == null) return;
         const providerId =
           dentistId !== 'all' && typeof clinicId !== 'string'
@@ -71,15 +82,53 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
         this.dashbordFacade.loadChartTips(1, clinicId);
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
-
-        const _params = {
-          clinicId: clinicId,
-          startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
-          endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
-          duration: duration,
-          queryWhEnabled,
-          dentistId: providerId,
-        };
+        if (trend === 'off' || isAllClinic) {
+          const params = {
+            clinicId: clinicId,
+            startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
+            endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
+            duration: duration,
+            queryWhEnabled,
+            dentistId: providerId,
+          };
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caDentistProduction',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollection',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollectionExp',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caDentistProductionDentist',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caDentistProductionOht',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollectionDentists',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollectionOht',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollectionExpDentists',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollectionExpOht',
+          });
+        } else {
+        }
       });
   }
 

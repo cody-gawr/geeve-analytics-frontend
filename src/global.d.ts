@@ -83,7 +83,18 @@ declare global {
     | 'caRecallRateTrend';
 
   type CA_PROD_CHART_NAME = 'Production' | 'Collection' | 'Collection-Exp';
-
+  type CA_PROD_SELECT_TAB =
+    | 'production_all'
+    | 'production_dentists'
+    | 'production_oht';
+  type CA_COL_SELECT_TAB =
+    | 'collection_all'
+    | 'collection_dentists'
+    | 'collection_oht';
+  type CA_COL_EXP_SELECT_TAB =
+    | 'collection_exp_all'
+    | 'collection_exp_dentists'
+    | 'collection_exp_oht';
   type CP_API_ENDPOINTS =
     | 'cpPredictorAnalysis'
     | 'cpPredictorSpecialistAnalysis'
@@ -105,5 +116,59 @@ declare global {
     year: number | string;
     yearMonth: string;
     goals?: number;
+  }
+
+  interface CaDentistProductionItem {
+    clinicId: string | number;
+    clinicName: string;
+    day: unknown;
+    month: unknown;
+    production: string | number;
+    providerId: string | number;
+    providerName: string;
+    providerType: 'OHT' | string;
+    week: unknown;
+    weekEnd: unknown;
+    weekStart: unknown;
+    year: unknown;
+    yearMonth: unknown;
+  }
+
+  interface CaDentistProductionApiResponse {
+    app: string;
+    data: CaDentistProductionItem[];
+    goals: string | number;
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+  }
+
+  interface CaCollectionItem {
+    clinicId: string | number;
+    clinicName: string;
+    day: unknown;
+    month: unknown;
+    collection: string | number;
+    providerId: string | number;
+    providerName: string;
+    providerType: 'OHT' | string;
+    week: unknown;
+    weekEnd: unknown;
+    weekStart: unknown;
+    year: unknown;
+    yearMonth: unknown;
+  }
+
+  interface CaCollectionApiResponse {
+    app: string;
+    data: CaCollectionItem[];
+    goals: string | number;
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
   }
 }

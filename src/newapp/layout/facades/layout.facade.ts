@@ -10,6 +10,7 @@ import {
   selectDurationTrendLabel,
   selectIsFullMonthsDateRange,
   selectTrend,
+  selectCompare,
 } from '../state/reducers/layout.reducer';
 import { Moment } from 'moment';
 import { layoutPageActions } from '../state/actions';
@@ -32,6 +33,8 @@ export class LayoutFacade {
     select(selectAverage)
   );
 
+  public readonly compare$ = this.store.pipe(select(selectCompare));
+
   public readonly isFullMonthsDateRange$ = this.store.pipe(
     select(selectIsFullMonthsDateRange)
   );
@@ -39,10 +42,18 @@ export class LayoutFacade {
   public saveDateRange(
     start: Moment | null,
     end: Moment | null,
-    duration: DATE_RANGE_DURATION
+    duration: DATE_RANGE_DURATION,
+    goalCount?: number,
+    enableGoal?: boolean
   ) {
     this.store.dispatch(
-      layoutPageActions.saveDateRange({ start, end, duration })
+      layoutPageActions.saveDateRange({
+        start,
+        end,
+        duration,
+        goalCount,
+        enableGoal,
+      })
     );
   }
 
@@ -52,6 +63,12 @@ export class LayoutFacade {
 
   public setAverage(avg: C_AVG_MODE) {
     this.store.dispatch(layoutPageActions.setAvgMode({ cMode: avg }));
+  }
+
+  public setCompareMode(compareMode: boolean) {
+    this.store.dispatch(
+      layoutPageActions.setCompareMode({ cMode: compareMode })
+    );
   }
 
   public setActivatedRouteTitle(title: string) {
