@@ -8,4 +8,5 @@
 </div>
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
   <caProduction-chart [toolTip]="getChartTip(1) | async" class="ca-chart" />
+  <caHourlyRate-chart [toolTip]="getChartTip(7) | async" class="ca-chart" />
 </div>

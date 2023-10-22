@@ -127,6 +127,43 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
             ...params,
             api: 'caCollectionExpOht',
           });
+
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caHourlyRate',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollectionHourlyRate',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollectionExpHourlyRate',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caHourlyRateDentists',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caHourlyRateOht',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollectionHourlyRateDentist',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollectionHourlyRateOht',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollectionExpHourlyRateDentist',
+          });
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caCollectionExpHourlyRateOht',
+          });
         } else {
         }
       });

@@ -67,6 +67,7 @@ import { ClinicianAnalysisService } from './services/clinician-analysis.service'
 import { ClinicianAnalysisFacade } from './facades/clinician-analysis.facade';
 import { ClinicianAnalysisComponent } from './components/clinician-analysis/clinician-analysis.component';
 import { CaProductionComponent } from './components/clinician-analysis/components/caProduction/caProduction.component';
+import { CaHourlyRateComponent } from './components/clinician-analysis/components/caHourlyRate/caHourlyRate.component';
 
 @NgModule({
   imports: [
@@ -134,6 +135,7 @@ import { CaProductionComponent } from './components/clinician-analysis/component
 
     ClinicianAnalysisComponent,
     CaProductionComponent,
+    CaHourlyRateComponent,
   ],
   providers: [
     DashboardService,

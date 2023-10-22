@@ -73,3 +73,31 @@ export const setColExpSelectTab = createAction(
     tabName: CA_COL_EXP_SELECT_TAB;
   }>()
 );
+
+export const setHourlyRateChartName = createAction(
+  '[Clinician Analysis API] Set Hourly Rate Chart Name',
+  props<{
+    chartName: CA_PROD_CHART_NAME;
+  }>()
+);
+
+export const setHourlyRateProdSelectTab = createAction(
+  '[Clinician Analysis API] Set Hourly Rate Prod Select Tab',
+  props<{
+    tabName: CA_PROD_SELECT_TAB;
+  }>()
+);
+
+export const setHourlyRateColSelectTab = createAction(
+  '[Clinician Analysis API] Set Hourly Rate Collection Select Tab',
+  props<{
+    tabName: CA_COL_SELECT_TAB;
+  }>()
+);
+
+export const setHourlyRateColExpSelectTab = createAction(
+  '[Clinician Analysis API] Set Hourly Rate CollectionExp Select Tab',
+  props<{
+    tabName: CA_COL_EXP_SELECT_TAB;
+  }>()
+);

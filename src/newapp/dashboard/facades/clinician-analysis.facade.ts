@@ -3,9 +3,15 @@ import { select, Store } from '@ngrx/store';
 import { ClinicianAnalysisActions } from '../state/actions';
 import {
   ClinicianAnalysisState,
+  selectCaHourlyRateChartData,
   selectCaProductionChartData,
   selectColExpSelectTab,
   selectColSelectTab,
+  selectHourlyRateChartName,
+  selectHourlyRateColExpSelectTab,
+  selectHourlyRateColSelectTab,
+  selectHourlyRateProdSelectTab,
+  selectIsLoadingCaHourlyRateAll,
   selectIsLoadingCaProduction,
   selectProdSelectTab,
   selectProductionChartName,
@@ -18,8 +24,16 @@ export class ClinicianAnalysisFacade {
     select(selectProductionChartName)
   );
 
+  public readonly hourlyRateChartName$ = this.store.pipe(
+    select(selectHourlyRateChartName)
+  );
+
   public readonly isLoadingCaProduction$ = this.store.pipe(
     select(selectIsLoadingCaProduction)
+  );
+
+  public readonly isLoadingCaHourlyRateAll$ = this.store.pipe(
+    select(selectIsLoadingCaHourlyRateAll)
   );
 
   public setProdChartName(chartName: CA_PROD_CHART_NAME) {
@@ -28,8 +42,18 @@ export class ClinicianAnalysisFacade {
     );
   }
 
+  public setHourlyRateChartName(chartName: CA_PROD_CHART_NAME) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.setHourlyRateChartName({ chartName })
+    );
+  }
+
   public readonly caProductionChartData$ = this.store.pipe(
     select(selectCaProductionChartData)
+  );
+
+  public readonly caHourlyRateChartData$ = this.store.pipe(
+    select(selectCaHourlyRateChartData)
   );
 
   public readonly prodSelectTab$ = this.store.pipe(select(selectProdSelectTab));
@@ -95,6 +119,36 @@ export class ClinicianAnalysisFacade {
           queryWhEnabled,
         },
       })
+    );
+  }
+
+  public readonly hourlyRateProdSelectTab$ = this.store.pipe(
+    select(selectHourlyRateProdSelectTab)
+  );
+
+  public readonly hourlyRateColSelectTab$ = this.store.pipe(
+    select(selectHourlyRateColSelectTab)
+  );
+
+  public readonly hourlyRateColExpSelectTab$ = this.store.pipe(
+    select(selectHourlyRateColExpSelectTab)
+  );
+
+  public setHourlyRateProdSelectTab(tabName: CA_PROD_SELECT_TAB) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.setHourlyRateProdSelectTab({ tabName })
+    );
+  }
+
+  public setHourlyRateColSelectTab(tabName: CA_COL_SELECT_TAB) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.setHourlyRateColSelectTab({ tabName })
+    );
+  }
+
+  public setHourlyRateColExpSelectTab(tabName: CA_COL_EXP_SELECT_TAB) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.setHourlyRateColExpSelectTab({ tabName })
     );
   }
 }

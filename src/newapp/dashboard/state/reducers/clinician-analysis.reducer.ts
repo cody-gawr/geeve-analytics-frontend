@@ -15,24 +15,36 @@ export interface ClinicianAnalysisState {
   isLoadingData: Array<CA_API_ENDPOINTS | CA_API_ENDPOINTS_TREND>;
   errors: Array<JeeveError>;
 
-  productionChartName: CA_PROD_CHART_NAME;
   resBodyList: Record<CA_API_ENDPOINTS, unknown> | {};
   resBodyListTrend: Record<CA_API_ENDPOINTS_TREND, unknown> | {};
 
+  productionChartName: CA_PROD_CHART_NAME;
   prodSelectTab: CA_PROD_SELECT_TAB;
   colSelectTab: CA_COL_SELECT_TAB;
   colExpSelectTab: CA_COL_EXP_SELECT_TAB;
+
+  hourlyRateChartName: CA_PROD_CHART_NAME;
+  hourlyRateProdSelectTab: CA_PROD_SELECT_TAB;
+  hourlyRateColSelectTab: CA_COL_SELECT_TAB;
+  hourlyRateColExpSelectTab: CA_COL_EXP_SELECT_TAB;
 }
 
 const initiateState: ClinicianAnalysisState = {
   isLoadingData: [],
   errors: [],
-  productionChartName: 'Production',
+
   resBodyList: {},
   resBodyListTrend: {},
+
+  productionChartName: 'Production',
   prodSelectTab: 'production_all',
   colSelectTab: 'collection_all',
   colExpSelectTab: 'collection_exp_all',
+
+  hourlyRateChartName: 'Production',
+  hourlyRateProdSelectTab: 'production_all',
+  hourlyRateColSelectTab: 'collection_all',
+  hourlyRateColExpSelectTab: 'collection_exp_all',
 };
 
 export const clinicianAnalysisFeature = createFeature({
@@ -72,6 +84,42 @@ export const clinicianAnalysisFeature = createFeature({
         return {
           ...state,
           colExpSelectTab: tabName,
+        };
+      }
+    ),
+    on(
+      ClinicianAnalysisActions.setHourlyRateChartName,
+      (state, { chartName }): ClinicianAnalysisState => {
+        return {
+          ...state,
+          hourlyRateChartName: chartName,
+        };
+      }
+    ),
+    on(
+      ClinicianAnalysisActions.setHourlyRateProdSelectTab,
+      (state, { tabName }): ClinicianAnalysisState => {
+        return {
+          ...state,
+          hourlyRateProdSelectTab: tabName,
+        };
+      }
+    ),
+    on(
+      ClinicianAnalysisActions.setHourlyRateColSelectTab,
+      (state, { tabName }): ClinicianAnalysisState => {
+        return {
+          ...state,
+          hourlyRateColSelectTab: tabName,
+        };
+      }
+    ),
+    on(
+      ClinicianAnalysisActions.setHourlyRateColExpSelectTab,
+      (state, { tabName }): ClinicianAnalysisState => {
+        return {
+          ...state,
+          hourlyRateColExpSelectTab: tabName,
         };
       }
     ),
@@ -157,6 +205,11 @@ export const {
   selectProdSelectTab,
   selectColSelectTab,
   selectColExpSelectTab,
+
+  selectHourlyRateChartName,
+  selectHourlyRateProdSelectTab,
+  selectHourlyRateColSelectTab,
+  selectHourlyRateColExpSelectTab,
 } = clinicianAnalysisFeature;
 
 export const selectIsLoadingCaDentistProduction = createSelector(
@@ -376,6 +429,266 @@ export const selectCaProductionChartData = createSelector(
       } else {
         chartData.push(Math.round(<number>res.collection));
       }
+
+      const pName =
+        res.providerName +
+        (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+      if (res.providerName != null && res.providerName != 'Anonymous') {
+        chartLabels.push(pName);
+      } else {
+        chartLabels.push(pName);
+      }
+
+      tableData.push({
+        providerName: pName,
+        value: chartData[i],
+      });
+    });
+
+    let datasets = [
+      {
+        data: [],
+        backgroundColor: dynamicBarBackgroundColor(
+          resBody.data,
+          chartLabels,
+          selectClinics.length > 1,
+          selectedClinics,
+          trendMode !== 'off',
+          averageMode == 'average'
+        ),
+        shadowOffsetX: 3,
+        shadowOffsetY: 3,
+        shadowBlur: 5,
+        shadowColor: 'rgba(0, 0, 0, 0.5)',
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundOverlayMode: 'multiply',
+      },
+    ];
+
+    datasets[0].data = chartData;
+    return {
+      datasets,
+      labels: chartLabels,
+      total: Math.round(resBody.total),
+      average: Math.round(resBody.totalAverage),
+      prev: Math.round(resBody.totalTa),
+      goal: parseInt(<string>resBody.goals),
+      tableData,
+    };
+  }
+);
+
+export const selectIsLoadingCaHourlyRate = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'caHourlyRate') >= 0
+);
+
+export const selectIsLoadingCaHourlyRateDentists = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'caHourlyRateDentists') >= 0
+);
+
+export const selectIsLoadingCaHourlyRateOht = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'caHourlyRateOht') >= 0
+);
+
+export const selectIsLoadingCaCollectionHourlyRate = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caCollectionHourlyRate') >= 0
+);
+
+export const selectIsLoadingCaCollectionHourlyRateDentist = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caCollectionHourlyRateDentist') >= 0
+);
+
+export const selectIsLoadingCaCollectionHourlyRateOht = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caCollectionHourlyRateOht') >= 0
+);
+
+export const selectIsLoadingCaCollectionExpHourlyRate = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caCollectionExpHourlyRate') >= 0
+);
+
+export const selectIsLoadingCaCollectionExpHourlyRateDentist = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caCollectionExpHourlyRateDentist') >= 0
+);
+
+export const selectIsLoadingCaCollectionExpHourlyRateOht = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caCollectionExpHourlyRateOht') >= 0
+);
+
+export const selectIsLoadingCaHourlyRateAll = createSelector(
+  selectHourlyRateChartName,
+  selectHourlyRateProdSelectTab,
+  selectHourlyRateColSelectTab,
+  selectHourlyRateColExpSelectTab,
+  selectIsLoadingCaHourlyRate,
+  selectIsLoadingCaHourlyRateDentists,
+  selectIsLoadingCaHourlyRateOht,
+  selectIsLoadingCaCollectionHourlyRate,
+  selectIsLoadingCaCollectionHourlyRateDentist,
+  selectIsLoadingCaCollectionHourlyRateOht,
+  selectIsLoadingCaCollectionExpHourlyRate,
+  selectIsLoadingCaCollectionExpHourlyRateDentist,
+  selectIsLoadingCaCollectionExpHourlyRateOht,
+  (
+    hourlyRateChartName,
+    hourlyRateProdTab,
+    hourlyRateColTab,
+    hourlyRatecolExpTab,
+    isLoadingCaHourlyRate,
+    isLoadingCaHourlyRateDentist,
+    isLoadingCaHourlyRateOht,
+    isLoadingCaCollectionHourlyRate,
+    isLoadingCaCollectionHourlyRateDentists,
+    isLoadingCaCollectionHourlyRateOht,
+    isLoadingCaCollectionExpHourlyRate,
+    isLoadingCaCollectionExpHourlyRateDentists,
+    isLoadingCaCollectionExpHourlyRateOht
+  ) => {
+    switch (hourlyRateChartName) {
+      case 'Production':
+        switch (hourlyRateProdTab) {
+          case 'production_all':
+            return isLoadingCaHourlyRate;
+          case 'production_dentists':
+            return isLoadingCaHourlyRateDentist;
+          case 'production_oht':
+            return isLoadingCaHourlyRateOht;
+        }
+        break;
+      case 'Collection':
+        switch (hourlyRateColTab) {
+          case 'collection_all':
+            return isLoadingCaCollectionHourlyRate;
+          case 'collection_dentists':
+            return isLoadingCaCollectionHourlyRateDentists;
+          case 'collection_oht':
+            return isLoadingCaCollectionHourlyRateOht;
+        }
+        break;
+      case 'Collection-Exp':
+        switch (hourlyRatecolExpTab) {
+          case 'collection_exp_all':
+            return isLoadingCaCollectionExpHourlyRate;
+          case 'collection_exp_dentists':
+            return isLoadingCaCollectionExpHourlyRateDentists;
+          case 'collection_exp_oht':
+            return isLoadingCaCollectionExpHourlyRateOht;
+        }
+    }
+  }
+);
+
+export const selectCaHourlyRateChartData = createSelector(
+  selectResBodyList,
+  selectCurrentClinics,
+  selectTrend,
+  selectAverage,
+  selectHourlyRateChartName,
+  selectHourlyRateProdSelectTab,
+  selectHourlyRateColSelectTab,
+  selectHourlyRateColExpSelectTab,
+  (
+    bodyList,
+    selectedClinics,
+    trendMode,
+    averageMode,
+    prodChartName,
+    prodTab,
+    colTab,
+    colExpTab
+  ) => {
+    let resBody: CaHourlyRateApiResponse | CaCollectionHourlyRateApiResponse =
+      null;
+    switch (prodChartName) {
+      case 'Production':
+        switch (prodTab) {
+          case 'production_all':
+            resBody = bodyList['caHourlyRate'];
+            break;
+          case 'production_dentists':
+            resBody = bodyList['caHourlyRateDentists'];
+            break;
+          case 'production_oht':
+            resBody = bodyList['caHourlyRateOht'];
+            break;
+        }
+        break;
+      case 'Collection':
+        switch (colTab) {
+          case 'collection_all':
+            resBody = bodyList['caCollectionHourlyRate'];
+            break;
+          case 'collection_dentists':
+            resBody = bodyList['caCollectionHourlyRateDentist'];
+            break;
+          case 'collection_oht':
+            resBody = bodyList['caCollectionHourlyRateOht'];
+            break;
+        }
+        break;
+      case 'Collection-Exp':
+        switch (colExpTab) {
+          case 'collection_exp_all':
+            resBody = bodyList['caCollectionExpHourlyRate'];
+            break;
+          case 'collection_exp_dentists':
+            resBody = bodyList['caCollectionExpHourlyRateDentist'];
+            break;
+          case 'collection_exp_oht':
+            resBody = bodyList['caCollectionExpHourlyRateOht'];
+            break;
+        }
+    }
+
+    let chartData = [],
+      chartLabels = [];
+    if (!resBody?.data) {
+      return {
+        datasets: [],
+        labels: [],
+        total: 0,
+        average: 0,
+        prev: 0,
+        goal: 0,
+        tableData: [],
+      };
+    }
+
+    if (selectedClinics.length > 1) {
+      resBody.data
+        .sort(
+          (a, b) =>
+            parseFloat(<string>a.hourlyRate) - parseFloat(<string>b.hourlyRate)
+        )
+        .reverse();
+    }
+
+    if (resBody.data.length > 20) {
+      resBody.data = resBody.data.slice(0, 20);
+    }
+    const tableData = [];
+    resBody.data.forEach((res, i) => {
+      chartData.push(Math.round(<number>res.hourlyRate));
 
       const pName =
         res.providerName +

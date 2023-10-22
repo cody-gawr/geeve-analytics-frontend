@@ -1,0 +1,132 @@
+<div class="chart-container">
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <mat-icon
+    [ngClass]="showTableInfo ? 'active' : ''"
+    (click)="toggleTableInfo()"
+    class="table-info-icon"
+    fontIcon="table_rows_narrow" />
+  <div class="chart-title">
+    <mat-icon
+      *ngIf="(duration$ | async) != 'custom'"
+      [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
+      [fontIcon]="trendingIcon"
+      [matTooltip]="getTrendTip$ | async"></mat-icon>
+    <div class="dropdown-title">
+      <div style="min-width: 200px">
+        <span *ngIf="(userType$ | async) === 4; else prodSelectTitle">{{
+          chartName$ | async
+        }}</span>
+        <ng-template #prodSelectTitle>
+          <mat-select
+            class="dropdown-font"
+            [value]="prodSelectShow$ | async"
+            (selectionChange)="onChangeProdSelectTab($event)"
+            *ngIf="(chartName$ | async) === 'Production'">
+            <mat-option value="production_all">Hourly Rate - All</mat-option>
+            <mat-option value="production_dentists"
+              >Hourly Rate - Dentists</mat-option
+            >
+            <mat-option value="production_oht">Hourly Rate - OHT</mat-option>
+          </mat-select>
+          <mat-select
+            [value]="colSelectShow$ | async"
+            (selectionChange)="onChangeColSelectTab($event)"
+            *ngIf="(chartName$ | async) === 'Collection'">
+            <mat-option value="collection_all">Hourly Rate - All</mat-option>
+            <mat-option value="collection_dentists"
+              >Hourly Rate - Dentists</mat-option
+            >
+            <mat-option value="collection_oht">Hourly Rate - OHT</mat-option>
+          </mat-select>
+          <mat-select
+            [value]="colExpSelectShow$ | async"
+            (selectionChange)="onChangeColExpSelectTab($event)"
+            *ngIf="(chartName$ | async) === 'Collection-Exp'">
+            <mat-option value="collection_exp_all"
+              >Hourly Rate - All</mat-option
+            >
+            <mat-option value="collection_exp_dentists"
+              >Hourly Rate - Dentists</mat-option
+            >
+            <mat-option value="collection_exp_oht"
+              >Hourly Rate - OHT</mat-option
+            >
+          </mat-select>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="chart-content">
+    <div class="canvas-wrapper chart-box ca-hourly-chart">
+      <div class="ca-hourly-switch">
+        <button
+          *ngFor="let chartName of hourlyRateChartNames"
+          (click)="switchChartName(chartName)"
+          [ngClass]="{ active: chartName == (chartName$ | async) }">
+          {{ chartName }}
+        </button>
+      </div>
+
+      <div class="pa-table" *ngIf="showTableInfo; else graphElem">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Collection</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let protbl of tableData">
+              <td>{{ protbl.providerName }}</td>
+              <td>{{ protbl.value | number: '1.0-0' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #graphElem>
+        <div class="chart-gauge ca-hourly-graph">
+          <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+          <ng-template #chartElem>
+            <canvas
+              baseChart
+              *ngIf="hasData"
+              [datasets]="datasets"
+              [labels]="labels"
+              [legend]="legend$ | async"
+              type="bar"
+              [options]="chartOptions$ | async">
+            </canvas>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!hasData"
+              [disableSpin]="true">
+              {{ noDataAlertMessage$ | async }}
+            </spin-loader>
+          </ng-template>
+        </div>
+      </ng-template>
+
+      <div class="chart-foot" *ngIf="isEnableFooter$ | async">
+        <div>
+          <h3>${{ total }}</h3>
+          <span>{{ durationLabel$ | async }}</span>
+        </div>
+
+        <div *ngIf="(duration$ | async) !== 'custom'">
+          <h3>${{ prev }}</h3>
+          <span>{{ durationTrendLabel$ | async }}</span>
+        </div>
+        <div *ngIf="goal >= 0 && (showGoals$ | async) == true">
+          <h3 *ngIf="goal && (goalCount$ | async)">
+            {{ goal * (goalCount$ | async) }}
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

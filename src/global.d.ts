@@ -171,4 +171,61 @@ declare global {
     totalAverage: number;
     totalTa: number;
   }
+
+  interface CaHourlyRateItem {
+    clinicId: string | number;
+    clinicName: string;
+    day: unknown;
+    month: unknown;
+    production: string | number;
+    providerId: string | number;
+    providerName: string;
+    providerType: 'OHT' | string;
+    week: unknown;
+    weekEnd: unknown;
+    weekStart: unknown;
+    year: unknown;
+    yearMonth: unknown;
+    hourlyRate: string | number;
+  }
+
+  interface CaHourlyRateApiResponse {
+    app: string;
+    data: CaHourlyRateItem[];
+    goals: string | number;
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+  }
+
+  interface CaCollectionHourlyRateItem {
+    clinicId: string | number;
+    clinicName: string;
+    day: unknown;
+    month: unknown;
+    collection: string | number;
+    providerId: string | number;
+    providerName: string;
+    providerType: 'OHT' | string;
+    week: unknown;
+    weekEnd: unknown;
+    weekStart: unknown;
+    year: unknown;
+    yearMonth: unknown;
+    hourlyRate: string | number;
+    hours: string | number;
+  }
+
+  interface CaCollectionHourlyRateApiResponse {
+    app: string;
+    data: CaCollectionHourlyRateItem[];
+    goals: string | number;
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+  }
 }
