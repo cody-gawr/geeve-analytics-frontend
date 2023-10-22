@@ -10,6 +10,7 @@ import {
   selectAverage,
   selectTrend,
 } from '@/newapp/layout/state/reducers/layout.reducer';
+import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.reducer';
 
 export interface ClinicianAnalysisState {
   isLoadingData: Array<CA_API_ENDPOINTS | CA_API_ENDPOINTS_TREND>;
@@ -332,6 +333,7 @@ export const selectCaProductionChartData = createSelector(
   selectProdSelectTab,
   selectColSelectTab,
   selectColExpSelectTab,
+  selectCurrentDentistId,
   (
     bodyList,
     selectedClinics,
@@ -340,147 +342,202 @@ export const selectCaProductionChartData = createSelector(
     prodChartName,
     prodTab,
     colTab,
-    colExpTab
+    colExpTab,
+    currentDentistId
   ) => {
+    const isAllDentist = currentDentistId === 'all';
     let resBody: CaDentistProductionApiResponse | CaCollectionApiResponse =
       null;
     switch (prodChartName) {
       case 'Production':
-        switch (prodTab) {
-          case 'production_all':
-            resBody = bodyList['caDentistProduction'];
-            break;
-          case 'production_dentists':
-            resBody = bodyList['caDentistProductionDentist'];
-            break;
-          case 'production_oht':
-            resBody = bodyList['caDentistProductionOht'];
-            break;
+        if (isAllDentist) {
+          switch (prodTab) {
+            case 'production_all':
+              resBody = bodyList['caDentistProduction'];
+              break;
+            case 'production_dentists':
+              resBody = bodyList['caDentistProductionDentist'];
+              break;
+            case 'production_oht':
+              resBody = bodyList['caDentistProductionOht'];
+              break;
+          }
+        } else {
+          resBody = bodyList['caDentistProduction'];
         }
         break;
       case 'Collection':
-        switch (colTab) {
-          case 'collection_all':
-            resBody = bodyList['caCollection'];
-            break;
-          case 'collection_dentists':
-            resBody = bodyList['caCollectionDentists'];
-            break;
-          case 'collection_oht':
-            resBody = bodyList['caCollectionOht'];
-            break;
+        if (isAllDentist) {
+          switch (colTab) {
+            case 'collection_all':
+              resBody = bodyList['caCollection'];
+              break;
+            case 'collection_dentists':
+              resBody = bodyList['caCollectionDentists'];
+              break;
+            case 'collection_oht':
+              resBody = bodyList['caCollectionOht'];
+              break;
+          }
+        } else {
+          resBody = bodyList['caCollection'];
         }
+
         break;
       case 'Collection-Exp':
-        switch (colExpTab) {
-          case 'collection_exp_all':
-            resBody = bodyList['caCollectionExp'];
-            break;
-          case 'collection_exp_dentists':
-            resBody = bodyList['caCollectionExpDentists'];
-            break;
-          case 'collection_exp_oht':
-            resBody = bodyList['caCollectionExpOht'];
-            break;
+        if (isAllDentist) {
+          switch (colExpTab) {
+            case 'collection_exp_all':
+              resBody = bodyList['caCollectionExp'];
+              break;
+            case 'collection_exp_dentists':
+              resBody = bodyList['caCollectionExpDentists'];
+              break;
+            case 'collection_exp_oht':
+              resBody = bodyList['caCollectionExpOht'];
+              break;
+          }
+        } else {
+          resBody = bodyList['caCollectionExp'];
         }
+        break;
     }
+    if (isAllDentist) {
+      let chartData = [],
+        chartLabels = [];
+      if (!resBody?.data) {
+        return {
+          datasets: [],
+          labels: [],
+          total: 0,
+          average: 0,
+          prev: 0,
+          goal: 0,
+          tableData: [],
+        };
+      }
 
-    let chartData = [],
-      chartLabels = [];
-    if (!resBody?.data) {
+      if (selectedClinics.length > 1) {
+        if (prodChartName === 'Production') {
+          resBody.data
+            .sort(
+              (a, b) =>
+                parseFloat(<string>a.production) -
+                parseFloat(<string>b.production)
+            )
+            .reverse();
+        } else {
+          resBody.data
+            .sort(
+              (a, b) =>
+                parseFloat(<string>a.collection) -
+                parseFloat(<string>b.collection)
+            )
+            .reverse();
+        }
+      }
+
+      if (resBody.data.length > 20) {
+        resBody.data = resBody.data.slice(0, 20);
+      }
+      const tableData = [];
+      resBody.data.forEach((res, i) => {
+        if (prodChartName === 'Production') {
+          chartData.push(Math.round(<number>res.production));
+        } else {
+          chartData.push(Math.round(<number>res.collection));
+        }
+
+        const pName =
+          res.providerName +
+          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+        if (res.providerName != null && res.providerName != 'Anonymous') {
+          chartLabels.push(pName);
+        } else {
+          chartLabels.push(pName);
+        }
+
+        tableData.push({
+          label: pName,
+          value: chartData[i],
+        });
+      });
+
+      let datasets = [
+        {
+          data: [],
+          backgroundColor: dynamicBarBackgroundColor(
+            resBody.data,
+            chartLabels,
+            selectClinics.length > 1,
+            selectedClinics,
+            trendMode !== 'off',
+            averageMode == 'average'
+          ),
+          shadowOffsetX: 3,
+          shadowOffsetY: 3,
+          shadowBlur: 5,
+          shadowColor: 'rgba(0, 0, 0, 0.5)',
+          pointBevelWidth: 2,
+          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+          pointShadowOffsetX: 3,
+          pointShadowOffsetY: 3,
+          pointShadowBlur: 10,
+          pointShadowColor: 'rgba(0, 0, 0, 0.5)',
+          backgroundOverlayMode: 'multiply',
+        },
+      ];
+
+      datasets[0].data = chartData;
       return {
-        datasets: [],
-        labels: [],
-        total: 0,
-        average: 0,
-        prev: 0,
-        goal: 0,
-        tableData: [],
+        datasets,
+        labels: chartLabels,
+        total: Math.round(resBody.total),
+        average: Math.round(resBody.totalAverage),
+        prev: Math.round(resBody.totalTa),
+        goal: parseInt(<string>resBody.goals),
+        tableData,
+      };
+    } else {
+      if (!resBody?.data) {
+        return {
+          gaugeValue: 0,
+          gaugeLabel: '',
+          maxGoal: 0,
+          total: 0,
+          average: 0,
+          prev: 0,
+          goal: 0,
+          tableData: [],
+        };
+      }
+
+      let gaugeValue = 0,
+        gaugeLabel = '',
+        maxGoal = 0,
+        tableData = [];
+
+      resBody.data.forEach(res => {
+        gaugeValue = Math.round(
+          prodChartName === 'Production' ? res.production : res.collection
+        );
+
+        gaugeLabel = res.providerName;
+      });
+      const goal = parseInt(<string>resBody.goals);
+      maxGoal = gaugeValue > goal ? gaugeValue : goal;
+      return {
+        gaugeValue: gaugeValue,
+        gaugeLabel: gaugeLabel,
+        total: Math.round(resBody.total),
+        average: Math.round(resBody.totalAverage),
+        prev: Math.round(resBody.totalTa),
+        goal: goal,
+        maxGoal: maxGoal,
+        tableData,
       };
     }
-
-    if (selectedClinics.length > 1) {
-      if (prodChartName === 'Production') {
-        resBody.data
-          .sort(
-            (a, b) =>
-              parseFloat(<string>a.production) -
-              parseFloat(<string>b.production)
-          )
-          .reverse();
-      } else {
-        resBody.data
-          .sort(
-            (a, b) =>
-              parseFloat(<string>a.collection) -
-              parseFloat(<string>b.collection)
-          )
-          .reverse();
-      }
-    }
-
-    if (resBody.data.length > 20) {
-      resBody.data = resBody.data.slice(0, 20);
-    }
-    const tableData = [];
-    resBody.data.forEach((res, i) => {
-      if (prodChartName === 'Production') {
-        chartData.push(Math.round(<number>res.production));
-      } else {
-        chartData.push(Math.round(<number>res.collection));
-      }
-
-      const pName =
-        res.providerName +
-        (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
-      if (res.providerName != null && res.providerName != 'Anonymous') {
-        chartLabels.push(pName);
-      } else {
-        chartLabels.push(pName);
-      }
-
-      tableData.push({
-        providerName: pName,
-        value: chartData[i],
-      });
-    });
-
-    let datasets = [
-      {
-        data: [],
-        backgroundColor: dynamicBarBackgroundColor(
-          resBody.data,
-          chartLabels,
-          selectClinics.length > 1,
-          selectedClinics,
-          trendMode !== 'off',
-          averageMode == 'average'
-        ),
-        shadowOffsetX: 3,
-        shadowOffsetY: 3,
-        shadowBlur: 5,
-        shadowColor: 'rgba(0, 0, 0, 0.5)',
-        pointBevelWidth: 2,
-        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-        pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-        pointShadowOffsetX: 3,
-        pointShadowOffsetY: 3,
-        pointShadowBlur: 10,
-        pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-        backgroundOverlayMode: 'multiply',
-      },
-    ];
-
-    datasets[0].data = chartData;
-    return {
-      datasets,
-      labels: chartLabels,
-      total: Math.round(resBody.total),
-      average: Math.round(resBody.totalAverage),
-      prev: Math.round(resBody.totalTa),
-      goal: parseInt(<string>resBody.goals),
-      tableData,
-    };
   }
 );
 
@@ -607,6 +664,7 @@ export const selectCaHourlyRateChartData = createSelector(
   selectHourlyRateProdSelectTab,
   selectHourlyRateColSelectTab,
   selectHourlyRateColExpSelectTab,
+  selectCurrentDentistId,
   (
     bodyList,
     selectedClinics,
@@ -615,131 +673,190 @@ export const selectCaHourlyRateChartData = createSelector(
     prodChartName,
     prodTab,
     colTab,
-    colExpTab
+    colExpTab,
+    currentDentistid
   ) => {
     let resBody: CaHourlyRateApiResponse | CaCollectionHourlyRateApiResponse =
       null;
+    const isAllDentist = currentDentistid === 'all';
     switch (prodChartName) {
       case 'Production':
-        switch (prodTab) {
-          case 'production_all':
-            resBody = bodyList['caHourlyRate'];
-            break;
-          case 'production_dentists':
-            resBody = bodyList['caHourlyRateDentists'];
-            break;
-          case 'production_oht':
-            resBody = bodyList['caHourlyRateOht'];
-            break;
+        if (isAllDentist) {
+          switch (prodTab) {
+            case 'production_all':
+              resBody = bodyList['caHourlyRate'];
+              break;
+            case 'production_dentists':
+              resBody = bodyList['caHourlyRateDentists'];
+              break;
+            case 'production_oht':
+              resBody = bodyList['caHourlyRateOht'];
+              break;
+          }
+        } else {
+          resBody = bodyList['caHourlyRate'];
         }
+
         break;
       case 'Collection':
-        switch (colTab) {
-          case 'collection_all':
-            resBody = bodyList['caCollectionHourlyRate'];
-            break;
-          case 'collection_dentists':
-            resBody = bodyList['caCollectionHourlyRateDentist'];
-            break;
-          case 'collection_oht':
-            resBody = bodyList['caCollectionHourlyRateOht'];
-            break;
+        if (isAllDentist) {
+          switch (colTab) {
+            case 'collection_all':
+              resBody = bodyList['caCollectionHourlyRate'];
+              break;
+            case 'collection_dentists':
+              resBody = bodyList['caCollectionHourlyRateDentist'];
+              break;
+            case 'collection_oht':
+              resBody = bodyList['caCollectionHourlyRateOht'];
+              break;
+          }
+        } else {
+          resBody = bodyList['caCollectionHourlyRate'];
         }
+
         break;
       case 'Collection-Exp':
-        switch (colExpTab) {
-          case 'collection_exp_all':
-            resBody = bodyList['caCollectionExpHourlyRate'];
-            break;
-          case 'collection_exp_dentists':
-            resBody = bodyList['caCollectionExpHourlyRateDentist'];
-            break;
-          case 'collection_exp_oht':
-            resBody = bodyList['caCollectionExpHourlyRateOht'];
-            break;
+        if (isAllDentist) {
+          switch (colExpTab) {
+            case 'collection_exp_all':
+              resBody = bodyList['caCollectionExpHourlyRate'];
+              break;
+            case 'collection_exp_dentists':
+              resBody = bodyList['caCollectionExpHourlyRateDentist'];
+              break;
+            case 'collection_exp_oht':
+              resBody = bodyList['caCollectionExpHourlyRateOht'];
+              break;
+          }
+        } else {
+          resBody = bodyList['caCollectionExpHourlyRate'];
         }
     }
-
-    let chartData = [],
-      chartLabels = [];
-    if (!resBody?.data) {
-      return {
-        datasets: [],
-        labels: [],
-        total: 0,
-        average: 0,
-        prev: 0,
-        goal: 0,
-        tableData: [],
-      };
-    }
-
-    if (selectedClinics.length > 1) {
-      resBody.data
-        .sort(
-          (a, b) =>
-            parseFloat(<string>a.hourlyRate) - parseFloat(<string>b.hourlyRate)
-        )
-        .reverse();
-    }
-
-    if (resBody.data.length > 20) {
-      resBody.data = resBody.data.slice(0, 20);
-    }
-    const tableData = [];
-    resBody.data.forEach((res, i) => {
-      chartData.push(Math.round(<number>res.hourlyRate));
-
-      const pName =
-        res.providerName +
-        (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
-      if (res.providerName != null && res.providerName != 'Anonymous') {
-        chartLabels.push(pName);
-      } else {
-        chartLabels.push(pName);
+    if (isAllDentist) {
+      let chartData = [],
+        chartLabels = [];
+      if (!resBody?.data) {
+        return {
+          datasets: [],
+          labels: [],
+          total: 0,
+          average: 0,
+          prev: 0,
+          goal: 0,
+          tableData: [],
+        };
       }
 
-      tableData.push({
-        providerName: pName,
-        value: chartData[i],
+      if (selectedClinics.length > 1) {
+        resBody.data
+          .sort(
+            (a, b) =>
+              parseFloat(<string>a.hourlyRate) -
+              parseFloat(<string>b.hourlyRate)
+          )
+          .reverse();
+      }
+
+      if (resBody.data.length > 20) {
+        resBody.data = resBody.data.slice(0, 20);
+      }
+      const tableData = [];
+      resBody.data.forEach((res, i) => {
+        chartData.push(Math.round(<number>res.hourlyRate));
+
+        const pName =
+          res.providerName +
+          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+        if (res.providerName != null && res.providerName != 'Anonymous') {
+          chartLabels.push(pName);
+        } else {
+          chartLabels.push(pName);
+        }
+
+        tableData.push({
+          label: pName,
+          value: chartData[i],
+        });
       });
-    });
 
-    let datasets = [
-      {
-        data: [],
-        backgroundColor: dynamicBarBackgroundColor(
-          resBody.data,
-          chartLabels,
-          selectClinics.length > 1,
-          selectedClinics,
-          trendMode !== 'off',
-          averageMode == 'average'
-        ),
-        shadowOffsetX: 3,
-        shadowOffsetY: 3,
-        shadowBlur: 5,
-        shadowColor: 'rgba(0, 0, 0, 0.5)',
-        pointBevelWidth: 2,
-        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-        pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-        pointShadowOffsetX: 3,
-        pointShadowOffsetY: 3,
-        pointShadowBlur: 10,
-        pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-        backgroundOverlayMode: 'multiply',
-      },
-    ];
+      let datasets = [
+        {
+          data: [],
+          backgroundColor: dynamicBarBackgroundColor(
+            resBody.data,
+            chartLabels,
+            selectClinics.length > 1,
+            selectedClinics,
+            trendMode !== 'off',
+            averageMode == 'average'
+          ),
+          shadowOffsetX: 3,
+          shadowOffsetY: 3,
+          shadowBlur: 5,
+          shadowColor: 'rgba(0, 0, 0, 0.5)',
+          pointBevelWidth: 2,
+          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+          pointShadowOffsetX: 3,
+          pointShadowOffsetY: 3,
+          pointShadowBlur: 10,
+          pointShadowColor: 'rgba(0, 0, 0, 0.5)',
+          backgroundOverlayMode: 'multiply',
+        },
+      ];
 
-    datasets[0].data = chartData;
-    return {
-      datasets,
-      labels: chartLabels,
-      total: Math.round(resBody.total),
-      average: Math.round(resBody.totalAverage),
-      prev: Math.round(resBody.totalTa),
-      goal: parseInt(<string>resBody.goals),
-      tableData,
-    };
+      datasets[0].data = chartData;
+      return {
+        datasets,
+        labels: chartLabels,
+        total: Math.round(resBody.total),
+        average: Math.round(resBody.totalAverage),
+        prev: Math.round(resBody.totalTa),
+        goal: parseInt(<string>resBody.goals),
+        tableData,
+      };
+    } else {
+      if (!resBody?.data) {
+        return {
+          gaugeValue: 0,
+          gaugeLabel: '',
+          maxGoal: 0,
+          total: 0,
+          average: 0,
+          prev: 0,
+          goal: 0,
+        };
+      }
+
+      let gaugeValue = 0,
+        gaugeLabel = '',
+        maxGoal = 0;
+
+      resBody.data.forEach(res => {
+        gaugeValue = Math.round(res.hourlyRate);
+
+        var name = res.providerName;
+        if (name != null && name != '') {
+          name = name.split(')');
+          if (name.length > 0 && name[1] != undefined) {
+            name = name[1].split(',');
+            if (name.length > 0) name = name[1] + ' ' + name[0];
+          }
+          gaugeLabel = name;
+        } else gaugeLabel = res.provider;
+      });
+      const goal = parseInt(<string>resBody.goals);
+      maxGoal = gaugeValue > goal ? gaugeValue : goal;
+      return {
+        gaugeValue: gaugeValue,
+        gaugeLabel: gaugeLabel,
+        total: Math.round(resBody.total),
+        average: Math.round(resBody.totalAverage),
+        prev: Math.round(resBody.totalTa),
+        goal: goal,
+        maxGoal: maxGoal,
+      };
+    }
   }
 );

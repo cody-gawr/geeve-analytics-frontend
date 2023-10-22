@@ -1,7 +1,7 @@
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
-import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
+import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { formatXLabel, formatXTooltipLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
@@ -92,6 +92,9 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   average = 0;
 
   goal = 0;
+  maxGoal = 0;
+  gaugeValue = 0;
+  gaugeLabel = '';
 
   goalCount = 0;
   showTableInfo = false;
@@ -141,8 +144,16 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     );
   }
 
-  get hasData() {
-    return this.datasets[0]?.data.length > 0;
+  get hasData$() {
+    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
+      map(([isAll, isTrend]) => {
+        if (isAll || isTrend) {
+          return this.datasets[0]?.data.length > 0;
+        } else {
+          return this.gaugeValue > 0;
+        }
+      })
+    );
   }
 
   get avgMode$() {
@@ -153,55 +164,93 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.authFacade.rolesIndividual$,
       this.layoutFacade.compare$,
+      this.isTrend$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(([v, cMode]) => v?.type == 4 && v?.plan != 'lite' && cMode),
+      map(
+        ([v, cMode, isTrend]) =>
+          v?.type == 4 && v?.plan != 'lite' && cMode && isTrend
+      ),
       map(v => !v)
+    );
+  }
+
+  get isAllDentist$() {
+    return this.dentistFacade.currentDentistId$.pipe(
+      takeUntil(this.destroy$),
+      map(v => {
+        return v === 'all';
+      })
     );
   }
 
   get noDataAlertMessage$() {
     return combineLatest([
+      this.isAllDentist$,
       this.caFacade.prodChartName$,
       this.caFacade.prodSelectTab$,
       this.caFacade.colSelectTab$,
       this.caFacade.colExpSelectTab$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(([visibility, prodSelectShow, colSelectShow, colExpSelectShow]) => {
-        switch (visibility) {
-          case 'Production':
-            switch (prodSelectShow) {
-              case 'production_all':
+      map(
+        ([
+          isAllDentist,
+          visibility,
+          prodSelectShow,
+          colSelectShow,
+          colExpSelectShow,
+        ]) => {
+          switch (visibility) {
+            case 'Production':
+              if (isAllDentist) {
+                switch (prodSelectShow) {
+                  case 'production_all':
+                    return 'You have no production in the selected period';
+                  case 'production_dentists':
+                    return 'You have no Dentist production for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
+                  case 'production_oht':
+                    return 'You have no OHT production for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
+                }
+              } else {
                 return 'You have no production in the selected period';
-              case 'production_dentists':
-                return 'You have no Dentist production for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
-              case 'production_oht':
-                return 'You have no OHT production for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
-            }
-            break;
-          case 'Collection':
-            switch (colSelectShow) {
-              case 'collection_all':
+              }
+            case 'Collection':
+              if (isAllDentist) {
+                switch (colSelectShow) {
+                  case 'collection_all':
+                    return 'You have no Collection in the selected period';
+                  case 'collection_dentists':
+                    return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
+                  case 'collection_oht':
+                    return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
+                }
+              } else {
                 return 'You have no Collection in the selected period';
-              case 'collection_dentists':
-                return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
-              case 'collection_oht':
-                return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
-            }
-            break;
-          case 'Collection-Exp':
-            switch (colExpSelectShow) {
-              case 'collection_exp_all':
+              }
+            case 'Collection-Exp':
+              if (isAllDentist) {
+                switch (colExpSelectShow) {
+                  case 'collection_exp_all':
+                    return 'You have no Collection in the selected period';
+                  case 'collection_exp_dentists':
+                    return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
+                  case 'collection_exp_oht':
+                    return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
+                }
+              } else {
                 return 'You have no Collection in the selected period';
-              case 'collection_exp_dentists':
-                return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
-              case 'collection_exp_oht':
-                return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
-            }
+              }
+          }
         }
-        return '';
-      })
+      )
+    );
+  }
+
+  get isTrend$() {
+    return this.layoutFacade.trend$.pipe(
+      takeUntil(this.destroy$),
+      map(v => v && v !== 'off')
     );
   }
 
@@ -210,18 +259,22 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
+    private dentistFacade: DentistFacade
   ) {
     combineLatest([this.caFacade.caProductionChartData$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([data]) => {
-        this.datasets = data.datasets;
-        this.labels = data.labels;
+        this.datasets = data.datasets ?? [];
+        this.labels = data.labels ?? [];
         this.total = data.total;
         this.prev = data.prev;
         this.average = data.average;
         this.goal = data.goal;
-        this.tableData = data.tableData;
+        this.tableData = data.tableData ?? [];
+        this.maxGoal = data.maxGoal;
+        this.gaugeLabel = data.gaugeLabel;
+        this.gaugeValue = data.gaugeValue;
       });
   }
 
@@ -249,7 +302,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   toggleTableInfo() {
     this.showTableInfo = !this.showTableInfo;
   }
-
   getAvgPluginOptions(avgVal): _DeepPartialObject<AnnotationPluginOptions> {
     return {
       // drawTime: 'afterDatasetsDraw',

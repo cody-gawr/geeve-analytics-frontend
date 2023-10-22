@@ -18,9 +18,13 @@
       [matTooltip]="getTrendTip$ | async"></mat-icon>
     <div class="dropdown-title">
       <div style="min-width: 200px">
-        <span *ngIf="(userType$ | async) === 4; else prodSelectTitle">{{
-          chartName$ | async
-        }}</span>
+        <span
+          *ngIf="
+            (userType$ | async) === 4 || !(isAllDentist$ | async);
+            else prodSelectTitle
+          "
+          >Dentist {{ chartName$ | async }}</span
+        >
         <ng-template #prodSelectTitle>
           <mat-select
             class="dropdown-font"
@@ -72,14 +76,20 @@
         <table>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Collection</th>
+              <th>{{ (isAllDentist$ | async) ? 'Name' : 'Week Ending' }}</th>
+              <th>
+                {{
+                  (chartName$ | async) === 'Production'
+                    ? 'Production'
+                    : 'Collection'
+                }}
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let protbl of tableData">
-              <td>{{ protbl.providerName }}</td>
-              <td>{{ protbl.value | number: '1.0-0' }}</td>
+              <td>{{ protbl.label }}</td>
+              <td>${{ protbl.value | number: '1.0-0' }}</td>
             </tr>
           </tbody>
         </table>
@@ -88,18 +98,37 @@
         <div class="chart-gauge ca-prod-graph">
           <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
           <ng-template #chartElem>
-            <canvas
-              baseChart
-              *ngIf="hasData"
-              [datasets]="datasets"
-              [labels]="labels"
-              [legend]="legend$ | async"
-              type="bar"
-              [options]="chartOptions$ | async">
-            </canvas>
+            <ngx-gauge
+              *ngIf="
+                !(isAllDentist$ | async) && !(isTrend$ | async);
+                else chartElem2
+              "
+              type="arch"
+              [value]="gaugeValue"
+              [label]="gaugeLabel"
+              [thick]="20"
+              backgroundColor="#f4f0fa"
+              foregroundColor="#4ccfae"
+              [max]="maxGoal"
+              cap="round"
+              [duration]="2500"
+              prepend="$"
+              [size]="300">
+            </ngx-gauge>
+            <ng-template #chartElem2>
+              <canvas
+                baseChart
+                *ngIf="hasData$ | async"
+                [datasets]="datasets"
+                [labels]="labels"
+                [legend]="legend$ | async"
+                type="bar"
+                [options]="chartOptions$ | async">
+              </canvas>
+            </ng-template>
             <spin-loader
               class="empty-placeholder"
-              *ngIf="!hasData"
+              *ngIf="!(hasData$ | async)"
               [disableSpin]="true">
               {{ noDataAlertMessage$ | async }}
             </spin-loader>
