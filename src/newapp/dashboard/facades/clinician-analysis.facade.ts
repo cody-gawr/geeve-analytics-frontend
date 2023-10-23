@@ -4,6 +4,7 @@ import { ClinicianAnalysisActions } from '../state/actions';
 import {
   ClinicianAnalysisState,
   selectCaHourlyRateChartData,
+  selectCaNumComplaintsChartData,
   selectCaNumNewPatientsChartData,
   selectCaProductionChartData,
   selectColExpSelectTab,
@@ -13,11 +14,17 @@ import {
   selectHourlyRateColSelectTab,
   selectHourlyRateProdSelectTab,
   selectIsLoadingCaHourlyRateAll,
+  selectIsLoadingCaNumComplaints,
   selectIsLoadingCaProduction,
+  selectIsLoadingCaRecallRateAll,
   selectIsLoadingCaTxPlanAvgFeeAll,
+  selectIsLoadingCaTxPlanCompRate,
   selectProdSelectTab,
   selectProductionChartName,
+  selectRecallRateChartData,
+  selectRecallRateChartName,
   selectTxPlanAvgFeesChartData,
+  selectTxPlanCompRateChartData,
   selectTxTplanAvgFeeChartName,
 } from '../state/reducers/clinician-analysis.reducer';
 
@@ -36,6 +43,10 @@ export class ClinicianAnalysisFacade {
     select(selectTxTplanAvgFeeChartName)
   );
 
+  public readonly recallRateChartName$ = this.store.pipe(
+    select(selectRecallRateChartName)
+  );
+
   public readonly isLoadingCaProduction$ = this.store.pipe(
     select(selectIsLoadingCaProduction)
   );
@@ -46,6 +57,18 @@ export class ClinicianAnalysisFacade {
 
   public readonly isLoadingTxPlanAvgFee$ = this.store.pipe(
     select(selectIsLoadingCaTxPlanAvgFeeAll)
+  );
+
+  public readonly isLoadingCaTxPlanCompRate$ = this.store.pipe(
+    select(selectIsLoadingCaTxPlanCompRate)
+  );
+
+  public readonly isLoadingRecallRateAll$ = this.store.pipe(
+    select(selectIsLoadingCaRecallRateAll)
+  );
+
+  public readonly isLoadingCaNumComplaints$ = this.store.pipe(
+    select(selectIsLoadingCaNumComplaints)
   );
 
   public setProdChartName(chartName: CA_PROD_CHART_NAME) {
@@ -60,9 +83,15 @@ export class ClinicianAnalysisFacade {
     );
   }
 
-  public setTxTplanAvgFeeChartName(chartName: CA_AVG_FEES) {
+  public setTxTplanAvgFeeChartName(chartName: CA_TX_PLAN_AVG_FEE_CHART_NAME) {
     this.store.dispatch(
       ClinicianAnalysisActions.setTxTplanAvgFeeChartName({ chartName })
+    );
+  }
+
+  public setRecallRateChartName(chartName: CA_RECALL_RATE_CHART_NAME) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.setRecallRateChartName({ chartName })
     );
   }
 
@@ -80,6 +109,18 @@ export class ClinicianAnalysisFacade {
 
   public readonly caTxPlanAvgFeesChartData$ = this.store.pipe(
     select(selectTxPlanAvgFeesChartData)
+  );
+
+  public readonly caTxPlanCompRateChartData$ = this.store.pipe(
+    select(selectTxPlanCompRateChartData)
+  );
+
+  public readonly caRecallRateChartData$ = this.store.pipe(
+    select(selectRecallRateChartData)
+  );
+
+  public readonly caNumComplaintsChartData$ = this.store.pipe(
+    select(selectCaNumComplaintsChartData)
   );
 
   public readonly prodSelectTab$ = this.store.pipe(select(selectProdSelectTab));

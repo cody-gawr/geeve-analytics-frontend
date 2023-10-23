@@ -83,7 +83,10 @@ declare global {
     | 'caRecallRateTrend';
 
   type CA_PROD_CHART_NAME = 'Production' | 'Collection' | 'Collection-Exp';
-  type CA_AVG_FEES = 'Avg. Proposed Fees' | 'Avg. Completed Fees';
+  type CA_TX_PLAN_AVG_FEE_CHART_NAME =
+    | 'Avg. Proposed Fees'
+    | 'Avg. Completed Fees';
+  type CA_RECALL_RATE_CHART_NAME = 'Recall Prebook Rate' | 'Reappointment Rate';
   type CA_PROD_SELECT_TAB =
     | 'production_all'
     | 'production_dentists'
@@ -261,7 +264,6 @@ declare global {
     averageFees: string | number;
     providerId: string | number;
     providerName: string;
-    providerType: string;
     totalFeeAll: string | number;
     totalTreatmentPlans: string | number;
     year: unknown;
@@ -271,6 +273,82 @@ declare global {
   interface CaTxPlanAvgFeeApiResponse {
     app: string;
     data: CaTxPlanAvgFeeItem[];
+    goals: string | number;
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+  }
+
+  interface CaTxPlanCompRateItem {
+    clinicId: string | number;
+    clinicName: string;
+    day: unknown;
+    month: unknown;
+    chartAvgTotal: string | number;
+    chartCount: string | number;
+    itemsDone: string | number;
+    itemsTotal: string | number;
+    providerId: string | number;
+    providerName: string;
+    treatmentPerPlanPercentage: string | number;
+    treatmentPercentage: string | number;
+    year: unknown;
+    yearMonth: unknown;
+  }
+
+  interface CaTxPlanCompRateApiResponse {
+    app: string;
+    data: CaTxPlanCompRateItem[];
+    goals: string | number;
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+  }
+
+  interface CaRecallRateItem {
+    clinicId: string | number;
+    clinicName: string;
+    day: unknown;
+    month: unknown;
+    recallPatient: string | number;
+    recallPercent: string | number;
+    providerId: string | number;
+    providerName: string;
+    totalPatient: string | number;
+    year: unknown;
+    yearMonth: unknown;
+  }
+
+  interface CaRecallRateApiResponse {
+    app: string;
+    data: CaRecallRateItem[];
+    goals: string | number;
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+  }
+
+  interface CaNumComplaintsItem {
+    clinicId: string | number;
+    clinicName: string;
+    day: unknown;
+    month: unknown;
+    numComplaints: string | number;
+    providerId: string | number;
+    providerName: string;
+    year: unknown;
+    yearMonth: unknown;
+  }
+
+  interface CaNumComplaintsApiResponse {
+    app: string;
+    data: CaNumComplaintsItem[];
     goals: string | number;
     message: string;
     status: string | number;

@@ -22,7 +22,10 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-  chartNames: CA_AVG_FEES[] = ['Avg. Proposed Fees', 'Avg. Completed Fees'];
+  chartNames: CA_TX_PLAN_AVG_FEE_CHART_NAME[] = [
+    'Avg. Proposed Fees',
+    'Avg. Completed Fees',
+  ];
 
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(
@@ -35,18 +38,6 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     if (this.total >= this.prev) {
       return 'trending_up';
     } else return 'trending_down';
-  }
-
-  get prodSelectShow$() {
-    return this.caFacade.prodSelectTab$.pipe(takeUntil(this.destroy$));
-  }
-
-  get colSelectShow$() {
-    return this.caFacade.colSelectTab$.pipe(takeUntil(this.destroy$));
-  }
-
-  get colExpSelectShow$() {
-    return this.caFacade.colExpSelectTab$.pipe(takeUntil(this.destroy$));
   }
 
   get durationLabel$() {
@@ -105,7 +96,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return this.caFacade.isLoadingCaProduction$.pipe(takeUntil(this.destroy$));
+    return this.caFacade.isLoadingTxPlanAvgFee$.pipe(takeUntil(this.destroy$));
   }
 
   get userType$() {
@@ -232,7 +223,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     this.destroy.next();
   }
 
-  switchChartName(chartName: CA_AVG_FEES) {
+  switchChartName(chartName: CA_TX_PLAN_AVG_FEE_CHART_NAME) {
     this.caFacade.setTxTplanAvgFeeChartName(chartName);
   }
 

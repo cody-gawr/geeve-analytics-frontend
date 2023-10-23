@@ -105,6 +105,13 @@ export const setHourlyRateColExpSelectTab = createAction(
 export const setTxTplanAvgFeeChartName = createAction(
   '[Clinician Analysis API] Set TxPlanAvgProposedFeesTrend Chart Name',
   props<{
-    chartName: CA_AVG_FEES;
+    chartName: CA_TX_PLAN_AVG_FEE_CHART_NAME;
+  }>()
+);
+
+export const setRecallRateChartName = createAction(
+  '[Clinician Analysis API] Set Recall Rate Chart Name',
+  props<{
+    chartName: CA_RECALL_RATE_CHART_NAME;
   }>()
 );

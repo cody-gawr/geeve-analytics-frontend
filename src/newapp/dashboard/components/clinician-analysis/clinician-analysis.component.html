@@ -12,5 +12,14 @@
   <caNumNewPatients-chart [toolTip]="getChartTip(8) | async" class="ca-chart" />
   <caTxPlanAvgFees-chart
     [toolTip]="txPlanAvgTooltip$ | async"
-    class="ca-chart" />
+    class="ca-chart-1" />
+  <caTxPlanCompRate-chart
+    [toolTip]="getChartTip(2) | async"
+    class="ca-chart-1" />
+  <caRecallRate-chart
+    [toolTip]="recallRateTooltip$ | async"
+    class="ca-chart-1" />
+  <caNumComplaints-chart
+    [toolTip]="getChartTip(6) | async"
+    class="ca-chart-1" />
 </div>

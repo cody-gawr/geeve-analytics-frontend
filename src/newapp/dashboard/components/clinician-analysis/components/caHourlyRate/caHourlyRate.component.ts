@@ -267,7 +267,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     combineLatest([this.caFacade.caHourlyRateChartData$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([data]) => {
-        console.log(data);
         this.datasets = data.datasets ?? [];
         this.labels = data.labels ?? [];
         this.total = data.total;

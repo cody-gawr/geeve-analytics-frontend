@@ -17,7 +17,7 @@
       [fontIcon]="trendingIcon"
       [matTooltip]="getTrendTip$ | async"></mat-icon>
 
-    <span>{{ chartName$ | async }}</span>
+    <span>Treatment Plan Average Cost</span>
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box ca-tx-plan-avg-fees-chart">
@@ -34,12 +34,12 @@
         <table>
           <thead>
             <tr>
-              <th>{{ (isAllDentist$ | async) ? 'Name' : 'Week Ending' }}</th>
+              <th>Name</th>
               <th>
                 {{
-                  (chartName$ | async) === 'Production'
-                    ? 'Production'
-                    : 'Collection'
+                  (chartName$ | async) === 'Avg. Proposed Fees'
+                    ? 'Processed fees'
+                    : 'Completed fees'
                 }}
               </th>
             </tr>

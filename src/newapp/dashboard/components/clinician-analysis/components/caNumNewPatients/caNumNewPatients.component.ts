@@ -182,7 +182,6 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
         this.newpColors = data.chartColors ?? [];
-        console.log('colors', this.newpColors);
       });
   }
 

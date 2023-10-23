@@ -70,6 +70,9 @@ import { CaProductionComponent } from './components/clinician-analysis/component
 import { CaHourlyRateComponent } from './components/clinician-analysis/components/caHourlyRate/caHourlyRate.component';
 import { CaNumNewPatientsComponent } from './components/clinician-analysis/components/caNumNewPatients/caNumNewPatients.component';
 import { CaTxPlanAvgFeedsComponent } from './components/clinician-analysis/components/caTxPlanAvgFees/caTxPlanAvgFees.component';
+import { CaTxPlanCompRateComponent } from './components/clinician-analysis/components/caTxPlanCompRate/caTxPlanCompRate.component';
+import { CaRecallRateComponent } from './components/clinician-analysis/components/caRecallRate/caRecallRate.component';
+import { CaNumComplaintsComponent } from './components/clinician-analysis/components/caNumComplaints/caNumComplaints.component';
 
 @NgModule({
   imports: [
@@ -140,6 +143,9 @@ import { CaTxPlanAvgFeedsComponent } from './components/clinician-analysis/compo
     CaHourlyRateComponent,
     CaNumNewPatientsComponent,
     CaTxPlanAvgFeedsComponent,
+    CaTxPlanCompRateComponent,
+    CaRecallRateComponent,
+    CaNumComplaintsComponent,
   ],
   providers: [
     DashboardService,

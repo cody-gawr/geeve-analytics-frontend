@@ -179,6 +179,26 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
             ...params,
             api: 'caTxPlanAvgCompletedFees',
           });
+
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caTxPlanCompRate',
+          });
+
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caRecallRate',
+          });
+
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caReappointRate',
+          });
+
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caNumComplaints',
+          });
         } else {
         }
       });
@@ -212,6 +232,23 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
           return tipData[53] ?? '';
         } else {
           return tipData[3] ?? '';
+        }
+      })
+    );
+  }
+
+  get recallRateTooltip$() {
+    return combineLatest([
+      this.caFacade.recallRateChartName$,
+      this.dashbordFacade.chartTips$,
+    ]).pipe(
+      takeUntil(this.destroy$),
+      map(([chartName, tipData]) => {
+        tipData = tipData ?? [];
+        if (chartName == 'Recall Prebook Rate') {
+          return tipData[4] ?? '';
+        } else {
+          return tipData[5] ?? '';
         }
       })
     );
