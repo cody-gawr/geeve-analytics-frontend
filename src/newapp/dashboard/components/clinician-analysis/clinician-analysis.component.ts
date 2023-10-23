@@ -164,6 +164,21 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
             ...params,
             api: 'caCollectionExpHourlyRateOht',
           });
+
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caNumNewPatients',
+          });
+
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caTxPlanAvgProposedFees',
+          });
+
+          this.caFacade.loadNoneTrendApiRequest({
+            ...params,
+            api: 'caTxPlanAvgCompletedFees',
+          });
         } else {
         }
       });
@@ -181,6 +196,23 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
           return c[index];
         }
         return '';
+      })
+    );
+  }
+
+  get txPlanAvgTooltip$() {
+    return combineLatest([
+      this.caFacade.txPlanAvgFeeChartName$,
+      this.dashbordFacade.chartTips$,
+    ]).pipe(
+      takeUntil(this.destroy$),
+      map(([chartName, tipData]) => {
+        tipData = tipData ?? [];
+        if (chartName == 'Avg. Completed Fees') {
+          return tipData[53] ?? '';
+        } else {
+          return tipData[3] ?? '';
+        }
       })
     );
   }

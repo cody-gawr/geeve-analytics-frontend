@@ -11,6 +11,8 @@ import {
   selectTrend,
 } from '@/newapp/layout/state/reducers/layout.reducer';
 import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.reducer';
+import { COLORS } from '@/newapp/constants';
+import { selectRolesIndividual } from '@/newapp/auth/state/reducers/auth.reducer';
 
 export interface ClinicianAnalysisState {
   isLoadingData: Array<CA_API_ENDPOINTS | CA_API_ENDPOINTS_TREND>;
@@ -28,6 +30,8 @@ export interface ClinicianAnalysisState {
   hourlyRateProdSelectTab: CA_PROD_SELECT_TAB;
   hourlyRateColSelectTab: CA_COL_SELECT_TAB;
   hourlyRateColExpSelectTab: CA_COL_EXP_SELECT_TAB;
+
+  txTplanAvgFeeChartName: CA_AVG_FEES;
 }
 
 const initiateState: ClinicianAnalysisState = {
@@ -46,6 +50,8 @@ const initiateState: ClinicianAnalysisState = {
   hourlyRateProdSelectTab: 'production_all',
   hourlyRateColSelectTab: 'collection_all',
   hourlyRateColExpSelectTab: 'collection_exp_all',
+
+  txTplanAvgFeeChartName: 'Avg. Proposed Fees',
 };
 
 export const clinicianAnalysisFeature = createFeature({
@@ -121,6 +127,15 @@ export const clinicianAnalysisFeature = createFeature({
         return {
           ...state,
           hourlyRateColExpSelectTab: tabName,
+        };
+      }
+    ),
+    on(
+      ClinicianAnalysisActions.setTxTplanAvgFeeChartName,
+      (state, { chartName }): ClinicianAnalysisState => {
+        return {
+          ...state,
+          txTplanAvgFeeChartName: chartName,
         };
       }
     ),
@@ -211,6 +226,7 @@ export const {
   selectHourlyRateProdSelectTab,
   selectHourlyRateColSelectTab,
   selectHourlyRateColExpSelectTab,
+  selectTxTplanAvgFeeChartName,
 } = clinicianAnalysisFeature;
 
 export const selectIsLoadingCaDentistProduction = createSelector(
@@ -334,6 +350,7 @@ export const selectCaProductionChartData = createSelector(
   selectColSelectTab,
   selectColExpSelectTab,
   selectCurrentDentistId,
+  selectRolesIndividual,
   (
     bodyList,
     selectedClinics,
@@ -343,7 +360,8 @@ export const selectCaProductionChartData = createSelector(
     prodTab,
     colTab,
     colExpTab,
-    currentDentistId
+    currentDentistId,
+    rolesInd
   ) => {
     const isAllDentist = currentDentistId === 'all';
     let resBody: CaDentistProductionApiResponse | CaCollectionApiResponse =
@@ -404,7 +422,8 @@ export const selectCaProductionChartData = createSelector(
     }
     if (isAllDentist) {
       let chartData = [],
-        chartLabels = [];
+        chartLabels = [],
+        chartColors;
       if (!resBody?.data) {
         return {
           datasets: [],
@@ -441,6 +460,7 @@ export const selectCaProductionChartData = createSelector(
         resBody.data = resBody.data.slice(0, 20);
       }
       const tableData = [];
+      let dentistKey = 0;
       resBody.data.forEach((res, i) => {
         if (prodChartName === 'Production') {
           chartData.push(Math.round(<number>res.production));
@@ -451,17 +471,26 @@ export const selectCaProductionChartData = createSelector(
         const pName =
           res.providerName +
           (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
-        if (res.providerName != null && res.providerName != 'Anonymous') {
-          chartLabels.push(pName);
-        } else {
-          chartLabels.push(pName);
-        }
+
+        chartLabels.push(pName);
+        dentistKey = i;
 
         tableData.push({
           label: pName,
           value: chartData[i],
         });
       });
+
+      if (rolesInd.type === 4) {
+        chartColors = [
+          {
+            backgroundColor: [],
+            hoverBorderColor: '#000',
+          },
+        ];
+
+        chartColors[dentistKey] = '#1CA49F';
+      } else chartColors = [];
 
       let datasets = [
         {
@@ -856,6 +885,335 @@ export const selectCaHourlyRateChartData = createSelector(
         prev: Math.round(resBody.totalTa),
         goal: goal,
         maxGoal: maxGoal,
+      };
+    }
+  }
+);
+
+export const selectIsLoadingCaNumNewPatients = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'caNumNewPatients') >= 0
+);
+
+export const selectCaNumNewPatientsChartData = createSelector(
+  selectResBodyList,
+  selectCurrentClinics,
+  selectTrend,
+  selectAverage,
+  selectCurrentDentistId,
+  selectRolesIndividual,
+  (bodyList, selectedClinics, trend, average, currentDentistid, rolesInd) => {
+    let resBody: CaNumNewPatientsApiResponse = bodyList['caNumNewPatients'];
+    const isAllDentist = currentDentistid === 'all';
+    if (!resBody?.data) {
+      return {
+        datasets: [],
+        labels: [],
+        total: 0,
+        average: 0,
+        prev: 0,
+        goal: 0,
+        tableData: [],
+      };
+    }
+
+    if (isAllDentist) {
+      if (selectedClinics.length > 1) {
+        resBody.data
+          .sort(
+            (a, b) =>
+              parseFloat(<string>a.newPatients) -
+              parseFloat(<string>b.newPatients)
+          )
+          .reverse();
+      }
+
+      const chartData = [],
+        chartLabels = [];
+      let chartColors = [];
+
+      if (resBody.data.length > 20) {
+        resBody.data = resBody.data.slice(0, 20);
+      }
+      let newpKey = 0;
+      const tableData = [];
+      resBody.data.forEach((res, i) => {
+        chartData.push(Math.round(<number>res.newPatients));
+
+        const pName =
+          res.providerName +
+          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+        chartLabels.push(pName);
+        if (res.providerName != 'Anonymous') newpKey = i;
+        tableData.push({
+          label: pName,
+          value: chartData[i],
+        });
+      });
+
+      if (!isAllDentist && trend === 'off' && average === 'average') {
+        chartColors = [
+          {
+            backgroundColor: dynamicBarBackgroundColor(
+              resBody.data,
+              chartLabels,
+              selectClinics.length > 1,
+              selectedClinics,
+              trend !== 'off',
+              average == 'average'
+            ),
+          },
+        ];
+      } else {
+        if (rolesInd.type == 4) {
+          chartColors = [{ backgroundColor: [] }];
+          chartColors[0].backgroundColor[newpKey] = '#1CA49F';
+        } else chartColors = [{ backgroundColor: COLORS.doughnutChartColors }];
+      }
+
+      let datasets = [
+        {
+          data: chartData,
+          backgroundColor: chartColors[0].backgroundColor,
+        },
+      ];
+
+      return {
+        datasets,
+        labels: chartLabels,
+        total: Math.round(resBody.total),
+        average: Math.round(resBody.totalAverage),
+        prev: Math.round(resBody.totalTa),
+        goal: parseInt(<string>resBody.goals),
+        maxData: Math.max(...chartData),
+        tableData,
+        chartColors,
+      };
+    } else {
+      if (!resBody?.data) {
+        return {
+          gaugeValue: 0,
+          gaugeLabel: '',
+          maxGoal: 0,
+          total: 0,
+          average: 0,
+          prev: 0,
+          goal: 0,
+        };
+      }
+
+      let gaugeValue = 0,
+        gaugeLabel = '',
+        maxGoal = 0;
+
+      resBody.data.forEach(res => {
+        gaugeValue = Math.round(<number>res.newPatients);
+
+        let name: any = res.providerName;
+        if (name != null && name != '') {
+          name = name.split(')');
+          if (name.length > 0 && name[1] != undefined) {
+            name = name[1].split(',');
+            if (name.length > 0) name = name[1] + ' ' + name[0];
+          }
+          gaugeLabel = name;
+        } else gaugeLabel = res.providerName;
+      });
+      const goal = parseInt(<string>resBody.goals);
+      maxGoal = gaugeValue > goal ? gaugeValue : goal;
+      return {
+        gaugeValue: gaugeValue,
+        gaugeLabel: gaugeLabel,
+        total: Math.round(resBody.total),
+        average: Math.round(resBody.totalAverage),
+        prev: Math.round(resBody.totalTa),
+        goal: goal,
+        maxGoal: maxGoal,
+      };
+    }
+  }
+);
+
+export const selectIsLoadingCaTxPlanAvgProposedFees = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caTxPlanAvgProposedFees') >= 0
+);
+
+export const selectIsLoadingCaTxPlanAvgCompletedFees = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caTxPlanAvgCompletedFees') >= 0
+);
+
+export const selectIsLoadingCaTxPlanAvgFeeAll = createSelector(
+  selectTxTplanAvgFeeChartName,
+  selectIsLoadingCaTxPlanAvgCompletedFees,
+  selectIsLoadingCaTxPlanAvgProposedFees,
+  (chartName, isCompleteFee, isProposedFee) => {
+    if (chartName === 'Avg. Completed Fees') {
+      return isCompleteFee;
+    } else {
+      return isProposedFee;
+    }
+  }
+);
+
+export const selectTxPlanAvgFeesChartData = createSelector(
+  selectResBodyList,
+  selectCurrentClinics,
+  selectTrend,
+  selectAverage,
+  selectTxTplanAvgFeeChartName,
+  selectCurrentDentistId,
+  selectRolesIndividual,
+  (
+    bodyList,
+    selectedClinics,
+    trendMode,
+    averageMode,
+    chartName,
+    currentDentistId,
+    rolesInd
+  ) => {
+    const isAllDentist = currentDentistId === 'all';
+    let resBody: CaTxPlanAvgFeeApiResponse = null;
+
+    if (chartName === 'Avg. Completed Fees') {
+      resBody = bodyList['caTxPlanAvgCompletedFees'];
+    } else {
+      resBody = bodyList['caTxPlanAvgProposedFees'];
+    }
+
+    if (isAllDentist) {
+      let chartData = [],
+        chartLabels = [],
+        chartColors;
+      if (!resBody?.data) {
+        return {
+          datasets: [],
+          labels: [],
+          total: 0,
+          average: 0,
+          prev: 0,
+          goal: 0,
+          tableData: [],
+        };
+      }
+
+      if (selectedClinics.length > 1) {
+        resBody.data
+          .sort(
+            (a, b) =>
+              parseFloat(<string>a.averageFees) -
+              parseFloat(<string>b.averageFees)
+          )
+          .reverse();
+      }
+
+      if (resBody.data.length > 20) {
+        resBody.data = resBody.data.slice(0, 20);
+      }
+      const tableData = [];
+      let dentistKey = 0;
+      resBody.data.forEach((res, i) => {
+        chartData.push(Math.round(<number>res.averageFees));
+
+        const pName =
+          res.providerName +
+          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+
+        chartLabels.push(pName);
+        dentistKey = i;
+
+        tableData.push({
+          label: pName,
+          value: chartData[i],
+        });
+      });
+
+      if (rolesInd.type === 4) {
+        chartColors = [
+          {
+            backgroundColor: [],
+            hoverBorderColor: '#000',
+          },
+        ];
+
+        chartColors[dentistKey] = '#1CA49F';
+      } else chartColors = [];
+
+      let datasets = [
+        {
+          data: [],
+          backgroundColor: dynamicBarBackgroundColor(
+            resBody.data,
+            chartLabels,
+            selectClinics.length > 1,
+            selectedClinics,
+            trendMode !== 'off',
+            averageMode == 'average'
+          ),
+          shadowOffsetX: 3,
+          shadowOffsetY: 3,
+          shadowBlur: 5,
+          shadowColor: 'rgba(0, 0, 0, 0.5)',
+          pointBevelWidth: 2,
+          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+          pointShadowOffsetX: 3,
+          pointShadowOffsetY: 3,
+          pointShadowBlur: 10,
+          pointShadowColor: 'rgba(0, 0, 0, 0.5)',
+          backgroundOverlayMode: 'multiply',
+        },
+      ];
+
+      datasets[0].data = chartData;
+      return {
+        datasets,
+        labels: chartLabels,
+        total: Math.round(resBody.total),
+        average: Math.round(resBody.totalAverage),
+        prev: Math.round(resBody.totalTa),
+        goal: parseInt(<string>resBody.goals),
+        tableData,
+      };
+    } else {
+      if (!resBody?.data) {
+        return {
+          gaugeValue: 0,
+          gaugeLabel: '',
+          maxGoal: 0,
+          total: 0,
+          average: 0,
+          prev: 0,
+          goal: 0,
+          tableData: [],
+        };
+      }
+
+      let gaugeValue = 0,
+        gaugeLabel = '',
+        maxGoal = 0,
+        tableData = [];
+
+      resBody.data.forEach(res => {
+        gaugeValue = Math.round(<number>res.averageFees);
+
+        gaugeLabel = res.providerName;
+      });
+      const goal = parseInt(<string>resBody.goals);
+      maxGoal = gaugeValue > goal ? gaugeValue : goal;
+      return {
+        gaugeValue: gaugeValue,
+        gaugeLabel: gaugeLabel,
+        total: Math.round(resBody.total),
+        average: Math.round(resBody.totalAverage),
+        prev: Math.round(resBody.totalTa),
+        goal: goal,
+        maxGoal: maxGoal,
+        tableData,
       };
     }
   }

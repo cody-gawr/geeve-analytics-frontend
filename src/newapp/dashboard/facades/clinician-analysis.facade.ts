@@ -4,6 +4,7 @@ import { ClinicianAnalysisActions } from '../state/actions';
 import {
   ClinicianAnalysisState,
   selectCaHourlyRateChartData,
+  selectCaNumNewPatientsChartData,
   selectCaProductionChartData,
   selectColExpSelectTab,
   selectColSelectTab,
@@ -13,8 +14,11 @@ import {
   selectHourlyRateProdSelectTab,
   selectIsLoadingCaHourlyRateAll,
   selectIsLoadingCaProduction,
+  selectIsLoadingCaTxPlanAvgFeeAll,
   selectProdSelectTab,
   selectProductionChartName,
+  selectTxPlanAvgFeesChartData,
+  selectTxTplanAvgFeeChartName,
 } from '../state/reducers/clinician-analysis.reducer';
 
 @Injectable()
@@ -28,12 +32,20 @@ export class ClinicianAnalysisFacade {
     select(selectHourlyRateChartName)
   );
 
+  public readonly txPlanAvgFeeChartName$ = this.store.pipe(
+    select(selectTxTplanAvgFeeChartName)
+  );
+
   public readonly isLoadingCaProduction$ = this.store.pipe(
     select(selectIsLoadingCaProduction)
   );
 
   public readonly isLoadingCaHourlyRateAll$ = this.store.pipe(
     select(selectIsLoadingCaHourlyRateAll)
+  );
+
+  public readonly isLoadingTxPlanAvgFee$ = this.store.pipe(
+    select(selectIsLoadingCaTxPlanAvgFeeAll)
   );
 
   public setProdChartName(chartName: CA_PROD_CHART_NAME) {
@@ -48,12 +60,26 @@ export class ClinicianAnalysisFacade {
     );
   }
 
+  public setTxTplanAvgFeeChartName(chartName: CA_AVG_FEES) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.setTxTplanAvgFeeChartName({ chartName })
+    );
+  }
+
   public readonly caProductionChartData$ = this.store.pipe(
     select(selectCaProductionChartData)
   );
 
   public readonly caHourlyRateChartData$ = this.store.pipe(
     select(selectCaHourlyRateChartData)
+  );
+
+  public readonly caNumNewPatientsChartData$ = this.store.pipe(
+    select(selectCaNumNewPatientsChartData)
+  );
+
+  public readonly caTxPlanAvgFeesChartData$ = this.store.pipe(
+    select(selectTxPlanAvgFeesChartData)
   );
 
   public readonly prodSelectTab$ = this.store.pipe(select(selectProdSelectTab));

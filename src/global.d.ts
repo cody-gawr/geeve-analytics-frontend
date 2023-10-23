@@ -83,6 +83,7 @@ declare global {
     | 'caRecallRateTrend';
 
   type CA_PROD_CHART_NAME = 'Production' | 'Collection' | 'Collection-Exp';
+  type CA_AVG_FEES = 'Avg. Proposed Fees' | 'Avg. Completed Fees';
   type CA_PROD_SELECT_TAB =
     | 'production_all'
     | 'production_dentists'
@@ -221,6 +222,55 @@ declare global {
   interface CaCollectionHourlyRateApiResponse {
     app: string;
     data: CaCollectionHourlyRateItem[];
+    goals: string | number;
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+  }
+
+  interface CaNumNewPatientsItem {
+    clinicId: string | number;
+    clinicName: string;
+    day: unknown;
+    month: unknown;
+    newPatients: string | number;
+    providerId: string | number;
+    providerName: string;
+    year: unknown;
+    yearMonth: unknown;
+  }
+
+  interface CaNumNewPatientsApiResponse {
+    app: string;
+    data: CaNumNewPatientsItem[];
+    goals: string | number;
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+  }
+
+  interface CaTxPlanAvgFeeItem {
+    clinicId: string | number;
+    clinicName: string;
+    day: unknown;
+    month: unknown;
+    averageFees: string | number;
+    providerId: string | number;
+    providerName: string;
+    providerType: string;
+    totalFeeAll: string | number;
+    totalTreatmentPlans: string | number;
+    year: unknown;
+    yearMonth: unknown;
+  }
+
+  interface CaTxPlanAvgFeeApiResponse {
+    app: string;
+    data: CaTxPlanAvgFeeItem[];
     goals: string | number;
     message: string;
     status: string | number;

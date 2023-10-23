@@ -68,6 +68,8 @@ import { ClinicianAnalysisFacade } from './facades/clinician-analysis.facade';
 import { ClinicianAnalysisComponent } from './components/clinician-analysis/clinician-analysis.component';
 import { CaProductionComponent } from './components/clinician-analysis/components/caProduction/caProduction.component';
 import { CaHourlyRateComponent } from './components/clinician-analysis/components/caHourlyRate/caHourlyRate.component';
+import { CaNumNewPatientsComponent } from './components/clinician-analysis/components/caNumNewPatients/caNumNewPatients.component';
+import { CaTxPlanAvgFeedsComponent } from './components/clinician-analysis/components/caTxPlanAvgFees/caTxPlanAvgFees.component';
 
 @NgModule({
   imports: [
@@ -136,6 +138,8 @@ import { CaHourlyRateComponent } from './components/clinician-analysis/component
     ClinicianAnalysisComponent,
     CaProductionComponent,
     CaHourlyRateComponent,
+    CaNumNewPatientsComponent,
+    CaTxPlanAvgFeedsComponent,
   ],
   providers: [
     DashboardService,

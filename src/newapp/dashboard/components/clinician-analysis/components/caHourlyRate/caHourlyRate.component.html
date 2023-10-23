@@ -6,7 +6,8 @@
     class="help-tip"
     fontIcon="help"></mat-icon>
   <mat-icon
-    [ngClass]="showTableInfo && (isAllDentist$ | async) ? 'active' : ''"
+    *ngIf="isAllDentist$ | async"
+    [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
     fontIcon="table_rows_narrow" />

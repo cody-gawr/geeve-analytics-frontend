@@ -1,0 +1,115 @@
+<div class="chart-container">
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <mat-icon
+    [ngClass]="showTableInfo ? 'active' : ''"
+    (click)="toggleTableInfo()"
+    class="table-info-icon"
+    fontIcon="table_rows_narrow" />
+  <div class="chart-title">
+    <mat-icon
+      *ngIf="(duration$ | async) != 'custom'"
+      [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
+      [fontIcon]="trendingIcon"
+      [matTooltip]="getTrendTip$ | async"></mat-icon>
+
+    <span>{{ chartName$ | async }}</span>
+  </div>
+  <div class="chart-content">
+    <div class="canvas-wrapper chart-box ca-tx-plan-avg-fees-chart">
+      <div class="ca-tx-plan-avg-fees-switch">
+        <button
+          *ngFor="let chartName of chartNames"
+          (click)="switchChartName(chartName)"
+          [ngClass]="{ active: chartName == (chartName$ | async) }">
+          {{ chartName }}
+        </button>
+      </div>
+
+      <div class="pa-table" *ngIf="showTableInfo; else graphElem">
+        <table>
+          <thead>
+            <tr>
+              <th>{{ (isAllDentist$ | async) ? 'Name' : 'Week Ending' }}</th>
+              <th>
+                {{
+                  (chartName$ | async) === 'Production'
+                    ? 'Production'
+                    : 'Collection'
+                }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let protbl of tableData">
+              <td>{{ protbl.label }}</td>
+              <td>${{ protbl.value | number: '1.0-0' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #graphElem>
+        <div class="chart-gauge ca-tx-plan-avg-fees-graph">
+          <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+          <ng-template #chartElem>
+            <ngx-gauge
+              *ngIf="
+                !(isAllDentist$ | async) && !(isTrend$ | async);
+                else chartElem2
+              "
+              type="arch"
+              [value]="gaugeValue"
+              [label]="gaugeLabel"
+              [thick]="20"
+              backgroundColor="#f4f0fa"
+              foregroundColor="#4ccfae"
+              [max]="maxGoal"
+              cap="round"
+              [duration]="2500"
+              prepend="$"
+              [size]="300">
+            </ngx-gauge>
+            <ng-template #chartElem2>
+              <canvas
+                baseChart
+                *ngIf="hasData$ | async"
+                [datasets]="datasets"
+                [labels]="labels"
+                [legend]="legend$ | async"
+                type="bar"
+                [options]="chartOptions$ | async">
+              </canvas>
+            </ng-template>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!(hasData$ | async)"
+              [disableSpin]="true">
+              {{ noDataAlertMessage$ | async }}
+            </spin-loader>
+          </ng-template>
+        </div>
+      </ng-template>
+
+      <div class="chart-foot" *ngIf="isEnableFooter$ | async">
+        <div>
+          <h3>${{ total }}</h3>
+          <span>{{ durationLabel$ | async }}</span>
+        </div>
+
+        <div *ngIf="(duration$ | async) !== 'custom'">
+          <h3>${{ prev }}</h3>
+          <span>{{ durationTrendLabel$ | async }}</span>
+        </div>
+        <div *ngIf="goal >= 0 && (showGoals$ | async) == true">
+          <h3 *ngIf="goal && (goalCount$ | async)">
+            {{ goal * (goalCount$ | async) }}
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

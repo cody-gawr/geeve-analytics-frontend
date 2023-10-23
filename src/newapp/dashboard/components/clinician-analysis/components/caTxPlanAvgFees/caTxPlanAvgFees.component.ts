@@ -1,6 +1,5 @@
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import { COLORS } from '@/newapp/constants';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
@@ -14,15 +13,16 @@ import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
-  selector: 'caNumNewPatients-chart',
-  templateUrl: './caNumNewPatients.component.html',
-  styleUrls: ['./caNumNewPatients.component.scss'],
+  selector: 'caTxPlanAvgFees-chart',
+  templateUrl: './caTxPlanAvgFees.component.html',
+  styleUrls: ['./caTxPlanAvgFees.component.scss'],
 })
-export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
+export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   @Input() toolTip: string = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
+  chartNames: CA_AVG_FEES[] = ['Avg. Proposed Fees', 'Avg. Completed Fees'];
 
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(
@@ -35,6 +35,18 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     if (this.total >= this.prev) {
       return 'trending_up';
     } else return 'trending_down';
+  }
+
+  get prodSelectShow$() {
+    return this.caFacade.prodSelectTab$.pipe(takeUntil(this.destroy$));
+  }
+
+  get colSelectShow$() {
+    return this.caFacade.colSelectTab$.pipe(takeUntil(this.destroy$));
+  }
+
+  get colExpSelectShow$() {
+    return this.caFacade.colExpSelectTab$.pipe(takeUntil(this.destroy$));
   }
 
   get durationLabel$() {
@@ -84,15 +96,13 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   showTableInfo = false;
   tableData = [];
 
-  newpColors = [];
-
-  legendSettings = {
-    visible: false,
-    position: top,
-    labels: {
-      usePointStyle: true,
-    },
-  };
+  get legend$() {
+    return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
+      map(([v]) => {
+        return typeof v === 'string' ? true : false;
+      })
+    );
+  }
 
   get isLoading$() {
     return this.caFacade.isLoadingCaProduction$.pipe(takeUntil(this.destroy$));
@@ -105,11 +115,27 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     );
   }
 
-  get chartOptions$() {
-    return combineLatest([this.isTrend$]).pipe(
+  get chartName$() {
+    return this.caFacade.txPlanAvgFeeChartName$.pipe(
       takeUntil(this.destroy$),
-      map(([isTrend]) => {
-        return this.doughnutChartOptions;
+      map(v => v)
+    );
+  }
+
+  get chartOptions$() {
+    return combineLatest([this.avgMode$]).pipe(
+      takeUntil(this.destroy$),
+      map(([avgMode]) => {
+        let options: ChartOptions = { ...this.barChartOptions };
+        if (avgMode === 'average') {
+          options.plugins.annotation = this.getAvgPluginOptions(this.average);
+        } else if (avgMode === 'goal') {
+          const value = this.goal * this.goalCount;
+          options.plugins.annotation = this.getGoalPluginOptions(value);
+        } else {
+          options.plugins.annotation = {};
+        }
+        return options;
       })
     );
   }
@@ -154,6 +180,21 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     );
   }
 
+  get noDataAlertMessage$() {
+    return combineLatest([this.caFacade.txPlanAvgFeeChartName$]).pipe(
+      takeUntil(this.destroy$),
+      map(([visibility]) => {
+        switch (visibility) {
+          case 'Avg. Proposed Fees':
+            return 'You have no proposed treatment in the selected period';
+
+          case 'Avg. Completed Fees':
+            return 'You have no completed treatment in the selected period';
+        }
+      })
+    );
+  }
+
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
@@ -164,11 +205,12 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,
+    private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade
   ) {
-    combineLatest([this.caFacade.caNumNewPatientsChartData$])
+    combineLatest([this.caFacade.caTxPlanAvgFeesChartData$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([data]) => {
         this.datasets = data.datasets ?? [];
@@ -181,8 +223,6 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
-        this.newpColors = data.chartColors ?? [];
-        console.log('colors', this.newpColors);
       });
   }
 
@@ -192,23 +232,31 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     this.destroy.next();
   }
 
-  switchChartName(chartName) {
-    switch (chartName) {
-      case 'Production':
-        this.caFacade.setProdSelectTab('production_all');
-        break;
-      case 'Collection':
-        this.caFacade.setColSelectTab('collection_all');
-        break;
-      case 'Collection-Exp':
-        this.caFacade.setColExpSelectTab('collection_exp_all');
-        break;
-    }
-    this.caFacade.setProdChartName(chartName);
+  switchChartName(chartName: CA_AVG_FEES) {
+    this.caFacade.setTxTplanAvgFeeChartName(chartName);
   }
 
   toggleTableInfo() {
     this.showTableInfo = !this.showTableInfo;
+  }
+  getAvgPluginOptions(avgVal): _DeepPartialObject<AnnotationPluginOptions> {
+    return {
+      // drawTime: 'afterDatasetsDraw',
+      annotations: [
+        {
+          drawTime: 'afterDraw',
+          type: 'line',
+          // mode: 'horizontal',
+          scaleID: 'y-axis-0',
+          yMax: avgVal,
+          yMin: avgVal,
+          borderColor: '#0e3459',
+          borderWidth: 2,
+          borderDash: [2, 2],
+          borderDashOffset: 0,
+        },
+      ],
+    };
   }
 
   getGoalPluginOptions(goalVal): _DeepPartialObject<AnnotationPluginOptions> {
@@ -231,78 +279,88 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     };
   }
 
-  public doughnutChartOptions: ChartOptions = {
-    // scaleShowVerticalLines: false,
-    // borderWidth: 0,
-    responsive: true,
+  public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
+    display: true,
+    position: 'bottom',
+    labels: {
+      boxWidth: 8,
+      usePointStyle: true,
+      generateLabels: chart => {
+        let bgColor = {};
+        let labels = chart.data.labels.map((value: string, i) => {
+          bgColor[value.split(' - ')[1]] =
+            chart.data.datasets[0].backgroundColor[i];
+          return value.split(' - ')[1];
+        });
+        labels = [...new Set(labels)];
+        labels = labels.splice(0, 10);
+        return labels.map((label, index) => ({
+          text: label,
+          strokeStyle: bgColor[label],
+          fillStyle: bgColor[label],
+        }));
+      },
+    },
+    onClick: (event, legendItem, legend) => {
+      return;
+    },
+    // align : 'start',
+  };
+
+  public barChartOptions: ChartOptions<'bar'> = {
+    // borderRadius: 50,
     hover: { mode: null },
-    maintainAspectRatio: false,
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    // curvature: 1,
     animation: {
-      duration: 2000,
+      duration: 1500,
       easing: 'easeOutSine',
     },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'bottom',
-        labels: {
-          usePointStyle: true,
-          padding: 5,
-          generateLabels: chart => {
-            var data = chart.data;
-            if (data.labels.length && data.datasets.length) {
-              return data.labels.map((label: string, i) => {
-                // var meta = chart.getDatasetMeta(0);
-                var ds = this.newpColors[0];
-                // var arc = meta.data[i];
-                // var custom = (arc && arc.custom) || {};
-                // const regex = /\w+\s\w+(?=\s)|\w+/g;
-                // var names = label.toString().trim().match(regex);
-                // var labls = '';
-                // var name = names[0].split(' ');
-                // if (names.length == 3) {
-                //   labls = `${names[0]}`;
-                // } else if (names.length == 2) {
-                //   if (name.length == 2) {
-                //     labls = `${names[0][0]} ${name[1]}`;
-                //   } else {
-                //     labls = `${names[0][0]} ${names[1]}`;
-                //   }
-                // } else {
-                //   labls = `${names[0]}`;
-                // }
-                return {
-                  text: <string>formatXLabel(label),
-                  fillStyle: ds.backgroundColor[i] ?? COLORS.even,
-                  strokeStyle: '#fff',
-                  //hidden: isNaN(ds.data[i]) || meta.data[i].active,
-                  index: i,
-                };
-              });
-            }
-            return [];
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        grid: {
+          display: true,
+        },
+        ticks: {
+          autoSkip: false,
+          callback: function (tickValue: string | number, index, ticks) {
+            return formatXLabel(this.getLabelForValue(index));
           },
         },
-        onClick: function (e) {
-          e.native.stopPropagation();
+      },
+      y: {
+        suggestedMin: 0,
+        ticks: {
+          callback: (label: number, index, ticks) => {
+            // when the floored value is the same as the value we have a whole number
+            if (typeof label === 'number') {
+              return '$' + this.decimalPipe.transform(label);
+            } else {
+              return `$${label}`;
+            }
+          },
         },
       },
+    },
+    plugins: {
+      legend: this.legendGenerator,
       tooltip: {
+        mode: 'x',
+        bodyFont: {
+          family: 'Gilroy-Regular',
+        },
+        cornerRadius: 0,
         callbacks: {
-          label: tooltipItem =>
-            `${tooltipItem.label}: ${tooltipItem.formattedValue}`,
+          label: tooltipItem => formatXTooltipLabel(tooltipItem),
+          // remove title
           title: function () {
             return '';
           },
         },
       },
     },
-    // elements: {
-    //   center: {
-    //     text: '',
-    //     sidePadding: 40,
-    //     minFontSize: 15
-    //   }
-    // }
   };
 }
