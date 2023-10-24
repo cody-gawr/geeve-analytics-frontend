@@ -247,12 +247,11 @@ export class AppTopbarComponent implements OnInit {
         }
       });
 
-    this.dentistFacade.currentDentistId$.pipe(
-      takeUntil(this.destroy$),
-      map(dentistId => {
+    this.dentistFacade.currentDentistId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(dentistId => {
         this.selectedDentist = dentistId;
-      })
-    );
+      });
 
     this.isMultiClinics$.subscribe((value: boolean) =>
       this.clinicFacade.setMultiClinicSelection(value)

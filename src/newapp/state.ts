@@ -17,6 +17,9 @@ export function localStorageSyncReducer(
         ],
       },
       {
+        dentist: ['currentDentistId'],
+      },
+      {
         auth: [
           'authUserData',
           //"rolesIndividual"

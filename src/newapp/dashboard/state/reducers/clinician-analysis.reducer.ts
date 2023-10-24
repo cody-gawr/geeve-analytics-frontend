@@ -13,6 +13,8 @@ import {
 import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.reducer';
 import { COLORS } from '@/newapp/constants';
 import { selectRolesIndividual } from '@/newapp/auth/state/reducers/auth.reducer';
+import moment from 'moment';
+import { ChartDataset } from 'chart.js';
 
 export interface ClinicianAnalysisState {
   isLoadingData: Array<CA_API_ENDPOINTS | CA_API_ENDPOINTS_TREND>;
@@ -31,7 +33,7 @@ export interface ClinicianAnalysisState {
   hourlyRateColSelectTab: CA_COL_SELECT_TAB;
   hourlyRateColExpSelectTab: CA_COL_EXP_SELECT_TAB;
 
-  txTplanAvgFeeChartName: CA_TX_PLAN_AVG_FEE_CHART_NAME;
+  txPlanAvgFeeChartName: CA_TX_PLAN_AVG_FEE_CHART_NAME;
   recallRateChartName: CA_RECALL_RATE_CHART_NAME;
 }
 
@@ -52,7 +54,7 @@ const initiateState: ClinicianAnalysisState = {
   hourlyRateColSelectTab: 'collection_all',
   hourlyRateColExpSelectTab: 'collection_exp_all',
 
-  txTplanAvgFeeChartName: 'Avg. Proposed Fees',
+  txPlanAvgFeeChartName: 'Avg. Proposed Fees',
   recallRateChartName: 'Recall Prebook Rate',
 };
 
@@ -137,7 +139,7 @@ export const clinicianAnalysisFeature = createFeature({
       (state, { chartName }): ClinicianAnalysisState => {
         return {
           ...state,
-          txTplanAvgFeeChartName: chartName,
+          txPlanAvgFeeChartName: chartName,
         };
       }
     ),
@@ -237,13 +239,19 @@ export const {
   selectHourlyRateProdSelectTab,
   selectHourlyRateColSelectTab,
   selectHourlyRateColExpSelectTab,
-  selectTxTplanAvgFeeChartName,
+  selectTxPlanAvgFeeChartName,
   selectRecallRateChartName,
 } = clinicianAnalysisFeature;
 
 export const selectIsLoadingCaDentistProduction = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'caDentistProduction') >= 0
+);
+
+export const selectIsLoadingCaDentistProductionTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caDentistProductionTrend') >= 0
 );
 
 export const selectIsLoadingCaDentistProductionDentist = createSelector(
@@ -263,6 +271,11 @@ export const selectIsLoadingCaCollection = createSelector(
   loadingData => _.findIndex(loadingData, l => l == 'caCollection') >= 0
 );
 
+export const selectIsLoadingCaCollectionTrend = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'caCollectionTrend') >= 0
+);
+
 export const selectIsLoadingCaCollectionDentists = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'caCollectionDentists') >= 0
@@ -278,6 +291,11 @@ export const selectIsLoadingCaCollectionExp = createSelector(
   loadingData => _.findIndex(loadingData, l => l == 'caCollectionExp') >= 0
 );
 
+export const selectIsLoadingCaCollectionExpTrend = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'caCollectionExpTrend') >= 0
+);
+
 export const selectIsLoadingCaCollectionExpDentists = createSelector(
   selectIsLoadingData,
   loadingData =>
@@ -290,6 +308,8 @@ export const selectIsLoadingCaCollectionExpOht = createSelector(
 );
 
 export const selectIsLoadingCaProduction = createSelector(
+  selectCurrentDentistId,
+  selectTrend,
   selectProductionChartName,
   selectProdSelectTab,
   selectColSelectTab,
@@ -303,7 +323,12 @@ export const selectIsLoadingCaProduction = createSelector(
   selectIsLoadingCaCollectionExp,
   selectIsLoadingCaCollectionExpDentists,
   selectIsLoadingCaCollectionExpOht,
+  selectIsLoadingCaDentistProductionTrend,
+  selectIsLoadingCaCollectionTrend,
+  selectIsLoadingCaCollectionExpTrend,
   (
+    currentDentistIds,
+    trendMode,
     prodChartName,
     prodTab,
     colTab,
@@ -316,37 +341,54 @@ export const selectIsLoadingCaProduction = createSelector(
     isLoadingCaCollectionOht,
     isLoadingCaCollectionExp,
     isLoadingCaCollectionExpDentists,
-    isLoadingCaCollectionExpOht
+    isLoadingCaCollectionExpOht,
+
+    isLoadingCaDentistProductionTrend,
+    isLoadingCaCollectionTrend,
+    isLoadingCaCollectionExpTrend
   ) => {
+    const isTrend = currentDentistIds === 'all' || trendMode === 'off';
+
     switch (prodChartName) {
       case 'Production':
-        switch (prodTab) {
-          case 'production_all':
-            return isLoadingCaDentistProduction;
-          case 'production_dentists':
-            return isLoadingCaDentistProductionDentist;
-          case 'production_oht':
-            return isLoadingCaDentistProductionOht;
+        if (isTrend) {
+          switch (prodTab) {
+            case 'production_all':
+              return isLoadingCaDentistProduction;
+            case 'production_dentists':
+              return isLoadingCaDentistProductionDentist;
+            case 'production_oht':
+              return isLoadingCaDentistProductionOht;
+          }
+        } else {
+          return isLoadingCaDentistProductionTrend;
         }
-        break;
       case 'Collection':
-        switch (colTab) {
-          case 'collection_all':
-            return isLoadingCaCollection;
-          case 'collection_dentists':
-            return isLoadingCaCollectionDentists;
-          case 'collection_oht':
-            return isLoadingCaCollectionOht;
+        if (isTrend) {
+          switch (colTab) {
+            case 'collection_all':
+              return isLoadingCaCollection;
+            case 'collection_dentists':
+              return isLoadingCaCollectionDentists;
+            case 'collection_oht':
+              return isLoadingCaCollectionOht;
+          }
+        } else {
+          return isLoadingCaCollectionTrend;
         }
-        break;
+
       case 'Collection-Exp':
-        switch (colExpTab) {
-          case 'collection_exp_all':
-            return isLoadingCaCollectionExp;
-          case 'collection_exp_dentists':
-            return isLoadingCaCollectionExpDentists;
-          case 'collection_exp_oht':
-            return isLoadingCaCollectionExpOht;
+        if (isTrend) {
+          switch (colExpTab) {
+            case 'collection_exp_all':
+              return isLoadingCaCollectionExp;
+            case 'collection_exp_dentists':
+              return isLoadingCaCollectionExpDentists;
+            case 'collection_exp_oht':
+              return isLoadingCaCollectionExpOht;
+          }
+        } else {
+          return isLoadingCaCollectionExpTrend;
         }
     }
   }
@@ -368,7 +410,7 @@ export const selectCaProductionChartData = createSelector(
     selectedClinics,
     trendMode,
     averageMode,
-    prodChartName,
+    chartName,
     prodTab,
     colTab,
     colExpTab,
@@ -376,9 +418,10 @@ export const selectCaProductionChartData = createSelector(
     rolesInd
   ) => {
     const isAllDentist = currentDentistId === 'all';
+    const isTrend = trendMode && trendMode !== 'off';
     let resBody: CaDentistProductionApiResponse | CaCollectionApiResponse =
       null;
-    switch (prodChartName) {
+    switch (chartName) {
       case 'Production':
         if (isAllDentist) {
           switch (prodTab) {
@@ -449,7 +492,7 @@ export const selectCaProductionChartData = createSelector(
       }
 
       if (selectedClinics.length > 1) {
-        if (prodChartName === 'Production') {
+        if (chartName === 'Production') {
           resBody.data
             .sort(
               (a, b) =>
@@ -474,7 +517,7 @@ export const selectCaProductionChartData = createSelector(
       const tableData = [];
       let dentistKey = 0;
       resBody.data.forEach((res, i) => {
-        if (prodChartName === 'Production') {
+        if (chartName === 'Production') {
           chartData.push(Math.round(<number>res.production));
         } else {
           chartData.push(Math.round(<number>res.collection));
@@ -512,7 +555,7 @@ export const selectCaProductionChartData = createSelector(
             chartLabels,
             selectClinics.length > 1,
             selectedClinics,
-            trendMode !== 'off',
+            isTrend,
             averageMode == 'average'
           ),
           shadowOffsetX: 3,
@@ -556,12 +599,11 @@ export const selectCaProductionChartData = createSelector(
 
       let gaugeValue = 0,
         gaugeLabel = '',
-        maxGoal = 0,
-        tableData = [];
+        maxGoal = 0;
 
       resBody.data.forEach(res => {
         gaugeValue = Math.round(
-          prodChartName === 'Production' ? res.production : res.collection
+          chartName === 'Production' ? res.production : res.collection
         );
 
         gaugeLabel = res.providerName;
@@ -576,9 +618,144 @@ export const selectCaProductionChartData = createSelector(
         prev: Math.round(resBody.totalTa),
         goal: goal,
         maxGoal: maxGoal,
-        tableData,
       };
     }
+  }
+);
+
+export const selectCaProductionTrendChartData = createSelector(
+  selectResBodyListTrend,
+  selectTrend,
+  selectProductionChartName,
+  (bodyList, trendMode, chartName) => {
+    let resBody: CaDentistProductionApiResponse | CaCollectionApiResponse =
+      null;
+    switch (chartName) {
+      case 'Production':
+        resBody = bodyList['caDentistProductionTrend'];
+        break;
+      case 'Collection':
+        resBody = bodyList['caCollectionTrend'];
+        break;
+      case 'Collection-Exp':
+        resBody = bodyList['caCollectionExpTrend'];
+        break;
+    }
+
+    let chartData = [],
+      chartLabels = [];
+    if (!resBody?.data) {
+      return {
+        datasets: [],
+        labels: [],
+        total: 0,
+        average: 0,
+        prev: 0,
+        goal: 0,
+        tableData: [],
+      };
+    }
+    const targetData = [],
+      tableData = [];
+    resBody.data.forEach((res, i) => {
+      if (chartName === 'Production') {
+        chartData.push(Math.round(<number>res.production));
+      } else {
+        chartData.push(Math.round(<number>res.collection));
+      }
+
+      if (res.goals == -1 || res.goals == null || res.goals == '') {
+        targetData.push(null);
+      } else {
+        targetData.push(res.goals);
+      }
+
+      if (trendMode == 'current') {
+        chartLabels.push(moment(res.yearMonth).format('MMM YYYY'));
+      } else if (trendMode === 'historic') {
+        chartLabels.push(res.year);
+      } else {
+        const wDate = moment(res.weekEnd).format('YYYY-MM-DD');
+        chartLabels.push('WE ' + wDate);
+        tableData.push({
+          label: wDate,
+          value: chartData[i],
+        });
+      }
+    });
+
+    let datasets: ChartDataset<'bar'>[] = [
+      {
+        data: chartData,
+        label: '',
+        // shadowOffsetX: 3,
+        //   xAxisID: "x-axis-actual",
+        backgroundColor: 'rgba(0, 0, 255, 0.2)',
+        order: 2,
+      },
+      {
+        data: [],
+        label: '',
+        //  xAxisID: "x-axis-target",
+        backgroundColor: 'rgba(255, 0, 128, 1)',
+        order: 1,
+        // minHeight: 5
+      },
+    ];
+
+    const maxVal = Math.max(...chartData);
+    var subVal = 1;
+    if (maxVal >= 20001) {
+      subVal = 200;
+    } else if (maxVal > 5000 && maxVal < 20000) {
+      subVal = 100;
+    } else if (maxVal > 3000 && maxVal < 5000) {
+      subVal = 50;
+    } else if (maxVal > 2000 && maxVal < 3000) {
+      subVal = 10;
+    } else if (maxVal > 100 && maxVal < 2000) {
+      subVal = 1;
+    } else if (maxVal > 51 && maxVal < 100) {
+      subVal = 0.2;
+    } else if (maxVal <= 50) {
+      subVal = 0.1;
+    }
+
+    const mappedtargetData = [];
+    targetData.map(function (v) {
+      if (v == null) {
+        mappedtargetData.push([v - 0, v + 0]);
+      } else {
+        mappedtargetData.push([v - subVal, v + subVal]);
+      }
+    });
+
+    if (trendMode == 'current') {
+      datasets[0]['label'] = 'Actual';
+      datasets[1]['label'] = 'Target';
+      datasets[1]['data'] = mappedtargetData; //this.targetData.map(v => [v - subVal, v + subVal]);
+    } else {
+      datasets[0]['label'] = '';
+      datasets[1]['label'] = '';
+      datasets[1]['data'] = [];
+    }
+
+    const dynamicColors = [];
+    chartLabels.forEach((label, labelIndex) => {
+      dynamicColors.push(labelIndex % 2 === 0 ? COLORS.odd : COLORS.even);
+    });
+
+    datasets[0].backgroundColor = dynamicColors;
+
+    return {
+      datasets,
+      labels: chartLabels,
+      total: Math.round(resBody.total),
+      average: Math.round(resBody.totalAverage),
+      prev: Math.round(resBody.totalTa),
+      goal: parseInt(<string>resBody.goals),
+      tableData,
+    };
   }
 );
 
@@ -1059,7 +1236,7 @@ export const selectIsLoadingCaTxPlanAvgCompletedFees = createSelector(
 );
 
 export const selectIsLoadingCaTxPlanAvgFeeAll = createSelector(
-  selectTxTplanAvgFeeChartName,
+  selectTxPlanAvgFeeChartName,
   selectIsLoadingCaTxPlanAvgCompletedFees,
   selectIsLoadingCaTxPlanAvgProposedFees,
   (chartName, isCompleteFee, isProposedFee) => {
@@ -1076,7 +1253,7 @@ export const selectTxPlanAvgFeesChartData = createSelector(
   selectCurrentClinics,
   selectTrend,
   selectAverage,
-  selectTxTplanAvgFeeChartName,
+  selectTxPlanAvgFeeChartName,
   selectCurrentDentistId,
   selectRolesIndividual,
   (

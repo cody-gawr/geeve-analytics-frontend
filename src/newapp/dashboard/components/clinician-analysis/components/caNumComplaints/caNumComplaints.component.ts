@@ -4,14 +4,20 @@ import { COLORS } from '@/newapp/constants';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { formatXLabel, formatXTooltipLabel } from '@/newapp/shared/utils';
+import { formatXLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ChartOptions, LegendOptions } from 'chart.js';
+import { ChartOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  combineLatest,
+  map,
+  distinctUntilChanged,
+} from 'rxjs';
 
 @Component({
   selector: 'caNumComplaints-chart',
@@ -171,7 +177,10 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
     private dentistFacade: DentistFacade
   ) {
     combineLatest([this.caFacade.caNumComplaintsChartData$])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
       .subscribe(([data]) => {
         this.datasets = data.datasets ?? [];
         this.labels = data.labels ?? [];

@@ -10,7 +10,13 @@ import { ChartOptions, LegendOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  combineLatest,
+  map,
+  distinctUntilChanged,
+} from 'rxjs';
 
 @Component({
   selector: 'caTxPlanAvgFees-chart',
@@ -202,7 +208,10 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     private dentistFacade: DentistFacade
   ) {
     combineLatest([this.caFacade.caTxPlanAvgFeesChartData$])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
       .subscribe(([data]) => {
         this.datasets = data.datasets ?? [];
         this.labels = data.labels ?? [];

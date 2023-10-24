@@ -101,8 +101,9 @@
           <ng-template #chartElem>
             <ngx-gauge
               *ngIf="
-                !(isAllDentist$ | async) && !(isTrend$ | async);
-                else chartElem2
+                !(isAllDentist$ | async) &&
+                !(isTrend$ | async) &&
+                (hasData$ | async)
               "
               type="arch"
               [value]="gaugeValue"
@@ -116,17 +117,18 @@
               prepend="$"
               [size]="300">
             </ngx-gauge>
-            <ng-template #chartElem2>
-              <canvas
-                baseChart
-                *ngIf="hasData$ | async"
-                [datasets]="datasets"
-                [labels]="labels"
-                [legend]="legend$ | async"
-                type="bar"
-                [options]="chartOptions$ | async">
-              </canvas>
-            </ng-template>
+            <canvas
+              baseChart
+              *ngIf="
+                ((isAllDentist$ | async) || (isTrend$ | async)) &&
+                (hasData$ | async)
+              "
+              [datasets]="datasets"
+              [labels]="labels"
+              [legend]="legend$ | async"
+              type="bar"
+              [options]="chartOptions$ | async">
+            </canvas>
 
             <spin-loader
               class="empty-placeholder"

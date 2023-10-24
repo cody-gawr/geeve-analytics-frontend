@@ -25,7 +25,8 @@ import {
   selectRecallRateChartName,
   selectTxPlanAvgFeesChartData,
   selectTxPlanCompRateChartData,
-  selectTxTplanAvgFeeChartName,
+  selectTxPlanAvgFeeChartName,
+  selectCaProductionTrendChartData,
 } from '../state/reducers/clinician-analysis.reducer';
 
 @Injectable()
@@ -40,7 +41,7 @@ export class ClinicianAnalysisFacade {
   );
 
   public readonly txPlanAvgFeeChartName$ = this.store.pipe(
-    select(selectTxTplanAvgFeeChartName)
+    select(selectTxPlanAvgFeeChartName)
   );
 
   public readonly recallRateChartName$ = this.store.pipe(
@@ -97,6 +98,10 @@ export class ClinicianAnalysisFacade {
 
   public readonly caProductionChartData$ = this.store.pipe(
     select(selectCaProductionChartData)
+  );
+
+  public readonly caProductionTrendChartData$ = this.store.pipe(
+    select(selectCaProductionTrendChartData)
   );
 
   public readonly caHourlyRateChartData$ = this.store.pipe(

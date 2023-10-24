@@ -9,6 +9,34 @@ import { ClinicianAnalysisFacade } from '../../facades/clinician-analysis.facade
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 
+const caEndpoints = [
+  'caDentistProduction',
+  'caCollection',
+  'caCollectionExp',
+  'caDentistProductionDentist',
+  'caDentistProductionOht',
+  'caCollectionDentists',
+  'caCollectionOht',
+  'caCollectionExpDentists',
+  'caCollectionExpOht',
+  'caHourlyRate',
+  'caCollectionHourlyRate',
+  'caCollectionExpHourlyRate',
+  'caHourlyRateDentists',
+  'caHourlyRateOht',
+  'caCollectionHourlyRateDentist',
+  'caCollectionHourlyRateOht',
+  'caCollectionExpHourlyRateDentist',
+  'caCollectionExpHourlyRateOht',
+  'caNumNewPatients',
+  'caTxPlanAvgProposedFees',
+  'caTxPlanAvgCompletedFees',
+  'caTxPlanCompRate',
+  'caRecallRate',
+  'caReappointRate',
+  'caNumComplaints',
+];
+
 @Component({
   selector: 'clinician-analysis',
   templateUrl: './clinician-analysis.component.html',
@@ -69,7 +97,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
-        const [clinicId, dateRange, route, trend, dentistId, isAllClinic] =
+        const [clinicId, dateRange, route, trend, dentistId, isAllDentist] =
           params;
         if (clinicId == null) return;
         const providerId =
@@ -82,7 +110,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
         this.dashbordFacade.loadChartTips(1, clinicId);
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
-        if (trend === 'off' || isAllClinic) {
+        if (trend === 'off' || isAllDentist) {
           const params = {
             clinicId: clinicId,
             startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
@@ -91,115 +119,32 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
             queryWhEnabled,
             dentistId: providerId,
           };
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caDentistProduction',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollection',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollectionExp',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caDentistProductionDentist',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caDentistProductionOht',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollectionDentists',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollectionOht',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollectionExpDentists',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollectionExpOht',
-          });
+          for (const api of caEndpoints) {
+            this.caFacade.loadNoneTrendApiRequest({
+              ...params,
+              api,
+            });
+          }
+        }
 
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caHourlyRate',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollectionHourlyRate',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollectionExpHourlyRate',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caHourlyRateDentists',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caHourlyRateOht',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollectionHourlyRateDentist',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollectionHourlyRateOht',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollectionExpHourlyRateDentist',
-          });
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caCollectionExpHourlyRateOht',
-          });
-
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caNumNewPatients',
-          });
-
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caTxPlanAvgProposedFees',
-          });
-
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caTxPlanAvgCompletedFees',
-          });
-
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caTxPlanCompRate',
-          });
-
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caRecallRate',
-          });
-
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caReappointRate',
-          });
-
-          this.caFacade.loadNoneTrendApiRequest({
-            ...params,
-            api: 'caNumComplaints',
-          });
-        } else {
+        if (!isAllDentist) {
+          for (const api of [
+            'caDentistProductionTrend',
+            'caCollectionTrend',
+            'caCollectionExpTrend',
+          ]) {
+            const params = {
+              clinicId,
+              mode:
+                trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+              queryWhEnabled,
+              dentistId: providerId,
+            };
+            this.caFacade.loadTrendApiRequest({
+              ...params,
+              api: api,
+            });
+          }
         }
       });
   }
