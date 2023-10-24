@@ -243,6 +243,7 @@ declare global {
     providerName: string;
     year: unknown;
     yearMonth: unknown;
+    goals?: string | number; // trend
   }
 
   interface CaNumNewPatientsApiResponse {

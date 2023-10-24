@@ -132,6 +132,10 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
             'caDentistProductionTrend',
             'caCollectionTrend',
             'caCollectionExpTrend',
+            'caHourlyRateTrend',
+            'caCollectionHourlyRateTrend',
+            'caCollectionExpHourlyRateTrend',
+            'caNumNewPatientsTrend',
           ]) {
             const params = {
               clinicId,

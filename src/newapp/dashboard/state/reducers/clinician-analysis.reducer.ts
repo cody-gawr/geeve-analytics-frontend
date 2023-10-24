@@ -648,10 +648,10 @@ export const selectCaProductionTrendChartData = createSelector(
       return {
         datasets: [],
         labels: [],
-        total: 0,
-        average: 0,
-        prev: 0,
-        goal: 0,
+        // total: 0,
+        // average: 0,
+        // prev: 0,
+        // goal: 0,
         tableData: [],
       };
     }
@@ -750,10 +750,10 @@ export const selectCaProductionTrendChartData = createSelector(
     return {
       datasets,
       labels: chartLabels,
-      total: Math.round(resBody.total),
-      average: Math.round(resBody.totalAverage),
-      prev: Math.round(resBody.totalTa),
-      goal: parseInt(<string>resBody.goals),
+      // total: Math.round(resBody.total),
+      // average: Math.round(resBody.totalAverage),
+      // prev: Math.round(resBody.totalTa),
+      // goal: parseInt(<string>resBody.goals),
       tableData,
     };
   }
@@ -762,6 +762,11 @@ export const selectCaProductionTrendChartData = createSelector(
 export const selectIsLoadingCaHourlyRate = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'caHourlyRate') >= 0
+);
+
+export const selectIsLoadingCaHourlyRateTrend = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'caHourlyRateTrend') >= 0
 );
 
 export const selectIsLoadingCaHourlyRateDentists = createSelector(
@@ -778,6 +783,12 @@ export const selectIsLoadingCaCollectionHourlyRate = createSelector(
   selectIsLoadingData,
   loadingData =>
     _.findIndex(loadingData, l => l == 'caCollectionHourlyRate') >= 0
+);
+
+export const selectIsLoadingCaCollectionHourlyRateTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caCollectionHourlyRateTrend') >= 0
 );
 
 export const selectIsLoadingCaCollectionHourlyRateDentist = createSelector(
@@ -798,6 +809,12 @@ export const selectIsLoadingCaCollectionExpHourlyRate = createSelector(
     _.findIndex(loadingData, l => l == 'caCollectionExpHourlyRate') >= 0
 );
 
+export const selectIsLoadingCaCollectionExpHourlyRateTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caCollectionExpHourlyRateTrend') >= 0
+);
+
 export const selectIsLoadingCaCollectionExpHourlyRateDentist = createSelector(
   selectIsLoadingData,
   loadingData =>
@@ -811,6 +828,8 @@ export const selectIsLoadingCaCollectionExpHourlyRateOht = createSelector(
 );
 
 export const selectIsLoadingCaHourlyRateAll = createSelector(
+  selectCurrentDentistId,
+  selectTrend,
   selectHourlyRateChartName,
   selectHourlyRateProdSelectTab,
   selectHourlyRateColSelectTab,
@@ -824,7 +843,12 @@ export const selectIsLoadingCaHourlyRateAll = createSelector(
   selectIsLoadingCaCollectionExpHourlyRate,
   selectIsLoadingCaCollectionExpHourlyRateDentist,
   selectIsLoadingCaCollectionExpHourlyRateOht,
+  selectIsLoadingCaHourlyRateTrend,
+  selectIsLoadingCaCollectionHourlyRateTrend,
+  selectIsLoadingCaCollectionExpHourlyRateTrend,
   (
+    currentDentistIds,
+    trendMode,
     hourlyRateChartName,
     hourlyRateProdTab,
     hourlyRateColTab,
@@ -837,37 +861,51 @@ export const selectIsLoadingCaHourlyRateAll = createSelector(
     isLoadingCaCollectionHourlyRateOht,
     isLoadingCaCollectionExpHourlyRate,
     isLoadingCaCollectionExpHourlyRateDentists,
-    isLoadingCaCollectionExpHourlyRateOht
+    isLoadingCaCollectionExpHourlyRateOht,
+    isLoadingCaHourlyRateTrend,
+    isLoadingCaCollectionHourlyRateTrend,
+    isLoadingCaCollectionExpHourlyRateTrend
   ) => {
+    const isTrend = currentDentistIds === 'all' || trendMode === 'off';
     switch (hourlyRateChartName) {
       case 'Production':
-        switch (hourlyRateProdTab) {
-          case 'production_all':
-            return isLoadingCaHourlyRate;
-          case 'production_dentists':
-            return isLoadingCaHourlyRateDentist;
-          case 'production_oht':
-            return isLoadingCaHourlyRateOht;
+        if (isTrend) {
+          switch (hourlyRateProdTab) {
+            case 'production_all':
+              return isLoadingCaHourlyRate;
+            case 'production_dentists':
+              return isLoadingCaHourlyRateDentist;
+            case 'production_oht':
+              return isLoadingCaHourlyRateOht;
+          }
+        } else {
+          return isLoadingCaHourlyRateTrend;
         }
-        break;
       case 'Collection':
-        switch (hourlyRateColTab) {
-          case 'collection_all':
-            return isLoadingCaCollectionHourlyRate;
-          case 'collection_dentists':
-            return isLoadingCaCollectionHourlyRateDentists;
-          case 'collection_oht':
-            return isLoadingCaCollectionHourlyRateOht;
+        if (isTrend) {
+          switch (hourlyRateColTab) {
+            case 'collection_all':
+              return isLoadingCaCollectionHourlyRate;
+            case 'collection_dentists':
+              return isLoadingCaCollectionHourlyRateDentists;
+            case 'collection_oht':
+              return isLoadingCaCollectionHourlyRateOht;
+          }
+        } else {
+          return isLoadingCaCollectionHourlyRateTrend;
         }
-        break;
       case 'Collection-Exp':
-        switch (hourlyRatecolExpTab) {
-          case 'collection_exp_all':
-            return isLoadingCaCollectionExpHourlyRate;
-          case 'collection_exp_dentists':
-            return isLoadingCaCollectionExpHourlyRateDentists;
-          case 'collection_exp_oht':
-            return isLoadingCaCollectionExpHourlyRateOht;
+        if (isTrend) {
+          switch (hourlyRatecolExpTab) {
+            case 'collection_exp_all':
+              return isLoadingCaCollectionExpHourlyRate;
+            case 'collection_exp_dentists':
+              return isLoadingCaCollectionExpHourlyRateDentists;
+            case 'collection_exp_oht':
+              return isLoadingCaCollectionExpHourlyRateOht;
+          }
+        } else {
+          return isLoadingCaCollectionExpHourlyRateTrend;
         }
     }
   }
@@ -1079,9 +1117,150 @@ export const selectCaHourlyRateChartData = createSelector(
   }
 );
 
+export const selectCaHourlyRateTrendChartData = createSelector(
+  selectResBodyListTrend,
+  selectTrend,
+  selectHourlyRateChartName,
+  (bodyList, trendMode, chartName) => {
+    let resBody: CaHourlyRateApiResponse | CaCollectionHourlyRateApiResponse =
+      null;
+    switch (chartName) {
+      case 'Production':
+        resBody = bodyList['caHourlyRateTrend'];
+        break;
+      case 'Collection':
+        resBody = bodyList['caCollectionHourlyRateTrend'];
+        break;
+      case 'Collection-Exp':
+        resBody = bodyList['caCollectionExpHourlyRateTrend'];
+        break;
+    }
+
+    let chartData = [],
+      chartLabels = [];
+    if (!resBody?.data) {
+      return {
+        datasets: [],
+        labels: [],
+      };
+    }
+    const targetData = [];
+    resBody.data.forEach((res, i) => {
+      chartData.push(Math.round(<number>res.hourlyRate));
+      if (res.goals == -1 || res.goals == null || res.goals == '') {
+        targetData.push(null);
+      } else {
+        targetData.push(res.goals);
+      }
+
+      if (trendMode == 'current') {
+        chartLabels.push(moment(res.yearMonth).format('MMM YYYY'));
+      } else {
+        chartLabels.push(res.year);
+      }
+    });
+
+    let datasets: ChartDataset<any>[] = [
+      {
+        data: chartData,
+        order: 2,
+        backgroundColor: [
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+        ],
+        label: '',
+        shadowOffsetX: 3,
+        shadowOffsetY: 2,
+        shadowBlur: 3,
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundOverlayMode: 'multiply',
+      },
+      {
+        data: [],
+        order: 1,
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor: 'rgba(255, 0, 128, 1)',
+      },
+    ];
+
+    const maxVal = Math.max(...chartData);
+    var subVal = 1;
+    if (maxVal >= 20001) {
+      subVal = 200;
+    } else if (maxVal > 5000 && maxVal < 20000) {
+      subVal = 100;
+    } else if (maxVal > 3000 && maxVal < 5000) {
+      subVal = 50;
+    } else if (maxVal > 2000 && maxVal < 3000) {
+      subVal = 10;
+    } else if (maxVal > 100 && maxVal < 2000) {
+      subVal = 1;
+    } else if (maxVal > 51 && maxVal < 100) {
+      subVal = 0.2;
+    } else if (maxVal <= 50) {
+      subVal = 0.1;
+    }
+
+    const mappedtargetData = [];
+    targetData.map(function (v) {
+      if (v == null) {
+        mappedtargetData.push([v - 0, v + 0]);
+      } else {
+        mappedtargetData.push([v - subVal, v + subVal]);
+      }
+    });
+
+    if (trendMode == 'current') {
+      datasets[0]['label'] = 'Actual';
+      datasets[1]['label'] = 'Target';
+      datasets[1]['data'] = mappedtargetData; //this.targetData.map(v => [v - subVal, v + subVal]);
+    } else {
+      datasets[0]['label'] = '';
+      datasets[1]['label'] = '';
+      datasets[1]['data'] = [];
+    }
+
+    const dynamicColors = [];
+    chartLabels.forEach((label, labelIndex) => {
+      dynamicColors.push(labelIndex % 2 === 0 ? COLORS.odd : COLORS.even);
+    });
+
+    datasets[0].backgroundColor = dynamicColors;
+
+    return {
+      datasets,
+      labels: chartLabels,
+    };
+  }
+);
+
 export const selectIsLoadingCaNumNewPatients = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'caNumNewPatients') >= 0
+);
+
+export const selectIsLoadingCaNumNewPatientsTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caNumNewPatientsTrend') >= 0
 );
 
 export const selectCaNumNewPatientsChartData = createSelector(
@@ -1220,6 +1399,132 @@ export const selectCaNumNewPatientsChartData = createSelector(
         maxGoal: maxGoal,
       };
     }
+  }
+);
+
+export const selectCaNumNewPatientsTrendChartData = createSelector(
+  selectResBodyListTrend,
+  selectTrend,
+  (bodyList, trendMode) => {
+    let resBody: CaNumNewPatientsApiResponse =
+      bodyList['caNumNewPatientsTrend'];
+
+    let chartData = [],
+      chartLabels = [];
+    if (!resBody?.data) {
+      return {
+        datasets: [],
+        labels: [],
+        tableData: [],
+      };
+    }
+    const targetData = [],
+      tableData = [];
+    resBody.data.forEach((res, i) => {
+      chartData.push(Math.round(<number>res.newPatients));
+      if (res.goals == -1 || res.goals == null || res.goals == '') {
+        targetData.push(null);
+      } else {
+        targetData.push(res.goals);
+      }
+
+      if (trendMode == 'current') {
+        chartLabels.push(moment(res.yearMonth).format('MMM YYYY'));
+      } else {
+        chartLabels.push(res.year);
+      }
+    });
+
+    let datasets: ChartDataset<any>[] = [
+      {
+        data: chartData,
+        order: 2,
+        backgroundColor: [
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+        ],
+        label: '',
+        shadowOffsetX: 3,
+        shadowOffsetY: 2,
+        shadowBlur: 3,
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundOverlayMode: 'multiply',
+      },
+      {
+        data: [],
+        order: 1,
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor: 'rgba(255, 0, 128, 1)',
+      },
+    ];
+
+    const maxVal = Math.max(...chartData);
+    var subVal = 1;
+    if (maxVal >= 20001) {
+      subVal = 200;
+    } else if (maxVal > 5000 && maxVal < 20000) {
+      subVal = 100;
+    } else if (maxVal > 3000 && maxVal < 5000) {
+      subVal = 50;
+    } else if (maxVal > 2000 && maxVal < 3000) {
+      subVal = 10;
+    } else if (maxVal > 100 && maxVal < 2000) {
+      subVal = 1;
+    } else if (maxVal > 51 && maxVal < 100) {
+      subVal = 0.2;
+    } else if (maxVal <= 50) {
+      subVal = 0.1;
+    }
+
+    const mappedtargetData = [];
+    targetData.map(function (v) {
+      if (v == null) {
+        mappedtargetData.push([v - 0, v + 0]);
+      } else {
+        mappedtargetData.push([v - subVal, v + subVal]);
+      }
+    });
+
+    if (trendMode == 'current') {
+      datasets[0]['label'] = 'Actual';
+      datasets[1]['label'] = 'Target';
+      datasets[1]['data'] = mappedtargetData; //this.targetData.map(v => [v - subVal, v + subVal]);
+    } else {
+      datasets[0]['label'] = '';
+      datasets[1]['label'] = '';
+      datasets[1]['data'] = [];
+    }
+
+    const dynamicColors = [];
+    chartLabels.forEach((label, labelIndex) => {
+      dynamicColors.push(labelIndex % 2 === 0 ? COLORS.odd : COLORS.even);
+    });
+
+    datasets[0].backgroundColor = dynamicColors;
+
+    return {
+      datasets,
+      labels: chartLabels,
+      tableData,
+    };
   }
 );
 

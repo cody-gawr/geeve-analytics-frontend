@@ -27,6 +27,10 @@ import {
   selectTxPlanCompRateChartData,
   selectTxPlanAvgFeeChartName,
   selectCaProductionTrendChartData,
+  selectCaHourlyRateTrendChartData,
+  selectCaNumNewPatientsTrendChartData,
+  selectIsLoadingCaNumNewPatients,
+  selectIsLoadingCaNumNewPatientsTrend,
 } from '../state/reducers/clinician-analysis.reducer';
 
 @Injectable()
@@ -108,8 +112,23 @@ export class ClinicianAnalysisFacade {
     select(selectCaHourlyRateChartData)
   );
 
+  public readonly caHourlyRateTrendChartData$ = this.store.pipe(
+    select(selectCaHourlyRateTrendChartData)
+  );
+
+  public readonly isLoadingCaNumNewPatients$ = this.store.pipe(
+    select(selectIsLoadingCaNumNewPatients)
+  );
+  public readonly isLoadingCaNumNewPatientsTrend$ = this.store.pipe(
+    select(selectIsLoadingCaNumNewPatientsTrend)
+  );
+
   public readonly caNumNewPatientsChartData$ = this.store.pipe(
     select(selectCaNumNewPatientsChartData)
+  );
+
+  public readonly caNumNewPatientsTrendChartData$ = this.store.pipe(
+    select(selectCaNumNewPatientsTrendChartData)
   );
 
   public readonly caTxPlanAvgFeesChartData$ = this.store.pipe(
@@ -147,6 +166,36 @@ export class ClinicianAnalysisFacade {
   public setColExpSelectTab(tabName: CA_COL_EXP_SELECT_TAB) {
     this.store.dispatch(
       ClinicianAnalysisActions.setColExpSelectTab({ tabName })
+    );
+  }
+
+  public readonly hourlyRateProdSelectTab$ = this.store.pipe(
+    select(selectHourlyRateProdSelectTab)
+  );
+
+  public readonly hourlyRateColSelectTab$ = this.store.pipe(
+    select(selectHourlyRateColSelectTab)
+  );
+
+  public readonly hourlyRateColExpSelectTab$ = this.store.pipe(
+    select(selectHourlyRateColExpSelectTab)
+  );
+
+  public setHourlyRateProdSelectTab(tabName: CA_PROD_SELECT_TAB) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.setHourlyRateProdSelectTab({ tabName })
+    );
+  }
+
+  public setHourlyRateColSelectTab(tabName: CA_COL_SELECT_TAB) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.setHourlyRateColSelectTab({ tabName })
+    );
+  }
+
+  public setHourlyRateColExpSelectTab(tabName: CA_COL_EXP_SELECT_TAB) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.setHourlyRateColExpSelectTab({ tabName })
     );
   }
 
@@ -191,36 +240,6 @@ export class ClinicianAnalysisFacade {
           queryWhEnabled,
         },
       })
-    );
-  }
-
-  public readonly hourlyRateProdSelectTab$ = this.store.pipe(
-    select(selectHourlyRateProdSelectTab)
-  );
-
-  public readonly hourlyRateColSelectTab$ = this.store.pipe(
-    select(selectHourlyRateColSelectTab)
-  );
-
-  public readonly hourlyRateColExpSelectTab$ = this.store.pipe(
-    select(selectHourlyRateColExpSelectTab)
-  );
-
-  public setHourlyRateProdSelectTab(tabName: CA_PROD_SELECT_TAB) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.setHourlyRateProdSelectTab({ tabName })
-    );
-  }
-
-  public setHourlyRateColSelectTab(tabName: CA_COL_SELECT_TAB) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.setHourlyRateColSelectTab({ tabName })
-    );
-  }
-
-  public setHourlyRateColExpSelectTab(tabName: CA_COL_EXP_SELECT_TAB) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.setHourlyRateColExpSelectTab({ tabName })
     );
   }
 }

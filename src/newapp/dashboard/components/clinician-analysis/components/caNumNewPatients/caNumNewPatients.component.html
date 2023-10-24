@@ -69,8 +69,8 @@
               "
               [datasets]="datasets"
               [labels]="labels"
-              [legend]="legendSettings"
-              type="doughnut"
+              [legend]="chartLegend$ | async"
+              [type]="chartType$ | async"
               [options]="chartOptions$ | async"
               [colors]="newpColors">
             </canvas>

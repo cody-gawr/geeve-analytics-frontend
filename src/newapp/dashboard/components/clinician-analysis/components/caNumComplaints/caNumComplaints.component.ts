@@ -145,7 +145,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       map(
         ([v, cMode, isTrend]) =>
-          v?.type == 4 && v?.plan != 'lite' && cMode && isTrend
+          (v?.type == 4 && v?.plan != 'lite' && cMode) || isTrend
       ),
       map(v => !v)
     );

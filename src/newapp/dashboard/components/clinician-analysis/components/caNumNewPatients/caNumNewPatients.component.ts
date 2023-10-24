@@ -1,13 +1,13 @@
+import { splitName } from '@/app/util';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
-import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { COLORS } from '@/newapp/constants';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { formatXLabel, formatXTooltipLabel } from '@/newapp/shared/utils';
+import { formatXLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ChartOptions, LegendOptions } from 'chart.js';
+import { ChartOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
@@ -101,7 +101,21 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   };
 
   get isLoading$() {
-    return this.caFacade.isLoadingCaProduction$.pipe(takeUntil(this.destroy$));
+    return combineLatest([
+      this.isAllDentist$,
+      this.isTrend$,
+      this.caFacade.isLoadingCaNumNewPatients$,
+      this.caFacade.isLoadingCaNumNewPatientsTrend$,
+    ]).pipe(
+      takeUntil(this.destroy$),
+      map(([isAllDentists, isTrend, isLoadingData, isLoadingDataTrend]) => {
+        if (isAllDentists || !isTrend) {
+          return isLoadingData;
+        } else {
+          return isLoadingDataTrend;
+        }
+      })
+    );
   }
 
   get userType$() {
@@ -112,10 +126,11 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   }
 
   get chartOptions$() {
-    return combineLatest([this.isTrend$]).pipe(
+    return combineLatest([this.isTrend$, this.isAllDentist$]).pipe(
       takeUntil(this.destroy$),
-      map(([isTrend]) => {
-        return this.doughnutChartOptions;
+      map(([isTrend, isAllDentist]) => {
+        if (isAllDentist || !isTrend) return this.doughnutChartOptions;
+        else return this.barChartOptionsTrend;
       })
     );
   }
@@ -145,7 +160,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       map(
         ([v, cMode, isTrend]) =>
-          v?.type == 4 && v?.plan != 'lite' && cMode && isTrend
+          (v?.type == 4 && v?.plan != 'lite' && cMode) || isTrend
       ),
       map(v => !v)
     );
@@ -167,6 +182,32 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     );
   }
 
+  get chartType$() {
+    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
+      takeUntil(this.destroy$),
+      map(([isAllDentist, isTrend]) => {
+        if (isAllDentist || !isTrend) {
+          return 'doughnut';
+        } else {
+          return 'bar';
+        }
+      })
+    );
+  }
+
+  get chartLegend$() {
+    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
+      takeUntil(this.destroy$),
+      map(([isAllDentist, isTrend]) => {
+        if (isAllDentist || !isTrend) {
+          return this.legendSettings;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
+
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,
@@ -174,14 +215,25 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade
   ) {
-    combineLatest([this.caFacade.caNumNewPatientsChartData$])
+    combineLatest([
+      this.isAllDentist$,
+      this.isTrend$,
+      this.caFacade.caNumNewPatientsChartData$,
+      this.caFacade.caNumNewPatientsTrendChartData$,
+    ])
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([data]) => {
-        this.datasets = data.datasets ?? [];
-        this.labels = data.labels ?? [];
+      .subscribe(([isAllDentist, isTrend, data, trendData]) => {
+        if (isAllDentist || !isTrend) {
+          this.datasets = data.datasets ?? [];
+          this.labels = data.labels ?? [];
+        } else {
+          this.datasets = trendData.datasets ?? [];
+          this.labels = trendData.labels ?? [];
+        }
+
         this.total = data.total;
         this.prev = data.prev;
         this.average = data.average;
@@ -312,5 +364,103 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     //     minFontSize: 15
     //   }
     // }
+  };
+
+  public barChartOptionsTrend: ChartOptions<'bar'> = {
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    hover: { mode: null },
+    // curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine',
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        grid: { display: true },
+        ticks: {
+          autoSkip: false,
+        },
+        stacked: true,
+      },
+      y: {
+        suggestedMin: 0,
+        beginAtZero: true,
+        ticks: {
+          callback: function (label: number, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return label;
+            }
+            return '';
+          },
+        },
+      },
+    },
+    plugins: {
+      tooltip: {
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
+        },
+        callbacks: {
+          // use label callback to return the desired label
+          label: function (tooltipItem) {
+            var Targetlable = '';
+            const v = tooltipItem.parsed.y;
+            let Tlable = tooltipItem.dataset.label;
+            if (Tlable != '') {
+              Tlable = Tlable + ': ';
+              Targetlable = Tlable;
+            }
+            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            let ylable = tooltipItem.parsed._custom
+              ? +(
+                  tooltipItem.parsed._custom.max +
+                  tooltipItem.parsed._custom.min
+                ) / 2
+              : v;
+            var tlab = 0;
+            if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
+            } else {
+              const tval =
+                tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
+              if (Array.isArray(tval)) {
+                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                if (tlab == 0) {
+                  Tlable = '';
+                }
+              }
+            }
+            if (tlab == 0 && Targetlable == 'Target: ') {
+              return '';
+            } else {
+              return Tlable + tooltipItem.label + ': ' + ylable;
+            }
+          },
+          // remove title
+          title: function (tooltipItem) {
+            return '';
+          },
+        },
+      },
+      legend: {
+        position: 'top',
+        onClick: function (e, legendItem) {
+          var index = legendItem.datasetIndex;
+          var ci = this.chart;
+          if (index == 0) {
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          } else if (index == 1) {
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          }
+          ci.update();
+        },
+      },
+    },
   };
 }
