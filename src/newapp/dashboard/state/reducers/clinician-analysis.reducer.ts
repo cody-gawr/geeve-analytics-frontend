@@ -1534,21 +1534,46 @@ export const selectIsLoadingCaTxPlanAvgProposedFees = createSelector(
     _.findIndex(loadingData, l => l == 'caTxPlanAvgProposedFees') >= 0
 );
 
+export const selectIsLoadingCaTxPlanAvgProposedFeesTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caTxPlanAvgProposedFeesTrend') >= 0
+);
+
 export const selectIsLoadingCaTxPlanAvgCompletedFees = createSelector(
   selectIsLoadingData,
   loadingData =>
     _.findIndex(loadingData, l => l == 'caTxPlanAvgCompletedFees') >= 0
 );
 
+export const selectIsLoadingCaTxPlanAvgCompletedFeesTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caTxPlanAvgCompletedFeesTrend') >= 0
+);
+
 export const selectIsLoadingCaTxPlanAvgFeeAll = createSelector(
+  selectCurrentDentistId,
+  selectTrend,
   selectTxPlanAvgFeeChartName,
   selectIsLoadingCaTxPlanAvgCompletedFees,
   selectIsLoadingCaTxPlanAvgProposedFees,
-  (chartName, isCompleteFee, isProposedFee) => {
+  selectIsLoadingCaTxPlanAvgProposedFeesTrend,
+  selectIsLoadingCaTxPlanAvgCompletedFeesTrend,
+  (
+    currentDentistId,
+    trendMode,
+    chartName,
+    isCompleteFee,
+    isProposedFee,
+    isProposedFeeTrend,
+    isCompleteFeeTrend
+  ) => {
+    const isTrend = currentDentistId === 'all' || trendMode !== 'off';
     if (chartName === 'Avg. Completed Fees') {
-      return isCompleteFee;
+      return isTrend ? isCompleteFeeTrend : isCompleteFee;
     } else {
-      return isProposedFee;
+      return isTrend ? isProposedFeeTrend : isProposedFee;
     }
   }
 );
@@ -1713,9 +1738,95 @@ export const selectTxPlanAvgFeesChartData = createSelector(
   }
 );
 
+export const selectTxPlanAvgFeesTrendChartData = createSelector(
+  selectResBodyListTrend,
+  selectTrend,
+  selectTxPlanAvgFeeChartName,
+  (bodyList, trendMode, chartName) => {
+    let resBody: CaTxPlanAvgFeeApiResponse = null;
+
+    if (chartName === 'Avg. Completed Fees') {
+      resBody = bodyList['caTxPlanAvgCompletedFeesTrend'];
+    } else {
+      resBody = bodyList['caTxPlanAvgProposedFeesTrend'];
+    }
+
+    let chartData = [],
+      chartLabels = [];
+    if (!resBody?.data) {
+      return {
+        datasets: [],
+        labels: [],
+      };
+    }
+    resBody.data.forEach(res => {
+      const avgFee = Math.round(<number>res.averageFees);
+      if (avgFee >= 0) {
+        chartData.push(avgFee);
+      }
+      chartLabels.push(
+        trendMode === 'current'
+          ? moment(res.yearMonth).format('MMM YYYY')
+          : res.year
+      );
+    });
+    const datasets: ChartDataset<any>[] = [
+      {
+        data: [],
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor: [
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+        ],
+        shadowOffsetY: 2,
+        shadowBlur: 3,
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundOverlayMode: 'multiply',
+      },
+    ];
+
+    datasets[0].data = chartData;
+
+    const dynamicColors = [];
+    chartLabels.forEach((label, labelIndex) => {
+      dynamicColors.push(labelIndex % 2 === 0 ? COLORS.odd : COLORS.even);
+    }); // This is dynamic array for colors of bars
+    datasets[0].backgroundColor = dynamicColors;
+
+    return {
+      datasets,
+      labels: chartLabels,
+    };
+  }
+);
+
 export const selectIsLoadingCaTxPlanCompRate = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'caTxPlanCompRate') >= 0
+);
+
+export const selectIsLoadingCaTxPlanCompRateTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caTxPlanCompRateTrend') >= 0
 );
 
 export const selectTxPlanCompRateChartData = createSelector(
@@ -1867,6 +1978,119 @@ export const selectTxPlanCompRateChartData = createSelector(
         tableData,
       };
     }
+  }
+);
+
+export const selectTxPlanCompRateTrendChartData = createSelector(
+  selectResBodyListTrend,
+  selectTrend,
+  (bodyList, trendMode) => {
+    let resBody: CaTxPlanCompRateApiResponse =
+      bodyList['caTxPlanCompRateTrend'];
+
+    let chartData = [],
+      chartLabels = [];
+    if (!resBody?.data) {
+      return {
+        datasets: [],
+        labels: [],
+      };
+    }
+    const targetData = [];
+    resBody.data.forEach(res => {
+      const treatPer = Math.round(<number>res.treatmentPerPlanPercentage);
+      if (treatPer >= 0) {
+        chartData.push(treatPer);
+      }
+      if (res.goals == -1 || res.goals == null || res.goals == '') {
+        targetData.push(null);
+      } else {
+        targetData.push(res.goals);
+      }
+      chartLabels.push(
+        trendMode === 'current'
+          ? moment(res.yearMonth).format('MMM YYYY')
+          : res.year
+      );
+    });
+
+    const sumpercantagevalue = chartData.reduce((acc, cur) => acc + cur, 0);
+
+    const datasets: ChartDataset<any>[] = [
+      {
+        data: chartData,
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor: [
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+        ],
+        shadowOffsetY: 2,
+        shadowBlur: 3,
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundOverlayMode: 'multiply',
+      },
+      {
+        data: [],
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor: 'rgba(255, 0, 128, 1)',
+        order: 1,
+      },
+    ];
+
+    if (sumpercantagevalue > 0) {
+      const mappedtargetData = [];
+      targetData.map(function (v) {
+        if (v == null) {
+          mappedtargetData.push([v - 0, v + 0]);
+        } else {
+          mappedtargetData.push([v - 0.5, v + 0.5]);
+        }
+      });
+
+      if (trendMode == 'current') {
+        datasets[0]['label'] = 'Actual';
+        datasets[1]['label'] = 'Target';
+        datasets[1]['data'] = mappedtargetData; //this.targetData.map(v => [v - subVal, v + subVal]);
+      } else {
+        datasets[0]['label'] = '';
+        datasets[1]['label'] = '';
+        datasets[1]['data'] = [];
+      }
+    } else {
+      chartLabels = [];
+    }
+
+    datasets[0].data = chartData;
+
+    const dynamicColors = [];
+    chartLabels.forEach((label, labelIndex) => {
+      dynamicColors.push(labelIndex % 2 === 0 ? COLORS.odd : COLORS.even);
+    }); // This is dynamic array for colors of bars
+    datasets[0].backgroundColor = dynamicColors;
+
+    return {
+      datasets,
+      labels: chartLabels,
+    };
   }
 );
 

@@ -39,6 +39,13 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isTrend$() {
+    return this.layoutFacade.trend$.pipe(
+      takeUntil(this.destroy$),
+      map(v => v && v !== 'off')
+    );
+  }
+
   ngOnInit(): void {}
 
   ngOnDestroy(): void {

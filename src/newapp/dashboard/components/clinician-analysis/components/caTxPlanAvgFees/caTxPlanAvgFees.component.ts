@@ -1,3 +1,4 @@
+import { splitName } from '@/app/util';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
@@ -94,9 +95,9 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   tableData = [];
 
   get legend$() {
-    return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
+    return combineLatest([this.isAllDentist$]).pipe(
       map(([v]) => {
-        return typeof v === 'string' ? true : false;
+        return v ? true : false;
       })
     );
   }
@@ -120,19 +121,27 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
 
   get chartOptions$() {
-    return combineLatest([this.avgMode$]).pipe(
+    return combineLatest([
+      this.avgMode$,
+      this.isAllDentist$,
+      this.isTrend$,
+    ]).pipe(
       takeUntil(this.destroy$),
-      map(([avgMode]) => {
-        let options: ChartOptions = { ...this.barChartOptions };
-        if (avgMode === 'average') {
-          options.plugins.annotation = this.getAvgPluginOptions(this.average);
-        } else if (avgMode === 'goal') {
-          const value = this.goal * this.goalCount;
-          options.plugins.annotation = this.getGoalPluginOptions(value);
+      map(([avgMode, isAllDentist, isTrend]) => {
+        if (isAllDentist || !isTrend) {
+          let options: ChartOptions = { ...this.barChartOptions };
+          if (avgMode === 'average') {
+            options.plugins.annotation = this.getAvgPluginOptions(this.average);
+          } else if (avgMode === 'goal') {
+            const value = this.goal * this.goalCount;
+            options.plugins.annotation = this.getGoalPluginOptions(value);
+          } else {
+            options.plugins.annotation = {};
+          }
+          return options;
         } else {
-          options.plugins.annotation = {};
+          return this.barChartOptionsTrend;
         }
-        return options;
       })
     );
   }
@@ -202,19 +211,29 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,
-    private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade
   ) {
-    combineLatest([this.caFacade.caTxPlanAvgFeesChartData$])
+    combineLatest([
+      this.isAllDentist$,
+      this.isTrend$,
+      this.caFacade.caTxPlanAvgFeesChartData$,
+      this.caFacade.caTxPlanAvgFeesTrendChartData$,
+    ])
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([data]) => {
-        this.datasets = data.datasets ?? [];
-        this.labels = data.labels ?? [];
+      .subscribe(([isAllDentist, isTrend, data, trendData]) => {
+        if (isAllDentist || !isTrend) {
+          this.datasets = data.datasets ?? [];
+          this.labels = data.labels ?? [];
+        } else {
+          this.datasets = trendData.datasets ?? [];
+          this.labels = trendData.labels ?? [];
+        }
+
         this.total = data.total;
         this.prev = data.prev;
         this.average = data.average;
@@ -359,6 +378,121 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
           title: function () {
             return '';
           },
+        },
+      },
+    },
+  };
+
+  public barChartOptionsTrend: ChartOptions<'bar'> = {
+    // scaleShowVerticalLines: false,
+    // cornerRadius: 60,
+    hover: { mode: null },
+    // curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine',
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    // scaleStartValue: 0,
+    scales: {
+      x: {
+        grid: {
+          display: true,
+          offset: true,
+        },
+        ticks: {
+          autoSkip: false,
+        },
+        offset: true,
+        stacked: true,
+      },
+      y: {
+        suggestedMin: 0,
+        min: 0,
+        beginAtZero: true,
+        ticks: {
+          callback: (label: number, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return '$' + this.decimalPipe.transform(label);
+            }
+            return '';
+          },
+        },
+      },
+    },
+    plugins: {
+      title: {
+        display: false,
+        text: '',
+      },
+      tooltip: {
+        mode: 'x',
+        displayColors(ctx, options) {
+          return !ctx.tooltip;
+        },
+        callbacks: {
+          // use label callback to return the desired label
+          label: tooltipItem => {
+            if (tooltipItem.label.includes('WE ')) {
+              return tooltipItem.label + ': $' + tooltipItem.formattedValue;
+            }
+            var Targetlable = '';
+            const v = tooltipItem.parsed.y;
+            let Tlable = tooltipItem.dataset.label;
+            if (Tlable != '') {
+              Tlable = Tlable + ': ';
+              Targetlable = Tlable;
+            }
+            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+            let ylable = tooltipItem.parsed._custom
+              ? +(
+                  tooltipItem.parsed._custom.max +
+                  tooltipItem.parsed._custom.min
+                ) / 2
+              : v;
+            var tlab = 0;
+            if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
+            } else {
+              const tval =
+                tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
+              if (Array.isArray(tval)) {
+                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                if (tlab == 0) {
+                  Tlable = '';
+                }
+              }
+            }
+            if (tlab == 0 && Targetlable == 'Target: ') {
+              return '';
+            } else {
+              return (
+                Tlable +
+                splitName(tooltipItem.label).join(' ') +
+                ': $' +
+                this.decimalPipe.transform(<number>ylable)
+              );
+            }
+          },
+          title: function () {
+            return '';
+          },
+        },
+      },
+      legend: {
+        position: 'top',
+        onClick: function (e, legendItem) {
+          var index = legendItem.datasetIndex;
+          var ci = this.chart;
+          if (index == 0) {
+            ci.getDatasetMeta(1).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          } else if (index == 1) {
+            ci.getDatasetMeta(0).hidden = true;
+            ci.getDatasetMeta(index).hidden = false;
+          }
+          ci.update();
         },
       },
     },

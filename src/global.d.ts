@@ -61,14 +61,8 @@ declare global {
 
   type CA_API_ENDPOINTS_TREND =
     | 'caDentistProductionTrend'
-    // | 'caDentistProductionDentistTrend'
-    // | 'caDentistProductionOhtTrend'
     | 'caCollectionTrend'
-    // | 'caCollectionDentistsTrend'
-    // | 'caCollectionOhtTrend'
     | 'caCollectionExpTrend'
-    // | 'caCollectionExpDentistsTrend'
-    // | 'caCollectionExpOhtTrend'
     | 'caNumComplaintsTrend'
     | 'caTxPlanAvgProposedFeesTrend'
     | 'caTxPlanAvgCompletedFeesTrend'
@@ -76,8 +70,6 @@ declare global {
     | 'caHourlyRateTrend'
     | 'caCollectionHourlyRateTrend'
     | 'caCollectionExpHourlyRateTrend'
-    // | 'caHourlyRateDentistsTrend'
-    // | 'caHourlyRateOhtTrend'
     | 'caNumNewPatientsTrend'
     | 'caTxPlanCompRateTrend'
     | 'caRecallRateTrend';
@@ -297,6 +289,7 @@ declare global {
     treatmentPercentage: string | number;
     year: unknown;
     yearMonth: unknown;
+    goals?: number | string;
   }
 
   interface CaTxPlanCompRateApiResponse {

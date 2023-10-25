@@ -3,7 +3,12 @@
     <button
       *ngFor="let menu of dateRangeMenus"
       (click)="setDuration(menu.range)"
-      [class]="menu.range === (duration$ | async) ? 'active' : ''">
+      [disabled]="isTrend$ | async"
+      [class]="
+        menu.range === (duration$ | async) && !(isTrend$ | async)
+          ? 'active'
+          : ''
+      ">
       {{ menu.label }}
     </button>
   </div>
