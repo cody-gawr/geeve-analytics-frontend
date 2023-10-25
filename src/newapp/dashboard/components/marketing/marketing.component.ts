@@ -1,7 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  combineLatest,
+  map,
+  distinctUntilChanged,
+} from 'rxjs';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
 import moment from 'moment';
@@ -57,7 +63,10 @@ export class MarketingComponent implements OnInit, OnDestroy {
       this.authUserId$,
       this.dashbordFacade.connectedClinicId$,
     ])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
       .subscribe(params => {
         const [
           clinicId,

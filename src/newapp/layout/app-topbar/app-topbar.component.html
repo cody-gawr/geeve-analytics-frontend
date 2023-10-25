@@ -19,11 +19,13 @@
         <div class="date-picker-field">
           <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
             <input
+              class="custom-font"
               matStartDate
               formControlName="start"
               (dateChange)="onDateRangeChange('start', $event)"
               placeholder="Start date" />
             <input
+              class="custom-font"
               matEndDate
               formControlName="end"
               (dateChange)="onDateRangeChange('end', $event)"
@@ -39,6 +41,7 @@
         <div class="clinic-selector-field">
           <mat-select
             multiple
+            class="custom-font"
             *ngIf="isMultiClinics$ | async; else singleClinicsSection"
             #multiClinicsSelectElem
             (selectionChange)="onChangeMultiClinics($event)"
@@ -56,8 +59,9 @@
                 {{ selectedMultiClinics?.length === 2 ? 'other' : 'others' }})
               </span>
             </mat-select-trigger>
-            <mat-option value="all">All Clinics</mat-option>
+            <mat-option class="custom-font" value="all">All Clinics</mat-option>
             <mat-option
+              class="custom-font"
               *ngFor="let clinic of clinics$ | async"
               [value]="clinic.id">
               {{ clinic.clinicName }}
@@ -73,12 +77,14 @@
           </mat-select>
           <ng-template #singleClinicsSection>
             <mat-select
+              class="custom-font"
               (selectionChange)="onChangeCurrentClinic($event)"
               [value]="selectedClinic">
               <mat-option *ngIf="enableAllClinics$ | async" value="all"
                 >All Clinics</mat-option
               >
               <mat-option
+                class="custom-font"
                 *ngFor="let clinic of clinics$ | async"
                 [value]="clinic.id">
                 {{ clinic.clinicName }}
@@ -90,10 +96,14 @@
           *ngIf="isEnableDentistDropdown$ | async"
           class="clinic-selector-field">
           <mat-select
+            class="custom-font"
             (selectionChange)="onChangeCurrentDentist($event)"
             [value]="selectedDentist">
-            <mat-option value="all">All Dentists</mat-option>
+            <mat-option class="custom-font" value="all"
+              >All Dentists</mat-option
+            >
             <mat-option
+              class="custom-font"
               *ngFor="let dentist of dentists$ | async"
               [value]="dentist.providerId">
               {{ dentist.jeeveName ?? dentist.name }}

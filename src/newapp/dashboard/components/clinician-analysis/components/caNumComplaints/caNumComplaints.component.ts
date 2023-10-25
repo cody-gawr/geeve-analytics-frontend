@@ -176,12 +176,29 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
       map(v => v && v !== 'off')
     );
   }
+
+  get chartType$() {
+    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
+      takeUntil(this.destroy$),
+      map(([isAllDentist, isTrend]) => {
+        return isAllDentist || !isTrend ? 'doughnut' : 'bar';
+      })
+    );
+  }
+
+  get chartLegend$() {
+    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
+      takeUntil(this.destroy$),
+      map(([isAllDentist, isTrend]) => {
+        return isAllDentist || !isTrend;
+      })
+    );
+  }
   newpColors = [];
 
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,
-    private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade

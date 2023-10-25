@@ -68,7 +68,7 @@
           justify-content: center;
           align-items: center;
           font-size: 14px;
-          height: 36px;
+          height: 32px;
           min-width: 280px;
           background-color: #fafafa;
           padding-left: 15px;
@@ -102,4 +102,9 @@
   background: white;
   padding: 5px 0;
   border-top: 1px solid lightgray;
+}
+
+.custom-font {
+  font-size: 14px;
+  font-weight: 400;
 }
