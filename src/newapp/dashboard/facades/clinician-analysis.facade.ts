@@ -34,6 +34,9 @@ import {
   selectTxPlanAvgFeesTrendChartData,
   selectIsLoadingCaTxPlanCompRateTrend,
   selectTxPlanCompRateTrendChartData,
+  selectRecallRateTrendChartData,
+  selectCaNumComplaintsTrendChartData,
+  selectIsLoadingCaNumComplaintsTrend,
 } from '../state/reducers/clinician-analysis.reducer';
 
 @Injectable()
@@ -81,6 +84,10 @@ export class ClinicianAnalysisFacade {
 
   public readonly isLoadingCaNumComplaints$ = this.store.pipe(
     select(selectIsLoadingCaNumComplaints)
+  );
+
+  public readonly isLoadingCaNumComplaintsTrend$ = this.store.pipe(
+    select(selectIsLoadingCaNumComplaintsTrend)
   );
 
   public setProdChartName(chartName: CA_PROD_CHART_NAME) {
@@ -158,8 +165,16 @@ export class ClinicianAnalysisFacade {
     select(selectRecallRateChartData)
   );
 
+  public readonly caRecallRateTrendChartData$ = this.store.pipe(
+    select(selectRecallRateTrendChartData)
+  );
+
   public readonly caNumComplaintsChartData$ = this.store.pipe(
     select(selectCaNumComplaintsChartData)
+  );
+
+  public readonly caNumComplaintsTrendChartData$ = this.store.pipe(
+    select(selectCaNumComplaintsTrendChartData)
   );
 
   public readonly prodSelectTab$ = this.store.pipe(select(selectProdSelectTab));

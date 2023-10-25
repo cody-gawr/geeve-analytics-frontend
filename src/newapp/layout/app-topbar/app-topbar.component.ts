@@ -204,7 +204,8 @@ export class AppTopbarComponent implements OnInit {
         filter(
           ([currentClinics, isEnableAll, isMulti, clinics]) =>
             clinics.length > 0 && isMulti !== null
-        )
+        ),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(([currentClinics, isEnableAll, isMulti, clinics]) => {
         if (isMulti == null) return;

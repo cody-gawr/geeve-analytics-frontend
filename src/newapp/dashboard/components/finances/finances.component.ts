@@ -1,7 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  combineLatest,
+  map,
+  distinctUntilChanged,
+} from 'rxjs';
 import { FinanceFacade } from '../../facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
@@ -22,7 +28,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
-      map(t => t !== 'off')
+      map(t => t && t !== 'off')
     );
   }
 
@@ -43,9 +49,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private router: Router,
     private authFacade: AuthFacade
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -54,7 +58,10 @@ export class FinancesComponent implements OnInit, OnDestroy {
       this.layoutFacade.trend$,
       this.dashbordFacade.connectedClinicId$,
     ])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
       .subscribe(params => {
         const [
           clinicId,
@@ -183,6 +190,8 @@ export class FinancesComponent implements OnInit, OnDestroy {
         this.noPermission = true;
       });
   }
+
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

@@ -129,7 +129,7 @@ export const selectCurrentClinics = createSelector(
   selectCurrentMultiClinicIds,
   selectClinics,
   (isMulti, singleId, multiIds, clinics) => {
-    if (isMulti == null) return [];
+    if (isMulti == null) return clinics?.length > 0 ? [clinics[0]] : [];
     if (isMulti) {
       return clinics.filter(c => multiIds && multiIds.includes(c.id));
     } else {

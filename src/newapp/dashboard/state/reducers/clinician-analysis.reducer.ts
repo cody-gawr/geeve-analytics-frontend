@@ -2099,20 +2099,43 @@ export const selectIsLoadingCaRecallRate = createSelector(
   loadingData => _.findIndex(loadingData, l => l == 'caRecallRate') >= 0
 );
 
+export const selectIsLoadingCaRecallRateTrend = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'caRecallRateTrend') >= 0
+);
+
 export const selectIsLoadingCaReappointRate = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'caReappointRate') >= 0
 );
 
+export const selectIsLoadingCaReappointRateTrend = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'caReappointRateTrend') >= 0
+);
+
 export const selectIsLoadingCaRecallRateAll = createSelector(
+  selectCurrentDentistId,
+  selectTrend,
   selectRecallRateChartName,
   selectIsLoadingCaRecallRate,
   selectIsLoadingCaReappointRate,
-  (chartName, isRecall, isReapp) => {
+  selectIsLoadingCaRecallRateTrend,
+  selectIsLoadingCaReappointRateTrend,
+  (
+    currentDentistId,
+    trendMode,
+    chartName,
+    isRecall,
+    isReapp,
+    isRecallTrend,
+    isReappTrend
+  ) => {
+    const isTrend = currentDentistId === 'all' || trendMode !== 'off';
     if (chartName === 'Recall Prebook Rate') {
-      return isRecall;
+      return isTrend ? isRecallTrend : isRecall;
     } else {
-      return isReapp;
+      return isTrend ? isReappTrend : isReapp;
     }
   }
 );
@@ -2135,7 +2158,7 @@ export const selectRecallRateChartData = createSelector(
     rolesInd
   ) => {
     const isAllDentist = currentDentistId === 'all';
-    let resBody: CaRecallRateApiResponse = null;
+    let resBody: CaRecallRateApiResponse | CaReappRateApiResponse = null;
 
     if (chartName === 'Recall Prebook Rate') {
       resBody = bodyList['caRecallRate'];
@@ -2175,7 +2198,11 @@ export const selectRecallRateChartData = createSelector(
       const tableData = [];
       let dentistKey = 0;
       resBody.data.forEach((res, i) => {
-        chartData.push(Math.round(<number>res.recallPercent));
+        chartData.push(
+          chartName === 'Recall Prebook Rate'
+            ? Math.round(<number>res.recallPercent)
+            : Math.round(<number>res.reappointRate)
+        );
 
         const pName =
           res.providerName +
@@ -2277,9 +2304,137 @@ export const selectRecallRateChartData = createSelector(
   }
 );
 
+export const selectRecallRateTrendChartData = createSelector(
+  selectResBodyListTrend,
+  selectTrend,
+  selectRecallRateChartName,
+  (bodyList, trendMode, chartName) => {
+    let resBody: CaRecallRateApiResponse | CaReappRateApiResponse = null;
+
+    if (chartName === 'Recall Prebook Rate') {
+      resBody = bodyList['caRecallRateTrend'];
+    } else {
+      resBody = bodyList['caReappointRateTrend'];
+    }
+
+    let chartData = [],
+      chartLabels = [];
+    if (!resBody?.data) {
+      return {
+        datasets: [],
+        labels: [],
+      };
+    }
+    const targetData = [];
+    resBody.data.forEach(res => {
+      const val =
+        chartName === 'Recall Prebook Rate'
+          ? Math.round(<number>res.recallPercent)
+          : Math.round(<number>res.reappointRate);
+      if (val >= 0) {
+        chartData.push(val);
+      }
+      if (res.goals == -1 || res.goals == null || res.goals == '') {
+        targetData.push(null);
+      } else {
+        targetData.push(res.goals);
+      }
+      chartLabels.push(
+        trendMode === 'current'
+          ? moment(res.yearMonth).format('MMM YYYY')
+          : res.year
+      );
+    });
+
+    const sumpercantagevalue = chartData.reduce((acc, cur) => acc + cur, 0);
+
+    const datasets: ChartDataset<any>[] = [
+      {
+        data: chartData,
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor: [
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+        ],
+        shadowOffsetY: 2,
+        shadowBlur: 3,
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundOverlayMode: 'multiply',
+      },
+      {
+        data: [],
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor: 'rgba(255, 0, 128, 1)',
+        order: 1,
+      },
+    ];
+
+    if (sumpercantagevalue > 0) {
+      const mappedtargetData = [];
+      targetData.map(function (v) {
+        if (v == null) {
+          mappedtargetData.push([v - 0, v + 0]);
+        } else {
+          mappedtargetData.push([v - 0.5, v + 0.5]);
+        }
+      });
+
+      if (trendMode == 'current') {
+        datasets[0]['label'] = 'Actual';
+        datasets[1]['label'] = 'Target';
+        datasets[1]['data'] = mappedtargetData; //this.targetData.map(v => [v - subVal, v + subVal]);
+      } else {
+        datasets[0]['label'] = '';
+        datasets[1]['label'] = '';
+        datasets[1]['data'] = [];
+      }
+    } else {
+      chartLabels = [];
+    }
+
+    datasets[0].data = chartData;
+
+    const dynamicColors = [];
+    chartLabels.forEach((label, labelIndex) => {
+      dynamicColors.push(labelIndex % 2 === 0 ? COLORS.odd : COLORS.even);
+    }); // This is dynamic array for colors of bars
+    datasets[0].backgroundColor = dynamicColors;
+
+    return {
+      datasets,
+      labels: chartLabels,
+    };
+  }
+);
+
 export const selectIsLoadingCaNumComplaints = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'caTxPlanCompRate') >= 0
+);
+
+export const selectIsLoadingCaNumComplaintsTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'caTxPlanCompRateTrend') >= 0
 );
 
 export const selectCaNumComplaintsChartData = createSelector(
@@ -2418,5 +2573,77 @@ export const selectCaNumComplaintsChartData = createSelector(
         maxGoal: maxGoal,
       };
     }
+  }
+);
+
+export const selectCaNumComplaintsTrendChartData = createSelector(
+  selectResBodyListTrend,
+  selectTrend,
+  (bodyList, trendMode) => {
+    let resBody: CaNumComplaintsApiResponse = bodyList['caNumComplaintsTrend'];
+    let chartData = [],
+      chartLabels = [];
+    if (!resBody?.data) {
+      return {
+        datasets: [],
+        labels: [],
+      };
+    }
+    resBody.data.forEach(res => {
+      const avgFee = Math.round(<number>res.numComplaints);
+      if (avgFee >= 0) {
+        chartData.push(avgFee);
+      }
+      chartLabels.push(
+        trendMode === 'current'
+          ? moment(res.yearMonth).format('MMM YYYY')
+          : res.year
+      );
+    });
+    const datasets: ChartDataset<any>[] = [
+      {
+        data: [],
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor: [
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+        ],
+        shadowOffsetY: 2,
+        shadowBlur: 3,
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundOverlayMode: 'multiply',
+      },
+    ];
+
+    datasets[0].data = chartData;
+
+    const dynamicColors = [];
+    chartLabels.forEach((label, labelIndex) => {
+      dynamicColors.push(labelIndex % 2 === 0 ? COLORS.odd : COLORS.even);
+    }); // This is dynamic array for colors of bars
+    datasets[0].backgroundColor = dynamicColors;
+
+    return {
+      datasets,
+      labels: chartLabels,
+    };
   }
 );

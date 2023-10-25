@@ -315,11 +315,38 @@ declare global {
     totalPatient: string | number;
     year: unknown;
     yearMonth: unknown;
+    goals?: string | number;
+  }
+
+  interface CaReappRateItem {
+    clinicId: string | number;
+    clinicName: string;
+    day: unknown;
+    month: unknown;
+    reappointRate: string | number;
+    providerId: string | number;
+    providerName: string;
+    totalAppts: string | number;
+    reappointments: string | number;
+    year: unknown;
+    yearMonth: unknown;
+    goals?: string | number;
   }
 
   interface CaRecallRateApiResponse {
     app: string;
     data: CaRecallRateItem[];
+    goals: string | number;
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+  }
+
+  interface CaReappRateApiResponse {
+    app: string;
+    data: CaReappRateItem[];
     goals: string | number;
     message: string;
     status: string | number;
