@@ -10,6 +10,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import camelcaseKeys from 'camelcase-keys';
+import moment from 'moment';
 import { map } from 'rxjs';
 
 @Injectable({
@@ -262,5 +263,53 @@ export class ClinicianProcedureService {
             <CpReferralsApiResponse>camelcaseKeys(resBody, { deep: true })
         )
       );
+  }
+
+  caNoneTrendApiRequest(
+    api: CP_API_ENDPOINTS,
+    queryParams: CaNoneTrendQueryParams
+  ) {
+    const params = {
+      clinic_id: queryParams.clinicId,
+      start_date: moment.isMoment(queryParams.startDate)
+        ? queryParams.startDate.format('YYYY-MM-DD')
+        : queryParams.startDate,
+      end_date: moment.isMoment(queryParams.endDate)
+        ? queryParams.endDate.format('YYYY-MM-DD')
+        : queryParams.endDate,
+      duration: queryParams.duration,
+      wh: queryParams.queryWhEnabled ?? 0,
+    };
+
+    if (queryParams.clinician) {
+      params['clinician'] = queryParams.clinician;
+    }
+
+    if (queryParams.dentistId) {
+      params['provider_id'] = queryParams.dentistId;
+    }
+    return this.http
+      .get(`${this.apiUrl}/ClinicianProcedures/${api}`, {
+        params: params,
+        withCredentials: true,
+      })
+      .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
+  }
+
+  caTrendApiRequest(
+    api: CP_API_TREND_ENDPOINTS,
+    queryParams: CaTrendQueryParams
+  ) {
+    return this.http
+      .get(`${this.apiUrl}/ClinicianProcedures/${api}`, {
+        params: {
+          clinic_id: queryParams.clinicId,
+          mode: queryParams.mode,
+          provider_id: queryParams.dentistId,
+          wh: queryParams.queryWhEnabled ?? 0,
+        },
+        withCredentials: true,
+      })
+      .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
   }
 }

@@ -16,8 +16,11 @@ import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.redu
 import { DoughnutChartColors1 } from '@/newapp/shared/constants';
 
 export interface ClinicianProcedureState {
-  isLoadingData: Array<CP_API_ENDPOINTS>;
+  isLoadingData: Array<CP_API_ENDPOINTS | CP_API_TREND_ENDPOINTS>;
   errors: Array<JeeveError>;
+
+  resBodyList: Record<CP_API_ENDPOINTS, unknown> | {};
+  resBodyListTrend: Record<CP_API_TREND_ENDPOINTS, unknown> | {};
 
   cpPredictorAnalysisData: CpPredictorAnalysisApiResponse;
   cpPredictorSpecialistAnalysisData: CpPredictorSpecialistAnalysisApiResponse;
@@ -33,6 +36,10 @@ export interface ClinicianProcedureState {
 const initialState: ClinicianProcedureState = {
   isLoadingData: [],
   errors: [],
+
+  resBodyList: {},
+  resBodyListTrend: {},
+
   cpPredictorAnalysisData: null,
   cpPredictorSpecialistAnalysisData: null,
   cpRevPerProcedureData: null,
@@ -286,6 +293,55 @@ export const clinicianProcedureFeature = createFeature({
         return {
           ...state,
           cpReferralsVisibility: value,
+        };
+      }
+    ),
+
+    on(
+      ClinicianProcedurePageActions.loadCaNoneTrendApiRequestSuccess,
+      (state, { api, resBody }): ClinicianProcedureState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, n => n.api != api),
+          resBodyList: { ...state.resBodyList, [api]: resBody },
+          isLoadingData: _.filter(isLoadingData, n => n != api),
+        };
+      }
+    ),
+    on(
+      ClinicianProcedurePageActions.loadCaNoneTrendApiRequestFailure,
+      (state, { api, error }): ClinicianProcedureState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          resBodyList: { ...state.resBodyList, [api]: {} },
+          isLoadingData: _.filter(isLoadingData, n => n != api),
+          errors: [...errors, { ...error, api: api }],
+        };
+      }
+    ),
+    on(
+      ClinicianProcedurePageActions.loadCaTrendApiRequestSuccess,
+      (state, { api, resBody }): ClinicianProcedureState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, n => n.api != api),
+          resBodyListTrend: { ...state.resBodyListTrend, [api]: resBody },
+          isLoadingData: _.filter(isLoadingData, n => n != api),
+        };
+      }
+    ),
+    on(
+      ClinicianProcedurePageActions.loadCaTrendApiRequestFailure,
+      (state, { api, error }): ClinicianProcedureState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          resBodyListTrend: { ...state.resBodyListTrend, [api]: {} },
+          isLoadingData: _.filter(isLoadingData, n => n != api),
+          errors: [...errors, { ...error, api: api }],
         };
       }
     )
@@ -1030,50 +1086,8 @@ export const selectCpReferralsChartData = createSelector(
     }
   }
 );
-// export const selectCpPredictorRatioTrendChartData = createSelector(
-//   selectCpReferralsTrendDat,
-//   selectTrend,
-//   (resData, trendMode) => {
-//     if(!resData){
-//       return {
-//         datasets: [],
-//         labels: []
-//       }
-//     }
 
-//     const chartDatasets1 = [
-//       { data: [], label: 'Indirect Restorations' },
-//       { data: [], label: 'Large Direct Restorations' }
-//     ];
-//     const chartDatasets2 = [
-//       { data: [], label: 'RCT' },
-//       { data: [], label: 'Extractions' }
-//     ];
-//     const chartDatasets3 = [
-//       { data: [], label: "RCT's Started" },
-//       { data: [], label: "RCT's Completed" }
-//     ];
-
-//     let chartLabels1 = [],
-//         chartLabels2 = [],
-//         chartLabels3 = [];
-
-//     resData.data.forEach(
-//       item => {
-//         if(typeof item.val != undefined){
-//           chartDatasets1[0]['data'].push(item.val.crown[0]);
-//           chartDatasets1[1]['data'].push(item.val.crown[1]);
-
-//           chartDatasets2[0]['data'].push(item.val.extraction[0]);
-//           chartDatasets2[1]['data'].push(item.val.extraction[1]);
-
-//           chartDatasets3[0]['data'].push(item.val.completed[0]);
-//           chartDatasets3[1]['data'].push(item.val.completed[1]);
-//         }
-//         chartLabels1.push(
-//           trendMode === 'current'?moment(item.duration).format('MMM YYYY'):item.duration
-//         );
-//       }
-//     )
-//   }
-// );
+// cpPredictorAnalysisTrend
+// cpPredictorSpecialistAnalysisTrend
+// cpReferralsTrend
+// cpPredictorRatioTrend

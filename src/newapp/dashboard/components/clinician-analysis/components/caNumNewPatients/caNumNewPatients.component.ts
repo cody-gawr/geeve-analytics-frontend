@@ -121,7 +121,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   get userType$() {
     return this.authFacade.rolesIndividual$.pipe(
       takeUntil(this.destroy$),
-      map(v => v.type)
+      map(v => v?.type)
     );
   }
 

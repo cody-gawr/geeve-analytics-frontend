@@ -24,6 +24,15 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isAllDentist$() {
+    return this.dentistFacade.currentDentistId$.pipe(
+      takeUntil(this.destroy$),
+      map(v => {
+        return v === 'all';
+      })
+    );
+  }
+
   get cpPredictorAnalysisTip$() {
     return combineLatest([
       this.dashbordFacade.chartTips$,
@@ -88,6 +97,8 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
+      this.isAllDentist$,
+      this.isTrend$,
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
       this.router.routerState.root.queryParams,
@@ -96,7 +107,15 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
-        const [clinicId, dateRange, route, trend, dentistId] = params;
+        const [
+          isAllDentist,
+          isTrend,
+          clinicId,
+          dateRange,
+          route,
+          trend,
+          dentistId,
+        ] = params;
         if (clinicId == null) return;
         const providerId =
           dentistId !== 'all' && typeof clinicId !== 'string'
@@ -125,6 +144,27 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
         this.clinicianProcedureFacade.loadCpRevPerProcedure(_params);
         this.clinicianProcedureFacade.loadCpPredictorRatio(_params);
         this.clinicianProcedureFacade.loadCpReferrals(_params);
+
+        if (!isAllDentist && isTrend) {
+          for (const api of [
+            'cpPredictorAnalysisTrend',
+            'cpPredictorSpecialistAnalysisTrend',
+            'cpReferralsTrend',
+            'cpPredictorRatioTrend',
+          ]) {
+            const params = {
+              clinicId,
+              mode:
+                trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+              queryWhEnabled,
+              dentistId: providerId,
+            };
+            this.clinicianProcedureFacade.loadTrendApiRequest({
+              ...params,
+              api: api,
+            });
+          }
+        }
       });
   }
 

@@ -1,5 +1,5 @@
 export {};
-
+import { Moment } from 'moment';
 declare global {
   interface JeeveError {
     api: string;
@@ -32,6 +32,23 @@ declare global {
     | 'Dentist Monthly';
   type T_MODE = 'clinic' | 'provider';
   type C_AVG_MODE = 'off' | 'average' | 'goal';
+
+  interface CaNoneTrendQueryParams {
+    clinicId: string | number;
+    startDate: Moment | string;
+    endDate: Moment | string;
+    duration: DATE_RANGE_DURATION;
+    clinician?: string;
+    dentistId?: number;
+    queryWhEnabled?: number;
+  }
+
+  interface CaTrendQueryParams {
+    clinicId: string | number;
+    dentistId: number;
+    mode: API_TREND_MODE;
+    queryWhEnabled?: number;
+  }
   type CA_API_ENDPOINTS =
     | 'caDentistProduction' // 1
     | 'caDentistProductionDentist'
@@ -91,12 +108,19 @@ declare global {
     | 'collection_exp_all'
     | 'collection_exp_dentists'
     | 'collection_exp_oht';
+
   type CP_API_ENDPOINTS =
     | 'cpPredictorAnalysis'
     | 'cpPredictorSpecialistAnalysis'
     | 'cpRevPerProcedure'
     | 'cpPredictorRatio'
     | 'cpReferrals';
+
+  type CP_API_TREND_ENDPOINTS =
+    | 'cpPredictorAnalysisTrend'
+    | 'cpPredictorSpecialistAnalysisTrend'
+    | 'cpReferralsTrend'
+    | 'cpPredictorRatioTrend';
 
   interface FnProduction {
     clinicId: number | string;

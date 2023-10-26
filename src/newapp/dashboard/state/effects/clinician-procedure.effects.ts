@@ -150,4 +150,57 @@ export class ClinicianProcedureEffects {
       })
     );
   });
+
+  // None Trend
+  public readonly loadNoneTrendApiRequest$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ClinicianProcedurePageActions.loadNoneTrendApiRequest),
+      mergeMap(({ api, params }) => {
+        return this.clinicianProcedureService
+          .caNoneTrendApiRequest(api, params)
+          .pipe(
+            map(data =>
+              ClinicianProcedurePageActions.loadCaNoneTrendApiRequestSuccess({
+                api,
+                resBody: data,
+              })
+            ),
+            catchError((error: HttpErrorResponse) =>
+              of(
+                ClinicianProcedurePageActions.loadCaNoneTrendApiRequestFailure({
+                  api,
+                  error: error.error ?? error,
+                })
+              )
+            )
+          );
+      })
+    );
+  });
+  // Trend
+  public readonly loadTrendApiRequest$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ClinicianProcedurePageActions.loadTrendApiRequest),
+      mergeMap(({ api, params }) => {
+        return this.clinicianProcedureService
+          .caTrendApiRequest(api, params)
+          .pipe(
+            map(data =>
+              ClinicianProcedurePageActions.loadCaTrendApiRequestSuccess({
+                api,
+                resBody: data,
+              })
+            ),
+            catchError((error: HttpErrorResponse) =>
+              of(
+                ClinicianProcedurePageActions.loadCaTrendApiRequestFailure({
+                  api,
+                  error: error.error ?? error,
+                })
+              )
+            )
+          );
+      })
+    );
+  });
 }

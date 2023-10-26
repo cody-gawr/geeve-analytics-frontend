@@ -100,14 +100,22 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       this.layoutFacade.trend$,
       this.dentistFacade.currentDentistId$,
       this.isAllDentist$,
+      this.isTrend$,
     ])
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(params => {
-        const [clinicId, dateRange, route, trend, dentistId, isAllDentist] =
-          params;
+        const [
+          clinicId,
+          dateRange,
+          route,
+          trend,
+          dentistId,
+          isAllDentist,
+          isTrend,
+        ] = params;
         if (clinicId == null) return;
         const providerId =
           dentistId !== 'all' && typeof clinicId !== 'string'
@@ -137,21 +145,26 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         }
 
         if (!isAllDentist) {
-          for (const api of [
+          const endpoints = [
             'caDentistProductionTrend',
             'caCollectionTrend',
             'caCollectionExpTrend',
-            'caHourlyRateTrend',
-            'caCollectionHourlyRateTrend',
-            'caCollectionExpHourlyRateTrend',
-            'caNumNewPatientsTrend',
-            'caTxPlanAvgProposedFeesTrend',
-            'caTxPlanAvgCompletedFeesTrend',
-            'caTxPlanCompRateTrend',
-            'caRecallRateTrend',
-            'caReappointRateTrend',
-            'caNumComplaintsTrend',
-          ]) {
+          ];
+          if (isTrend) {
+            endpoints.push(
+              'caHourlyRateTrend',
+              'caCollectionHourlyRateTrend',
+              'caCollectionExpHourlyRateTrend',
+              'caNumNewPatientsTrend',
+              'caTxPlanAvgProposedFeesTrend',
+              'caTxPlanAvgCompletedFeesTrend',
+              'caTxPlanCompRateTrend',
+              'caRecallRateTrend',
+              'caReappointRateTrend',
+              'caNumComplaintsTrend'
+            );
+          }
+          for (const api of endpoints) {
             const params = {
               clinicId,
               mode:

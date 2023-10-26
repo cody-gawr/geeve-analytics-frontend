@@ -1,11 +1,15 @@
 <div class="dashboard-header-box">
   <date-range-menu class="date-range-container"></date-range-menu>
+  <div class="toggle-section">
+    <trend-mode-toggle *ngIf="!(isAllDentist$ | async)"></trend-mode-toggle>
+  </div>
 </div>
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
   <cp-procedure-analysis-chart
     [toolTip]="cpPredictorAnalysisTip$ | async"
     class="cp-chart"></cp-procedure-analysis-chart>
   <cp-rev-per-procedure-chart
+    *ngIf="(isAllDentist$ | async) || !(isTrend$ | async)"
     [toolTip]="getChartTip(13) | async"
     class="cp-chart"></cp-rev-per-procedure-chart>
   <cp-predictor-ratio-chart
@@ -13,5 +17,8 @@
     class="cp-chart"></cp-predictor-ratio-chart>
   <cp-clinician-referrals-chart
     [toolTip]="getChartTip(14) | async"
+    [ngClass]="
+      (isAllDentist$ | async) || !(isTrend$ | async) ? 'cp-chart' : 'cp-chart-1'
+    "
     class="cp-chart"></cp-clinician-referrals-chart>
 </div>

@@ -192,4 +192,48 @@ export class ClinicianProcedureFacade {
       ClinicianProcedurePageActions.setCpReferralsVisibility({ value })
     );
   }
+
+  public loadNoneTrendApiRequest({
+    api,
+    clinicId,
+    startDate,
+    endDate,
+    duration,
+    queryWhEnabled,
+    dentistId = undefined,
+  }) {
+    this.store.dispatch(
+      ClinicianProcedurePageActions.loadNoneTrendApiRequest({
+        api: api,
+        params: {
+          clinicId,
+          startDate,
+          endDate,
+          duration,
+          queryWhEnabled,
+          dentistId,
+        },
+      })
+    );
+  }
+
+  public loadTrendApiRequest({
+    api,
+    clinicId,
+    mode,
+    queryWhEnabled,
+    dentistId = undefined,
+  }) {
+    this.store.dispatch(
+      ClinicianProcedurePageActions.loadTrendApiRequest({
+        api: api,
+        params: {
+          clinicId: clinicId,
+          dentistId: dentistId,
+          mode,
+          queryWhEnabled,
+        },
+      })
+    );
+  }
 }

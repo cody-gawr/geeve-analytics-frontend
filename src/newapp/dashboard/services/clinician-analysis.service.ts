@@ -2,25 +2,8 @@ import { environment } from '@/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import camelcaseKeys from 'camelcase-keys';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import { map } from 'rxjs';
-
-export interface CaNoneTrendQueryParams {
-  clinicId: string | number;
-  startDate: Moment | string;
-  endDate: Moment | string;
-  duration: DATE_RANGE_DURATION;
-  clinician?: string;
-  dentistId?: number;
-  queryWhEnabled?: number;
-}
-
-export interface CaTrendQueryParams {
-  clinicId: string | number;
-  dentistId: number;
-  mode: API_TREND_MODE;
-  queryWhEnabled?: number;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -77,10 +60,4 @@ export class ClinicianAnalysisService {
       })
       .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
   }
-
-  // getAccountingDentist
-  // getStatusDentist
-  // saveDentistMapping
-  // getClinics
-  // getClinicFollowUpSettings
 }

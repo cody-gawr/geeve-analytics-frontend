@@ -1,8 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-import {
-  CaNoneTrendQueryParams,
-  CaTrendQueryParams,
-} from '../../services/clinician-analysis.service';
 
 export const loadNoneTrendApiRequest = createAction(
   '[Clinician Analysis API] load None Trend Api Request',
