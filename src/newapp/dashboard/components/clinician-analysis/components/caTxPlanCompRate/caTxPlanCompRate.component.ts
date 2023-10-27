@@ -469,7 +469,6 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     if (isAllDentist || !isTrend) {
       let options: ChartOptions = { ...this.barChartOptionsPercent };
       if (avgMode === 'average') {
-        console.log(this.average);
         options.plugins.annotation = this.getAvgPluginOptions(this.average);
       } else if (avgMode === 'goal') {
         const value = this.goal * this.goalCount;

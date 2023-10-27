@@ -140,9 +140,7 @@ export class AppTopbarComponent implements OnInit {
   }
 
   constructor(
-    // private menuService: MenuService,
     private layoutFacade: LayoutFacade,
-    // private dentistFacade: DentistFacade,
     private dashboardFacade: DashboardFacade,
     private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
@@ -294,6 +292,7 @@ export class AppTopbarComponent implements OnInit {
   }
 
   onChangeCurrentDentist(event) {
+    console.log({ event });
     this.dentistFacade.setCurrentDentistId(event.value);
   }
 

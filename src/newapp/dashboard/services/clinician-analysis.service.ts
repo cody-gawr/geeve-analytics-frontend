@@ -36,6 +36,7 @@ export class ClinicianAnalysisService {
     if (queryParams.dentistId) {
       params['provider_id'] = queryParams.dentistId;
     }
+
     return this.http
       .get(`${this.apiUrl}/ClinicianAnalysis/${api}`, {
         params: params,

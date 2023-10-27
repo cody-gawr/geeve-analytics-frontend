@@ -99,7 +99,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
       this.dentistFacade.currentDentistId$,
-      this.isAllDentist$,
       this.isTrend$,
     ])
       .pipe(
@@ -107,16 +106,10 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(params => {
-        const [
-          clinicId,
-          dateRange,
-          route,
-          trend,
-          dentistId,
-          isAllDentist,
-          isTrend,
-        ] = params;
+        const [clinicId, dateRange, route, trend, dentistId, isTrend] = params;
         if (clinicId == null) return;
+
+        const isAllDentist = dentistId === 'all';
         const providerId =
           dentistId !== 'all' && typeof clinicId !== 'string'
             ? dentistId
@@ -136,6 +129,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
             queryWhEnabled,
             dentistId: providerId,
           };
+
           for (const api of caEndpoints) {
             this.caFacade.loadNoneTrendApiRequest({
               ...params,

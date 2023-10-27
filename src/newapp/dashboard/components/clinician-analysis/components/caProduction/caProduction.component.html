@@ -142,7 +142,7 @@
         </div>
       </ng-template>
 
-      <div class="chart-foot" *ngIf="isEnableFooter$ | async">
+      <div class="chart-foot" *ngIf="isFooterEnabled$ | async">
         <div>
           <h3>${{ total }}</h3>
           <span>{{ durationLabel$ | async }}</span>

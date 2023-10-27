@@ -284,8 +284,6 @@ export class CustomisationsComponent
         $('.ajax-loader').hide();
       }
     );
-    // console.log("huddles", huddles);
-    // console.log("dashboard", dashboard);
   }
 
   setVisibilityOfMaxBar() {
@@ -441,8 +439,6 @@ export class CustomisationsComponent
         $('.ajax-loader').hide();
       }
     );
-    // console.log("huddles", huddles);
-    // console.log("dashboard", dashboard);
   }
 
   //

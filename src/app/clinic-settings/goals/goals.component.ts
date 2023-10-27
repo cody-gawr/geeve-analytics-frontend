@@ -327,7 +327,6 @@ export class GoalsComponent
           }
         },
         error => {
-          console.log('error', error);
           $('.ajax-loader').hide();
         }
       );

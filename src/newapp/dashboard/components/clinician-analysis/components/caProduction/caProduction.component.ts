@@ -15,6 +15,7 @@ import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
 import {
+  Observable,
   Subject,
   takeUntil,
   combineLatest,
@@ -63,11 +64,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     return this.caFacade.colExpSelectTab$.pipe(takeUntil(this.destroy$));
   }
 
-  get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+  get durationLabel$(): Observable<string> {
+    return this.layoutFacade.durationLabel$.pipe(takeUntil(this.destroy$));
   }
 
   get showGoals$() {
@@ -116,13 +114,9 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.isAllDentist$,
       this.isTrend$,
     ]).pipe(
-      map(([v, isAllDentist, isTrend]) => {
-        if (isAllDentist || !isTrend) {
-          return typeof v === 'string' ? true : false;
-        } else {
-          return false;
-        }
-      })
+      map(([v, isAllDentist, isTrend]) =>
+        isAllDentist || !isTrend ? typeof v === 'string' : false
+      )
     );
   }
 
@@ -163,7 +157,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     return this.layoutFacade.average$.pipe(takeUntil(this.destroy$));
   }
 
-  get isEnableFooter$() {
+  get isFooterEnabled$() {
     return combineLatest([
       this.authFacade.rolesIndividual$,
       this.layoutFacade.compare$,
@@ -181,9 +175,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   get isAllDentist$() {
     return this.dentistFacade.currentDentistId$.pipe(
       takeUntil(this.destroy$),
-      map(v => {
-        return v === 'all';
-      })
+      map(v => v === 'all')
     );
   }
 
@@ -347,12 +339,10 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   getGoalPluginOptions(goalVal): _DeepPartialObject<AnnotationPluginOptions> {
     return {
-      // drawTime: 'afterDatasetsDraw',
       annotations: [
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: goalVal,
           yMin: goalVal,
