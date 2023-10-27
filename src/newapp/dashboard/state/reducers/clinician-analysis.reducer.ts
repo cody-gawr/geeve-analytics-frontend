@@ -2159,13 +2159,13 @@ export const selectRecallRateChartData = createSelector(
   ) => {
     const isAllDentist = currentDentistId === 'all';
     let resBody: CaRecallRateApiResponse | CaReappRateApiResponse = null;
-
     if (chartName === 'Recall Prebook Rate') {
       resBody = bodyList['caRecallRate'];
     } else {
       resBody = bodyList['caReappointRate'];
     }
 
+    console.log(resBody);
     if (isAllDentist) {
       let chartData = [],
         chartLabels = [],

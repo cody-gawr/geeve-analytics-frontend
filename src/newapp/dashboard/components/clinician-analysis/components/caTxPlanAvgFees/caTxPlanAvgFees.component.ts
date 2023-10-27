@@ -93,6 +93,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   goalCount = 0;
   showTableInfo = false;
   tableData = [];
+  public chartOptions: ChartOptions;
 
   get legend$() {
     return combineLatest([this.isAllDentist$]).pipe(
@@ -117,32 +118,6 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     return this.caFacade.txPlanAvgFeeChartName$.pipe(
       takeUntil(this.destroy$),
       map(v => v)
-    );
-  }
-
-  get chartOptions$() {
-    return combineLatest([
-      this.avgMode$,
-      this.isAllDentist$,
-      this.isTrend$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([avgMode, isAllDentist, isTrend]) => {
-        if (isAllDentist || !isTrend) {
-          let options: ChartOptions = { ...this.barChartOptions };
-          if (avgMode === 'average') {
-            options.plugins.annotation = this.getAvgPluginOptions(this.average);
-          } else if (avgMode === 'goal') {
-            const value = this.goal * this.goalCount;
-            options.plugins.annotation = this.getGoalPluginOptions(value);
-          } else {
-            options.plugins.annotation = {};
-          }
-          return options;
-        } else {
-          return this.barChartOptionsTrend;
-        }
-      })
     );
   }
 
@@ -214,7 +189,9 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.isAllDentist$,
       this.isTrend$,
@@ -243,9 +220,31 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
       });
-  }
 
-  ngOnInit(): void {}
+    combineLatest([this.avgMode$, this.isAllDentist$, this.isTrend$])
+      .pipe(
+        takeUntil(this.destroy$),
+        map(([avgMode, isAllDentist, isTrend]) => {
+          if (isAllDentist || !isTrend) {
+            let options: ChartOptions = { ...this.barChartOptions };
+            if (avgMode === 'average') {
+              options.plugins.annotation = this.getAvgPluginOptions(
+                this.average
+              );
+            } else if (avgMode === 'goal') {
+              const value = this.goal * this.goalCount;
+              options.plugins.annotation = this.getGoalPluginOptions(value);
+            } else {
+              options.plugins.annotation = {};
+            }
+            return options;
+          } else {
+            return this.barChartOptionsTrend;
+          }
+        })
+      )
+      .subscribe(options => (this.chartOptions = options));
+  }
 
   ngOnDestroy(): void {
     this.destroy.next();

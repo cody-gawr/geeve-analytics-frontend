@@ -110,31 +110,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     );
   }
 
-  get chartOptions$() {
-    return combineLatest([
-      this.isAllDentist$,
-      this.isTrend$,
-      this.avgMode$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([isAllDentist, isTrend, avgMode]) => {
-        if (isAllDentist || !isTrend) {
-          let options: ChartOptions = { ...this.barChartOptionsPercent };
-          if (avgMode === 'average') {
-            options.plugins.annotation = this.getAvgPluginOptions(this.average);
-          } else if (avgMode === 'goal') {
-            const value = this.goal * this.goalCount;
-            options.plugins.annotation = this.getGoalPluginOptions(value);
-          } else {
-            options.plugins.annotation = {};
-          }
-          return options;
-        } else {
-          return this.barChartOptionsPercentTrend;
-        }
-      })
-    );
-  }
+  public chartOptions: ChartOptions;
 
   get hasData$() {
     return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
@@ -221,7 +197,31 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    combineLatest([this.isAllDentist$, this.isTrend$, this.avgMode$])
+      .pipe(
+        takeUntil(this.destroy$),
+        map(([isAllDentist, isTrend, avgMode]) => {
+          if (isAllDentist || !isTrend) {
+            let options: ChartOptions = { ...this.barChartOptionsPercent };
+            if (avgMode === 'average') {
+              options.plugins.annotation = this.getAvgPluginOptions(
+                this.average
+              );
+            } else if (avgMode === 'goal') {
+              const value = this.goal * this.goalCount;
+              options.plugins.annotation = this.getGoalPluginOptions(value);
+            } else {
+              options.plugins.annotation = {};
+            }
+            return options;
+          } else {
+            return this.barChartOptionsPercentTrend;
+          }
+        })
+      )
+      .subscribe(options => (this.chartOptions = options));
+  }
 
   ngOnDestroy(): void {
     this.destroy.next();

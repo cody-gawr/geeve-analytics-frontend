@@ -11,11 +11,12 @@ import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
 import {
+  combineLatest,
+  distinctUntilChanged,
+  Observable,
   Subject,
   takeUntil,
-  combineLatest,
   map,
-  distinctUntilChanged,
 } from 'rxjs';
 
 @Component({
@@ -93,211 +94,6 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   showTableInfo = false;
   tableData = [];
 
-  get legend$() {
-    return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
-      map(([v]) => {
-        return typeof v === 'string' ? true : false;
-      })
-    );
-  }
-
-  get isLoading$() {
-    return this.caFacade.isLoadingRecallRateAll$.pipe(takeUntil(this.destroy$));
-  }
-
-  get userType$() {
-    return this.authFacade.rolesIndividual$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v?.type)
-    );
-  }
-
-  get chartName$() {
-    return this.caFacade.recallRateChartName$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
-  }
-
-  get chartOptions$() {
-    return combineLatest([
-      this.avgMode$,
-      this.isAllDentist$,
-      this.isTrend$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([avgMode, isAllDentist, isTrend]) => {
-        if (isAllDentist || !isTrend) {
-          let options: ChartOptions = { ...this.barChartOptions };
-          if (avgMode === 'average') {
-            options.plugins.annotation = this.getAvgPluginOptions(this.average);
-          } else if (avgMode === 'goal') {
-            const value = this.goal * this.goalCount;
-            options.plugins.annotation = this.getGoalPluginOptions(value);
-          } else {
-            options.plugins.annotation = {};
-          }
-          return options;
-        } else {
-          return this.barChartOptionsPercentTrend;
-        }
-      })
-    );
-  }
-
-  get hasData$() {
-    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
-      map(([isAll, isTrend]) => {
-        if (isAll || isTrend) {
-          return this.datasets[0]?.data.length > 0;
-        } else {
-          return this.gaugeValue > 0;
-        }
-      })
-    );
-  }
-
-  get avgMode$() {
-    return this.layoutFacade.average$.pipe(takeUntil(this.destroy$));
-  }
-
-  get isEnableFooter$() {
-    return combineLatest([
-      this.authFacade.rolesIndividual$,
-      this.layoutFacade.compare$,
-      this.isTrend$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(
-        ([v, cMode, isTrend]) =>
-          v?.type == 4 && v?.plan != 'lite' && cMode && isTrend
-      ),
-      map(v => !v)
-    );
-  }
-
-  get isAllDentist$() {
-    return this.dentistFacade.currentDentistId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => {
-        return v === 'all';
-      })
-    );
-  }
-
-  get noDataAlertMessage$() {
-    return combineLatest([this.caFacade.recallRateChartName$]).pipe(
-      takeUntil(this.destroy$),
-      map(([visibility]) => {
-        switch (visibility) {
-          case 'Recall Prebook Rate':
-            return 'You have no proposed treatment in the selected period';
-
-          case 'Reappointment Rate':
-            return 'You have no completed treatment in the selected period';
-        }
-      })
-    );
-  }
-
-  get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v !== 'off')
-    );
-  }
-
-  constructor(
-    private caFacade: ClinicianAnalysisFacade,
-    private layoutFacade: LayoutFacade,
-    private clinicFacade: ClinicFacade,
-    private authFacade: AuthFacade,
-    private decimalPipe: DecimalPipe,
-    private dentistFacade: DentistFacade
-  ) {
-    combineLatest([
-      this.isAllDentist$,
-      this.isTrend$,
-      this.caFacade.caRecallRateChartData$,
-      this.caFacade.caRecallRateTrendChartData$,
-    ])
-      .pipe(
-        takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
-      )
-      .subscribe(([isAllDentist, isTrend, data, trendData]) => {
-        if (isAllDentist || !isTrend) {
-          this.datasets = data.datasets ?? [];
-          this.labels = data.labels ?? [];
-        } else {
-          this.datasets = trendData.datasets ?? [];
-          this.labels = trendData.labels ?? [];
-        }
-
-        this.total = data.total;
-        this.prev = data.prev;
-        this.average = data.average;
-        this.goal = data.goal;
-        this.tableData = data.tableData ?? [];
-        this.maxGoal = data.maxGoal;
-        this.gaugeLabel = data.gaugeLabel;
-        this.gaugeValue = data.gaugeValue;
-      });
-  }
-
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.destroy.next();
-  }
-
-  switchChartName(chartName: CA_RECALL_RATE_CHART_NAME) {
-    this.caFacade.setRecallRateChartName(chartName);
-  }
-
-  toggleTableInfo() {
-    this.showTableInfo = !this.showTableInfo;
-  }
-  getAvgPluginOptions(avgVal): _DeepPartialObject<AnnotationPluginOptions> {
-    return {
-      // drawTime: 'afterDatasetsDraw',
-      annotations: [
-        {
-          drawTime: 'afterDraw',
-          type: 'line',
-          // mode: 'horizontal',
-          scaleID: 'y-axis-0',
-          yMax: avgVal,
-          yMin: avgVal,
-          borderColor: '#0e3459',
-          borderWidth: 2,
-          borderDash: [2, 2],
-          borderDashOffset: 0,
-        },
-      ],
-    };
-  }
-
-  getGoalPluginOptions(goalVal): _DeepPartialObject<AnnotationPluginOptions> {
-    return {
-      // drawTime: 'afterDatasetsDraw',
-      annotations: [
-        {
-          drawTime: 'afterDraw',
-          type: 'line',
-          // mode: 'horizontal',
-          scaleID: 'y-axis-0',
-          yMax: goalVal,
-          yMin: goalVal,
-          borderColor: 'red',
-          borderWidth: 2,
-          borderDash: [2, 2],
-          borderDashOffset: 0,
-        },
-      ],
-    };
-  }
-
   public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
     position: 'bottom',
@@ -325,6 +121,8 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     },
     // align : 'start',
   };
+
+  public chartOptions: ChartOptions;
 
   public barChartOptions: ChartOptions<'bar'> = {
     // borderRadius: 50,
@@ -356,7 +154,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
           callback: (label: number, index, ticks) => {
             // when the floored value is the same as the value we have a whole number
             if (typeof label === 'number') {
-              return '$' + this.decimalPipe.transform(label);
+              return `$${this.decimalPipe.transform(label)}`;
             } else {
               return `$${label}`;
             }
@@ -384,10 +182,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   };
 
   public barChartOptionsPercentTrend: ChartOptions = {
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
     hover: { mode: null },
-    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine',
@@ -487,4 +282,209 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
       },
     },
   };
+
+  get legend$() {
+    return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
+      map(([v]) => {
+        return typeof v === 'string' ? true : false;
+      })
+    );
+  }
+
+  get isLoading$() {
+    return this.caFacade.isLoadingRecallRateAll$.pipe(takeUntil(this.destroy$));
+  }
+
+  get userType$() {
+    return this.authFacade.rolesIndividual$.pipe(
+      takeUntil(this.destroy$),
+      map(v => v?.type)
+    );
+  }
+
+  get chartName$() {
+    return this.caFacade.recallRateChartName$.pipe(
+      takeUntil(this.destroy$),
+      map(v => v)
+    );
+  }
+
+  get hasData$() {
+    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
+      map(([isAll, isTrend]) => {
+        if (isAll || isTrend) {
+          return this.datasets[0]?.data.length > 0;
+        } else {
+          return this.gaugeValue > 0;
+        }
+      })
+    );
+  }
+
+  get avgMode$() {
+    return this.layoutFacade.average$.pipe(takeUntil(this.destroy$));
+  }
+
+  get isEnableFooter$() {
+    return combineLatest([
+      this.authFacade.rolesIndividual$,
+      this.layoutFacade.compare$,
+      this.isTrend$,
+    ]).pipe(
+      takeUntil(this.destroy$),
+      map(
+        ([v, cMode, isTrend]) =>
+          v?.type == 4 && v?.plan != 'lite' && cMode && isTrend
+      ),
+      map(v => !v)
+    );
+  }
+
+  get isAllDentist$() {
+    return this.dentistFacade.currentDentistId$.pipe(
+      takeUntil(this.destroy$),
+      map(v => {
+        return v === 'all';
+      })
+    );
+  }
+
+  get noDataAlertMessage$() {
+    return combineLatest([this.caFacade.recallRateChartName$]).pipe(
+      takeUntil(this.destroy$),
+      map(([visibility]) => {
+        switch (visibility) {
+          case 'Recall Prebook Rate':
+            return 'You have no proposed treatment in the selected period';
+
+          case 'Reappointment Rate':
+            return 'You have no completed treatment in the selected period';
+        }
+      })
+    );
+  }
+
+  get isTrend$() {
+    return this.layoutFacade.trend$.pipe(
+      takeUntil(this.destroy$),
+      map(v => v && v !== 'off')
+    );
+  }
+
+  constructor(
+    private caFacade: ClinicianAnalysisFacade,
+    private layoutFacade: LayoutFacade,
+    private clinicFacade: ClinicFacade,
+    private authFacade: AuthFacade,
+    private decimalPipe: DecimalPipe,
+    private dentistFacade: DentistFacade
+  ) {}
+
+  ngOnInit(): void {
+    combineLatest([
+      this.isAllDentist$,
+      this.isTrend$,
+      this.caFacade.caRecallRateChartData$,
+      this.caFacade.caRecallRateTrendChartData$,
+    ])
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
+      .subscribe(([isAllDentist, isTrend, data, trendData]) => {
+        if (isAllDentist || !isTrend) {
+          this.datasets = data.datasets ?? [];
+          this.labels = data.labels ?? [];
+        } else {
+          this.datasets = trendData.datasets ?? [];
+          this.labels = trendData.labels ?? [];
+        }
+
+        this.total = data.total;
+        this.prev = data.prev;
+        this.average = data.average;
+        this.goal = data.goal;
+        this.tableData = data.tableData ?? [];
+        this.maxGoal = data.maxGoal;
+        this.gaugeLabel = data.gaugeLabel;
+        this.gaugeValue = data.gaugeValue;
+      });
+
+    combineLatest([this.avgMode$, this.isAllDentist$, this.isTrend$])
+      .pipe(
+        takeUntil(this.destroy$),
+        map(([avgMode, isAllDentist, isTrend]) => {
+          console.log(avgMode);
+          if (isAllDentist || !isTrend) {
+            let options: ChartOptions = { ...this.barChartOptionsPercentTrend };
+            if (avgMode === 'average') {
+              options.plugins.annotation = this.getAvgPluginOptions(
+                this.average
+              );
+            } else if (avgMode === 'goal') {
+              const value = this.goal * this.goalCount;
+              options.plugins.annotation = this.getGoalPluginOptions(value);
+            } else {
+              options.plugins.annotation = {};
+            }
+            return options;
+          } else {
+            return this.barChartOptionsPercentTrend;
+          }
+        })
+      )
+      .subscribe(options => (this.chartOptions = options));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+  }
+
+  switchChartName(chartName: CA_RECALL_RATE_CHART_NAME) {
+    this.caFacade.setRecallRateChartName(chartName);
+  }
+
+  toggleTableInfo() {
+    this.showTableInfo = !this.showTableInfo;
+  }
+
+  getAvgPluginOptions(
+    avgVal: number
+  ): _DeepPartialObject<AnnotationPluginOptions> {
+    return {
+      annotations: [
+        {
+          yScaleID: 'y-axis-0',
+          drawTime: 'afterDraw',
+          type: 'line',
+          scaleID: 'y-axis-0',
+          yMax: avgVal,
+          yMin: avgVal,
+          borderColor: '#0e3459',
+          borderWidth: 2,
+          borderDash: [2, 2],
+          borderDashOffset: 0,
+        },
+      ],
+    };
+  }
+
+  getGoalPluginOptions(goalVal): _DeepPartialObject<AnnotationPluginOptions> {
+    return {
+      annotations: [
+        {
+          drawTime: 'afterDraw',
+          type: 'line',
+          // mode: 'horizontal',
+          scaleID: 'y-axis-0',
+          yMax: goalVal,
+          yMin: goalVal,
+          borderColor: 'red',
+          borderWidth: 2,
+          borderDash: [2, 2],
+          borderDashOffset: 0,
+        },
+      ],
+    };
+  }
 }

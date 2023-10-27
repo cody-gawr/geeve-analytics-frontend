@@ -147,32 +147,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     );
   }
 
-  get chartOptions$() {
-    return combineLatest([
-      this.avgMode$,
-      this.isAllDentist$,
-      this.isTrend$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([avgMode, isAllDentist, isTrend]) => {
-        if (isAllDentist || !isTrend) {
-          let options: ChartOptions = { ...this.barChartOptions };
-          if (avgMode === 'average') {
-            options.plugins.annotation = this.getAvgPluginOptions(this.average);
-          } else if (avgMode === 'goal') {
-            const value = this.goal * this.goalCount;
-            options.plugins.annotation = this.getGoalPluginOptions(value);
-          } else {
-            options.plugins.annotation = {};
-          }
-          return options;
-        } else {
-          return this.barChartOptionsTrend;
-        }
-      })
-    );
-  }
-
   get hasData$() {
     return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
       map(([isAll, isTrend]) => {
@@ -290,8 +264,11 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
+      this.avgMode$,
       this.isAllDentist$,
       this.isTrend$,
       this.caFacade.caProductionChartData$,
@@ -301,7 +278,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([isAllDentist, isTrend, data, trendData]) => {
+      .subscribe(([avgMode, isAllDentist, isTrend, data, trendData]) => {
         if (isAllDentist || !isTrend) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
@@ -322,10 +299,9 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
+        this.setChartOptions(isAllDentist, isTrend, avgMode);
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();
@@ -401,6 +377,27 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     this.caFacade.setColExpSelectTab(event.value);
   }
 
+  private setChartOptions(
+    isAllDentist: boolean,
+    isTrend: boolean,
+    avgMode: string
+  ): void {
+    if (isAllDentist || !isTrend) {
+      let options: ChartOptions = { ...this.barChartOptions };
+      if (avgMode === 'average') {
+        options.plugins.annotation = this.getAvgPluginOptions(this.average);
+      } else if (avgMode === 'goal') {
+        const value = this.goal * this.goalCount;
+        options.plugins.annotation = this.getGoalPluginOptions(value);
+      } else {
+        options.plugins.annotation = {};
+      }
+      this.chartOptions = options;
+    } else {
+      this.chartOptions = this.barChartOptionsTrend;
+    }
+  }
+
   public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
     position: 'bottom',
@@ -428,6 +425,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     },
     // align : 'start',
   };
+
+  public chartOptions: ChartOptions;
 
   public barChartOptions: ChartOptions<'bar'> = {
     // borderRadius: 50,
