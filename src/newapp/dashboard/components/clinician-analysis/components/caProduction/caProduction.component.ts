@@ -325,14 +325,14 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   toggleTableInfo() {
     this.showTableInfo = !this.showTableInfo;
   }
-  getAvgPluginOptions(avgVal): _DeepPartialObject<AnnotationPluginOptions> {
+  getAvgPluginOptions(
+    avgVal: number
+  ): _DeepPartialObject<AnnotationPluginOptions> {
     return {
-      // drawTime: 'afterDatasetsDraw',
       annotations: [
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: avgVal,
           yMin: avgVal,
@@ -392,6 +392,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       } else {
         options.plugins.annotation = {};
       }
+
       this.chartOptions = options;
     } else {
       this.chartOptions = this.barChartOptionsTrend;

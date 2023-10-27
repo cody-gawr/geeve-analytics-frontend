@@ -2165,7 +2165,6 @@ export const selectRecallRateChartData = createSelector(
       resBody = bodyList['caReappointRate'];
     }
 
-    console.log(resBody);
     if (isAllDentist) {
       let chartData = [],
         chartLabels = [],
@@ -2290,11 +2289,12 @@ export const selectRecallRateChartData = createSelector(
       });
       const goal = parseInt(<string>resBody.goals);
       maxGoal = gaugeValue > goal ? gaugeValue : goal;
+
       return {
         gaugeValue: gaugeValue,
         gaugeLabel: gaugeLabel,
         total: Math.round(resBody.total),
-        average: Math.round(resBody.totalAverage),
+        average: 12,
         prev: Math.round(resBody.totalTa),
         goal: goal,
         maxGoal: maxGoal,

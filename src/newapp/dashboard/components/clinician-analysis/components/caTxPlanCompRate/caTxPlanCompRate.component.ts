@@ -166,8 +166,11 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
+      this.avgMode$,
       this.isAllDentist$,
       this.isTrend$,
       this.caFacade.caTxPlanCompRateChartData$,
@@ -177,7 +180,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([isAllDentist, isTrend, data, trendData]) => {
+      .subscribe(([avgMode, isAllDentist, isTrend, data, trendData]) => {
         if (isAllDentist || !isTrend) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
@@ -194,33 +197,9 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
-      });
-  }
 
-  ngOnInit(): void {
-    combineLatest([this.isAllDentist$, this.isTrend$, this.avgMode$])
-      .pipe(
-        takeUntil(this.destroy$),
-        map(([isAllDentist, isTrend, avgMode]) => {
-          if (isAllDentist || !isTrend) {
-            let options: ChartOptions = { ...this.barChartOptionsPercent };
-            if (avgMode === 'average') {
-              options.plugins.annotation = this.getAvgPluginOptions(
-                this.average
-              );
-            } else if (avgMode === 'goal') {
-              const value = this.goal * this.goalCount;
-              options.plugins.annotation = this.getGoalPluginOptions(value);
-            } else {
-              options.plugins.annotation = {};
-            }
-            return options;
-          } else {
-            return this.barChartOptionsPercentTrend;
-          }
-        })
-      )
-      .subscribe(options => (this.chartOptions = options));
+        this.setChartOptions(isAllDentist, isTrend, avgMode);
+      });
   }
 
   ngOnDestroy(): void {
@@ -230,14 +209,15 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   toggleTableInfo() {
     this.showTableInfo = !this.showTableInfo;
   }
-  getAvgPluginOptions(avgVal): _DeepPartialObject<AnnotationPluginOptions> {
+
+  getAvgPluginOptions(
+    avgVal: number
+  ): _DeepPartialObject<AnnotationPluginOptions> {
     return {
-      // drawTime: 'afterDatasetsDraw',
       annotations: [
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: avgVal,
           yMin: avgVal,
@@ -250,7 +230,9 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     };
   }
 
-  getGoalPluginOptions(goalVal): _DeepPartialObject<AnnotationPluginOptions> {
+  getGoalPluginOptions(
+    goalVal: number
+  ): _DeepPartialObject<AnnotationPluginOptions> {
     return {
       // drawTime: 'afterDatasetsDraw',
       annotations: [
@@ -478,4 +460,27 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
       },
     },
   };
+
+  private setChartOptions(
+    isAllDentist: boolean,
+    isTrend: boolean,
+    avgMode: string
+  ): void {
+    if (isAllDentist || !isTrend) {
+      let options: ChartOptions = { ...this.barChartOptionsPercent };
+      if (avgMode === 'average') {
+        console.log(this.average);
+        options.plugins.annotation = this.getAvgPluginOptions(this.average);
+      } else if (avgMode === 'goal') {
+        const value = this.goal * this.goalCount;
+        options.plugins.annotation = this.getGoalPluginOptions(value);
+      } else {
+        options.plugins.annotation = {};
+      }
+
+      this.chartOptions = options;
+    } else {
+      this.chartOptions = this.barChartOptionsPercentTrend;
+    }
+  }
 }

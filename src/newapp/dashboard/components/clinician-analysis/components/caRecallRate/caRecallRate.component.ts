@@ -13,7 +13,6 @@ import _ from 'lodash';
 import {
   combineLatest,
   distinctUntilChanged,
-  Observable,
   Subject,
   takeUntil,
   map,
@@ -125,11 +124,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   public chartOptions: ChartOptions;
 
   public barChartOptions: ChartOptions<'bar'> = {
-    // borderRadius: 50,
     hover: { mode: null },
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
-    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine',
@@ -150,11 +145,14 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
       },
       y: {
         suggestedMin: 0,
+        suggestedMax: 100,
+        beginAtZero: true,
+        max: 100,
         ticks: {
           callback: (label: number, index, ticks) => {
             // when the floored value is the same as the value we have a whole number
             if (typeof label === 'number') {
-              return `$${this.decimalPipe.transform(label)}`;
+              return `${this.decimalPipe.transform(label)}%`;
             } else {
               return `$${label}`;
             }
@@ -171,7 +169,8 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: tooltipItem => formatXTooltipLabel(tooltipItem),
+          label: tooltipItem =>
+            tooltipItem.label + ': ' + tooltipItem.formattedValue + '%',
           // remove title
           title: function () {
             return '';
@@ -222,37 +221,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         callbacks: {
           // use label callback to return the desired label
           label: function (tooltipItem) {
-            var Targetlable = '';
-            const v = tooltipItem.parsed.y;
-            let Tlable = tooltipItem.dataset.label;
-            if (Tlable != '') {
-              Tlable = Tlable + ': ';
-              Targetlable = Tlable;
-            }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-            let ylable = tooltipItem.parsed._custom
-              ? +(
-                  tooltipItem.parsed._custom.max +
-                  tooltipItem.parsed._custom.min
-                ) / 2
-              : v;
-            var tlab = 0;
-            if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
-            } else {
-              const tval =
-                tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
-              if (Array.isArray(tval)) {
-                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-                if (tlab == 0) {
-                  Tlable = '';
-                }
-              }
-            }
-            if (tlab == 0 && Targetlable == 'Target: ') {
-              return '';
-            } else {
-              return Tlable + tooltipItem.label + ': ' + ylable + '%';
-            }
+            return tooltipItem.label + ': ' + tooltipItem.formattedValue + '%';
           },
           // remove title
           title: function (tooltipItem) {
@@ -382,6 +351,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
+      this.avgMode$,
       this.isAllDentist$,
       this.isTrend$,
       this.caFacade.caRecallRateChartData$,
@@ -391,7 +361,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([isAllDentist, isTrend, data, trendData]) => {
+      .subscribe(([avgMode, isAllDentist, isTrend, data, trendData]) => {
         if (isAllDentist || !isTrend) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
@@ -408,32 +378,9 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
-      });
 
-    combineLatest([this.avgMode$, this.isAllDentist$, this.isTrend$])
-      .pipe(
-        takeUntil(this.destroy$),
-        map(([avgMode, isAllDentist, isTrend]) => {
-          console.log(avgMode);
-          if (isAllDentist || !isTrend) {
-            let options: ChartOptions = { ...this.barChartOptionsPercentTrend };
-            if (avgMode === 'average') {
-              options.plugins.annotation = this.getAvgPluginOptions(
-                this.average
-              );
-            } else if (avgMode === 'goal') {
-              const value = this.goal * this.goalCount;
-              options.plugins.annotation = this.getGoalPluginOptions(value);
-            } else {
-              options.plugins.annotation = {};
-            }
-            return options;
-          } else {
-            return this.barChartOptionsPercentTrend;
-          }
-        })
-      )
-      .subscribe(options => (this.chartOptions = options));
+        this.setChartOptions(isAllDentist, isTrend, avgMode);
+      });
   }
 
   ngOnDestroy(): void {
@@ -454,7 +401,6 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     return {
       annotations: [
         {
-          yScaleID: 'y-axis-0',
           drawTime: 'afterDraw',
           type: 'line',
           scaleID: 'y-axis-0',
@@ -475,7 +421,6 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: goalVal,
           yMin: goalVal,
@@ -486,5 +431,27 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         },
       ],
     };
+  }
+
+  private setChartOptions(
+    isAllDentist: boolean,
+    isTrend: boolean,
+    avgMode: string
+  ): void {
+    if (isAllDentist || !isTrend) {
+      let options: ChartOptions = { ...this.barChartOptions };
+      if (avgMode === 'average') {
+        options.plugins.annotation = this.getAvgPluginOptions(this.average);
+      } else if (avgMode === 'goal') {
+        const value = this.goal * this.goalCount;
+        options.plugins.annotation = this.getGoalPluginOptions(value);
+      } else {
+        options.plugins.annotation = {};
+      }
+
+      this.chartOptions = options;
+    } else {
+      this.chartOptions = this.barChartOptions;
+    }
   }
 }

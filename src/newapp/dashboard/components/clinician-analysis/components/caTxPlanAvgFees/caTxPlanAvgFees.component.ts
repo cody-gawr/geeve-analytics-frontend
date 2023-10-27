@@ -264,7 +264,6 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: avgVal,
           yMin: avgVal,
