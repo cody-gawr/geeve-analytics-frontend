@@ -1,6 +1,5 @@
 @import '../../../../../../assets/layout/styles/layout/mixin';
 .ca-prod-chart {
-  // max-height: 350px;
   gap: 15px !important;
 }
 
@@ -39,6 +38,7 @@
 
 .ca-prod-graph {
   min-height: 280px;
+  max-height: 350px;
   flex: 1;
   width: 100%;
 }
