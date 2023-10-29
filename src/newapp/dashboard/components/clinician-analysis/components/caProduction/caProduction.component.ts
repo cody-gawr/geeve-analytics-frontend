@@ -10,6 +10,7 @@ import {
 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 import { ChartOptions, LegendOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
@@ -40,10 +41,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   ];
 
   get duration$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.duration)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }
 
   get trendingIcon() {
@@ -69,22 +67,15 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get showGoals$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.enableGoal)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.enableGoal));
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get getTrendTip$() {
     return combineLatest([this.durationTrendLabel$]).pipe(
-      takeUntil(this.destroy$),
       map(([durTrendLabel]) => {
         return durTrendLabel + ': $' + this.decimalPipe.transform(this.prev);
       })
@@ -121,24 +112,16 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return this.caFacade.isLoadingCaProduction$.pipe(
-      takeUntil(this.destroy$),
-      distinctUntilChanged()
-    );
+    ///@audit - why distinctUntilChanged() operator is needed here?
+    return this.caFacade.isLoadingCaProduction$.pipe(distinctUntilChanged());
   }
 
   get userType$() {
-    return this.authFacade.rolesIndividual$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v?.type)
-    );
+    return this.authFacade.rolesIndividual$.pipe(map(v => v?.type));
   }
 
   get chartName$() {
-    return this.caFacade.prodChartName$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.caFacade.prodChartName$;
   }
 
   get hasData$() {
@@ -154,7 +137,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get avgMode$() {
-    return this.layoutFacade.average$.pipe(takeUntil(this.destroy$));
+    return this.layoutFacade.average$;
   }
 
   get isFooterEnabled$() {
@@ -163,7 +146,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.layoutFacade.compare$,
       this.isTrend$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(
         ([v, cMode, isTrend]) =>
           (v?.type == 4 && v?.plan != 'lite' && cMode) || isTrend
@@ -173,10 +155,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isAllDentist$() {
-    return this.dentistFacade.currentDentistId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v === 'all')
-    );
+    return this.dentistFacade.currentDentistId$.pipe(map(v => v === 'all'));
   }
 
   get noDataAlertMessage$() {
@@ -187,7 +166,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.caFacade.colSelectTab$,
       this.caFacade.colExpSelectTab$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(
         ([
           isAllDentist,
@@ -243,10 +221,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
   }
 
   constructor(
@@ -355,15 +330,15 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     };
   }
 
-  onChangeProdSelectTab(event) {
+  onChangeProdSelectTab(event: MatSelectChange) {
     this.caFacade.setProdSelectTab(event.value);
   }
 
-  onChangeColSelectTab(event) {
+  onChangeColSelectTab(event: MatSelectChange) {
     this.caFacade.setColSelectTab(event.value);
   }
 
-  onChangeColExpSelectTab(event) {
+  onChangeColExpSelectTab(event: MatSelectChange) {
     this.caFacade.setColExpSelectTab(event.value);
   }
 
