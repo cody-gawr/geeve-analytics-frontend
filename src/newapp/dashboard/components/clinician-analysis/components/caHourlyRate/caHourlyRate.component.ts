@@ -259,8 +259,8 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       this.caFacade.caHourlyRateTrendChartData$,
     ])
       .pipe(
-        takeUntil(this.destroy$)
-        // distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(([isAllDentist, isTrend, data, trendData]) => {
         if (isAllDentist || !isTrend) {
