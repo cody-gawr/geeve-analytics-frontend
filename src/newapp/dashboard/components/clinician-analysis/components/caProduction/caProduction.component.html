@@ -30,7 +30,6 @@
           >Dentist {{ chartName$ | async }}</span
         >
         <ng-template #prodSelectTitle>
-          <div>{{ prodSelectShow$ | async }}</div>
           <mat-select
             class="dropdown-font"
             [value]="prodSelectShow$ | async"
