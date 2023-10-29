@@ -80,7 +80,7 @@ export const setHourlyRateChartName = createAction(
 export const setHourlyRateProdSelectTab = createAction(
   '[Clinician Analysis API] Set Hourly Rate Prod Select Tab',
   props<{
-    tabName: CA_PROD_SELECT_TAB;
+    tabName: CA_HOURLY_RATE_SELECT_TAB;
   }>()
 );
 

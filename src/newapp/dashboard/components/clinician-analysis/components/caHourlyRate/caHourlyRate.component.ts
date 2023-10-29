@@ -143,11 +143,9 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   get hasData$() {
     return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
       map(([isAll, isTrend]) => {
-        if (isAll || isTrend) {
-          return this.datasets[0]?.data.length > 0;
-        } else {
-          return this.gaugeValue > 0;
-        }
+        return isAll || isTrend
+          ? this.datasets[0]?.data.length > 0
+          : this.gaugeValue > 0;
       })
     );
   }
@@ -202,11 +200,11 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
             case 'Production':
               if (isAllDentist) {
                 switch (prodSelectShow) {
-                  case 'production_all':
+                  case 'hourly_rate_all':
                     return 'You have no hourly rates for the selected period';
-                  case 'production_dentists':
+                  case 'hourly_rate_dentists':
                     return 'You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
-                  case 'production_oht':
+                  case 'hourly_rate_oht':
                     return 'You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
                 }
               } else {
@@ -293,7 +291,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   switchChartName(chartName: CA_PROD_CHART_NAME) {
     switch (chartName) {
       case 'Production':
-        this.caFacade.setHourlyRateProdSelectTab('production_all');
+        this.caFacade.setHourlyRateProdSelectTab('hourly_rate_all');
         break;
       case 'Collection':
         this.caFacade.setHourlyRateColSelectTab('collection_all');
@@ -312,7 +310,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
   getAvgPluginOptions(avgVal): _DeepPartialObject<AnnotationPluginOptions> {
     return {
-      // drawTime: 'afterDatasetsDraw',
       annotations: [
         {
           drawTime: 'afterDraw',

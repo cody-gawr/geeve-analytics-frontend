@@ -51,19 +51,19 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get prodSelectShow$() {
-    return this.caFacade.prodSelectTab$.pipe(takeUntil(this.destroy$));
+    return this.caFacade.prodSelectTab$;
   }
 
   get colSelectShow$() {
-    return this.caFacade.colSelectTab$.pipe(takeUntil(this.destroy$));
+    return this.caFacade.colSelectTab$;
   }
 
   get colExpSelectShow$() {
-    return this.caFacade.colExpSelectTab$.pipe(takeUntil(this.destroy$));
+    return this.caFacade.colExpSelectTab$;
   }
 
   get durationLabel$(): Observable<string> {
-    return this.layoutFacade.durationLabel$.pipe(takeUntil(this.destroy$));
+    return this.layoutFacade.durationLabel$;
   }
 
   get showGoals$() {

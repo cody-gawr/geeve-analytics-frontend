@@ -29,7 +29,7 @@ export interface ClinicianAnalysisState {
   colExpSelectTab: CA_COL_EXP_SELECT_TAB;
 
   hourlyRateChartName: CA_PROD_CHART_NAME;
-  hourlyRateProdSelectTab: CA_PROD_SELECT_TAB;
+  hourlyRateProdSelectTab: CA_HOURLY_RATE_SELECT_TAB;
   hourlyRateColSelectTab: CA_COL_SELECT_TAB;
   hourlyRateColExpSelectTab: CA_COL_EXP_SELECT_TAB;
 
@@ -50,7 +50,7 @@ const initiateState: ClinicianAnalysisState = {
   colExpSelectTab: 'collection_exp_all',
 
   hourlyRateChartName: 'Production',
-  hourlyRateProdSelectTab: 'production_all',
+  hourlyRateProdSelectTab: 'hourly_rate_all',
   hourlyRateColSelectTab: 'collection_all',
   hourlyRateColExpSelectTab: 'collection_exp_all',
 
@@ -871,11 +871,11 @@ export const selectIsLoadingCaHourlyRateAll = createSelector(
       case 'Production':
         if (isTrend) {
           switch (hourlyRateProdTab) {
-            case 'production_all':
+            case 'hourly_rate_all':
               return isLoadingCaHourlyRate;
-            case 'production_dentists':
+            case 'hourly_rate_dentists':
               return isLoadingCaHourlyRateDentist;
-            case 'production_oht':
+            case 'hourly_rate_oht':
               return isLoadingCaHourlyRateOht;
           }
         } else {
@@ -939,13 +939,13 @@ export const selectCaHourlyRateChartData = createSelector(
       case 'Production':
         if (isAllDentist) {
           switch (prodTab) {
-            case 'production_all':
+            case 'hourly_rate_all':
               resBody = bodyList['caHourlyRate'];
               break;
-            case 'production_dentists':
+            case 'hourly_rate_dentists':
               resBody = bodyList['caHourlyRateDentists'];
               break;
-            case 'production_oht':
+            case 'hourly_rate_oht':
               resBody = bodyList['caHourlyRateOht'];
               break;
           }

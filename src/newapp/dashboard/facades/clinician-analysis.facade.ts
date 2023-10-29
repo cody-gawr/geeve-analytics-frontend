@@ -211,7 +211,7 @@ export class ClinicianAnalysisFacade {
     select(selectHourlyRateColExpSelectTab)
   );
 
-  public setHourlyRateProdSelectTab(tabName: CA_PROD_SELECT_TAB) {
+  public setHourlyRateProdSelectTab(tabName: CA_HOURLY_RATE_SELECT_TAB) {
     this.store.dispatch(
       ClinicianAnalysisActions.setHourlyRateProdSelectTab({ tabName })
     );

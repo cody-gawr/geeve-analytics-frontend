@@ -101,6 +101,11 @@ declare global {
     | 'production_dentists'
     | 'production_oht';
 
+  type CA_HOURLY_RATE_SELECT_TAB =
+    | 'hourly_rate_all'
+    | 'hourly_rate_dentists'
+    | 'hourly_rate_oht';
+
   type CA_COL_SELECT_TAB =
     | 'collection_all'
     | 'collection_dentists'
