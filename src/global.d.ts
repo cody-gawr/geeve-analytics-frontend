@@ -100,10 +100,12 @@ declare global {
     | 'production_all'
     | 'production_dentists'
     | 'production_oht';
+
   type CA_COL_SELECT_TAB =
     | 'collection_all'
     | 'collection_dentists'
     | 'collection_oht';
+
   type CA_COL_EXP_SELECT_TAB =
     | 'collection_exp_all'
     | 'collection_exp_dentists'

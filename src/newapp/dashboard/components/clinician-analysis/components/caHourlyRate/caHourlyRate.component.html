@@ -30,6 +30,8 @@
           >Hourly Rate</span
         >
         <ng-template #prodSelectTitle>
+          <div>{{ chartName$ | async }}</div>
+          <div>{{ prodSelectShow$ | async }}</div>
           <mat-select
             class="dropdown-font"
             [value]="prodSelectShow$ | async"

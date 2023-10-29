@@ -7,6 +7,7 @@ import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { formatXLabel, formatXTooltipLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 import { ChartOptions, LegendOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
@@ -36,10 +37,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   ];
 
   get duration$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.duration)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }
 
   get trendingIcon() {
@@ -49,41 +47,31 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get prodSelectShow$() {
-    return this.caFacade.prodSelectTab$.pipe(takeUntil(this.destroy$));
+    return this.caFacade.prodSelectTab$;
   }
 
   get colSelectShow$() {
-    return this.caFacade.colSelectTab$.pipe(takeUntil(this.destroy$));
+    return this.caFacade.colSelectTab$;
   }
 
   get colExpSelectShow$() {
-    return this.caFacade.colExpSelectTab$.pipe(takeUntil(this.destroy$));
+    return this.caFacade.colExpSelectTab$;
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get showGoals$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.enableGoal)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.enableGoal));
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get getTrendTip$() {
     return combineLatest([this.durationTrendLabel$]).pipe(
-      takeUntil(this.destroy$),
       map(([durTrendLabel]) => {
         return durTrendLabel + ': $' + this.decimalPipe.transform(this.prev);
       })
@@ -116,23 +104,15 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return this.caFacade.isLoadingCaHourlyRateAll$.pipe(
-      takeUntil(this.destroy$)
-    );
+    return this.caFacade.isLoadingCaHourlyRateAll$;
   }
 
   get userType$() {
-    return this.authFacade.rolesIndividual$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v?.type)
-    );
+    return this.authFacade.rolesIndividual$.pipe(map(v => v?.type));
   }
 
   get chartName$() {
-    return this.caFacade.hourlyRateChartName$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.caFacade.hourlyRateChartName$.pipe(map(v => v));
   }
 
   get chartOptions$() {
@@ -141,7 +121,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       this.isAllDentist$,
       this.isTrend$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([avgMode, isAllDentist, isTrend]) => {
         if (isAllDentist || !isTrend) {
           let options: ChartOptions = { ...this.barChartOptions };
@@ -183,7 +162,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       this.layoutFacade.compare$,
       this.isTrend$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(
         ([v, cMode, isTrend]) =>
           (v?.type == 4 && v?.plan != 'lite' && cMode) || isTrend
@@ -194,7 +172,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
   get isAllDentist$() {
     return this.dentistFacade.currentDentistId$.pipe(
-      takeUntil(this.destroy$),
       map(v => {
         return v === 'all';
       })
@@ -202,10 +179,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
   }
 
   get noDataAlertMessage$() {
@@ -216,7 +190,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       this.caFacade.hourlyRateColSelectTab$,
       this.caFacade.hourlyRateColExpSelectTab$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(
         ([
           isAllDentist,
@@ -278,7 +251,9 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.isAllDentist$,
       this.isTrend$,
@@ -286,8 +261,8 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       this.caFacade.caHourlyRateTrendChartData$,
     ])
       .pipe(
-        takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        takeUntil(this.destroy$)
+        // distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(([isAllDentist, isTrend, data, trendData]) => {
         if (isAllDentist || !isTrend) {
@@ -311,13 +286,11 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit(): void {}
-
   ngOnDestroy(): void {
     this.destroy.next();
   }
 
-  switchChartName(chartName) {
+  switchChartName(chartName: CA_PROD_CHART_NAME) {
     switch (chartName) {
       case 'Production':
         this.caFacade.setHourlyRateProdSelectTab('production_all');
@@ -329,6 +302,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         this.caFacade.setHourlyRateColExpSelectTab('collection_exp_all');
         break;
     }
+
     this.caFacade.setHourlyRateChartName(chartName);
   }
 
@@ -376,7 +350,8 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     };
   }
 
-  onChangeProdSelectTab(event) {
+  onChangeProdSelectTab(event: MatSelectChange) {
+    console.log(event.value);
     this.caFacade.setHourlyRateProdSelectTab(event.value);
   }
 

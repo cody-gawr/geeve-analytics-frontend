@@ -158,7 +158,8 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               'caNumComplaintsTrend'
             );
           }
-          for (const api of endpoints) {
+
+          endpoints.forEach(api => {
             const params = {
               clinicId,
               mode:
@@ -170,7 +171,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               ...params,
               api: api,
             });
-          }
+          });
         }
       });
   }

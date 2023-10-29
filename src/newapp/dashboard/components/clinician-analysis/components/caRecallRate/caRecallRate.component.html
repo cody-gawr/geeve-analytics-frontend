@@ -51,7 +51,7 @@
           <tbody>
             <tr *ngFor="let protbl of tableData">
               <td>{{ protbl.label }}</td>
-              <td>${{ protbl.value | number: '1.0-0' }}</td>
+              <td>{{ protbl.value | number: '1.0-0' }}%</td>
             </tr>
           </tbody>
         </table>
@@ -102,7 +102,7 @@
 
       <div class="chart-foot" *ngIf="isEnableFooter$ | async">
         <div>
-          <h3>${{ total }}</h3>
+          <h3>{{ total }}%</h3>
           <span>{{ durationLabel$ | async }}</span>
         </div>
 

@@ -988,6 +988,8 @@ export const selectCaHourlyRateChartData = createSelector(
         } else {
           resBody = bodyList['caCollectionExpHourlyRate'];
         }
+
+        break;
     }
     if (isAllDentist) {
       let chartData = [],
