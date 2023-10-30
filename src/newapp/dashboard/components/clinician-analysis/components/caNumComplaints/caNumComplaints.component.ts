@@ -151,11 +151,12 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
       this.authFacade.rolesIndividual$,
       this.layoutFacade.compare$,
       this.isTrend$,
+      this.isAllDentist$,
     ]).pipe(
       takeUntil(this.destroy$),
       map(
-        ([v, cMode, isTrend]) =>
-          (v?.type == 4 && v?.plan != 'lite' && cMode) || isTrend
+        ([v, cMode, isTrend, isAllDentist]) =>
+          v?.type == 4 && v?.plan != 'lite' && cMode && isTrend && !isAllDentist
       ),
       map(v => !v)
     );

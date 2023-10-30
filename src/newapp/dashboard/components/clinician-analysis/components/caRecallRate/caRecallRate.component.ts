@@ -299,11 +299,12 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
       this.authFacade.rolesIndividual$,
       this.layoutFacade.compare$,
       this.isTrend$,
+      this.isAllDentist$,
     ]).pipe(
       takeUntil(this.destroy$),
       map(
-        ([v, cMode, isTrend]) =>
-          v?.type == 4 && v?.plan != 'lite' && cMode && isTrend
+        ([v, cMode, isTrend, isAllDentist]) =>
+          v?.type == 4 && v?.plan != 'lite' && cMode && isTrend && !isAllDentist
       ),
       map(v => !v)
     );
@@ -372,7 +373,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
 
         this.total = data.total;
         this.prev = data.prev;
-        this.average = data.average;
+        this.average = data.total;
         this.goal = data.goal;
         this.tableData = data.tableData ?? [];
         this.maxGoal = data.maxGoal;

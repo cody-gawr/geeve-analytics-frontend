@@ -1,3 +1,4 @@
+import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import moment from 'moment';
@@ -26,7 +27,10 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
   selectedMenu: DATE_RANGE_DURATION;
 
-  constructor(private layoutFacade: LayoutFacade) {
+  constructor(
+    private layoutFacade: LayoutFacade,
+    private dentistFacade: DentistFacade
+  ) {
     this.layoutFacade.dateRange$.pipe(takeUntil(this.destroy$)).subscribe(v => {
       this.selectedMenu = v.duration;
     });
@@ -43,6 +47,14 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
       map(v => v && v !== 'off')
+    );
+  }
+
+  get isAllDentist$() {
+    return this.dentistFacade.currentDentistId$.pipe(
+      map(v => {
+        return v === 'all';
+      })
     );
   }
 

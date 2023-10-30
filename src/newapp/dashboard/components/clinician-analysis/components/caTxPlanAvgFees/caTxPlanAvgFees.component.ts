@@ -96,9 +96,9 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   public chartOptions: ChartOptions;
 
   get legend$() {
-    return combineLatest([this.isAllDentist$]).pipe(
+    return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
       map(([v]) => {
-        return v ? true : false;
+        return typeof v === 'string' ? true : false;
       })
     );
   }
@@ -142,11 +142,12 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
       this.authFacade.rolesIndividual$,
       this.layoutFacade.compare$,
       this.isTrend$,
+      this.isAllDentist$,
     ]).pipe(
       takeUntil(this.destroy$),
       map(
-        ([v, cMode, isTrend]) =>
-          (v?.type == 4 && v?.plan != 'lite' && cMode) || isTrend
+        ([v, cMode, isTrend, isAllDentist]) =>
+          v?.type == 4 && v?.plan != 'lite' && cMode && isTrend && !isAllDentist
       ),
       map(v => !v)
     );
@@ -188,11 +189,13 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
+    private clinicFacade: ClinicFacade
   ) {}
 
   ngOnInit(): void {
     combineLatest([
+      this.avgMode$,
       this.isAllDentist$,
       this.isTrend$,
       this.caFacade.caTxPlanAvgFeesChartData$,
@@ -202,7 +205,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([isAllDentist, isTrend, data, trendData]) => {
+      .subscribe(([avgMode, isAllDentist, isTrend, data, trendData]) => {
         if (isAllDentist || !isTrend) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
@@ -210,40 +213,41 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
           this.datasets = trendData.datasets ?? [];
           this.labels = trendData.labels ?? [];
         }
-
         this.total = data.total;
         this.prev = data.prev;
-        this.average = data.average;
+        this.average = data.total;
         this.goal = data.goal;
         this.tableData = data.tableData ?? [];
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
+
+        this.setChartOptions(isAllDentist, isTrend, avgMode);
       });
 
-    combineLatest([this.avgMode$, this.isAllDentist$, this.isTrend$])
-      .pipe(
-        takeUntil(this.destroy$),
-        map(([avgMode, isAllDentist, isTrend]) => {
-          if (isAllDentist || !isTrend) {
-            let options: ChartOptions = { ...this.barChartOptions };
-            if (avgMode === 'average') {
-              options.plugins.annotation = this.getAvgPluginOptions(
-                this.average
-              );
-            } else if (avgMode === 'goal') {
-              const value = this.goal * this.goalCount;
-              options.plugins.annotation = this.getGoalPluginOptions(value);
-            } else {
-              options.plugins.annotation = {};
-            }
-            return options;
-          } else {
-            return this.barChartOptionsTrend;
-          }
-        })
-      )
-      .subscribe(options => (this.chartOptions = options));
+    // combineLatest([this.avgMode$, this.isAllDentist$, this.isTrend$])
+    //   .pipe(
+    //     takeUntil(this.destroy$),
+    //     map(([avgMode, isAllDentist, isTrend]) => {
+    //       if (isAllDentist || !isTrend) {
+    //         let options: ChartOptions = { ...this.barChartOptions };
+    //         if (avgMode === 'average') {
+    //           options.plugins.annotation = this.getAvgPluginOptions(
+    //             this.average
+    //           );
+    //         } else if (avgMode === 'goal') {
+    //           const value = this.goal * this.goalCount;
+    //           options.plugins.annotation = this.getGoalPluginOptions(value);
+    //         } else {
+    //           options.plugins.annotation = {};
+    //         }
+    //         return options;
+    //       } else {
+    //         return this.barChartOptionsTrend;
+    //       }
+    //     })
+    //   )
+    //   .subscribe(options => (this.chartOptions = options));
   }
 
   ngOnDestroy(): void {
@@ -495,4 +499,26 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
       },
     },
   };
+
+  private setChartOptions(
+    isAllDentist: boolean,
+    isTrend: boolean,
+    avgMode: string
+  ): void {
+    if (isAllDentist || !isTrend) {
+      let options: ChartOptions = { ...this.barChartOptions };
+      if (avgMode === 'average') {
+        options.plugins.annotation = this.getAvgPluginOptions(this.average);
+      } else if (avgMode === 'goal') {
+        const value = this.goal * this.goalCount;
+        options.plugins.annotation = this.getGoalPluginOptions(value);
+      } else {
+        options.plugins.annotation = {};
+      }
+
+      this.chartOptions = options;
+    } else {
+      this.chartOptions = this.barChartOptions;
+    }
+  }
 }
