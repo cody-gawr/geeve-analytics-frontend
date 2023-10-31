@@ -243,7 +243,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
         this.total = data.total;
         this.prev = data.prev;
-        console.log(data.average);
         this.average = data.average;
         this.goal = data.goal;
         if (isAllDentist) {

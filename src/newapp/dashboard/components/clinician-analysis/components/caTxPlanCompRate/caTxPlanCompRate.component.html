@@ -87,7 +87,7 @@
 
       <div class="chart-foot" *ngIf="isEnableFooter$ | async">
         <div>
-          <h3>${{ total }}</h3>
+          <h3>{{ total | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
           <span>{{ durationLabel$ | async }}</span>
         </div>
 
