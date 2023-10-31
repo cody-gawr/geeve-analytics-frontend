@@ -493,17 +493,17 @@ export const selectCaProductionChartData = createSelector(
 
       if (selectedClinics.length > 1) {
         if (chartName === 'Production') {
-          resBody.data
+          (<CaDentistProductionApiResponse>resBody).data
             .sort(
-              (a, b) =>
+              (a: CaDentistProductionItem, b: CaDentistProductionItem) =>
                 parseFloat(<string>a.production) -
                 parseFloat(<string>b.production)
             )
             .reverse();
         } else {
-          resBody.data
+          (<CaCollectionApiResponse>resBody).data
             .sort(
-              (a, b) =>
+              (a: CaCollectionItem, b: CaCollectionItem) =>
                 parseFloat(<string>a.collection) -
                 parseFloat(<string>b.collection)
             )
@@ -932,6 +932,7 @@ export const selectCaHourlyRateChartData = createSelector(
     // colExpTab,
     currentDentistid
   ) => {
+    console.log({ bodyList });
     let resBody: CaHourlyRateApiResponse | CaCollectionHourlyRateApiResponse =
       null;
     const isAllDentist = currentDentistid === 'all';
@@ -1007,9 +1008,9 @@ export const selectCaHourlyRateChartData = createSelector(
       }
 
       if (selectedClinics.length > 1) {
-        resBody.data
+        (<CaCollectionHourlyRateApiResponse>resBody).data
           .sort(
-            (a, b) =>
+            (a: CaCollectionHourlyRateItem, b: CaCollectionHourlyRateItem) =>
               parseFloat(<string>a.hourlyRate) -
               parseFloat(<string>b.hourlyRate)
           )
@@ -1020,23 +1021,25 @@ export const selectCaHourlyRateChartData = createSelector(
         resBody.data = resBody.data.slice(0, 20);
       }
       const tableData = [];
-      resBody.data.forEach((res, i) => {
-        chartData.push(Math.round(<number>res.hourlyRate));
+      resBody.data.forEach(
+        (res: CaHourlyRateItem | CaCollectionHourlyRateItem, i) => {
+          chartData.push(Math.round(<number>res.hourlyRate));
 
-        const pName =
-          res.providerName +
-          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
-        if (res.providerName != null && res.providerName != 'Anonymous') {
-          chartLabels.push(pName);
-        } else {
-          chartLabels.push(pName);
+          const pName =
+            res.providerName +
+            (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+          if (res.providerName != null && res.providerName != 'Anonymous') {
+            chartLabels.push(pName);
+          } else {
+            chartLabels.push(pName);
+          }
+
+          tableData.push({
+            label: pName,
+            value: chartData[i],
+          });
         }
-
-        tableData.push({
-          label: pName,
-          value: chartData[i],
-        });
-      });
+      );
 
       let datasets = [
         {
@@ -1091,21 +1094,14 @@ export const selectCaHourlyRateChartData = createSelector(
         gaugeLabel = '',
         maxGoal = 0;
 
-      resBody.data.forEach(res => {
-        gaugeValue = Math.round(res.hourlyRate);
+      if (resBody.data.length > 0) {
+        gaugeValue = Math.round(<number>resBody.data[0].hourlyRate);
+        gaugeLabel = resBody.data[0].providerName;
+      }
 
-        var name = res.providerName;
-        if (name != null && name != '') {
-          name = name.split(')');
-          if (name.length > 0 && name[1] != undefined) {
-            name = name[1].split(',');
-            if (name.length > 0) name = name[1] + ' ' + name[0];
-          }
-          gaugeLabel = name;
-        } else gaugeLabel = res.provider;
-      });
       const goal = parseInt(<string>resBody.goals);
       maxGoal = gaugeValue > goal ? gaugeValue : goal;
+
       return {
         gaugeValue: gaugeValue,
         gaugeLabel: gaugeLabel,

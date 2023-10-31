@@ -31,7 +31,7 @@ export class ClinicFacade {
     select(selectError)
   );
 
-  public readonly clinics$: Observable<Array<Clinic>> = this.store.pipe(
+  public readonly clinics$: Observable<Clinic[]> = this.store.pipe(
     select(selectClinics)
   );
 

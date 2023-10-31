@@ -4,6 +4,7 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { Clinic } from '@/newapp/models/clinic';
 import { formatXLabel, formatXTooltipLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
@@ -13,6 +14,7 @@ import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
 import {
+  Observable,
   Subject,
   takeUntil,
   combineLatest,
@@ -49,14 +51,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   get prodSelectShow$() {
     return this.caFacade.hourlyRateProdSelectTab$;
   }
-
-  // get colSelectShow$() {
-  //   return this.caFacade.hourlyRateColSelectTab$;
-  // }
-
-  // get colExpSelectShow$() {
-  //   return this.caFacade.hourlyRateColExpSelectTab$;
-  // }
 
   get durationLabel$() {
     return this.layoutFacade.durationLabel$;
@@ -214,6 +208,10 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     );
   }
 
+  get currentClinics$(): Observable<Clinic[]> {
+    return this.clinicFacade.currentClinics$;
+  }
+
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,
@@ -242,6 +240,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
           this.datasets = trendData.datasets ?? [];
           this.labels = trendData.labels ?? [];
         }
+        console.log({ data });
 
         this.total = data.total;
         this.prev = data.prev;
@@ -323,14 +322,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     console.log(event.value);
     this.caFacade.setHourlyRateProdSelectTab(event.value);
   }
-
-  // onChangeColSelectTab(event) {
-  //   this.caFacade.setHourlyRateColSelectTab(event.value);
-  // }
-
-  // onChangeColExpSelectTab(event) {
-  //   this.caFacade.setHourlyRateColExpSelectTab(event.value);
-  // }
 
   public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,

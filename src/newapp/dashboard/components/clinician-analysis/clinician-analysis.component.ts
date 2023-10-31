@@ -140,12 +140,16 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
         if (!isAllDentist) {
           const endpoints = [
-            'caDentistProductionTrend',
-            'caCollectionTrend',
-            'caCollectionExpTrend',
+            // 'caDentistProductionTrend',
+            // 'caCollectionTrend',
+            // 'caCollectionExpTrend',
           ];
           if (isTrend) {
             endpoints.push(
+              'caDentistProductionTrend',
+              'caCollectionTrend',
+              'caCollectionExpTrend',
+
               'caHourlyRateTrend',
               'caCollectionHourlyRateTrend',
               'caCollectionExpHourlyRateTrend',
