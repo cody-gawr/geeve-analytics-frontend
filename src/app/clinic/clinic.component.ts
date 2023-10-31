@@ -398,12 +398,12 @@ export class ClinicComponent implements AfterViewInit {
     }
   }
 
-  private getConnectCoreLink(id) {
+  private getConnectCoreLink(id, reconnect = false) {
     this.setupService.getConnectCoreLink(id).subscribe(
       res => {
         if (res.status == 200) {
           let connectToCoreLink = res.body.data;
-          this.connectToCore(connectToCoreLink, id);
+          this.connectToCore(connectToCoreLink, id, reconnect);
         }
       },
       error => {
@@ -411,12 +411,17 @@ export class ClinicComponent implements AfterViewInit {
       }
     );
   }
-  private connectToCore(link, id) {
+  private connectToCore(link, id, reconnect = false) {
     var win = window.open(link, 'MsgWindow', 'width=1000,height=800');
     var self = this;
     var timer = setInterval(function () {
       if (win.closed) {
-        self.checkCoreStatus(id);
+        if (reconnect) {
+          self.getClinics();
+          self.updateFilter(null);
+        } else {
+          self.checkCoreStatus(id);
+        }
         clearTimeout(timer);
       }
     }, 1000);
@@ -493,11 +498,22 @@ export class ClinicComponent implements AfterViewInit {
         this.clinicService.removeClinic(clinicId).subscribe(res => {
           if (res.status == 200) {
             this.toastr.success(`Remove Core for ${clinic.clinicName}`);
-            clinic.core_clinics = [];
+            clinic.core_sessions = [];
           }
         });
       }
     });
+  }
+
+  reconnectToCore(event, clinicId) {
+    event.preventDefault();
+    event.stopPropagation();
+    const clinic = this.rows.find(r => r.id === clinicId);
+    if (clinic.core_clinics?.every(c => c.clinic_url)) {
+      this.getConnectCoreLink(clinicId, true);
+    } else {
+      this.toastr.warning('No Registred Clinic URL');
+    }
   }
 }
 

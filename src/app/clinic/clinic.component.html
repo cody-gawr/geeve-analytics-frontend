@@ -141,11 +141,19 @@
               ><i class="ti-pencil m-r-10"></i
             ></a>
             <button
-              *ngIf="row.pms == 'core' && row.core_clinics?.length > 0"
+              *ngIf="row.pms == 'core' && row.core_sessions?.length > 0"
               mat-button
               (click)="removeCore($event, value)"
               color="warn">
               DISCONNECT
+            </button>
+            <button
+              class="golden"
+              style="color: white"
+              *ngIf="row.pms == 'core' && !row.core_sessions?.length"
+              mat-button
+              (click)="reconnectToCore($event, value)">
+              RECONNECT
             </button>
           </div>
           <!--     <button class="action_btn danger" mat-menu-item (click) = "deleteClinic(rowIndex)">
