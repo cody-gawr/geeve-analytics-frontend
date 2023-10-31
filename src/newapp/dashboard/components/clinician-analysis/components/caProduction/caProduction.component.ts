@@ -99,7 +99,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   showTableInfo = false;
   tableData = [];
 
-  get legend$() {
+  get isLegendVisible$() {
     return combineLatest([
       this.clinicFacade.currentClinicId$,
       this.isAllDentist$,
@@ -247,6 +247,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(([avgMode, isAllDentist, isTrend, data, trendData]) => {
+        console.log({ data });
+
         if (isAllDentist || !isTrend) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
@@ -390,17 +392,12 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     onClick: (event, legendItem, legend) => {
       return;
     },
-    // align : 'start',
   };
 
   public chartOptions: ChartOptions;
 
   public barChartOptions: ChartOptions<'bar'> = {
-    // borderRadius: 50,
     hover: { mode: null },
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
-    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine',
@@ -453,17 +450,13 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   };
 
   public barChartOptionsTrend: ChartOptions<'bar'> = {
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
     hover: { mode: null },
-    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine',
     },
     responsive: true,
     maintainAspectRatio: false,
-    // scaleStartValue: 0,
     scales: {
       x: {
         grid: {

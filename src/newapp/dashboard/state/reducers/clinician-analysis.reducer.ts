@@ -478,7 +478,7 @@ export const selectCaProductionChartData = createSelector(
     if (isAllDentist) {
       let chartData = [],
         chartLabels = [],
-        chartColors;
+        chartColors: any[] = [];
       if (!resBody?.data) {
         return {
           datasets: [],
@@ -553,7 +553,7 @@ export const selectCaProductionChartData = createSelector(
             selectClinics.length > 1,
             selectedClinics,
             isTrend,
-            averageMode == 'average'
+            false
           ),
           shadowOffsetX: 3,
           shadowOffsetY: 3,
@@ -1046,7 +1046,7 @@ export const selectCaHourlyRateChartData = createSelector(
             selectClinics.length > 1,
             selectedClinics,
             trendMode !== 'off',
-            averageMode == 'average'
+            false
           ),
           shadowOffsetX: 3,
           shadowOffsetY: 3,
@@ -1322,7 +1322,7 @@ export const selectCaNumNewPatientsChartData = createSelector(
               selectClinics.length > 1,
               selectedClinics,
               trend !== 'off',
-              average == 'average'
+              false
             ),
           },
         ];
@@ -1665,7 +1665,7 @@ export const selectTxPlanAvgFeesChartData = createSelector(
             selectClinics.length > 1,
             selectedClinics,
             trendMode !== 'off',
-            averageMode == 'average'
+            false
           ),
           shadowOffsetX: 3,
           shadowOffsetY: 3,
@@ -1909,7 +1909,7 @@ export const selectTxPlanCompRateChartData = createSelector(
             selectClinics.length > 1,
             selectedClinics,
             trendMode !== 'off',
-            averageMode == 'average'
+            false
           ),
           shadowOffsetX: 3,
           shadowOffsetY: 3,
@@ -2231,7 +2231,7 @@ export const selectRecallRateChartData = createSelector(
             selectClinics.length > 1,
             selectedClinics,
             trendMode !== 'off',
-            averageMode == 'average'
+            false
           ),
           shadowOffsetX: 3,
           shadowOffsetY: 3,
@@ -2498,7 +2498,7 @@ export const selectCaNumComplaintsChartData = createSelector(
               selectClinics.length > 1,
               selectedClinics,
               trend !== 'off',
-              average == 'average'
+              false
             ),
           },
         ];
