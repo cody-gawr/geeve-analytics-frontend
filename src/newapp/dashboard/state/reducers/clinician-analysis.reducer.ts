@@ -918,8 +918,8 @@ export const selectCaHourlyRateChartData = createSelector(
   selectAverage,
   selectHourlyRateChartName,
   selectHourlyRateProdSelectTab,
-  selectHourlyRateColSelectTab,
-  selectHourlyRateColExpSelectTab,
+  // selectHourlyRateColSelectTab,
+  // selectHourlyRateColExpSelectTab,
   selectCurrentDentistId,
   (
     bodyList,
@@ -928,8 +928,8 @@ export const selectCaHourlyRateChartData = createSelector(
     averageMode,
     prodChartName,
     prodTab,
-    colTab,
-    colExpTab,
+    // colTab,
+    // colExpTab,
     currentDentistid
   ) => {
     let resBody: CaHourlyRateApiResponse | CaCollectionHourlyRateApiResponse =
@@ -956,14 +956,14 @@ export const selectCaHourlyRateChartData = createSelector(
         break;
       case 'Collection':
         if (isAllDentist) {
-          switch (colTab) {
-            case 'collection_all':
+          switch (prodTab) {
+            case 'hourly_rate_all':
               resBody = bodyList['caCollectionHourlyRate'];
               break;
-            case 'collection_dentists':
+            case 'hourly_rate_dentists':
               resBody = bodyList['caCollectionHourlyRateDentist'];
               break;
-            case 'collection_oht':
+            case 'hourly_rate_oht':
               resBody = bodyList['caCollectionHourlyRateOht'];
               break;
           }
@@ -974,14 +974,14 @@ export const selectCaHourlyRateChartData = createSelector(
         break;
       case 'Collection-Exp':
         if (isAllDentist) {
-          switch (colExpTab) {
-            case 'collection_exp_all':
+          switch (prodTab) {
+            case 'hourly_rate_all':
               resBody = bodyList['caCollectionExpHourlyRate'];
               break;
-            case 'collection_exp_dentists':
+            case 'hourly_rate_dentists':
               resBody = bodyList['caCollectionExpHourlyRateDentist'];
               break;
-            case 'collection_exp_oht':
+            case 'hourly_rate_oht':
               resBody = bodyList['caCollectionExpHourlyRateOht'];
               break;
           }

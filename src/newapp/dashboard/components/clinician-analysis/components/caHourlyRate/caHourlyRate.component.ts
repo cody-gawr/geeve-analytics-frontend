@@ -47,16 +47,16 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get prodSelectShow$() {
-    return this.caFacade.prodSelectTab$;
+    return this.caFacade.hourlyRateProdSelectTab$;
   }
 
-  get colSelectShow$() {
-    return this.caFacade.colSelectTab$;
-  }
+  // get colSelectShow$() {
+  //   return this.caFacade.hourlyRateColSelectTab$;
+  // }
 
-  get colExpSelectShow$() {
-    return this.caFacade.colExpSelectTab$;
-  }
+  // get colExpSelectShow$() {
+  //   return this.caFacade.hourlyRateColExpSelectTab$;
+  // }
 
   get durationLabel$() {
     return this.layoutFacade.durationLabel$;
@@ -184,59 +184,30 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   get noDataAlertMessage$() {
     return combineLatest([
       this.isAllDentist$,
-      this.caFacade.hourlyRateChartName$,
+      // this.caFacade.hourlyRateChartName$,
       this.caFacade.hourlyRateProdSelectTab$,
-      this.caFacade.hourlyRateColSelectTab$,
-      this.caFacade.hourlyRateColExpSelectTab$,
+      // this.caFacade.hourlyRateColSelectTab$,
+      // this.caFacade.hourlyRateColExpSelectTab$,
     ]).pipe(
       map(
         ([
           isAllDentist,
-          visibility,
+          // visibility,
           prodSelectShow,
-          colSelectShow,
-          colExpSelectShow,
+          // colSelectShow,
+          // colExpSelectShow,
         ]) => {
-          switch (visibility) {
-            case 'Production':
-              if (isAllDentist) {
-                switch (prodSelectShow) {
-                  case 'hourly_rate_all':
-                    return 'You have no hourly rates for the selected period';
-                  case 'hourly_rate_dentists':
-                    return 'You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
-                  case 'hourly_rate_oht':
-                    return 'You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
-                }
-              } else {
+          if (isAllDentist) {
+            switch (prodSelectShow) {
+              case 'hourly_rate_all':
                 return 'You have no hourly rates for the selected period';
-              }
-            case 'Collection':
-              if (isAllDentist) {
-                switch (colSelectShow) {
-                  case 'collection_all':
-                    return 'You have no hourly rates in the selected period';
-                  case 'collection_dentists':
-                    return 'You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
-                  case 'collection_oht':
-                    return 'You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
-                }
-              } else {
-                return 'You have no hourly rates in the selected period';
-              }
-            case 'Collection-Exp':
-              if (isAllDentist) {
-                switch (colExpSelectShow) {
-                  case 'collection_exp_all':
-                    return 'You have no hourly rates in the selected period';
-                  case 'collection_exp_dentists':
-                    return 'You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
-                  case 'collection_exp_oht':
-                    return 'You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
-                }
-              } else {
-                return 'You have no hourly rates in the selected period';
-              }
+              case 'hourly_rate_dentists':
+                return 'You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
+              case 'hourly_rate_oht':
+                return 'You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
+            }
+          } else {
+            return 'You have no hourly rates for the selected period';
           }
         }
       )
@@ -290,17 +261,17 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   switchChartName(chartName: CA_PROD_CHART_NAME) {
-    switch (chartName) {
-      case 'Production':
-        this.caFacade.setHourlyRateProdSelectTab('hourly_rate_all');
-        break;
-      case 'Collection':
-        this.caFacade.setHourlyRateColSelectTab('collection_all');
-        break;
-      case 'Collection-Exp':
-        this.caFacade.setHourlyRateColExpSelectTab('collection_exp_all');
-        break;
-    }
+    // switch (chartName) {
+    //   case 'Production':
+    //     this.caFacade.setHourlyRateProdSelectTab('hourly_rate_all');
+    //     break;
+    //   case 'Collection':
+    //     this.caFacade.setHourlyRateColSelectTab('collection_all');
+    //     break;
+    //   case 'Collection-Exp':
+    //     this.caFacade.setHourlyRateColExpSelectTab('collection_exp_all');
+    //     break;
+    // }
 
     this.caFacade.setHourlyRateChartName(chartName);
   }
@@ -353,13 +324,13 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     this.caFacade.setHourlyRateProdSelectTab(event.value);
   }
 
-  onChangeColSelectTab(event) {
-    this.caFacade.setHourlyRateColSelectTab(event.value);
-  }
+  // onChangeColSelectTab(event) {
+  //   this.caFacade.setHourlyRateColSelectTab(event.value);
+  // }
 
-  onChangeColExpSelectTab(event) {
-    this.caFacade.setHourlyRateColExpSelectTab(event.value);
-  }
+  // onChangeColExpSelectTab(event) {
+  //   this.caFacade.setHourlyRateColExpSelectTab(event.value);
+  // }
 
   public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,

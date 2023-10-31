@@ -33,37 +33,12 @@
           <mat-select
             class="dropdown-font"
             [value]="prodSelectShow$ | async"
-            (selectionChange)="onChangeProdSelectTab($event)"
-            *ngIf="(chartName$ | async) === 'Production'">
-            <mat-option value="production_all">Hourly Rate - All</mat-option>
-            <mat-option value="production_dentists"
+            (selectionChange)="onChangeProdSelectTab($event)">
+            <mat-option value="hourly_rate_all">Hourly Rate - All</mat-option>
+            <mat-option value="hourly_rate_dentists"
               >Hourly Rate - Dentists</mat-option
             >
-            <mat-option value="production_oht">Hourly Rate - OHT</mat-option>
-          </mat-select>
-          <mat-select
-            [value]="colSelectShow$ | async"
-            (selectionChange)="onChangeColSelectTab($event)"
-            *ngIf="(chartName$ | async) === 'Collection'">
-            <mat-option value="collection_all">Hourly Rate - All</mat-option>
-            <mat-option value="collection_dentists"
-              >Hourly Rate - Dentists</mat-option
-            >
-            <mat-option value="collection_oht">Hourly Rate - OHT</mat-option>
-          </mat-select>
-          <mat-select
-            [value]="colExpSelectShow$ | async"
-            (selectionChange)="onChangeColExpSelectTab($event)"
-            *ngIf="(chartName$ | async) === 'Collection-Exp'">
-            <mat-option value="collection_exp_all"
-              >Hourly Rate - All</mat-option
-            >
-            <mat-option value="collection_exp_dentists"
-              >Hourly Rate - Dentists</mat-option
-            >
-            <mat-option value="collection_exp_oht"
-              >Hourly Rate - OHT</mat-option
-            >
+            <mat-option value="hourly_rate_oht">Hourly Rate - OHT</mat-option>
           </mat-select>
         </ng-template>
       </div>
