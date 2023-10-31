@@ -398,7 +398,6 @@ export const selectCaProductionChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
   selectTrend,
-  selectAverage,
   selectProductionChartName,
   selectProdSelectTab,
   selectColSelectTab,
@@ -409,7 +408,6 @@ export const selectCaProductionChartData = createSelector(
     bodyList,
     selectedClinics,
     trendMode,
-    averageMode,
     chartName,
     prodTab,
     colTab,
@@ -912,21 +910,15 @@ export const selectCaHourlyRateChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
   selectTrend,
-  selectAverage,
   selectHourlyRateChartName,
   selectHourlyRateProdSelectTab,
-  // selectHourlyRateColSelectTab,
-  // selectHourlyRateColExpSelectTab,
   selectCurrentDentistId,
   (
     bodyList,
     selectedClinics,
     trendMode,
-    averageMode,
     prodChartName,
     prodTab,
-    // colTab,
-    // colExpTab,
     currentDentistid
   ) => {
     let resBody: CaHourlyRateApiResponse | CaCollectionHourlyRateApiResponse =
@@ -1064,11 +1056,16 @@ export const selectCaHourlyRateChartData = createSelector(
       ];
 
       datasets[0].data = chartData;
+
       return {
         datasets,
         labels: chartLabels,
         total: Math.round(resBody.total),
-        average: Math.round(resBody.totalAverage),
+        average: _.chain(data)
+          .meanBy((item: CaHourlyRateItem | CaCollectionHourlyRateItem) =>
+            parseFloat(<string>item.hourlyRate)
+          )
+          .value(),
         prev: Math.round(resBody.totalTa),
         goal: parseInt(<string>resBody.goals),
         tableData,
