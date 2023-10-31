@@ -19,6 +19,7 @@ import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie';
 import _ from 'lodash';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-topbar',
@@ -287,12 +288,11 @@ export class AppTopbarComponent implements OnInit {
     }
   }
 
-  onChangeCurrentClinic(event) {
+  onChangeCurrentClinic(event: MatSelectChange) {
     this.clinicFacade.setCurrentSingleClinicId(event.value);
   }
 
-  onChangeCurrentDentist(event) {
-    console.log({ event });
+  onChangeCurrentDentist(event: MatSelectChange) {
     this.dentistFacade.setCurrentDentistId(event.value);
   }
 

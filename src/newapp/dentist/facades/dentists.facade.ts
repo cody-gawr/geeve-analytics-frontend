@@ -35,7 +35,6 @@ export class DentistFacade {
   }
 
   public setCurrentDentistId(dentistId: number) {
-    console.log({ dentistId });
     this.store.dispatch(DentistPageActions.setCurrentDentistId({ dentistId }));
   }
 }

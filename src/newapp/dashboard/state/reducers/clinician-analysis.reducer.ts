@@ -491,41 +491,38 @@ export const selectCaProductionChartData = createSelector(
         };
       }
 
+      let data: (CaDentistProductionItem | CaCollectionItem)[] = resBody.data;
+
       if (selectedClinics.length > 1) {
-        if (chartName === 'Production') {
-          (<CaDentistProductionApiResponse>resBody).data
-            .sort(
-              (a: CaDentistProductionItem, b: CaDentistProductionItem) =>
-                parseFloat(<string>a.production) -
-                parseFloat(<string>b.production)
-            )
-            .reverse();
-        } else {
-          (<CaCollectionApiResponse>resBody).data
-            .sort(
-              (a: CaCollectionItem, b: CaCollectionItem) =>
-                parseFloat(<string>a.collection) -
-                parseFloat(<string>b.collection)
-            )
-            .reverse();
-        }
+        data = _.chain(data)
+          .sortBy(item =>
+            chartName === 'Production'
+              ? parseFloat(<string>(<CaDentistProductionItem>item).production)
+              : parseFloat(<string>(<CaCollectionItem>item).collection)
+          )
+          .reverse()
+          .value();
       }
 
-      if (resBody.data.length > 20) {
-        resBody.data = resBody.data.slice(0, 20);
+      if (data.length > 20) {
+        data = data.slice(0, 20);
       }
       const tableData = [];
       let dentistKey = 0;
-      resBody.data.forEach((res, i) => {
+      data.forEach((item, i) => {
         if (chartName === 'Production') {
-          chartData.push(Math.round(<number>res.production));
+          chartData.push(
+            Math.round(<number>(<CaDentistProductionItem>item).production)
+          );
         } else {
-          chartData.push(Math.round(<number>res.collection));
+          chartData.push(
+            Math.round(<number>(<CaCollectionItem>item).collection)
+          );
         }
 
         const pName =
-          res.providerName +
-          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+          item.providerName +
+          (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
 
         chartLabels.push(pName);
         dentistKey = i;
@@ -551,7 +548,7 @@ export const selectCaProductionChartData = createSelector(
         {
           data: [],
           backgroundColor: dynamicBarBackgroundColor(
-            resBody.data,
+            data,
             chartLabels,
             selectClinics.length > 1,
             selectedClinics,
@@ -932,7 +929,6 @@ export const selectCaHourlyRateChartData = createSelector(
     // colExpTab,
     currentDentistid
   ) => {
-    console.log({ bodyList });
     let resBody: CaHourlyRateApiResponse | CaCollectionHourlyRateApiResponse =
       null;
     const isAllDentist = currentDentistid === 'all';
@@ -1011,13 +1007,12 @@ export const selectCaHourlyRateChartData = createSelector(
         resBody.data;
 
       if (selectedClinics.length > 1) {
-        data
-          .sort(
-            (a: CaCollectionHourlyRateItem, b: CaCollectionHourlyRateItem) =>
-              parseFloat(<string>a.hourlyRate) -
-              parseFloat(<string>b.hourlyRate)
+        data = _.chain(data)
+          .sortBy((item: CaCollectionHourlyRateItem) =>
+            parseFloat(<string>item.hourlyRate)
           )
-          .reverse();
+          .reverse()
+          .value();
       }
 
       if (data.length > 20) {
@@ -1285,26 +1280,26 @@ export const selectCaNumNewPatientsChartData = createSelector(
     }
 
     if (isAllDentist) {
+      let data: CaNumNewPatientsItem[] = resBody.data;
       if (selectedClinics.length > 1) {
-        resBody.data
-          .sort(
-            (a, b) =>
-              parseFloat(<string>a.newPatients) -
-              parseFloat(<string>b.newPatients)
+        data = _.chain(data)
+          .sort((item: CaNumNewPatientsItem) =>
+            parseFloat(<string>item.newPatients)
           )
-          .reverse();
+          .reverse()
+          .value();
       }
 
       const chartData = [],
         chartLabels = [];
       let chartColors = [];
 
-      if (resBody.data.length > 20) {
-        resBody.data = resBody.data.slice(0, 20);
+      if (data.length > 20) {
+        data = data.slice(0, 20);
       }
       let newpKey = 0;
       const tableData = [];
-      resBody.data.forEach((res, i) => {
+      data.forEach((res, i) => {
         chartData.push(Math.round(<number>res.newPatients));
 
         const pName =
@@ -1322,7 +1317,7 @@ export const selectCaNumNewPatientsChartData = createSelector(
         chartColors = [
           {
             backgroundColor: dynamicBarBackgroundColor(
-              resBody.data,
+              data,
               chartLabels,
               selectClinics.length > 1,
               selectedClinics,
@@ -1618,23 +1613,23 @@ export const selectTxPlanAvgFeesChartData = createSelector(
           tableData: [],
         };
       }
+      let data: CaTxPlanAvgFeeItem[] = resBody.data;
 
       if (selectedClinics.length > 1) {
-        resBody.data
-          .sort(
-            (a, b) =>
-              parseFloat(<string>a.averageFees) -
-              parseFloat(<string>b.averageFees)
+        data = _.chain(data)
+          .sortBy((item: CaTxPlanAvgFeeItem) =>
+            parseFloat(<string>item.averageFees)
           )
-          .reverse();
+          .reverse()
+          .value();
       }
 
-      if (resBody.data.length > 20) {
-        resBody.data = resBody.data.slice(0, 20);
+      if (data.length > 20) {
+        data = data.slice(0, 20);
       }
       const tableData = [];
       let dentistKey = 0;
-      resBody.data.forEach((res, i) => {
+      data.forEach((res, i) => {
         chartData.push(Math.round(<number>res.averageFees));
 
         const pName =
@@ -1665,7 +1660,7 @@ export const selectTxPlanAvgFeesChartData = createSelector(
         {
           data: [],
           backgroundColor: dynamicBarBackgroundColor(
-            resBody.data,
+            data,
             chartLabels,
             selectClinics.length > 1,
             selectedClinics,
@@ -1862,22 +1857,23 @@ export const selectTxPlanCompRateChartData = createSelector(
         };
       }
 
+      let data: CaTxPlanCompRateItem[] = resBody.data;
+
       if (selectedClinics.length > 1) {
-        resBody.data
-          .sort(
-            (a, b) =>
-              parseFloat(<string>a.treatmentPerPlanPercentage) -
-              parseFloat(<string>b.treatmentPerPlanPercentage)
+        data = _.chain(data)
+          .sortBy((item: CaTxPlanCompRateItem) =>
+            parseFloat(<string>item.treatmentPerPlanPercentage)
           )
-          .reverse();
+          .reverse()
+          .value();
       }
 
-      if (resBody.data.length > 20) {
-        resBody.data = resBody.data.slice(0, 20);
+      if (data.length > 20) {
+        data = data.slice(0, 20);
       }
       const tableData = [];
       let dentistKey = 0;
-      resBody.data.forEach((res, i) => {
+      data.forEach((res, i) => {
         chartData.push(Math.round(<number>res.treatmentPerPlanPercentage));
 
         const pName =
@@ -1908,7 +1904,7 @@ export const selectTxPlanCompRateChartData = createSelector(
         {
           data: [],
           backgroundColor: dynamicBarBackgroundColor(
-            resBody.data,
+            data,
             chartLabels,
             selectClinics.length > 1,
             selectedClinics,
@@ -2179,32 +2175,32 @@ export const selectRecallRateChartData = createSelector(
           tableData: [],
         };
       }
+      let data: (CaRecallRateItem | CaReappRateItem)[] = resBody.data;
 
       if (selectedClinics.length > 1) {
-        resBody.data
-          .sort(
-            (a, b) =>
-              parseFloat(<string>a.recallPercent) -
-              parseFloat(<string>b.recallPercent)
+        data = _.chain(data)
+          .sortBy((item: CaRecallRateItem) =>
+            parseFloat(<string>item.recallPercent)
           )
-          .reverse();
+          .reverse()
+          .value();
       }
 
-      if (resBody.data.length > 20) {
-        resBody.data = resBody.data.slice(0, 20);
+      if (data.length > 20) {
+        data = data.slice(0, 20);
       }
       const tableData = [];
       let dentistKey = 0;
-      resBody.data.forEach((res, i) => {
+      data.forEach((item: CaRecallRateItem | CaReappRateItem, i) => {
         chartData.push(
           chartName === 'Recall Prebook Rate'
-            ? Math.round(<number>res.recallPercent)
-            : Math.round(<number>res.reappointRate)
+            ? Math.round(<number>(<CaRecallRateItem>item).recallPercent)
+            : Math.round(<number>(<CaReappRateItem>item).reappointRate)
         );
 
         const pName =
-          res.providerName +
-          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+          item.providerName +
+          (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
 
         chartLabels.push(pName);
         dentistKey = i;
@@ -2230,7 +2226,7 @@ export const selectRecallRateChartData = createSelector(
         {
           data: [],
           backgroundColor: dynamicBarBackgroundColor(
-            resBody.data,
+            data,
             chartLabels,
             selectClinics.length > 1,
             selectedClinics,
@@ -2459,8 +2455,9 @@ export const selectCaNumComplaintsChartData = createSelector(
     }
 
     if (isAllDentist) {
+      let data: CaNumComplaintsItem[] = resBody.data;
       if (selectedClinics.length > 1) {
-        resBody.data
+        data
           .sort(
             (a, b) =>
               parseFloat(<string>a.numComplaints) -
@@ -2473,12 +2470,12 @@ export const selectCaNumComplaintsChartData = createSelector(
         chartLabels = [];
       let chartColors = [];
 
-      if (resBody.data.length > 20) {
-        resBody.data = resBody.data.slice(0, 20);
+      if (data.length > 20) {
+        data = data.slice(0, 20);
       }
       let newpKey = 0;
       const tableData = [];
-      resBody.data.forEach((res, i) => {
+      data.forEach((res, i) => {
         chartData.push(Math.round(<number>res.numComplaints));
 
         const pName =
@@ -2496,7 +2493,7 @@ export const selectCaNumComplaintsChartData = createSelector(
         chartColors = [
           {
             backgroundColor: dynamicBarBackgroundColor(
-              resBody.data,
+              data,
               chartLabels,
               selectClinics.length > 1,
               selectedClinics,

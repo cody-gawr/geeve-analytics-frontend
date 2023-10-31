@@ -240,7 +240,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
           this.datasets = trendData.datasets ?? [];
           this.labels = trendData.labels ?? [];
         }
-        console.log({ data });
 
         this.total = data.total;
         this.prev = data.prev;
