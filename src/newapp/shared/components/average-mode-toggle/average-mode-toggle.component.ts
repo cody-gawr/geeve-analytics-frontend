@@ -1,5 +1,6 @@
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -11,12 +12,10 @@ export class AverageModeToggleComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
-  constructor(private layoutFacade: LayoutFacade) {
-    //this.layoutFacade.setAverage('off');
-  }
+  constructor(private layoutFacade: LayoutFacade) {}
 
   get avgMode$() {
-    return this.layoutFacade.average$.pipe(takeUntil(this.destroy$));
+    return this.layoutFacade.average$;
   }
 
   ngOnInit(): void {}
@@ -25,7 +24,7 @@ export class AverageModeToggleComponent implements OnInit, OnDestroy {
     this.destroy.next();
   }
 
-  onChangeAvgMode(event) {
+  onChangeAvgMode(event: MatButtonToggleChange) {
     this.layoutFacade.setAverage(event.value);
   }
 }

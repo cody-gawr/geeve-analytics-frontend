@@ -143,13 +143,11 @@ export const selectCurrentClinics = createSelector(
 export const selectCurrentClinicId = createSelector(
   selectCurrentClinics,
   clinics => {
-    if (clinics.length > 0) {
-      return clinics.length > 1
+    return clinics.length > 0
+      ? clinics.length > 1
         ? clinics.map(c => c.id).join(',')
-        : clinics[0].id;
-    } else {
-      return null;
-    }
+        : clinics[0].id
+      : null;
   }
 );
 

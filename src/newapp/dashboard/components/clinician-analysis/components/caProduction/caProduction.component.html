@@ -6,17 +6,14 @@
     class="help-tip"
     fontIcon="help"></mat-icon>
   <mat-icon
-    *ngIf="(isAllDentist$ | async) || !(isTrend$ | async)"
+    *ngIf="isTableIconVisible$ | async"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
     fontIcon="table_rows_narrow" />
   <div class="chart-title">
     <mat-icon
-      *ngIf="
-        (duration$ | async) != 'custom' &&
-        ((isAllDentist$ | async) || !(isTrend$ | async))
-      "
+      *ngIf="isTrendIconVisible$ | async"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"
       [matTooltip]="getTrendTip$ | async"></mat-icon>
@@ -105,11 +102,7 @@
           <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
           <ng-template #chartElem>
             <ngx-gauge
-              *ngIf="
-                !(isAllDentist$ | async) &&
-                !(isTrend$ | async) &&
-                (hasData$ | async)
-              "
+              *ngIf="isGaugeChartVisible$ | async"
               type="arch"
               [value]="gaugeValue"
               [label]="gaugeLabel"
@@ -124,10 +117,7 @@
             </ngx-gauge>
             <canvas
               baseChart
-              *ngIf="
-                ((isAllDentist$ | async) || (isTrend$ | async)) &&
-                (hasData$ | async)
-              "
+              *ngIf="isChartVisible$ | async"
               [datasets]="datasets"
               [labels]="labels"
               [legend]="isLegendVisible$ | async"
@@ -136,7 +126,7 @@
             </canvas>
             <spin-loader
               class="empty-placeholder"
-              *ngIf="!(hasData$ | async)"
+              *ngIf="hasData$ | async"
               [disableSpin]="true">
               {{ noDataAlertMessage$ | async }}
             </spin-loader>
@@ -151,7 +141,7 @@
         </div>
 
         <div *ngIf="(duration$ | async) !== 'custom'">
-          <h3>${{ prev }}</h3>
+          <h3>{{ prev | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>
         <div *ngIf="goal >= 0 && (showGoals$ | async) == true">

@@ -26,7 +26,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
 
   get isAllDentist$() {
     return this.dentistFacade.currentDentistId$.pipe(
-      takeUntil(this.destroy$),
       map(v => {
         return v === 'all';
       })

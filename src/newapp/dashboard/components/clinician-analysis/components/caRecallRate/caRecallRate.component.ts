@@ -301,7 +301,6 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
       this.isTrend$,
       this.isAllDentist$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(
         ([v, cMode, isTrend, isAllDentist]) =>
           v?.type == 4 && v?.plan != 'lite' && cMode && isTrend && !isAllDentist
@@ -312,7 +311,6 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
 
   get isAllDentist$() {
     return this.dentistFacade.currentDentistId$.pipe(
-      takeUntil(this.destroy$),
       map(v => {
         return v === 'all';
       })
@@ -321,7 +319,6 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
 
   get noDataAlertMessage$() {
     return combineLatest([this.caFacade.recallRateChartName$]).pipe(
-      takeUntil(this.destroy$),
       map(([visibility]) => {
         switch (visibility) {
           case 'Recall Prebook Rate':

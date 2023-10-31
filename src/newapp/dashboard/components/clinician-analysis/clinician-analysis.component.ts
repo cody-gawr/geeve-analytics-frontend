@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import {
+  Observable,
   Subject,
   takeUntil,
   combineLatest,
@@ -53,31 +54,26 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get clinicId$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.clinicFacade.currentClinicId$;
   }
 
-  get isAllDentist$() {
-    return this.dentistFacade.currentDentistId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => {
-        return v === 'all';
-      })
+  get isAverageToggleVisible$(): Observable<boolean> {
+    return combineLatest([
+      this.dentistFacade.currentDentistId$,
+      this.clinicFacade.currentMultiClinicIDs$,
+    ]).pipe(
+      map(
+        ([dentistId, clinicIds]) => dentistId === 'all' || clinicIds.length > 1
+      )
     );
   }
 
   get isEnableCompare$() {
     return this.authFacade.rolesIndividual$.pipe(
-      takeUntil(this.destroy$),
       map(v => v?.type == 4 && v?.plan != 'lite')
     );
   }
@@ -94,7 +90,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
-      this.clinicFacade.currentClinicId$,
+      this.clinicFacade.currentMultiClinicIDs$,
       this.layoutFacade.dateRange$,
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
@@ -106,23 +102,22 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(params => {
-        const [clinicId, dateRange, route, trend, dentistId, isTrend] = params;
-        if (clinicId == null) return;
+        const [clinicIds, dateRange, route, trend, dentistId, isTrend] = params;
+        if (clinicIds.length == 0) return;
 
         const isAllDentist = dentistId === 'all';
         const providerId =
-          dentistId !== 'all' && typeof clinicId !== 'string'
-            ? dentistId
-            : undefined;
+          dentistId !== 'all' && clinicIds.length == 1 ? dentistId : undefined;
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
 
-        this.dashbordFacade.loadChartTips(1, clinicId);
+        this.dashbordFacade.loadChartTips(1, clinicIds.join(','));
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
-        if (trend === 'off' || isAllDentist) {
+        console.log({ trend });
+        if (isAllDentist || clinicIds.length > 1) {
           const params = {
-            clinicId: clinicId,
+            clinicId: clinicIds.join(','),
             startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
             endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
             duration: duration,
@@ -131,6 +126,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
           };
 
           for (const api of caEndpoints) {
+            console.log({ clinicIds, trend, isAllDentist });
             this.caFacade.loadNoneTrendApiRequest({
               ...params,
               api,
@@ -138,18 +134,14 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
           }
         }
 
-        if (!isAllDentist) {
+        if (!isAllDentist && clinicIds.length == 1) {
           const endpoints = [
-            // 'caDentistProductionTrend',
-            // 'caCollectionTrend',
-            // 'caCollectionExpTrend',
+            'caDentistProductionTrend',
+            'caCollectionTrend',
+            'caCollectionExpTrend',
           ];
           if (isTrend) {
             endpoints.push(
-              'caDentistProductionTrend',
-              'caCollectionTrend',
-              'caCollectionExpTrend',
-
               'caHourlyRateTrend',
               'caCollectionHourlyRateTrend',
               'caCollectionExpHourlyRateTrend',
@@ -165,7 +157,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
           endpoints.forEach(api => {
             const params = {
-              clinicId,
+              clinicId: clinicIds.join(','),
               mode:
                 trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
               queryWhEnabled,
@@ -201,7 +193,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       this.caFacade.txPlanAvgFeeChartName$,
       this.dashbordFacade.chartTips$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([chartName, tipData]) => {
         tipData = tipData ?? [];
         if (chartName == 'Avg. Completed Fees') {
@@ -218,7 +209,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       this.caFacade.recallRateChartName$,
       this.dashbordFacade.chartTips$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([chartName, tipData]) => {
         tipData = tipData ?? [];
         if (chartName == 'Recall Prebook Rate') {

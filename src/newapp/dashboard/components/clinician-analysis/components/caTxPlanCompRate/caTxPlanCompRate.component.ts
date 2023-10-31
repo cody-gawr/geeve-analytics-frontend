@@ -146,7 +146,6 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
 
   get isAllDentist$() {
     return this.dentistFacade.currentDentistId$.pipe(
-      takeUntil(this.destroy$),
       map(v => {
         return v === 'all';
       })
@@ -154,10 +153,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
   }
 
   constructor(

@@ -155,7 +155,6 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
 
   get isAllDentist$() {
     return this.dentistFacade.currentDentistId$.pipe(
-      takeUntil(this.destroy$),
       map(v => {
         return v === 'all';
       })
@@ -164,7 +163,6 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
 
   get noDataAlertMessage$() {
     return combineLatest([this.caFacade.txPlanAvgFeeChartName$]).pipe(
-      takeUntil(this.destroy$),
       map(([visibility]) => {
         switch (visibility) {
           case 'Avg. Proposed Fees':
