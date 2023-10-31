@@ -126,7 +126,7 @@
             </canvas>
             <spin-loader
               class="empty-placeholder"
-              *ngIf="hasData$ | async"
+              *ngIf="!(hasData$ | async)"
               [disableSpin]="true">
               {{ noDataAlertMessage$ | async }}
             </spin-loader>

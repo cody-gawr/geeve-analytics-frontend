@@ -21,7 +21,7 @@ import {
   takeUntil,
   combineLatest,
   map,
-  tap,
+  withLatestFrom,
   distinctUntilChanged,
 } from 'rxjs';
 
@@ -127,17 +127,13 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   get hasData$(): Observable<boolean> {
     return combineLatest([
-      this.clinicFacade.currentMultiClinicIds$,
-      this.isAllDentist$,
-      this.isTrend$,
+      this.caFacade.caProductionChartData$,
+      this.caFacade.caProductionTrendChartData$,
     ]).pipe(
-      map(([clinicIds, isAll, isTrend]) => {
-        if (clinicIds.length > 1 || isAll || isTrend) {
-          return this.datasets[0]?.data.length > 0;
-        } else {
-          return this.gaugeValue > 0;
-        }
-      })
+      map(
+        ([data, trendData]) =>
+          data.datasets?.length > 0 || trendData.datasets?.length > 0
+      )
     );
   }
 
