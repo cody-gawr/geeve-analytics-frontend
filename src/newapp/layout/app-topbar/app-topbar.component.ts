@@ -298,38 +298,33 @@ export class AppTopbarComponent implements OnInit {
 
   previousSelectedMultiClinics: Array<number | 'all'> = null;
 
-  onChangeMultiClinics(event) {
-    combineLatest([
-      this.clinicFacade.clinics$,
-      // this.clinicFacade.currentClinics$,
-    ])
-      .pipe(take(1))
-      .subscribe(([clinics]) => {
-        this.previousSelectedMultiClinics = this.selectedMultiClinics.slice();
-        const clinicIDs = event.value;
-        const isPrevAll =
-          this.previousSelectedMultiClinics.filter(v => v !== 'all').length ===
-          clinics.length;
-        let currentMultiClinicIds: Array<'all' | number> = [];
-        if (
-          clinicIDs.length == clinics.length &&
+  onChangeMultiClinics(event: MatSelectChange) {
+    this.clinicFacade.clinics$.pipe(take(1)).subscribe(clinics => {
+      this.previousSelectedMultiClinics = this.selectedMultiClinics.slice();
+      const clinicIDs = event.value;
+      const isPrevAll =
+        this.previousSelectedMultiClinics.filter(v => v !== 'all').length ===
+        clinics.length;
+      let currentMultiClinicIds: Array<'all' | number> = [];
+      if (
+        clinicIDs.length == clinics.length &&
+        !clinicIDs.includes('all') &&
+        isPrevAll
+      ) {
+        currentMultiClinicIds = [];
+      } else if (
+        (clinicIDs.length == clinics.length &&
           !clinicIDs.includes('all') &&
-          isPrevAll
-        ) {
-          currentMultiClinicIds = [];
-        } else if (
-          (clinicIDs.length == clinics.length &&
-            !clinicIDs.includes('all') &&
-            !isPrevAll) ||
-          (clinicIDs.includes('all') && !isPrevAll)
-        ) {
-          currentMultiClinicIds = [...clinics.map(c => c.id), 'all'];
-        } else {
-          const selectedClinicIDs = <number[]>clinicIDs.filter(c => c != 'all');
-          currentMultiClinicIds = selectedClinicIDs;
-        }
-        this.selectedMultiClinics = currentMultiClinicIds;
-      });
+          !isPrevAll) ||
+        (clinicIDs.includes('all') && !isPrevAll)
+      ) {
+        currentMultiClinicIds = [...clinics.map(c => c.id), 'all'];
+      } else {
+        const selectedClinicIDs = <number[]>clinicIDs.filter(c => c != 'all');
+        currentMultiClinicIds = selectedClinicIDs;
+      }
+      this.selectedMultiClinics = currentMultiClinicIds;
+    });
   }
 
   onApplyMultiClinics() {
