@@ -402,8 +402,13 @@ export class ClinicComponent implements AfterViewInit {
     this.setupService.getConnectCoreLink(id).subscribe(
       res => {
         if (res.status == 200) {
-          let connectToCoreLink = res.body.data;
-          this.connectToCore(connectToCoreLink, id, reconnect);
+          const appSuccess = res.body.success;
+          if (appSuccess) {
+            let connectToCoreLink = res.body.data;
+            this.connectToCore(connectToCoreLink, id, reconnect);
+          } else {
+            this.warningMessage = res.body.message;
+          }
         }
       },
       error => {
@@ -509,7 +514,7 @@ export class ClinicComponent implements AfterViewInit {
     event.preventDefault();
     event.stopPropagation();
     const clinic = this.rows.find(r => r.id === clinicId);
-    if (clinic.core_clinics?.every(c => c.clinic_url)) {
+    if (clinic.core_clinics[0]?.clinic_url) {
       this.getConnectCoreLink(clinicId, true);
     } else {
       this.toastr.warning('No Registred Clinic URL');
