@@ -1007,8 +1007,11 @@ export const selectCaHourlyRateChartData = createSelector(
         };
       }
 
+      let data: (CaHourlyRateItem | CaCollectionHourlyRateItem)[] =
+        resBody.data;
+
       if (selectedClinics.length > 1) {
-        (<CaCollectionHourlyRateApiResponse>resBody).data
+        data
           .sort(
             (a: CaCollectionHourlyRateItem, b: CaCollectionHourlyRateItem) =>
               parseFloat(<string>a.hourlyRate) -
@@ -1017,29 +1020,27 @@ export const selectCaHourlyRateChartData = createSelector(
           .reverse();
       }
 
-      if (resBody.data.length > 20) {
-        resBody.data = resBody.data.slice(0, 20);
+      if (data.length > 20) {
+        data = data.slice(0, 20);
       }
       const tableData = [];
-      resBody.data.forEach(
-        (res: CaHourlyRateItem | CaCollectionHourlyRateItem, i) => {
-          chartData.push(Math.round(<number>res.hourlyRate));
+      data.forEach((res: CaHourlyRateItem | CaCollectionHourlyRateItem, i) => {
+        chartData.push(Math.round(<number>res.hourlyRate));
 
-          const pName =
-            res.providerName +
-            (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
-          if (res.providerName != null && res.providerName != 'Anonymous') {
-            chartLabels.push(pName);
-          } else {
-            chartLabels.push(pName);
-          }
-
-          tableData.push({
-            label: pName,
-            value: chartData[i],
-          });
+        const pName =
+          res.providerName +
+          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+        if (res.providerName != null && res.providerName != 'Anonymous') {
+          chartLabels.push(pName);
+        } else {
+          chartLabels.push(pName);
         }
-      );
+
+        tableData.push({
+          label: pName,
+          value: chartData[i],
+        });
+      });
 
       let datasets = [
         {
