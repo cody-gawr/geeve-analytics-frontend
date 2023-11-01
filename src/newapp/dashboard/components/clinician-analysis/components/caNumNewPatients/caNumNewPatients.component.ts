@@ -1,5 +1,6 @@
 import { splitName } from '@/app/util';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { COLORS } from '@/newapp/constants';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
@@ -7,7 +8,7 @@ import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { formatXLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ChartOptions } from 'chart.js';
+import { Chart, ChartOptions, Plugin } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
@@ -135,6 +136,21 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     );
   }
 
+  get chartPlugins$() {
+    return combineLatest([
+      this.isTrend$,
+      this.isAllDentist$,
+      this.clinicFacade.currentClinics$,
+    ]).pipe(
+      takeUntil(this.destroy$),
+      map(([isTrend, isAllDentist, clinics]) => {
+        if (isAllDentist || !isTrend || clinics.length > 1)
+          return this.beforeDrawChart(this.total);
+        else return null;
+      })
+    );
+  }
+
   get hasData$() {
     return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
       map(([isAll, isTrend]) => {
@@ -214,7 +230,8 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
+    private clinicFacade: ClinicFacade
   ) {
     combineLatest([
       this.isAllDentist$,
@@ -464,4 +481,34 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
       },
     },
   };
+
+  beforeDrawChart(count: number, isCurrency?: boolean) {
+    const array: Plugin[] = [
+      {
+        id: 'plugin-123',
+        beforeDraw: (chart: Chart) => {
+          const ctx = chart.ctx;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+          const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+          ctx.font = (count.toString().length > 4 ? 24 : 37) + 'px Gilroy-Bold';
+          ctx.fillStyle = '#454649';
+          // Draw text in center
+          let perThousands = count
+            .toFixed(0)
+            .split(/(?=(?:...)*$)/)
+            .join(','); //decimal numbers fixed to zero number of digits after decimal point
+
+          if (isCurrency) {
+            ctx.fillText('$ ' + perThousands, centerX, centerY);
+          } else {
+            ctx.fillText(perThousands, centerX, centerY);
+          }
+        },
+      },
+    ];
+
+    return array;
+  }
 }

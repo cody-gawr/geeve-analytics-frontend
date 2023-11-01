@@ -35,7 +35,10 @@ export class ServerErrorInterceptor implements HttpInterceptor {
             AuthApiActions.loginFailure({ error: error.message })
           );
           if (!(error.url && error.url.includes('/login'))) {
-            this.router.navigateByUrl('/login');
+            //this.router.navigateByUrl('/login', );
+            this.router.navigate(['/login'], {
+              queryParams: { returnUrl: this.router.url },
+            });
           }
         } else if (error.status === 403) {
           // const errMsg = getApiErrorMesssage(error);
