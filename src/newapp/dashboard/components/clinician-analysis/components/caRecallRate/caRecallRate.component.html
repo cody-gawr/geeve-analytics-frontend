@@ -107,7 +107,7 @@
         </div>
 
         <div *ngIf="(duration$ | async) !== 'custom'">
-          <h3>${{ prev }}</h3>
+          <h3>{{ prev }}%</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>
         <div *ngIf="goal >= 0 && (showGoals$ | async) == true">

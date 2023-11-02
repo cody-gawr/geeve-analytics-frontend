@@ -88,12 +88,12 @@
 
       <div class="chart-foot" *ngIf="isEnableFooter$ | async">
         <div>
-          <h3>{{ total | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
+          <h3>{{ total }}</h3>
           <span>{{ durationLabel$ | async }}</span>
         </div>
 
         <div *ngIf="(duration$ | async) !== 'custom'">
-          <h3>${{ prev }}</h3>
+          <h3>{{ prev }}</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>
         <div *ngIf="goal >= 0 && (showGoals$ | async) == true">
