@@ -286,8 +286,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         ([clinicIds, avgMode, isAllDentist, isTrend, data, trendData]) => {
-          console.log({ data });
-
           if (isAllDentist || !isTrend) {
             this.datasets = data.datasets ?? [];
             this.labels = data.labels ?? [];

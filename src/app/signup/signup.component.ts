@@ -59,10 +59,6 @@ export class SignupComponent implements OnInit {
         this.loadScript('../../assets/js/signupxero.js');
       }, 500);
     });
-
-    // console.log("isloaded", this.loaded);
-
-    // var ml_account = ml('accounts', '2348549', 'w4o2f2u2e9', 'load');
   }
 
   ngOnInit() {

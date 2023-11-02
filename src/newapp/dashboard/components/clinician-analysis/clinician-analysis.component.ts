@@ -114,7 +114,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
         this.dashbordFacade.loadChartTips(1, clinicIds.join(','));
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
-        console.log({ trend });
+
         if (isAllDentist || clinicIds.length > 1) {
           const params = {
             clinicId: clinicIds.join(','),
@@ -126,7 +126,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
           };
 
           for (const api of caEndpoints) {
-            console.log({ clinicIds, trend, isAllDentist });
             this.caFacade.loadNoneTrendApiRequest({
               ...params,
               api,

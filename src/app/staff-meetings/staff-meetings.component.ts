@@ -438,29 +438,6 @@ export class StaffMeetingsComponent implements OnInit {
         day_time = day_time == 'AM' ? 'PM' : 'AM';
       }
     }
-    // if(time[0] != "12"){
-    //   if(hr>12){
-    //     if(hr == 24){
-    //       hr = 12;
-    //     }else{
-    //       hr = hr%12;
-    //     }
-    //     day_time = day_time == "AM" ? "PM" : "AM";
-    //   }else if(hr == 12){
-    //     day_time = day_time == "AM" ? "PM" : "AM";
-    //   }
-    // }else{
-    //   console.log("-->",hr);
-
-    //   if(hr > 12 ){
-    //     if(hr == 24){
-    //       hr = 12;
-    //     }else{
-    //       hr = (hr%12);
-    //     }
-    //   }
-    //   console.log("--->",hr);
-    // }
 
     let end_time = hr + ':' + min + ' ' + day_time;
     let start_date = this.datepipe.transform(formData.start_date, 'yyyy-MM-dd');

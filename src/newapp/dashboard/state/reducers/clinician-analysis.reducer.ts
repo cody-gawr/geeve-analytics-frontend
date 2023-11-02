@@ -419,7 +419,7 @@ export const selectCaProductionChartData = createSelector(
     const isTrend = trendMode && trendMode !== 'off';
     let resBody: CaDentistProductionApiResponse | CaCollectionApiResponse =
       null;
-    console.log({ bodyList });
+
     switch (chartName) {
       case 'Production':
         if (isAllDentist) {
@@ -478,7 +478,7 @@ export const selectCaProductionChartData = createSelector(
       let chartData = [],
         chartLabels = [],
         chartColors: any[] = [];
-      console.log(resBody);
+
       if (!resBody?.data) {
         return {
           datasets: [],

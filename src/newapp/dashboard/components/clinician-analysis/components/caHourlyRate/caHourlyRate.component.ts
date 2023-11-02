@@ -318,7 +318,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   onChangeProdSelectTab(event: MatSelectChange) {
-    console.log(event.value);
     this.caFacade.setHourlyRateProdSelectTab(event.value);
   }
 
