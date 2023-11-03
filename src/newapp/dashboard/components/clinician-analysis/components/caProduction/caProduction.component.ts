@@ -101,12 +101,12 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   get isLegendVisible$() {
     return combineLatest([
-      this.clinicFacade.currentClinicId$,
-      this.isAllDentist$,
+      this.clinicFacade.currentClinics$,
+      this.isDentistMode$,
       this.isTrend$,
     ]).pipe(
-      map(([v, isAllDentist, isTrend]) =>
-        isAllDentist || !isTrend ? typeof v === 'string' : false
+      map(([clinics, isDentistMode, isTrend]) =>
+        !isDentistMode ? clinics.length > 1 : false
       )
     );
   }
@@ -141,11 +141,19 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isFooterEnabled$() {
-    return this.caFacade.isHideFooterSection$;
+    return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
   }
 
-  get isAllDentist$() {
-    return this.dentistFacade.currentDentistId$.pipe(map(v => v === 'all'));
+  get isDentistMode$() {
+    return this.caFacade.isDentistMode$;
+  }
+
+  // get isAllDentist$() {
+  //   return this.dentistFacade.currentDentistId$.pipe(map(v => v === 'all'));
+  // }
+
+  get isMultiClinics$() {
+    return this.clinicFacade.currentClinics$.pipe(map(v => v.length > 1));
   }
 
   get isTableIconVisible$(): Observable<boolean> {
@@ -158,35 +166,33 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   get isGaugeChartVisible$(): Observable<boolean> {
     return combineLatest([
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
       this.hasData$,
     ]).pipe(
       map(
-        ([isAllDentist, isTrend, hasData]) =>
-          !(isAllDentist || isTrend) && hasData
+        ([isDentistMode, isTrend, hasData]) =>
+          isDentistMode && !isTrend && hasData
       )
     );
   }
 
   get isChartVisible$(): Observable<boolean> {
     return combineLatest([
-      this.clinicFacade.currentMultiClinicIds$,
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
       this.hasData$,
     ]).pipe(
       map(
-        ([clinicIds, isAllDentist, isTrend, hasData]) =>
-          (clinicIds.length > 1 || isAllDentist || isTrend) && hasData
+        ([isDentistMode, isTrend, hasData]) =>
+          (!isDentistMode || isTrend) && hasData
       )
     );
   }
 
   get noDataAlertMessage$() {
     return combineLatest([
-      this.clinicFacade.currentMultiClinicIds$,
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.caFacade.prodChartName$,
       this.caFacade.prodSelectTab$,
       this.caFacade.colSelectTab$,
@@ -194,8 +200,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([
-          clinicIds,
-          isAllDentist,
+          isDentistMode,
           visibility,
           prodSelectShow,
           colSelectShow,
@@ -203,7 +208,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         ]) => {
           switch (visibility) {
             case 'Production':
-              if (isAllDentist) {
+              if (!isDentistMode) {
                 switch (prodSelectShow) {
                   case 'production_all':
                     return 'You have no production in the selected period';
@@ -216,7 +221,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
                 return 'You have no production in the selected period';
               }
             case 'Collection':
-              if (isAllDentist) {
+              if (!isDentistMode) {
                 switch (colSelectShow) {
                   case 'collection_all':
                     return 'You have no Collection in the selected period';
@@ -229,7 +234,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
                 return 'You have no Collection in the selected period';
               }
             case 'Collection-Exp':
-              if (isAllDentist) {
+              if (!isDentistMode) {
                 switch (colExpSelectShow) {
                   case 'collection_exp_all':
                     return 'You have no Collection in the selected period';
@@ -262,9 +267,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
-      this.clinicFacade.currentMultiClinicIds$,
       this.avgMode$,
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
       this.caFacade.caProductionChartData$,
       this.caFacade.caProductionTrendChartData$,
@@ -273,31 +277,29 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(
-        ([clinicIds, avgMode, isAllDentist, isTrend, data, trendData]) => {
-          if (isAllDentist || !isTrend) {
-            this.datasets = data.datasets ?? [];
-            this.labels = data.labels ?? [];
-          } else {
-            this.datasets = trendData.datasets ?? [];
-            this.labels = trendData.labels ?? [];
-          }
-          this.total = data.total;
-          this.prev = data.prev;
-          this.average = data.average;
-          this.goal = data.goal;
-          if (isAllDentist) {
-            this.tableData = data.tableData ?? [];
-          } else {
-            this.tableData = trendData.tableData ?? [];
-          }
-
-          this.maxGoal = data.maxGoal;
-          this.gaugeLabel = data.gaugeLabel;
-          this.gaugeValue = data.gaugeValue;
-          this.setChartOptions(isAllDentist, isTrend, avgMode);
+      .subscribe(([avgMode, isDentistMode, isTrend, data, trendData]) => {
+        if (!isDentistMode || !isTrend) {
+          this.datasets = data.datasets ?? [];
+          this.labels = data.labels ?? [];
+        } else {
+          this.datasets = trendData.datasets ?? [];
+          this.labels = trendData.labels ?? [];
         }
-      );
+        this.total = data.total;
+        this.prev = data.prev;
+        this.average = data.average;
+        this.goal = data.goal;
+        if (!isDentistMode) {
+          this.tableData = data.tableData ?? [];
+        } else {
+          this.tableData = trendData.tableData ?? [];
+        }
+
+        this.maxGoal = data.maxGoal;
+        this.gaugeLabel = data.gaugeLabel;
+        this.gaugeValue = data.gaugeValue;
+        this.setChartOptions(!isDentistMode, isTrend, avgMode);
+      });
   }
 
   ngOnDestroy(): void {

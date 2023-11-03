@@ -37,7 +37,9 @@ export class ServerErrorInterceptor implements HttpInterceptor {
           if (!(error.url && error.url.includes('/login'))) {
             //this.router.navigateByUrl('/login', );
             this.router.navigate(['/login'], {
-              queryParams: { returnUrl: this.router.url },
+              queryParams: this.router.url.includes('/login')
+                ? {}
+                : { returnUrl: this.router.url },
             });
           }
         } else if (error.status === 403) {

@@ -21,7 +21,7 @@
       <div style="min-width: 200px">
         <span
           *ngIf="
-            (userType$ | async) === 4 || !(isAllDentist$ | async);
+            (userType$ | async) === 4 || (isDentistMode$ | async);
             else prodSelectTitle
           "
           >Dentist {{ chartName$ | async }}</span
@@ -81,7 +81,7 @@
         <table>
           <thead>
             <tr>
-              <th>{{ (isAllDentist$ | async) ? 'Name' : 'Week Ending' }}</th>
+              <th>{{ (isDentistMode$ | async) ? 'Week Ending' : 'Name' }}</th>
               <th>
                 {{
                   (chartName$ | async) === 'Production'

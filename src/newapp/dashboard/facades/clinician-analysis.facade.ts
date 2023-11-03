@@ -38,6 +38,7 @@ import {
   selectCaNumComplaintsTrendChartData,
   selectIsLoadingCaNumComplaintsTrend,
   selectIsHideFooterSection,
+  selectIsDentistMode,
 } from '../state/reducers/clinician-analysis.reducer';
 
 @Injectable()
@@ -189,6 +190,8 @@ export class ClinicianAnalysisFacade {
   public readonly isHideFooterSection$ = this.store.pipe(
     select(selectIsHideFooterSection)
   );
+
+  public readonly isDentistMode$ = this.store.pipe(select(selectIsDentistMode));
 
   public setProdSelectTab(tabName: CA_PROD_SELECT_TAB) {
     this.store.dispatch(ClinicianAnalysisActions.setProdSelectTab({ tabName }));

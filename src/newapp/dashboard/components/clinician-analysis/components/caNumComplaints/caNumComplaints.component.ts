@@ -147,7 +147,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   get isEnableFooter$() {
-    return this.caFacade.isHideFooterSection$;
+    return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
   }
 
   get isAllDentist$() {

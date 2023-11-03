@@ -326,6 +326,14 @@ export const selectIsHideFooterSection = createSelector(
   }
 );
 
+export const selectIsDentistMode = createSelector(
+  selectCurrentDentistId,
+  selectCurrentClinics,
+  (dentistId, clinics) => {
+    return !(dentistId === 'all' || clinics.length > 1);
+  }
+);
+
 export const selectIsLoadingCaProduction = createSelector(
   selectCurrentDentistId,
   selectTrend,
