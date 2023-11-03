@@ -75,7 +75,9 @@
         </button>
       </div>
 
-      <div class="pa-table" *ngIf="showTableInfo; else graphElem">
+      <div
+        class="pa-table"
+        *ngIf="showTableInfo && (isTableIconVisible$ | async); else graphElem">
         <table>
           <thead>
             <tr>

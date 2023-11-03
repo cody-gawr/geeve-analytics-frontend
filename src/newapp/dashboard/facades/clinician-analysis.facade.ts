@@ -37,6 +37,7 @@ import {
   selectRecallRateTrendChartData,
   selectCaNumComplaintsTrendChartData,
   selectIsLoadingCaNumComplaintsTrend,
+  selectIsHideFooterSection,
 } from '../state/reducers/clinician-analysis.reducer';
 
 @Injectable()
@@ -183,6 +184,10 @@ export class ClinicianAnalysisFacade {
 
   public readonly colExpSelectTab$ = this.store.pipe(
     select(selectColExpSelectTab)
+  );
+
+  public readonly isHideFooterSection$ = this.store.pipe(
+    select(selectIsHideFooterSection)
   );
 
   public setProdSelectTab(tabName: CA_PROD_SELECT_TAB) {
