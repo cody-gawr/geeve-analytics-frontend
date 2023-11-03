@@ -248,18 +248,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   switchChartName(chartName: CA_PROD_CHART_NAME) {
-    // switch (chartName) {
-    //   case 'Production':
-    //     this.caFacade.setHourlyRateProdSelectTab('hourly_rate_all');
-    //     break;
-    //   case 'Collection':
-    //     this.caFacade.setHourlyRateColSelectTab('collection_all');
-    //     break;
-    //   case 'Collection-Exp':
-    //     this.caFacade.setHourlyRateColExpSelectTab('collection_exp_all');
-    //     break;
-    // }
-
     this.caFacade.setHourlyRateChartName(chartName);
   }
 
@@ -339,11 +327,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   };
 
   public barChartOptions: ChartOptions<'bar'> = {
-    // borderRadius: 50,
     hover: { mode: null },
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
-    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine',
