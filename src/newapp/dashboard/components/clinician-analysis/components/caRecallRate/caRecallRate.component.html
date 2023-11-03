@@ -34,7 +34,9 @@
         </button>
       </div>
 
-      <div class="pa-table" *ngIf="showTableInfo; else graphElem">
+      <div
+        class="pa-table"
+        *ngIf="showTableInfo && (isAllDentist$ | async); else graphElem">
         <table>
           <thead>
             <tr>

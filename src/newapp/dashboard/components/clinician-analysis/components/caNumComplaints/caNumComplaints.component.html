@@ -27,7 +27,7 @@
     <div class="canvas-wrapper chart-box ca-num-comp-chart">
       <div
         class="pa-table"
-        *ngIf="showTableInfo && !(isTrend$ | async); else graphElem">
+        *ngIf="showTableInfo && (isAllDentist$ | async); else graphElem">
         <table>
           <thead>
             <tr>

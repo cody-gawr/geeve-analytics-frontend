@@ -6,10 +6,7 @@
     class="help-tip"
     fontIcon="help"></mat-icon>
   <mat-icon
-    *ngIf="
-      (duration$ | async) != 'custom' &&
-      ((isAllDentist$ | async) || !(isTrend$ | async))
-    "
+    *ngIf="(duration$ | async) != 'custom' && (isAllDentist$ | async)"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
