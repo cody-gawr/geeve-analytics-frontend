@@ -141,18 +141,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isFooterEnabled$() {
-    return combineLatest([
-      this.authFacade.rolesIndividual$,
-      this.layoutFacade.compare$,
-      this.isTrend$,
-      this.isAllDentist$,
-    ]).pipe(
-      map(
-        ([v, cMode, isTrend, isAllDentist]) =>
-          v?.type == 4 && v?.plan != 'lite' && cMode && isTrend && !isAllDentist
-      ),
-      map(v => !v)
-    );
+    return this.caFacade.isHideFooterSection$;
   }
 
   get isAllDentist$() {

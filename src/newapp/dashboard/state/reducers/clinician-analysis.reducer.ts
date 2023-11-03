@@ -8,6 +8,7 @@ import {
 import { dynamicBarBackgroundColor } from '@/newapp/shared/utils';
 import {
   selectAverage,
+  selectCompare,
   selectTrend,
 } from '@/newapp/layout/state/reducers/layout.reducer';
 import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.reducer';
@@ -305,6 +306,24 @@ export const selectIsLoadingCaCollectionExpDentists = createSelector(
 export const selectIsLoadingCaCollectionExpOht = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'caCollectionExpOht') >= 0
+);
+
+export const selectIsHideFooterSection = createSelector(
+  selectRolesIndividual,
+  selectCompare,
+  selectTrend,
+  selectCurrentDentistId,
+  selectCurrentClinics,
+  (role, compare, trend, dentistId, clinics) => {
+    if (role?.type == 4 && role?.plan != 'lite' && compare) return true;
+    if (clinics.length > 1) return false;
+    else if (dentistId === 'all') return false;
+    else {
+      if (trend !== 'off') {
+        return false;
+      } else return true;
+    }
+  }
 );
 
 export const selectIsLoadingCaProduction = createSelector(

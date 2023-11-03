@@ -295,18 +295,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get isEnableFooter$() {
-    return combineLatest([
-      this.authFacade.rolesIndividual$,
-      this.layoutFacade.compare$,
-      this.isTrend$,
-      this.isAllDentist$,
-    ]).pipe(
-      map(
-        ([v, cMode, isTrend, isAllDentist]) =>
-          v?.type == 4 && v?.plan != 'lite' && cMode && isTrend && !isAllDentist
-      ),
-      map(v => !v)
-    );
+    return this.caFacade.isHideFooterSection$;
   }
 
   get isAllDentist$() {
