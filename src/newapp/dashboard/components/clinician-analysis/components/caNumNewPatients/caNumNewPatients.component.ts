@@ -103,14 +103,14 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
 
   get isLoading$() {
     return combineLatest([
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
       this.caFacade.isLoadingCaNumNewPatients$,
       this.caFacade.isLoadingCaNumNewPatientsTrend$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(([isAllDentists, isTrend, isLoadingData, isLoadingDataTrend]) => {
-        if (isAllDentists || !isTrend) {
+      map(([isDentistMode, isTrend, isLoadingData, isLoadingDataTrend]) => {
+        if (!isDentistMode || !isTrend) {
           return isLoadingData;
         } else {
           return isLoadingDataTrend;
@@ -127,34 +127,29 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   }
 
   get chartOptions$() {
-    return combineLatest([this.isTrend$, this.isAllDentist$]).pipe(
+    return combineLatest([this.isTrend$, this.isDentistMode$]).pipe(
       takeUntil(this.destroy$),
-      map(([isTrend, isAllDentist]) => {
-        if (isAllDentist || !isTrend) return this.doughnutChartOptions;
+      map(([isTrend, isDentistMode]) => {
+        if (!isDentistMode || !isTrend) return this.doughnutChartOptions;
         else return this.barChartOptionsTrend;
       })
     );
   }
 
   get chartPlugins$() {
-    return combineLatest([
-      this.isTrend$,
-      this.isAllDentist$,
-      this.clinicFacade.currentClinics$,
-    ]).pipe(
+    return combineLatest([this.isTrend$, this.isDentistMode$]).pipe(
       takeUntil(this.destroy$),
-      map(([isTrend, isAllDentist, clinics]) => {
-        if (isAllDentist || !isTrend || clinics.length > 1)
-          return this.beforeDrawChart(this.total);
+      map(([isTrend, isDentistMode]) => {
+        if (!isDentistMode || !isTrend) return this.beforeDrawChart(this.total);
         else return null;
       })
     );
   }
 
   get hasData$() {
-    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
-      map(([isAll, isTrend]) => {
-        if (isAll || isTrend) {
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
+      map(([isDentistMode, isTrend]) => {
+        if (!isDentistMode || isTrend) {
           return this.datasets[0]?.data.length > 0;
         } else {
           return this.gaugeValue > 0;
@@ -171,13 +166,17 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
   }
 
-  get isAllDentist$() {
-    return this.dentistFacade.currentDentistId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => {
-        return v === 'all';
-      })
-    );
+  // get isAllDentist$() {
+  //   return this.dentistFacade.currentDentistId$.pipe(
+  //     takeUntil(this.destroy$),
+  //     map(v => {
+  //       return v === 'all';
+  //     })
+  //   );
+  // }
+
+  get isDentistMode$() {
+    return this.caFacade.isDentistMode$;
   }
 
   get isTrend$() {
@@ -188,10 +187,10 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   }
 
   get chartType$() {
-    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
       takeUntil(this.destroy$),
-      map(([isAllDentist, isTrend]) => {
-        if (isAllDentist || !isTrend) {
+      map(([isDentistMode, isTrend]) => {
+        if (!isDentistMode || !isTrend) {
           return 'doughnut';
         } else {
           return 'bar';
@@ -201,10 +200,10 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   }
 
   get chartLegend$() {
-    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
       takeUntil(this.destroy$),
-      map(([isAllDentist, isTrend]) => {
-        if (isAllDentist || !isTrend) {
+      map(([isDentistMode, isTrend]) => {
+        if (!isDentistMode || !isTrend) {
           return this.legendSettings;
         } else {
           return false;
@@ -222,7 +221,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade
   ) {
     combineLatest([
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
       this.caFacade.caNumNewPatientsChartData$,
       this.caFacade.caNumNewPatientsTrendChartData$,
@@ -231,8 +230,8 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([isAllDentist, isTrend, data, trendData]) => {
-        if (isAllDentist || !isTrend) {
+      .subscribe(([isDentistMode, isTrend, data, trendData]) => {
+        if (!isDentistMode || !isTrend) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
         } else {

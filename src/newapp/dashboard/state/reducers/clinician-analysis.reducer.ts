@@ -429,7 +429,7 @@ export const selectCaProductionChartData = createSelector(
   selectProdSelectTab,
   selectColSelectTab,
   selectColExpSelectTab,
-  selectCurrentDentistId,
+  selectIsDentistMode,
   selectRolesIndividual,
   (
     bodyList,
@@ -439,17 +439,16 @@ export const selectCaProductionChartData = createSelector(
     prodTab,
     colTab,
     colExpTab,
-    currentDentistId,
+    isDentistMode,
     rolesInd
   ) => {
-    const isAllDentist = currentDentistId === 'all';
     const isTrend = trendMode && trendMode !== 'off';
     let resBody: CaDentistProductionApiResponse | CaCollectionApiResponse =
       null;
 
     switch (chartName) {
       case 'Production':
-        if (isAllDentist) {
+        if (!isDentistMode) {
           switch (prodTab) {
             case 'production_all':
               resBody = bodyList['caDentistProduction'];
@@ -466,7 +465,7 @@ export const selectCaProductionChartData = createSelector(
         }
         break;
       case 'Collection':
-        if (isAllDentist) {
+        if (!isDentistMode) {
           switch (colTab) {
             case 'collection_all':
               resBody = bodyList['caCollection'];
@@ -484,7 +483,7 @@ export const selectCaProductionChartData = createSelector(
 
         break;
       case 'Collection-Exp':
-        if (isAllDentist) {
+        if (!isDentistMode) {
           switch (colExpTab) {
             case 'collection_exp_all':
               resBody = bodyList['caCollectionExp'];
@@ -501,7 +500,7 @@ export const selectCaProductionChartData = createSelector(
         }
         break;
     }
-    if (selectedClinics.length > 1 || isAllDentist) {
+    if (selectedClinics.length > 1 || !isDentistMode) {
       let chartData = [],
         chartLabels = [],
         chartColors: any[] = [];
@@ -941,21 +940,20 @@ export const selectCaHourlyRateChartData = createSelector(
   selectTrend,
   selectHourlyRateChartName,
   selectHourlyRateProdSelectTab,
-  selectCurrentDentistId,
+  selectIsDentistMode,
   (
     bodyList,
     selectedClinics,
     trendMode,
     prodChartName,
     prodTab,
-    currentDentistid
+    isDentistMode
   ) => {
     let resBody: CaHourlyRateApiResponse | CaCollectionHourlyRateApiResponse =
       null;
-    const isAllDentist = currentDentistid === 'all';
     switch (prodChartName) {
       case 'Production':
-        if (isAllDentist) {
+        if (!isDentistMode) {
           switch (prodTab) {
             case 'hourly_rate_all':
               resBody = bodyList['caHourlyRate'];
@@ -973,7 +971,7 @@ export const selectCaHourlyRateChartData = createSelector(
 
         break;
       case 'Collection':
-        if (isAllDentist) {
+        if (!isDentistMode) {
           switch (prodTab) {
             case 'hourly_rate_all':
               resBody = bodyList['caCollectionHourlyRate'];
@@ -991,7 +989,7 @@ export const selectCaHourlyRateChartData = createSelector(
 
         break;
       case 'Collection-Exp':
-        if (isAllDentist) {
+        if (!isDentistMode) {
           switch (prodTab) {
             case 'hourly_rate_all':
               resBody = bodyList['caCollectionExpHourlyRate'];
@@ -1009,7 +1007,7 @@ export const selectCaHourlyRateChartData = createSelector(
 
         break;
     }
-    if (isAllDentist) {
+    if (!isDentistMode) {
       let chartData = [],
         chartLabels = [];
       if (!resBody?.data) {
@@ -1288,11 +1286,10 @@ export const selectCaNumNewPatientsChartData = createSelector(
   selectCurrentClinics,
   selectTrend,
   selectAverage,
-  selectCurrentDentistId,
+  selectIsDentistMode,
   selectRolesIndividual,
-  (bodyList, selectedClinics, trend, average, currentDentistid, rolesInd) => {
+  (bodyList, selectedClinics, trend, average, isDentistMode, rolesInd) => {
     let resBody: CaNumNewPatientsApiResponse = bodyList['caNumNewPatients'];
-    const isAllDentist = currentDentistid === 'all';
     if (!resBody?.data) {
       return {
         datasets: [],
@@ -1305,7 +1302,7 @@ export const selectCaNumNewPatientsChartData = createSelector(
       };
     }
 
-    if (isAllDentist) {
+    if (!isDentistMode) {
       let data: CaNumNewPatientsItem[] = resBody.data;
       if (selectedClinics.length > 1) {
         data = _.chain(data)
@@ -1339,7 +1336,7 @@ export const selectCaNumNewPatientsChartData = createSelector(
         });
       });
 
-      if (!isAllDentist && trend === 'off' && average === 'average') {
+      if (isDentistMode && trend === 'off' && average === 'average') {
         chartColors = [
           {
             backgroundColor: dynamicBarBackgroundColor(
@@ -1602,20 +1599,17 @@ export const selectTxPlanAvgFeesChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
   selectTrend,
-  selectAverage,
   selectTxPlanAvgFeeChartName,
-  selectCurrentDentistId,
+  selectIsDentistMode,
   selectRolesIndividual,
   (
     bodyList,
     selectedClinics,
     trendMode,
-    averageMode,
     chartName,
-    currentDentistId,
+    isDentistMode,
     rolesInd
   ) => {
-    const isAllDentist = currentDentistId === 'all';
     let resBody: CaTxPlanAvgFeeApiResponse = null;
 
     if (chartName === 'Avg. Completed Fees') {
@@ -1624,7 +1618,7 @@ export const selectTxPlanAvgFeesChartData = createSelector(
       resBody = bodyList['caTxPlanAvgProposedFees'];
     }
 
-    if (isAllDentist) {
+    if (!isDentistMode) {
       let chartData = [],
         chartLabels = [],
         chartColors;
@@ -1854,20 +1848,19 @@ export const selectTxPlanCompRateChartData = createSelector(
   selectCurrentClinics,
   selectTrend,
   selectAverage,
-  selectCurrentDentistId,
+  selectIsDentistMode,
   selectRolesIndividual,
   (
     bodyList,
     selectedClinics,
     trendMode,
     averageMode,
-    currentDentistId,
+    isDentistMode,
     rolesInd
   ) => {
-    const isAllDentist = currentDentistId === 'all';
     let resBody: CaTxPlanCompRateApiResponse = bodyList['caTxPlanCompRate'];
 
-    if (isAllDentist) {
+    if (!isDentistMode) {
       let chartData = [],
         chartLabels = [],
         chartColors;
@@ -2165,20 +2158,17 @@ export const selectRecallRateChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
   selectTrend,
-  selectAverage,
   selectRecallRateChartName,
-  selectCurrentDentistId,
+  selectIsDentistMode,
   selectRolesIndividual,
   (
     bodyList,
     selectedClinics,
     trendMode,
-    averageMode,
     chartName,
-    currentDentistId,
+    isDentistMode,
     rolesInd
   ) => {
-    const isAllDentist = currentDentistId === 'all';
     let resBody: CaRecallRateApiResponse | CaReappRateApiResponse = null;
     if (chartName === 'Recall Prebook Rate') {
       resBody = bodyList['caRecallRate'];
@@ -2186,7 +2176,7 @@ export const selectRecallRateChartData = createSelector(
       resBody = bodyList['caReappointRate'];
     }
 
-    if (isAllDentist) {
+    if (!isDentistMode) {
       let chartData = [],
         chartLabels = [],
         chartColors;
@@ -2463,11 +2453,10 @@ export const selectCaNumComplaintsChartData = createSelector(
   selectCurrentClinics,
   selectTrend,
   selectAverage,
-  selectCurrentDentistId,
+  selectIsDentistMode,
   selectRolesIndividual,
-  (bodyList, selectedClinics, trend, average, currentDentistid, rolesInd) => {
+  (bodyList, selectedClinics, trend, average, isDentistMode, rolesInd) => {
     let resBody: CaNumComplaintsApiResponse = bodyList['caNumComplaints'];
-    const isAllDentist = currentDentistid === 'all';
     if (!resBody?.data) {
       return {
         datasets: [],
@@ -2480,7 +2469,7 @@ export const selectCaNumComplaintsChartData = createSelector(
       };
     }
 
-    if (isAllDentist) {
+    if (!isDentistMode) {
       let data: CaNumComplaintsItem[] = resBody.data;
       if (selectedClinics.length > 1) {
         data
@@ -2515,7 +2504,7 @@ export const selectCaNumComplaintsChartData = createSelector(
         });
       });
 
-      if (!isAllDentist && trend === 'off' && average === 'average') {
+      if (isDentistMode && trend === 'off' && average === 'average') {
         chartColors = [
           {
             backgroundColor: dynamicBarBackgroundColor(

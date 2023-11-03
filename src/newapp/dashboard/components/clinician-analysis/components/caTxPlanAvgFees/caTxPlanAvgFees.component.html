@@ -6,7 +6,7 @@
     class="help-tip"
     fontIcon="help"></mat-icon>
   <mat-icon
-    *ngIf="(duration$ | async) != 'custom' && (isAllDentist$ | async)"
+    *ngIf="(duration$ | async) != 'custom' && !(isDentistMode$ | async)"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
@@ -59,7 +59,7 @@
           <ng-template #chartElem>
             <ngx-gauge
               *ngIf="
-                !(isAllDentist$ | async) &&
+                (isDentistMode$ | async) &&
                 !(isTrend$ | async) &&
                 (hasData$ | async)
               "
@@ -78,7 +78,7 @@
             <canvas
               baseChart
               *ngIf="
-                ((isAllDentist$ | async) || (isTrend$ | async)) &&
+                (!(isDentistMode$ | async) || (isTrend$ | async)) &&
                 (hasData$ | async)
               "
               [datasets]="datasets"

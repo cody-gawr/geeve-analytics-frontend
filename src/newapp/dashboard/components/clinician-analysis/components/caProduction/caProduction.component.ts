@@ -298,7 +298,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
-        this.setChartOptions(!isDentistMode, isTrend, avgMode);
+        this.setChartOptions(isDentistMode, isTrend, avgMode);
       });
   }
 
@@ -375,11 +375,11 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   private setChartOptions(
-    isAllDentist: boolean,
+    isDentistMode: boolean,
     isTrend: boolean,
     avgMode: string
   ): void {
-    if (isAllDentist || !isTrend) {
+    if (!isDentistMode || !isTrend) {
       let options: ChartOptions = { ...this.barChartOptions };
       if (avgMode === 'average') {
         options.plugins.annotation = this.getAvgPluginOptions(this.average);

@@ -91,23 +91,23 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   tableData = [];
 
   get legend$() {
-    return combineLatest([this.isAllDentist$]).pipe(
+    return combineLatest([this.isDentistMode$]).pipe(
       map(([v]) => {
-        return v ? true : false;
+        return !v;
       })
     );
   }
 
   get isLoading$() {
     return combineLatest([
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
       this.caFacade.isLoadingCaNumComplaints$,
       this.caFacade.isLoadingCaNumComplaintsTrend$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(([isAllDentist, isTrend, isLoadingData, isLoadingTrendData]) =>
-        isAllDentist || !isTrend ? isLoadingData : isLoadingTrendData
+      map(([isDentistMode, isTrend, isLoadingData, isLoadingTrendData]) =>
+        !isDentistMode || !isTrend ? isLoadingData : isLoadingTrendData
       )
     );
   }
@@ -120,10 +120,10 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   get chartOptions$() {
-    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
       takeUntil(this.destroy$),
-      map(([isAllDentist, isTrend]) => {
-        return isAllDentist || !isTrend
+      map(([isDentistMode, isTrend]) => {
+        return !isDentistMode || !isTrend
           ? this.doughnutChartOptions
           : this.barChartOptionsTrend;
       })
@@ -131,9 +131,9 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   get hasData$() {
-    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
-      map(([isAll, isTrend]) => {
-        if (isAll || isTrend) {
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
+      map(([isDentistMode, isTrend]) => {
+        if (!isDentistMode || isTrend) {
           return this.datasets[0]?.data.length > 0;
         } else {
           return this.gaugeValue > 0;
@@ -150,13 +150,17 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
     return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
   }
 
-  get isAllDentist$() {
-    return this.dentistFacade.currentDentistId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => {
-        return v === 'all';
-      })
-    );
+  // get isAllDentist$() {
+  //   return this.dentistFacade.currentDentistId$.pipe(
+  //     takeUntil(this.destroy$),
+  //     map(v => {
+  //       return v === 'all';
+  //     })
+  //   );
+  // }
+
+  get isDentistMode$() {
+    return this.caFacade.isDentistMode$;
   }
 
   get isTrend$() {
@@ -167,19 +171,19 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   get chartType$() {
-    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
       takeUntil(this.destroy$),
-      map(([isAllDentist, isTrend]) => {
-        return isAllDentist || !isTrend ? 'doughnut' : 'bar';
+      map(([isDentistMode, isTrend]) => {
+        return !isDentistMode || !isTrend ? 'doughnut' : 'bar';
       })
     );
   }
 
   get chartLegend$() {
-    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
       takeUntil(this.destroy$),
-      map(([isAllDentist, isTrend]) => {
-        return isAllDentist || !isTrend;
+      map(([isDentistMode, isTrend]) => {
+        return !isDentistMode || !isTrend;
       })
     );
   }
@@ -193,7 +197,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
     private dentistFacade: DentistFacade
   ) {
     combineLatest([
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
       this.caFacade.caNumComplaintsChartData$,
       this.caFacade.caNumComplaintsTrendChartData$,
@@ -202,8 +206,8 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([isAllDentist, isTrend, data, trendData]) => {
-        if (isAllDentist || !isTrend) {
+      .subscribe(([isDentistMode, isTrend, data, trendData]) => {
+        if (!isDentistMode || !isTrend) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
         } else {

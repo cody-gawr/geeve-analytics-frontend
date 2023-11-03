@@ -279,9 +279,9 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get hasData$() {
-    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
-      map(([isAll, isTrend]) => {
-        if (isAll || isTrend) {
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
+      map(([isDentistMode, isTrend]) => {
+        if (!isDentistMode || isTrend) {
           return this.datasets[0]?.data.length > 0;
         } else {
           return this.gaugeValue > 0;
@@ -298,12 +298,8 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
   }
 
-  get isAllDentist$() {
-    return this.dentistFacade.currentDentistId$.pipe(
-      map(v => {
-        return v === 'all';
-      })
-    );
+  get isDentistMode$() {
+    return this.caFacade.isDentistMode$;
   }
 
   get noDataAlertMessage$() {
@@ -339,7 +335,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     combineLatest([
       this.avgMode$,
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
       this.caFacade.caRecallRateChartData$,
       this.caFacade.caRecallRateTrendChartData$,
@@ -348,8 +344,8 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([avgMode, isAllDentist, isTrend, data, trendData]) => {
-        if (isAllDentist || !isTrend) {
+      .subscribe(([avgMode, isDentistMode, isTrend, data, trendData]) => {
+        if (!isDentistMode || !isTrend) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
         } else {
@@ -366,7 +362,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
 
-        this.setChartOptions(isAllDentist, isTrend, avgMode);
+        this.setChartOptions(isDentistMode, isTrend, avgMode);
       });
   }
 
@@ -421,11 +417,11 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   private setChartOptions(
-    isAllDentist: boolean,
+    isDentistMode: boolean,
     isTrend: boolean,
     avgMode: string
   ): void {
-    if (isAllDentist || !isTrend) {
+    if (!isDentistMode || !isTrend) {
       let options: ChartOptions = { ...this.barChartOptions };
       if (avgMode === 'average') {
         options.plugins.annotation = this.getAvgPluginOptions(this.average);

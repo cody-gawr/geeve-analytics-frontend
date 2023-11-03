@@ -122,9 +122,9 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
 
   get hasData$() {
-    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
-      map(([isAll, isTrend]) => {
-        if (isAll || isTrend) {
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
+      map(([isDentistMode, isTrend]) => {
+        if (!isDentistMode || isTrend) {
           return this.datasets[0]?.data.length > 0;
         } else {
           return this.gaugeValue > 0;
@@ -141,12 +141,8 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
   }
 
-  get isAllDentist$() {
-    return this.dentistFacade.currentDentistId$.pipe(
-      map(v => {
-        return v === 'all';
-      })
-    );
+  get isDentistMode$() {
+    return this.caFacade.isDentistMode$;
   }
 
   get noDataAlertMessage$() {
@@ -182,7 +178,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     combineLatest([
       this.avgMode$,
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
       this.caFacade.caTxPlanAvgFeesChartData$,
       this.caFacade.caTxPlanAvgFeesTrendChartData$,
@@ -191,8 +187,8 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([avgMode, isAllDentist, isTrend, data, trendData]) => {
-        if (isAllDentist || !isTrend) {
+      .subscribe(([avgMode, isDentistMode, isTrend, data, trendData]) => {
+        if (!isDentistMode || !isTrend) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
         } else {
@@ -208,32 +204,8 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
 
-        this.setChartOptions(isAllDentist, isTrend, avgMode);
+        this.setChartOptions(isDentistMode, isTrend, avgMode);
       });
-
-    // combineLatest([this.avgMode$, this.isAllDentist$, this.isTrend$])
-    //   .pipe(
-    //     takeUntil(this.destroy$),
-    //     map(([avgMode, isAllDentist, isTrend]) => {
-    //       if (isAllDentist || !isTrend) {
-    //         let options: ChartOptions = { ...this.barChartOptions };
-    //         if (avgMode === 'average') {
-    //           options.plugins.annotation = this.getAvgPluginOptions(
-    //             this.average
-    //           );
-    //         } else if (avgMode === 'goal') {
-    //           const value = this.goal * this.goalCount;
-    //           options.plugins.annotation = this.getGoalPluginOptions(value);
-    //         } else {
-    //           options.plugins.annotation = {};
-    //         }
-    //         return options;
-    //       } else {
-    //         return this.barChartOptionsTrend;
-    //       }
-    //     })
-    //   )
-    //   .subscribe(options => (this.chartOptions = options));
   }
 
   ngOnDestroy(): void {
@@ -487,11 +459,11 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   };
 
   private setChartOptions(
-    isAllDentist: boolean,
+    isDentistMode: boolean,
     isTrend: boolean,
     avgMode: string
   ): void {
-    if (isAllDentist || !isTrend) {
+    if (!isDentistMode || !isTrend) {
       let options: ChartOptions = { ...this.barChartOptions };
       if (avgMode === 'average') {
         options.plugins.annotation = this.getAvgPluginOptions(this.average);

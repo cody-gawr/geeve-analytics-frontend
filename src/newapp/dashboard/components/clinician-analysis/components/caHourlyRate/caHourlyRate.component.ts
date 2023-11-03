@@ -112,11 +112,11 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   get chartOptions$() {
     return combineLatest([
       this.avgMode$,
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
     ]).pipe(
-      map(([avgMode, isAllDentist, isTrend]) => {
-        if (isAllDentist || !isTrend) {
+      map(([avgMode, isDentistMode, isTrend]) => {
+        if (!isDentistMode || !isTrend) {
           let options: ChartOptions = { ...this.barChartOptions };
           if (avgMode === 'average') {
             options.plugins.annotation = this.getAvgPluginOptions(this.average);
@@ -135,9 +135,9 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get hasData$() {
-    return combineLatest([this.isAllDentist$, this.isTrend$]).pipe(
-      map(([isAll, isTrend]) => {
-        return isAll || isTrend
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
+      map(([isDentistMode, isTrend]) => {
+        return !isDentistMode || isTrend
           ? this.datasets[0]?.data.length > 0
           : this.gaugeValue > 0;
       })
@@ -152,13 +152,17 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
   }
 
-  get isAllDentist$() {
-    return this.dentistFacade.currentDentistId$.pipe(
-      map(v => {
-        return v === 'all';
-      })
-    );
+  get isDentistMode$() {
+    return this.caFacade.isDentistMode$;
   }
+
+  // get isAllDentist$() {
+  //   return this.dentistFacade.currentDentistId$.pipe(
+  //     map(v => {
+  //       return v === 'all';
+  //     })
+  //   );
+  // }
 
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
@@ -166,7 +170,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
   get noDataAlertMessage$() {
     return combineLatest([
-      this.isAllDentist$,
+      this.isDentistMode$,
       // this.caFacade.hourlyRateChartName$,
       this.caFacade.hourlyRateProdSelectTab$,
       // this.caFacade.hourlyRateColSelectTab$,
@@ -174,13 +178,13 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([
-          isAllDentist,
+          isDentistMode,
           // visibility,
           prodSelectShow,
           // colSelectShow,
           // colExpSelectShow,
         ]) => {
-          if (isAllDentist) {
+          if (!isDentistMode) {
             switch (prodSelectShow) {
               case 'hourly_rate_all':
                 return 'You have no hourly rates for the selected period';
@@ -212,7 +216,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
       this.caFacade.caHourlyRateChartData$,
       this.caFacade.caHourlyRateTrendChartData$,
@@ -221,8 +225,8 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([isAllDentist, isTrend, data, trendData]) => {
-        if (isAllDentist || !isTrend) {
+      .subscribe(([isDentistMode, isTrend, data, trendData]) => {
+        if (!isDentistMode || !isTrend) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
         } else {
@@ -234,7 +238,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         this.prev = data.prev;
         this.average = data.average;
         this.goal = data.goal;
-        if (isAllDentist) {
+        if (!isDentistMode) {
           this.tableData = data.tableData ?? [];
         }
         this.maxGoal = data.maxGoal;
