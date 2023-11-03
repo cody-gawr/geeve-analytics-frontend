@@ -8,7 +8,6 @@ import {
 import {
   AbstractControl,
   UntypedFormBuilder,
-  FormControl,
   UntypedFormGroup,
   ValidationErrors,
   ValidatorFn,
@@ -289,20 +288,6 @@ export class StaffMeetingsComponent implements OnInit {
       this.getCompletedMeetings();
     }
   }
-
-  // ---- not in use ----
-  // changing list based on tags completed or upcoming
-  // changeCompleteTab(type){
-  //   if(type == 'Upcoming'){
-  //     this.currentTab = 0;
-  //     this.showCompletedMeetingTab = false;
-  //   }else if(type == 'Completed'){
-  //     this.showCompletedMeetingTab = true
-  //     this.currentTab = 1;
-  //   }
-
-  //   this.refresh();
-  // }
 
   // use to check the permission of the logged user
   getRolesIndividual() {
