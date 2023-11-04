@@ -320,8 +320,8 @@ export const selectIsHideFooterSection = createSelector(
     else if (dentistId === 'all') return false;
     else {
       if (trend !== 'off') {
-        return false;
-      } else return true;
+        return true;
+      } else return false;
     }
   }
 );

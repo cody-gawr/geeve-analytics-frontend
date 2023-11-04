@@ -79,6 +79,10 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
       });
   }
 
+  get hasData() {
+    return this.datasets[0]?.data?.every(v => v !== 0);
+  }
+
   ngOnInit(): void {}
 
   ngOnDestroy(): void {

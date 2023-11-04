@@ -11,7 +11,7 @@
       <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
       <ng-template #chartElem>
         <canvas
-          *ngIf="datasets.length > 0 && datasets[0].data.length > 0"
+          *ngIf="datasets.length > 0 && hasData"
           baseChart
           [datasets]="datasets"
           [labels]="labels"
@@ -21,10 +21,7 @@
         </canvas>
         <spin-loader
           class="empty-placeholder"
-          *ngIf="
-            !(datasets.length > 0 && datasets[0].data.length > 0) &&
-            !(isLoading$ | async)
-          "
+          *ngIf="!(datasets.length > 0 && hasData) && !(isLoading$ | async)"
           [disableSpin]="true">
           You have no data in the selected period
         </spin-loader>

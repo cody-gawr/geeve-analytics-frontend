@@ -33,6 +33,10 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
     );
   }
 
+  get hasData() {
+    return this.datasets[0]?.data?.every(v => v !== 0);
+  }
+
   get trendingIcon() {
     if (this.totalDiscountChartTotal >= this.totalDiscountChartTrendTotal) {
       return 'trending_up';
