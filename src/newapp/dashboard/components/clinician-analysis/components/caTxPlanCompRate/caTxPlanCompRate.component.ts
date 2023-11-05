@@ -67,7 +67,9 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     return combineLatest([this.durationTrendLabel$]).pipe(
       takeUntil(this.destroy$),
       map(([durTrendLabel]) => {
-        return durTrendLabel + ': $' + this.decimalPipe.transform(this.prev);
+        return (
+          durTrendLabel + ': ' + this.decimalPipe.transform(this.prev) + '%'
+        );
       })
     );
   }

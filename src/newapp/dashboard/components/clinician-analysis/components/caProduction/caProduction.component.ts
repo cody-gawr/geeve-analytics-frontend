@@ -157,7 +157,9 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$(): Observable<boolean> {
-    return this.isTrend$.pipe(map(isTrend => !isTrend));
+    return combineLatest([this.isTrend$, this.isDentistMode$]).pipe(
+      map(([isTrend, isDentistMode]) => !isDentistMode || !isTrend)
+    );
   }
 
   get isTrendIconVisible$(): Observable<boolean> {
@@ -263,9 +265,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     combineLatest([
       this.avgMode$,
       this.isDentistMode$,
@@ -301,6 +301,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         this.setChartOptions(isDentistMode, isTrend, avgMode);
       });
   }
+
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

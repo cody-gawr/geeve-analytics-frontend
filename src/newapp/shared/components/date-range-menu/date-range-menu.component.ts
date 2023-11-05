@@ -1,8 +1,10 @@
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import moment from 'moment';
-import { Subject, takeUntil, map } from 'rxjs';
+import { Subject, takeUntil, map, combineLatest, filter } from 'rxjs';
 
 export const DateRangeMenus: { range: DATE_RANGE_DURATION; label: string }[] = [
   { range: 'm', label: 'This Month' },
@@ -26,14 +28,31 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
   selectedMenu: DATE_RANGE_DURATION;
+  activedUrl = '';
 
   constructor(
     private layoutFacade: LayoutFacade,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
+    private clinicFacade: ClinicFacade,
+    private router: Router
   ) {
     this.layoutFacade.dateRange$.pipe(takeUntil(this.destroy$)).subscribe(v => {
       this.selectedMenu = v.duration;
     });
+
+    this.router.events
+      .pipe(
+        takeUntil(this.destroy$),
+        map((event: any) => event.routerEvent ?? event),
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe(event => {
+        const { url } = <NavigationEnd>event;
+        // const path = this.router.parseUrl(url).root.children['primary']
+        //   ? this.router.parseUrl(url).root.children['primary'].segments[0].path
+        //   : this.defaultMenu;
+        this.activedUrl = url.split('?')[0];
+      });
   }
 
   get duration$() {
@@ -50,10 +69,20 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
     );
   }
 
-  get isAllDentist$() {
-    return this.dentistFacade.currentDentistId$.pipe(
-      map(v => {
-        return v === 'all';
+  get enableDatePresets$() {
+    return combineLatest([
+      this.dentistFacade.currentDentistId$,
+      this.clinicFacade.currentClinics$,
+      this.layoutFacade.trend$,
+    ]).pipe(
+      map(([dentistIds, clinicIds, trend]) => {
+        if (this.activedUrl === '/newapp/dashboard/cliniciananalysis') {
+          return (
+            dentistIds === 'all' || trend === 'off' || clinicIds.length > 1
+          );
+        } else {
+          return trend !== 'off';
+        }
       })
     );
   }

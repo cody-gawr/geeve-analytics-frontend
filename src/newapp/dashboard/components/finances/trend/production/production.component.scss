@@ -5,8 +5,6 @@
   width: 100%;
   padding: 15px;
   gap: 15px;
-  min-height: 280px;
-  max-height: 350px;
   height: 100%;
   .profit-switch {
     display: flex;
@@ -42,7 +40,8 @@
   }
 
   .profit-graph {
-    max-height: 280px;
+    min-height: 280px;
+    max-height: 350px;
     flex: 1;
   }
 }

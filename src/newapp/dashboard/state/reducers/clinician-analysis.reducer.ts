@@ -1,10 +1,7 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { ClinicianAnalysisActions } from '../actions';
 import _ from 'lodash';
-import {
-  selectClinics,
-  selectCurrentClinics,
-} from '@/newapp/clinic/state/reducers/clinic.reducer';
+import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { dynamicBarBackgroundColor } from '@/newapp/shared/utils';
 import {
   selectAverage,
@@ -500,6 +497,7 @@ export const selectCaProductionChartData = createSelector(
         }
         break;
     }
+
     if (selectedClinics.length > 1 || !isDentistMode) {
       let chartData = [],
         chartLabels = [],
@@ -517,7 +515,8 @@ export const selectCaProductionChartData = createSelector(
         };
       }
 
-      let data: (CaDentistProductionItem | CaCollectionItem)[] = resBody.data;
+      let data: (CaDentistProductionItem | CaCollectionItem)[] =
+        resBody.data.slice();
 
       if (selectedClinics.length > 1) {
         data = _.chain(data)
@@ -576,7 +575,7 @@ export const selectCaProductionChartData = createSelector(
           backgroundColor: dynamicBarBackgroundColor(
             data,
             chartLabels,
-            selectClinics.length > 1,
+            selectedClinics.length > 1,
             selectedClinics,
             isTrend,
             false
@@ -1023,7 +1022,7 @@ export const selectCaHourlyRateChartData = createSelector(
       }
 
       let data: (CaHourlyRateItem | CaCollectionHourlyRateItem)[] =
-        resBody.data;
+        resBody.data.slice();
 
       if (selectedClinics.length > 1) {
         data = _.chain(data)
@@ -1062,7 +1061,7 @@ export const selectCaHourlyRateChartData = createSelector(
           backgroundColor: dynamicBarBackgroundColor(
             resBody.data,
             chartLabels,
-            selectClinics.length > 1,
+            selectedClinics.length > 1,
             selectedClinics,
             trendMode !== 'off',
             false
@@ -1303,7 +1302,7 @@ export const selectCaNumNewPatientsChartData = createSelector(
     }
 
     if (!isDentistMode) {
-      let data: CaNumNewPatientsItem[] = resBody.data;
+      let data: CaNumNewPatientsItem[] = resBody.data.slice();
       if (selectedClinics.length > 1) {
         data = _.chain(data)
           .sort((item: CaNumNewPatientsItem) =>
@@ -1342,7 +1341,7 @@ export const selectCaNumNewPatientsChartData = createSelector(
             backgroundColor: dynamicBarBackgroundColor(
               data,
               chartLabels,
-              selectClinics.length > 1,
+              selectedClinics.length > 1,
               selectedClinics,
               trend !== 'off',
               false
@@ -1633,7 +1632,7 @@ export const selectTxPlanAvgFeesChartData = createSelector(
           tableData: [],
         };
       }
-      let data: CaTxPlanAvgFeeItem[] = resBody.data;
+      let data: CaTxPlanAvgFeeItem[] = resBody.data.slice();
 
       if (selectedClinics.length > 1) {
         data = _.chain(data)
@@ -1682,7 +1681,7 @@ export const selectTxPlanAvgFeesChartData = createSelector(
           backgroundColor: dynamicBarBackgroundColor(
             data,
             chartLabels,
-            selectClinics.length > 1,
+            selectedClinics.length > 1,
             selectedClinics,
             trendMode !== 'off',
             false
@@ -1876,7 +1875,7 @@ export const selectTxPlanCompRateChartData = createSelector(
         };
       }
 
-      let data: CaTxPlanCompRateItem[] = resBody.data;
+      let data: CaTxPlanCompRateItem[] = resBody.data.slice();
 
       if (selectedClinics.length > 1) {
         data = _.chain(data)
@@ -1925,7 +1924,7 @@ export const selectTxPlanCompRateChartData = createSelector(
           backgroundColor: dynamicBarBackgroundColor(
             data,
             chartLabels,
-            selectClinics.length > 1,
+            selectedClinics.length > 1,
             selectedClinics,
             trendMode !== 'off',
             false
@@ -2191,7 +2190,7 @@ export const selectRecallRateChartData = createSelector(
           tableData: [],
         };
       }
-      let data: (CaRecallRateItem | CaReappRateItem)[] = resBody.data;
+      let data: (CaRecallRateItem | CaReappRateItem)[] = resBody.data.slice();
 
       if (selectedClinics.length > 1) {
         data = _.chain(data)
@@ -2244,7 +2243,7 @@ export const selectRecallRateChartData = createSelector(
           backgroundColor: dynamicBarBackgroundColor(
             data,
             chartLabels,
-            selectClinics.length > 1,
+            selectedClinics.length > 1,
             selectedClinics,
             trendMode !== 'off',
             false
@@ -2470,7 +2469,7 @@ export const selectCaNumComplaintsChartData = createSelector(
     }
 
     if (!isDentistMode) {
-      let data: CaNumComplaintsItem[] = resBody.data;
+      let data: CaNumComplaintsItem[] = resBody.data.slice();
       if (selectedClinics.length > 1) {
         data
           .sort(
@@ -2510,7 +2509,7 @@ export const selectCaNumComplaintsChartData = createSelector(
             backgroundColor: dynamicBarBackgroundColor(
               data,
               chartLabels,
-              selectClinics.length > 1,
+              selectedClinics.length > 1,
               selectedClinics,
               trend !== 'off',
               false

@@ -3,10 +3,10 @@
     <button
       *ngFor="let menu of dateRangeMenus"
       (click)="setDuration(menu.range)"
-      [disabled]="(isTrend$ | async) && !(isAllDentist$ | async)"
+      [disabled]="!(enableDatePresets$ | async)"
       [class]="
         menu.range === (duration$ | async) &&
-        !((isTrend$ | async) && !(isAllDentist$ | async))
+        !((isTrend$ | async) && !(enableDatePresets$ | async))
           ? 'active'
           : ''
       ">

@@ -1,7 +1,12 @@
 @import '../../../../../../assets/layout/styles/layout/mixin';
 .prod-per-visit-trend-chart {
   width: 100%;
+  padding: 15px;
+}
+
+.prod-per-visit-graph {
+  width: 100%;
   min-height: 280px;
   max-height: 350px;
-  padding: 15px;
+  height: 100%;
 }

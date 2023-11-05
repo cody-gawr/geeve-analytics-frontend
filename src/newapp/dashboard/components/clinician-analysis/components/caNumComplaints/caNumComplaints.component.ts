@@ -38,7 +38,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   get trendingIcon() {
-    if (this.total >= this.prev) {
+    if (this.total < this.prev) {
       return 'trending_up';
     } else return 'trending_down';
   }
@@ -68,7 +68,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
     return combineLatest([this.durationTrendLabel$]).pipe(
       takeUntil(this.destroy$),
       map(([durTrendLabel]) => {
-        return durTrendLabel + ': $' + this.decimalPipe.transform(this.prev);
+        return durTrendLabel + ': ' + this.decimalPipe.transform(this.prev);
       })
     );
   }
