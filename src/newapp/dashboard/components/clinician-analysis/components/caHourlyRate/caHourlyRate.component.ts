@@ -87,7 +87,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
   public goalCount: number = 0;
   public showTableInfo: boolean = false;
-  tableData = [];
+  public tableData = [];
 
   get legend$() {
     return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
