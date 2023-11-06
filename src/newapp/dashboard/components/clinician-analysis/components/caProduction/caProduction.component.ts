@@ -128,11 +128,16 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.caFacade.caProductionChartData$,
       this.caFacade.caProductionTrendChartData$,
+      this.isDentistMode$,
+      this.isTrend$,
     ]).pipe(
-      map(
-        ([data, trendData]) =>
-          data.datasets?.length > 0 || trendData.datasets?.length > 0
-      )
+      map(([data, trendData, isDentistMode, isTrend]) => {
+        if (isDentistMode && isTrend) {
+          return data.datasets?.length > 0 || trendData.datasets?.length > 0;
+        } else {
+          return this.gaugeValue > 0;
+        }
+      })
     );
   }
 
@@ -147,10 +152,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   get isDentistMode$() {
     return this.caFacade.isDentistMode$;
   }
-
-  // get isAllDentist$() {
-  //   return this.dentistFacade.currentDentistId$.pipe(map(v => v === 'all'));
-  // }
 
   get isMultiClinics$() {
     return this.clinicFacade.currentClinics$.pipe(map(v => v.length > 1));

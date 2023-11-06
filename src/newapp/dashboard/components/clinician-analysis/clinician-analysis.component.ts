@@ -90,50 +90,48 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
-      this.clinicFacade.currentMultiClinicIDs$,
+      this.clinicFacade.currentClinics$,
       this.layoutFacade.dateRange$,
       this.router.routerState.root.queryParams,
-      this.layoutFacade.trend$,
       this.dentistFacade.currentDentistId$,
       this.isTrend$,
+      this.layoutFacade.trend$,
     ])
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(params => {
-        const [clinicIds, dateRange, route, trend, dentistId, isTrend] = params;
-        if (clinicIds.length == 0) return;
+        const [clinics, dateRange, route, dentistId, isTrend, trend] = params;
+        if (clinics.length == 0) return;
 
-        const isAllDentist = dentistId === 'all';
+        // const isAllDentist = dentistId === 'all';
         const providerId =
-          dentistId !== 'all' && clinicIds.length == 1 ? dentistId : undefined;
+          dentistId !== 'all' && clinics.length == 1 ? dentistId : undefined;
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
-
-        this.dashbordFacade.loadChartTips(1, clinicIds.join(','));
+        const clinicIds = clinics.map(v => v.id).join(',');
+        this.dashbordFacade.loadChartTips(1, clinicIds);
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
 
-        if (isAllDentist || clinicIds.length > 1) {
-          const params = {
-            clinicId: clinicIds.join(','),
-            startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
-            endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
-            duration: duration,
-            queryWhEnabled,
-            dentistId: providerId,
-          };
+        const queryParams = {
+          clinicId: clinicIds,
+          startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
+          endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
+          duration: duration,
+          queryWhEnabled,
+          dentistId: providerId,
+        };
 
-          for (const api of caEndpoints) {
-            this.caFacade.loadNoneTrendApiRequest({
-              ...params,
-              api,
-            });
-          }
+        for (const api of caEndpoints) {
+          this.caFacade.loadNoneTrendApiRequest({
+            ...queryParams,
+            api,
+          });
         }
 
-        if (!isAllDentist && clinicIds.length == 1) {
+        if (providerId) {
           const endpoints = [
             'caDentistProductionTrend',
             'caCollectionTrend',
@@ -156,7 +154,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
           endpoints.forEach(api => {
             const params = {
-              clinicId: clinicIds.join(','),
+              clinicId: clinicIds,
               mode:
                 trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
               queryWhEnabled,
