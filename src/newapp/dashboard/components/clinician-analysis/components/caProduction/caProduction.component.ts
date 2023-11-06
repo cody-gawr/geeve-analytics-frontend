@@ -82,21 +82,21 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     );
   }
 
-  datasets: any = [{ data: [] }];
+  datasets: any[] = [{ data: [] }];
   labels = [];
-  prev = 0;
+  public prev: number = 0;
 
-  total = 0;
+  public total: number = 0;
 
-  average = 0;
+  public average: number = 0;
 
-  goal = 0;
-  maxGoal = 0;
-  gaugeValue = 0;
-  gaugeLabel = '';
+  public goal: number = 0;
+  public maxGoal: number = 0;
+  public gaugeValue: number = 0;
+  public gaugeLabel: string = '';
 
-  goalCount = 0;
-  showTableInfo = false;
+  public goalCount: number = 0;
+  public showTableInfo: boolean = false;
   tableData = [];
 
   get isLegendVisible$() {
@@ -112,7 +112,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    ///@audit - why distinctUntilChanged() operator is needed here?
     return this.caFacade.isLoadingCaProduction$.pipe(distinctUntilChanged());
   }
 
