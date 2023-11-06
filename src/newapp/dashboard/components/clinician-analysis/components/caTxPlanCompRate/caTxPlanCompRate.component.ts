@@ -217,12 +217,10 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     goalVal: number
   ): _DeepPartialObject<AnnotationPluginOptions> {
     return {
-      // drawTime: 'afterDatasetsDraw',
       annotations: [
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: goalVal,
           yMin: goalVal,
@@ -264,10 +262,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   };
 
   public barChartOptionsPercent: ChartOptions = {
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
     hover: { mode: null },
-    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine',
@@ -320,23 +315,6 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
         },
       },
     },
-
-    // legend: {
-    //   position: 'top',
-    //   onClick: function (e, legendItem) {
-    //     var index = legendItem.datasetIndex;
-    //     var ci = this.chart;
-    //     if (index == 0) {
-    //       ci.getDatasetMeta(1).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     else if (index == 1) {
-    //       ci.getDatasetMeta(0).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     ci.update();
-    //   },
-    // },
   };
 
   public barChartOptionsPercentTrend: ChartOptions<'bar'> = {

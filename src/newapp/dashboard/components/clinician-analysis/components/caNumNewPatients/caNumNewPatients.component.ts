@@ -166,15 +166,6 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
   }
 
-  // get isAllDentist$() {
-  //   return this.dentistFacade.currentDentistId$.pipe(
-  //     takeUntil(this.destroy$),
-  //     map(v => {
-  //       return v === 'all';
-  //     })
-  //   );
-  // }
-
   get isDentistMode$() {
     return this.caFacade.isDentistMode$;
   }
@@ -278,12 +269,10 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
 
   getGoalPluginOptions(goalVal): _DeepPartialObject<AnnotationPluginOptions> {
     return {
-      // drawTime: 'afterDatasetsDraw',
       annotations: [
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: goalVal,
           yMin: goalVal,
@@ -297,8 +286,6 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   }
 
   public doughnutChartOptions: ChartOptions = {
-    // scaleShowVerticalLines: false,
-    // borderWidth: 0,
     responsive: true,
     hover: { mode: null },
     maintainAspectRatio: false,
@@ -314,38 +301,16 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
           usePointStyle: true,
           padding: 5,
           generateLabels: chart => {
-            var data = chart.data;
-            if (data.labels.length && data.datasets.length) {
-              return data.labels.map((label: string, i) => {
-                // var meta = chart.getDatasetMeta(0);
-                var ds = this.newpColors[0];
-                // var arc = meta.data[i];
-                // var custom = (arc && arc.custom) || {};
-                // const regex = /\w+\s\w+(?=\s)|\w+/g;
-                // var names = label.toString().trim().match(regex);
-                // var labls = '';
-                // var name = names[0].split(' ');
-                // if (names.length == 3) {
-                //   labls = `${names[0]}`;
-                // } else if (names.length == 2) {
-                //   if (name.length == 2) {
-                //     labls = `${names[0][0]} ${name[1]}`;
-                //   } else {
-                //     labls = `${names[0][0]} ${names[1]}`;
-                //   }
-                // } else {
-                //   labls = `${names[0]}`;
-                // }
-                return {
+            const data = chart.data;
+            return data.labels.length && data.datasets.length
+              ? data.labels.map((label: string, i) => ({
                   text: <string>formatXLabel(label),
-                  fillStyle: ds.backgroundColor[i] ?? COLORS.even,
+                  fillStyle:
+                    this.newpColors[0].backgroundColor[i] ?? COLORS.even,
                   strokeStyle: '#fff',
-                  //hidden: isNaN(ds.data[i]) || meta.data[i].active,
                   index: i,
-                };
-              });
-            }
-            return [];
+                }))
+              : [];
           },
         },
         onClick: function (e) {
@@ -362,20 +327,10 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
         },
       },
     },
-    // elements: {
-    //   center: {
-    //     text: '',
-    //     sidePadding: 40,
-    //     minFontSize: 15
-    //   }
-    // }
   };
 
   public barChartOptionsTrend: ChartOptions<'bar'> = {
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
     hover: { mode: null },
-    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine',

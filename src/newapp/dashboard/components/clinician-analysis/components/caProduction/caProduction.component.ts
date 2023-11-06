@@ -538,7 +538,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+
             let ylable = tooltipItem.parsed._custom
               ? +(
                   tooltipItem.parsed._custom.max +

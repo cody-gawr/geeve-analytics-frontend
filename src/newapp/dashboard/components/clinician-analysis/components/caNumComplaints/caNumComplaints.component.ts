@@ -150,15 +150,6 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
     return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
   }
 
-  // get isAllDentist$() {
-  //   return this.dentistFacade.currentDentistId$.pipe(
-  //     takeUntil(this.destroy$),
-  //     map(v => {
-  //       return v === 'all';
-  //     })
-  //   );
-  // }
-
   get isDentistMode$() {
     return this.caFacade.isDentistMode$;
   }
@@ -243,7 +234,6 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: avgVal,
           yMin: avgVal,
@@ -258,12 +248,10 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
 
   getGoalPluginOptions(goalVal): _DeepPartialObject<AnnotationPluginOptions> {
     return {
-      // drawTime: 'afterDatasetsDraw',
       annotations: [
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: goalVal,
           yMin: goalVal,
@@ -277,8 +265,6 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   public doughnutChartOptions: ChartOptions = {
-    // scaleShowVerticalLines: false,
-    // borderWidth: 0,
     responsive: true,
     hover: { mode: null },
     maintainAspectRatio: false,
@@ -294,36 +280,14 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
           usePointStyle: true,
           padding: 5,
           generateLabels: chart => {
-            var data = chart.data;
+            const data = chart.data;
             if (data.labels.length && data.datasets.length) {
-              return data.labels.map((label: string, i) => {
-                // var meta = chart.getDatasetMeta(0);
-                var ds = this.newpColors[0];
-                // var arc = meta.data[i];
-                // var custom = (arc && arc.custom) || {};
-                // const regex = /\w+\s\w+(?=\s)|\w+/g;
-                // var names = label.toString().trim().match(regex);
-                // var labls = '';
-                // var name = names[0].split(' ');
-                // if (names.length == 3) {
-                //   labls = `${names[0]}`;
-                // } else if (names.length == 2) {
-                //   if (name.length == 2) {
-                //     labls = `${names[0][0]} ${name[1]}`;
-                //   } else {
-                //     labls = `${names[0][0]} ${names[1]}`;
-                //   }
-                // } else {
-                //   labls = `${names[0]}`;
-                // }
-                return {
-                  text: <string>formatXLabel(label),
-                  fillStyle: ds.backgroundColor[i] ?? COLORS.even,
-                  strokeStyle: '#fff',
-                  //hidden: isNaN(ds.data[i]) || meta.data[i].active,
-                  index: i,
-                };
-              });
+              return data.labels.map((label: string, i) => ({
+                text: <string>formatXLabel(label),
+                fillStyle: this.newpColors[0].backgroundColor[i] ?? COLORS.even,
+                strokeStyle: '#fff',
+                index: i,
+              }));
             }
             return [];
           },
@@ -342,20 +306,10 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
         },
       },
     },
-    // elements: {
-    //   center: {
-    //     text: '',
-    //     sidePadding: 40,
-    //     minFontSize: 15
-    //   }
-    // }
   };
 
   public barChartOptionsTrend: ChartOptions = {
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
     hover: { mode: null },
-    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine',
@@ -400,7 +354,6 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             let ylable = tooltipItem.parsed._custom
               ? +(
                   tooltipItem.parsed._custom.max +
@@ -425,7 +378,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
               return Tlable + tooltipItem.label + ': ' + ylable;
             }
           },
-          // remove title
+
           title: function (tooltipItem) {
             return '';
           },
