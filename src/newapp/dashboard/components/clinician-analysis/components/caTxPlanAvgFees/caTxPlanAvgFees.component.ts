@@ -92,7 +92,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
 
   public goalCount: number = 0;
   public showTableInfo: boolean = false;
-  tableData = [];
+  public tableData: any[] = [];
   public chartOptions: ChartOptions;
 
   get legend$() {
