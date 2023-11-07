@@ -7,6 +7,7 @@ import {
   selectDentists,
   selectDentistsError,
   selectDentistsLoading,
+  selectIsDentistMode,
 } from '../state/reducers/dentist.reducer';
 import { Dentist } from '@/newapp/models/dentist';
 import { JeeveError } from '@/newapp/models';
@@ -26,6 +27,8 @@ export class DentistFacade {
   public readonly isDentistsLoading$: Observable<boolean> = this.store.pipe(
     select(selectDentistsLoading)
   );
+
+  public readonly isDentistMode$ = this.store.pipe(select(selectIsDentistMode));
 
   public readonly dentistsError$: Observable<JeeveError | null> =
     this.store.pipe(select(selectDentistsError));

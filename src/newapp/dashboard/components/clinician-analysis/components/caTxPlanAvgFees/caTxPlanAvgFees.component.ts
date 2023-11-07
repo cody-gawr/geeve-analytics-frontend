@@ -142,7 +142,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
 
   get isDentistMode$() {
-    return this.caFacade.isDentistMode$;
+    return this.dentistFacade.isDentistMode$;
   }
 
   get noDataAlertMessage$() {

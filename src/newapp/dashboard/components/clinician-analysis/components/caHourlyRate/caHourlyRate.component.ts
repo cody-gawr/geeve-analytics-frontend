@@ -153,7 +153,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get isDentistMode$() {
-    return this.caFacade.isDentistMode$;
+    return this.dentistFacade.isDentistMode$;
   }
 
   get isTrend$() {

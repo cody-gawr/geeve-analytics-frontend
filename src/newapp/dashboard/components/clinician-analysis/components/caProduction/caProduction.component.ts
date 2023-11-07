@@ -124,17 +124,12 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get hasData$(): Observable<boolean> {
-    return combineLatest([
-      this.caFacade.caProductionChartData$,
-      this.caFacade.caProductionTrendChartData$,
-      this.isDentistMode$,
-      this.isTrend$,
-    ]).pipe(
-      map(([data, trendData, isDentistMode, isTrend]) => {
-        if (isDentistMode && isTrend) {
-          return data.datasets?.length > 0 || trendData.datasets?.length > 0;
-        } else {
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
+      map(([isDentistMode, isTrend]) => {
+        if (isDentistMode && !isTrend) {
           return this.gaugeValue > 0;
+        } else {
+          return this.datasets?.length > 0;
         }
       })
     );
@@ -149,7 +144,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isDentistMode$() {
-    return this.caFacade.isDentistMode$;
+    return this.dentistFacade.isDentistMode$;
   }
 
   get isMultiClinics$() {

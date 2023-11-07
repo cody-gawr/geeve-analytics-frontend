@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { JeeveError } from '@/newapp/models';
 import { Dentist } from '@/newapp/models/dentist';
 import { DentistApiActions, DentistPageActions } from '../actions';
+import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.reducer';
 
 export interface DentistState {
   isLoadingData: Array<'dentGet'>;
@@ -82,4 +83,12 @@ export const selectDentistsLoading = createSelector(
 export const selectDentistsError = createSelector(
   selectErrors,
   (errors): JeeveError | undefined => _.find(errors, e => e.api == 'dentGet')
+);
+
+export const selectIsDentistMode = createSelector(
+  selectCurrentDentistId,
+  selectCurrentClinics,
+  (dentistId, clinics) => {
+    return !(dentistId === 'all' || clinics.length > 1);
+  }
 );

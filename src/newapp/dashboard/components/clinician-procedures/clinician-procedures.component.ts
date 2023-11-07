@@ -24,12 +24,8 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
     );
   }
 
-  get isAllDentist$() {
-    return this.dentistFacade.currentDentistId$.pipe(
-      map(v => {
-        return v === 'all';
-      })
-    );
+  get isDentistMode$() {
+    return this.dentistFacade.isDentistMode$;
   }
 
   get cpPredictorAnalysisTip$() {
@@ -96,7 +92,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
-      this.isAllDentist$,
+      this.isDentistMode$,
       this.isTrend$,
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -107,7 +103,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
         const [
-          isAllDentist,
+          isDentistMode,
           isTrend,
           clinicId,
           dateRange,
@@ -144,7 +140,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
         this.clinicianProcedureFacade.loadCpPredictorRatio(_params);
         this.clinicianProcedureFacade.loadCpReferrals(_params);
 
-        if (!isAllDentist && isTrend) {
+        if (isDentistMode && isTrend) {
           for (const api of [
             'cpPredictorAnalysisTrend',
             'cpPredictorSpecialistAnalysisTrend',

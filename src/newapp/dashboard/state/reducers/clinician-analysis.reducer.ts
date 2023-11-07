@@ -8,7 +8,10 @@ import {
   selectCompare,
   selectTrend,
 } from '@/newapp/layout/state/reducers/layout.reducer';
-import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.reducer';
+import {
+  selectCurrentDentistId,
+  selectIsDentistMode,
+} from '@/newapp/dentist/state/reducers/dentist.reducer';
 import { COLORS } from '@/newapp/constants';
 import { selectRolesIndividual } from '@/newapp/auth/state/reducers/auth.reducer';
 import moment from 'moment';
@@ -323,13 +326,13 @@ export const selectIsHideFooterSection = createSelector(
   }
 );
 
-export const selectIsDentistMode = createSelector(
-  selectCurrentDentistId,
-  selectCurrentClinics,
-  (dentistId, clinics) => {
-    return !(dentistId === 'all' || clinics.length > 1);
-  }
-);
+// export const selectIsDentistMode = createSelector(
+//   selectCurrentDentistId,
+//   selectCurrentClinics,
+//   (dentistId, clinics) => {
+//     return !(dentistId === 'all' || clinics.length > 1);
+//   }
+// );
 
 export const selectIsLoadingCaProduction = createSelector(
   selectCurrentDentistId,

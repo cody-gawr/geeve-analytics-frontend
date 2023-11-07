@@ -135,7 +135,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   }
 
   get isDentistMode$() {
-    return this.caFacade.isDentistMode$;
+    return this.dentistFacade.isDentistMode$;
   }
 
   get isTrend$() {

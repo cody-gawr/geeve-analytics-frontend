@@ -1,7 +1,7 @@
 <div class="dashboard-header-box">
   <date-range-menu class="date-range-container"></date-range-menu>
   <div class="toggle-section">
-    <trend-mode-toggle *ngIf="!(isAllDentist$ | async)"></trend-mode-toggle>
+    <trend-mode-toggle *ngIf="isDentistMode$ | async"></trend-mode-toggle>
   </div>
 </div>
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
