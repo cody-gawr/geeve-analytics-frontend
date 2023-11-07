@@ -22,25 +22,19 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get trendingIcon() {
-    if (this.totalVisitsVal >= this.totalVisitsPrev) {
-      return 'trending_up';
-    }
-    return 'trending_down';
+    return this.totalVisitsVal >= this.totalVisitsPrev
+      ? 'trending_up'
+      : 'trending_down';
   }
 
   get maxTotalVisitsGoal() {
-    if (this.totalVisitsVal > this.totalVisitsGoal) {
-      return this.totalVisitsVal;
-    } else {
-      return this.totalVisitsGoal;
-    }
+    return this.totalVisitsVal > this.totalVisitsGoal
+      ? this.totalVisitsVal
+      : this.totalVisitsGoal;
   }
 
   get isActivePatients$() {
-    return this.marketingFacade.isActivePatients$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.marketingFacade.isActivePatients$;
   }
 
   totalVisitsVal = 0;
@@ -57,52 +51,36 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       this.marketingFacade.isLoadingTotalVisitsTrend$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(([isTrend, isLoading, isTrendLoading]) => {
-        return isTrend ? isTrendLoading : isLoading;
-      })
+      map(([isTrend, isLoading, isTrendLoading]) =>
+        isTrend ? isTrendLoading : isLoading
+      )
     );
   }
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v => typeof v == 'string')
     );
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$.pipe(map(val => val));
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$.pipe(map(l => l));
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.connectedWith$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v != 'none')
-    );
+    return this.dashboardFacade.connectedWith$.pipe(map(v => v && v != 'none'));
   }
 
   get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.layoutFacade.isFullMonthsDateRange$;
   }
 
   get hasData$() {

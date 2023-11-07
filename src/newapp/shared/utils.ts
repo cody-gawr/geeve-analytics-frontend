@@ -76,12 +76,6 @@ export const getTodayMoment = (tz = 'Australia/Brisbane') => {
   return moment().tz(tz);
 };
 
-// export const convertTimeFormatAndTimezone = (dt_str:string, tz = 'Australia/Brisbane') => {
-//   const utc_dt = moment_tz.utc(dt_str);
-//   const aus_dt = utc_dt.clone().tz(tz);
-//   return aus_dt.format('YYYY-MM-DD h:mm a');
-// }
-
 export function formatXLabel(label: string | number) {
   if (label && typeof label == 'string') {
     const names = splitName(label);

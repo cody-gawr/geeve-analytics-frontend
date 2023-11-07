@@ -16,12 +16,7 @@ import { FinanceApiActions, FinancePageActions } from '../actions';
 import { Store } from '@ngrx/store';
 import {
   FinanceState,
-  // selectIsLoadingCollection,
-  // selectIsLoadingCollectionTrend,
   selectIsLoadingNetProfit,
-  // selectIsLoadingNetProfitTrend,
-  // selectIsLoadingTotalProduction,
-  // selectIsLoadingTotalProductionTrend,
 } from '../reducers/finance.reducer';
 
 @Injectable()
@@ -38,8 +33,6 @@ export class FinanceEffects {
   public readonly loadFnTotalProduction$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalProduction),
-      // withLatestFrom(interval(1000)),
-      // filter(([action, isLoading]) => !isLoading),
       mergeMap(params => {
         return this.financeService.fnTotalProduction(params).pipe(
           map(res =>
@@ -64,8 +57,6 @@ export class FinanceEffects {
   public readonly loadFnTotalProductionTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalProductionTrend),
-      // withLatestFrom(this.store.select(selectIsLoadingTotalProductionTrend)),
-      // filter(([action, isLoading]) => isLoading),
       mergeMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.financeService
           .fnTotalProductionTrend(clinicId, mode, queryWhEnabled)
@@ -91,8 +82,6 @@ export class FinanceEffects {
   public readonly loadFnTotalCollection$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalCollection),
-      // withLatestFrom(this.store.select(selectIsLoadingCollection)),
-      // filter(([action, isLoading]) => isLoading),
       mergeMap(params => {
         return this.financeService.fnTotalCollection(params).pipe(
           map(res =>
@@ -117,8 +106,6 @@ export class FinanceEffects {
   public readonly loadFnTotalCollectionTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalCollectionTrend),
-      // withLatestFrom(this.store.select(selectIsLoadingCollectionTrend)),
-      // filter(([action, isLoading]) => isLoading),
       mergeMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.financeService
           .fnTotalCollectionTrend(clinicId, mode, queryWhEnabled)
@@ -166,8 +153,6 @@ export class FinanceEffects {
   public readonly loadfnNetProfitTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnNetProfitTrend),
-      // withLatestFrom(this.store.select(selectIsLoadingNetProfitTrend)),
-      // filter(([action, isLoading]) => isLoading),
       mergeMap(({ clinicId, mode, connectedWith, queryWhEnabled }) => {
         return this.financeService
           .fnNetProfitTrend(clinicId, mode, connectedWith, queryWhEnabled)

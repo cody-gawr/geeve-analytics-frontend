@@ -20,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie';
 import _ from 'lodash';
 import { MatSelectChange } from '@angular/material/select';
+import { getTodayMoment } from '@/newapp/shared/utils';
 
 @Component({
   selector: 'app-topbar',
@@ -188,6 +189,8 @@ export class AppTopbarComponent implements OnInit {
     this.layoutFacade.dateRange$
       .pipe(takeUntil(this.destroy$))
       .subscribe(({ start, end }) => {
+        const today = getTodayMoment();
+        console.log({ today: today.startOf('month') });
         this.range.controls['start'].setValue(start);
         this.range.controls['end'].setValue(end);
       });
@@ -273,9 +276,18 @@ export class AppTopbarComponent implements OnInit {
     target: 'start' | 'end',
     event: MatDatepickerInputEvent<Moment>
   ) {
+    console.log({
+      start: this.range.controls['start'].value,
+      end: this.range.controls['end'].value,
+    });
+
     if (target === 'start') {
-      this.range.controls['start'].setValue(event.value);
-    } else if (event.value) {
+      // this.range.controls['start'].setValue(event.value);
+      console.log({
+        start: this.range.controls['start'].value,
+        end: this.range.controls['end'].value,
+      });
+    } else if (target === 'end' && !!event.value) {
       this.layoutFacade.saveDateRange(
         this.range.controls['start'].value,
         event.value,
@@ -337,7 +349,7 @@ export class AppTopbarComponent implements OnInit {
     this.multiSelectElement.toggle();
   }
 
-  onMultiSelectPanelOpened(event) {
+  onMultiSelectPanelOpened(event: MatSelectChange) {
     if (!event) {
       combineLatest([
         this.clinicFacade.currentClinics$,
