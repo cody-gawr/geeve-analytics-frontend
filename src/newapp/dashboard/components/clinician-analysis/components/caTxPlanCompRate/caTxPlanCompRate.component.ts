@@ -74,21 +74,21 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     );
   }
 
-  datasets: any = [{ data: [] }];
-  labels = [];
-  prev = 0;
+  public datasets: any[] = [{ data: [] }];
+  public labels: any[] = [];
+  public prev: number = 0;
 
-  total = 0;
+  public total: number = 0;
 
-  average = 0;
+  public average: number = 0;
 
-  goal = 0;
-  maxGoal = 0;
-  gaugeValue = 0;
-  gaugeLabel = '';
+  public goal: number = 0;
+  public maxGoal: number = 0;
+  public gaugeValue: number = 0;
+  public gaugeLabel: string = '';
 
-  goalCount = 0;
-  showTableInfo = false;
+  public goalCount: number = 0;
+  public showTableInfo: boolean = false;
   tableData = [];
 
   get legend$() {
@@ -217,12 +217,10 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     goalVal: number
   ): _DeepPartialObject<AnnotationPluginOptions> {
     return {
-      // drawTime: 'afterDatasetsDraw',
       annotations: [
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: goalVal,
           yMin: goalVal,
@@ -264,10 +262,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   };
 
   public barChartOptionsPercent: ChartOptions = {
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
     hover: { mode: null },
-    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine',
@@ -320,23 +315,6 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
         },
       },
     },
-
-    // legend: {
-    //   position: 'top',
-    //   onClick: function (e, legendItem) {
-    //     var index = legendItem.datasetIndex;
-    //     var ci = this.chart;
-    //     if (index == 0) {
-    //       ci.getDatasetMeta(1).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     else if (index == 1) {
-    //       ci.getDatasetMeta(0).hidden = true;
-    //       ci.getDatasetMeta(index).hidden = false;
-    //     }
-    //     ci.update();
-    //   },
-    // },
   };
 
   public barChartOptionsPercentTrend: ChartOptions<'bar'> = {

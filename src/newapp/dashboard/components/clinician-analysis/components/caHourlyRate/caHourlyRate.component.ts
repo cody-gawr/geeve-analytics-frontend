@@ -72,22 +72,22 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     );
   }
 
-  datasets: any = [{ data: [] }];
-  labels = [];
-  prev = 0;
+  public datasets: any[] = [{ data: [] }];
+  public labels: any[] = [];
+  public prev: number = 0;
 
-  total = 0;
+  public total: number = 0;
 
-  average = 0;
+  public average: number = 0;
 
-  goal = 0;
-  maxGoal = 0;
-  gaugeValue = 0;
-  gaugeLabel = '';
+  public goal: number = 0;
+  public maxGoal: number = 0;
+  public gaugeValue: number = 0;
+  public gaugeLabel: string = '';
 
-  goalCount = 0;
-  showTableInfo = false;
-  tableData = [];
+  public goalCount: number = 0;
+  public showTableInfo: boolean = false;
+  public tableData = [];
 
   get legend$() {
     return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
@@ -156,14 +156,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     return this.caFacade.isDentistMode$;
   }
 
-  // get isAllDentist$() {
-  //   return this.dentistFacade.currentDentistId$.pipe(
-  //     map(v => {
-  //       return v === 'all';
-  //     })
-  //   );
-  // }
-
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
   }
@@ -171,33 +163,22 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   get noDataAlertMessage$() {
     return combineLatest([
       this.isDentistMode$,
-      // this.caFacade.hourlyRateChartName$,
       this.caFacade.hourlyRateProdSelectTab$,
-      // this.caFacade.hourlyRateColSelectTab$,
-      // this.caFacade.hourlyRateColExpSelectTab$,
     ]).pipe(
-      map(
-        ([
-          isDentistMode,
-          // visibility,
-          prodSelectShow,
-          // colSelectShow,
-          // colExpSelectShow,
-        ]) => {
-          if (!isDentistMode) {
-            switch (prodSelectShow) {
-              case 'hourly_rate_all':
-                return 'You have no hourly rates for the selected period';
-              case 'hourly_rate_dentists':
-                return 'You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
-              case 'hourly_rate_oht':
-                return 'You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
-            }
-          } else {
-            return 'You have no hourly rates for the selected period';
+      map(([isDentistMode, prodSelectShow]) => {
+        if (!isDentistMode) {
+          switch (prodSelectShow) {
+            case 'hourly_rate_all':
+              return 'You have no hourly rates for the selected period';
+            case 'hourly_rate_dentists':
+              return 'You have no Dentist hourly rates for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
+            case 'hourly_rate_oht':
+              return 'You have no OHT hourly rates for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
           }
+        } else {
+          return 'You have no hourly rates for the selected period';
         }
-      )
+      })
     );
   }
 
@@ -265,7 +246,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: avgVal,
           yMin: avgVal,
@@ -280,12 +260,10 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
   getGoalPluginOptions(goalVal): _DeepPartialObject<AnnotationPluginOptions> {
     return {
-      // drawTime: 'afterDatasetsDraw',
       annotations: [
         {
           drawTime: 'afterDraw',
           type: 'line',
-          // mode: 'horizontal',
           scaleID: 'y-axis-0',
           yMax: goalVal,
           yMin: goalVal,
@@ -384,17 +362,13 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   };
 
   public barChartOptionsTrend: ChartOptions<'bar'> = {
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
     hover: { mode: null },
-    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine',
     },
     responsive: true,
     maintainAspectRatio: false,
-    // scaleStartValue: 0,
     scales: {
       x: {
         grid: {
