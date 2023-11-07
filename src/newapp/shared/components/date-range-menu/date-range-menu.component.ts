@@ -81,7 +81,7 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
             dentistIds === 'all' || trend === 'off' || clinicIds.length > 1
           );
         } else {
-          return trend !== 'off';
+          return trend === 'off';
         }
       })
     );
@@ -201,5 +201,6 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
         }
         break;
     }
+    this.layoutFacade.setTrend('off');
   }
 }
