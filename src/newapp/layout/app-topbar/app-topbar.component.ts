@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Moment } from 'moment';
+import moment, { Moment, isMoment } from 'moment';
 import {
   map,
   Subject,
@@ -189,10 +189,10 @@ export class AppTopbarComponent implements OnInit {
     this.layoutFacade.dateRange$
       .pipe(takeUntil(this.destroy$))
       .subscribe(({ start, end }) => {
-        const today = getTodayMoment();
-        console.log({ today: today.startOf('month') });
-        this.range.controls['start'].setValue(start);
-        this.range.controls['end'].setValue(end);
+        this.range.controls['start'].setValue(
+          isMoment(start) ? start : moment(start)
+        );
+        this.range.controls['end'].setValue(isMoment(end) ? end : moment(end));
       });
 
     combineLatest([
@@ -276,18 +276,7 @@ export class AppTopbarComponent implements OnInit {
     target: 'start' | 'end',
     event: MatDatepickerInputEvent<Moment>
   ) {
-    console.log({
-      start: this.range.controls['start'].value,
-      end: this.range.controls['end'].value,
-    });
-
-    if (target === 'start') {
-      // this.range.controls['start'].setValue(event.value);
-      console.log({
-        start: this.range.controls['start'].value,
-        end: this.range.controls['end'].value,
-      });
-    } else if (target === 'end' && !!event.value) {
+    if (target === 'end' && !!event.value) {
       this.layoutFacade.saveDateRange(
         this.range.controls['start'].value,
         event.value,
