@@ -22,8 +22,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private router: Router,
-    // private appLayoutService: AppLayoutService,
-    private clinicFacade: ClinicFacade // private ref: ChangeDetectorRef
+    private clinicFacade: ClinicFacade
   ) {
     this.router.events
       .pipe(
@@ -43,9 +42,6 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
       )
       .subscribe(event => {
         const { url } = <NavigationEnd>event;
-        // const path = this.router.parseUrl(url).root.children['primary']
-        //   ? this.router.parseUrl(url).root.children['primary'].segments[0].path
-        //   : this.defaultMenu;
         this.activatedUrl = url.split('?')[0];
       });
   }
@@ -78,11 +74,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     this.destroy.next();
   }
 
-  onOpenedChange = (e: boolean) => {
-    // if (!e) {
-    //   this.clinicFacade.setCurrentClinicId(null);
-    // }
-  };
+  onOpenedChange = (e: boolean) => {};
 
   onMainNavOpenedChange = (e: boolean) => {
     this.isSidenavVisible = e;

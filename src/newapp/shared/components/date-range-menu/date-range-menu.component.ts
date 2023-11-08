@@ -35,25 +35,7 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
     private dentistFacade: DentistFacade,
     private clinicFacade: ClinicFacade,
     private router: Router
-  ) {
-    this.layoutFacade.dateRange$.pipe(takeUntil(this.destroy$)).subscribe(v => {
-      this.selectedMenu = v.duration;
-    });
-
-    this.router.events
-      .pipe(
-        takeUntil(this.destroy$),
-        map((event: any) => event.routerEvent ?? event),
-        filter(event => event instanceof NavigationEnd)
-      )
-      .subscribe(event => {
-        const { url } = <NavigationEnd>event;
-        // const path = this.router.parseUrl(url).root.children['primary']
-        //   ? this.router.parseUrl(url).root.children['primary'].segments[0].path
-        //   : this.defaultMenu;
-        this.activedUrl = url.split('?')[0];
-      });
-  }
+  ) {}
 
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(
@@ -87,7 +69,22 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.layoutFacade.dateRange$.pipe(takeUntil(this.destroy$)).subscribe(v => {
+      this.selectedMenu = v.duration;
+    });
+
+    this.router.events
+      .pipe(
+        takeUntil(this.destroy$),
+        map((event: any) => event.routerEvent ?? event),
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe(event => {
+        const { url } = <NavigationEnd>event;
+        this.activedUrl = url.split('?')[0];
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy.next();

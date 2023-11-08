@@ -94,7 +94,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       this.layoutFacade.dateRange$,
       this.router.routerState.root.queryParams,
       this.dentistFacade.currentDentistId$,
-      this.isTrend$,
       this.layoutFacade.trend$,
     ])
       .pipe(
@@ -102,10 +101,10 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(params => {
-        const [clinics, dateRange, route, dentistId, isTrend, trend] = params;
+        const [clinics, dateRange, route, dentistId, trend] = params;
         if (clinics.length == 0) return;
 
-        // const isAllDentist = dentistId === 'all';
+        const isTrend = trend === 'off';
         const providerId =
           dentistId !== 'all' && clinics.length == 1 ? dentistId : undefined;
         const startDate = dateRange.start;
@@ -137,6 +136,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
             'caCollectionTrend',
             'caCollectionExpTrend',
           ];
+
           if (isTrend) {
             endpoints.push(
               'caHourlyRateTrend',

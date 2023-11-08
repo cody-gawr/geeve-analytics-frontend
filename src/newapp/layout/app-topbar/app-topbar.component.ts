@@ -20,7 +20,6 @@ import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie';
 import _ from 'lodash';
 import { MatSelectChange } from '@angular/material/select';
-import { getTodayMoment } from '@/newapp/shared/utils';
 
 @Component({
   selector: 'app-topbar',
@@ -286,6 +285,8 @@ export class AppTopbarComponent implements OnInit {
           this.range.controls['start'].value.clone().startOf('month').date() &&
           event.value.date() == event.value.clone().endOf('month').date()
       );
+
+      this.layoutFacade.setTrend('off');
     }
   }
 
