@@ -18,10 +18,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get isDentistMode$() {
