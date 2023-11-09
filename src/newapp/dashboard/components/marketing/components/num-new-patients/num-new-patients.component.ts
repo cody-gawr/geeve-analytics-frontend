@@ -2,8 +2,6 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
-import { splitName } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
@@ -24,34 +22,25 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get trendingIcon() {
-    if (this.newNumPatientsVal >= this.newNumPatientsPrev) {
-      return 'trending_up';
-    }
-    return 'trending_down';
+    return this.newNumPatientsVal >= this.newNumPatientsPrev
+      ? 'trending_up'
+      : 'trending_down';
   }
 
   get maxNewNumPatientsGoal() {
-    if (this.newNumPatientsVal > this.newNumPatientsGoal) {
-      return this.newNumPatientsVal;
-    } else {
-      return this.newNumPatientsGoal;
-    }
+    return this.newNumPatientsVal > this.newNumPatientsGoal
+      ? this.newNumPatientsVal
+      : this.newNumPatientsGoal;
   }
 
   get displayTitle$() {
     return this.marketingFacade.isActivePatients$.pipe(
-      takeUntil(this.destroy$),
-      map(v => {
-        return v ? 'No. Active Patients' : 'No. New Patients';
-      })
+      map(v => (v ? 'No. Active Patients' : 'No. New Patients'))
     );
   }
 
   get isActivePatients$() {
-    return this.marketingFacade.isActivePatients$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.marketingFacade.isActivePatients$;
   }
 
   enableActivePatients() {
@@ -70,10 +59,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
   labels = [];
 
   get isConnectedWith$() {
-    return this.dashboardFacade.connectedWith$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v != 'none')
-    );
+    return this.dashboardFacade.connectedWith$.pipe(map(v => v && v != 'none'));
   }
 
   get isLoading$() {
@@ -82,7 +68,6 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
       this.marketingFacade.isLoadingNewNumPatients$,
       this.marketingFacade.isLoadingNewNumPatientsTrend$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isLoading, isTrendLoading]) => {
         return isTrend ? isTrendLoading : isLoading;
       })
@@ -91,41 +76,27 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v => typeof v == 'string')
     );
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      map(([isTrend, isMulti]) => {
-        if (isTrend || isMulti) {
-          return this.labels.length > 0;
-        } else {
-          return this.newNumPatientsVal > 0;
-        }
-      })
+      map(([isTrend, isMulti]) =>
+        isTrend || isMulti ? this.labels.length > 0 : this.newNumPatientsVal > 0
+      )
     );
   }
 
@@ -189,7 +160,6 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
 
   get goalCount$() {
     return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
       map(val => {
         switch (val.duration) {
           case 'w':
@@ -222,12 +192,11 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
 
   get chartOptions$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      takeUntil(this.destroy$),
-      map(([isTrend, isMultiClinic]) => {
-        return isTrend && isMultiClinic
+      map(([isTrend, isMultiClinic]) =>
+        isTrend && isMultiClinic
           ? this.stackedChartOptionsMulti
-          : this.stackedChartOptions;
-      })
+          : this.stackedChartOptions
+      )
     );
   }
 

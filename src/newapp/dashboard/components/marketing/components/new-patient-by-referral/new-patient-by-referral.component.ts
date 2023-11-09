@@ -105,9 +105,7 @@ export class MarketingNewPatientByReferralComponent
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private decimalPipe: DecimalPipe
-  ) {
-    this.loadData();
-  }
+  ) {}
 
   loadData() {
     combineLatest([
@@ -126,10 +124,14 @@ export class MarketingNewPatientByReferralComponent
           this.labels = chartData.labels;
           this.newPatientsByReferralVal = chartData.newPatientsByReferralVal;
         }
+
+        console.log({ labels: this.labels });
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadData();
+  }
 
   ngOnDestroy(): void {
     this.destroy.next();

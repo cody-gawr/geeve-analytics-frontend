@@ -330,7 +330,7 @@
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)">
                 </canvas>
-                <!-- labelBarmkRevenueByReferralOptionsStacked -->
+
                 <div
                   class="no-data-placeholder"
                   *ngIf="
@@ -465,11 +465,13 @@
                 <div
                   class="chart-num-patients"
                   *ngIf="
-                    !showNPBar &&
-                    !showTrend &&
                     newPatientsTotal > 0 &&
-                    !fdnewPatientsRatioLoader &&
-                    !activePatients
+                    !(
+                      showNPBar ||
+                      showTrend ||
+                      fdnewPatientsRatioLoader ||
+                      activePatients
+                    )
                   ">
                   <ngx-gauge
                     class="singleRatio"

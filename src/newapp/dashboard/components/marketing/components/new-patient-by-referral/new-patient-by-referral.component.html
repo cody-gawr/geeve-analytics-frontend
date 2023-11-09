@@ -32,7 +32,7 @@
               [datasets]="datasets"
               [labels]="labels"
               [type]="chartType$ | async"
-              [legend]="false"
+              [legend]="true"
               [options]="chartOptions$ | async"
               (chartClick)="chartClicked($event)"></canvas>
           </ng-template>

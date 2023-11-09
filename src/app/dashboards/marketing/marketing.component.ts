@@ -8,18 +8,12 @@ import {
   ElementRef,
 } from '@angular/core';
 import { MarketingService } from './marketing.service';
-import { FinancesService } from '../finances/finances.service';
-import { DentistService } from '../../dentist/dentist.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from 'ngx-cookie';
 import { NgxSmartModalService } from 'ngx-smart-modal';
-import { ToastrService } from 'ngx-toastr'; /**/
-import {
-  BaseChartDirective,
-  // PluginServiceGlobalRegistrationAndOptions
-} from 'ng2-charts';
+import { BaseChartDirective } from 'ng2-charts';
 import { Observable, ReplaySubject, map, takeUntil } from 'rxjs';
 import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
@@ -117,10 +111,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private localStorageService: LocalStorageService,
-    private toastr: ToastrService,
     private marketingService: MarketingService,
-    private financesService: FinancesService,
-    private dentistService: DentistService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
     private headerService: HeaderService,
@@ -146,15 +137,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // plugin observable for the center text in doughnut chart to subscribe the no patients count
-    /*this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
-      takeUntil(this.destroyed$),
-      map((revenueCount) => {      
-        return this.chartService.beforeDrawChart(revenueCount);
-      })
-    );*/
-    // end of plugin observable logic
-
     this.doughnutChartColors = [
       '#6cd8ba',
       '#b0fffa',
@@ -225,8 +207,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     }
     this.getRolesIndividual();
     var val = $('#currentClinic').attr('cid');
-    //const val = this._cookieService.get("clinic_id");
-    // this.clinic_id = val;
+
     if (val != undefined) {
       if (val == 'all') {
         this.clinic_id =
@@ -240,7 +221,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         this.multipleClinicsSelected = false;
         this.clinic_id = val;
         await this.clinicGetAccountingPlatform();
-        // this.connectedwith = this._cookieService.get("a_connect");
+
         this.isVisibleAccountGraphs =
           this.connectedwith == 'none' ? false : true;
         if (this.connectedwith == 'myob') {
@@ -273,7 +254,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       } else {
         this.filterDate(this.chartService.duration$.value);
       }
-      //this.filterDate(this.chartService.duration$.value);
+
       this.getChartsTips();
     } else {
       this.multipleClinicsSelected = true;
@@ -358,74 +339,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         }
       });
     });
-    // let proceedureGradient = this.canvas2.nativeElement
-    //   .getContext('2d')
-    //   .createLinearGradient(0, 0, 0, 400);
-    // proceedureGradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
-    // proceedureGradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
-    // let proceedureGradient1 = this.canvas2.nativeElement
-    //   .getContext('2d')
-    //   .createLinearGradient(0, 0, 0, 100);
-    // proceedureGradient1.addColorStop(1, 'rgba(12, 209,169,0.8)');
-    // proceedureGradient1.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    // let proceedureGradient2 = this.canvas2.nativeElement
-    //   .getContext('2d')
-    //   .createLinearGradient(0, 0, 0, 100);
-    // proceedureGradient2.addColorStop(1, 'rgba(59, 227,193,0.8');
-    // proceedureGradient2.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    // let proceedureGradient3 = this.canvas2.nativeElement
-    //   .getContext('2d')
-    //   .createLinearGradient(0, 0, 0, 100);
-    // proceedureGradient3.addColorStop(1, 'rgba(94, 232,205,0.8)');
-    // proceedureGradient3.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    // let proceedureGradient4 = this.canvas2.nativeElement
-    //   .getContext('2d')
-    //   .createLinearGradient(0, 0, 0, 100);
-    // proceedureGradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
-    // proceedureGradient4.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    // let proceedureGradient5 = this.canvas2.nativeElement
-    //   .getContext('2d')
-    //   .createLinearGradient(0, 0, 0, 100);
-    // proceedureGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
-    // proceedureGradient5.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    // this.preoceedureChartColors = [
-    //   {
-    //     backgroundColor: proceedureGradient,
-    //     hoverBorderWidth: 2,
-    //     hoverBorderColor: '#1CA49F',
-    //     borderColor: 'rgba(25,179,148,0.7)'
-    //   },
-    //   {
-    //     backgroundColor: proceedureGradient1,
-    //     hoverBorderWidth: 2,
-    //     hoverBorderColor: '#1CA49F',
-    //     borderColor: 'rgba(25,179,148,0.7)'
-    //   },
-    //   {
-    //     backgroundColor: proceedureGradient2,
-    //     hoverBorderWidth: 2,
-    //     hoverBorderColor: '#1CA49F',
-    //     borderColor: 'rgba(25,179,148,0.7)'
-    //   },
-    //   {
-    //     backgroundColor: proceedureGradient3,
-    //     hoverBorderWidth: 2,
-    //     hoverBorderColor: '#1CA49F',
-    //     borderColor: 'rgba(25,179,148,0.7)'
-    //   },
-    //   {
-    //     backgroundColor: proceedureGradient4,
-    //     hoverBorderWidth: 2,
-    //     hoverBorderColor: '#1CA49F',
-    //     borderColor: 'rgba(25,179,148,0.7)'
-    //   },
-    //   {
-    //     backgroundColor: proceedureGradient5,
-    //     hoverBorderWidth: 2,
-    //     hoverBorderColor: '#1CA49F'
-    //   }
-    // ];
-    // this.filterDate(this.chartService.duration$.value);
   }
 
   public labelBarmkRevenueByReferralOptionsStacked: ChartOptions = {
@@ -454,11 +367,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       },
       y: {
         stacked: true,
-        // ticks: {
-        //   callback: function (item) {
-        //     return item;
-        //   }
-        // }
       },
     },
     plugins: {
@@ -467,88 +375,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       },
       tooltip: {
         mode: 'x',
-        // enabled: false,
-        // external: function (t) {
-        //   const tooltip = t.tooltip;
-        //   const chart = t.chart;
-
-        //   if (!tooltip) return;
-        //   var tooltipEl = document.getElementById('chartjs-tooltip');
-        //   if (!tooltipEl) {
-        //     tooltipEl = document.createElement('div');
-        //     tooltipEl.id = 'chartjs-tooltip';
-        //     tooltipEl.style.backgroundColor = '#FFFFFF';
-        //     tooltipEl.style.borderColor = '#B2BABB';
-        //     tooltipEl.style.borderWidth = 'thin';
-        //     tooltipEl.style.borderStyle = 'solid';
-        //     tooltipEl.style.zIndex = '999999';
-        //     tooltipEl.style.backgroundColor = '#000000';
-        //     tooltipEl.style.color = '#FFFFFF';
-        //     document.body.appendChild(tooltipEl);
-        //   }
-        //   if (tooltip.opacity === 0) {
-        //     tooltipEl.style.opacity = '0';
-        //     return;
-        //   } else {
-        //     tooltipEl.style.opacity = '0.8';
-        //   }
-        //   tooltipEl.classList.remove('above', 'below', 'no-transform');
-        //   if (tooltip.yAlign) {
-        //     tooltipEl.classList.add(tooltip.yAlign);
-        //   } else {
-        //     tooltipEl.classList.add('no-transform');
-        //   }
-
-        //   function getBody(bodyItem) {
-        //     return bodyItem.lines;
-        //   }
-        //   if (tooltip.body) {
-        //     var titleLines = tooltip.title || [];
-        //     var bodyLines = tooltip.body.map(getBody);
-        //     var labelColorscustom = tooltip.labelColors;
-        //     var innerHtml = '<table><thead>';
-        //     innerHtml += '</thead><tbody>';
-        //     titleLines.forEach(function (title) {
-        //       innerHtml +=
-        //         '<tr><th colspan="2" style="text-align: left;">' +
-        //         title +
-        //         '</th></tr>';
-        //     });
-        //     bodyLines.forEach(function (body, i) {
-        //       var singledata = body[0].split(':');
-        //       singledata[1] = singledata[1].trim();
-        //       if (singledata[1] > 0) {
-        //         singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
-        //         body[0] = singledata.join(': $');
-        //         innerHtml +=
-        //           '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-        //           labelColorscustom[i].backgroundColor +
-        //           '"></span></td><td style="padding: 0px">' +
-        //           body[0] +
-        //           '</td></tr>';
-        //       }
-        //     });
-        //     innerHtml += '</tbody></table>';
-        //     tooltipEl.innerHTML = innerHtml;
-        //     //tableRoot.innerHTML = innerHtml;
-        //   }
-        //   // disable displaying the color box;
-        //   var position = chart.canvas.getBoundingClientRect();
-        //   // Display, position, and set styles for font
-        //   tooltipEl.style.position = 'fixed';
-        //   tooltipEl.style.left =
-        //     position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        //   tooltipEl.style.top =
-        //     position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        //   // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        //   // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        //   // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        //   // tooltipEl.style.padding =
-        //   //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        //   tooltipEl.style.pointerEvents = 'none';
-        //   // tooltip.displayColors = false;
-        // },
-        // displayColors: false,
         callbacks: {
           label: tooltipItem =>
             `${tooltipItem.dataset.label}: ${tooltipItem.formattedValue}`,
@@ -584,12 +410,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       },
       y: {
         stacked: true,
-
-        // ticks: {
-        //   callback: function (item) {
-        //     return item;
-        //   }
-        // }
       },
     },
     plugins: {
@@ -598,87 +418,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       },
       tooltip: {
         mode: 'x',
-        // enabled: false,
-        // external: function (t) {
-        //   const tooltip = t.tooltip;
-        //   const chart = t.chart;
-        //   if (!tooltip) return;
-        //   var tooltipEl = document.getElementById('chartjs-tooltip');
-        //   if (!tooltipEl) {
-        //     tooltipEl = document.createElement('div');
-        //     tooltipEl.id = 'chartjs-tooltip';
-        //     tooltipEl.style.backgroundColor = '#FFFFFF';
-        //     tooltipEl.style.borderColor = '#B2BABB';
-        //     tooltipEl.style.borderWidth = 'thin';
-        //     tooltipEl.style.borderStyle = 'solid';
-        //     tooltipEl.style.zIndex = '999999';
-        //     tooltipEl.style.backgroundColor = '#000000';
-        //     tooltipEl.style.color = '#FFFFFF';
-        //     document.body.appendChild(tooltipEl);
-        //   }
-        //   if (tooltip.opacity === 0) {
-        //     tooltipEl.style.opacity = '0';
-        //     return;
-        //   } else {
-        //     tooltipEl.style.opacity = '0.8';
-        //   }
-
-        //   tooltipEl.classList.remove('above', 'below', 'no-transform');
-        //   if (tooltip.yAlign) {
-        //     tooltipEl.classList.add(tooltip.yAlign);
-        //   } else {
-        //     tooltipEl.classList.add('no-transform');
-        //   }
-
-        //   function getBody(bodyItem) {
-        //     return bodyItem.lines;
-        //   }
-        //   if (tooltip.body) {
-        //     var titleLines = tooltip.title || [];
-        //     var bodyLines = tooltip.body.map(getBody);
-        //     var labelColorscustom = tooltip.labelColors;
-        //     var innerHtml = '<table><thead>';
-        //     innerHtml += '</thead><tbody>';
-        //     titleLines.forEach(function (title) {
-        //       innerHtml +=
-        //         '<tr><th colspan="2" style="text-align: left;">' +
-        //         title +
-        //         '</th></tr>';
-        //     });
-        //     bodyLines.forEach(function (body, i) {
-        //       var singledata = body[0].split(':');
-        //       singledata[1] = singledata[1].trim();
-        //       if (singledata[1] > 0) {
-        //         singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
-        //         body[0] = singledata.join(': ');
-        //         innerHtml +=
-        //           '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-        //           labelColorscustom[i].backgroundColor +
-        //           '"></span></td><td style="padding: 0px">' +
-        //           body[0] +
-        //           '</td></tr>';
-        //       }
-        //     });
-        //     innerHtml += '</tbody></table>';
-        //     tooltipEl.innerHTML = innerHtml;
-        //     //tableRoot.innerHTML = innerHtml;
-        //   }
-        //   // disable displaying the color box;
-        //   var position = chart.canvas.getBoundingClientRect();
-        //   // Display, position, and set styles for font
-        //   tooltipEl.style.position = 'fixed';
-        //   tooltipEl.style.left =
-        //     position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        //   tooltipEl.style.top =
-        //     position.top + window.pageYOffset + tooltip.caretY - 70 + 'px';
-        //   // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        //   // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        //   // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        //   // tooltipEl.style.padding =
-        //   //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        //   // tooltipEl.style.pointerEvents = 'none';
-        // },
-        // displayColors: false,
         callbacks: {
           label: tooltipItem =>
             `${tooltipItem.dataset.label}: ${tooltipItem.formattedValue}`,
@@ -713,12 +452,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       },
       y: {
         beginAtZero: true,
-        // ticks: {
-        //   callback: function (label) {
-        //     // when the floored value is the same as jhgjghe value we have a whole number
-        //     return label;
-        //   }
-        // }
       },
     },
     plugins: {
@@ -768,127 +501,13 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       },
       y: {
         stacked: true,
-        ticks: {
-          // callback: function (item) {
-          //   return item;
-          // }
-        },
+        ticks: {},
       },
     },
     plugins: {
       legend: this.stackLegendGenerator,
       tooltip: {
         mode: 'x',
-        // enabled: false,
-        // external: function (t) {
-        //   const tooltip = t.tooltip;
-        //   const chart = t.chart;
-        //   if (!tooltip) return;
-        //   var tooltipEl = document.getElementById('chartjs-tooltip');
-        //   if (!tooltipEl) {
-        //     tooltipEl = document.createElement('div');
-        //     tooltipEl.id = 'chartjs-tooltip';
-        //     tooltipEl.style.backgroundColor = '#FFFFFF';
-        //     tooltipEl.style.borderColor = '#B2BABB';
-        //     tooltipEl.style.borderWidth = 'thin';
-        //     tooltipEl.style.borderStyle = 'solid';
-        //     tooltipEl.style.zIndex = '999999';
-        //     tooltipEl.style.backgroundColor = '#000000';
-        //     tooltipEl.style.color = '#FFFFFF';
-        //     document.body.appendChild(tooltipEl);
-        //   }
-        //   if (tooltip.opacity === 0) {
-        //     tooltipEl.style.opacity = '0';
-        //     return;
-        //   } else {
-        //     tooltipEl.style.opacity = '0.8';
-        //   }
-
-        //   tooltipEl.classList.remove('above', 'below', 'no-transform');
-        //   if (tooltip.yAlign) {
-        //     tooltipEl.classList.add(tooltip.yAlign);
-        //   } else {
-        //     tooltipEl.classList.add('no-transform');
-        //   }
-
-        //   function getBody(bodyItem) {
-        //     return bodyItem.lines;
-        //   }
-        //   var bodyLineCont = 0;
-        //   if (tooltip.body) {
-        //     var titleLines = tooltip.title || [];
-        //     var bodyLines = tooltip.body.map(getBody);
-        //     var labelColorscustom = tooltip.labelColors;
-        //     var innerHtml = '<table><thead>';
-        //     innerHtml += '</thead><tbody>';
-        //     let total: any = 0;
-        //     bodyLines.forEach(function (body, i) {
-        //       // if (!body[0].includes("0")) {
-        //       var singleval = body[0].split(':');
-        //       if (singleval[1].includes('-')) {
-        //         var temp = singleval[1];
-        //         var amount = temp;
-        //         total -= parseFloat(amount);
-        //       } else {
-        //         var temp = singleval[1];
-        //         var amount = temp;
-        //         total += parseFloat(amount);
-        //       }
-
-        //       //  }
-        //     });
-        //     total = Math.round(total);
-        //     if (total != 0) {
-        //       var num_parts = total.toString().split('.');
-        //       num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        //       total = num_parts.join('.');
-        //     }
-        //     titleLines.forEach(function (title) {
-        //       innerHtml +=
-        //         '<tr><th colspan="2" style="text-align: left;">' +
-        //         title +
-        //         ': ' +
-        //         total +
-        //         '</th></tr>';
-        //     });
-        //     bodyLines.forEach(function (body, i) {
-        //       var singledata = body[0].split(':');
-        //       singledata[1] = singledata[1].trim();
-        //       if (singledata[1] > 0) {
-        //         singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(',');
-        //         body[0] = singledata.join(': ');
-        //         innerHtml +=
-        //           '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:' +
-        //           labelColorscustom[i].backgroundColor +
-        //           '"></span></td><td style="padding: 0px">' +
-        //           body[0] +
-        //           '</td></tr>';
-        //       }
-        //     });
-        //     innerHtml += '</tbody></table>';
-        //     tooltipEl.innerHTML = innerHtml;
-        //     //tableRoot.innerHTML = innerHtml;
-        //   }
-        //   // disable displaying the color box;
-        //   var position = chart.canvas.getBoundingClientRect();
-        //   // Display, position, and set styles for font
-        //   tooltipEl.style.position = 'fixed';
-        //   tooltipEl.style.left =
-        //     position.left + window.pageXOffset + tooltip.caretX - 130 + 'px';
-        //   tooltipEl.style.top =
-        //     position.top +
-        //     window.pageYOffset +
-        //     tooltip.caretY -
-        //     (70 + bodyLineCont * 15) +
-        //     'px';
-        //   // tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-        //   // tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-        //   // tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-        //   // tooltipEl.style.padding =
-        //   //   tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-        //   tooltipEl.style.pointerEvents = 'none';
-        // },
-        // displayColors: false,
         callbacks: {
           label: function (tooltipItems) {
             if (tooltipItems.parsed.y > 0) {
@@ -1132,13 +751,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
   public pieChartColors = [
     {
       backgroundColor: [
-        // '#6edbbb',
-        // '#b0fffa',
-        // '#abb3ff',
-        // '#ffb4b5',
-        // '#fffcac',
-        // '#D7F8EF',
-        // '#FEEFB8'
         '#6edbbb',
         '#b0fffa',
         '#abb3ff',
@@ -1216,15 +828,8 @@ export class MarketingComponent implements OnInit, AfterViewInit {
         },
       },
     },
-    // elements: {
-    //   center: {
-    //     text: ''
-    //   }
-    // }
   };
   myDateParser(dateStr: string): string {
-    // 2018-01-01T12:12:12.123456; - converting valid date f74ormat like this
-
     let date = dateStr.substring(0, 10);
     let time = dateStr.substring(11, 19);
     let millisecond = dateStr.substring(20);
@@ -1261,6 +866,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     );
 
     if (newValue == 'all') {
+      console.log('load dentist');
       this.mkNewPatientsByReferral();
       this.mkRevenueByReferral();
       if (this.activePatients || !this.isVisibleAccountGraphs) {
@@ -1268,9 +874,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       }
       this.fdnewPatientsRatio();
 
-      // if(!this.isVisibleAccountGraphs){
-      //   this.fdActivePatient();
-      // }
       if (['myob', 'xero'].indexOf(this.connectedwith) >= 0) {
         this.fdnewPatientsAcq();
       }
@@ -1287,7 +890,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       ) {
         this.getAccounts();
       }
-      //this.fdWorkTimeAnalysis();
     }
   }
 
@@ -1370,11 +972,13 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       )
       .subscribe({
         next: res => {
+          console.log(res);
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
             this.mkNewPatientsByReferalMulti = [];
             this.mkNewPatientsByReferalLabels = [];
+
             if (
               this.clinic_id.indexOf(',') >= 0 ||
               Array.isArray(this.clinic_id)
@@ -1388,6 +992,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                 });
               });
               mkNewPatientsLabels = [...new Set(label)];
+
               res.body.data.forEach((res, ind) => {
                 res.val.forEach((result, key) => {
                   if (
@@ -1404,7 +1009,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                   ) {
                     this.mkNewPatientsByReferalMulti[key]['data'] = [];
                   }
-                  // var total = Math.trunc(result.patients_visits);
+
                   var total = Math.round(result.patients_visits);
                   if (
                     result.production > 0 &&
@@ -1449,6 +1054,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                     }
                   });
               }
+
+              console.log({
+                newPatientsTimeLabels: this.newPatientsTimeLabels,
+              });
 
               setTimeout(() => {
                 this.mkNewPatientsByReferralLoader = false;
@@ -1903,7 +1512,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
-      // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
+
       shadowColor: 'rgba(0, 0, 0, 0.3)',
       pointBevelWidth: 2,
       pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
@@ -2439,14 +2048,13 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           'dd-MM-yyyy'
         );
       }
-      /*        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
-              this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');   */
+
       this.loadDentist('all');
     } else if (duration == 'custom') {
       this.trendText = '';
       this.duration = 'custom';
       this.currentText = '';
-      //let selectedDate = this.chartService.customSelectedDate$.value;
+
       let selectedDate = null;
       if (selectedDate == null) {
         let newAppLayoutData: any = localStorage.getItem('layout');
