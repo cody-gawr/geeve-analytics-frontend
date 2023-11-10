@@ -95,6 +95,10 @@ export class MarketingNewPatientByReferralComponent
     );
   }
 
+  get legend$() {
+    return this.isMultipleClinic$.pipe(map(v => !v));
+  }
+
   constructor(
     private marketingFacade: MarketingFacade,
     private clinicFacade: ClinicFacade,

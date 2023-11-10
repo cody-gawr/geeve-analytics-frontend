@@ -93,10 +93,11 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
+  }
+
+  get legend$() {
+    return this.isMultipleClinic$.pipe(map(v => !v));
   }
 
   constructor(
