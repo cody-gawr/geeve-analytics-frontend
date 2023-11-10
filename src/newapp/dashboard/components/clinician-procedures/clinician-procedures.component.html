@@ -9,7 +9,7 @@
     [toolTip]="cpPredictorAnalysisTip$ | async"
     class="cp-chart"></cp-procedure-analysis-chart>
   <cp-rev-per-procedure-chart
-    *ngIf="(isAllDentist$ | async) || !(isTrend$ | async)"
+    *ngIf="!(isDentistMode$ | async) || !(isTrend$ | async)"
     [toolTip]="getChartTip(13) | async"
     class="cp-chart"></cp-rev-per-procedure-chart>
   <cp-predictor-ratio-chart
@@ -18,7 +18,9 @@
   <cp-clinician-referrals-chart
     [toolTip]="getChartTip(14) | async"
     [ngClass]="
-      (isAllDentist$ | async) || !(isTrend$ | async) ? 'cp-chart' : 'cp-chart-1'
+      !(isDentistMode$ | async) || !(isTrend$ | async)
+        ? 'cp-chart'
+        : 'cp-chart-1'
     "
     class="cp-chart"></cp-clinician-referrals-chart>
 </div>

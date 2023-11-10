@@ -1,15 +1,13 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import {
-  MkRevByReferral,
-  MkRevenueByReferralApiResponse,
-} from '@/newapp/models/dashboard/marketing';
+import { MkRevByReferral } from '@/newapp/models/dashboard/marketing';
 import { formatXTooltipLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Chart, ChartOptions } from 'chart.js';
-import _, { camelCase } from 'lodash';
+import _ from 'lodash';
+import camelCase from 'camelcase';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({

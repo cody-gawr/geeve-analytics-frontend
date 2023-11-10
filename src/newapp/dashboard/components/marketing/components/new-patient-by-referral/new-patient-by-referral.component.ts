@@ -5,7 +5,8 @@ import { MkNewPatientsByReferral } from '@/newapp/models/dashboard/marketing';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, Chart } from 'chart.js';
-import _, { camelCase } from 'lodash';
+import _ from 'lodash';
+import camelCase from 'camelcase';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
@@ -154,6 +155,7 @@ export class MarketingNewPatientByReferralComponent
             const apiResData = <MkNewPatientsByReferral>result.data;
             let chartData = [],
               chartLabels = [];
+            console.log('data', apiResData.patientsRefname, activeLabel);
             if (apiResData.patientsRefname[activeLabel].length > 0) {
               this.isChartClicked = true;
               apiResData.patientsRefname[activeLabel]

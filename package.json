@@ -45,6 +45,7 @@
     "@syncfusion/ej2-angular-kanban": "^19.4.52",
     "@syncfusion/ej2-dropdowns": "^19.4.40",
     "angular-user-idle": "^4.0.0",
+    "camelcase": "^8.0.0",
     "camelcase-keys": "^8.0.2",
     "chart.js": "^4.3.0",
     "chartjs-plugin-annotation": "^3.0.1",
