@@ -155,7 +155,6 @@ export class MarketingNewPatientByReferralComponent
             const apiResData = <MkNewPatientsByReferral>result.data;
             let chartData = [],
               chartLabels = [];
-            console.log('data', apiResData.patientsRefname, activeLabel);
             if (apiResData.patientsRefname[activeLabel].length > 0) {
               this.isChartClicked = true;
               apiResData.patientsRefname[activeLabel]

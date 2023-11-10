@@ -259,7 +259,7 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
           },
           title: tooltipItems => {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
-            return `${tooltipItems[0].label}: ${this.decimalPipe.transform(
+            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(
               sumV
             )}`;
           },
