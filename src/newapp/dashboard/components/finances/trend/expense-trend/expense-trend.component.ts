@@ -32,10 +32,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.connectedWith$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v != 'none')
-    );
+    return this.dashboardFacade.isConnectedWith$;
   }
 
   constructor(

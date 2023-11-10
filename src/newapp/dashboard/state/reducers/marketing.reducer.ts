@@ -27,6 +27,7 @@ import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import moment from 'moment';
 import { ChartDataset } from 'chart.js';
 import { selectConnectedWith } from './dashboard.reducer';
+import { COLORS } from '@/newapp/constants';
 
 type MarketingEndpoints =
   | 'mkNumPatientsByReferral'
@@ -1196,15 +1197,49 @@ export const selectActivePatientsChartData = createSelector(
     }
     const chartData = [],
       chartLabels = [];
-    activePatientsData.data.forEach(v => {
+    activePatientsData.data.forEach((v, index) => {
       chartData.push(Math.round(parseFloat(<string>v.activePatients)));
       chartLabels.push(v.clinicName);
     });
+    const datasets: ChartDataset<any>[] = [
+      {
+        data: chartData,
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor: [
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+        ],
+        shadowOffsetY: 2,
+        shadowBlur: 3,
+        // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundOverlayMode: 'multiply',
+      },
+    ];
     return {
       activePatientsVal: activePatientsData.total,
       activePatientsPrev: activePatientsData.totalTa,
       activePatientsGoal: activePatientsData.goals,
-      datasets: [{ data: chartData }],
+      datasets: datasets,
       labels: chartLabels,
     };
   }
@@ -1382,11 +1417,46 @@ export const selectTotalVisitsChartData = createSelector(
       chartLabels.push(v.clinicName);
     });
 
+    const datasets: ChartDataset<any>[] = [
+      {
+        data: chartData,
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor: [
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+          COLORS.even,
+          COLORS.odd,
+        ],
+        shadowOffsetY: 2,
+        shadowBlur: 3,
+        // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundOverlayMode: 'multiply',
+      },
+    ];
+
     return {
       totalVisitsVal: totalVisitsData.total,
       totalVisitsPrev: totalVisitsData.totalTa,
       totalVisitsGoal: totalVisitsData.goals,
-      datasets: [{ data: chartData }],
+      datasets: datasets,
       labels: chartLabels,
     };
   }

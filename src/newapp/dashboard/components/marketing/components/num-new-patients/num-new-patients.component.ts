@@ -59,7 +59,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
   labels = [];
 
   get isConnectedWith$() {
-    return this.dashboardFacade.connectedWith$.pipe(map(v => v && v != 'none'));
+    return this.dashboardFacade.isConnectedWith$;
   }
 
   get isLoading$() {

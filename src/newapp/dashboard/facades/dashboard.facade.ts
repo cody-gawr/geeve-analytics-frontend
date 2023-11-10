@@ -8,6 +8,7 @@ import {
   selectConnectedClinicId,
   selectConnectedWith,
   selectErrors,
+  selectIsConnectedWith,
   selectIsLoadingClinicAccountingPlatform,
 } from '../state/reducers/dashboard.reducer';
 import { JeeveError } from '@/newapp/models';
@@ -23,7 +24,9 @@ export class DashboardFacade {
   public readonly chartTips$ = this.store.pipe(select(selectChartTips));
 
   public readonly connectedWith$ = this.store.pipe(select(selectConnectedWith));
-
+  public readonly isConnectedWith$ = this.store.pipe(
+    select(selectIsConnectedWith)
+  );
   public readonly isLoadingClinicAccounting$ = this.store.pipe(
     select(selectIsLoadingClinicAccountingPlatform)
   );

@@ -133,3 +133,10 @@ export const selectChartTipsError = createSelector(
   (errors): JeeveError | undefined =>
     _.find(errors, e => e.api == 'ctGetPageTips')
 );
+
+export const selectIsConnectedWith = createSelector(
+  selectConnectedWith,
+  connectWith => {
+    return connectWith && connectWith !== 'none';
+  }
+);

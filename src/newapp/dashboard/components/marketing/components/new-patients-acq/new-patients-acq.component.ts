@@ -105,10 +105,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.connectedWith$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v != 'none')
-    );
+    return this.dashboardFacade.isConnectedWith$;
   }
 
   get isFullMonthsDateRange$() {
@@ -130,9 +127,6 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
       this.isTrend$,
       this.marketingFacade.newPatientsAcqChartData$,
       this.marketingFacade.newPatientsAcqTrendChartData$,
-      // this.marketingFacade.isActivePatients$,
-      // this.marketingFacade.activePatientsChartData$,
-      // this.marketingFacade.activePatientsTrendChartData$
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([isTrend, chartData, trendChartData]) => {

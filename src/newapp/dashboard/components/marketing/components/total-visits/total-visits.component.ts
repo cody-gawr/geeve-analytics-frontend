@@ -2,7 +2,6 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
@@ -74,7 +73,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.connectedWith$.pipe(map(v => v && v != 'none'));
+    return this.dashboardFacade.isConnectedWith$;
   }
 
   get isFullMonthsDateRange$() {
