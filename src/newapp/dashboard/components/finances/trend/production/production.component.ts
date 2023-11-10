@@ -267,12 +267,10 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
   get chartOptions$() {
     return combineLatest([
       this.financeFacade.profitTrendChartName$,
-      this.clinicFacade.currentClinicId$,
+      this.clinicFacade.isMultiClinicsSelected$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(([t, clinicId]) => {
-        const isMultiClinic = typeof clinicId == 'string';
-
+      map(([t, isMultiClinic]) => {
         switch (t) {
           case 'Production':
             return isMultiClinic
@@ -443,11 +441,10 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
   get chartType$() {
     return combineLatest([
       this.financeFacade.profitTrendChartName$,
-      this.clinicFacade.currentClinicId$,
+      this.clinicFacade.isMultiClinicsSelected$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(([t, clinicId]) => {
-        const isMultiClinic = typeof clinicId == 'string';
+      map(([t, isMultiClinic]) => {
         switch (t) {
           case 'Production':
             return isMultiClinic ? 'bar' : 'line';
@@ -467,12 +464,9 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.dashboardFacade.connectedWith$,
       this.financeFacade.profitTrendChartName$,
-      // this.clinicFacade.currentClinicId$,
     ]).pipe(
       map(([v, chartName]) => {
         const isDisconnected = !(v && v != 'none');
-        // const isMultiClinic = typeof clinicId == "string";
-
         return isDisconnected && chartName !== 'Collection';
       })
     );

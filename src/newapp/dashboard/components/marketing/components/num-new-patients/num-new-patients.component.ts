@@ -75,9 +75,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
   }
 
   get isMultipleClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      map(v => typeof v == 'string')
-    );
+    return this.clinicFacade.isMultiClinicsSelected$;
   }
 
   get durationLabel$() {

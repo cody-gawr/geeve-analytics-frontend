@@ -148,7 +148,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isMultiClinics$() {
-    return this.clinicFacade.currentClinics$.pipe(map(v => v.length > 1));
+    return this.clinicFacade.isMultiClinicsSelected$;
   }
 
   get isTableIconVisible$(): Observable<boolean> {

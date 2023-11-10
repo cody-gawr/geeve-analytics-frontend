@@ -140,6 +140,11 @@ export const selectCurrentClinics = createSelector(
   }
 );
 
+export const selectIsMultiClinicsSelected = createSelector(
+  selectCurrentClinics,
+  clinics => clinics.length > 1
+);
+
 export const selectCurrentClinicId = createSelector(
   selectCurrentClinics,
   clinics => {

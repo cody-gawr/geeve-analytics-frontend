@@ -22,10 +22,7 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
   labels = [];
 
   get isMultiClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => typeof v === 'string')
-    );
+    return this.clinicFacade.isMultiClinicsSelected$;
   }
 
   get isLoading$() {

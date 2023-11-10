@@ -39,10 +39,7 @@ export class MarketingNewPatientByReferralComponent
   }
 
   get isMultipleClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => typeof v == 'string')
-    );
+    return this.clinicFacade.isMultiClinicsSelected$;
   }
 
   get chartType$() {
@@ -65,16 +62,13 @@ export class MarketingNewPatientByReferralComponent
   }
 
   get chartOptions$() {
-    return combineLatest([
-      this.clinicFacade.currentClinicId$,
-      this.isTrend$,
-    ]).pipe(
+    return combineLatest([this.isMultipleClinic$, this.isTrend$]).pipe(
       takeUntil(this.destroy$),
-      map(([v, isTrend]) => {
+      map(([isMultClinics, isTrend]) => {
         if (isTrend) {
           return this.stackedChartOptionsRef;
         }
-        if (typeof v === 'string') {
+        if (isMultClinics) {
           return this.stackedChartOptionsRef;
         } else {
           return this.noNewPatientsByReferralChartOptions;

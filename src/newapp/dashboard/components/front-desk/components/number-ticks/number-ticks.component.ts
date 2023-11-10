@@ -49,10 +49,7 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
   }
 
   get isMultipleClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => typeof v == 'string')
-    );
+    return this.clinicFacade.isMultiClinicsSelected$;
   }
 
   get durationLabel$() {
