@@ -47,12 +47,10 @@ export class MarketingNewPatientByReferralComponent
       this.clinicFacade.currentClinicId$,
       this.isTrend$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([v, trendMode]) => {
         if (trendMode) {
           return 'bar';
-        }
-        if (typeof v === 'string') {
+        } else if (typeof v === 'string') {
           return 'bar';
         } else {
           return 'doughnut';
@@ -63,12 +61,10 @@ export class MarketingNewPatientByReferralComponent
 
   get chartOptions$() {
     return combineLatest([this.isMultipleClinic$, this.isTrend$]).pipe(
-      takeUntil(this.destroy$),
       map(([isMultClinics, isTrend]) => {
         if (isTrend) {
           return this.stackedChartOptionsRef;
-        }
-        if (isMultClinics) {
+        } else if (isMultClinics) {
           return this.stackedChartOptionsRef;
         } else {
           return this.noNewPatientsByReferralChartOptions;
@@ -82,17 +78,11 @@ export class MarketingNewPatientByReferralComponent
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get isActivePatients$() {
-    return this.marketingFacade.isActivePatients$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.marketingFacade.isActivePatients$;
   }
 
   get legend$() {

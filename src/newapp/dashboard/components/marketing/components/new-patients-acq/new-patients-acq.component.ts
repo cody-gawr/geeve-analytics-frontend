@@ -1,10 +1,7 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
-import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
-import { splitName } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -26,36 +23,26 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get trendingIcon() {
-    if (this.newPatientsAcqVal >= this.newPatientsAcqPrev) {
-      return 'trending_up';
-    }
-    return 'trending_down';
+    return this.newPatientsAcqVal >= this.newPatientsAcqPrev
+      ? 'trending_up'
+      : 'trending_down';
   }
 
   get maxNewPatientsAcqGoal() {
-    if (this.newPatientsAcqVal > this.newPatientsAcqGoal) {
-      return this.newPatientsAcqVal;
-    } else {
-      return this.newPatientsAcqGoal;
-    }
+    return this.newPatientsAcqVal > this.newPatientsAcqGoal
+      ? this.newPatientsAcqVal
+      : this.newPatientsAcqGoal;
   }
 
   get isActivePatients$() {
-    return this.marketingFacade.isActivePatients$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.marketingFacade.isActivePatients$;
   }
 
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      map(([isTrend, isMulti]) => {
-        if (isTrend || isMulti) {
-          return this.labels.length > 0;
-        } else {
-          return this.newPatientsAcqVal > 0;
-        }
-      })
+      map(([isTrend, isMulti]) =>
+        isTrend || isMulti ? this.labels.length > 0 : this.newPatientsAcqVal > 0
+      )
     );
   }
 
@@ -84,24 +71,15 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get isConnectedWith$() {
@@ -109,10 +87,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   }
 
   get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.layoutFacade.isFullMonthsDateRange$;
   }
 
   constructor(
@@ -259,7 +234,6 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
         suggestedMin: 0,
         ticks: {
           callback: (label: string) => {
-            // when the floored value is the same as the value we have a whole number
             return '$' + this.decimalPipe.transform(label);
           },
         },
@@ -268,9 +242,6 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     plugins: {
       tooltip: {
         mode: 'x',
-        // custom: (tooltip: Chart.ChartTooltipModel) => {
-        //   tooltip.displayColors = false;
-        // },
         callbacks: {
           label: tooltipItems => {
             return tooltipItems.label + ': $' + tooltipItems.formattedValue;
