@@ -72,10 +72,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
   }
 
   get clinicId$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.clinicFacade.currentClinicId$;
   }
 
   constructor(

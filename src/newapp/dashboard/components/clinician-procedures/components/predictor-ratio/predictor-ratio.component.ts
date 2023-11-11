@@ -183,10 +183,8 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
         hoverBorderWidth: 7,
       },
     },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine',
@@ -264,10 +262,8 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
         borderWidth: 10,
       },
     },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine',

@@ -61,11 +61,11 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(map(val => val));
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(map(l => l));
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get isTrend$() {

@@ -25,10 +25,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
   labels = [];
 
   get isLoading$() {
-    return this.financeFacade.isLoadingFnExpensesTrend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.financeFacade.isLoadingFnExpensesTrend$;
   }
 
   get isConnectedWith$() {
@@ -84,10 +81,8 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
         hoverBorderWidth: 7,
       },
     },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine',

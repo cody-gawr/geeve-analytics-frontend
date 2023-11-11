@@ -15,7 +15,6 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v => typeof v == 'string')
     );
   }
@@ -51,7 +50,6 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
       this.financeFacade.profitTrendChartName$,
       this.dashbordFacade.chartTips$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([chartName, tips]) => {
         if (tips) {
           switch (chartName) {
@@ -72,7 +70,6 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
 
   getChartTip(index: number) {
     return this.dashbordFacade.chartTips$.pipe(
-      takeUntil(this.destroy$),
       map(c => {
         if (c && c[index]) {
           return c[index];

@@ -24,10 +24,7 @@ export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.financeFacade.isLoadingTotalProductionTrend$,
       this.financeFacade.isLoadingCollectionTrend$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([v, v1]) => v && v1)
-    );
+    ]).pipe(map(([v, v1]) => v && v1));
   }
 
   constructor(private financeFacade: FinanceFacade) {
@@ -62,10 +59,8 @@ export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
         hoverBorderWidth: 7,
       },
     },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine',

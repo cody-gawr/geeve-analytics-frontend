@@ -87,10 +87,8 @@ export class CpRevPerProcedureComponent implements OnInit, OnDestroy {
   public proceedureChartOptionsDP: ChartOptions = {
     indexAxis: 'y', // horizontal bar chart,
     hover: { mode: null },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 1,
       easing: 'linear',
@@ -133,8 +131,6 @@ export class CpRevPerProcedureComponent implements OnInit, OnDestroy {
         enabled: true,
         callbacks: {
           title: function () {
-            //var idx = tooltipItems[0].index;
-            // return data.labels[idx];//do something with title
             return '';
           },
           label: tooltipItem => formatXTooltipLabel(tooltipItem),

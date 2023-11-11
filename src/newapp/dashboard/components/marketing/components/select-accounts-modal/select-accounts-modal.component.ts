@@ -7,8 +7,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
-import _ from 'lodash';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { Subject, takeUntil, take, combineLatest, map } from 'rxjs';
 export interface DialogData {
   title: string;
 }
@@ -29,27 +28,18 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.marketingFacade.isLoadingMkMyobAccounts$,
       this.marketingFacade.isLoadingMkXeroAccounts$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([v1, v2]) => v1 || v2)
-    );
+    ]).pipe(map(([v1, v2]) => v1 || v2));
   }
 
   get isWaiting$() {
     return combineLatest([
       this.marketingFacade.isLoadingMkSaveMyobAccounts$,
       this.marketingFacade.isLoadingMkSaveXeroAccounts$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([v1, v2]) => v1 || v2)
-    );
+    ]).pipe(map(([v1, v2]) => v1 || v2));
   }
 
   get connectedWith$() {
-    return this.dashboardFacade.connectedWith$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.dashboardFacade.connectedWith$;
   }
 
   constructor(
@@ -116,7 +106,7 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
 
   onSubmitClick() {
     combineLatest([this.connectedWith$, this.clinicFacade.currentClinicId$])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(take(1))
       .subscribe(([isCon, clinicId]) => {
         if (isCon == 'xero') {
           this.marketingFacade.saveXeroAccounts({

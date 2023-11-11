@@ -27,10 +27,7 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   }
 
   get isByDayData$() {
-    return this.frontDeskFacade.isByDayData$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.frontDeskFacade.isByDayData$;
   }
 
   enableIsByDayData() {
@@ -54,7 +51,6 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
       this.frontDeskFacade.isLoadingFdUtilRateData$,
       this.frontDeskFacade.isLoadingFdUtilRateTrendData$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isLoading, isTrendLoading]) => {
         return isTrend ? isTrendLoading : isLoading;
       })
@@ -66,24 +62,15 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get isExact$() {
@@ -125,7 +112,6 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
 
   get showGoals$() {
     return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
       map(val => {
         if (['m', 'lm'].indexOf(val.duration) >= 0) {
           return true;
@@ -187,7 +173,6 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
 
   get chartOptions$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isMultiClinic]) => {
         if (isTrend && isMultiClinic) {
           return this.stackedChartOptionsTC;
@@ -288,9 +273,6 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
       tooltip: {
         mode: 'x',
         enabled: true,
-        // custom: function (tooltip: ChartTooltipModel) {
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return false;
         },
@@ -341,17 +323,13 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
     plugins: {
       tooltip: {
         mode: 'x',
-        // custom: function (tooltip) {
-        //   if (!tooltip) return;
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
           label: function (tooltipItems) {
             let label = tooltipItems.label;
-            //let total = parseInt(tooltipItems.formattedValue.toString()) > 100 ? 100 : tooltipItems.formattedValue;
+
             if ((<string>tooltipItems.label).indexOf('--') >= 0) {
               let lbl = (<string>tooltipItems.label).split('--');
               if (typeof lbl[3] === 'undefined') {
@@ -367,7 +345,6 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             let ylable = tooltipItems.parsed._custom
               ? +(
                   tooltipItems.parsed._custom.max +

@@ -32,22 +32,15 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
       this.isTrend$,
       this.marketingFacade.isLoadingRevByReferral$,
       this.marketingFacade.isLoadingRevByReferralTrend$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([isTrend, v, v1]) => (isTrend ? v1 : v))
-    );
+    ]).pipe(map(([isTrend, v, v1]) => (isTrend ? v1 : v)));
   }
 
   get isLoadingTrend$() {
-    return this.marketingFacade.isLoadingRevByReferralTrend$.pipe(
-      takeUntil(this.destroy$),
-      v => v
-    );
+    return this.marketingFacade.isLoadingRevByReferralTrend$;
   }
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v => typeof v == 'string')
     );
   }
@@ -57,10 +50,10 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
       this.clinicFacade.currentClinicId$,
       this.isTrend$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([v, isTrend]) => {
-        if (isTrend) return 'bar';
-        if (typeof v === 'string') {
+        if (isTrend) {
+          return 'bar';
+        } else if (typeof v === 'string') {
           return 'bar';
         } else {
           return 'doughnut';
@@ -74,7 +67,6 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
       this.clinicFacade.currentClinicId$,
       this.isTrend$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([v, isTrend]) => {
         if (isTrend) {
           return this.stackedChartOptionsRev;
@@ -192,11 +184,6 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
         },
       },
     },
-    // elements: {
-    //   center: {
-    //     text: ''
-    //   }
-    // }
   };
 
   public stackedChartOptionsRev: ChartOptions<'bar'> = {
