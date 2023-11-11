@@ -111,14 +111,11 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.isConnectedWith$
+    return this.dashboardFacade.isConnectedWith$;
   }
 
   get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.layoutFacade.isFullMonthsDateRange$;
   }
 
   get hasData$() {
