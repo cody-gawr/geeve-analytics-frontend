@@ -184,11 +184,6 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
         },
       },
     },
-    // elements: {
-    //   center: {
-    //     text: ''
-    //   }
-    // }
   };
 
   public stackedChartOptionsRev: ChartOptions<'bar'> = {
