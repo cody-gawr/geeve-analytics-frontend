@@ -40,7 +40,6 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
 
   get showGoals$() {
     return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
       map(val => {
         if (['m', 'lm'].indexOf(val.duration) >= 0) {
           return true;
@@ -79,7 +78,6 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
       this.frontDeskFacade.isLoadingFdFtaRatioData$,
       this.frontDeskFacade.isLoadingFdFtaRatioTrendData$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isLoading, isTrendLoading]) => {
         return isTrend ? isTrendLoading : isLoading;
       })
@@ -91,24 +89,15 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get isConnectedWith$() {
@@ -116,10 +105,7 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
   }
 
   get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.layoutFacade.isFullMonthsDateRange$;
   }
 
   get hasData$() {
@@ -169,7 +155,6 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
 
   get chartOptions$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isMultiClinic]) => {
         if (isTrend) {
           return isMultiClinic
@@ -184,7 +169,6 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
 
   get chartType$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isMultiClinic]) => {
         if (isTrend) {
           return isMultiClinic ? 'bar' : 'line';
@@ -251,14 +235,12 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
     elements: {
       line: JeeveLineFillOptions,
     },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
     animation: {
       duration: 500,
       easing: 'easeOutSine',
     },
-    // fill: false,
     scales: {
       x: {
         stacked: true,
@@ -288,10 +270,6 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           label: function (tooltipItems) {
-            // let total =
-            //   parseFloat(tooltipItems.label) > 100
-            //     ? 100
-            //     : tooltipItems.formattedValue;
             var Targetlable = '';
             const v = tooltipItems.dataset.data[tooltipItems.dataIndex];
             let Tlable = tooltipItems.dataset.label;
@@ -299,7 +277,7 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+
             let ylable = tooltipItems.parsed._custom
               ? +(
                   tooltipItems.parsed._custom.max +
@@ -375,9 +353,6 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
       tooltip: {
         mode: 'x',
         enabled: true,
-        // custom: function (tooltip: ChartTooltipModel) {
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return false;
         },
@@ -417,7 +392,6 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
       y: {
         min: 0,
         max: 100,
-        // stacked:true,
         ticks: {
           callback: function (label, index, labels) {
             return label + '%';
@@ -428,17 +402,12 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
     plugins: {
       tooltip: {
         mode: 'x',
-        // custom: function (tooltip) {
-        //   if (!tooltip) return;
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
           label: function (tooltipItems) {
             let label = tooltipItems.label;
-            //let total = parseInt(tooltipItems.formattedValue.toString()) > 100 ? 100 : tooltipItems.formattedValue;
             if ((<string>tooltipItems.label).indexOf('--') >= 0) {
               let lbl = (<string>tooltipItems.label).split('--');
               if (typeof lbl[3] === 'undefined') {

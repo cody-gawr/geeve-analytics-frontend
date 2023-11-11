@@ -1,9 +1,7 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { FrontDeskFacade } from '@/newapp/dashboard/facades/front-desk.facade';
-import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
 import { JeeveLineFillOptions } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
@@ -40,7 +38,6 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
 
   get showGoals$() {
     return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
       map(val => {
         if (['m', 'lm'].indexOf(val.duration) >= 0) {
           return true;
@@ -71,7 +68,6 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
       this.frontDeskFacade.isLoadingFdReappointRateData$,
       this.frontDeskFacade.isLoadingFdReappointRateTrendData$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isLoading, isTrendLoading]) => {
         return isTrend ? isTrendLoading : isLoading;
       })
@@ -83,24 +79,15 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get isConnectedWith$() {
@@ -108,10 +95,7 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
   }
 
   get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.layoutFacade.isFullMonthsDateRange$;
   }
 
   get hasData$() {
@@ -161,7 +145,6 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
 
   get chartOptions$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isMultiClinic]) => {
         if (isTrend) {
           return isMultiClinic
@@ -230,14 +213,13 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
     elements: {
       line: JeeveLineFillOptions,
     },
-    // scaleShowVerticalLines: false,
+
     responsive: true,
     maintainAspectRatio: false,
     animation: {
       duration: 500,
       easing: 'easeOutSine',
     },
-    // fill: false,
     scales: {
       x: {
         stacked: true,
@@ -267,10 +249,6 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           label: function (tooltipItems) {
-            // let total =
-            //   parseInt(tooltipItems.label) > 100
-            //     ? 100
-            //     : tooltipItems.formattedValue;
             var Targetlable = '';
             const v = tooltipItems.dataset.data[tooltipItems.dataIndex];
             let Tlable = tooltipItems.dataset.label;
@@ -278,7 +256,7 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+
             let ylable = tooltipItems.parsed._custom
               ? +(
                   tooltipItems.parsed._custom.max +
@@ -354,9 +332,6 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
       tooltip: {
         mode: 'x',
         enabled: true,
-        // custom: function (tooltip: ChartTooltipModel) {
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return false;
         },
@@ -373,7 +348,6 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
     hover: { mode: null },
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 1,
       easing: 'linear',
@@ -407,17 +381,12 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
     plugins: {
       tooltip: {
         mode: 'x',
-        // custom: function (tooltip) {
-        //   if (!tooltip) return;
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
           label: function (tooltipItems) {
             let label = tooltipItems.label;
-            //let total = parseInt(tooltipItems.formattedValue.toString()) > 100 ? 100 : tooltipItems.formattedValue;
             if ((<string>tooltipItems.label).indexOf('--') >= 0) {
               let lbl = (<string>tooltipItems.label).split('--');
               if (typeof lbl[3] === 'undefined') {
@@ -433,7 +402,7 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+
             let ylable = tooltipItems.parsed._custom
               ? +(
                   tooltipItems.parsed._custom.max +

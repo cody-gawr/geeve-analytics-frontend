@@ -402,43 +402,51 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     this.showPaTable = !this.showPaTable;
   }
 
-  generatePaSpecialTotal(palData) {
-    const Implant_Surg = palData
-      .map(item => parseFloat(item.Implant_Surg))
-      .map(v => Math.round(v))
-      .reduce((prev, curr) => prev + curr, 0);
-    const Braces = palData
-      .map(item => parseFloat(item.Braces))
-      .map(v => Math.round(v))
-      .reduce((prev, curr) => prev + curr, 0);
-    const Aligners = palData
-      .map(item => parseFloat(item.Aligners))
-      .map(v => Math.round(v))
-      .reduce((prev, curr) => prev + curr, 0);
-    const MAS = palData
-      .map(item => parseFloat(item.MAS))
-      .map(v => Math.round(v))
-      .reduce((prev, curr) => prev + curr, 0);
-    const Perio_Surg = palData
-      .map(item => parseFloat(item.Perio_Surg))
-      .map(v => Math.round(v))
-      .reduce((prev, curr) => prev + curr, 0);
-    const Endo_Re_treat = palData
-      .map(item => parseFloat(item.Endo_Re_treat))
-      .map(v => Math.round(v))
-      .reduce((prev, curr) => prev + curr, 0);
-    const Veneers_ind = palData
-      .map(item => parseFloat(item.Veneers_ind))
-      .map(v => Math.round(v))
-      .reduce((prev, curr) => prev + curr, 0);
+  generatePaSpecialTotal(palData: any[]) {
+    const implantSurg = palData
+      .map((item: any) => parseFloat(item.Implant_Surg))
+      .map((v: number) => Math.round(v))
+      .reduce((prev: number, curr: number) => prev + curr, 0);
+
+    const braces = palData
+      .map((item: any) => parseFloat(item.Braces))
+      .map((v: number) => Math.round(v))
+      .reduce((prev: number, curr: number) => prev + curr, 0);
+
+    const aligners = palData
+      .map((item: any) => parseFloat(item.Aligners))
+      .map((v: number) => Math.round(v))
+      .reduce((prev: number, curr: number) => prev + curr, 0);
+
+    const mas = palData
+      .map((item: any) => parseFloat(item.MAS))
+      .map((v: number) => Math.round(v))
+      .reduce((prev: number, curr: number) => prev + curr, 0);
+
+    const perioSurg = palData
+      .map((item: any) => parseFloat(item.Perio_Surg))
+      .map((v: number) => Math.round(v))
+      .reduce((prev: number, curr: number) => prev + curr, 0);
+
+    const endoReTreat = palData
+      .map((item: any) => parseFloat(item.Endo_Re_treat))
+      .map((v: number) => Math.round(v))
+      .reduce((prev: number, curr: number) => prev + curr, 0);
+
+    const veneersInd = palData
+      .map((item: any) => parseFloat(item.Veneers_ind))
+      .map((v: number) => Math.round(v))
+      .reduce((prev: number, curr: number) => prev + curr, 0);
+
     let html = '<td> Total </td>';
-    html += '<td>' + Implant_Surg + '</td>';
-    html += '<td>' + Braces + '</td>';
-    html += '<td>' + Aligners + '</td>';
-    html += '<td>' + MAS + '</td>';
-    html += '<td>' + Perio_Surg + '</td>';
-    html += '<td>' + Endo_Re_treat + '</td>';
-    html += '<td>' + Veneers_ind + '</td>';
+    html += '<td>' + implantSurg + '</td>';
+    html += '<td>' + braces + '</td>';
+    html += '<td>' + aligners + '</td>';
+    html += '<td>' + mas + '</td>';
+    html += '<td>' + perioSurg + '</td>';
+    html += '<td>' + endoReTreat + '</td>';
+    html += '<td>' + veneersInd + '</td>';
+
     return this.sanitized.bypassSecurityTrustHtml(html);
   }
 }

@@ -19,10 +19,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get authUserId$() {
@@ -34,10 +31,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
   }
 
   get clinicId$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.clinicFacade.currentClinicId$;
   }
 
   constructor(
@@ -147,7 +141,6 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
 
   getChartTip(index: number) {
     return this.dashbordFacade.chartTips$.pipe(
-      takeUntil(this.destroy$),
       map(c => {
         if (c && c[index]) {
           return c[index];

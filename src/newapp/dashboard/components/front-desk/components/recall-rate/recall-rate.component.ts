@@ -1,11 +1,8 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { FrontDeskFacade } from '@/newapp/dashboard/facades/front-desk.facade';
-import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
 import { JeeveLineFillOptions } from '@/newapp/shared/utils';
-import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
@@ -40,21 +37,12 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
 
   get showGoals$() {
     return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(val => {
-        if (['m', 'lm'].indexOf(val.duration) >= 0) {
-          return true;
-        }
-
-        if (
-          val.start.date() == 1 &&
-          val.end.date() == val.end.clone().endOf('month').date()
-        ) {
-          return true;
-        }
-
-        return false;
-      })
+      map(
+        val =>
+          ['m', 'lm'].indexOf(val.duration) >= 0 ||
+          (val.start.date() == 1 &&
+            val.end.date() == val.end.clone().endOf('month').date())
+      )
     );
   }
 
@@ -130,7 +118,6 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
     private frontDeskFacade: FrontDeskFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
-    private decimalPipe: DecimalPipe,
     private dashboardFacade: DashboardFacade
   ) {
     combineLatest([
@@ -161,7 +148,6 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
 
   get chartOptions$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isMultiClinic]) => {
         if (isTrend) {
           return isMultiClinic
@@ -267,10 +253,6 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           label: function (tooltipItems) {
-            // let total =
-            //   parseInt(tooltipItems.label) > 100
-            //     ? 100
-            //     : tooltipItems.formattedValue;
             var Targetlable = '';
             const v = tooltipItems.dataset.data[tooltipItems.dataIndex];
             let Tlable = tooltipItems.dataset.label;
@@ -354,9 +336,6 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
       tooltip: {
         mode: 'x',
         enabled: true,
-        // custom: function (tooltip: ChartTooltipModel) {
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return false;
         },
@@ -373,7 +352,6 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
     hover: { mode: null },
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 1,
       easing: 'linear',
@@ -396,7 +374,6 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
       y: {
         min: 0,
         max: 100,
-        // stacked:true,
         ticks: {
           callback: function (label, index, labels) {
             return label + '%';
@@ -407,17 +384,12 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
     plugins: {
       tooltip: {
         mode: 'x',
-        // custom: function (tooltip) {
-        //   if (!tooltip) return;
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
           label: function (tooltipItems) {
             let label = tooltipItems.label;
-            //let total = parseInt(tooltipItems.formattedValue.toString()) > 100 ? 100 : tooltipItems.formattedValue;
             if ((<string>tooltipItems.label).indexOf('--') >= 0) {
               let lbl = (<string>tooltipItems.label).split('--');
               if (typeof lbl[3] === 'undefined') {

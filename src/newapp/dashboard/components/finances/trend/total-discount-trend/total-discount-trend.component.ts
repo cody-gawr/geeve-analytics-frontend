@@ -35,15 +35,11 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return this.financeFacade.isLoadingFnTotalDiscountTrend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.financeFacade.isLoadingFnTotalDiscountTrend$;
   }
 
   get chartType$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v => (typeof v === 'string' ? 'bar' : 'line'))
     );
   }
@@ -188,10 +184,8 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
         hoverBorderWidth: 7,
       },
     },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine',
@@ -247,7 +241,6 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
 
   get chartOptions$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v =>
         typeof v === 'string'
           ? this.stackedChartOptionsDiscount

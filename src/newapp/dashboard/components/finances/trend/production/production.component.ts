@@ -130,10 +130,8 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
         hoverBorderWidth: 7,
       },
     },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine',

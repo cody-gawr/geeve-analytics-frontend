@@ -2,9 +2,7 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { FrontDeskFacade } from '@/newapp/dashboard/facades/front-desk.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
 import { JeeveLineFillOptions } from '@/newapp/shared/utils';
-import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
@@ -30,30 +28,20 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
   }
 
   get maxfdUtaRatioGoal() {
-    if (this.fdUtaRatioVal > this.fdUtaRatioPrev) {
-      return this.fdUtaRatioVal;
-    } else {
-      return this.fdUtaRatioGoal;
-    }
+    return this.fdUtaRatioVal > this.fdUtaRatioPrev
+      ? this.fdUtaRatioVal
+      : this.fdUtaRatioGoal;
   }
 
   get showGoals$() {
     return this.layoutFacade.dateRange$.pipe(
       takeUntil(this.destroy$),
-      map(val => {
-        if (['m', 'lm'].indexOf(val.duration) >= 0) {
-          return true;
-        }
-
-        if (
-          val.start.date() == 1 &&
-          val.end.date() == val.end.clone().endOf('month').date()
-        ) {
-          return true;
-        }
-
-        return false;
-      })
+      map(
+        val =>
+          ['m', 'lm'].indexOf(val.duration) >= 0 ||
+          (val.start.date() == 1 &&
+            val.end.date() == val.end.clone().endOf('month').date())
+      )
     );
   }
 
@@ -65,11 +53,9 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
   labels = [];
 
   get maxFdUtaRatioGoal() {
-    if (this.fdUtaRatioVal > this.fdUtaRatioPrev) {
-      return this.fdUtaRatioVal;
-    } else {
-      return this.fdUtaRatioGoal;
-    }
+    return this.fdUtaRatioVal > this.fdUtaRatioPrev
+      ? this.fdUtaRatioVal
+      : this.fdUtaRatioGoal;
   }
 
   get isLoading$() {
@@ -78,10 +64,9 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
       this.frontDeskFacade.isLoadingFdUtaRatioData$,
       this.frontDeskFacade.isLoadingFdUtaRatioTrendData$,
     ]).pipe(
-      takeUntil(this.destroy$),
-      map(([isTrend, isLoading, isTrendLoading]) => {
-        return isTrend ? isTrendLoading : isLoading;
-      })
+      map(([isTrend, isLoading, isTrendLoading]) =>
+        isTrend ? isTrendLoading : isLoading
+      )
     );
   }
 
@@ -90,46 +75,30 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.isConnectedWith$
+    return this.dashboardFacade.isConnectedWith$;
   }
 
   get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.layoutFacade.isFullMonthsDateRange$;
   }
 
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      map(([isTrend, isMulti]) => {
-        if (isTrend || isMulti) {
-          return this.labels.length > 0;
-        } else {
-          return this.fdUtaRatioVal > 0;
-        }
-      })
+      map(([isTrend, isMulti]) =>
+        isTrend || isMulti ? this.labels.length > 0 : this.fdUtaRatioVal > 0
+      )
     );
   }
 
@@ -137,7 +106,6 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
     private frontDeskFacade: FrontDeskFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
-    private decimalPipe: DecimalPipe,
     private dashboardFacade: DashboardFacade
   ) {
     combineLatest([
@@ -168,7 +136,6 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
 
   get chartOptions$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isMultiClinic]) => {
         if (isTrend) {
           return isMultiClinic
@@ -183,7 +150,6 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
 
   get chartType$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isMultiClinic]) => {
         if (isTrend) {
           return isMultiClinic ? 'bar' : 'line';
@@ -250,7 +216,6 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
     elements: {
       line: JeeveLineFillOptions,
     },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
     animation: {
@@ -287,10 +252,6 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           label: function (tooltipItems) {
-            // let total =
-            //   parseInt(tooltipItems.label) > 100
-            //     ? 100
-            //     : tooltipItems.formattedValue;
             var Targetlable = '';
             const v = tooltipItems.dataset.data[tooltipItems.dataIndex];
             let Tlable = tooltipItems.dataset.label;
@@ -298,7 +259,7 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+
             let ylable = tooltipItems.parsed._custom
               ? +(
                   tooltipItems.parsed._custom.max +
@@ -374,9 +335,6 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
       tooltip: {
         mode: 'x',
         enabled: true,
-        // custom: function (tooltip: ChartTooltipModel) {
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return false;
         },
@@ -393,7 +351,7 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
     hover: { mode: null },
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
+
     animation: {
       duration: 1,
       easing: 'linear',
@@ -427,17 +385,13 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
     plugins: {
       tooltip: {
         mode: 'x',
-        // custom: function (tooltip) {
-        //   if (!tooltip) return;
-        //   tooltip.displayColors = false;
-        // },
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
         callbacks: {
           label: function (tooltipItems) {
             let label = tooltipItems.label;
-            //let total = parseInt(tooltipItems.formattedValue.toString()) > 100 ? 100 : tooltipItems.formattedValue;
+
             if ((<string>tooltipItems.label).indexOf('--') >= 0) {
               let lbl = (<string>tooltipItems.label).split('--');
               if (typeof lbl[3] === 'undefined') {
@@ -453,7 +407,7 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
               Tlable = Tlable + ': ';
               Targetlable = Tlable;
             }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
+
             let ylable = tooltipItems.parsed._custom
               ? +(
                   tooltipItems.parsed._custom.max +

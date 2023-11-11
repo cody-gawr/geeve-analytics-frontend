@@ -26,17 +26,11 @@ export class FinancesComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t && t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t && t !== 'off'));
   }
 
   get clinicId$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.clinicFacade.currentClinicId$;
   }
 
   errMsg = '';
