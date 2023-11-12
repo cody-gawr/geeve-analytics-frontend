@@ -38,7 +38,7 @@
           "
           [disableSpin]="true">
           {{
-            !(isFullMonthsDateRange$ | async)
+            !(isFullMonthsDateRange$ | async) && !(isTrend$ | async)
               ? 'Please select a date range consisting of full months to view Accounting charts'
               : 'Please connect to Xero/MYOB to display this chart'
           }}

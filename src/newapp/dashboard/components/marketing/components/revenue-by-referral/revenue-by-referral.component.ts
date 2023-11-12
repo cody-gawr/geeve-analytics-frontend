@@ -89,7 +89,9 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
   }
 
   get legend$() {
-    return this.isMultipleClinic$.pipe(map(v => !v));
+    return combineLatest([this.isMultipleClinic$, this.isTrend$]).pipe(
+      map(([isMultiClinics, isTrend]) => !isMultiClinics && !isTrend)
+    );
   }
 
   constructor(

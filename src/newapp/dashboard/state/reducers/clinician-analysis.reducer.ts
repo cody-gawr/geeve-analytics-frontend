@@ -2296,7 +2296,11 @@ export const selectRecallRateChartData = createSelector(
         tableData = [];
 
       resBody.data.forEach(res => {
-        gaugeValue = Math.round(<number>res.recallPercent);
+        gaugeValue = Math.round(
+          chartName === 'Recall Prebook Rate'
+            ? <number>res.recallPercent
+            : <number>res.reappointRate
+        );
 
         gaugeLabel = res.providerName;
       });
