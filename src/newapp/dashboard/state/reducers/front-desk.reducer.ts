@@ -21,6 +21,7 @@ import * as moment from 'moment';
 import {
   selectCurrentClinicId,
   selectCurrentClinics,
+  selectIsMultiClinicsSelected,
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
@@ -1634,7 +1635,7 @@ export const selectFdFtaRatioChartData = createSelector(
       },
     ];
 
-    chartDatasets[0]['data'] = chartLabels;
+    chartDatasets[0]['data'] = chartData;
 
     return {
       datasets: chartDatasets,
@@ -1648,9 +1649,9 @@ export const selectFdFtaRatioChartData = createSelector(
 
 export const selectFdFtaRatioTrendChartData = createSelector(
   selectFdFtaRatioTrendData,
-  selectCurrentClinicId,
+  selectIsMultiClinicsSelected,
   selectTrend,
-  (resBody, clinicId, trendMode) => {
+  (resBody, isMultiClinics, trendMode) => {
     if (resBody == null) {
       return {
         datasets: [],
@@ -1660,7 +1661,7 @@ export const selectFdFtaRatioTrendChartData = createSelector(
     let chartDatasets = [];
     const chartData = [],
       chartLabels = [];
-    if (typeof clinicId === 'string') {
+    if (isMultiClinics) {
       _.chain(resBody.data)
         .groupBy(trendMode === 'current' ? 'yearMonth' : 'year')
         .map((items, duration) => {
@@ -1675,7 +1676,7 @@ export const selectFdFtaRatioTrendChartData = createSelector(
               trendMode === 'current'
                 ? moment(duration).format('MMM YYYY')
                 : duration,
-            ftaRatio: _.round((totalFta / totalAppts) * 100),
+            ftaRatio: _.round((totalFta / totalAppts) * 100, 1),
           };
         })
         .value()
@@ -1683,7 +1684,9 @@ export const selectFdFtaRatioTrendChartData = createSelector(
           chartData.push(item.ftaRatio);
           chartLabels.push(item.duration);
         });
-      chartDatasets = [{ data: chartData, label: '' }];
+      chartDatasets = [
+        { data: chartData, label: '', backgroundColor: DoughnutChartColors[0] },
+      ];
     } else {
       resBody.data.forEach(item => {
         chartData.push(_.round(<number>item.ftaRatio, 1));
@@ -1777,7 +1780,7 @@ export const selectFdUtaRatioChartData = createSelector(
       },
     ];
 
-    chartDatasets[0]['data'] = chartLabels;
+    chartDatasets[0]['data'] = chartData;
 
     return {
       datasets: chartDatasets,
@@ -1818,7 +1821,7 @@ export const selectFdUtaRatioTrendChartData = createSelector(
               trendMode === 'current'
                 ? moment(duration).format('MMM YYYY')
                 : duration,
-            utaRatio: _.round((totalUta / totalAppts) * 100),
+            utaRatio: _.round((totalUta / totalAppts) * 100, 1),
           };
         })
         .value()
@@ -1826,7 +1829,9 @@ export const selectFdUtaRatioTrendChartData = createSelector(
           chartData.push(item.utaRatio);
           chartLabels.push(item.duration);
         });
-      chartDatasets = [{ data: chartData, label: '' }];
+      chartDatasets = [
+        { data: chartData, label: '', backgroundColor: DoughnutChartColors[0] },
+      ];
     } else {
       resBody.data.forEach(item => {
         chartData.push(_.round(<number>item.utaRatio, 1));
