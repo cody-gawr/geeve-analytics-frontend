@@ -796,6 +796,25 @@ export const selectFdUtilRateByDayChartData = createSelector(
     const chartData = [],
       chartLabels = [],
       fdUtiByDayData = [];
+    const days = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ];
+    days.forEach(d => {
+      fdUtiByDayData.push({
+        day: d,
+        scheduledHours: 0,
+        clinicanHours: 0,
+        utilRate: 0,
+      });
+      chartData.push(0);
+      chartLabels.push(`${d}--0--0`);
+    });
     _.chain(resBody.data)
       .groupBy('day')
       .map((items, day) => {
@@ -813,17 +832,20 @@ export const selectFdUtilRateByDayChartData = createSelector(
       })
       .value()
       .forEach(item => {
-        const utilRate = _.round((item.workedHour / item.plannedHour) * 100);
-        fdUtiByDayData.push({
-          day: item.day,
-          scheduledHours: item.plannedHour,
-          clinicanHours: item.workedHour,
-          utilRate: utilRate,
-        });
-        chartData.push(utilRate);
-        chartLabels.push(
-          `${item.day}--${item.workedHour}--${item.plannedHour}`
-        );
+        const idx = days.findIndex(d => d === item.day);
+        if (idx >= 0) {
+          const utilRate = _.round((item.workedHour / item.plannedHour) * 100);
+          fdUtiByDayData[idx] = {
+            day: item.day,
+            scheduledHours: item.plannedHour,
+            clinicanHours: item.workedHour,
+            utilRate: utilRate,
+          };
+          chartData[idx] = utilRate;
+          chartLabels[
+            idx
+          ] = `${item.day}--${item.workedHour}--${item.plannedHour}`;
+        }
       });
 
     const chartDatasets = [
