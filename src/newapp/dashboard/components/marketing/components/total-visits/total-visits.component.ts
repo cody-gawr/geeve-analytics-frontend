@@ -4,7 +4,12 @@ import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import {
+  ChartOptions,
+  LegendOptions,
+  ChartDataset,
+  TooltipItem,
+} from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
@@ -144,12 +149,12 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       usePointStyle: true,
       generateLabels: chart => {
         let labels = [];
-        let bg_color = {};
+        let bgColor = {};
         chart.data.datasets.forEach(item => {
           item.data.forEach((val: number) => {
             if (val > 0) {
               labels.push(item.label);
-              bg_color[item.label] = item.backgroundColor;
+              bgColor[item.label] = item.backgroundColor;
             }
           });
         });
@@ -157,8 +162,8 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
         labels = labels.splice(0, 10);
         return labels.map(item => ({
           text: item,
-          strokeStyle: bg_color[item],
-          fillStyle: bg_color[item],
+          strokeStyle: bgColor[item],
+          fillStyle: bgColor[item],
         }));
       },
     },
@@ -214,6 +219,65 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       },
     },
   };
+
+  // public stackedChartOptionsMulti: ChartOptions<'bar'> = {
+  //   elements: {
+  //     point: {
+  //       radius: 5,
+  //       hoverRadius: 7,
+  //       pointStyle: 'rectRounded',
+  //       hoverBorderWidth: 7,
+  //     },
+  //   },
+  //   responsive: true,
+  //   maintainAspectRatio: false,
+  //   animation: {
+  //     duration: 500,
+  //     easing: 'easeOutSine',
+  //   },
+  //   scales: {
+  //     x: {
+  //       stacked: true,
+  //       ticks: {
+  //         autoSkip: false,
+  //       },
+  //     },
+  //     y: {
+  //       stacked: true,
+  //       ticks: {},
+  //     },
+  //   },
+  //   plugins: {
+  //     legend: {
+  //       display: false,
+  //     },
+  //     tooltip: {
+  //       mode: 'x',
+  //       callbacks: {
+  //         // label: function (tooltipItems) {
+  //         //   if (tooltipItems.parsed.y > 0) {
+  //         //     return (
+  //         //       tooltipItems.dataset.label +
+  //         //       ': ' +
+  //         //       tooltipItems.formattedValue +
+  //         //       '-0090'
+  //         //     );
+  //         //   } else {
+  //         //     return '';
+  //         //   }
+  //         // },
+  //         // label: tooltipItem => tooltipItem.parsed.y.toString(),
+  //         title: tooltipItems => {
+  //           const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
+  //           return `${tooltipItems[0].label}: ${this.decimalPipe.transform(
+  //             sumV
+  //           )}-0000`;
+  //         },
+  //       },
+  //     },
+  //   },
+  // };
+
   public stackedChartOptionsMulti: ChartOptions<'bar'> = {
     elements: {
       point: {
@@ -223,10 +287,8 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
         hoverBorderWidth: 7,
       },
     },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine',
@@ -240,11 +302,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       },
       y: {
         stacked: true,
-        ticks: {
-          // callback: function (item) {
-          //   return item;
-          // }
-        },
+        ticks: {},
       },
     },
     plugins: {
