@@ -1289,10 +1289,6 @@ export const selectActivePatientsTrendChartData = createSelector(
         })
         .value();
 
-      console.log({
-        chartDatasets,
-      });
-
       return {
         datasets: chartDatasets,
         labels: chartLabels,
@@ -1402,6 +1398,10 @@ export const selectNewPatientAcqTrendChartData = createSelector(
         };
       })
       .value();
+
+    console.log({
+      chartDatasets,
+    });
 
     return {
       datasets: chartDatasets,
