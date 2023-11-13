@@ -134,7 +134,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       takeUntil(this.destroy$),
       map(([isTrend, isMultiClinic]) => {
-        return isMultiClinic
+        return isTrend && isMultiClinic
           ? this.stackedChartOptionsMulti
           : this.stackedChartOptions;
       })
@@ -220,64 +220,6 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     },
   };
 
-  // public stackedChartOptionsMulti: ChartOptions<'bar'> = {
-  //   elements: {
-  //     point: {
-  //       radius: 5,
-  //       hoverRadius: 7,
-  //       pointStyle: 'rectRounded',
-  //       hoverBorderWidth: 7,
-  //     },
-  //   },
-  //   responsive: true,
-  //   maintainAspectRatio: false,
-  //   animation: {
-  //     duration: 500,
-  //     easing: 'easeOutSine',
-  //   },
-  //   scales: {
-  //     x: {
-  //       stacked: true,
-  //       ticks: {
-  //         autoSkip: false,
-  //       },
-  //     },
-  //     y: {
-  //       stacked: true,
-  //       ticks: {},
-  //     },
-  //   },
-  //   plugins: {
-  //     legend: {
-  //       display: false,
-  //     },
-  //     tooltip: {
-  //       mode: 'x',
-  //       callbacks: {
-  //         // label: function (tooltipItems) {
-  //         //   if (tooltipItems.parsed.y > 0) {
-  //         //     return (
-  //         //       tooltipItems.dataset.label +
-  //         //       ': ' +
-  //         //       tooltipItems.formattedValue +
-  //         //       '-0090'
-  //         //     );
-  //         //   } else {
-  //         //     return '';
-  //         //   }
-  //         // },
-  //         // label: tooltipItem => tooltipItem.parsed.y.toString(),
-  //         title: tooltipItems => {
-  //           const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
-  //           return `${tooltipItems[0].label}: ${this.decimalPipe.transform(
-  //             sumV
-  //           )}-0000`;
-  //         },
-  //       },
-  //     },
-  //   },
-  // };
-
   public stackedChartOptionsMulti: ChartOptions<'bar'> = {
     elements: {
       point: {
@@ -306,24 +248,30 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      legend: this.stackLegendGenerator,
+      legend: {
+        display: false,
+      },
       tooltip: {
         mode: 'x',
         callbacks: {
           label: function (tooltipItems) {
             if (tooltipItems.parsed.y > 0) {
               return (
-                tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue
+                tooltipItems.dataset.label +
+                ': ' +
+                tooltipItems.formattedValue +
+                '-0090'
               );
             } else {
               return '';
             }
           },
+
           title: tooltipItems => {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
             return `${tooltipItems[0].label}: ${this.decimalPipe.transform(
               sumV
-            )}`;
+            )}-0000`;
           },
         },
       },
