@@ -6,6 +6,7 @@ import {
   MkActivePatientsApiResponse,
   MkActivePatientsTrendApiResponse,
   MkNewPatientAcqApiResponse,
+  MkNewPatientAcqItem,
   MkNewPatientAcqTrendApiResponse,
   MkNewPatientsByReferral,
   MkNewPatientsByReferralApiResponse,
@@ -1386,18 +1387,42 @@ export const selectNewPatientAcqTrendChartData = createSelector(
       .value();
     let i = 0;
     const chartDatasets = _.chain(newPatientAcqTrendData.data)
-      .groupBy('clinicId')
-      .map(items => {
+      .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
+      .map((items: MkNewPatientAcqItem[], key: string) => {
         const bgColors = DoughnutChartColors[i];
         i++;
         return {
-          data: items.map(item => _.round(<number>item.costPerPatient)),
-          label: items.length > 0 ? <string>items[0].clinicName : '',
+          data: [
+            _.sumBy(items, (item: MkNewPatientAcqItem) => <number>item.cost) /
+              _.sumBy(
+                items,
+                (item: MkNewPatientAcqItem) => <number>item.newPatients
+              ),
+          ],
+          label: key,
           backgroundColor: bgColors,
           hoverBackgroundColor: bgColors,
         };
       })
       .value();
+    // const chartDatasets = _.chain(newPatientAcqTrendData.data)
+    //   .groupBy('clinicId')
+    //   .map(items => {
+    //     const bgColors = DoughnutChartColors[i];
+    //     i++;
+    //     return {
+    //       data: items.map(item => _.round(<number>item.costPerPatient)),
+    //       label: items.length > 0 ? <string>items[0].clinicName : '',
+    //       backgroundColor: bgColors,
+    //       hoverBackgroundColor: bgColors,
+    //     };
+    //   })
+    //   .value();
+
+    console.log({
+      chartDatasets,
+      newPatientAcqTrendData,
+    });
 
     return {
       datasets: chartDatasets,
@@ -1447,7 +1472,6 @@ export const selectTotalVisitsChartData = createSelector(
         ],
         shadowOffsetY: 2,
         shadowBlur: 3,
-        // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
         shadowColor: 'rgba(0, 0, 0, 0.3)',
         pointBevelWidth: 2,
         pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',

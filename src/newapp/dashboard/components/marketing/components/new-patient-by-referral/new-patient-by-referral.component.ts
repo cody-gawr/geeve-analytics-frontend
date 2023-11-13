@@ -115,8 +115,6 @@ export class MarketingNewPatientByReferralComponent
           this.labels = chartData.labels;
           this.newPatientsByReferralVal = chartData.newPatientsByReferralVal;
         }
-
-        console.log({ labels: this.labels });
       });
   }
 

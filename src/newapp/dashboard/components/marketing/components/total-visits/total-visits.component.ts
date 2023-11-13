@@ -129,7 +129,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       takeUntil(this.destroy$),
       map(([isTrend, isMultiClinic]) => {
-        return isMultiClinic
+        return isTrend && isMultiClinic
           ? this.stackedChartOptionsMulti
           : this.stackedChartOptions;
       })
@@ -144,12 +144,12 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       usePointStyle: true,
       generateLabels: chart => {
         let labels = [];
-        let bg_color = {};
+        let bgColor = {};
         chart.data.datasets.forEach(item => {
           item.data.forEach((val: number) => {
             if (val > 0) {
               labels.push(item.label);
-              bg_color[item.label] = item.backgroundColor;
+              bgColor[item.label] = item.backgroundColor;
             }
           });
         });
@@ -157,8 +157,8 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
         labels = labels.splice(0, 10);
         return labels.map(item => ({
           text: item,
-          strokeStyle: bg_color[item],
-          fillStyle: bg_color[item],
+          strokeStyle: bgColor[item],
+          fillStyle: bgColor[item],
         }));
       },
     },
@@ -214,6 +214,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       },
     },
   };
+
   public stackedChartOptionsMulti: ChartOptions<'bar'> = {
     elements: {
       point: {
@@ -223,10 +224,8 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
         hoverBorderWidth: 7,
       },
     },
-    // scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 500,
       easing: 'easeOutSine',
@@ -240,15 +239,13 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       },
       y: {
         stacked: true,
-        ticks: {
-          // callback: function (item) {
-          //   return item;
-          // }
-        },
+        ticks: {},
       },
     },
     plugins: {
-      legend: this.stackLegendGenerator,
+      legend: {
+        display: false,
+      },
       tooltip: {
         mode: 'x',
         callbacks: {
@@ -261,6 +258,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
               return '';
             }
           },
+
           title: tooltipItems => {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
             return `${tooltipItems[0].label}: ${this.decimalPipe.transform(

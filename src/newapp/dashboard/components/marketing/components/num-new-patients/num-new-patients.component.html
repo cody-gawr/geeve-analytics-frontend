@@ -56,8 +56,8 @@
           <ngx-gauge
             *ngIf="
               !(isLoading$ | async) &&
-              !(isMultipleClinic$ | async) &&
               (hasData$ | async) &&
+              !(isMultipleClinic$ | async) &&
               !(isTrend$ | async)
             "
             type="arch"

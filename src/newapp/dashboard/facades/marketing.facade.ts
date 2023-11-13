@@ -7,7 +7,6 @@ import {
   selectActivePatientsChartData,
   selectActivePatientsTrendChartData,
   selectErrors,
-  selectIsActivePatients,
   selectIsActivePatientsWithPlatform,
   selectIsLoadingMkMyobAccounts,
   selectIsLoadingMkNewPatientAcq,
