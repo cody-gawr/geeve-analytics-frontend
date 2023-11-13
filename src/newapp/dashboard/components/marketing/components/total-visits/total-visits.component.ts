@@ -4,12 +4,7 @@ import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import {
-  ChartOptions,
-  LegendOptions,
-  ChartDataset,
-  TooltipItem,
-} from 'chart.js';
+import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
