@@ -117,10 +117,10 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   get hasData$() {
     return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
       map(([isDentistMode, isTrend]) => {
-        if (!isDentistMode || isTrend) {
-          return this.datasets[0]?.data.length > 0;
-        } else {
+        if (isDentistMode && !isTrend) {
           return this.gaugeValue > 0;
+        } else {
+          return this.datasets[0]?.data.length > 0;
         }
       })
     );

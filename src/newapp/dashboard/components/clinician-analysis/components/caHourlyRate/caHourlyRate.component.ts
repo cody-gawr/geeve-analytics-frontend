@@ -137,9 +137,11 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   get hasData$() {
     return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
       map(([isDentistMode, isTrend]) => {
-        return !isDentistMode || isTrend
-          ? this.datasets[0]?.data.length > 0
-          : this.gaugeValue > 0;
+        if (isDentistMode && !isTrend) {
+          return this.gaugeValue > 0;
+        } else {
+          return this.datasets[0]?.data.length > 0;
+        }
       })
     );
   }
