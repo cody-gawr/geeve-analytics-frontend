@@ -1393,10 +1393,7 @@ export const selectNewPatientAcqTrendChartData = createSelector(
         i++;
         return {
           data: [
-            _.sumBy(
-              items,
-              (item: MkNewPatientAcqItem) => <number>item.costPerPatient
-            ) /
+            _.sumBy(items, (item: MkNewPatientAcqItem) => <number>item.cost) /
               _.sumBy(
                 items,
                 (item: MkNewPatientAcqItem) => <number>item.newPatients
