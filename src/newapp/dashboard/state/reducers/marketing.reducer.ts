@@ -1424,6 +1424,7 @@ export const selectNewPatientAcqTrendChartData = createSelector(
 
     console.log({
       chartDatasets,
+      newPatientAcqTrendData,
     });
 
     return {
