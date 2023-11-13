@@ -257,10 +257,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
           label: function (tooltipItems) {
             if (tooltipItems.parsed.y > 0) {
               return (
-                tooltipItems.dataset.label +
-                ': ' +
-                tooltipItems.formattedValue +
-                '-0090'
+                tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue
               );
             } else {
               return '';
@@ -271,7 +268,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
             return `${tooltipItems[0].label}: ${this.decimalPipe.transform(
               sumV
-            )}-0000`;
+            )}`;
           },
         },
       },
