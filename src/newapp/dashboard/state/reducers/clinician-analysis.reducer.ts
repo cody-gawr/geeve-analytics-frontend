@@ -1308,8 +1308,10 @@ export const selectCaNumNewPatientsChartData = createSelector(
       let data: CaNumNewPatientsItem[] = resBody.data.slice();
       if (selectedClinics.length > 1) {
         data = _.chain(data)
-          .sort((item: CaNumNewPatientsItem) =>
-            parseFloat(<string>item.newPatients)
+          .sort(
+            (a: CaNumNewPatientsItem, b) =>
+              parseFloat(<string>a.newPatients) -
+              parseFloat(<string>b.newPatients)
           )
           .reverse()
           .value();
