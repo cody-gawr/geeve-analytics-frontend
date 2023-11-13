@@ -280,7 +280,9 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
             if (tlab == 0 && Targetlable == 'Target: ') {
               return '';
             } else {
-              return Tlable + tooltipItems.label + ': ' + ylable + '%';
+              return (
+                Tlable + tooltipItems.label + ': ' + parseInt(<any>ylable) + '%'
+              );
             }
           },
           title: function () {

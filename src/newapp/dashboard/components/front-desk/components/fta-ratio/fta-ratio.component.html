@@ -61,11 +61,11 @@
       </div>
       <div class="chart-foot" *ngIf="!(isTrend$ | async)">
         <div>
-          <h3>{{ fdFtaRatioVal | number: '1.0-0' }}%</h3>
+          <h3>{{ fdFtaRatioVal }}%</h3>
           <span>{{ durationLabel$ | async }}</span>
         </div>
         <div>
-          <h3>{{ fdFtaRatioPrev | number: '1.0-0' }}%</h3>
+          <h3>{{ fdFtaRatioPrev }}%</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>
         <div *ngIf="fdFtaRatioGoal > 0 && showGoals$ | async">

@@ -21,7 +21,10 @@ import {
   MkTotalVisitsTrendApiResponse,
   MkXeroOrMyobAccountsApiResponse,
 } from '@/newapp/models/dashboard/marketing';
-import { selectCurrentClinicId } from '@/newapp/clinic/state/reducers/clinic.reducer';
+import {
+  selectCurrentClinicId,
+  selectIsMultiClinicsSelected,
+} from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import moment from 'moment';
@@ -816,10 +819,10 @@ export const selectIsLoadingMkSaveAcctXero = createSelector(
 
 export const selectNewPatientsByReferralChartData = createSelector(
   selectNewPatientsByReferralData,
-  selectCurrentClinicId,
+  selectIsMultiClinicsSelected,
   (
     newPatientsByReferralData,
-    clinicId
+    isMultiClinics
   ): {
     newPatientsByReferralVal: number;
     labels: string[];
@@ -832,7 +835,10 @@ export const selectNewPatientsByReferralChartData = createSelector(
         datasets: [],
       };
     }
-    if (typeof clinicId === 'string') {
+    if (
+      isMultiClinics &&
+      !('patientsReftype' in newPatientsByReferralData.data)
+    ) {
       const data = <MkNewPatientsByReferralMultiItem[]>(
         newPatientsByReferralData.data
       );
@@ -930,10 +936,10 @@ export const selectNewPatientsByReferralTrendChartData = createSelector(
 
 export const selectRevByReferralChartData = createSelector(
   selectRevenueByReferralData,
-  selectCurrentClinicId,
+  selectIsMultiClinicsSelected,
   (
     revByReferralData,
-    clinicId
+    isMultiClinics
   ): {
     revByReferralVal: number;
     labels: string[];
@@ -946,8 +952,10 @@ export const selectRevByReferralChartData = createSelector(
         datasets: [],
       };
     }
-    if (typeof clinicId === 'string') {
+
+    if (isMultiClinics && !('patientsReftype' in revByReferralData.data)) {
       const data = <MkRevByReferralMultiItem[]>revByReferralData.data;
+
       const chartLables = _.chain(data)
         .map(item => item.clinicName)
         .value();
