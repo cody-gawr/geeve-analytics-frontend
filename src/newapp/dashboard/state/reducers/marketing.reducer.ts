@@ -1289,6 +1289,10 @@ export const selectActivePatientsTrendChartData = createSelector(
         })
         .value();
 
+      console.log({
+        chartDatasets,
+      });
+
       return {
         datasets: chartDatasets,
         labels: chartLabels,
@@ -1447,7 +1451,6 @@ export const selectTotalVisitsChartData = createSelector(
         ],
         shadowOffsetY: 2,
         shadowBlur: 3,
-        // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
         shadowColor: 'rgba(0, 0, 0, 0.3)',
         pointBevelWidth: 2,
         pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
