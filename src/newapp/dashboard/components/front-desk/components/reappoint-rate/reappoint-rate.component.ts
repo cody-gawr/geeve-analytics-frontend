@@ -8,6 +8,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
+import moment from 'moment';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
@@ -28,13 +29,13 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
     return 'trending_down';
   }
 
-  get maxfdReappointRateGoal() {
-    if (this.fdReappointRateVal > this.fdReappointRatePrev) {
-      return this.fdReappointRateVal;
-    } else {
-      return this.fdReappointRateGoal;
-    }
-  }
+  // get maxFdReappointRateGoal() {
+  //   if (this.fdReappointRateVal > this.fdReappointRatePrev) {
+  //     return this.fdReappointRateVal;
+  //   } else {
+  //     return this.fdReappointRateGoal;
+  //   }
+  // }
 
   get showGoals$() {
     return this.layoutFacade.dateRange$.pipe(
@@ -46,8 +47,9 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
         if (
           val &&
           val.start &&
-          val.start.date() == 1 &&
-          val.end.date() == val.end.clone().endOf('month').date()
+          moment(val.start).date() == 1 &&
+          moment(val.end).date() ==
+            moment(val.end).clone().endOf('month').date()
         ) {
           return true;
         }

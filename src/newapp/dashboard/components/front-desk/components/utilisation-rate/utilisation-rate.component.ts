@@ -120,8 +120,9 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
         if (
           val &&
           val.start &&
-          val.start.date() == 1 &&
-          val.end.date() == val.end.clone().endOf('month').date()
+          moment(val.start).date() == 1 &&
+          moment(val.end).date() ==
+            moment(val.end).clone().endOf('month').date()
         ) {
           return true;
         }

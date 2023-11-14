@@ -10,6 +10,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
+import moment from 'moment';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
@@ -44,12 +45,12 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
         if (['m', 'lm'].indexOf(val?.duration) >= 0) {
           return true;
         }
-
         if (
           val &&
           val.start &&
-          val.start.date() == 1 &&
-          val.end.date() == val.end.clone().endOf('month').date()
+          moment(val.start).date() == 1 &&
+          moment(val.end).date() ==
+            moment(val.end).clone().endOf('month').date()
         ) {
           return true;
         }
@@ -66,13 +67,13 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
   datasets: ChartDataset[] = [];
   labels = [];
 
-  get maxFdFtaRatioGoal() {
-    if (this.fdFtaRatioVal > this.fdFtaRatioPrev) {
-      return this.fdFtaRatioVal;
-    } else {
-      return this.fdFtaRatioGoal;
-    }
-  }
+  // get maxFdFtaRatioGoal() {
+  //   if (this.fdFtaRatioVal > this.fdFtaRatioPrev) {
+  //     return this.fdFtaRatioVal;
+  //   } else {
+  //     return this.fdFtaRatioGoal;
+  //   }
+  // }
 
   get isLoading$() {
     return combineLatest([

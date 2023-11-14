@@ -7,6 +7,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
+import moment from 'moment';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
@@ -27,13 +28,13 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
     return 'trending_down';
   }
 
-  get maxFdRecallRateGoal() {
-    if (this.fdRecallRateVal > this.fdRecallRatePrev) {
-      return this.fdRecallRateVal;
-    } else {
-      return this.fdRecallRateGoal;
-    }
-  }
+  // get maxFdRecallRateGoal() {
+  //   if (this.fdRecallRateVal > this.fdRecallRatePrev) {
+  //     return this.fdRecallRateVal;
+  //   } else {
+  //     return this.fdRecallRateGoal;
+  //   }
+  // }
 
   get showGoals$() {
     return this.layoutFacade.dateRange$.pipe(
@@ -42,8 +43,9 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
           ['m', 'lm'].indexOf(val?.duration) >= 0 ||
           (val &&
             val.start &&
-            val.start.date() == 1 &&
-            val.end.date() == val.end.clone().endOf('month').date())
+            moment(val.start).date() == 1 &&
+            moment(val.end).date() ==
+              moment(val.end).clone().endOf('month').date())
       )
     );
   }
@@ -137,7 +139,7 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
           this.labels = chartData.labels;
           this.fdRecallRateVal = chartData.fdRecallRateVal;
           this.fdRecallRatePrev = chartData.fdRecallRatePrev;
-          this.fdRecallRateGoal = chartData.fdRecallRateGoal;
+          this.fdRecallRateGoal = parseInt(<any>chartData.fdRecallRateGoal);
         }
       });
   }
