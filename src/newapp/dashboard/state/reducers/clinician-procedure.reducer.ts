@@ -14,6 +14,7 @@ import {
 } from '@/newapp/models/dashboard/clinician-procedure';
 import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors1 } from '@/newapp/shared/constants';
+import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.reducer';
 
 export interface ClinicianProcedureState {
   isLoadingData: Array<CP_API_ENDPOINTS | CP_API_TREND_ENDPOINTS>;
@@ -396,8 +397,9 @@ export const selectIsLoadingCpReferrals = createSelector(
 export const selectCpPredictorAnalysisChartData = createSelector(
   selectCpPredictorAnalysisData,
   selectCurrentClinics,
+  selectCurrentDentistId,
   // selectRolesIndividual,
-  (resData, clinics) => {
+  (resData, clinics, dentistId) => {
     if (!resData || !resData.data || resData.data.length == 0) {
       return {
         datasets: [],
@@ -473,6 +475,61 @@ export const selectCpPredictorAnalysisChartData = createSelector(
       return {
         datasets: chartDatasets,
         labels: chartLabels,
+      };
+    } else if (dentistId !== 'all') {
+      const chartDatasets: any[] = [
+        {
+          data: [10, 1, 5],
+          label: 'Items Predictor Analysis ',
+          shadowOffsetX: 3,
+          shadowOffsetY: 2,
+          shadowBlur: 3,
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
+          pointBevelWidth: 2,
+          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+          pointShadowOffsetX: 3,
+          pointShadowOffsetY: 3,
+          pointShadowBlur: 10,
+          pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+          backgroundOverlayMode: 'multiply',
+        },
+      ];
+      const chartData = [];
+      const chartLabels = [];
+      var temp = [];
+      temp['Crowns'] = resData.data[0].crowns;
+
+      temp['Splints'] = resData.data[0].splints;
+
+      temp['Root Canals'] = resData.data[0].rct;
+
+      temp['Perio'] = resData.data[0].perio;
+
+      temp['Surgical Extractions'] = resData.data[0].extract;
+      temp['Stainless Steel Crowns'] = resData.data[0].ssCrowns;
+      temp['Composite Veneers'] = resData.data[0].compVeneers;
+      temp['Implant Crowns'] = resData.data[0].impCrowns;
+      temp['Whitening'] = resData.data[0].whitening;
+      var tupleArray = [];
+      for (var key in temp) tupleArray.push([key, temp[key]]);
+      tupleArray.sort(function (a, b) {
+        return b[1] - a[1];
+      });
+
+      tupleArray.forEach((res, key) => {
+        chartData.push(res[1]);
+        chartLabels.push(res[0]);
+      });
+      chartDatasets[0]['data'] = chartData;
+      chartDatasets[0]['label'] = 'DentistMode-' + resData.data[0].providerName;
+      //this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
+
+      const maxData = Math.max(...chartDatasets[0]['data']);
+      return {
+        datasets: chartDatasets,
+        labels: chartLabels,
+        maxData: maxData,
       };
     } else {
       chartDatasets = [
@@ -572,7 +629,6 @@ export const selectCpPredictorAnalysisChartData = createSelector(
         { backgroundColor: '#ffb4b5' },
         { backgroundColor: '#fffcac' },
       ];
-
       return {
         datasets: chartDatasets,
         labels: chartLabels,

@@ -33,10 +33,10 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
   }
 
   get enablePaTable$() {
-    return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      map(([isTrend, isMultipleClinic]) => {
+    return combineLatest([this.isTrend$, this.isDentistMode$]).pipe(
+      map(([isTrend, isDentistMode]) => {
         return (
-          !isTrend && !isMultipleClinic && this.maxVal > 0 && this.showPaTable
+          !isTrend && !isDentistMode && this.maxVal > 0 && this.showPaTable
         );
       })
     );
@@ -97,6 +97,10 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
           : 'You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period'
       )
     );
+  }
+
+  get isDentistMode$() {
+    return this.dentistFacade.isDentistMode$;
   }
 
   constructor(
