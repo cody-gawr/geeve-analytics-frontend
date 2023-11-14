@@ -38,8 +38,10 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       map(
         val =>
-          ['m', 'lm'].indexOf(val.duration) >= 0 ||
-          (val.start.date() == 1 &&
+          ['m', 'lm'].indexOf(val?.duration) >= 0 ||
+          (val &&
+            val.start &&
+            val.start.date() == 1 &&
             val.end.date() == val.end.clone().endOf('month').date())
       )
     );

@@ -113,11 +113,13 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   get showGoals$() {
     return this.layoutFacade.dateRange$.pipe(
       map(val => {
-        if (['m', 'lm'].indexOf(val.duration) >= 0) {
+        if (['m', 'lm'].indexOf(val?.duration) >= 0) {
           return true;
         }
 
         if (
+          val &&
+          val.start &&
           val.start.date() == 1 &&
           val.end.date() == val.end.clone().endOf('month').date()
         ) {
