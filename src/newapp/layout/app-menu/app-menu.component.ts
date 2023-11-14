@@ -175,7 +175,7 @@ const MENU_DATA: MenuNode[] = [
       //(user_type==2 || permissions.contains(dashboard4) || user_type==7) && userPlan!='lite'
       {
         title: 'Marketing',
-        path: 'dashboards/marketing',
+        path: '/newapp/dashboard/marketing',
         validatorFn: ({
           permissions,
           userType,
