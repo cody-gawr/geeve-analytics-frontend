@@ -45,7 +45,7 @@
         display: flex;
         flex: 1;
         gap: 15px;
-        @include respond-from('phone') {
+        @include respond-from('tablet-landscape') {
           flex-direction: column;
         }
 
