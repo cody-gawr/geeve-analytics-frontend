@@ -155,21 +155,33 @@ html {
     .pa-table {
       width: 100%;
       height: 100%;
-      min-height: 350px;
+      max-height: 423px;
+      min-height: 415px;
+      width: 100%;
+      overflow: auto;
+      margin-left: 12px;
     }
     .pa-table table {
       width: 100%;
-      height: 100%;
+      line-height: 23px;
+
       thead tr th {
         text-align: left;
         font-size: 13px;
       }
+
       thead th {
         font-size: 14px;
       }
+
       tbody tr td {
-        padding: 0;
+        padding: 5px;
         font-size: 13px;
+      }
+
+      tbody tr.patable-total {
+        background-color: #f1efef;
+        font-weight: bold !important;
       }
     }
 

@@ -22,14 +22,12 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
 
   get isGeneral$() {
     return this.cpFacade.cpPredictorAnalysisVisibility$.pipe(
-      takeUntil(this.destroy$),
       map(v => v === 'general')
     );
   }
 
   get isSpecialList$() {
     return this.cpFacade.cpPredictorAnalysisVisibility$.pipe(
-      takeUntil(this.destroy$),
       map(v => v === 'specialist')
     );
   }
@@ -69,10 +67,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get legend$() {
@@ -80,7 +75,6 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       this.clinicFacade.currentClinics$,
       this.dentistFacade.currentDentistId$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([clinics, dentistId]) => {
         return !(clinics.length == 1 && dentistId !== 'all');
       })
@@ -97,12 +91,11 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       this.dentistFacade.currentDentistId$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(([clinics, dentistId]) => {
-        if (clinics.length == 1 && dentistId !== 'all') {
-          return 'You have no specialist items in this period';
-        }
-        return `You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period`;
-      })
+      map(([clinics, dentistId]) =>
+        clinics.length == 1 && dentistId !== 'all'
+          ? 'You have no specialist items in this period'
+          : 'You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period'
+      )
     );
   }
 
