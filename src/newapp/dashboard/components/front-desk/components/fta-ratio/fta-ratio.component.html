@@ -17,8 +17,8 @@
     <span> FTA ratio (%) </span>
   </div>
   <div class="chart-content">
-    <div class="canvas-wrapper chart-box fta-ratio-gauge">
-      <div class="chart-gauge">
+    <div class="canvas-wrapper chart-box">
+      <div class="chart-gauge fta-ratio-gauge">
         <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
         <ng-template #mainElem>
           <ngx-gauge

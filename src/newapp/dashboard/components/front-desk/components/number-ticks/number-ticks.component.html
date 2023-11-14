@@ -17,8 +17,8 @@
     <span> Number of Ticks </span>
   </div>
   <div class="chart-content">
-    <div class="canvas-wrapper chart-box number-ticks-gauge">
-      <div class="chart-gauge">
+    <div class="canvas-wrapper chart-box">
+      <div class="chart-gauge number-ticks-gauge">
         <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
         <ng-template #mainElem>
           <ngx-gauge

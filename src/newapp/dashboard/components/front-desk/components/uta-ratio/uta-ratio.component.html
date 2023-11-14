@@ -17,8 +17,8 @@
     <span> UTA ratio (%) </span>
   </div>
   <div class="chart-content">
-    <div class="canvas-wrapper chart-box uta-ratio-gauge">
-      <div class="chart-gauge">
+    <div class="canvas-wrapper chart-box">
+      <div class="chart-gauge uta-ratio-gauge">
         <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
         <ng-template #mainElem>
           <ngx-gauge
