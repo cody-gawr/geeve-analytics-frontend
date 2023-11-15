@@ -23,7 +23,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   labels = [];
   bgColors = [];
 
-  predictorRatioValue = 0;
+  predictorRatioValue = '';
   predictorRatioPrev = '';
   multifulRatio = '';
 

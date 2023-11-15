@@ -984,30 +984,22 @@ export const selectCpPredictorRatioChartData = createSelector(
           { data: [], label: "RCT's Started" },
           { data: [], label: "RCT's Completed" },
         ]);
-      let cpPredictorRatioAvr1 = 0,
-        cpPredictorRatioAvr2 = 0,
-        cpPredictorRatioAvr3 = 0;
+      let cpPredictorRatioAvr1 = '',
+        cpPredictorRatioAvr2 = '',
+        cpPredictorRatioAvr3 = '';
       resData.data.forEach(item => {
         let provider = item.providerName ?? '';
         switch (item.type) {
           case 'crown-largefilling':
-            chartDatasets1[0]['data'].push(
-              Math.round(parseFloat(<string>item.firstValue))
-            );
-            chartDatasets1[1]['data'].push(
-              Math.round(parseFloat(<string>item.secondValue))
-            );
-            cpPredictorRatioAvr1 = Math.round(parseFloat(<string>item.ratio));
+            chartDatasets1[0]['data'].push(item.firstValue);
+            chartDatasets1[1]['data'].push(item.secondValue);
+            cpPredictorRatioAvr1 = item.ratio;
             chartLabels1.push(provider);
             break;
           case 'rct-extraction':
-            chartDatasets2[0]['data'].push(
-              Math.round(parseFloat(<string>item.firstValue))
-            );
-            chartDatasets2[1]['data'].push(
-              Math.round(parseFloat(<string>item.secondValue))
-            );
-            cpPredictorRatioAvr2 = Math.round(parseFloat(<string>item.ratio));
+            chartDatasets2[0]['data'].push(item.firstValue);
+            chartDatasets2[1]['data'].push(item.secondValue);
+            cpPredictorRatioAvr2 = item.ratio;
             chartLabels2.push(provider);
             break;
           case 'rctstarted-rctcompleted':
@@ -1017,7 +1009,7 @@ export const selectCpPredictorRatioChartData = createSelector(
             chartDatasets3[1]['data'].push(
               Math.round(parseFloat(<string>item.secondValue))
             );
-            cpPredictorRatioAvr3 = Math.round(parseFloat(<string>item.ratio));
+            cpPredictorRatioAvr3 = item.ratio;
             chartLabels3.push(provider);
             break;
           default:
