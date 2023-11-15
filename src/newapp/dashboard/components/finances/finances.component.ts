@@ -43,7 +43,9 @@ export class FinancesComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private router: Router,
     private authFacade: AuthFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -184,8 +186,6 @@ export class FinancesComponent implements OnInit, OnDestroy {
         this.noPermission = true;
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

@@ -55,7 +55,6 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       this.cpFacade.isLoadingCpPredictorAnalysis$,
       this.cpFacade.isLoadingCpPredictorSpecialistAnalysis$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([isLoading1, isLoading2]) => {
         return isLoading1 || isLoading2;
       })
@@ -163,7 +162,6 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       this.clinicFacade.currentClinics$,
       this.dentistFacade.currentDentistId$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([clinics, dentistId]) => {
         if (clinics.length === 1 && dentistId !== 'all') {
           // dentistMode

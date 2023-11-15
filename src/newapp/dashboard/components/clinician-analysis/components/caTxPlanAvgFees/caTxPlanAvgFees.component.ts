@@ -35,10 +35,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   ];
 
   get duration$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.duration)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }
 
   get trendingIcon() {
@@ -48,29 +45,19 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get showGoals$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.enableGoal)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.enableGoal));
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get getTrendTip$() {
     return combineLatest([this.durationTrendLabel$]).pipe(
-      takeUntil(this.destroy$),
       map(([durTrendLabel]) => {
         return durTrendLabel + ': $' + this.decimalPipe.transform(this.prev);
       })
@@ -104,37 +91,29 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return this.caFacade.isLoadingTxPlanAvgFee$.pipe(takeUntil(this.destroy$));
+    return this.caFacade.isLoadingTxPlanAvgFee$;
   }
 
   get userType$() {
-    return this.authFacade.rolesIndividual$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v?.type)
-    );
+    return this.authFacade.rolesIndividual$.pipe(map(v => v?.type));
   }
 
   get chartName$() {
-    return this.caFacade.txPlanAvgFeeChartName$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.caFacade.txPlanAvgFeeChartName$;
   }
 
   get hasData$() {
     return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
-      map(([isDentistMode, isTrend]) => {
-        if (isDentistMode && !isTrend) {
-          return this.gaugeValue > 0;
-        } else {
-          return this.datasets[0]?.data.length > 0;
-        }
-      })
+      map(([isDentistMode, isTrend]) =>
+        isDentistMode && !isTrend
+          ? this.gaugeValue > 0
+          : this.datasets[0]?.data.length > 0
+      )
     );
   }
 
   get avgMode$() {
-    return this.layoutFacade.average$.pipe(takeUntil(this.destroy$));
+    return this.layoutFacade.average$;
   }
 
   get isEnableFooter$() {
@@ -160,10 +139,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
   }
 
   constructor(

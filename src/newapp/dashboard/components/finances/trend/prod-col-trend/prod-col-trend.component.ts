@@ -27,7 +27,9 @@ export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
     ]).pipe(map(([v, v1]) => v && v1));
   }
 
-  constructor(private financeFacade: FinanceFacade) {
+  constructor(private financeFacade: FinanceFacade) {}
+
+  ngOnInit(): void {
     combineLatest([this.financeFacade.prodCollChartData$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([prodCollChartData]) => {
@@ -35,8 +37,6 @@ export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
         this.labels = prodCollChartData.labels;
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

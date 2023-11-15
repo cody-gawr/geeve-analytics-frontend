@@ -25,10 +25,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get authUserId$() {
@@ -40,10 +37,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
   }
 
   get clinicId$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.clinicFacade.currentClinicId$;
   }
 
   constructor(
@@ -53,7 +47,9 @@ export class MarketingComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private authFacade: AuthFacade,
     private router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -158,8 +154,6 @@ export class MarketingComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit(): void {}
-
   ngOnDestroy(): void {
     this.destroy.next();
   }
@@ -169,7 +163,6 @@ export class MarketingComponent implements OnInit, OnDestroy {
       this.dashbordFacade.chartTips$,
       this.marketingFacade.isActivePatients$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([tip, v]) => {
         if (v) {
           return tip && tip[61] && tip[61];

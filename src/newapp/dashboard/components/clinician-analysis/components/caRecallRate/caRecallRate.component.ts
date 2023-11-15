@@ -34,10 +34,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   ];
 
   get duration$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.duration)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }
 
   get trendingIcon() {
@@ -47,34 +44,23 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get showGoals$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.enableGoal)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.enableGoal));
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get getTrendTip$() {
     return combineLatest([this.durationTrendLabel$]).pipe(
-      takeUntil(this.destroy$),
-      map(([durTrendLabel]) => {
-        return (
+      map(
+        ([durTrendLabel]) =>
           durTrendLabel + ': ' + this.decimalPipe.transform(this.prev) + '%'
-        );
-      })
+      )
     );
   }
 
@@ -263,21 +249,15 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return this.caFacade.isLoadingRecallRateAll$.pipe(takeUntil(this.destroy$));
+    return this.caFacade.isLoadingRecallRateAll$;
   }
 
   get userType$() {
-    return this.authFacade.rolesIndividual$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v?.type)
-    );
+    return this.authFacade.rolesIndividual$.pipe(map(v => v?.type));
   }
 
   get chartName$() {
-    return this.caFacade.recallRateChartName$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.caFacade.recallRateChartName$;
   }
 
   get hasData$() {
@@ -293,7 +273,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get avgMode$() {
-    return this.layoutFacade.average$.pipe(takeUntil(this.destroy$));
+    return this.layoutFacade.average$;
   }
 
   get isEnableFooter$() {
@@ -319,10 +299,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
   }
 
   constructor(

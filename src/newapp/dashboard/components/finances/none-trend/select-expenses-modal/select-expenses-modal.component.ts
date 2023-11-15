@@ -24,30 +24,11 @@ export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
   unSelectedData: { value: number; name: string }[] = [];
 
   get isLoading$() {
-    return combineLatest([
-      this.financeFacade.isLoadingFnExpenses$,
-      //this.marketingFacade.isLoadingMkXeroAccounts$
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([v1]) => v1)
-    );
+    return this.financeFacade.isLoadingFnExpenses$;
   }
 
-  // get isWaiting$(){
-  //     return combineLatest([
-  //         this.marketingFacade.isLoadingMkSaveMyobAccounts$,
-  //         this.marketingFacade.isLoadingMkSaveXeroAccounts$
-  //     ]).pipe(
-  //         takeUntil(this.destroy$),
-  //         map( ([v1, v2]) => v1 || v2)
-  //     )
-  // }
-
   get connectedWith$() {
-    return this.dashboardFacade.connectedWith$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.dashboardFacade.connectedWith$;
   }
 
   constructor(
@@ -59,96 +40,6 @@ export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
   ) {
     this.selectedData = data.selectedData;
     this.unSelectedData = data.unSelectedData;
-    // combineLatest([
-    //     this.dashboardFacade.connectedWith$,
-    //     this.marketingFacade.xeroAccounts$,
-    //     this.marketingFacade.myobAccounts$
-    // ]).pipe(
-    //     takeUntil(this.destroy$),
-    // ).subscribe(([isConnected, xeroAccounts, myobAccounts]) => {
-    //     if(isConnected == 'xero'){
-    //         this.selectedAccounts = xeroAccounts.data.selectedCategories;
-    //         const result = [];
-    //         for(let key in xeroAccounts.data.categories){
-    //             const val = xeroAccounts.data.categories[key];
-    //             if(!this.selectedAccounts.includes(val)){
-    //                 result.push(val);
-    //             }
-    //         }
-    //         this.unselectedAccounts = result;
-    //     }else if(isConnected == 'myob'){
-    //         this.selectedAccounts = myobAccounts.data.selectedCategories;
-    //         const result = [];
-    //         for(let key in myobAccounts.data.categories){
-    //             const val = myobAccounts.data.categories[key];
-    //             if(!this.selectedAccounts.includes(val)){
-    //                 result.push(val);
-    //             }
-    //         }
-    //         this.unselectedAccounts = result;
-    //     }else {
-    //         this.selectedAccounts = [];
-    //     }
-    // });
-
-    // combineLatest([
-    //   this.financeFacade.expensesData$,
-    //   this.financeFacade.expensesProduction$,
-    //   this.clinicFacade.currentClinicId$,
-    // ])
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(([expenses, production, clinicId]) => {
-    //     //   if (typeof clinicId === "string") {
-    //     //     this.datasets = [];
-    //     //     let i = 0;
-    //     //     _.chain(expenses)
-    //     //       .groupBy("accountName")
-    //     //       .map((items, accountName) => {
-    //     //         return {
-    //     //           items,
-    //     //           accountName,
-    //     //         };
-    //     //       })
-    //     //       .value()
-    //     //       .forEach((v) => {
-    //     //         const bgColor = DoughnutChartColors[i];
-    //     //         i++;
-    //     //         this.datasets.push({
-    //     //           data: _.chain(v.items)
-    //     //             .orderBy("clinicId", "asc")
-    //     //             .value()
-    //     //             .map(
-    //     //               (item) =>
-    //     //                 _.round((item.expense / production) * 100 * 10) / 10
-    //     //             ),
-    //     //           label: v.accountName,
-    //     //           backgroundColor: bgColor,
-    //     //           hoverBackgroundColor: bgColor,
-    //     //         });
-    //     //       });
-    //     //     this.labels = _.chain(expenses)
-    //     //       .unionBy((item) => item.clinicName)
-    //     //       .value()
-    //     //       .map((item) => item.clinicName);
-    //     //   } else {
-    //     if (production > 0) {
-    //       this.selectedData = [];
-    //       this.unSelectedData = [];
-    //       expenses.forEach((item, index) => {
-    //         const chartItem = {
-    //           name: `${item.accountName}--${item.expense}`,
-    //           value: _.round((item.expense / production) * 100 * 10) / 10,
-    //         };
-
-    //         if (index < 15) {
-    //           this.selectedData.push(chartItem);
-    //         } else {
-    //           this.unSelectedData.push(chartItem);
-    //         }
-    //       });
-    //     }
-    //     //   }
-    //   });
   }
 
   ngOnInit(): void {}

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../../facades/dashboard.facade';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { FinanceFacade } from '../../../facades/finance.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 
@@ -10,9 +10,6 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
   styleUrls: ['./trend.component.scss'],
 })
 export class TrendFinanceComponent implements OnInit, OnDestroy {
-  destroy = new Subject<void>();
-  destroy$ = this.destroy.asObservable();
-
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       map(v => typeof v == 'string')
@@ -41,9 +38,7 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
-  ngOnDestroy(): void {
-    this.destroy.next();
-  }
+  ngOnDestroy(): void {}
 
   get profitTrendTip$() {
     return combineLatest([

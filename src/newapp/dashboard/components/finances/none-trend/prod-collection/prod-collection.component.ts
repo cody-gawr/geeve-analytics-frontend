@@ -23,30 +23,21 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.financeFacade.isLoadingTotalProduction$,
       this.financeFacade.isLoadingCollection$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([v, v1]) => v && v1)
-    );
+    ]).pipe(map(([v, v1]) => v && v1));
   }
 
   get chartOptions$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
-      map(v => {
-        if (typeof v === 'string') {
-          return this.labelBarOptionsMultiTC;
-        } else {
-          return this.labelBarOptionsTC;
-        }
-      })
+      map(v =>
+        typeof v === 'string'
+          ? this.labelBarOptionsMultiTC
+          : this.labelBarOptionsTC
+      )
     );
   }
 
   get duration$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.duration)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }
 
   datasets: ChartDataset[] = [];
@@ -56,52 +47,36 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get totalProdVal$() {
-    return this.financeFacade.productionVal$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.financeFacade.productionVal$;
   }
 
   get totalProdTrendVal$() {
-    return this.financeFacade.productionTrendVal$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.financeFacade.productionTrendVal$;
   }
 
   get collectionVal$() {
-    return this.financeFacade.collectionVal$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.financeFacade.collectionVal$;
   }
 
   get collectionTrendVal$() {
-    return this.financeFacade.collectionTrendVal$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.financeFacade.collectionTrendVal$;
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   constructor(
     private financeFacade: FinanceFacade,
     private layoutFacade: LayoutFacade,
     private clinicFacade: ClinicFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.financeFacade.productionVal$,
       this.financeFacade.prodData$,
@@ -163,8 +138,6 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {}
 

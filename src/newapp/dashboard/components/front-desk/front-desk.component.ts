@@ -41,7 +41,9 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private authFacade: AuthFacade,
     private router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -132,8 +134,6 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

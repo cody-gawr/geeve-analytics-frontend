@@ -28,15 +28,8 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
     return 'trending_down';
   }
 
-  // get maxfdUtaRatioGoal() {
-  //   return this.fdUtaRatioVal > this.fdUtaRatioPrev
-  //     ? this.fdUtaRatioVal
-  //     : this.fdUtaRatioGoal;
-  // }
-
   get showGoals$() {
     return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
       map(
         val =>
           ['m', 'lm'].indexOf(val?.duration) >= 0 ||

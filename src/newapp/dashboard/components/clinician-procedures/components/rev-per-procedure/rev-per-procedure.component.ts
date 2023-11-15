@@ -2,9 +2,8 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianProcedureFacade } from '@/newapp/dashboard/facades/clinician-procedures.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { ChartOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
@@ -28,24 +27,17 @@ export class CpRevPerProcedureComponent implements OnInit, OnDestroy {
   showTopValues = false;
 
   get isLoading$() {
-    return this.cpFacade.isLoadingCpRevPerProcedure$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.cpFacade.isLoadingCpRevPerProcedure$;
   }
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v => typeof v == 'string')
     );
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get hasData() {
@@ -55,9 +47,7 @@ export class CpRevPerProcedureComponent implements OnInit, OnDestroy {
   constructor(
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
-    private dentistFacade: DentistFacade,
     private cpFacade: ClinicianProcedureFacade,
-    private sanitized: DomSanitizer,
     private numPipe: DecimalPipe
   ) {}
 

@@ -49,7 +49,6 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       this.marketingFacade.isLoadingTotalVisits$,
       this.marketingFacade.isLoadingTotalVisitsTrend$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isLoading, isTrendLoading]) =>
         isTrend ? isTrendLoading : isLoading
       )
@@ -82,13 +81,9 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
 
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      map(([isTrend, isMulti]) => {
-        if (isTrend || isMulti) {
-          return this.labels.length > 0;
-        } else {
-          return this.totalVisitsVal > 0;
-        }
-      })
+      map(([isTrend, isMulti]) =>
+        isTrend || isMulti ? this.labels.length > 0 : this.totalVisitsVal > 0
+      )
     );
   }
 
@@ -127,12 +122,11 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
 
   get chartOptions$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      takeUntil(this.destroy$),
-      map(([isTrend, isMultiClinic]) => {
-        return isTrend && isMultiClinic
+      map(([isTrend, isMultiClinic]) =>
+        isTrend && isMultiClinic
           ? this.stackedChartOptionsMulti
-          : this.stackedChartOptions;
-      })
+          : this.stackedChartOptions
+      )
     );
   }
 

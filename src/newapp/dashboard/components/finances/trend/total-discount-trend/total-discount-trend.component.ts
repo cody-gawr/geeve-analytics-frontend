@@ -54,7 +54,13 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade
-  ) {
+  ) {}
+
+  get hasData() {
+    return this.datasets[0]?.data?.every(v => v !== 0);
+  }
+
+  ngOnInit(): void {
     combineLatest([
       this.financeFacade.totalDiscountTrendChartData$,
       this.layoutFacade.trend$,
@@ -71,12 +77,6 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-  get hasData() {
-    return this.datasets[0]?.data?.every(v => v !== 0);
-  }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

@@ -33,47 +33,29 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
   maxValue = 0;
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get isLoading$() {
-    return this.cpFacade.isLoadingCpReferrals$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.cpFacade.isLoadingCpReferrals$;
   }
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v => typeof v == 'string')
     );
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get legend$() {
-    return combineLatest([this.isTrend$]).pipe(
-      takeUntil(this.destroy$),
-      map(([isTrend]) => {
-        return isTrend ? false : true;
-      })
-    );
+    return combineLatest([this.isTrend$]).pipe(map(([isTrend]) => !isTrend));
   }
 
   get hasData() {
@@ -82,7 +64,6 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
 
   get noDataAlertMessage$() {
     return combineLatest([this.cpFacade.cpReferralsVisibility$]).pipe(
-      takeUntil(this.destroy$),
       map(([visibility]) => {
         switch (visibility) {
           case 'internal':
@@ -99,25 +80,18 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
   }
 
   get visibility$() {
-    return this.cpFacade.cpReferralsVisibility$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.cpFacade.cpReferralsVisibility$;
   }
 
   public get isLargeOrSmall$() {
     return this.breakpointObserver
       .observe([Breakpoints.Large, Breakpoints.Small])
-      .pipe(
-        takeUntil(this.destroy$),
-        map(result => result.matches)
-      );
+      .pipe(map(result => result.matches));
   }
 
   constructor(
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
-    // private dentistFacade: DentistFacade,
     private cpFacade: ClinicianProcedureFacade,
     private breakpointObserver: BreakpointObserver
   ) {}
@@ -147,7 +121,6 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
       this.isTrend$,
       this.clinicFacade.currentClinics$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, clinics]) => {
         if (isTrend) {
           return this.stackedChartOptions;

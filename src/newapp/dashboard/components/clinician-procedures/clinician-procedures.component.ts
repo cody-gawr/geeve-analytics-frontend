@@ -30,7 +30,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       this.dashbordFacade.chartTips$,
       this.clinicianProcedureFacade.cpPredictorAnalysisVisibility$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([tips, visibility]) => {
         if (visibility === 'general') {
           if (tips && tips[9]) {
@@ -51,7 +50,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       this.dashbordFacade.chartTips$,
       this.clinicianProcedureFacade.cpPredictorRatioVisibility$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([tips, visibility]) => {
         if (visibility === 1) {
           if (tips && tips[10]) {
@@ -163,7 +161,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
 
   getChartTip(index: number) {
     return this.dashbordFacade.chartTips$.pipe(
-      takeUntil(this.destroy$),
       map(c => {
         if (c && c[index]) {
           return c[index];

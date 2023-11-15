@@ -43,7 +43,6 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
 
   get hasData$() {
     return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
-      takeUntil(this.destroy$),
       map(([clinicId]) => {
         if (typeof clinicId === 'string') {
           return this.datasets.length > 0;
@@ -56,7 +55,6 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v => typeof v == 'string')
     );
   }

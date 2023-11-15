@@ -26,24 +26,20 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return this.financeFacade.isLoadingFnProdPerClinicianTrend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.financeFacade.isLoadingFnProdPerClinicianTrend$;
   }
 
   get legend$() {
-    return this.dashboardFacade.connectedWith$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v != 'none')
-    );
+    return this.dashboardFacade.connectedWith$.pipe(map(v => v && v != 'none'));
   }
 
   constructor(
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
     private dashboardFacade: DashboardFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([this.financeFacade.prodByClinicianTrendChartData$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([chartData]) => {
@@ -51,8 +47,6 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
         this.labels = chartData.labels;
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

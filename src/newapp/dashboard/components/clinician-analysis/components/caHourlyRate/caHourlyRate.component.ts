@@ -147,7 +147,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get avgMode$() {
-    return this.layoutFacade.average$.pipe(takeUntil(this.destroy$));
+    return this.layoutFacade.average$;
   }
 
   get isEnableFooter$() {

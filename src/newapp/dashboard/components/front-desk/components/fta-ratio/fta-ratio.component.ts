@@ -129,7 +129,9 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private decimalPipe: DecimalPipe,
     private dashboardFacade: DashboardFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.isTrend$,
       this.frontDeskFacade.fdFtaRatioChartData$,
@@ -149,8 +151,6 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

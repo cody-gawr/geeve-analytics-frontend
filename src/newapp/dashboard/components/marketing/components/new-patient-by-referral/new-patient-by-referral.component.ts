@@ -32,10 +32,7 @@ export class MarketingNewPatientByReferralComponent
       this.isTrend$,
       this.marketingFacade.isLoadingNewPatientsByReferral$,
       this.marketingFacade.isLoadingNewPatientsByReferralTrend$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([isTrend, v, v1]) => (isTrend ? v1 : v))
-    );
+    ]).pipe(map(([isTrend, v, v1]) => (isTrend ? v1 : v)));
   }
 
   get isMultipleClinic$() {

@@ -260,7 +260,9 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.avgMode$,
       this.isDentistMode$,
@@ -296,8 +298,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         this.setChartOptions(isDentistMode, isTrend, avgMode);
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

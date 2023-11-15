@@ -267,7 +267,6 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       this.financeFacade.profitTrendChartName$,
       this.clinicFacade.isMultiClinicsSelected$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([t, isMultiClinic]) => {
         switch (t) {
           case 'Production':
@@ -311,7 +310,6 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       this.financeFacade.isLoadingNetProfitTrend$,
       this.financeFacade.isLoadingNetProfitPercentageTrend$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(
         ([
           t,
@@ -337,10 +335,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
   }
 
   get chartName$() {
-    return this.financeFacade.profitTrendChartName$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.financeFacade.profitTrendChartName$;
   }
 
   constructor(
@@ -348,7 +343,42 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
     private dashboardFacade: DashboardFacade,
     private layoutFacade: LayoutFacade,
     private clinicFacade: ClinicFacade
-  ) {
+  ) {}
+
+  get chartType$() {
+    return combineLatest([
+      this.financeFacade.profitTrendChartName$,
+      this.clinicFacade.isMultiClinicsSelected$,
+    ]).pipe(
+      map(([t, isMultiClinic]) => {
+        switch (t) {
+          case 'Production':
+            return isMultiClinic ? 'bar' : 'line';
+          case 'Collection':
+            return isMultiClinic ? 'bar' : 'line';
+          case 'Net Profit':
+            return 'line';
+          case 'Net Profit %':
+            return 'line';
+        }
+        return 'line';
+      })
+    );
+  }
+
+  get isDisconnectedPlatform$() {
+    return combineLatest([
+      this.dashboardFacade.connectedWith$,
+      this.financeFacade.profitTrendChartName$,
+    ]).pipe(
+      map(([v, chartName]) => {
+        const isDisconnected = !(v && v != 'none');
+        return isDisconnected && chartName !== 'Collection';
+      })
+    );
+  }
+
+  ngOnInit(): void {
     combineLatest([
       this.financeFacade.prodTrendChartData$,
       this.clinicFacade.currentClinicId$,
@@ -435,42 +465,6 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
         }
       );
   }
-
-  get chartType$() {
-    return combineLatest([
-      this.financeFacade.profitTrendChartName$,
-      this.clinicFacade.isMultiClinicsSelected$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([t, isMultiClinic]) => {
-        switch (t) {
-          case 'Production':
-            return isMultiClinic ? 'bar' : 'line';
-          case 'Collection':
-            return isMultiClinic ? 'bar' : 'line';
-          case 'Net Profit':
-            return 'line';
-          case 'Net Profit %':
-            return 'line';
-        }
-        return 'line';
-      })
-    );
-  }
-
-  get isDisconnectedPlatform$() {
-    return combineLatest([
-      this.dashboardFacade.connectedWith$,
-      this.financeFacade.profitTrendChartName$,
-    ]).pipe(
-      map(([v, chartName]) => {
-        const isDisconnected = !(v && v != 'none');
-        return isDisconnected && chartName !== 'Collection';
-      })
-    );
-  }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

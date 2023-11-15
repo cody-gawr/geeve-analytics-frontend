@@ -24,10 +24,7 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
   productionChartTrendIcon = 'down';
 
   get isLoading$() {
-    return this.financeFacade.isLoadingFnProdPerClinician$.pipe(
-      takeUntil(this.destroy$),
-      v => v
-    );
+    return this.financeFacade.isLoadingFnProdPerClinician$;
   }
 
   get isMultipleClinic$() {
@@ -40,7 +37,59 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
   constructor(
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade
-  ) {
+  ) {}
+
+  public pieChartOptions: ChartOptions<'doughnut'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          padding: 20,
+        },
+        onClick(e) {
+          e.native.stopPropagation();
+        },
+      },
+      tooltip: {
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
+        callbacks: {
+          label: function (tooltipItem) {
+            return (
+              tooltipItem.label + ': ' + Math.round(tooltipItem.parsed) + '%'
+            );
+          },
+        },
+      },
+    },
+  };
+
+  public pieChartColors = [
+    {
+      backgroundColor: [
+        '#6edbbb',
+        '#b0fffa',
+        '#abb3ff',
+        '#ffb4b5',
+        '#fffcac',
+        '#FFE4E4',
+        '#FFD578',
+        '#54D2FF',
+        '#E58DD7',
+        '#A9AABC',
+        '#F2ECFF',
+        '#5689C9',
+        '#F9F871',
+      ],
+    },
+  ];
+
+  ngOnInit(): void {
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.financeFacade.prodByClinicianTotal$,
@@ -108,58 +157,6 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
         }
       );
   }
-
-  public pieChartOptions: ChartOptions<'doughnut'> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'bottom',
-        labels: {
-          usePointStyle: true,
-          padding: 20,
-        },
-        onClick(e) {
-          e.native.stopPropagation();
-        },
-      },
-      tooltip: {
-        enabled: false,
-        position: 'nearest',
-        external: externalTooltipHandler,
-        callbacks: {
-          label: function (tooltipItem) {
-            return (
-              tooltipItem.label + ': ' + Math.round(tooltipItem.parsed) + '%'
-            );
-          },
-        },
-      },
-    },
-  };
-
-  public pieChartColors = [
-    {
-      backgroundColor: [
-        '#6edbbb',
-        '#b0fffa',
-        '#abb3ff',
-        '#ffb4b5',
-        '#fffcac',
-        '#FFE4E4',
-        '#FFD578',
-        '#54D2FF',
-        '#E58DD7',
-        '#A9AABC',
-        '#F2ECFF',
-        '#5689C9',
-        '#F9F871',
-      ],
-    },
-  ];
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

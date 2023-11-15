@@ -48,7 +48,9 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
     private dashboardFacade: DashboardFacade,
     private marketingFacade: MarketingFacade,
     private clinicFacade: ClinicFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.dashboardFacade.connectedWith$,
       this.marketingFacade.xeroAccounts$,
@@ -81,8 +83,6 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

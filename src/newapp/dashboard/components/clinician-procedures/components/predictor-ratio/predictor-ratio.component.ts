@@ -28,31 +28,19 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   multifulRatio = '';
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get duration$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.duration)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }
 
   get isLoading$() {
-    return this.cpFacade.isLoadingCpPredictorRatio$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.cpFacade.isLoadingCpPredictorRatio$;
   }
 
   get isMultipleClinic$() {
@@ -60,18 +48,12 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get legend$() {
     return combineLatest([this.clinicFacade.currentClinics$]).pipe(
-      takeUntil(this.destroy$),
-      map(([clinics]) => {
-        return clinics.length == 1 ? false : true;
-      })
+      map(([clinics]) => clinics.length != 1)
     );
   }
 
@@ -81,7 +63,6 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
 
   get noDataAlertMessage$() {
     return combineLatest([this.cpFacade.cpPredictorRatioVisibility$]).pipe(
-      takeUntil(this.destroy$),
       map(([visibility]) => {
         switch (visibility) {
           case 1:
@@ -97,19 +78,13 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   }
 
   get visibility$() {
-    return this.cpFacade.cpPredictorRatioVisibility$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.cpFacade.cpPredictorRatioVisibility$;
   }
 
   public get isLargeOrSmall$() {
     return this.breakpointObserver
       .observe([Breakpoints.Large, Breakpoints.Small])
-      .pipe(
-        takeUntil(this.destroy$),
-        map(result => result.matches)
-      );
+      .pipe(map(result => result.matches));
   }
 
   setVisibility(val: number) {
@@ -150,14 +125,11 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
       this.isTrend$,
       this.clinicFacade.currentClinics$,
     ]).pipe(
-      takeUntil(this.destroy$),
-      map(([isTrend, clinics]) => {
-        if (clinics.length === 1) {
-          return this.stackedChartOptions;
-        } else {
-          return this.stackedChartOptionsmulti;
-        }
-      })
+      map(([isTrend, clinics]) =>
+        clinics.length === 1
+          ? this.stackedChartOptions
+          : this.stackedChartOptionsmulti
+      )
     );
   }
 

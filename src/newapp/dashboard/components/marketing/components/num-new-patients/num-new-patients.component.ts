@@ -104,7 +104,9 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private dashboardFacade: DashboardFacade,
     private decimalPipe: DecimalPipe
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.isTrend$,
       this.marketingFacade.newNumPatientsChartData$,
@@ -149,8 +151,6 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
         }
       );
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

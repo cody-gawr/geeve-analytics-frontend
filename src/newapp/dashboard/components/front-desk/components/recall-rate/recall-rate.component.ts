@@ -28,14 +28,6 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
     return 'trending_down';
   }
 
-  // get maxFdRecallRateGoal() {
-  //   if (this.fdRecallRateVal > this.fdRecallRatePrev) {
-  //     return this.fdRecallRateVal;
-  //   } else {
-  //     return this.fdRecallRateGoal;
-  //   }
-  // }
-
   get showGoals$() {
     return this.layoutFacade.dateRange$.pipe(
       map(
@@ -63,10 +55,9 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
       this.frontDeskFacade.isLoadingFdRecallRateData$,
       this.frontDeskFacade.isLoadingFdRecallRateTrendData$,
     ]).pipe(
-      takeUntil(this.destroy$),
-      map(([isTrend, isLoading, isTrendLoading]) => {
-        return isTrend ? isTrendLoading : isLoading;
-      })
+      map(([isTrend, isLoading, isTrendLoading]) =>
+        isTrend ? isTrendLoading : isLoading
+      )
     );
   }
 
@@ -75,24 +66,15 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(t => t !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
 
   get isConnectedWith$() {
@@ -100,21 +82,14 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.layoutFacade.isFullMonthsDateRange$;
   }
 
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      map(([isTrend, isMulti]) => {
-        if (isTrend || isMulti) {
-          return this.labels.length > 0;
-        } else {
-          return this.fdRecallRateVal > 0;
-        }
-      })
+      map(([isTrend, isMulti]) =>
+        isTrend || isMulti ? this.labels.length > 0 : this.fdRecallRateVal > 0
+      )
     );
   }
 
@@ -123,7 +98,9 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private dashboardFacade: DashboardFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.isTrend$,
       this.frontDeskFacade.fdRecallRateChartData$,
@@ -143,8 +120,6 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

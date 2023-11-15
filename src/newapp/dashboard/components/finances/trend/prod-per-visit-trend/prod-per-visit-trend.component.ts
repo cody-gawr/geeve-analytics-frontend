@@ -116,10 +116,7 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
   };
 
   get isLoading$() {
-    return this.financeFacade.isLoadingFnProdPerVisitTrend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.financeFacade.isLoadingFnProdPerVisitTrend$;
   }
 
   constructor(

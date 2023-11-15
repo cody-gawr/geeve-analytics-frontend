@@ -136,7 +136,9 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
     private frontDeskFacade: FrontDeskFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.isTrend$,
       this.frontDeskFacade.isByDayData$,
@@ -167,8 +169,6 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
         }
       );
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();

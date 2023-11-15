@@ -175,7 +175,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
   getChartTip(index: number) {
     return this.dashbordFacade.chartTips$.pipe(
-      takeUntil(this.destroy$),
       map(c => (c && c[index] ? c[index] : ''))
     );
   }

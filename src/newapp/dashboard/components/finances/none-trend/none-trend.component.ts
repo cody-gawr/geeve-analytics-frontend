@@ -15,48 +15,32 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get netProfitProductionVal$() {
-    return this.financeFacade.productionVal$.pipe(
-      takeUntil(this.destroy$),
-      map(c => Math.round(c ?? 0))
-    );
+    return this.financeFacade.productionVal$.pipe(map(c => Math.round(c ?? 0)));
   }
 
   get netProfitVal$() {
-    return this.financeFacade.netProfitVal$.pipe(
-      takeUntil(this.destroy$),
-      map(c => Math.round(c ?? 0))
-    );
+    return this.financeFacade.netProfitVal$.pipe(map(c => Math.round(c ?? 0)));
   }
 
   get netProfitPercentageVal$() {
     return this.financeFacade.netProfitPercentageVal$.pipe(
-      takeUntil(this.destroy$),
       map(c => Math.round(c ?? 0))
     );
   }
 
   get productionPerVisit$() {
-    return this.financeFacade.prodPerVisitTotal$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.financeFacade.prodPerVisitTotal$;
   }
 
   get collectionVal$() {
-    return this.financeFacade.collectionVal$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.financeFacade.collectionVal$;
   }
 
   get isLoadingCollectionVal$() {
     return combineLatest([
       this.financeFacade.isLoadingTotalProduction$,
       this.financeFacade.isLoadingCollection$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      map(([v, v1]) => v && v1)
-    );
+    ]).pipe(map(([v, v1]) => v && v1));
   }
 
   get isLoadingNetProfitProduction$() {
@@ -80,14 +64,10 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
   }
 
   get isLoadingProductionPerVisit$() {
-    return this.financeFacade.isLoadingFnProdPerVisit$.pipe(
-      takeUntil(this.destroy$),
-      v => v
-    );
+    return this.financeFacade.isLoadingFnProdPerVisit$;
   }
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v => typeof v == 'string')
     );
   }

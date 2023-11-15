@@ -59,7 +59,6 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
       this.marketingFacade.isLoadingNewPatientsAcq$,
       this.marketingFacade.isLoadingNewPatientsAcqTrend$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isLoading, isTrendLoading]) => {
         return isTrend ? isTrendLoading : isLoading;
       })
@@ -130,7 +129,6 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
 
   get chartOptions$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      takeUntil(this.destroy$),
       map(([isTrend, isMultiClinic]) => {
         return isTrend ? this.barChartOptions : this.stackedChartOptions;
       })

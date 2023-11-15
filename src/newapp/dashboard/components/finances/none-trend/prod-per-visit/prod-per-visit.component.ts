@@ -43,10 +43,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   labels = [];
 
   get duration$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.duration)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }
 
   get hasData$() {
@@ -62,44 +59,30 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return this.financeFacade.isLoadingFnProdPerVisit$.pipe(
-      takeUntil(this.destroy$),
-      v => v
-    );
+    return this.financeFacade.isLoadingFnProdPerVisit$;
   }
 
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v => typeof v == 'string')
     );
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get getTrendTip$() {
     return this.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(v => {
-        if (this.productionVisitTrendVal > 0) {
-          return (
-            v + ': $' + this.decimalPipe.transform(this.productionVisitTrendVal)
-          );
-        }
-        return '';
-      })
+      map(v =>
+        this.productionVisitTrendVal > 0
+          ? v + ': $' + this.decimalPipe.transform(this.productionVisitTrendVal)
+          : ''
+      )
     );
   }
 

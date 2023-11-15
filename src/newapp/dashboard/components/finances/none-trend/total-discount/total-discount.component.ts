@@ -27,10 +27,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
   totalDiscountChartTrendTotal = 0;
 
   get isLoading$() {
-    return this.financeFacade.isLoadingFnTotalDiscount$.pipe(
-      takeUntil(this.destroy$),
-      v => v
-    );
+    return this.financeFacade.isLoadingFnTotalDiscount$;
   }
 
   get hasData() {
@@ -45,22 +42,15 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get getTrendTip$() {
     return this.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
       map(v => {
         if (this.totalDiscountChartTrendTotal > 0) {
           return (
@@ -76,7 +66,6 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
 
   get legend$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      takeUntil(this.destroy$),
       map(v => {
         return typeof v === 'string';
       })
@@ -95,7 +84,36 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private decimalPipe: DecimalPipe
-  ) {
+  ) {}
+
+  public pieChartOptions: ChartOptions<'doughnut'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          padding: 20,
+        },
+        onClick: event => {
+          event.native.stopPropagation();
+        },
+      },
+      tooltip: {
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
+        callbacks: {
+          label: tooltipItem => formatXTooltipLabel(tooltipItem),
+          title: () => '',
+        },
+      },
+    },
+  };
+
+  ngOnInit(): void {
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.financeFacade.totalDiscountTotal$,
@@ -155,42 +173,12 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
       );
   }
 
-  public pieChartOptions: ChartOptions<'doughnut'> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'bottom',
-        labels: {
-          usePointStyle: true,
-          padding: 20,
-        },
-        onClick: event => {
-          event.native.stopPropagation();
-        },
-      },
-      tooltip: {
-        enabled: false,
-        position: 'nearest',
-        external: externalTooltipHandler,
-        callbacks: {
-          label: tooltipItem => formatXTooltipLabel(tooltipItem),
-          title: () => '',
-        },
-      },
-    },
-  };
-
-  ngOnInit(): void {}
-
   ngOnDestroy(): void {
     this.destroy.next();
   }
 
   get plugins$() {
     return this.financeFacade.totalDiscountTotal$.pipe(
-      takeUntil(this.destroy$),
       map(dC => {
         {
           return [chartPlugin(dC, true)];

@@ -31,10 +31,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get duration$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.duration)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }
 
   get trendingIcon() {
@@ -44,32 +41,23 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(val => val)
-    );
+    return this.layoutFacade.durationLabel$;
   }
 
   get showGoals$() {
-    return this.layoutFacade.dateRange$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v.enableGoal)
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.enableGoal));
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(
-      takeUntil(this.destroy$),
-      map(l => l)
-    );
+    return this.layoutFacade.durationTrendLabel$;
   }
 
   get getTrendTip$() {
     return combineLatest([this.durationTrendLabel$]).pipe(
-      takeUntil(this.destroy$),
-      map(([durTrendLabel]) => {
-        return durTrendLabel + ': ' + this.decimalPipe.transform(this.prev);
-      })
+      map(
+        ([durTrendLabel]) =>
+          durTrendLabel + ': ' + this.decimalPipe.transform(this.prev)
+      )
     );
   }
 
@@ -105,7 +93,6 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
       this.caFacade.isLoadingCaNumComplaints$,
       this.caFacade.isLoadingCaNumComplaintsTrend$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([isDentistMode, isTrend, isLoadingData, isLoadingTrendData]) =>
         !isDentistMode || !isTrend ? isLoadingData : isLoadingTrendData
       )
@@ -113,20 +100,16 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   get userType$() {
-    return this.authFacade.rolesIndividual$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v?.type)
-    );
+    return this.authFacade.rolesIndividual$.pipe(map(v => v?.type));
   }
 
   get chartOptions$() {
     return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
-      takeUntil(this.destroy$),
-      map(([isDentistMode, isTrend]) => {
-        return !isDentistMode || !isTrend
+      map(([isDentistMode, isTrend]) =>
+        !isDentistMode || !isTrend
           ? this.doughnutChartOptions
-          : this.barChartOptionsTrend;
-      })
+          : this.barChartOptionsTrend
+      )
     );
   }
 
@@ -143,7 +126,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   get avgMode$() {
-    return this.layoutFacade.average$.pipe(takeUntil(this.destroy$));
+    return this.layoutFacade.average$;
   }
 
   get isEnableFooter$() {
@@ -155,27 +138,20 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   get isTrend$() {
-    return this.layoutFacade.trend$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v && v !== 'off')
-    );
+    return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
   }
 
   get chartType$() {
     return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
-      takeUntil(this.destroy$),
-      map(([isDentistMode, isTrend]) => {
-        return !isDentistMode || !isTrend ? 'doughnut' : 'bar';
-      })
+      map(([isDentistMode, isTrend]) =>
+        !isDentistMode || !isTrend ? 'doughnut' : 'bar'
+      )
     );
   }
 
   get chartLegend$() {
     return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
-      takeUntil(this.destroy$),
-      map(([isDentistMode, isTrend]) => {
-        return !isDentistMode || !isTrend;
-      })
+      map(([isDentistMode, isTrend]) => !(isDentistMode && isTrend))
     );
   }
   newpColors = [];
@@ -186,7 +162,9 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     combineLatest([
       this.isDentistMode$,
       this.isTrend$,
@@ -217,8 +195,6 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
         this.newpColors = data.chartColors ?? [];
       });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();
