@@ -1,32 +1,5 @@
 @import '../../../../assets/layout/styles/layout/mixin';
 
-// .cp-page-container {
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-between;
-//   @include respond-from('phone') {
-//     flex-direction: column;
-//     justify-content: flex-start;
-//     gap: 15px;
-//   }
-
-//   .mat-tab {
-//     padding: 0 !important;
-//   }
-// }
-
-// .cp-chart-content {
-//   background-color: #fafafa;
-//   padding: 15px;
-//   gap: 15px;
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-//   height: calc(100vh - 135px);
-//   overflow-y: auto;
-
-// }
-
 .cp-chart {
   display: flex;
   flex-direction: column;

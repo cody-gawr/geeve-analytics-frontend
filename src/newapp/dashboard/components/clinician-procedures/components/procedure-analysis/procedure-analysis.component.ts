@@ -43,7 +43,6 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
   }
 
   showPaTable = false;
-
   datasets: ChartDataset[] = [];
   labels = [];
   maxVal = 0;
@@ -158,13 +157,11 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
 
   get chartOptions$() {
     return combineLatest([
-      //this.isTrend$,
       this.clinicFacade.currentClinics$,
       this.dentistFacade.currentDentistId$,
     ]).pipe(
       map(([clinics, dentistId]) => {
         if (clinics.length === 1 && dentistId !== 'all') {
-          // dentistMode
           return this.stackedChartOptions;
         } else if (clinics.length > 1) {
           return this.stackedChartOptionsmulti;

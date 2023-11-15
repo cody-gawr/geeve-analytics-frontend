@@ -3604,6 +3604,8 @@ export class ClinicianProceeduresComponent
                   Math.max(...this.stackedChartData[7]['data']);
               }
             }
+
+            console.log(this.stackedChartData);
           },
           error: error => {
             this.warningMessage = 'Please Provide Valid Inputs!';

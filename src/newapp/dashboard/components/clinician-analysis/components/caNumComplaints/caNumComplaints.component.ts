@@ -176,7 +176,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(([isDentistMode, isTrend, data, trendData]) => {
-        if (!isDentistMode || !isTrend) {
+        if (!(isDentistMode && isTrend)) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
         } else {

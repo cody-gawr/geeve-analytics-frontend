@@ -7,6 +7,7 @@ import {
 } from '../actions';
 import {
   CpPredictorAnalysisApiResponse,
+  CpPredictorAnalysisDataItem,
   CpPredictorRatioApiResponse,
   CpPredictorSpecialistAnalysisApiResponse,
   CpReferralsApiResponse,
@@ -15,6 +16,9 @@ import {
 import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors1 } from '@/newapp/shared/constants';
 import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.reducer';
+import { selectResBodyListTrend } from './clinician-analysis.reducer';
+import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
+import { ChartData } from 'chart.js';
 
 export interface ClinicianProcedureState {
   isLoadingData: Array<CP_API_ENDPOINTS | CP_API_TREND_ENDPOINTS>;
@@ -52,11 +56,22 @@ const initialState: ClinicianProcedureState = {
   cpReferralsVisibility: 'combined',
 };
 
+const propAnalysisToType: Record<string, string> = {
+  crowns: 'Crowns & Onlays',
+  splints: 'Splints',
+  rct: 'Root Canals',
+  perio: 'Perio Charts',
+  extract: 'Surgical Extractions',
+  ss_crowns: 'Stainless Steel Crowns',
+  comp_veneers: 'Composite Veneers',
+  imp_crowns: 'Implant Crowns',
+  whitening: 'Whitening',
+};
+
 export const clinicianProcedureFeature = createFeature({
   name: 'clinician-procedure',
   reducer: createReducer(
     initialState,
-    // cpPredictorAnalysis
     on(
       ClinicianProcedurePageActions.loadCpPredictorAnalysis,
       (state): ClinicianProcedureState => {
@@ -326,6 +341,7 @@ export const clinicianProcedureFeature = createFeature({
       ClinicianProcedurePageActions.loadCpTrendApiRequestSuccess,
       (state, { api, resBody }): ClinicianProcedureState => {
         const { isLoadingData, errors } = state;
+        console.log({ [api]: resBody });
         return {
           ...state,
           errors: _.filter(errors, n => n.api != api),
@@ -398,7 +414,6 @@ export const selectCpPredictorAnalysisChartData = createSelector(
   selectCpPredictorAnalysisData,
   selectCurrentClinics,
   selectCurrentDentistId,
-  // selectRolesIndividual,
   (resData, clinics, dentistId) => {
     if (!resData || !resData.data || resData.data.length == 0) {
       return {
@@ -411,19 +426,7 @@ export const selectCpPredictorAnalysisChartData = createSelector(
       chartLabels = [];
 
     if (clinics.length > 1) {
-      const mapPropAnalysisType: Record<string, string> = {
-        crowns: 'Crowns & Onlays',
-        splints: 'Splints',
-        rct: 'Root Canals',
-        perio: 'Perio Charts',
-        extract: 'Surgical Extractions',
-        ss_crowns: 'Stainless Steel Crowns',
-        comp_veneers: 'Composite Veneers',
-        imp_crowns: 'Implant Crowns',
-        whitening: 'Whitening',
-      };
-
-      Object.keys(mapPropAnalysisType).forEach(() => {
+      Object.keys(propAnalysisToType).forEach(() => {
         chartDatasets.push({
           data: [],
           label: '',
@@ -467,9 +470,9 @@ export const selectCpPredictorAnalysisChartData = createSelector(
         .value()
         .forEach(item => {
           chartLabels.push(item.clinicName);
-          Object.keys(mapPropAnalysisType).forEach((key, index) => {
+          Object.keys(propAnalysisToType).forEach((key, index) => {
             chartDatasets[index]['data'].push(Math.trunc(item[key]));
-            chartDatasets[index]['label'] = mapPropAnalysisType[key];
+            chartDatasets[index]['label'] = propAnalysisToType[key];
           });
         });
       return {
@@ -1140,6 +1143,40 @@ export const selectCpReferralsChartData = createSelector(
         maxVal: Math.max(...chartData3),
       };
     }
+  }
+);
+
+export const selectCpPredictorAnalysisTrendChartData = createSelector(
+  selectResBodyListTrend,
+  selectTrend,
+  selectCpPredictorAnalysisVisibility,
+  (trendDataList, trendMode, visibility) => {
+    let data: ChartData = {
+      datasets: [],
+      labels: [],
+    };
+    if (
+      _.has(trendDataList, 'cpPredictorAnalysisTrend') &&
+      trendMode != 'off'
+    ) {
+      const trendItems = (<CpPredictorAnalysisApiResponse>(
+        trendDataList['cpPredictorAnalysisTrend']
+      )).data;
+      const datasets = trendItems.map(
+        (item: CpPredictorAnalysisDataItem) => {}
+      );
+      const labels = trendItems.map(item =>
+        trendMode == 'current' ? item.yearMonth : item.year
+      );
+
+      data = {
+        // datasets,
+        ...data,
+        labels,
+      };
+    }
+
+    return data;
   }
 );
 
