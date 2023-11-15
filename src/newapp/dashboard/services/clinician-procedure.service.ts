@@ -265,7 +265,7 @@ export class ClinicianProcedureService {
       );
   }
 
-  caNoneTrendApiRequest(
+  cpNoneTrendApiRequest(
     api: CP_API_ENDPOINTS,
     queryParams: CaNoneTrendQueryParams
   ) {
@@ -296,7 +296,7 @@ export class ClinicianProcedureService {
       .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
   }
 
-  caTrendApiRequest(
+  cpTrendApiRequest(
     api: CP_API_TREND_ENDPOINTS,
     queryParams: CaTrendQueryParams
   ) {

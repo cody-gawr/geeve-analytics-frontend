@@ -123,13 +123,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
           dentistId: providerId,
         };
 
-        for (const api of caEndpoints) {
-          this.caFacade.loadNoneTrendApiRequest({
-            ...queryParams,
-            api,
-          });
-        }
-
         if (providerId) {
           const endpoints = [
             'caDentistProductionTrend',
@@ -165,6 +158,15 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               api: api,
             });
           });
+        }
+
+        if (!isTrend) {
+          for (const api of caEndpoints) {
+            this.caFacade.loadNoneTrendApiRequest({
+              ...queryParams,
+              api,
+            });
+          }
         }
       });
   }

@@ -124,14 +124,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
           dentistId: providerId,
         };
 
-        this.clinicianProcedureFacade.loadCpPredictorAnalysis(_params);
-        this.clinicianProcedureFacade.loadCpPredictorSpecialistAnalysis(
-          _params
-        );
-        this.clinicianProcedureFacade.loadCpRevPerProcedure(_params);
-        this.clinicianProcedureFacade.loadCpPredictorRatio(_params);
-        this.clinicianProcedureFacade.loadCpReferrals(_params);
-
         if (isDentistMode && isTrend) {
           for (const api of [
             'cpPredictorAnalysisTrend',
@@ -146,11 +138,21 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
               queryWhEnabled,
               dentistId: providerId,
             };
+
+            console.log({ api });
             this.clinicianProcedureFacade.loadTrendApiRequest({
               ...params,
               api: api,
             });
           }
+        } else {
+          this.clinicianProcedureFacade.loadCpPredictorAnalysis(_params);
+          this.clinicianProcedureFacade.loadCpPredictorSpecialistAnalysis(
+            _params
+          );
+          this.clinicianProcedureFacade.loadCpRevPerProcedure(_params);
+          this.clinicianProcedureFacade.loadCpPredictorRatio(_params);
+          this.clinicianProcedureFacade.loadCpReferrals(_params);
         }
       });
   }

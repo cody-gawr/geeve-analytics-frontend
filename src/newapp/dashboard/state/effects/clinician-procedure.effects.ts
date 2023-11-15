@@ -157,17 +157,17 @@ export class ClinicianProcedureEffects {
       ofType(ClinicianProcedurePageActions.loadNoneTrendApiRequest),
       mergeMap(({ api, params }) => {
         return this.clinicianProcedureService
-          .caNoneTrendApiRequest(api, params)
+          .cpNoneTrendApiRequest(api, params)
           .pipe(
             map(data =>
-              ClinicianProcedurePageActions.loadCaNoneTrendApiRequestSuccess({
+              ClinicianProcedurePageActions.loadCpNoneTrendApiRequestSuccess({
                 api,
                 resBody: data,
               })
             ),
             catchError((error: HttpErrorResponse) =>
               of(
-                ClinicianProcedurePageActions.loadCaNoneTrendApiRequestFailure({
+                ClinicianProcedurePageActions.loadCpNoneTrendApiRequestFailure({
                   api,
                   error: error.error ?? error,
                 })
@@ -183,17 +183,17 @@ export class ClinicianProcedureEffects {
       ofType(ClinicianProcedurePageActions.loadTrendApiRequest),
       mergeMap(({ api, params }) => {
         return this.clinicianProcedureService
-          .caTrendApiRequest(api, params)
+          .cpTrendApiRequest(api, params)
           .pipe(
             map(data =>
-              ClinicianProcedurePageActions.loadCaTrendApiRequestSuccess({
+              ClinicianProcedurePageActions.loadCpTrendApiRequestSuccess({
                 api,
                 resBody: data,
               })
             ),
             catchError((error: HttpErrorResponse) =>
               of(
-                ClinicianProcedurePageActions.loadCaTrendApiRequestFailure({
+                ClinicianProcedurePageActions.loadCpTrendApiRequestFailure({
                   api,
                   error: error.error ?? error,
                 })

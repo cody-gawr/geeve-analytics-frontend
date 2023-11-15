@@ -299,7 +299,7 @@ export const clinicianProcedureFeature = createFeature({
     ),
 
     on(
-      ClinicianProcedurePageActions.loadCaNoneTrendApiRequestSuccess,
+      ClinicianProcedurePageActions.loadCpNoneTrendApiRequestSuccess,
       (state, { api, resBody }): ClinicianProcedureState => {
         const { isLoadingData, errors } = state;
         return {
@@ -311,7 +311,7 @@ export const clinicianProcedureFeature = createFeature({
       }
     ),
     on(
-      ClinicianProcedurePageActions.loadCaNoneTrendApiRequestFailure,
+      ClinicianProcedurePageActions.loadCpNoneTrendApiRequestFailure,
       (state, { api, error }): ClinicianProcedureState => {
         const { isLoadingData, errors } = state;
         return {
@@ -323,7 +323,7 @@ export const clinicianProcedureFeature = createFeature({
       }
     ),
     on(
-      ClinicianProcedurePageActions.loadCaTrendApiRequestSuccess,
+      ClinicianProcedurePageActions.loadCpTrendApiRequestSuccess,
       (state, { api, resBody }): ClinicianProcedureState => {
         const { isLoadingData, errors } = state;
         return {
@@ -335,7 +335,7 @@ export const clinicianProcedureFeature = createFeature({
       }
     ),
     on(
-      ClinicianProcedurePageActions.loadCaTrendApiRequestFailure,
+      ClinicianProcedurePageActions.loadCpTrendApiRequestFailure,
       (state, { api, error }): ClinicianProcedureState => {
         const { isLoadingData, errors } = state;
         return {

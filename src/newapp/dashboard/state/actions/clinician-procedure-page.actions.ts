@@ -88,12 +88,12 @@ export const setCpReferralsVisibility = createAction(
   props<{ value: 'combined' | 'internal' | 'external' }>()
 );
 
-export const loadCaNoneTrendApiRequestSuccess = createAction(
+export const loadCpNoneTrendApiRequestSuccess = createAction(
   '[Clinician Procedure API] Load None Trend Api Success',
   props<{ api: CP_API_ENDPOINTS; resBody: any }>()
 );
 
-export const loadCaNoneTrendApiRequestFailure = createAction(
+export const loadCpNoneTrendApiRequestFailure = createAction(
   '[Clinician Procedure API] Load None Trend Api Failure',
   props<{
     api: CP_API_ENDPOINTS;
@@ -101,12 +101,12 @@ export const loadCaNoneTrendApiRequestFailure = createAction(
   }>()
 );
 
-export const loadCaTrendApiRequestSuccess = createAction(
+export const loadCpTrendApiRequestSuccess = createAction(
   '[Clinician Procedure API] Load Trend Api Success',
   props<{ api: CP_API_TREND_ENDPOINTS; resBody: any }>()
 );
 
-export const loadCaTrendApiRequestFailure = createAction(
+export const loadCpTrendApiRequestFailure = createAction(
   '[Clinician Procedure API] Load Trend Api Failure',
   props<{
     api: CP_API_TREND_ENDPOINTS;
