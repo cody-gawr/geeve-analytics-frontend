@@ -1379,32 +1379,55 @@ export const selectNewPatientAcqTrendChartData = createSelector(
         labels: [],
       };
     }
-    const chartLabels = _.chain(newPatientAcqTrendData.data)
-      .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
-      .map((items, duration) =>
-        trendMode == 'current' ? moment(duration).format('MMM YYYY') : duration
-      )
-      .value();
+    const chartLabels = [];
+    const chartData = [];
+    const backgroundColors = [];
     let i = 0;
-    const chartDatasets = _.chain(newPatientAcqTrendData.data)
+    _.chain(newPatientAcqTrendData.data)
       .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
-      .map((items: MkNewPatientAcqItem[], key: string) => {
+      .map((items, duration) => {
         const bgColors = DoughnutChartColors[i];
         i++;
         return {
-          data: [
+          value:
             _.sumBy(items, (item: MkNewPatientAcqItem) => <number>item.cost) /
-              _.sumBy(
-                items,
-                (item: MkNewPatientAcqItem) => <number>item.newPatients
-              ),
-          ],
-          label: key,
+            _.sumBy(
+              items,
+              (item: MkNewPatientAcqItem) => <number>item.newPatients
+            ),
           backgroundColor: bgColors,
-          hoverBackgroundColor: bgColors,
+          duration:
+            trendMode == 'current'
+              ? moment(duration).format('MMM YYYY')
+              : duration,
         };
       })
-      .value();
+      .value()
+      .forEach(data => {
+        chartData.push(data.value);
+        backgroundColors.push(data.backgroundColor);
+        chartLabels.push(data.duration);
+      });
+
+    // const chartDatasets = _.chain(newPatientAcqTrendData.data)
+    //   .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
+    //   .map((items: MkNewPatientAcqItem[], key: string) => {
+    //     const bgColors = DoughnutChartColors[i];
+    //     i++;
+    //     return {
+    //       data: [
+    //         _.sumBy(items, (item: MkNewPatientAcqItem) => <number>item.cost) /
+    //           _.sumBy(
+    //             items,
+    //             (item: MkNewPatientAcqItem) => <number>item.newPatients
+    //           ),
+    //       ],
+    //       label: key,
+    //       backgroundColor: bgColors,
+    //       hoverBackgroundColor: bgColors,
+    //     };
+    //   })
+    //   .value();
     // const chartDatasets = _.chain(newPatientAcqTrendData.data)
     //   .groupBy('clinicId')
     //   .map(items => {
@@ -1419,13 +1442,13 @@ export const selectNewPatientAcqTrendChartData = createSelector(
     //   })
     //   .value();
 
-    console.log({
-      chartDatasets,
-      newPatientAcqTrendData,
-    });
-
     return {
-      datasets: chartDatasets,
+      datasets: [
+        {
+          data: chartData,
+          backgroundColor: backgroundColors,
+        },
+      ],
       labels: chartLabels,
     };
   }
