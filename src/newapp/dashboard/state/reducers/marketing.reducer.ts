@@ -29,7 +29,7 @@ import {
 import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import moment from 'moment';
-import { ChartDataset } from 'chart.js';
+import { ChartDataset, Colors } from 'chart.js';
 import { selectConnectedWith } from './dashboard.reducer';
 import { COLORS } from '@/newapp/constants';
 
@@ -1383,10 +1383,13 @@ export const selectNewPatientAcqTrendChartData = createSelector(
     const chartData = [];
     const backgroundColors = [];
     let i = 0;
+    const chainData = _.chain(newPatientAcqTrendData.data).groupBy(
+      trendMode == 'current' ? 'yearMonth' : 'year'
+    );
+
     _.chain(newPatientAcqTrendData.data)
       .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
       .map((items, duration) => {
-        const bgColors = DoughnutChartColors[i];
         i++;
         return {
           value:
@@ -1395,7 +1398,6 @@ export const selectNewPatientAcqTrendChartData = createSelector(
               items,
               (item: MkNewPatientAcqItem) => <number>item.newPatients
             ),
-          backgroundColor: bgColors,
           duration:
             trendMode == 'current'
               ? moment(duration).format('MMM YYYY')
@@ -1403,44 +1405,11 @@ export const selectNewPatientAcqTrendChartData = createSelector(
         };
       })
       .value()
-      .forEach(data => {
+      .forEach((data, index) => {
         chartData.push(data.value);
-        backgroundColors.push(data.backgroundColor);
+        backgroundColors.push(index % 2 == 0 ? COLORS.even : COLORS.odd);
         chartLabels.push(data.duration);
       });
-
-    // const chartDatasets = _.chain(newPatientAcqTrendData.data)
-    //   .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
-    //   .map((items: MkNewPatientAcqItem[], key: string) => {
-    //     const bgColors = DoughnutChartColors[i];
-    //     i++;
-    //     return {
-    //       data: [
-    //         _.sumBy(items, (item: MkNewPatientAcqItem) => <number>item.cost) /
-    //           _.sumBy(
-    //             items,
-    //             (item: MkNewPatientAcqItem) => <number>item.newPatients
-    //           ),
-    //       ],
-    //       label: key,
-    //       backgroundColor: bgColors,
-    //       hoverBackgroundColor: bgColors,
-    //     };
-    //   })
-    //   .value();
-    // const chartDatasets = _.chain(newPatientAcqTrendData.data)
-    //   .groupBy('clinicId')
-    //   .map(items => {
-    //     const bgColors = DoughnutChartColors[i];
-    //     i++;
-    //     return {
-    //       data: items.map(item => _.round(<number>item.costPerPatient)),
-    //       label: items.length > 0 ? <string>items[0].clinicName : '',
-    //       backgroundColor: bgColors,
-    //       hoverBackgroundColor: bgColors,
-    //     };
-    //   })
-    //   .value();
 
     return {
       datasets: [
