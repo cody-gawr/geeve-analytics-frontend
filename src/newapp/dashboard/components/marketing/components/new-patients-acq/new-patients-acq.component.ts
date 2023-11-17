@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, Observable } from 'rxjs';
 import { MkSelectAccountsModalComponent } from '../select-accounts-modal/select-accounts-modal.component';
 
 @Component({

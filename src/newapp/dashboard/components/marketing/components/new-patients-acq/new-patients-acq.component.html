@@ -38,9 +38,11 @@
           "
           [disableSpin]="true">
           {{
-            !(isFullMonthsDateRange$ | async) && !(isTrend$ | async)
+            !(isConnectedWith$ | async)
+              ? 'Please connect to Xero/MYOB to display this chart'
+              : !((isFullMonthsDateRange$ | async) || (isTrend$ | async))
               ? 'Please select a date range consisting of full months to view Accounting charts'
-              : 'Please connect to Xero/MYOB to display this chart'
+              : ''
           }}
         </spin-loader>
         <ng-template #chartElem1>

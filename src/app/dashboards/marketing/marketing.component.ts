@@ -2681,9 +2681,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     plugins: {
       tooltip: {
         mode: 'x',
-        // custom: (tooltip: Chart.ChartTooltipModel) => {
-        //   tooltip.displayColors = false;
-        // },
         callbacks: {
           label: tooltipItems => {
             return tooltipItems.label + ': $' + tooltipItems.formattedValue;

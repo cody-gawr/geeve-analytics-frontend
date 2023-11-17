@@ -1382,15 +1382,10 @@ export const selectNewPatientAcqTrendChartData = createSelector(
     const chartLabels = [];
     const chartData = [];
     const backgroundColors = [];
-    let i = 0;
-    const chainData = _.chain(newPatientAcqTrendData.data).groupBy(
-      trendMode == 'current' ? 'yearMonth' : 'year'
-    );
 
     _.chain(newPatientAcqTrendData.data)
       .groupBy(trendMode == 'current' ? 'yearMonth' : 'year')
       .map((items, duration) => {
-        i++;
         return {
           value: _.round(
             _.sumBy(items, (item: MkNewPatientAcqItem) => <number>item.cost) /
