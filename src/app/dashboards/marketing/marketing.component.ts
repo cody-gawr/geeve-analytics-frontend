@@ -2785,61 +2785,10 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                   hoverBackgroundColor: this.doughnutChartColors[index],
                 }));
 
-              // this.newPatientsChartTemp.forEach((data, key) => {
-              //   res.body.data.forEach((res1, key1) => {
-              //     if (
-              //       this.trendValue == 'c' &&
-              //       res1.duration == data.year_month
-              //     ) {
-              //       let dataX: number = 0;
-              //       this.dataY = 0;
-              //       let percent: any = 0;
-              //       if (res1.val != undefined) {
-              //         res1.val.forEach((res2, key2) => {
-              //           if (res2.meta_key != 'Total Operating Expenses')
-              //             this.dataY =
-              //               parseInt(this.dataY) + parseInt(res2.expenses);
-              //         });
-              //       }
-
-              //       if (data.val != '') {
-              //         dataX = data.new_patients;
-              //       }
-
-              //       if (dataX != 0) percent = this.dataY / dataX;
-
-              //       this.expenseDataTrend1.push(Math.round(percent));
-              //       this.expenseDataTrendLabels1.push(
-              //         this.datePipe.transform(data.year_month, 'MMM y')
-              //       );
-              //     } else if (
-              //       this.trendValue == 'h' &&
-              //       res1.duration == data.year
-              //     ) {
-              //       let dataX: number = 0;
-              //       this.dataY = 0;
-              //       let percent: any = 0;
-              //       if (res1.val != undefined) {
-              //         res1.val.forEach((res2, key2) => {
-              //           if (res2.meta_key != 'Total Operating Expenses')
-              //             this.dataY =
-              //               parseInt(this.dataY) + parseInt(res2.expenses);
-              //         });
-              //       }
-
-              //       if (data.val != '') {
-              //         dataX = data.new_patients;
-              //       }
-
-              //       if (dataX != 0) percent = this.dataY / dataX;
-
-              //       this.expenseDataTrend1.push(Math.round(percent));
-              //       this.expenseDataTrendLabels1.push(data.year);
-              //     }
-              //   });
-              // });
-              // this.expenseDataTrend[0]['data'] = this.expenseDataTrend1;
-              // this.expenseDataTrendLabels = this.expenseDataTrendLabels1;
+              console.log({
+                rawResponse: res,
+                newPatientCostsChartData: this.newPatientCostsChartData,
+              });
             }
           },
           error: error => {
