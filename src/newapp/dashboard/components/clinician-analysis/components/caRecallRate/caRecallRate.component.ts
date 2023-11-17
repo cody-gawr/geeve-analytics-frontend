@@ -413,7 +413,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
 
       this.chartOptions = options;
     } else {
-      this.chartOptions = this.barChartOptions;
+      this.chartOptions = this.barChartOptionsPercentTrend;
     }
   }
 }
