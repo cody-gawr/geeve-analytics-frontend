@@ -1,4 +1,5 @@
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { Subject, takeUntil, map, combineLatest } from 'rxjs';
@@ -14,7 +15,8 @@ export class TrendModeToggleComponent implements OnInit, OnDestroy {
 
   constructor(
     private layoutFacade: LayoutFacade,
-    private financeFacade: FinanceFacade
+    private financeFacade: FinanceFacade,
+    private marketingFacade: MarketingFacade
   ) {}
 
   get trendMode$() {
@@ -25,9 +27,11 @@ export class TrendModeToggleComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.financeFacade.isLoadingAllData$,
       this.financeFacade.isLoadingAllTrendData$,
+      this.marketingFacade.isLoadingAllData$,
+      this.marketingFacade.isLoadingAllTrendData$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(([v1, v2]) => v1 || v2)
+      map(([v1, v2, v3, v4]) => v1 || v2 || v3 || v4)
     );
   }
 

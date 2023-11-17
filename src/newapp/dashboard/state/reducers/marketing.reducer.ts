@@ -759,6 +759,12 @@ export const selectIsLoadingMkNumNewPatients = createSelector(
   loadingData => _.findIndex(loadingData, l => l == 'mkNumNewPatients') >= 0
 );
 
+export const selectIsLoadingMkNumNewPatientsTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'mkNumNewPatientsTrend') >= 0
+);
+
 export const selectIsLoadingMkActivePatients = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'mkActivePatients') >= 0
@@ -768,12 +774,6 @@ export const selectIsLoadingMkActivePatientsTrend = createSelector(
   selectIsLoadingData,
   loadingData =>
     _.findIndex(loadingData, l => l == 'mkActivePatientsTrend') >= 0
-);
-
-export const selectIsLoadingMkNumNewPatientsTrend = createSelector(
-  selectIsLoadingData,
-  loadingData =>
-    _.findIndex(loadingData, l => l == 'mkNumNewPatientsTrend') >= 0
 );
 
 export const selectIsLoadingMkNewPatientAcq = createSelector(
@@ -814,6 +814,30 @@ export const selectIsLoadingMkSaveAcctMyob = createSelector(
 export const selectIsLoadingMkSaveAcctXero = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'mkSaveAcctXero') >= 0
+);
+
+export const selectIsLoadingAllData = createSelector(
+  selectIsLoadingMkNewPatientsByReferral,
+  selectIsLoadingMkRevByReferral,
+  selectIsLoadingMkNumNewPatients,
+  selectIsLoadingMkActivePatients,
+  selectIsLoadingMkNewPatientAcq,
+  selectIsLoadingMkTotalVisits,
+  (s1, s2, s3, s4, s5, s6) => {
+    return s1 || s2 || s3 || s4 || s5 || s6;
+  }
+);
+
+export const selectIsLoadingAllTrendData = createSelector(
+  selectIsLoadingMkNewPatientsByReferralTrend,
+  selectIsLoadingMkRevByReferralTrend,
+  selectIsLoadingMkNumNewPatientsTrend,
+  selectIsLoadingMkActivePatientsTrend,
+  selectIsLoadingMkNewPatientAcqTrend,
+  selectIsLoadingMkTotalVisitsTrend,
+  (s1, s2, s3, s4, s5, s6) => {
+    return s1 || s2 || s3 || s4 || s5 || s6;
+  }
 );
 
 // Chart Data

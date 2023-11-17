@@ -8,6 +8,8 @@ import {
   selectActivePatientsTrendChartData,
   selectErrors,
   selectIsActivePatientsWithPlatform,
+  selectIsLoadingAllData,
+  selectIsLoadingAllTrendData,
   selectIsLoadingMkMyobAccounts,
   selectIsLoadingMkNewPatientAcq,
   selectIsLoadingMkNewPatientAcqTrend,
@@ -164,6 +166,14 @@ export class MarketingFacade {
 
   public readonly isActivePatients$ = this.store.pipe(
     select(selectIsActivePatientsWithPlatform)
+  );
+
+  public readonly isLoadingAllData$ = this.store.pipe(
+    select(selectIsLoadingAllData)
+  );
+
+  public readonly isLoadingAllTrendData$ = this.store.pipe(
+    select(selectIsLoadingAllTrendData)
   );
 
   public setActivePatients(isActive: boolean) {
