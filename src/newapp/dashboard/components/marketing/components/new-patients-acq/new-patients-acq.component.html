@@ -33,7 +33,7 @@
           class="empty-placeholder"
           *ngIf="
             (!(isConnectedWith$ | async) && !(isMultipleClinic$ | async)) ||
-              !(isFullMonthsDateRange$ | async);
+              !((isFullMonthsDateRange$ | async) || (isTrend$ | async));
             else chartElem1
           "
           [disableSpin]="true">
@@ -41,8 +41,8 @@
             !(isConnectedWith$ | async)
               ? 'Please connect to Xero/MYOB to display this chart'
               : !((isFullMonthsDateRange$ | async) || (isTrend$ | async))
-              ? 'Please select a date range consisting of full months to view Accounting charts'
-              : ''
+                ? 'Please select a date range consisting of full months to view Accounting charts'
+                : ''
           }}
         </spin-loader>
         <ng-template #chartElem1>
