@@ -1392,12 +1392,14 @@ export const selectNewPatientAcqTrendChartData = createSelector(
       .map((items, duration) => {
         i++;
         return {
-          value:
+          value: _.round(
             _.sumBy(items, (item: MkNewPatientAcqItem) => <number>item.cost) /
-            _.sumBy(
-              items,
-              (item: MkNewPatientAcqItem) => <number>item.newPatients
-            ),
+              _.sumBy(
+                items,
+                (item: MkNewPatientAcqItem) => <number>item.newPatients
+              ),
+            0
+          ),
           duration:
             trendMode == 'current'
               ? moment(duration).format('MMM YYYY')
