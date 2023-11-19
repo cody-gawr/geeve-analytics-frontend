@@ -296,13 +296,12 @@
               <div
                 fxLayout="row wrap"
                 class="Item_Predictor_clinicianproceedures"
-                *ngIf="dentistMode == true">
+                *ngIf="dentistMode">
                 <div
                   class="item-predic"
                   *ngIf="
                     itemPredictedChartDataMax > 0 &&
-                    buildChartDentistLoader == false &&
-                    showTrend == false
+                    !(buildChartDentistLoader || showTrend)
                   ">
                   <canvas
                     baseChart
@@ -318,7 +317,7 @@
                 <!-- Trend Mode -->
                 <div
                   *ngIf="
-                    showTrend == true &&
+                    showTrend &&
                     stackedChartDataMax > 0 &&
                     !buildChartDentistLoader
                   "

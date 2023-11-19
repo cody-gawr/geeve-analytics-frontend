@@ -7,7 +7,6 @@ import {
 } from '../actions';
 import {
   CpPredictorAnalysisApiResponse,
-  CpPredictorAnalysisDataItem,
   CpPredictorRatioApiResponse,
   CpPredictorSpecialistAnalysisApiResponse,
   CpReferralsApiResponse,
@@ -16,7 +15,6 @@ import {
 import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors1 } from '@/newapp/shared/constants';
 import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.reducer';
-import { selectResBodyListTrend } from './clinician-analysis.reducer';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import { ChartData } from 'chart.js';
 
@@ -342,11 +340,12 @@ export const clinicianProcedureFeature = createFeature({
       (state, { api, resBody }): ClinicianProcedureState => {
         const { isLoadingData, errors } = state;
         console.log({ [api]: resBody });
+        console.log(state.resBodyListTrend);
         return {
           ...state,
           errors: _.filter(errors, n => n.api != api),
-          resBodyListTrend: { ...state.resBodyListTrend, [api]: resBody },
           isLoadingData: _.filter(isLoadingData, n => n != api),
+          resBodyListTrend: { ...state.resBodyListTrend, [api]: resBody },
         };
       }
     ),
@@ -376,6 +375,8 @@ export const {
   selectCpPredictorAnalysisVisibility,
   selectCpPredictorRatioVisibility,
   selectCpReferralsVisibility,
+  selectResBodyList,
+  selectResBodyListTrend,
 } = clinicianProcedureFeature;
 
 export const selectCpPredictorAnalysisError = createSelector(
@@ -387,6 +388,12 @@ export const selectCpPredictorAnalysisError = createSelector(
 export const selectIsLoadingCpPredictorAnalysis = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'cpPredictorAnalysis') >= 0
+);
+
+export const selectIsLoadingCpPredictorAnalysisTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'cpPredictorAnalysisTrend') != -1
 );
 
 export const selectIsLoadingCpPredictorSpecialistAnalysis = createSelector(
@@ -1142,33 +1149,33 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
   selectResBodyListTrend,
   selectTrend,
   selectCpPredictorAnalysisVisibility,
-  (trendDataList, trendMode, visibility) => {
+  (resBodyList, trendMode, visibility) => {
     let data: ChartData = {
       datasets: [],
       labels: [],
     };
-    if (
-      _.has(trendDataList, 'cpPredictorAnalysisTrend') &&
-      trendMode != 'off'
-    ) {
-      const trendItems = (<CpPredictorAnalysisApiResponse>(
-        trendDataList['cpPredictorAnalysisTrend']
-      )).data;
-      const datasets = trendItems.map(
-        (item: CpPredictorAnalysisDataItem) => {}
-      );
-      const labels = trendItems.map(item =>
-        trendMode == 'current' ? item.yearMonth : item.year
-      );
 
-      data = {
-        // datasets,
-        ...data,
-        labels,
-      };
-    }
+    console.log({ resBodyList });
+    // const trendItems = cpPredictorAnalysisData.data;
 
-    return data;
+    // const keys = Object.keys(propAnalysisToType);
+    // const values = _.map(keys, key => _(trendItems).map(key).compact().value());
+    // var result = _.zipObject(keys, values);
+    // console.log({ result });
+
+    // const datasets = trendItems.map((item: CpPredictorAnalysisDataItem) => {});
+
+    // const labels = trendItems.map(item =>
+    //   trendMode == 'current' ? item.yearMonth : item.year
+    // );
+
+    // data = {
+    //   // datasets,
+    //   ...data,
+    //   labels,
+    // };
+
+    return resBodyList;
   }
 );
 

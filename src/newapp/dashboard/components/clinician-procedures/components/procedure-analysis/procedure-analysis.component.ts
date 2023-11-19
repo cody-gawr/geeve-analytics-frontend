@@ -53,10 +53,21 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.cpFacade.isLoadingCpPredictorAnalysis$,
       this.cpFacade.isLoadingCpPredictorSpecialistAnalysis$,
+      this.cpFacade.isLoadingCpPredictorAnalysisTrend$,
     ]).pipe(
-      map(([isLoading1, isLoading2]) => {
-        return isLoading1 || isLoading2;
-      })
+      map(
+        ([
+          isLoadingCpPredictorAnalysis,
+          isLoadingCpPredictorSpecialistAnalysis,
+          isLoadingCpPredictorAnalysisTrend,
+        ]) => {
+          return (
+            isLoadingCpPredictorAnalysis ||
+            isLoadingCpPredictorSpecialistAnalysis ||
+            isLoadingCpPredictorAnalysisTrend
+          );
+        }
+      )
     );
   }
 
@@ -115,6 +126,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       this.cpFacade.cpPredictorAnalysisVisibility$,
       this.cpFacade.cpPredictorAnalysisChartData$,
       this.cpFacade.cpPredictorSpecialistAnalysisChartData$,
+      this.cpFacade.cpPredictorAnalysisTrendChartData,
       this.isMultipleClinic$,
     ])
       .pipe(takeUntil(this.destroy$))
@@ -124,8 +136,10 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
           visibility,
           chartData,
           specialChartData,
+          predictorAnalysisTrendChartData,
           isMultiClinics,
         ]) => {
+          console.log({ predictorAnalysisTrendChartData });
           if (visibility === 'general') {
             this.datasets = chartData.datasets;
             this.labels = chartData.labels;

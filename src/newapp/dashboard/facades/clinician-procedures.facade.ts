@@ -5,6 +5,7 @@ import { JeeveError } from '@/newapp/models';
 import {
   ClinicianProcedureState,
   selectCpPredictorAnalysisChartData,
+  selectCpPredictorAnalysisTrendChartData,
   selectCpPredictorAnalysisVisibility,
   selectCpPredictorRatioChartData,
   selectCpPredictorRatioVisibility,
@@ -14,6 +15,7 @@ import {
   selectCpRevPerProcedureChartData,
   selectErrors,
   selectIsLoadingCpPredictorAnalysis,
+  selectIsLoadingCpPredictorAnalysisTrend,
   selectIsLoadingCpPredictorRatio,
   selectIsLoadingCpPredictorSpecialistAnalysis,
   selectIsLoadingCpReferrals,
@@ -31,6 +33,10 @@ export class ClinicianProcedureFacade {
 
   public readonly isLoadingCpPredictorAnalysis$ = this.store.pipe(
     select(selectIsLoadingCpPredictorAnalysis)
+  );
+
+  public readonly isLoadingCpPredictorAnalysisTrend$ = this.store.pipe(
+    select(selectIsLoadingCpPredictorAnalysisTrend)
   );
 
   public readonly isLoadingCpPredictorSpecialistAnalysis$ = this.store.pipe(
@@ -79,6 +85,10 @@ export class ClinicianProcedureFacade {
 
   public readonly cpReferralsVisibility$ = this.store.pipe(
     select(selectCpReferralsVisibility)
+  );
+
+  public readonly cpPredictorAnalysisTrendChartData = this.store.pipe(
+    select(selectCpPredictorAnalysisTrendChartData)
   );
 
   public loadCpPredictorAnalysis({

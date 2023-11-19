@@ -203,6 +203,7 @@ export const clinicianAnalysisFeature = createFeature({
       ClinicianAnalysisActions.loadCaTrendApiRequestSuccess,
       (state, { api, resBody }): ClinicianAnalysisState => {
         const { isLoadingData, errors } = state;
+        console.log({ resBody });
         return {
           ...state,
           errors: _.filter(errors, n => n.api != api),
@@ -325,14 +326,6 @@ export const selectIsHideFooterSection = createSelector(
     }
   }
 );
-
-// export const selectIsDentistMode = createSelector(
-//   selectCurrentDentistId,
-//   selectCurrentClinics,
-//   (dentistId, clinics) => {
-//     return !(dentistId === 'all' || clinics.length > 1);
-//   }
-// );
 
 export const selectIsLoadingCaProduction = createSelector(
   selectCurrentDentistId,
@@ -655,6 +648,7 @@ export const selectCaProductionTrendChartData = createSelector(
   (bodyList, trendMode, chartName) => {
     let resBody: CaDentistProductionApiResponse | CaCollectionApiResponse =
       null;
+
     switch (chartName) {
       case 'Production':
         resBody = bodyList['caDentistProductionTrend'];
@@ -1144,6 +1138,7 @@ export const selectCaHourlyRateTrendChartData = createSelector(
   (bodyList, trendMode, chartName) => {
     let resBody: CaHourlyRateApiResponse | CaCollectionHourlyRateApiResponse =
       null;
+    console.log({ selectCaHourlyRateTrendChartData: bodyList });
     switch (chartName) {
       case 'Production':
         resBody = bodyList['caHourlyRateTrend'];
