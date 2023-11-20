@@ -50,7 +50,12 @@
           </button>
         </ng-template>
       </div>
-      <div class="chart-gauge predictor-ratio-gauge">
+      <div
+        [ngClass]="
+          (chartType$ | async) == 'doughnut'
+            ? ['chart-gauge', 'predictor-ratio-gauge']
+            : ['chart-gauge', 'predictor-ratio-gauge-1']
+        ">
         <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
         <ng-template #chartElem>
           <canvas

@@ -1,8 +1,10 @@
 .predictor-ratio-gauge {
-  height: 300px;
-  min-height: 300px;
-  max-width: 600px;
+  max-height: 300px;
   padding: 25px 25px;
+}
+
+.predictor-ratio-gauge-1 {
+  min-height: 350px;
 }
 
 .active-toggle {
