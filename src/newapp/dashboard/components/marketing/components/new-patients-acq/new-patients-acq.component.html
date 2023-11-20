@@ -89,7 +89,7 @@
           </ng-template>
         </ng-template>
       </div>
-      <div class="chart-foot" *ngIf="!(isTrend$ | async)">
+      <div class="chart-foot" *ngIf="!(isTrend$ | async) && (hasData$ | async)">
         <div>
           <h3>${{ newPatientsAcqVal | number: '1.0-0' }}</h3>
           <span>{{ durationLabel$ | async }}</span>

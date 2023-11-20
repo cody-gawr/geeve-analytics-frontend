@@ -31,9 +31,17 @@
 }
 
 .j-justify-center {
-  justify-content: center;
+  justify-content: center !important;
+}
+
+.j-items-center {
+  align-items: center !important;
 }
 
 .j-text-error {
   color: red;
+}
+
+.j-padding-20 {
+  padding: 20px;
 }

@@ -7,8 +7,20 @@
     fontIcon="help"></mat-icon>
   <div class="chart-title">New Patients By Referral</div>
   <div class="chart-content">
-    <div class="canvas-wrapper chart-box">
-      <div class="chart-gauge new-patient-by-referral-chart">
+    <div
+      [ngClass]="
+        (chartType$ | async) == 'doughnut'
+          ? [
+              'canvas-wrapper',
+              'chart-box',
+              'j-justify-center',
+              'j-items-center'
+            ]
+          : ['canvas-wrapper', 'chart-box']
+      ">
+      <div
+        class="chart-gauge new-patient-by-referral-chart"
+        [ngClass]="(chartType$ | async) == 'doughnut' ? ['j-padding-20'] : []">
         <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
         <ng-template #mainElem>
           <button
