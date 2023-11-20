@@ -1156,19 +1156,17 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
     };
 
     if (_.has(resBodyList, 'cpPredictorAnalysisTrend') && trendMode != 'off') {
-      console.log({
-        cpPredictorAnalysisTrend: resBodyList['cpPredictorAnalysisTrend'],
-      });
       const trendItems = (<CpPredictorAnalysisApiResponse>(
         resBodyList['cpPredictorAnalysisTrend']
       )).data;
+
       const keys = Object.keys(propAnalysisToType);
 
       data = {
         datasets: _.map(
           _.zipObject(
             keys,
-            _.map(keys, key => _(trendItems).map(key).compact().value())
+            _.map(keys, key => _(trendItems).map(_.camelCase(key)).value())
           ),
           (values: number[], key: string) => ({
             label: propAnalysisToType[key],
