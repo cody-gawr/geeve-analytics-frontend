@@ -33,9 +33,8 @@ import {
   Observable,
   ReplaySubject,
   Subject,
-  distinctUntilChanged,
-  map,
   takeUntil,
+  map,
 } from 'rxjs';
 import { TooltipLayoutComponent } from '../../shared/tooltip/tooltip-layout.component';
 import { AppConstants } from '../../app.constants';

@@ -18,9 +18,7 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
-      <div
-        class="active-toggle"
-        *ngIf="!(isTrend$ | async) && !(enablePaTable$ | async)">
+      <div class="active-toggle" *ngIf="!(enablePaTable$ | async)">
         <button
           mat-flat-button
           *ngIf="isGeneral$ | async; else elem1"
@@ -50,10 +48,12 @@
       <div
         class="chart-gauge procedure-analysis-gauge"
         *ngIf="!(enablePaTable$ | async)">
-        <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+        <spin-loader
+          *ngIf="isLoading$ | async; else chartElem"
+          [disableSpin]="false"></spin-loader>
         <ng-template #chartElem>
           <canvas
-            *ngIf="!(isLoading$ | async) && hasData"
+            *ngIf="!(isLoading$ | async) && (hasData$ | async)"
             baseChart
             [datasets]="datasets"
             [labels]="labels"
@@ -64,7 +64,7 @@
           </canvas>
           <spin-loader
             class="empty-placeholder"
-            *ngIf="!hasData"
+            *ngIf="!(hasData$ | async)"
             [disableSpin]="true">
             {{ noDataAlertMessage$ | async }}
           </spin-loader>

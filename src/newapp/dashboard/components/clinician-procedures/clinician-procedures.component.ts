@@ -139,7 +139,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
               dentistId: providerId,
             };
 
-            console.log({ api });
             this.clinicianProcedureFacade.loadTrendApiRequest({
               ...params,
               api: api,

@@ -6,7 +6,14 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  combineLatest,
+  map,
+  distinctUntilChanged,
+  Observable,
+} from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -81,17 +88,25 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
 
   get legend$() {
     return combineLatest([
+      this.isTrend$,
       this.clinicFacade.currentClinics$,
       this.dentistFacade.currentDentistId$,
     ]).pipe(
-      map(([clinics, dentistId]) => {
-        return !(clinics.length == 1 && dentistId !== 'all');
-      })
+      map(
+        ([isTrend, clinics, dentistId]) =>
+          !(isTrend || (clinics.length == 1 && dentistId !== 'all'))
+      )
     );
   }
 
-  get hasData() {
-    return this.labels.length > 0 && this.maxVal > 0;
+  get hasData$(): Observable<boolean> {
+    return this.isTrend$.pipe(
+      map(isTrend =>
+        isTrend
+          ? this.labels.length > 0
+          : this.labels.length > 0 && this.maxVal > 0
+      )
+    );
   }
 
   get noDataAlertMessage$() {
@@ -129,7 +144,10 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       this.cpFacade.cpPredictorAnalysisTrendChartData,
       this.isMultipleClinic$,
     ])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        takeUntil(this.destroy$)
+      )
       .subscribe(
         ([
           isTrend,
@@ -139,22 +157,27 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
           predictorAnalysisTrendChartData,
           isMultiClinics,
         ]) => {
-          console.log({ predictorAnalysisTrendChartData });
-          if (visibility === 'general') {
-            this.datasets = chartData.datasets;
-            this.labels = chartData.labels;
-            this.maxVal = chartData.maxData;
-            this.bgColors = chartData.bgColors;
-            if (!isMultiClinics && !isTrend) {
-              this.paTableData = chartData.paTableData;
-            }
+          if (isTrend) {
+            console.log({ predictorAnalysisTrendChartData });
+            this.datasets = predictorAnalysisTrendChartData.datasets;
+            this.labels = predictorAnalysisTrendChartData.labels;
           } else {
-            this.datasets = specialChartData.datasets;
-            this.labels = specialChartData.labels;
-            this.maxVal = specialChartData.maxData;
-            this.bgColors = specialChartData.bgColors;
-            if (!isMultiClinics && !isTrend) {
-              this.paTableData = specialChartData.paSpecialTableData;
+            if (visibility === 'general') {
+              this.datasets = chartData.datasets;
+              this.labels = chartData.labels;
+              this.maxVal = chartData.maxData;
+              this.bgColors = chartData.bgColors;
+              if (!isMultiClinics && !isTrend) {
+                this.paTableData = chartData.paTableData;
+              }
+            } else {
+              this.datasets = specialChartData.datasets;
+              this.labels = specialChartData.labels;
+              this.maxVal = specialChartData.maxData;
+              this.bgColors = specialChartData.bgColors;
+              if (!isMultiClinics && !isTrend) {
+                this.paTableData = specialChartData.paSpecialTableData;
+              }
             }
           }
         }

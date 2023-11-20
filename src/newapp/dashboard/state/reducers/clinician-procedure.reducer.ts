@@ -339,8 +339,6 @@ export const clinicianProcedureFeature = createFeature({
       ClinicianProcedurePageActions.loadCpTrendApiRequestSuccess,
       (state, { api, resBody }): ClinicianProcedureState => {
         const { isLoadingData, errors } = state;
-        console.log({ [api]: resBody });
-        console.log(state.resBodyListTrend);
         return {
           ...state,
           errors: _.filter(errors, n => n.api != api),
@@ -392,8 +390,10 @@ export const selectIsLoadingCpPredictorAnalysis = createSelector(
 
 export const selectIsLoadingCpPredictorAnalysisTrend = createSelector(
   selectIsLoadingData,
-  loadingData =>
-    _.findIndex(loadingData, l => l == 'cpPredictorAnalysisTrend') != -1
+  loadingData => {
+    console.log({ loadingData });
+    return _.findIndex(loadingData, l => l == 'cpPredictorAnalysisTrend') != -1;
+  }
 );
 
 export const selectIsLoadingCpPredictorSpecialistAnalysis = createSelector(
@@ -1155,27 +1155,33 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
       labels: [],
     };
 
-    console.log({ resBodyList });
-    // const trendItems = cpPredictorAnalysisData.data;
+    if (_.has(resBodyList, 'cpPredictorAnalysisTrend') && trendMode != 'off') {
+      console.log({
+        cpPredictorAnalysisTrend: resBodyList['cpPredictorAnalysisTrend'],
+      });
+      const trendItems = (<CpPredictorAnalysisApiResponse>(
+        resBodyList['cpPredictorAnalysisTrend']
+      )).data;
+      const keys = Object.keys(propAnalysisToType);
 
-    // const keys = Object.keys(propAnalysisToType);
-    // const values = _.map(keys, key => _(trendItems).map(key).compact().value());
-    // var result = _.zipObject(keys, values);
-    // console.log({ result });
+      data = {
+        datasets: _.map(
+          _.zipObject(
+            keys,
+            _.map(keys, key => _(trendItems).map(key).compact().value())
+          ),
+          (values: number[], key: string) => ({
+            label: propAnalysisToType[key],
+            data: values,
+          })
+        ),
+        labels: _(trendItems)
+          .map(trendMode == 'current' ? 'yearMonth' : 'year')
+          .value(),
+      };
+    }
 
-    // const datasets = trendItems.map((item: CpPredictorAnalysisDataItem) => {});
-
-    // const labels = trendItems.map(item =>
-    //   trendMode == 'current' ? item.yearMonth : item.year
-    // );
-
-    // data = {
-    //   // datasets,
-    //   ...data,
-    //   labels,
-    // };
-
-    return resBodyList;
+    return data;
   }
 );
 
