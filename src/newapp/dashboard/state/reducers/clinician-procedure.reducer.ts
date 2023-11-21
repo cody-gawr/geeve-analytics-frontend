@@ -7,6 +7,7 @@ import {
 } from '../actions';
 import {
   CpPredictorAnalysisApiResponse,
+  CpPredictorAnalysisDataItem,
   CpPredictorRatioApiResponse,
   CpPredictorSpecialistAnalysisApiResponse,
   CpReferralsApiResponse,
@@ -17,6 +18,7 @@ import { DoughnutChartColors1 } from '@/newapp/shared/constants';
 import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.reducer';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import { ChartData } from 'chart.js';
+import moment from 'moment';
 
 export interface ClinicianProcedureState {
   isLoadingData: Array<CP_API_ENDPOINTS | CP_API_TREND_ENDPOINTS>;
@@ -54,7 +56,7 @@ const initialState: ClinicianProcedureState = {
   cpReferralsVisibility: 'combined',
 };
 
-const propAnalysisToType: Record<string, string> = {
+const generalPropertyToDescription: Record<string, string> = {
   crowns: 'Crowns & Onlays',
   splints: 'Splints',
   rct: 'Root Canals',
@@ -64,6 +66,16 @@ const propAnalysisToType: Record<string, string> = {
   comp_veneers: 'Composite Veneers',
   imp_crowns: 'Implant Crowns',
   whitening: 'Whitening',
+};
+
+const specialistPropertyToDescription: Record<string, string> = {
+  imp_surg: 'Implant Surg',
+  ortho_fix: 'Braces',
+  ortho_align: 'Aligners',
+  sleep: 'MAS',
+  perio_surg: 'Perio Surg',
+  endo_retreat: 'Endo Re-treat',
+  veneers_ind: 'Veneers (indirect)',
 };
 
 export const clinicianProcedureFeature = createFeature({
@@ -442,7 +454,7 @@ export const selectCpPredictorAnalysisChartData = createSelector(
       chartLabels = [];
 
     if (clinics.length > 1) {
-      Object.keys(propAnalysisToType).forEach(() => {
+      Object.keys(generalPropertyToDescription).forEach(() => {
         chartDatasets.push({
           data: [],
           label: '',
@@ -486,9 +498,9 @@ export const selectCpPredictorAnalysisChartData = createSelector(
         .value()
         .forEach(item => {
           chartLabels.push(item.clinicName);
-          Object.keys(propAnalysisToType).forEach((key, index) => {
+          Object.keys(generalPropertyToDescription).forEach((key, index) => {
             chartDatasets[index]['data'].push(Math.trunc(item[key]));
-            chartDatasets[index]['label'] = propAnalysisToType[key];
+            chartDatasets[index]['label'] = generalPropertyToDescription[key];
           });
         });
       return {
@@ -1159,18 +1171,29 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
   selectTrend,
   selectCpPredictorAnalysisVisibility,
   (resBodyList, trendMode, visibility) => {
-    const resBody = <CpPredictorAnalysisApiResponse>(
-      resBodyList['cpPredictorAnalysisTrend']
-    );
+    const resBody:
+      | CpPredictorAnalysisApiResponse
+      | CpPredictorSpecialistAnalysisApiResponse =
+      visibility == 'general'
+        ? <CpPredictorAnalysisApiResponse>(
+            resBodyList['cpPredictorAnalysisTrend']
+          )
+        : <CpPredictorSpecialistAnalysisApiResponse>(
+            resBodyList['cpPredictorSpecialistAnalysisTrend']
+          );
     let data: ChartData = {
       datasets: [],
       labels: [],
     };
-    console.log({ resBodyList });
+
     if (!_.isEmpty(resBody) && trendMode != 'off') {
       const trendItems = resBody.data;
 
-      const keys = Object.keys(propAnalysisToType);
+      const keys = Object.keys(
+        visibility == 'general'
+          ? generalPropertyToDescription
+          : specialistPropertyToDescription
+      );
 
       data = {
         datasets: _.map(
@@ -1181,12 +1204,19 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
             )
           ),
           (values: number[], key: string) => ({
-            label: propAnalysisToType[key],
+            label:
+              visibility == 'general'
+                ? generalPropertyToDescription[key]
+                : specialistPropertyToDescription[key],
             data: values,
           })
         ),
         labels: _(trendItems)
-          .map(trendMode == 'current' ? 'yearMonth' : 'year')
+          .map((trendItem: CpPredictorAnalysisDataItem) =>
+            trendMode == 'current'
+              ? moment(trendItem.yearMonth).format('MMM YYYY')
+              : trendItem.year
+          )
           .value(),
       };
     }

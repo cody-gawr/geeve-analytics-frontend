@@ -158,7 +158,6 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
           isMultiClinics,
         ]) => {
           if (isTrend) {
-            console.log({ predictorAnalysisTrendChartData });
             this.datasets = predictorAnalysisTrendChartData.datasets;
             this.labels = predictorAnalysisTrendChartData.labels;
           } else {

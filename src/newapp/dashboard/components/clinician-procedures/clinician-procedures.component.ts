@@ -1,7 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  combineLatest,
+  map,
+  distinctUntilChanged,
+} from 'rxjs';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
 import moment from 'moment';
@@ -92,7 +98,10 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       this.layoutFacade.trend$,
       this.dentistFacade.currentDentistId$,
     ])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        takeUntil(this.destroy$)
+      )
       .subscribe(params => {
         const [
           isDentistMode,
