@@ -203,7 +203,7 @@ export const clinicianAnalysisFeature = createFeature({
       ClinicianAnalysisActions.loadCaTrendApiRequestSuccess,
       (state, { api, resBody }): ClinicianAnalysisState => {
         const { isLoadingData, errors } = state;
-        console.log({ resBody });
+
         return {
           ...state,
           errors: _.filter(errors, n => n.api != api),
@@ -1138,7 +1138,7 @@ export const selectCaHourlyRateTrendChartData = createSelector(
   (bodyList, trendMode, chartName) => {
     let resBody: CaHourlyRateApiResponse | CaCollectionHourlyRateApiResponse =
       null;
-    console.log({ selectCaHourlyRateTrendChartData: bodyList });
+
     switch (chartName) {
       case 'Production':
         resBody = bodyList['caHourlyRateTrend'];

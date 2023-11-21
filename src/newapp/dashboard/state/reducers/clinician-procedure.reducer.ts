@@ -310,7 +310,17 @@ export const clinicianProcedureFeature = createFeature({
         };
       }
     ),
-
+    on(
+      ClinicianProcedurePageActions.loadTrendApiRequest,
+      (state, { api }): ClinicianProcedureState => {
+        return {
+          ...state,
+          errors: _.filter(state.errors, n => n.api != api),
+          isLoadingData: _.union(state.isLoadingData, [api]),
+          resBodyListTrend: { ...state.resBodyListTrend, [api]: {} },
+        };
+      }
+    ),
     on(
       ClinicianProcedurePageActions.loadCpNoneTrendApiRequestSuccess,
       (state, { api, resBody }): ClinicianProcedureState => {
@@ -391,7 +401,6 @@ export const selectIsLoadingCpPredictorAnalysis = createSelector(
 export const selectIsLoadingCpPredictorAnalysisTrend = createSelector(
   selectIsLoadingData,
   loadingData => {
-    console.log({ loadingData });
     return _.findIndex(loadingData, l => l == 'cpPredictorAnalysisTrend') != -1;
   }
 );
@@ -1150,15 +1159,16 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
   selectTrend,
   selectCpPredictorAnalysisVisibility,
   (resBodyList, trendMode, visibility) => {
+    const resBody = <CpPredictorAnalysisApiResponse>(
+      resBodyList['cpPredictorAnalysisTrend']
+    );
     let data: ChartData = {
       datasets: [],
       labels: [],
     };
-
-    if (_.has(resBodyList, 'cpPredictorAnalysisTrend') && trendMode != 'off') {
-      const trendItems = (<CpPredictorAnalysisApiResponse>(
-        resBodyList['cpPredictorAnalysisTrend']
-      )).data;
+    console.log({ resBodyList });
+    if (!_.isEmpty(resBody) && trendMode != 'off') {
+      const trendItems = resBody.data;
 
       const keys = Object.keys(propAnalysisToType);
 
@@ -1166,7 +1176,9 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
         datasets: _.map(
           _.zipObject(
             keys,
-            _.map(keys, key => _(trendItems).map(_.camelCase(key)).value())
+            _.map(keys, key =>
+              _(trendItems).map(_.camelCase(key)).compact().value()
+            )
           ),
           (values: number[], key: string) => ({
             label: propAnalysisToType[key],

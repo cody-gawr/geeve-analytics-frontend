@@ -1055,10 +1055,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                   });
               }
 
-              console.log({
-                newPatientsTimeLabels: this.newPatientsTimeLabels,
-              });
-
               setTimeout(() => {
                 this.mkNewPatientsByReferralLoader = false;
               }, this.timeout);

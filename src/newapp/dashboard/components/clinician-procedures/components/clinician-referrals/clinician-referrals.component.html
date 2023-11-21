@@ -63,7 +63,7 @@
             baseChart
             [datasets]="datasets"
             [labels]="labels"
-            [legend]="legend$"
+            [legend]="legend$ | async"
             [type]="chartType$ | async"
             [options]="chartOptions$ | async">
           </canvas>

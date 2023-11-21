@@ -22,7 +22,7 @@
           [datasets]="datasets"
           [labels]="labels"
           [options]="labelBarPercentOptionsStacked"
-          [legend]="legend$"
+          [legend]="legend$ | async"
           type="bar">
         </canvas>
         <spin-loader
