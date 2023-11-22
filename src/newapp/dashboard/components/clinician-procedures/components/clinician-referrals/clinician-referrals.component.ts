@@ -6,7 +6,14 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  takeUntil,
+  combineLatest,
+  map,
+  distinctUntilChanged,
+} from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
@@ -41,7 +48,15 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return this.cpFacade.isLoadingCpReferrals$;
+    return combineLatest([
+      this.cpFacade.isLoadingCpReferrals$,
+      this.cpFacade.isLoadingCpReferralsTrend$,
+    ]).pipe(
+      map(
+        ([isLoadingCpReferrals, isLoadingCpReferralsTrend]) =>
+          isLoadingCpReferrals || isLoadingCpReferralsTrend
+      )
+    );
   }
 
   get isMultipleClinic$() {
@@ -58,8 +73,10 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
     return combineLatest([this.isTrend$]).pipe(map(([isTrend]) => !isTrend));
   }
 
-  get hasData() {
-    return this.maxValue > 0;
+  get hasData$(): Observable<boolean> {
+    return combineLatest([this.isTrend$]).pipe(
+      map(([isTrend]) => (isTrend ? this.labels.length > 0 : this.maxValue > 0))
+    );
   }
 
   get noDataAlertMessage$() {
@@ -97,18 +114,30 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    combineLatest([this.cpFacade.cpReferralsChartData$])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([chartData]) => {
-        this.datasets = chartData.datasets;
-        this.labels = chartData.labels;
-        this.referralsVal = chartData.referralsVal;
-        this.referralsPrev = chartData.referralsPrev;
-        this.referralsVal2 = chartData.referralsVal2;
-        this.referralsPrev2 = chartData.referralsPrev2;
-        this.referralsVal3 = chartData.referralsVal3;
-        this.referralsPrev3 = chartData.referralsPrev3;
-        this.maxValue = chartData.maxVal;
+    combineLatest([
+      this.cpFacade.cpReferralsChartData$,
+      this.cpFacade.cpReferralsTrendChartData$,
+      this.isTrend$,
+    ])
+      .pipe(
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(([chartData, trendChartData, isTrend]) => {
+        if (isTrend) {
+          this.datasets = trendChartData.datasets;
+          this.labels = trendChartData.labels;
+        } else {
+          this.datasets = chartData.datasets;
+          this.labels = chartData.labels;
+          this.referralsVal = chartData.referralsVal;
+          this.referralsPrev = chartData.referralsPrev;
+          this.referralsVal2 = chartData.referralsVal2;
+          this.referralsPrev2 = chartData.referralsPrev2;
+          this.referralsVal3 = chartData.referralsVal3;
+          this.referralsPrev3 = chartData.referralsPrev3;
+          this.maxValue = chartData.maxVal;
+        }
       });
   }
 

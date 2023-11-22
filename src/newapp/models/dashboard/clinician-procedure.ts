@@ -126,6 +126,19 @@ export interface CpReferralsApiResponse {
   totalAverage: number;
 }
 
+export interface CpReferralsTrendApiResponse {
+  app: string;
+  status: number | string;
+  message: string;
+  data: {
+    combined: CpReferralsTrendDataItem[];
+    external: CpReferralsTrendDataItem[];
+    internal: CpReferralsTrendDataItem[];
+  };
+  goals: number;
+  total: number;
+}
+
 export interface CpReferralsDataItem {
   clinicId: string | number;
   clinicName: string;
@@ -141,4 +154,9 @@ export interface CpReferralsDataItem {
   duration: string;
   total: number | string;
   val?: any;
+}
+
+export interface CpReferralsTrendDataItem {
+  duration: string;
+  val: string[];
 }

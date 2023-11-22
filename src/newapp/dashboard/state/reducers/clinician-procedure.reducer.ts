@@ -13,6 +13,8 @@ import {
   CpPredictorRatioTrendDataItem,
   CpPredictorSpecialistAnalysisApiResponse,
   CpReferralsApiResponse,
+  CpReferralsTrendApiResponse,
+  CpReferralsTrendDataItem,
   CpRevPerProcedureApiResponse,
 } from '@/newapp/models/dashboard/clinician-procedure';
 import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.reducer';
@@ -97,6 +99,18 @@ const cpPredictorRatioVisibilityToProperty: Record<string, string> = {
   'rct to extraction': 'val.extraction',
   'rct conversion': 'val.completed',
 };
+
+const cpReferralsTrendChartLabels = [
+  'Oral Surgeon',
+  'Orthodontics',
+  'Prosthodontics',
+  'Endodontics',
+  'Paediatrics',
+  'Periodontics',
+  'Sleep Consult',
+  'Implants',
+  'Oral Medicine',
+];
 
 export const clinicianProcedureFeature = createFeature({
   name: 'clinician-procedure',
@@ -427,7 +441,7 @@ export const selectCpPredictorAnalysisError = createSelector(
 
 export const selectIsLoadingCpPredictorAnalysis = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorAnalysis') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorAnalysis') != -1
 );
 
 export const selectIsLoadingCpPredictorAnalysisTrend = createSelector(
@@ -440,28 +454,33 @@ export const selectIsLoadingCpPredictorAnalysisTrend = createSelector(
 export const selectIsLoadingCpPredictorSpecialistAnalysis = createSelector(
   selectIsLoadingData,
   loadingData =>
-    _.findIndex(loadingData, l => l == 'cpPredictorSpecialistAnalysis') >= 0
+    _.findIndex(loadingData, l => l == 'cpPredictorSpecialistAnalysis') != -1
 );
 
 export const selectIsLoadingCpRevPerProcedure = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'cpRevPerProcedure') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'cpRevPerProcedure') != -1
 );
 
 export const selectIsLoadingCpPredictorRatio = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorRatio') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorRatio') != -1
 );
 
 export const selectIsLoadingCpPredictorRatioTrend = createSelector(
   selectIsLoadingData,
   loadingData =>
-    _.findIndex(loadingData, l => l == 'cpPredictorRatioTrend') >= 0
+    _.findIndex(loadingData, l => l == 'cpPredictorRatioTrend') != -1
 );
 
 export const selectIsLoadingCpReferrals = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'cpReferrals') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'cpReferrals') != -1
+);
+
+export const selectIsLoadingCpReferralsTrend = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'cpReferralsTrend') != -1
 );
 
 export const selectCpPredictorAnalysisChartData = createSelector(
@@ -1273,28 +1292,65 @@ export const selectCpPredictorRatioTrendChartData = createSelector(
           .value()
       );
 
-      data = {
-        datasets: (<string[]>cpPredictorRatioVisibilityToLabel[visibility]).map(
-          (label: string, index: number) => ({
+      if (!_.isEmpty(values)) {
+        data = {
+          datasets: (<string[]>(
+            cpPredictorRatioVisibilityToLabel[visibility]
+          )).map((label: string, index: number) => ({
             label,
             data: values[index].map(v => parseInt(v)),
-          })
-        ),
-        labels: _(trendItems)
-          .map((trendItem: CpPredictorRatioTrendDataItem) =>
-            trendMode == 'current'
-              ? moment(trendItem.duration).format('MMM YYYY')
-              : trendItem.duration
-          )
-          .value(),
-      };
+          })),
+          labels: _(trendItems)
+            .map((trendItem: CpPredictorRatioTrendDataItem) =>
+              trendMode == 'current'
+                ? moment(trendItem.duration).format('MMM YYYY')
+                : trendItem.duration
+            )
+            .value(),
+        };
+      }
     }
-
-    console.log({ data });
 
     return data;
   }
 );
 
-// cpReferralsTrend
-// cpPredictorRatioTrend
+export const selectCpReferralsTrendChartData = createSelector(
+  selectResBodyListTrend,
+  selectTrend,
+  selectCpReferralsVisibility,
+  (resBodyList, trendMode, visibility) => {
+    const resBody = <CpReferralsTrendApiResponse>(
+      resBodyList['cpReferralsTrend']
+    );
+
+    let data: ChartData = {
+      datasets: [],
+      labels: [],
+    };
+
+    if (!_.isEmpty(resBody) && trendMode != 'off') {
+      const trendItems: CpReferralsTrendDataItem[] = resBody.data[visibility];
+      const values: string[][] = _.unzip(_(trendItems).map('val').value());
+      if (!_.isEmpty(values)) {
+        data = {
+          datasets: cpReferralsTrendChartLabels.map(
+            (label: string, index: number) => ({
+              label,
+              data: values[index].map(v => parseInt(v)),
+            })
+          ),
+          labels: _(trendItems)
+            .map((trendItem: CpReferralsTrendDataItem) =>
+              trendMode == 'current'
+                ? moment(trendItem.duration).format('MMM YYYY')
+                : trendItem.duration
+            )
+            .value(),
+        };
+      }
+    }
+
+    return data;
+  }
+);

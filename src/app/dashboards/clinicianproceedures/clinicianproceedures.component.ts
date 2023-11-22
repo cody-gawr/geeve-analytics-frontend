@@ -1325,13 +1325,9 @@ export class ClinicianProceeduresComponent
   public itemPredictedChartLabels: string[] = [];
 
   // events
-  public chartClicked(e: any): void {
-    //console.log(e);
-  }
+  public chartClicked(e: any): void {}
 
-  public chartHovered(e: any): void {
-    // console.log(e);
-  }
+  public chartHovered(e: any): void {}
   public gaugeType = 'arch';
   public gaugeValue = '';
   public gaugeLabel = '';
@@ -3775,6 +3771,7 @@ export class ClinicianProceeduresComponent
         )
         .subscribe({
           next: res => {
+            console.log({ res });
             this.Apirequest = this.Apirequest - 1;
             this.clinicianReferralLoader = false;
             this.stackedChartTrendLabels1 = [];
@@ -3918,6 +3915,7 @@ export class ClinicianProceeduresComponent
                 }
               }
             }
+
             this.stackedChartTrendDataMax =
               Math.max(...this.stackedChartTrendData[0]['data']) +
               Math.max(...this.stackedChartTrendData[1]['data']) +

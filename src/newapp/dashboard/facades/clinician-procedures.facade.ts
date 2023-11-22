@@ -12,6 +12,7 @@ import {
   selectCpPredictorRatioVisibility,
   selectCpPredictorSpecialistAnalysisChartData,
   selectCpReferralsChartData,
+  selectCpReferralsTrendChartData,
   selectCpReferralsVisibility,
   selectCpRevPerProcedureChartData,
   selectErrors,
@@ -21,6 +22,7 @@ import {
   selectIsLoadingCpPredictorRatioTrend,
   selectIsLoadingCpPredictorSpecialistAnalysis,
   selectIsLoadingCpReferrals,
+  selectIsLoadingCpReferralsTrend,
   selectIsLoadingCpRevPerProcedure,
 } from '../state/reducers/clinician-procedure.reducer';
 import { ClinicianProcedurePageActions } from '../state/actions';
@@ -61,6 +63,10 @@ export class ClinicianProcedureFacade {
     select(selectIsLoadingCpReferrals)
   );
 
+  public readonly isLoadingCpReferralsTrend$ = this.store.pipe(
+    select(selectIsLoadingCpReferralsTrend)
+  );
+
   public readonly cpPredictorAnalysisChartData$ = this.store.pipe(
     select(selectCpPredictorAnalysisChartData)
   );
@@ -83,6 +89,10 @@ export class ClinicianProcedureFacade {
 
   public readonly cpReferralsChartData$ = this.store.pipe(
     select(selectCpReferralsChartData)
+  );
+
+  public readonly cpReferralsTrendChartData$ = this.store.pipe(
+    select(selectCpReferralsTrendChartData)
   );
 
   public readonly cpPredictorAnalysisVisibility$ = this.store.pipe(

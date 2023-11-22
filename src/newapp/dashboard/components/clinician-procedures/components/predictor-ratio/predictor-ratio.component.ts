@@ -66,9 +66,10 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   }
 
   get legend$() {
-    return combineLatest([this.clinicFacade.currentClinics$]).pipe(
-      map(([clinics]) => clinics.length != 1)
-    );
+    return combineLatest([
+      this.clinicFacade.currentClinics$,
+      this.isTrend$,
+    ]).pipe(map(([clinics, isTrend]) => clinics.length != 1 || isTrend));
   }
 
   get hasData() {
