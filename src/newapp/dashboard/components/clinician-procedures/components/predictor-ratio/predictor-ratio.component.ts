@@ -46,7 +46,15 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return this.cpFacade.isLoadingCpPredictorRatio$;
+    return combineLatest([
+      this.cpFacade.isLoadingCpPredictorRatio$,
+      this.cpFacade.isLoadingCpPredictorRatioTrend$,
+    ]).pipe(
+      map(
+        ([isLoadingCpPredictorRatio, isLoadingCpPredictorRatioTrend]) =>
+          isLoadingCpPredictorRatio || isLoadingCpPredictorRatioTrend
+      )
+    );
   }
 
   get isMultipleClinic$() {
@@ -112,21 +120,27 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
     combineLatest([
       this.cpFacade.cpPredictorRatioChartData$,
       this.cpFacade.cpPredictorRatioTrendChartData$,
+      this.isTrend$,
       this.isMultipleClinic$,
     ])
       .pipe(
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
         takeUntil(this.destroy$)
       )
-      .subscribe(([chartData, chartTrendData, isMultiClinics]) => {
-        this.datasets = chartData.datasets;
-        this.labels = chartData.labels;
-        if (isMultiClinics) {
-          this.multifulRatio = chartData.multifulRatio;
+      .subscribe(([chartData, chartTrendData, isTrend, isMultiClinics]) => {
+        if (isTrend) {
+          this.datasets = chartTrendData.datasets;
+          this.labels = chartTrendData.labels;
         } else {
-          this.predictorRatioValue = chartData.cpPredictorRatioAvr;
+          this.datasets = chartData.datasets;
+          this.labels = chartData.labels;
+          if (isMultiClinics) {
+            this.multifulRatio = chartData.multifulRatio;
+          } else {
+            this.predictorRatioValue = chartData.cpPredictorRatioAvr;
+          }
+          this.predictorRatioPrev = chartData.cpPredictorRatioPrev;
         }
-        this.predictorRatioPrev = chartData.cpPredictorRatioPrev;
       });
   }
 

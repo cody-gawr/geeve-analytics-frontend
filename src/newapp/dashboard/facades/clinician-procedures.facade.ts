@@ -18,6 +18,7 @@ import {
   selectIsLoadingCpPredictorAnalysis,
   selectIsLoadingCpPredictorAnalysisTrend,
   selectIsLoadingCpPredictorRatio,
+  selectIsLoadingCpPredictorRatioTrend,
   selectIsLoadingCpPredictorSpecialistAnalysis,
   selectIsLoadingCpReferrals,
   selectIsLoadingCpRevPerProcedure,
@@ -50,6 +51,10 @@ export class ClinicianProcedureFacade {
 
   public readonly isLoadingCpPredictorRatio$ = this.store.pipe(
     select(selectIsLoadingCpPredictorRatio)
+  );
+
+  public readonly isLoadingCpPredictorRatioTrend$ = this.store.pipe(
+    select(selectIsLoadingCpPredictorRatioTrend)
   );
 
   public readonly isLoadingCpReferrals$ = this.store.pipe(

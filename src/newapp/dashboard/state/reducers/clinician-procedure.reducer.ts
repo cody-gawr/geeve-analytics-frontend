@@ -10,6 +10,7 @@ import {
   CpPredictorAnalysisDataItem,
   CpPredictorRatioApiResponse,
   CpPredictorRatioTrendApiResponse,
+  CpPredictorRatioTrendDataItem,
   CpPredictorSpecialistAnalysisApiResponse,
   CpReferralsApiResponse,
   CpRevPerProcedureApiResponse,
@@ -80,6 +81,21 @@ const specialistPropertyToDescription: Record<string, string> = {
   perio_surg: 'Perio Surg',
   endo_retreat: 'Endo Re-treat',
   veneers_ind: 'Veneers (indirect)',
+};
+
+const cpPredictorRatioVisibilityToLabel: Record<string, string[]> = {
+  'indirect to large direct fillings': [
+    'Indirect Restorations',
+    'Large Direct Restorations',
+  ],
+  'rct to extraction': ['RCT', 'Extractions'],
+  'rct conversion': ["RCT's Started", "RCT's Completed"],
+};
+
+const cpPredictorRatioVisibilityToProperty: Record<string, string> = {
+  'indirect to large direct fillings': 'val.crown',
+  'rct to extraction': 'val.extraction',
+  'rct conversion': 'val.completed',
 };
 
 export const clinicianProcedureFeature = createFeature({
@@ -435,6 +451,12 @@ export const selectIsLoadingCpRevPerProcedure = createSelector(
 export const selectIsLoadingCpPredictorRatio = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'cpPredictorRatio') >= 0
+);
+
+export const selectIsLoadingCpPredictorRatioTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'cpPredictorRatioTrend') >= 0
 );
 
 export const selectIsLoadingCpReferrals = createSelector(
@@ -1245,8 +1267,30 @@ export const selectCpPredictorRatioTrendChartData = createSelector(
 
     if (!_.isEmpty(resBody) && trendMode != 'off') {
       const trendItems = resBody.data;
-      console.log(_(trendItems).map('val.crown').value());
+      const values: string[][] = _.unzip(
+        _(trendItems)
+          .map(cpPredictorRatioVisibilityToProperty[visibility])
+          .value()
+      );
+
+      data = {
+        datasets: (<string[]>cpPredictorRatioVisibilityToLabel[visibility]).map(
+          (label: string, index: number) => ({
+            label,
+            data: values[index].map(v => parseInt(v)),
+          })
+        ),
+        labels: _(trendItems)
+          .map((trendItem: CpPredictorRatioTrendDataItem) =>
+            trendMode == 'current'
+              ? moment(trendItem.duration).format('MMM YYYY')
+              : trendItem.duration
+          )
+          .value(),
+      };
     }
+
+    console.log({ data });
 
     return data;
   }

@@ -66,7 +66,9 @@
         </ng-template>
       </div>
       <div class="chart-gauge predictor-ratio-gauge">
-        <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+        <spin-loader
+          *ngIf="isLoading$ | async; else chartElem"
+          [disableSpin]="false"></spin-loader>
         <ng-template #chartElem>
           <canvas
             *ngIf="!(isLoading$ | async) && hasData"
@@ -85,7 +87,7 @@
           </spin-loader>
         </ng-template>
       </div>
-      <div class="chart-foot">
+      <div class="chart-foot" *ngIf="!(isTrend$ | async)">
         <div *ngIf="!(isMultipleClinic$ | async); else otherEl">
           <h3>{{ predictorRatioValue }}</h3>
           <span>{{ durationLabel$ | async }} Average</span>
