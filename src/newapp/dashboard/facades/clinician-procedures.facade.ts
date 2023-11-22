@@ -191,7 +191,12 @@ export class ClinicianProcedureFacade {
     );
   }
 
-  public setCpPredictorRatioVisibility(value: number) {
+  public setCpPredictorRatioVisibility(
+    value:
+      | 'indirect to large direct fillings'
+      | 'rct to extraction'
+      | 'rct conversion'
+  ) {
     this.store.dispatch(
       ClinicianProcedurePageActions.setCpPredictorRatioVisibility({ value })
     );

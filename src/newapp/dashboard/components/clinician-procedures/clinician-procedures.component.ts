@@ -57,11 +57,11 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       this.clinicianProcedureFacade.cpPredictorRatioVisibility$,
     ]).pipe(
       map(([tips, visibility]) => {
-        if (visibility === 1) {
+        if (visibility === 'indirect to large direct fillings') {
           if (tips && tips[10]) {
             return tips[10];
           }
-        } else if (visibility === 2) {
+        } else if (visibility === 'rct to extraction') {
           if (tips && tips[11]) {
             return tips[11];
           }

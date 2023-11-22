@@ -80,7 +80,12 @@ export const setCpPredictorAnalysisVisibility = createAction(
 
 export const setCpPredictorRatioVisibility = createAction(
   '[Clinician Procedure Page] Set cpPredictorRatioVisibility',
-  props<{ value: number }>()
+  props<{
+    value:
+      | 'indirect to large direct fillings'
+      | 'rct to extraction'
+      | 'rct conversion';
+  }>()
 );
 
 export const setCpReferralsVisibility = createAction(

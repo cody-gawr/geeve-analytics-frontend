@@ -3604,8 +3604,6 @@ export class ClinicianProceeduresComponent
                   Math.max(...this.stackedChartData[7]['data']);
               }
             }
-
-            console.log(this.stackedChartData);
           },
           error: error => {
             this.warningMessage = 'Please Provide Valid Inputs!';
@@ -3778,9 +3776,6 @@ export class ClinicianProceeduresComponent
         .subscribe({
           next: res => {
             this.Apirequest = this.Apirequest - 1;
-            // this.showInternal =false;
-            //   this.showExternal =false;
-            //   this.showCombined =false;
             this.clinicianReferralLoader = false;
             this.stackedChartTrendLabels1 = [];
             this.stackedChartTrendData1 = [];

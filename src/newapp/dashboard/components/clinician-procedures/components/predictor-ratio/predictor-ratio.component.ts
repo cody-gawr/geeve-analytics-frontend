@@ -65,14 +65,13 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
     return combineLatest([this.cpFacade.cpPredictorRatioVisibility$]).pipe(
       map(([visibility]) => {
         switch (visibility) {
-          case 1:
+          case 'indirect to large direct fillings':
             return 'You have no indirect or large direct fillings in the selected period';
-          case 2:
+          case 'rct to extraction':
             return 'You have no RCTs or extractions in the selected period';
-          case 3:
+          case 'rct conversion':
             return 'You have no RCTs in the selected period';
         }
-        return '';
       })
     );
   }
@@ -87,7 +86,12 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
       .pipe(map(result => result.matches));
   }
 
-  setVisibility(val: number) {
+  setVisibility(
+    val:
+      | 'indirect to large direct fillings'
+      | 'rct to extraction'
+      | 'rct conversion'
+  ) {
     this.cpFacade.setCpPredictorRatioVisibility(val);
   }
 

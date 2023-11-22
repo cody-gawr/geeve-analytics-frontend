@@ -10,11 +10,14 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
-      <div class="active-toggle" *ngIf="!(isTrend$ | async)">
+      <div class="active-toggle">
         <button
           mat-flat-button
-          *ngIf="(visibility$ | async) === 1; else elem1"
-          (click)="setVisibility(1)"
+          *ngIf="
+            (visibility$ | async) === 'indirect to large direct fillings';
+            else elem1
+          "
+          (click)="setVisibility('indirect to large direct fillings')"
           color="primary">
           {{
             (isLargeOrSmall$ | async)
@@ -23,7 +26,9 @@
           }}
         </button>
         <ng-template #elem1>
-          <button mat-stroked-button (click)="setVisibility(1)">
+          <button
+            mat-stroked-button
+            (click)="setVisibility('indirect to large direct fillings')">
             {{
               (isLargeOrSmall$ | async)
                 ? 'Indirect to Large Direct'
@@ -33,27 +38,29 @@
         </ng-template>
 
         <button
-          (click)="setVisibility(2)"
-          *ngIf="(visibility$ | async) === 2; else elem2"
+          (click)="setVisibility('rct to extraction')"
+          *ngIf="(visibility$ | async) === 'rct to extraction'; else elem2"
           color="primary"
           mat-flat-button>
           RCT to Extraction
         </button>
         <ng-template #elem2>
-          <button (click)="setVisibility(2)" mat-stroked-button>
+          <button
+            (click)="setVisibility('rct to extraction')"
+            mat-stroked-button>
             RCT to Extraction
           </button>
         </ng-template>
 
         <button
-          (click)="setVisibility(3)"
-          *ngIf="(visibility$ | async) === 3; else elem3"
+          (click)="setVisibility('rct conversion')"
+          *ngIf="(visibility$ | async) === 'rct conversion'; else elem3"
           color="primary"
           mat-flat-button>
           RCT Conversion
         </button>
         <ng-template #elem3>
-          <button (click)="setVisibility(3)" mat-stroked-button>
+          <button (click)="setVisibility('rct conversion')" mat-stroked-button>
             RCT Conversion
           </button>
         </ng-template>

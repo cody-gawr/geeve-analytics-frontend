@@ -34,7 +34,10 @@ export interface ClinicianProcedureState {
   cpReferralsData: CpReferralsApiResponse;
 
   cpPredictorAnalysisVisibility: 'general' | 'specialist';
-  cpPredictorRatioVisibility: number;
+  cpPredictorRatioVisibility:
+    | 'indirect to large direct fillings'
+    | 'rct to extraction'
+    | 'rct conversion';
   cpReferralsVisibility: 'internal' | 'external' | 'combined';
 }
 
@@ -52,7 +55,7 @@ const initialState: ClinicianProcedureState = {
   cpReferralsData: null,
 
   cpPredictorAnalysisVisibility: 'general',
-  cpPredictorRatioVisibility: 1,
+  cpPredictorRatioVisibility: 'indirect to large direct fillings',
   cpReferralsVisibility: 'combined',
 };
 
@@ -971,7 +974,7 @@ export const selectCpPredictorRatioChartData = createSelector(
             }
           });
       });
-      if (visibility === 1) {
+      if (visibility === 'indirect to large direct fillings') {
         return {
           datasets: chartDatasets1,
           labels: chartLabels1,
@@ -980,7 +983,7 @@ export const selectCpPredictorRatioChartData = createSelector(
           ratio2: ratio2,
           multifulRatio: multifulratio1,
         };
-      } else if (visibility === 2) {
+      } else if (visibility === 'rct to extraction') {
         return {
           datasets: chartDatasets2,
           labels: chartLabels2,
@@ -1045,14 +1048,14 @@ export const selectCpPredictorRatioChartData = createSelector(
         }
       });
 
-      if (visibility === 1) {
+      if (visibility === 'indirect to large direct fillings') {
         return {
           datasets: chartDatasets1,
           labels: chartLabels1,
           cpPredictorRatioPrev: cpPredictorRatioPrev1,
           cpPredictorRatioAvr: cpPredictorRatioAvr1,
         };
-      } else if (visibility === 2) {
+      } else if (visibility === 'rct to extraction') {
         return {
           datasets: chartDatasets2,
           labels: chartLabels2,
@@ -1225,7 +1228,11 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
   }
 );
 
-// cpPredictorAnalysisTrend
-// cpPredictorSpecialistAnalysisTrend
+export const selectCpPredictorRatioTrendChartData = createSelector(
+  selectResBodyListTrend,
+  selectTrend,
+  () => {}
+);
+
 // cpReferralsTrend
 // cpPredictorRatioTrend
