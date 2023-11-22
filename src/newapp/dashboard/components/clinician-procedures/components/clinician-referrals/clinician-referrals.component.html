@@ -10,7 +10,7 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
-      <div class="active-toggle" *ngIf="!(isTrend$ | async)">
+      <div class="active-toggle">
         <button
           mat-flat-button
           *ngIf="(visibility$ | async) === 'combined'; else elem1"
@@ -25,7 +25,7 @@
         </ng-template>
 
         <button
-          (click)="setVisibility(2)"
+          (click)="setVisibility('internal')"
           *ngIf="(visibility$ | async) === 'internal'; else elem2"
           color="primary"
           mat-flat-button>
@@ -38,7 +38,7 @@
         </ng-template>
 
         <button
-          (click)="setVisibility(3)"
+          (click)="setVisibility('external')"
           *ngIf="(visibility$ | async) === 'external'; else elem3"
           color="primary"
           mat-flat-button>
