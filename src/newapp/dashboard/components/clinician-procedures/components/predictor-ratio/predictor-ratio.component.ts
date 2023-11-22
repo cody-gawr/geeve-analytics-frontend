@@ -5,7 +5,13 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  combineLatest,
+  map,
+  distinctUntilChanged,
+} from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
@@ -105,10 +111,14 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     combineLatest([
       this.cpFacade.cpPredictorRatioChartData$,
+      this.cpFacade.cpPredictorRatioTrendChartData$,
       this.isMultipleClinic$,
     ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([chartData, isMultiClinics]) => {
+      .pipe(
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(([chartData, chartTrendData, isMultiClinics]) => {
         this.datasets = chartData.datasets;
         this.labels = chartData.labels;
         if (isMultiClinics) {

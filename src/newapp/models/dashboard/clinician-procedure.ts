@@ -79,6 +79,14 @@ export interface CpPredictorRatioApiResponse {
   goals: number[];
 }
 
+export interface CpPredictorRatioTrendApiResponse {
+  app: string;
+  status: number | string;
+  message: string;
+  data: CpPredictorRatioTrendDataItem[];
+  goals: number[];
+}
+
 export interface CpPredictorRatioDataItem {
   clinicId: string | number;
   clinicName: string;
@@ -92,6 +100,15 @@ export interface CpPredictorRatioDataItem {
   secondValue: string | number;
   ratio: string;
   totalTa: string;
+}
+
+export interface CpPredictorRatioTrendDataItem {
+  duration: string;
+  val: {
+    completed: string[2];
+    crown: string[2];
+    extraction: string[2];
+  };
 }
 
 export interface CpReferralsApiResponse {

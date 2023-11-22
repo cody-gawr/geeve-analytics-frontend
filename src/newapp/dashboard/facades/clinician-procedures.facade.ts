@@ -8,6 +8,7 @@ import {
   selectCpPredictorAnalysisTrendChartData,
   selectCpPredictorAnalysisVisibility,
   selectCpPredictorRatioChartData,
+  selectCpPredictorRatioTrendChartData,
   selectCpPredictorRatioVisibility,
   selectCpPredictorSpecialistAnalysisChartData,
   selectCpReferralsChartData,
@@ -69,6 +70,10 @@ export class ClinicianProcedureFacade {
 
   public readonly cpPredictorRatioChartData$ = this.store.pipe(
     select(selectCpPredictorRatioChartData)
+  );
+
+  public readonly cpPredictorRatioTrendChartData$ = this.store.pipe(
+    select(selectCpPredictorRatioTrendChartData)
   );
 
   public readonly cpReferralsChartData$ = this.store.pipe(

@@ -9,6 +9,7 @@ import {
   CpPredictorAnalysisApiResponse,
   CpPredictorAnalysisDataItem,
   CpPredictorRatioApiResponse,
+  CpPredictorRatioTrendApiResponse,
   CpPredictorSpecialistAnalysisApiResponse,
   CpReferralsApiResponse,
   CpRevPerProcedureApiResponse,
@@ -1231,7 +1232,24 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
 export const selectCpPredictorRatioTrendChartData = createSelector(
   selectResBodyListTrend,
   selectTrend,
-  () => {}
+  selectCpPredictorRatioVisibility,
+  (resBodyList, trendMode, visibility) => {
+    const resBody = <CpPredictorRatioTrendApiResponse>(
+      resBodyList['cpPredictorRatioTrend']
+    );
+
+    let data: ChartData = {
+      datasets: [],
+      labels: [],
+    };
+
+    if (!_.isEmpty(resBody) && trendMode != 'off') {
+      const trendItems = resBody.data;
+      console.log(_(trendItems).map('val.crown').value());
+    }
+
+    return data;
+  }
 );
 
 // cpReferralsTrend
