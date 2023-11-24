@@ -408,4 +408,11 @@ declare global {
     totalAverage: number;
     totalTa: number;
   }
+
+  type FU_API_ENDPOINTS =
+    | 'fuGetConversion'
+    | 'fuGetConversionPerUser'
+    | 'fuGetFollowupCompletion'
+    | 'fuGetOutcome'
+    | 'fuGetPerUser';
 }
