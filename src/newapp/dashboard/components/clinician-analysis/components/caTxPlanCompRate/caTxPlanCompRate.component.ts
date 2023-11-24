@@ -86,7 +86,15 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return this.caFacade.isLoadingCaTxPlanCompRate$;
+    return combineLatest([
+      this.caFacade.isLoadingCaTxPlanCompRate$,
+      this.caFacade.isLoadingCaTxPlanCompRateTrend$,
+    ]).pipe(
+      map(
+        ([isLoadingCaTxPlanCompRate, isLoadingCaTxPlanCompRateTrend]) =>
+          isLoadingCaTxPlanCompRate || isLoadingCaTxPlanCompRateTrend
+      )
+    );
   }
 
   get userType$() {
