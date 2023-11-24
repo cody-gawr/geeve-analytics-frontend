@@ -110,15 +110,12 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
   }
 
   get noDataAlertMessage$() {
-    return combineLatest([
-      this.clinicFacade.currentClinics$,
-      this.dentistFacade.currentDentistId$,
-    ]).pipe(
+    return this.isGeneral$.pipe(
       takeUntil(this.destroy$),
-      map(([clinics, dentistId]) =>
-        clinics.length == 1 && dentistId !== 'all'
-          ? 'You have no specialist items in this period'
-          : 'You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period'
+      map(isGeneral =>
+        isGeneral
+          ? 'You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period'
+          : 'You have no specialist items in this period'
       )
     );
   }
