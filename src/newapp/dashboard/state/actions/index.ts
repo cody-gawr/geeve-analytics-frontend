@@ -9,7 +9,7 @@ import * as FrontDeskApiActions from './front-desk-api.actions';
 import * as ClinicianProcedurePageActions from './clinician-procedure-page.actions';
 import * as ClinicianProcedureApiActions from './clinician-procedure-api.actions';
 import * as ClinicianAnalysisActions from './clinician-analysis.actions';
-
+import * as FollowupsActions from './followups.actions';
 export {
   DashboardApiActions,
   DashboardPageActions,
@@ -22,4 +22,5 @@ export {
   ClinicianProcedurePageActions,
   ClinicianProcedureApiActions,
   ClinicianAnalysisActions,
+  FollowupsActions,
 };
