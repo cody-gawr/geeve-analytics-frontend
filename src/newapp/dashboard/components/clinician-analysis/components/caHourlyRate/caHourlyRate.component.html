@@ -62,7 +62,13 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>Collection</th>
+              <th>
+                {{
+                  (chartName$ | async) === 'Production'
+                    ? 'Production'
+                    : 'Collection'
+                }}
+              </th>
             </tr>
           </thead>
           <tbody>

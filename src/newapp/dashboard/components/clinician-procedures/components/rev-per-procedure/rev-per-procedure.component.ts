@@ -1,13 +1,11 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianProcedureFacade } from '@/newapp/dashboard/facades/clinician-procedures.facade';
-import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
 import { DecimalPipe } from '@angular/common';
 import { formatXTooltipLabel } from '@/newapp/shared/utils';
 

@@ -90,7 +90,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
-      this.isDentistMode$,
       this.isTrend$,
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -103,15 +102,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(params => {
-        const [
-          isDentistMode,
-          isTrend,
-          clinicId,
-          dateRange,
-          route,
-          trend,
-          dentistId,
-        ] = params;
+        const [isTrend, clinicId, dateRange, route, trend, dentistId] = params;
         if (clinicId == null) return;
         const providerId =
           dentistId !== 'all' && typeof clinicId !== 'string'
@@ -132,6 +123,10 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
           queryWhEnabled,
           dentistId: providerId,
         };
+
+        const isDentistMode = !(
+          dentistId === 'all' || typeof clinicId == 'string'
+        );
 
         if (isDentistMode && isTrend) {
           for (const api of [
