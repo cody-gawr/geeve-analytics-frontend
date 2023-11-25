@@ -22,7 +22,7 @@ import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { environment } from '../../../environments/environment';
 import { NgxSmartModalService } from 'ngx-smart-modal';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import {
   ChartDataset,
   ChartOptions,

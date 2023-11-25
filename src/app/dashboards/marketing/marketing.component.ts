@@ -22,7 +22,7 @@ import { ChartstipsService } from '../../shared/chartstips.service';
 import { RolesUsersService } from '../../roles-users/roles-users.service';
 import { environment } from '../../../environments/environment';
 import { Chart, ChartDataset, ChartOptions, LegendOptions } from 'chart.js';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Plugin } from 'chart.js/dist/types/index';

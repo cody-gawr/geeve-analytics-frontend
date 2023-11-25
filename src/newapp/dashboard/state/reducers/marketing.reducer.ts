@@ -1,5 +1,5 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { JeeveError } from '@/newapp/models';
 import { MarketingApiActions, MarketingPageActions } from '../actions';
 import {
@@ -53,9 +53,7 @@ type MarketingEndpoints =
 
 export interface MarketingState {
   isLoadingData: Array<MarketingEndpoints>;
-
   errors: Array<JeeveError>;
-
   newPatientsByReferralData: MkNewPatientsByReferralApiResponse | null;
   newPatientsByReferralTrendData: MkNewPatientsByReferralTrendApiResponse | null;
   revenueByReferralData: MkRevenueByReferralApiResponse | null;

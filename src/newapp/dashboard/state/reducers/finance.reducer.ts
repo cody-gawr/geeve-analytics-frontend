@@ -1,5 +1,5 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { JeeveError } from '@/newapp/models';
 import { FinanceApiActions, FinancePageActions } from '../actions';
 import {
@@ -7,7 +7,6 @@ import {
   FnExpensesDataItem,
   FnProductionByClinicianItem,
   FnProductionPerVisitItem,
-  // FnTotalProductionApiResponse,
   FnTotalProductionItem,
   FnTotalCollectionItem,
   FnNetProfitTrendItem,

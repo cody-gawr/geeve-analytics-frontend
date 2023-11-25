@@ -1,5 +1,5 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { JeeveError } from '@/newapp/models';
 import { Dentist } from '@/newapp/models/dentist';
 import { DentistApiActions, DentistPageActions } from '../actions';

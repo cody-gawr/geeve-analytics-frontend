@@ -1,7 +1,7 @@
 import { ChartTip } from '../../../models/dashboard/finance';
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { DashboardApiActions, DashboardPageActions } from '../actions';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { JeeveError } from '@/newapp/models';
 
 export interface DashboardState {

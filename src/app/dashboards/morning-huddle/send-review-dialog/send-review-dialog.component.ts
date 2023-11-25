@@ -4,7 +4,7 @@ import {
   MatLegacyDialogRef as MatDialogRef,
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
 } from '@angular/material/legacy-dialog';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { ClinicSettingsService } from '../../../clinic-settings/clinic-settings.service';
 import { HeaderService } from '../../../layouts/full/header/header.service';

@@ -19,7 +19,7 @@ import { AppConstants } from '../../app.constants';
 import { environment } from '../../../environments/environment';
 import { ChartstipsService } from '../../shared/chartstips.service';
 import { ClinicianAnalysisService } from '../cliniciananalysis/cliniciananalysis.service';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import * as moment from 'moment';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { take, Subject, interval } from 'rxjs';
