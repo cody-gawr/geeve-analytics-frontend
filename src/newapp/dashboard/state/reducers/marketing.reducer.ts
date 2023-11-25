@@ -138,21 +138,6 @@ export const marketingFeature = createFeature({
         };
       }
     ),
-    // on(
-    //   MarketingApiActions.mkNewPatientsByReferralFailure,
-    //   (state, { error }): MarketingState => {
-    //     const { isLoadingData, errors } = state;
-    //     return {
-    //       ...state,
-    //       newPatientsByReferralData: null,
-    //       isLoadingData: _.filter(
-    //         isLoadingData,
-    //         (n) => n != "mkNumPatientsByReferral"
-    //       ),
-    //       errors: [...errors, { ...error, api: "mkNumPatientsByReferral" }],
-    //     };
-    //   }
-    // ),
     // mkNewPatientsByReferralTrend
     on(
       MarketingPageActions.loadMkNewPatientsByReferralTrend,
@@ -402,7 +387,6 @@ export const marketingFeature = createFeature({
         };
       }
     ),
-
     // mkActivePatientsTrend
     on(
       MarketingPageActions.loadMkActivePatientsTrend,

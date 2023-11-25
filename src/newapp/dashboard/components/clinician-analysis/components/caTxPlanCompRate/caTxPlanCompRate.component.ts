@@ -63,13 +63,9 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   public datasets: any[] = [{ data: [] }];
   public labels: any[] = [];
   public prev: number = 0;
-
   public total: number = 0;
-
   public average: number = 0;
-
   public goal: number = 0;
-  public maxGoal: number = 0;
   public gaugeValue: number = 0;
   public gaugeLabel: string = '';
 
@@ -153,7 +149,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(([avgMode, isDentistMode, isTrend, data, trendData]) => {
-        if (!isDentistMode || !isTrend) {
+        if (!(isDentistMode && isTrend)) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
         } else {
@@ -166,7 +162,6 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
         this.average = data.total;
         this.goal = data.goal;
         this.tableData = data.tableData ?? [];
-        this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
 
