@@ -746,7 +746,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     );
     this.unSchedulehours = _.round(
       _.chain(this.appointmentCards.data)
-        .sumBy((item: any) => parseInt(item.outstanding_item_value))
+        .sumBy((item: any) => Math.round(item.outstanding_item_value))
         .value(),
       0
     );

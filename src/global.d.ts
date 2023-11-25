@@ -409,6 +409,13 @@ declare global {
     totalTa: number;
   }
 
+  interface FuApiQueryParams {
+    clinicId: string | number;
+    startDate: string;
+    endDate: string;
+    duration?: string;
+  }
+
   type FU_API_ENDPOINTS =
     | 'fuGetConversion'
     | 'fuGetConversionPerUser'
