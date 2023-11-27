@@ -73,7 +73,6 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   average = 0;
 
   goal = 0;
-  maxGoal = 0;
   gaugeValue = 0;
   gaugeLabel = '';
 
@@ -337,7 +336,6 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         this.average = data.total;
         this.goal = data.goal;
         this.tableData = data.tableData ?? [];
-        this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
 
