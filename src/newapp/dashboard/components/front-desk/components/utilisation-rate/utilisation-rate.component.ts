@@ -292,7 +292,6 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
     hover: { mode: null },
     responsive: true,
     maintainAspectRatio: false,
-    // barThickness: 10,
     animation: {
       duration: 1,
       easing: 'linear',
@@ -315,7 +314,6 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
       y: {
         min: 0,
         max: 100,
-        // stacked:true,
         ticks: {
           callback: function (label, index, labels) {
             return label + '%';

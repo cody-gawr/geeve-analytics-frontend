@@ -45,7 +45,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
-      this.clinicFacade.currentClinicId$,
+      this.clinicFacade.clinics$,
       this.layoutFacade.dateRange$,
       this.dashbordFacade.connectedWith$,
       this.router.routerState.root.queryParams,
@@ -55,13 +55,23 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
         const [
-          clinicId,
+          clinics,
           dateRange,
           connectedWith,
           route,
           trend,
           connectedClinicId,
         ] = params;
+
+        const clinicId =
+          clinics.length > 0
+            ? clinics.length > 1
+              ? clinics.map(c => c.id).join(',')
+              : clinics[0].id
+            : null;
+        const isEachClinicPmsCoreOrExact =
+          clinics.every(c => c.pms == 'core') ||
+          clinics.every(c => c.pms == 'exact');
         if (clinicId == null) return;
         //if (typeof clinicId !== "string" && connectedWith == null) return;
         const newConnectedId =
@@ -89,9 +99,10 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
               queryWhEnabled,
               connectedWith: connectedWith,
             };
-
-            this.frontDeskFacade.loadFdUtilisationRate(params);
-            this.frontDeskFacade.loadFdUtilisationRateByDay(params);
+            if (!isEachClinicPmsCoreOrExact) {
+              this.frontDeskFacade.loadFdUtilisationRate(params);
+              this.frontDeskFacade.loadFdUtilisationRateByDay(params);
+            }
             this.frontDeskFacade.loadFdRecallRate(params);
             this.frontDeskFacade.loadFdReappointRate(params);
             this.frontDeskFacade.loadFdNumTicks(params);
@@ -100,11 +111,13 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
             break;
           case 'current':
           case 'historic':
-            this.frontDeskFacade.loadFdUtilisationRateTrend(
-              clinicId,
-              trend === 'current' ? 'c' : 'h',
-              queryWhEnabled
-            );
+            if (!isEachClinicPmsCoreOrExact) {
+              this.frontDeskFacade.loadFdUtilisationRateTrend(
+                clinicId,
+                trend === 'current' ? 'c' : 'h',
+                queryWhEnabled
+              );
+            }
             this.frontDeskFacade.loadFdRecallRateTrend(
               clinicId,
               trend === 'current' ? 'c' : 'h',
