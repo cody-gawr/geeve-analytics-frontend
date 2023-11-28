@@ -73,7 +73,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
           clinics.every(c => c.pms == 'core') ||
           clinics.every(c => c.pms == 'exact');
         if (clinicId == null) return;
-        //if (typeof clinicId !== "string" && connectedWith == null) return;
+
         const newConnectedId =
           typeof clinicId == 'string'
             ? _.min(clinicId.split(',').map(c => parseInt(c)))
