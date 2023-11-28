@@ -29,7 +29,9 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.isConnectedWith$;
+    return this.dashboardFacade.connectedWith$.pipe(
+      map(connectWith => connectWith === 'xero' || connectWith === 'myob')
+    );
   }
 
   constructor(

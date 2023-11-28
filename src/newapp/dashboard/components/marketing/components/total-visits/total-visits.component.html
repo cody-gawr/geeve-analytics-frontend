@@ -21,55 +21,44 @@
       <div class="chart-gauge total-visits-gauge">
         <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
         <ng-template #mainElem>
+          <ngx-gauge
+            *ngIf="
+              !(isLoading$ | async) &&
+              !(isMultipleClinic$ | async) &&
+              (hasData$ | async) &&
+              !(isTrend$ | async)
+            "
+            type="arch"
+            [value]="totalVisitsVal"
+            [thick]="20"
+            foregroundColor="#4ccfae"
+            backgroundColor="#f4f0fa"
+            cap="round"
+            size="250"
+            [max]="maxTotalVisitsGoal">
+          </ngx-gauge>
+          <canvas
+            #mkTotalVisits
+            *ngIf="
+              !(isLoading$ | async) &&
+              ((isTrend$ | async) || (isMultipleClinic$ | async)) &&
+              (hasData$ | async)
+            "
+            baseChart
+            [datasets]="datasets"
+            [labels]="labels"
+            [legend]="false"
+            type="bar"
+            [options]="chartOptions$ | async"
+            [colors]="lineChartColors">
+          </canvas>
+
           <spin-loader
             class="empty-placeholder"
-            *ngIf="
-              !(isConnectedWith$ | async) && !(isMultipleClinic$ | async);
-              else chartElem4
-            "
+            *ngIf="!(hasData$ | async)"
             [disableSpin]="true">
-            Please connect to Xero/MYOB to display this chart
+            You have no visits in the selected period
           </spin-loader>
-          <ng-template #chartElem4>
-            <ngx-gauge
-              *ngIf="
-                !(isLoading$ | async) &&
-                !(isMultipleClinic$ | async) &&
-                (hasData$ | async) &&
-                !(isTrend$ | async)
-              "
-              type="arch"
-              [value]="totalVisitsVal"
-              [thick]="20"
-              foregroundColor="#4ccfae"
-              backgroundColor="#f4f0fa"
-              cap="round"
-              size="250"
-              [max]="maxTotalVisitsGoal">
-            </ngx-gauge>
-            <canvas
-              #mkTotalVisits
-              *ngIf="
-                !(isLoading$ | async) &&
-                ((isTrend$ | async) || (isMultipleClinic$ | async)) &&
-                (hasData$ | async)
-              "
-              baseChart
-              [datasets]="datasets"
-              [labels]="labels"
-              [legend]="false"
-              type="bar"
-              [options]="chartOptions$ | async"
-              [colors]="lineChartColors">
-            </canvas>
-
-            <spin-loader
-              class="empty-placeholder"
-              *ngIf="!(hasData$ | async)"
-              [disableSpin]="true">
-              You have no visits in the selected period
-            </spin-loader>
-          </ng-template>
         </ng-template>
       </div>
       <div class="chart-foot" *ngIf="!(isTrend$ | async)">
