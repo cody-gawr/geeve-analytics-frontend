@@ -22,12 +22,14 @@
 </div>
 <ng-template #placeh>
   <div class="stats-card-placeh">
-    <p *ngIf="!isFullMonths">
-      Please select a date range consisting of full months to view Accounting
-      charts
+    <p *ngIf="!isConnectedWith; else el0">
+      Please connect to Xero/MYOB to display this chart
     </p>
-    <p *ngIf="!isConnectedWith">
-      Please ensure your Xero/MYOB account is connected
-    </p>
+    <ng-template #e10>
+      <p *ngIf="!isFullMonths">
+        Please select a date range consisting of full months to view Accounting
+        charts
+      </p>
+    </ng-template>
   </div>
 </ng-template>
