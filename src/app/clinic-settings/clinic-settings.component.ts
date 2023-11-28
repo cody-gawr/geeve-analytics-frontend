@@ -170,7 +170,6 @@ export class ClinicSettingsComponent implements OnInit {
         contactName: [null],
         address: [null],
         timezone: [null],
-        // practice_size: [null, Validators.compose([Validators.required])],
         post_op_calls: [null],
         subtracted_accounts: [null],
         fta_uta: [null, Validators.compose([Validators.required])],
@@ -188,12 +187,6 @@ export class ClinicSettingsComponent implements OnInit {
         uta_followup_days_later: this.isExact
           ? null
           : [null, Validators.compose([Validators.required])],
-        //  referral_weeks: [null, Validators.compose([Validators.required])],
-        // unscheduled_patients_days: [null, Validators.compose([Validators.required])],
-        // facebook: [null],
-        // twitter: [null],
-        // linkedin: [null],
-        // instagram: [null],
       });
     }
 
