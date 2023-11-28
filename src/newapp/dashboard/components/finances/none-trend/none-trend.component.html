@@ -56,7 +56,6 @@
       [toolTip]="toolTipFnProductionPerVisit$ | async"></prod-per-clinic-chart>
     <prod-per-visit-chart
       class="prod-per-visit-chart"
-      *ngIf="isConnectedWith$ | async"
       [toolTip]="getChartTip(32) | async"></prod-per-visit-chart>
     <total-discount-chart
       [toolTip]="getChartTip(34) | async"
