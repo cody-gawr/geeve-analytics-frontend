@@ -22,11 +22,7 @@
         <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
         <ng-template #chartElem>
           <canvas
-            *ngIf="
-              datasets.length > 0 &&
-              datasets[0].data.length > 0 &&
-              !(isDisconnectedPlatform$ | async)
-            "
+            *ngIf="datasets.length > 0 && datasets[0].data.length > 0"
             baseChart
             [datasets]="datasets"
             [labels]="labels"
@@ -34,12 +30,6 @@
             [legend]="legend$ | async"
             [type]="chartType$ | async">
           </canvas>
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="isDisconnectedPlatform$ | async"
-            [disableSpin]="true">
-            Please connect to Xero/MYOB to display this chart
-          </spin-loader>
           <spin-loader
             class="empty-placeholder"
             *ngIf="
