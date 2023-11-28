@@ -82,7 +82,12 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.isConnectedWith$;
+    return this.dashboardFacade.connectedWith$.pipe(
+      map(v => {
+        console.log(v);
+        return v === 'myob' || v === 'xero';
+      })
+    );
   }
 
   get isFullMonthsDateRange$() {

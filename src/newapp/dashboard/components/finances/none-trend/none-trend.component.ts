@@ -60,7 +60,9 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashbordFacade.isConnectedWith$;
+    return this.dashbordFacade.connectedWith$.pipe(
+      map(v => v === 'xero' || v === 'myob')
+    );
   }
 
   get isLoadingProductionPerVisit$() {

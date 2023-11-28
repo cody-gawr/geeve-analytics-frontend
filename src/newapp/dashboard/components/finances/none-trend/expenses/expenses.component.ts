@@ -11,6 +11,7 @@ import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { MkSelectExpensesModalComponent } from '../select-expenses-modal/select-expenses-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 
 @Component({
   selector: 'finance-expense-chart',
@@ -59,6 +60,12 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isConnectedWith$() {
+    return this.dashboardFacade.connectedWith$.pipe(
+      map(v => v === 'xero' || v === 'myob')
+    );
+  }
+
   colorScheme = {
     domain: [
       '#6edbba',
@@ -75,7 +82,8 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
   constructor(
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private dashboardFacade: DashboardFacade
   ) {
     combineLatest([
       this.financeFacade.fnExpensesData$,

@@ -371,9 +371,11 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       this.dashboardFacade.connectedWith$,
       this.financeFacade.profitTrendChartName$,
     ]).pipe(
-      map(([v, chartName]) => {
-        const isDisconnected = !(v && v != 'none');
-        return isDisconnected && chartName !== 'Collection';
+      map(([connectWith, chartName]) => {
+        if (chartName === 'Net Profit' || chartName === 'Net Profit %') {
+          return !(connectWith === 'xero' || connectWith === 'myob');
+        }
+        return false;
       })
     );
   }
