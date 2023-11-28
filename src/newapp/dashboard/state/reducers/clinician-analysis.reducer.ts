@@ -1585,7 +1585,7 @@ export const selectIsLoadingCaTxPlanAvgFeeAll = createSelector(
     isProposedFeeTrend,
     isCompleteFeeTrend
   ) => {
-    const isTrend = currentDentistId === 'all' || trendMode !== 'off';
+    const isTrend = currentDentistId !== 'all' && trendMode !== 'off';
     if (chartName === 'Avg. Completed Fees') {
       return isTrend ? isCompleteFeeTrend : isCompleteFee;
     } else {
@@ -2144,7 +2144,7 @@ export const selectIsLoadingCaRecallRateAll = createSelector(
     isRecallTrend,
     isReappTrend
   ) => {
-    const isTrend = currentDentistId === 'all' || trendMode !== 'off';
+    const isTrend = currentDentistId !== 'all' && trendMode !== 'off';
     if (chartName === 'Recall Prebook Rate') {
       return isTrend ? isRecallTrend : isRecall;
     } else {
