@@ -10,20 +10,13 @@ export function localStorageSyncReducer(
   return localStorageSync({
     keys: [
       {
-        clinic: [
-          //'clinics',
-          'currentSingleClinicId',
-          'currentMultiClinicIds',
-        ],
+        clinic: ['currentSingleClinicId', 'currentMultiClinicIds'],
       },
       {
         dentist: ['currentDentistId'],
       },
       {
-        auth: [
-          'authUserData',
-          //"rolesIndividual"
-        ],
+        auth: ['authUserData'],
       },
       { layout: ['dateRange', 'trend', 'average', 'compare'] },
     ],
