@@ -25,40 +25,49 @@
         charts
       </spin-loader>
       <ng-template #chartElem>
-        <spin-loader *ngIf="isLoading$ | async; else chartElem0"></spin-loader>
-        <ng-template #chartElem0>
+        <spin-loader
+          class="empty-placeholder"
+          *ngIf="!(isConnectedWith$ | async); else ce0"
+          [disableSpin]="true">
+          Please connect to Xero/MYOB to display this chart
+        </spin-loader>
+        <ng-template #ce0>
           <spin-loader
-            class="empty-placeholder"
-            *ngIf="!(hasData$ | async); else chartElem2"
-            [disableSpin]="true">
-            No expenses found for the selected period
-          </spin-loader>
-          <ng-template #chartElem2>
-            <canvas
-              *ngIf="isMultipleClinic$ | async; else singleChart"
-              baseChart
-              [datasets]="datasets"
-              [labels]="labels"
-              [options]="labelBarOptionsMultiPercentage"
-              [legend]="false"
-              type="bar"></canvas>
-            <ng-template #singleChart>
-              <ngx-charts-pie-chart
-                [view]="[500, 320]"
-                [scheme]="colorScheme"
-                [trimLabels]="true"
-                [maxLabelLength]="15"
-                [results]="selectedData"
+            *ngIf="isLoading$ | async; else chartElem0"></spin-loader>
+          <ng-template #chartElem0>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!(hasData$ | async); else chartElem2"
+              [disableSpin]="true">
+              No expenses found for the selected period
+            </spin-loader>
+            <ng-template #chartElem2>
+              <canvas
+                *ngIf="isMultipleClinic$ | async; else singleChart"
+                baseChart
+                [datasets]="datasets"
+                [labels]="labels"
+                [options]="labelBarOptionsMultiPercentage"
                 [legend]="false"
-                [explodeSlices]="isExplodeSlices"
-                [labels]="isShowLabels"
-                [arcWidth]="arcWidth"
-                [doughnut]="isDoughnut"
-                [gradient]="isGradient"
-                [tooltipDisabled]="isTooltipDisabled"
-                [tooltipText]="pieTooltipText"
-                [labelFormatting]="pieLabelText">
-              </ngx-charts-pie-chart>
+                type="bar"></canvas>
+              <ng-template #singleChart>
+                <ngx-charts-pie-chart
+                  [view]="[500, 320]"
+                  [scheme]="colorScheme"
+                  [trimLabels]="true"
+                  [maxLabelLength]="15"
+                  [results]="selectedData"
+                  [legend]="false"
+                  [explodeSlices]="isExplodeSlices"
+                  [labels]="isShowLabels"
+                  [arcWidth]="arcWidth"
+                  [doughnut]="isDoughnut"
+                  [gradient]="isGradient"
+                  [tooltipDisabled]="isTooltipDisabled"
+                  [tooltipText]="pieTooltipText"
+                  [labelFormatting]="pieLabelText">
+                </ngx-charts-pie-chart>
+              </ng-template>
             </ng-template>
           </ng-template>
         </ng-template>
