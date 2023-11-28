@@ -422,4 +422,111 @@ declare global {
     | 'fuGetFollowupCompletion'
     | 'fuGetOutcome'
     | 'fuGetPerUser';
+
+  interface FuGetConversionItem {
+    bookedPercent: string | number;
+    clinicId: string | number;
+    numBooked: string | number;
+    totalNum: string | number;
+    type: string;
+  }
+
+  interface FuGetConversionApiResponse {
+    app: string;
+    data: FuGetConversionItem[];
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+    goals?: number;
+  }
+
+  interface FuGetConversionPerUserItem {
+    bookedPercent: string | number;
+    clinicId: string | number;
+    completedBy: string;
+    completedById: string | number;
+    numBooked: string | number;
+    totalNum: string | number;
+    type: string;
+  }
+
+  interface FuGetConversionPerUserApiResponse {
+    app: string;
+    data: Record<
+      'ftas' | 'recalls' | 'ticks' | 'utas',
+      FuGetConversionPerUserItem[]
+    >;
+    message: string;
+    status: string | number;
+    totalFta: number;
+    totalRecall: number;
+    totalTaFta: number;
+    totalTaRecall: number;
+    totalTaTick: number;
+    totalTaUta: number;
+    totalTick: number;
+    totalUta: number;
+  }
+
+  interface FuGetFollowupCompletionItem {
+    clinicIdParameter: string | number;
+    completionRate: string | number;
+    numCompleted: string | number;
+    numTotal: string | number;
+    type: string | number;
+  }
+
+  interface FuGetFollowupCompletionApiResponse {
+    app: string;
+    data: FuGetFollowupCompletionItem[];
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+    goals?: number;
+  }
+
+  interface FuGetOutcomeItem {
+    clinicId: string | number;
+    numFollowups: string | number;
+    numStatus: string | number;
+    status: string;
+    statusPercent: string | number;
+    type: string;
+  }
+
+  interface FuGetOutcomeApiResponse {
+    app: string;
+    data: Record<'ftas' | 'recalls' | 'ticks' | 'utas', FuGetOutcomeItem[]>;
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+  }
+
+  interface FuGetPerUserItem {
+    clinicId: string | number;
+    completedBy: string;
+    completedById: string | number;
+    numFtas: string | number;
+    numPostop: string | number;
+    numRecall: string | number;
+    numTicks: string | number;
+    numTotal: string | number;
+    numUtas: string | number;
+  }
+
+  interface FuGetPerUserApiResponse {
+    app: string;
+    data: FuGetPerUserItem[];
+    message: string;
+    status: string | number;
+    total: number;
+    totalAverage: number;
+    totalTa: number;
+  }
 }

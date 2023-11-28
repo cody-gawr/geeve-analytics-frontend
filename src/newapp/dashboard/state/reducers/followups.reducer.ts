@@ -84,3 +84,190 @@ export const selectIsLoadingFuGetPerUser = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'fuGetPerUser') >= 0
 );
+
+export const selectFuGetConversionChartData = createSelector(
+  selectResBodyList,
+  bodyList => {
+    //
+    let resBody: FuGetConversionApiResponse = bodyList['fuGetConversion'];
+    let chartData,
+      chartLabels = [];
+    resBody.data.forEach(item => {
+      chartData.push(Math.round(<number>item.bookedPercent));
+      chartLabels.push(item.type);
+    });
+    return {
+      datasets: [
+        {
+          data: chartData,
+        },
+      ],
+      total: resBody.total,
+      prev: resBody.totalTa,
+      goal: resBody?.goals,
+    };
+  }
+);
+
+export const selectFuGetConversionPerUserChartData = createSelector(
+  selectResBodyList,
+  bodyList => {
+    let resBody: FuGetConversionPerUserApiResponse =
+      bodyList['fuGetConversionPerUser'];
+    let chartDataFtas = [],
+      chartLabelsFtas = [];
+    resBody.data.ftas?.forEach(fta => {
+      chartDataFtas.push(Math.round(<number>fta.bookedPercent));
+      chartLabelsFtas.push(fta.completedBy);
+    });
+    let chartDataUtas = [],
+      chartLabelsUtas = [];
+    resBody.data.utas?.forEach(uta => {
+      chartDataUtas.push(Math.round(<number>uta.bookedPercent));
+      chartLabelsUtas.push(uta.completedBy);
+    });
+    let chartDataRecalls = [],
+      chartLabelsRecalls = [];
+    resBody.data.recalls?.forEach(recall => {
+      chartDataRecalls.push(Math.round(<number>recall.bookedPercent));
+      chartLabelsRecalls.push(recall.completedBy);
+    });
+
+    let chartDataTicks = [],
+      chartLabelsTicks = [];
+    resBody.data.ticks?.forEach(ticks => {
+      chartDataTicks.push(Math.round(<number>ticks.bookedPercent));
+      chartLabelsTicks.push(ticks.completedBy);
+    });
+
+    return {
+      datasetsFta: [{ data: chartDataFtas }],
+      labelsFta: chartLabelsFtas,
+      datasetsUta: [{ data: chartDataUtas }],
+      labelsUta: chartLabelsUtas,
+      datasetsRecalls: [{ data: chartDataRecalls }],
+      labelsRecalls: chartLabelsRecalls,
+      datasetsTicks: [{ data: chartDataTicks }],
+      labelsTicks: chartLabelsTicks,
+      totalFta: resBody.totalFta,
+      totalUta: resBody.totalUta,
+      totalRecalls: resBody.totalRecall,
+      totalTicks: resBody.totalTick,
+      prevTicks: resBody.totalTaTick,
+      prevRecalls: resBody.totalTaRecall,
+      prevFta: resBody.totalTaFta,
+      prevUta: resBody.totalTaUta,
+    };
+  }
+);
+
+export const selectFuGetFollowupCompletionChartData = createSelector(
+  selectResBodyList,
+  bodyList => {
+    let resBody: FuGetFollowupCompletionApiResponse =
+      bodyList['fuGetFollowupCompletion'];
+    let chartData = [],
+      chartLabels = [];
+    resBody.data.forEach(item => {
+      if (
+        parseInt(<string>item.completionRate) >= 0 &&
+        parseInt(<string>item.numTotal) > 0
+      ) {
+        chartData.push(item.completionRate);
+        chartLabels.push(item.type);
+      }
+    });
+
+    return {
+      datasets: [
+        {
+          data: chartData,
+        },
+      ],
+      total: resBody.total,
+      prev: resBody.totalTa,
+      goal: resBody?.goals,
+    };
+  }
+);
+
+export const selectFuGetOutcomeChartData = createSelector(
+  selectResBodyList,
+  bodyList => {
+    let resBody: FuGetOutcomeApiResponse = bodyList['fuGetOutcome'];
+    let tick = [],
+      recall = [],
+      fta = [],
+      uta = [];
+    resBody.data.ticks?.forEach(item => {
+      tick.push({
+        name: item.status,
+        value: item.statusPercent,
+      });
+    });
+
+    resBody.data.recalls?.forEach(item => {
+      recall.push({
+        name: item.status,
+        value: item.statusPercent,
+      });
+    });
+
+    resBody.data.utas?.forEach(item => {
+      uta.push({
+        name: item.status,
+        value: item.statusPercent,
+      });
+    });
+
+    resBody.data.ftas?.forEach(item => {
+      fta.push({
+        name: item.status,
+        value: item.statusPercent,
+      });
+    });
+
+    return {
+      total: resBody.total,
+      prev: resBody.totalTa,
+      ticks: tick,
+      recalls: recall,
+      utas: uta,
+      ftas: fta,
+    };
+  }
+);
+
+export const selectFuGetPerUserChartData = createSelector(
+  selectResBodyList,
+  bodyList => {
+    let resBody: FuGetPerUserApiResponse = bodyList['fuGetPerUser'];
+
+    let chartData1 = [],
+      chartData2 = [],
+      chartData3 = [],
+      chartData4 = [],
+      chartData5 = [],
+      chartLabels = [];
+
+    resBody.data.forEach(item => {
+      chartData1.push(item.numTicks);
+      chartData2.push(item.numPostop);
+      chartData3.push(item.numRecall);
+      chartData4.push(item.numFtas);
+      chartData5.push(item.numUtas);
+      chartLabels.push(item.completedBy);
+    });
+
+    return {
+      datasets: [
+        { data: chartData1, label: 'Ticks' },
+        { data: chartData2, label: 'Post Op' },
+        { data: chartData3, label: 'Recall' },
+        { data: chartData4, label: 'Ftas' },
+        { data: chartData5, label: 'Utas' },
+      ],
+      labels: chartLabels,
+    };
+  }
+);
