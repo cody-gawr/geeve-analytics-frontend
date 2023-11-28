@@ -19,12 +19,12 @@
     <div class="expenses-ngx-chart">
       <spin-loader
         class="empty-placeholder"
-        *ngIf="!(isConnectedWith$ | async); else chartElem"
+        *ngIf="!(isConnectedWith$ | async); else chartEle"
         [disableSpin]="true">
         Please connect to Xero/MYOB to display this chart
       </spin-loader>
 
-      <ng-template #chartElem>
+      <ng-template #chartEle>
         <spin-loader
           class="empty-placeholder"
           *ngIf="!isFullMonths; else ce0"
