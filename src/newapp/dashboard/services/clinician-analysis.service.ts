@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import camelcaseKeys from 'camelcase-keys';
 import moment from 'moment';
-import { map } from 'rxjs';
+import { map, Subject, Observable, takeUntil } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +13,17 @@ export class ClinicianAnalysisService {
 
   constructor(private http: HttpClient) {}
 
+  destroy: Record<CA_API_ENDPOINTS, Subject<void>> | {} = {};
+  destroy$: Record<CA_API_ENDPOINTS, Observable<void>> | {} = {};
   caNoneTrendApiRequest(
     api: CA_API_ENDPOINTS,
     queryParams: CaNoneTrendQueryParams
   ) {
+    if (!Object.keys(this.destroy).includes(api)) {
+      this.destroy[api] = new Subject<void>();
+      this.destroy$[api] = this.destroy[api].asObservable();
+    }
+    this.destroy[api].next();
     const params = {
       clinic_id: queryParams.clinicId,
       start_date: moment.isMoment(queryParams.startDate)
@@ -42,13 +49,23 @@ export class ClinicianAnalysisService {
         params: params,
         withCredentials: true,
       })
-      .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
+      .pipe(
+        takeUntil(this.destroy$[api]),
+        map(resBody => <any>camelcaseKeys(resBody, { deep: true }))
+      );
   }
 
+  trendDestroy: Record<CA_API_ENDPOINTS_TREND, Subject<void>> | {} = {};
+  trendDestroy$: Record<CA_API_ENDPOINTS_TREND, Observable<void>> | {} = {};
   caTrendApiRequest(
     api: CA_API_ENDPOINTS_TREND,
     queryParams: CaTrendQueryParams
   ) {
+    if (!Object.keys(this.trendDestroy).includes(api)) {
+      this.trendDestroy[api] = new Subject<void>();
+      this.trendDestroy$[api] = this.trendDestroy[api].asObservable();
+    }
+    this.trendDestroy[api].next();
     return this.http
       .get(`${this.apiUrl}/ClinicianAnalysis/${api}`, {
         params: {
@@ -59,6 +76,9 @@ export class ClinicianAnalysisService {
         },
         withCredentials: true,
       })
-      .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
+      .pipe(
+        takeUntil(this.trendDestroy$[api]),
+        map(resBody => <any>camelcaseKeys(resBody, { deep: true }))
+      );
   }
 }
