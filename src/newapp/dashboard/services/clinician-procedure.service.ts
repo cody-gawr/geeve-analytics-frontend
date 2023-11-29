@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import camelcaseKeys from 'camelcase-keys';
 import moment from 'moment';
-import { map } from 'rxjs';
+import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +20,9 @@ export class ClinicianProcedureService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
+
+  cpPredictorAnalysisDestroy = new Subject<void>();
+  cpPredictorAnalysisDestroy$ = this.cpPredictorAnalysisDestroy.asObservable();
   cpPredictorAnalysis({
     clinicId,
     startDate,
@@ -27,6 +30,7 @@ export class ClinicianProcedureService {
     queryWhEnabled,
     dentistId = undefined,
   }) {
+    this.cpPredictorAnalysisDestroy.next();
     return this.http
       .get(`${this.apiUrl}/ClinicianProcedures/cpPredictorAnalysis`, {
         params: {
@@ -39,6 +43,7 @@ export class ClinicianProcedureService {
         withCredentials: true,
       })
       .pipe(
+        takeUntil(this.cpPredictorAnalysisDestroy$),
         map(
           resBody =>
             <CpPredictorAnalysisApiResponse>(
@@ -133,6 +138,8 @@ export class ClinicianProcedureService {
       );
   }
 
+  cpRevPerProcedureDestroy = new Subject<void>();
+  cpRevPerProcedureDestroy$ = this.cpPredictorAnalysisDestroy.asObservable();
   cpRevPerProcedure({
     clinicId,
     startDate,
@@ -140,6 +147,7 @@ export class ClinicianProcedureService {
     queryWhEnabled,
     dentistId = undefined,
   }) {
+    this.cpRevPerProcedureDestroy.next();
     return this.http
       .get(`${this.apiUrl}/ClinicianProcedures/cpRevPerProcedure`, {
         params: {
@@ -152,6 +160,7 @@ export class ClinicianProcedureService {
         withCredentials: true,
       })
       .pipe(
+        takeUntil(this.cpRevPerProcedureDestroy$),
         map(
           resBody =>
             <CpRevPerProcedureApiResponse>camelcaseKeys(resBody, { deep: true })
@@ -159,6 +168,8 @@ export class ClinicianProcedureService {
       );
   }
 
+  cpPredictorRatioDestroy = new Subject<void>();
+  cpPredictorRatioDestroy$ = this.cpPredictorAnalysisDestroy.asObservable();
   cpPredictorRatio({
     clinicId,
     startDate,
@@ -167,6 +178,7 @@ export class ClinicianProcedureService {
     queryWhEnabled,
     dentistId = undefined,
   }) {
+    this.cpPredictorRatioDestroy.next();
     return this.http
       .get(`${this.apiUrl}/ClinicianProcedures/cpPredictorRatio`, {
         params: {
@@ -180,6 +192,7 @@ export class ClinicianProcedureService {
         withCredentials: true,
       })
       .pipe(
+        takeUntil(this.cpPredictorRatioDestroy$),
         map(
           resBody =>
             <CpPredictorRatioApiResponse>camelcaseKeys(resBody, { deep: true })
@@ -213,6 +226,8 @@ export class ClinicianProcedureService {
       );
   }
 
+  cpReferralsDestroy = new Subject<void>();
+  cpReferralsDestroy$ = this.cpReferralsDestroy.asObservable();
   cpReferrals({
     clinicId,
     startDate,
@@ -220,7 +235,9 @@ export class ClinicianProcedureService {
     duration,
     queryWhEnabled,
     dentistId = undefined,
-  }) {
+  }): Observable<CpReferralsApiResponse> {
+    this.cpReferralsDestroy.next();
+
     return this.http
       .get(`${this.apiUrl}/ClinicianProcedures/cpReferrals`, {
         params: {
@@ -234,6 +251,7 @@ export class ClinicianProcedureService {
         withCredentials: true,
       })
       .pipe(
+        takeUntil(this.cpReferralsDestroy$),
         map(
           resBody =>
             <CpReferralsApiResponse>camelcaseKeys(resBody, { deep: true })

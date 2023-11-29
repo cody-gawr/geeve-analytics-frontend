@@ -15,6 +15,7 @@ import {
   distinctUntilChanged,
 } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 
 @Component({
   selector: 'cp-clinician-referrals-chart',
@@ -110,7 +111,8 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private cpFacade: ClinicianProcedureFacade,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private dentistFacade: DentistFacade
   ) {}
 
   ngOnInit(): void {
@@ -118,13 +120,14 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
       this.cpFacade.cpReferralsChartData$,
       this.cpFacade.cpReferralsTrendChartData$,
       this.isTrend$,
+      this.dentistFacade.isDentistMode$,
     ])
       .pipe(
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
         takeUntil(this.destroy$)
       )
-      .subscribe(([chartData, trendChartData, isTrend]) => {
-        if (isTrend) {
+      .subscribe(([chartData, trendChartData, isTrend, dentistMode]) => {
+        if (dentistMode && isTrend) {
           this.datasets = trendChartData.datasets;
           this.labels = trendChartData.labels;
         } else {

@@ -53,7 +53,7 @@
           [disableSpin]="false"></spin-loader>
         <ng-template #chartElem>
           <canvas
-            *ngIf="!(isLoading$ | async) && (hasData$ | async)"
+            *ngIf="!(isLoading$ | async) && hasData"
             baseChart
             [datasets]="datasets"
             [labels]="labels"
@@ -64,7 +64,7 @@
           </canvas>
           <spin-loader
             class="empty-placeholder"
-            *ngIf="!(hasData$ | async)"
+            *ngIf="!hasData"
             [disableSpin]="true">
             {{ noDataAlertMessage$ | async }}
           </spin-loader>

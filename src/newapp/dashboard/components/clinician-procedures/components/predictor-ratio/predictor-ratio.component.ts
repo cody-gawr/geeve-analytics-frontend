@@ -259,9 +259,9 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
         pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
-      bar: {
-        borderWidth: 10,
-      },
+      // bar: {
+      //   borderWidth: 10,
+      // },
     },
     responsive: true,
     maintainAspectRatio: false,

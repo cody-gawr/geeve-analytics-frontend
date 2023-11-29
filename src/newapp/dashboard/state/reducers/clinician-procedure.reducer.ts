@@ -17,7 +17,10 @@ import {
   CpReferralsTrendDataItem,
   CpRevPerProcedureApiResponse,
 } from '@/newapp/models/dashboard/clinician-procedure';
-import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.reducer';
+import {
+  selectCurrentClinics,
+  selectIsMultiClinicsSelected,
+} from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors1 } from '@/newapp/shared/constants';
 import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.reducer';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
@@ -1120,11 +1123,12 @@ export const selectCpPredictorRatioChartData = createSelector(
 export const selectCpReferralsChartData = createSelector(
   selectCpReferralsData,
   selectCpReferralsVisibility,
-  (resData, visibility) => {
+  selectIsMultiClinicsSelected,
+  (resData, visibility, isMultiClinics) => {
     if (!resData) {
       return {};
     }
-    const chartData1 = [],
+    let chartData1 = [],
       chartLabels1 = [],
       chartData2 = [],
       chartLabels2 = [],
@@ -1137,39 +1141,78 @@ export const selectCpReferralsChartData = createSelector(
       pieChartInternalPrev = 0,
       pieChartExternalPrev = 0,
       pieChartCombinedPrev = 0;
+    if (isMultiClinics) {
+      const data: _.CollectionChain<{
+        treatItemName: string;
+        internal: number;
+        external: number;
+        total: number;
+      }> = _.chain(resData.data)
+        .groupBy('treatItemName')
+        .map((items: any[], treatItemName: string) => {
+          return {
+            treatItemName,
+            internal: _.sumBy(items, item => Number(item.internal)),
+            external: _.sumBy(items, item => Number(item.external)),
+            total: _.sumBy(items, item => Number(item.total)),
+          };
+        });
+      const data1 = data
+        .orderBy(item => item.internal, 'desc')
+        .filter(item => item.internal > 0);
+      const data2 = data
+        .orderBy(item => item.external, 'desc')
+        .filter(item => item.external > 0);
+      const data3 = data
+        .orderBy(item => item.total, 'desc')
+        .filter(item => item.total > 0);
+      chartData1 = data1.map(v => v.internal).value();
+      chartLabels1 = data1.map(v => v.treatItemName).value();
+      pieChartInternalTotal = data1.sumBy(item => item.internal).value();
 
-    resData.data.forEach(item => {
-      if (Math.round(parseFloat(<string>item.total)) > 0) {
-        if (Math.round(parseFloat(<string>item.internal)) > 0) {
-          chartData1.push(item.internal);
-          chartLabels1.push(item.treatItemName);
+      chartData2 = data2.map(v => v.external).value();
+      chartLabels2 = data2.map(v => v.treatItemName).value();
+      pieChartExternalTotal = data2.sumBy(item => item.external).value();
+
+      chartData3 = data3.map(v => v.total).value();
+      chartLabels3 = data3.map(v => v.treatItemName).value();
+      pieChartCombinedTotal = data3.sumBy(item => item.total).value();
+    } else {
+      resData.data.forEach(item => {
+        if (Math.round(parseFloat(<string>item.total)) > 0) {
+          if (Math.round(parseFloat(<string>item.internal)) > 0) {
+            chartData1.push(item.internal);
+            chartLabels1.push(item.treatItemName);
+          }
+          if (Math.round(parseFloat(<string>item.external)) > 0) {
+            chartData2.push(item.external);
+            chartLabels2.push(item.treatItemName);
+          }
+
+          chartData3.push(item.total);
+          chartLabels3.push(item.treatItemName);
+
+          pieChartInternalTotal =
+            pieChartInternalTotal +
+            Math.round(parseFloat(<string>item.internal));
+          pieChartExternalTotal =
+            pieChartExternalTotal +
+            Math.round(parseFloat(<string>item.external));
+          pieChartCombinedTotal =
+            pieChartCombinedTotal + Math.round(parseFloat(<string>item.total));
         }
-        if (Math.round(parseFloat(<string>item.external)) > 0) {
-          chartData2.push(item.external);
-          chartLabels2.push(item.treatItemName);
-        }
+      });
 
-        chartData3.push(item.total);
-        chartLabels3.push(item.treatItemName);
-
-        pieChartInternalTotal =
-          pieChartInternalTotal + Math.round(parseFloat(<string>item.internal));
-        pieChartExternalTotal =
-          pieChartExternalTotal + Math.round(parseFloat(<string>item.external));
-        pieChartCombinedTotal =
-          pieChartCombinedTotal + Math.round(parseFloat(<string>item.total));
-      }
-    });
-
-    pieChartInternalPrev =
-      pieChartInternalPrev +
-      Math.round(parseFloat(<string>resData.totalTa.internal));
-    pieChartExternalPrev =
-      pieChartExternalPrev +
-      Math.round(parseFloat(<string>resData.totalTa.external));
-    pieChartCombinedPrev =
-      pieChartCombinedPrev +
-      Math.round(parseFloat(<string>resData.totalTa.total));
+      pieChartInternalPrev =
+        pieChartInternalPrev +
+        Math.round(parseFloat(<string>resData.totalTa.internal));
+      pieChartExternalPrev =
+        pieChartExternalPrev +
+        Math.round(parseFloat(<string>resData.totalTa.external));
+      pieChartCombinedPrev =
+        pieChartCombinedPrev +
+        Math.round(parseFloat(<string>resData.totalTa.total));
+    }
 
     if (visibility === 'internal') {
       return {

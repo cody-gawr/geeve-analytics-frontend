@@ -99,14 +99,15 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     );
   }
 
-  get hasData$(): Observable<boolean> {
-    return this.isTrend$.pipe(
-      map(isTrend =>
-        isTrend
-          ? this.labels.length > 0
-          : this.labels.length > 0 && this.maxVal > 0
-      )
-    );
+  get hasData() {
+    return this.labels.length > 0;
+    // return this.isTrend$.pipe(
+    //   map(isTrend =>
+    //     isTrend
+    //       ? this.labels.length > 0
+    //       : this.labels.length > 0 && this.maxVal > 0
+    //   )
+    // );
   }
 
   get noDataAlertMessage$() {
@@ -139,6 +140,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       this.cpFacade.cpPredictorAnalysisChartData$,
       this.cpFacade.cpPredictorSpecialistAnalysisChartData$,
       this.cpFacade.cpPredictorAnalysisTrendChartData,
+      this.isDentistMode$,
       this.isMultipleClinic$,
     ])
       .pipe(
@@ -152,9 +154,10 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
           chartData,
           specialChartData,
           predictorAnalysisTrendChartData,
+          dentistMode,
           isMultiClinics,
         ]) => {
-          if (isTrend) {
+          if (dentistMode && isTrend) {
             this.datasets = predictorAnalysisTrendChartData.datasets;
             this.labels = predictorAnalysisTrendChartData.labels;
           } else {
@@ -300,9 +303,9 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
         pointStyle: 'rectRounded',
         hoverBorderWidth: 7,
       },
-      bar: {
-        borderWidth: 10,
-      },
+      // bar: {
+      //   borderWidth: 10,
+      // },
     },
     // scaleShowVerticalLines: false,
     responsive: true,
