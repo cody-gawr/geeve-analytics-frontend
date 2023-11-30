@@ -177,6 +177,7 @@ export class ClinicianProcedureEffects {
       })
     );
   });
+
   // Trend
   public readonly loadTrendApiRequest$ = createEffect(() => {
     return this.actions$.pipe(
