@@ -44,6 +44,10 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isDentistMode$() {
+    return this.dentistFacade.isDentistMode$;
+  }
+
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),

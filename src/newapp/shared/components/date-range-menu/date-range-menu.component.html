@@ -5,7 +5,11 @@
       (click)="setDuration(menu.range)"
       [class]="
         menu.range === (duration$ | async) &&
-        !((isTrend$ | async) && !(enableDatePresets$ | async))
+        !(
+          (isDentistMode$ | async) &&
+          (isTrend$ | async) &&
+          !(enableDatePresets$ | async)
+        )
           ? 'active'
           : ''
       ">
