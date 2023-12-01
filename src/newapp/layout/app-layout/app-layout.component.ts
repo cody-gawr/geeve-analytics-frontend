@@ -24,15 +24,15 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     private router: Router,
     private clinicFacade: ClinicFacade
   ) {
-    this.router.events
-      .pipe(
-        takeUntil(this.destroy$),
-        map((event: any) => event.routerEvent ?? event),
-        filter(event => event instanceof NavigationStart)
-      )
-      .subscribe(_ => {
-        this.clinicFacade.setMultiClinicSelection(null);
-      });
+    // this.router.events
+    //   .pipe(
+    //     takeUntil(this.destroy$),
+    //     map((event: any) => event.routerEvent ?? event),
+    //     filter(event => event instanceof NavigationStart)
+    //   )
+    //   .subscribe(_ => {
+    //     this.clinicFacade.setMultiClinicSelection(null);
+    //   });
 
     this.router.events
       .pipe(
