@@ -1,7 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of, withLatestFrom, filter } from 'rxjs';
+import {
+  catchError,
+  map,
+  mergeMap,
+  switchMap,
+  of,
+  withLatestFrom,
+  filter,
+  tap,
+} from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ClinicianProcedureService } from '../../services/clinician-procedure.service';
 import {
@@ -30,7 +39,7 @@ export class ClinicianProcedureEffects {
       ofType(ClinicianProcedurePageActions.loadCpPredictorAnalysis),
       withLatestFrom(this.store.select(selectIsLoadingCpPredictorAnalysis)),
       filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(([params]) => {
         return this.clinicianProcedureService.cpPredictorAnalysis(params).pipe(
           map(data =>
             ClinicianProcedureApiActions.loadCpPredictorAnalysisSuccess({
@@ -56,7 +65,7 @@ export class ClinicianProcedureEffects {
         this.store.select(selectIsLoadingCpPredictorSpecialistAnalysis)
       ),
       filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(([params]) => {
         return this.clinicianProcedureService
           .cpPredictorSpecialistAnalysis(params)
           .pipe(
@@ -84,7 +93,7 @@ export class ClinicianProcedureEffects {
       ofType(ClinicianProcedurePageActions.loadCpRevPerProcedure),
       withLatestFrom(this.store.select(selectIsLoadingCpRevPerProcedure)),
       filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(([params]) => {
         return this.clinicianProcedureService.cpRevPerProcedure(params).pipe(
           map(data =>
             ClinicianProcedureApiActions.loadCpRevPerProcedureSuccess({
@@ -108,7 +117,7 @@ export class ClinicianProcedureEffects {
       ofType(ClinicianProcedurePageActions.loadCpPredictorRatio),
       withLatestFrom(this.store.select(selectIsLoadingCpPredictorRatio)),
       filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(([params]) => {
         return this.clinicianProcedureService.cpPredictorRatio(params).pipe(
           map(data =>
             ClinicianProcedureApiActions.loadCpPredictorRatioSuccess({
@@ -132,7 +141,7 @@ export class ClinicianProcedureEffects {
       ofType(ClinicianProcedurePageActions.loadCpReferrals),
       withLatestFrom(this.store.select(selectIsLoadingCpReferrals)),
       filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(([params]) => {
         return this.clinicianProcedureService.cpReferrals(params).pipe(
           map(data =>
             ClinicianProcedureApiActions.loadCpReferralsSuccess({
@@ -155,6 +164,7 @@ export class ClinicianProcedureEffects {
   public readonly loadNoneTrendApiRequest$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ClinicianProcedurePageActions.loadNoneTrendApiRequest),
+      tap(({ api }) => console.log(api)),
       mergeMap(({ api, params }) => {
         return this.clinicianProcedureService
           .cpNoneTrendApiRequest(api, params)
