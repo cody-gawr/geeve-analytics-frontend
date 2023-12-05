@@ -73,6 +73,15 @@ import { CaTxPlanAvgFeedsComponent } from './components/clinician-analysis/compo
 import { CaTxPlanCompRateComponent } from './components/clinician-analysis/components/caTxPlanCompRate/caTxPlanCompRate.component';
 import { CaRecallRateComponent } from './components/clinician-analysis/components/caRecallRate/caRecallRate.component';
 import { CaNumComplaintsComponent } from './components/clinician-analysis/components/caNumComplaints/caNumComplaints.component';
+import { followupsFeature } from './state/reducers/followups.reducer';
+import { FollowupsEffects } from './state/effects/followups.effects';
+import { FollowupsFacade } from './facades/followups.facade';
+import { FuGetConversionComponent } from './components/followups/components/fuGetConversion/fuGetConversion.component';
+import { FuGetConversionPerUserComponent } from './components/followups/components/fuGetConversionPerUser/fuGetConversionPerUser.component';
+import { FuGetFollowupCompletionComponent } from './components/followups/components/fuGetFollowupCompletion/fuGetFollowupCompletion.component';
+import { FuGetOutcomeComponent } from './components/followups/components/fuGetOutcome/fuGetOutcome.component';
+import { FuGetPerUserComponent } from './components/followups/components/fuGetPerUser/fuGetPerUser.component';
+import { FollowupsComponent } from './components/followups/followups.component';
 
 @NgModule({
   imports: [
@@ -85,6 +94,7 @@ import { CaNumComplaintsComponent } from './components/clinician-analysis/compon
     StoreModule.forFeature(frontDeskFeature),
     StoreModule.forFeature(clinicianProcedureFeature),
     StoreModule.forFeature(clinicianAnalysisFeature),
+    StoreModule.forFeature(followupsFeature),
     EffectsModule.forFeature([
       DashboardEffects,
       FinanceEffects,
@@ -92,6 +102,7 @@ import { CaNumComplaintsComponent } from './components/clinician-analysis/compon
       FrontDeskEffects,
       ClinicianProcedureEffects,
       ClinicianAnalysisEffects,
+      FollowupsEffects,
     ]),
     AppLayoutModule,
     NgxChartsModule,
@@ -146,6 +157,13 @@ import { CaNumComplaintsComponent } from './components/clinician-analysis/compon
     CaTxPlanCompRateComponent,
     CaRecallRateComponent,
     CaNumComplaintsComponent,
+
+    FollowupsComponent,
+    FuGetConversionComponent,
+    FuGetConversionPerUserComponent,
+    FuGetFollowupCompletionComponent,
+    FuGetOutcomeComponent,
+    FuGetPerUserComponent,
   ],
   providers: [
     DashboardService,
@@ -159,6 +177,7 @@ import { CaNumComplaintsComponent } from './components/clinician-analysis/compon
     ClinicianProcedureFacade,
     ClinicianAnalysisService,
     ClinicianAnalysisFacade,
+    FollowupsFacade,
   ],
 })
 export class DashboardModule {}

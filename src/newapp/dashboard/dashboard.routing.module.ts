@@ -6,6 +6,7 @@ import { MarketingComponent } from './components/marketing/marketing.component';
 import { FrontDeskComponent } from './components/front-desk/front-desk.component';
 import { ClinicianProcedureComponent } from './components/clinician-procedures/clinician-procedures.component';
 import { ClinicianAnalysisComponent } from './components/clinician-analysis/clinician-analysis.component';
+import { FollowupsComponent } from './components/followups/followups.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'frontdesk',
         component: FrontDeskComponent,
+      },
+      {
+        path: 'followups',
+        component: FollowupsComponent,
       },
       {
         path: 'clinicianproceedures',

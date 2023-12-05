@@ -1,0 +1,25 @@
+@import '../../../../assets/layout/styles/layout/mixin';
+
+.fu-chart {
+  display: flex;
+  flex-direction: column;
+  @include respond-from('big-desktop') {
+    width: calc(33.3% - 10px);
+  }
+
+  @include respond-from('tablet-portrait') {
+    width: 100%;
+  }
+}
+
+.fu-chart-1 {
+  display: flex;
+  flex-direction: column;
+  @include respond-from('big-desktop') {
+    width: calc(50% - 7.5px);
+  }
+
+  @include respond-from('tablet-portrait') {
+    width: 100%;
+  }
+}

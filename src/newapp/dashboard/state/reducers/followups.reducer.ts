@@ -5,6 +5,8 @@ import _ from 'lodash';
 export interface FollowupsState {
   isLoadingData: Array<FU_API_ENDPOINTS>;
   errors: Array<JeeveError>;
+  fuGetOutcomeChartName: FU_OUTCOME_CHART_NAME;
+  fuGetConversionPerUserChartName: FU_OUTCOME_CHART_NAME;
 
   resBodyList: Record<FU_API_ENDPOINTS, unknown> | {};
 }
@@ -12,7 +14,8 @@ export interface FollowupsState {
 const initiateState: FollowupsState = {
   isLoadingData: [],
   errors: [],
-
+  fuGetOutcomeChartName: 'Ticks',
+  fuGetConversionPerUserChartName: 'Ticks',
   resBodyList: {},
 };
 
@@ -20,7 +23,47 @@ export const followupsFeature = createFeature({
   name: 'followups',
   reducer: createReducer(
     initiateState,
-    on(FollowupsActions.loadApiRequest, (state, { api }): FollowupsState => {
+    on(FollowupsActions.loadFuGetConversion, (state): FollowupsState => {
+      const api: FU_API_ENDPOINTS = 'fuGetConversion';
+      return {
+        ...state,
+        errors: _.filter(state.errors, n => n.api != api),
+        isLoadingData: _.union(state.isLoadingData, [api]),
+        resBodyList: { ...state.resBodyList, [api]: {} },
+      };
+    }),
+    on(FollowupsActions.loadFuGetConversionPerUser, (state): FollowupsState => {
+      const api: FU_API_ENDPOINTS = 'fuGetConversionPerUser';
+      return {
+        ...state,
+        errors: _.filter(state.errors, n => n.api != api),
+        isLoadingData: _.union(state.isLoadingData, [api]),
+        resBodyList: { ...state.resBodyList, [api]: {} },
+      };
+    }),
+    on(
+      FollowupsActions.loadFuGetFollowupCompletion,
+      (state): FollowupsState => {
+        const api: FU_API_ENDPOINTS = 'fuGetFollowupCompletion';
+        return {
+          ...state,
+          errors: _.filter(state.errors, n => n.api != api),
+          isLoadingData: _.union(state.isLoadingData, [api]),
+          resBodyList: { ...state.resBodyList, [api]: {} },
+        };
+      }
+    ),
+    on(FollowupsActions.loadFuGetOutcome, (state): FollowupsState => {
+      const api: FU_API_ENDPOINTS = 'fuGetOutcome';
+      return {
+        ...state,
+        errors: _.filter(state.errors, n => n.api != api),
+        isLoadingData: _.union(state.isLoadingData, [api]),
+        resBodyList: { ...state.resBodyList, [api]: {} },
+      };
+    }),
+    on(FollowupsActions.loadFuGetPerUser, (state): FollowupsState => {
+      const api: FU_API_ENDPOINTS = 'fuGetPerUser';
       return {
         ...state,
         errors: _.filter(state.errors, n => n.api != api),
@@ -51,12 +94,35 @@ export const followupsFeature = createFeature({
           errors: [...errors, { ...error, api: api }],
         };
       }
+    ),
+    on(
+      FollowupsActions.setFuOutComeChartName,
+      (state, { chartName }): FollowupsState => {
+        return {
+          ...state,
+          fuGetOutcomeChartName: chartName,
+        };
+      }
+    ),
+    on(
+      FollowupsActions.setFuConversionPerUserChartName,
+      (state, { chartName }): FollowupsState => {
+        return {
+          ...state,
+          fuGetConversionPerUserChartName: chartName,
+        };
+      }
     )
   ),
 });
 
-export const { selectIsLoadingData, selectErrors, selectResBodyList } =
-  followupsFeature;
+export const {
+  selectIsLoadingData,
+  selectErrors,
+  selectResBodyList,
+  selectFuGetConversionPerUserChartName,
+  selectFuGetOutcomeChartName,
+} = followupsFeature;
 
 export const selectIsLoadingFuGetConversion = createSelector(
   selectIsLoadingData,
@@ -102,6 +168,7 @@ export const selectFuGetConversionChartData = createSelector(
           data: chartData,
         },
       ],
+      labels: chartLabels,
       total: resBody.total,
       prev: resBody.totalTa,
       goal: resBody?.goals,
@@ -184,6 +251,7 @@ export const selectFuGetFollowupCompletionChartData = createSelector(
           data: chartData,
         },
       ],
+      labels: chartLabels,
       total: resBody.total,
       prev: resBody.totalTa,
       goal: resBody?.goals,
@@ -268,6 +336,8 @@ export const selectFuGetPerUserChartData = createSelector(
         { data: chartData5, label: 'Utas' },
       ],
       labels: chartLabels,
+      total: resBody.total,
+      prev: resBody.totalTa,
     };
   }
 );

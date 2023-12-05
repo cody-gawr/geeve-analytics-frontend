@@ -423,6 +423,8 @@ declare global {
     | 'fuGetOutcome'
     | 'fuGetPerUser';
 
+  type FU_OUTCOME_CHART_NAME = 'Ticks' | 'Recalls' | 'FTAs' | 'UTAs';
+
   interface FuGetConversionItem {
     bookedPercent: string | number;
     clinicId: string | number;

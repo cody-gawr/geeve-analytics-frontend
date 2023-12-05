@@ -1,0 +1,18 @@
+<div class="dashboard-header-box">
+  <date-range-menu class="date-range-container"></date-range-menu>
+</div>
+<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
+  <fuGetConversion
+    [toolTip]="getChartTip(57) | async"
+    class="fu-chart"></fuGetConversion>
+  <fuGetFollowupCompletion
+    [toolTip]="getChartTip(59) | async"
+    class="fu-chart"></fuGetFollowupCompletion>
+  <fuGetOutcome [toolTip]="getChartTip(56)" class="fu-chart"></fuGetOutcome>
+  <fuGetConversionPerUser
+    [toolTip]="getChartTip(58) | async"
+    class="fu-chart-1"></fuGetConversionPerUser>
+  <fuGetPerUser
+    [toolTip]="getChartTip(55) | async"
+    class="fu-chart-1"></fuGetPerUser>
+</div>

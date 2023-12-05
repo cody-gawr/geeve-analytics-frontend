@@ -1,0 +1,57 @@
+<div class="chart-container">
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <div class="chart-title">
+    <mat-icon
+      [matTooltip]="
+        (durationTrendLabel$ | async) + ': ' + (prev | number: '1.0-0')
+      "
+      [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
+      [fontIcon]="trendingIcon"></mat-icon>
+    <span> Followup Conversion </span>
+  </div>
+  <div class="chart-content">
+    <div class="canvas-wrapper chart-box">
+      <div class="chart-gauge fuGetConversion">
+        <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
+        <ng-template #mainElem>
+          <canvas
+            #fdFtaRatioChart
+            *ngIf="hasData$ | async"
+            baseChart
+            [datasets]="datasets"
+            [labels]="labels"
+            [legend]="false"
+            type="bar"
+            [options]="chartOptions">
+          </canvas>
+
+          <spin-loader
+            class="empty-placeholder"
+            *ngIf="!(hasData$ | async)"
+            [disableSpin]="true">
+            No followups were converted in this period
+          </spin-loader>
+        </ng-template>
+      </div>
+      <div class="chart-foot">
+        <div>
+          <h3>{{ total | number: '1.0-0' }}%</h3>
+          <span>{{ durationLabel$ | async }}</span>
+        </div>
+        <div>
+          <h3>{{ prev | number: '1.0-0' }}%</h3>
+          <span>{{ durationTrendLabel$ | async }}</span>
+        </div>
+        <div *ngIf="goal > 0 && showGoals$ | async">
+          <h3>{{ goal | number: '1.0-0' }}%</h3>
+          <span>Goal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
