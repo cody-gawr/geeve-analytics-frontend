@@ -77,7 +77,7 @@ export class FuGetConversionComponent implements OnInit, OnDestroy {
     return this.layoutFacade.durationTrendLabel$;
   }
 
-  get hasData$() {
+  get hasData() {
     return this.labels.length > 0;
   }
 

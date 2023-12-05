@@ -33,7 +33,7 @@ export class FuGetConversionPerUserComponent implements OnInit, OnDestroy {
   }
 
   get isLoading$() {
-    return;
+    return this.fuFacade.isLoadingFuGetConversionPerUser$;
   }
 
   get chartName$() {
@@ -143,7 +143,7 @@ export class FuGetConversionPerUserComponent implements OnInit, OnDestroy {
   }
 
   get hasData() {
-    return this.datasets.length > 0;
+    return this.datasets.length > 0 && this.labels.length > 0;
   }
 
   public barChartOptions1: ChartOptions<'bar'> = {

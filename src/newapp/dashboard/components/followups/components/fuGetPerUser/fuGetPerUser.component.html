@@ -21,7 +21,7 @@
         <ng-template #mainElem>
           <canvas
             #fdFtaRatioChart
-            *ngIf="hasData$ | async"
+            *ngIf="hasData"
             baseChart
             [datasets]="datasets"
             [labels]="labels"
@@ -32,7 +32,7 @@
 
           <spin-loader
             class="empty-placeholder"
-            *ngIf="!(hasData$ | async)"
+            *ngIf="!hasData"
             [disableSpin]="true">
             No followups were completed in this period
           </spin-loader>

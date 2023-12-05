@@ -30,7 +30,9 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private fuFacadee: FollowupsFacade,
     private layoutFacade: LayoutFacade
-  ) {}
+  ) {
+    this.layoutFacade.setTrend('off');
+  }
 
   ngOnInit(): void {
     combineLatest([
