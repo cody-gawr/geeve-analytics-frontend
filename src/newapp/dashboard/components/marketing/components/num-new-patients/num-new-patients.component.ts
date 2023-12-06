@@ -198,6 +198,10 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
     );
   }
 
+  get legend$() {
+    return this.isMultipleClinic$;
+  }
+
   public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
     position: 'bottom',

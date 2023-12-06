@@ -8,6 +8,7 @@
   <div class="chart-title">
     <div class="icon-title">
       <mat-icon
+        *ngif="!(isTrend$ | async)"
         [matTooltip]="
           (durationTrendLabel$ | async) +
           ': $' +
@@ -81,7 +82,7 @@
               baseChart
               [datasets]="datasets"
               [labels]="labels"
-              [legend]="false"
+              [legend]="legend$ | async"
               type="bar"
               [options]="chartOptions$ | async"
               [colors]="lineChartColors">
