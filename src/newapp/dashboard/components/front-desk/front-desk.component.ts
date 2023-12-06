@@ -45,7 +45,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     combineLatest([
-      this.clinicFacade.clinics$,
+      this.clinicFacade.currentClinics$,
       this.layoutFacade.dateRange$,
       this.dashbordFacade.connectedWith$,
       this.router.routerState.root.queryParams,
