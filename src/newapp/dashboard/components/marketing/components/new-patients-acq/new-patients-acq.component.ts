@@ -206,7 +206,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
           label: tooltipItems => {
             return (
               tooltipItems.label +
-              ': ' +
+              ': $' +
               this.decimalPipe.transform(tooltipItems.parsed.y)
             );
           },
