@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   DentistState,
   selectCurrentDentistId,
+  selectDentistId,
   selectDentists,
   selectDentistsError,
   selectDentistsLoading,
@@ -18,6 +19,10 @@ export class DentistFacade {
 
   public readonly dentists$: Observable<Dentist[] | null> = this.store.pipe(
     select(selectDentists)
+  );
+
+  public readonly dentistId$: Observable<number | null> = this.store.pipe(
+    select(selectDentistId)
   );
 
   public readonly currentDentistId$ = this.store.pipe(
@@ -35,6 +40,10 @@ export class DentistFacade {
 
   public loadDentists(clinicId: string | number, all = 0) {
     this.store.dispatch(DentistPageActions.loadDentists({ clinicId, all }));
+  }
+
+  public loadSpecificDentist(clinicId: string | number) {
+    this.store.dispatch(DentistPageActions.loadSpecificDentist({ clinicId }));
   }
 
   public setCurrentDentistId(dentistId: number) {

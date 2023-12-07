@@ -12,3 +12,13 @@ export const loadDentistsFailure = createAction(
   '[Dentist API] load Dentists Failure',
   props<{ error: JeeveError }>()
 );
+
+export const loadSpecificDentistSuccess = createAction(
+  '[Dentist API] load Specific Dentist Success',
+  props<{ dentistId: number }>()
+);
+
+export const loadSpecificDentistFailure = createAction(
+  '[Dentist API] load Specific Dentist Failure',
+  props<{ error: JeeveError }>()
+);
