@@ -317,6 +317,7 @@ export class AppTopbarComponent implements OnInit {
 
   onChangeCurrentClinic(event: MatSelectChange) {
     this.clinicFacade.setCurrentSingleClinicId(event.value);
+    this.dentistFacade.setCurrentDentistId('all');
   }
 
   onChangeCurrentDentist(event: MatSelectChange) {
@@ -358,6 +359,7 @@ export class AppTopbarComponent implements OnInit {
     const values = <number[]>this.selectedMultiClinics.filter(v => v !== 'all');
     if (values.length > 0) {
       this.clinicFacade.setCurrentMultiClinicIDs(values);
+      this.dentistFacade.setCurrentDentistId('all');
     } else {
       this.toastr.error('You must select one clinic at least!');
     }

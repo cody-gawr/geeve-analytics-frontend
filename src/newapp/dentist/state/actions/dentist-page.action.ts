@@ -12,5 +12,5 @@ export const loadSpecificDentist = createAction(
 
 export const setCurrentDentistId = createAction(
   '[Dentist Page] Current Dentists Id',
-  props<{ dentistId: number }>()
+  props<{ dentistId: number | 'all' }>()
 );

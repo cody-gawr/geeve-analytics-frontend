@@ -46,7 +46,7 @@ export class DentistFacade {
     this.store.dispatch(DentistPageActions.loadSpecificDentist({ clinicId }));
   }
 
-  public setCurrentDentistId(dentistId: number) {
+  public setCurrentDentistId(dentistId: number | 'all') {
     this.store.dispatch(DentistPageActions.setCurrentDentistId({ dentistId }));
   }
 }
