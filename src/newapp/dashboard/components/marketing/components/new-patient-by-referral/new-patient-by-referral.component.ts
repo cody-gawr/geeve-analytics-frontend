@@ -8,6 +8,7 @@ import { ChartOptions, Chart } from 'chart.js';
 import _ from 'lodash';
 import camelCase from 'camelcase';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { externalTooltipHandler } from '@/newapp/shared/utils';
 
 @Component({
   selector: 'new-patient-by-referral-chart',
@@ -163,6 +164,9 @@ export class MarketingNewPatientByReferralComponent
     maintainAspectRatio: false,
     plugins: {
       tooltip: {
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: tooltipItem => {
             return (
@@ -242,6 +246,9 @@ export class MarketingNewPatientByReferralComponent
         itemSort: (itemA, itemB): number => {
           return itemB.parsed.y - itemA.parsed.y;
         },
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: function (tooltipItems) {
             if (tooltipItems.parsed.y > 0) {

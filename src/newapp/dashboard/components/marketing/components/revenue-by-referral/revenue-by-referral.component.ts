@@ -2,7 +2,10 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { MkRevByReferral } from '@/newapp/models/dashboard/marketing';
-import { formatXTooltipLabel } from '@/newapp/shared/utils';
+import {
+  externalTooltipHandler,
+  formatXTooltipLabel,
+} from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Chart, ChartOptions } from 'chart.js';
@@ -169,6 +172,9 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
     maintainAspectRatio: false,
     plugins: {
       tooltip: {
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: tooltipItem => formatXTooltipLabel(tooltipItem),
           title: () => '',
@@ -238,6 +244,9 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
         itemSort: (itemA, itemB): number => {
           return itemB.parsed.y - itemA.parsed.y;
         },
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: function (tooltipItem) {
             if (tooltipItem.parsed.y == 0) {

@@ -10,6 +10,7 @@ import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map, Observable } from 'rxjs';
 import { MkSelectAccountsModalComponent } from '../select-accounts-modal/select-accounts-modal.component';
+import { externalTooltipHandler } from '@/newapp/shared/utils';
 
 @Component({
   selector: 'new-patients-acq-chart',
@@ -210,6 +211,9 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: tooltipItems => {
             return (
@@ -252,6 +256,9 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     plugins: {
       tooltip: {
         mode: 'x',
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: tooltipItems => {
             return tooltipItems.label + ': $' + tooltipItems.formattedValue;
