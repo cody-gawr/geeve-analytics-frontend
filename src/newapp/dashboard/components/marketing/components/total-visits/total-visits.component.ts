@@ -131,7 +131,11 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
   }
 
   get legend$() {
-    return this.isMultipleClinic$;
+    return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
+      map(([isTrend, isMultiClinic]) => {
+        return isTrend && isMultiClinic;
+      })
+    );
   }
 
   public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {

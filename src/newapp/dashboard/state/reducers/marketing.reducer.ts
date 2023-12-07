@@ -1557,8 +1557,8 @@ export const selectTotalVisitsTrendChartData = createSelector(
 
 export const selectIsActivePatientsWithPlatform = createSelector(
   selectIsActivePatients,
-  selectConnectedWith,
-  (isActive, isConnected) => {
-    return isActive && isConnected;
+  // selectConnectedWith,
+  isActive => {
+    return isActive;
   }
 );
