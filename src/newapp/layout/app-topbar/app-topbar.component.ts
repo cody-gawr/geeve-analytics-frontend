@@ -190,10 +190,12 @@ export class AppTopbarComponent implements OnInit {
       )
       .subscribe(params => {
         const [isEnable, clinics, isDentistUser] = params;
-        if (isEnable) {
-          this.dentistFacade.loadDentists(clinics[0].id, 0);
-        } else if (isDentistUser) {
-          this.dentistFacade.loadSpecificDentist(clinics[0].id);
+        if (clinics.length > 0) {
+          if (isEnable) {
+            this.dentistFacade.loadDentists(clinics[0].id, 0);
+          } else if (isDentistUser) {
+            this.dentistFacade.loadSpecificDentist(clinics[0].id);
+          }
         }
       });
 
