@@ -282,7 +282,6 @@ const MENU_DATA: MenuNode[] = [
         title: 'Clinics',
         path: 'clinic',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
-          console.log('hello', userType);
           return (
             permissions?.indexOf('profilesettings') >= 0 ||
             [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
@@ -395,7 +394,6 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
           userPlan: result.plan,
           hasPrimeClinics: result.hasPrimeClinics,
         };
-        console.log('params', params);
         const menuData: MenuNode[] = [];
 
         MENU_DATA.forEach(item => {
