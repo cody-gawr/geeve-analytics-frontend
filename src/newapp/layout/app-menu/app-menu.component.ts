@@ -131,7 +131,7 @@ const MENU_DATA: MenuNode[] = [
       // user_type==2 || permissions.contains(dashboard1) || user_type==7
       {
         title: 'Clinician Analysis',
-        path: 'dashboards/cliniciananalysis',
+        path: '/newapp/dashboard/cliniciananalysis',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions?.indexOf('dashboard1') >= 0 ||
@@ -259,6 +259,7 @@ const MENU_DATA: MenuNode[] = [
     path: '',
     icon: faHandshake,
     badgeText: 'Get 50% off',
+    validatorFn: () => true,
   },
   // user_type != 7 && apiUrl.includes('test')
   {
@@ -281,6 +282,7 @@ const MENU_DATA: MenuNode[] = [
         title: 'Clinics',
         path: 'clinic',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+          console.log('hello', userType);
           return (
             permissions?.indexOf('profilesettings') >= 0 ||
             [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
@@ -308,6 +310,7 @@ const MENU_DATA: MenuNode[] = [
     path: 'https://jeeve.crunch.help/jeeve-analytics',
     icon: faQuestion,
     linkType: 'open',
+    validatorFn: () => true,
   },
 ];
 
@@ -392,24 +395,27 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
           userPlan: result.plan,
           hasPrimeClinics: result.hasPrimeClinics,
         };
+        console.log('params', params);
         const menuData: MenuNode[] = [];
 
         MENU_DATA.forEach(item => {
           //return item.validatorFn ? item.validatorFn(params) : true;
-          if (item.validatorFn) {
-            const mainMenuValid = item.validatorFn(params);
-            if (item.children && mainMenuValid) {
-              const children = item.children.filter(c =>
-                c.validatorFn ? c.validatorFn(params) : true
-              );
-              menuData.push({ ...item, ...{ children } });
-              return;
-            } else if (mainMenuValid) {
-              menuData.push({ ...item });
-            }
-          } else {
+          //if (item.validatorFn) {
+          const mainMenuValid = item.validatorFn
+            ? item.validatorFn(params)
+            : null;
+          if (item.children) {
+            const children = item.children.filter(c =>
+              c.validatorFn ? c.validatorFn(params) : true
+            );
+            menuData.push({ ...item, ...{ children } });
+            return;
+          } else if (mainMenuValid) {
             menuData.push({ ...item });
           }
+          // } else {
+          //   menuData.push({ ...item });
+          // }
         });
 
         this.dataSource.data = menuData;
