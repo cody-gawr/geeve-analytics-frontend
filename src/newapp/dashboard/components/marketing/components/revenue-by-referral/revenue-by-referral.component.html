@@ -38,15 +38,25 @@
           </spin-loader>
           <ng-template #chartElem3>
             <canvas
+              *ngIf="isExactOrCore$ | async; else cE02"
               #mkRevByReferral
-              *ngIf="!(isLoading$ | async) && hasData"
               baseChart
               [datasets]="datasets"
               [labels]="labels"
               [type]="chartType$ | async"
               [legend]="legend$ | async"
-              [options]="chartOptions$ | async"
-              (chartClick)="chartClicked($event)"></canvas>
+              [options]="chartOptions$ | async"></canvas>
+            <ng-template #cE02>
+              <canvas
+                #mkRevByReferral
+                baseChart
+                [datasets]="datasets"
+                [labels]="labels"
+                [type]="chartType$ | async"
+                [legend]="legend$ | async"
+                [options]="chartOptions$ | async"
+                (chartClick)="chartClicked($event)"></canvas>
+            </ng-template>
           </ng-template>
         </ng-template>
       </div>

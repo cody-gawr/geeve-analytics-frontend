@@ -30,6 +30,17 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
 
   isChartClicked = false;
 
+  get isExactOrCore$() {
+    return combineLatest([
+      this.clinicFacade.isExactCurrentClinics$,
+      this.clinicFacade.isCoreCurrentClinics$,
+    ]).pipe(
+      map(values => {
+        return values[0] || values[1];
+      })
+    );
+  }
+
   get isLoading$() {
     return combineLatest([
       this.isTrend$,

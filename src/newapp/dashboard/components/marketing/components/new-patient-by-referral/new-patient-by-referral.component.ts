@@ -83,6 +83,17 @@ export class MarketingNewPatientByReferralComponent
     return this.marketingFacade.isActivePatients$;
   }
 
+  get isExactOrCore$() {
+    return combineLatest([
+      this.clinicFacade.isExactCurrentClinics$,
+      this.clinicFacade.isCoreCurrentClinics$,
+    ]).pipe(
+      map(values => {
+        return values[0] || values[1];
+      })
+    );
+  }
+
   get legend$() {
     return combineLatest([this.isMultipleClinic$, this.isTrend$]).pipe(
       map(([isMultiClinics, isTrend]) => !isMultiClinics && !isTrend)
