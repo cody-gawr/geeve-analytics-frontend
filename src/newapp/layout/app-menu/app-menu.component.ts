@@ -142,7 +142,7 @@ const MENU_DATA: MenuNode[] = [
       // user_type==2 || permissions.contains(dashboard2) || user_type==7
       {
         title: 'Clinician Procedures & Referrals',
-        path: 'newapp/dashboard/clinicianproceedures',
+        path: '/newapp/dashboard/clinicianproceedures',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions?.indexOf('dashboard2') >= 0 ||
