@@ -129,7 +129,9 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         if (isDentistMode && !isTrend) {
           return this.gaugeValue > 0;
         } else {
-          return this.datasets?.length > 0;
+          return (
+            this.datasets?.length > 0 && this.datasets[0]?.data?.length > 0
+          );
         }
       })
     );
