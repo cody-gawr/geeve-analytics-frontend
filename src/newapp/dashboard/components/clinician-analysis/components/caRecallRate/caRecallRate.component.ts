@@ -208,7 +208,12 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         callbacks: {
           // use label callback to return the desired label
           label: function (tooltipItem) {
-            return tooltipItem.label + ': ' + tooltipItem.formattedValue + '%';
+            if (tooltipItem?.dataset?.label == 'Actual') {
+              return (
+                tooltipItem.label + ': ' + tooltipItem.formattedValue + '%'
+              );
+            }
+            return '';
           },
           // remove title
           title: function (tooltipItem) {
