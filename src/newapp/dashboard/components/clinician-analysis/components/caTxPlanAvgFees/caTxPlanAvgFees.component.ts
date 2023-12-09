@@ -142,6 +142,19 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
   }
 
+  get isTrendIconVisible$() {
+    return combineLatest([
+      this.duration$,
+      this.isDentistMode$,
+      this.isTrend$,
+    ]).pipe(
+      map(
+        ([duration, isDentistMode, isTrend]) =>
+          duration != 'custom' && !(isDentistMode && isTrend)
+      )
+    );
+  }
+
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,

@@ -705,7 +705,7 @@ export const selectCaProductionTrendChartData = createSelector(
 
     let datasets: ChartDataset<'bar'>[] = [
       {
-        data: chartData,
+        data: _.every(chartData, Boolean) ? chartData : [],
         label: '',
         // shadowOffsetX: 3,
         //   xAxisID: "x-axis-actual",

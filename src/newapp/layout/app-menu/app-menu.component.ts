@@ -268,7 +268,7 @@ const MENU_DATA: MenuNode[] = [
     icon: faBriefcase,
     validatorFn: ({ userType }: MenuValidatorParams) => {
       return false;
-      return userType != 7 && environment.apiUrl.includes('test');
+      //return userType != 7 && environment.apiUrl.includes('test');
     },
   },
   // nav_open == 'setting'

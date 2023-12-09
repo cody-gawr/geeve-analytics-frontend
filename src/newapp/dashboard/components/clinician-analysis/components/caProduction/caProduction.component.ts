@@ -130,7 +130,9 @@ export class CaProductionComponent implements OnInit, OnDestroy {
           return this.gaugeValue > 0;
         } else {
           return (
-            this.datasets?.length > 0 && this.datasets[0]?.data?.length > 0
+            this.datasets?.length > 0 &&
+            this.datasets[0]?.data?.length > 0 &&
+            this.labels.length > 0
           );
         }
       })
@@ -154,13 +156,20 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$(): Observable<boolean> {
-    return combineLatest([this.isTrend$, this.isDentistMode$]).pipe(
-      map(([isTrend, isDentistMode]) => !isDentistMode || !isTrend)
-    );
+    return this.isDentistMode$.pipe(map(v => !v));
   }
 
   get isTrendIconVisible$(): Observable<boolean> {
-    return this.duration$.pipe(map(duration => duration != 'custom'));
+    return combineLatest([
+      this.duration$,
+      this.isDentistMode$,
+      this.isTrend$,
+    ]).pipe(
+      map(
+        ([duration, isDentistMode, isTrend]) =>
+          duration != 'custom' && !(isDentistMode && isTrend)
+      )
+    );
   }
 
   get isGaugeChartVisible$(): Observable<boolean> {
