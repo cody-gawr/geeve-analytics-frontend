@@ -232,27 +232,27 @@ export class CaProductionComponent implements OnInit, OnDestroy {
               if (!isDentistMode) {
                 switch (colSelectShow) {
                   case 'collection_all':
-                    return 'You have no Collection in the selected period';
+                    return 'You have no collection in the selected period';
                   case 'collection_dentists':
                     return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
                   case 'collection_oht':
                     return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
                 }
               } else {
-                return 'You have no Collection in the selected period';
+                return 'You have no collection in the selected period';
               }
             case 'Collection-Exp':
               if (!isDentistMode) {
                 switch (colExpSelectShow) {
                   case 'collection_exp_all':
-                    return 'You have no Collection in the selected period';
+                    return 'You have no collection in the selected period';
                   case 'collection_exp_dentists':
                     return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
                   case 'collection_exp_oht':
                     return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
                 }
               } else {
-                return 'You have no Collection in the selected period';
+                return 'You have no collection in the selected period';
               }
           }
         }
