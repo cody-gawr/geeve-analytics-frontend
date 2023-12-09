@@ -104,9 +104,10 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         const [clinics, dateRange, route, dentistId, trend] = params;
         if (clinics.length == 0) return;
 
-        const isTrend = trend !== 'off';
+        const isTrend = trend !== 'off' && dentistId !== 'all';
         const providerId =
           dentistId !== 'all' && clinics.length == 1 ? dentistId : undefined;
+
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
