@@ -2263,7 +2263,7 @@ export const selectRecallRateChartData = createSelector(
         },
       ];
 
-      datasets[0].data = chartData;
+      datasets[0].data = _.every(chartData, Boolean) ? chartData : [];
       return {
         datasets,
         labels: chartLabels,
