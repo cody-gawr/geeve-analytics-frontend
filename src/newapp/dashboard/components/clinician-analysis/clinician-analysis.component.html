@@ -13,7 +13,7 @@
   </div>
 </div>
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
-  <caProduction-chart [toolTip]="getChartTip(1) | async" class="ca-chart" />
+  <caProduction-chart [toolTip]="prodChartTip$ | async" class="ca-chart" />
   <caHourlyRate-chart [toolTip]="getChartTip(7) | async" class="ca-chart" />
   <caNumNewPatients-chart [toolTip]="getChartTip(8) | async" class="ca-chart" />
   <caTxPlanAvgFees-chart

@@ -35,6 +35,7 @@ const caEndpoints = [
   'caCollectionHourlyRateOht',
   'caCollectionExpHourlyRateDentist',
   'caCollectionExpHourlyRateOht',
+
   'caNumNewPatients',
   'caTxPlanAvgProposedFees',
   'caTxPlanAvgCompletedFees',
@@ -69,6 +70,25 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       map(
         ([dentistId, clinicIds]) => dentistId === 'all' || clinicIds.length > 1
       )
+    );
+  }
+
+  get prodChartTip$() {
+    return combineLatest([
+      this.caFacade.prodChartName$,
+      this.dashbordFacade.chartTips$,
+    ]).pipe(
+      map(([chartName, tips]) => {
+        switch (chartName) {
+          case 'Production':
+            return tips[1] ?? '';
+          case 'Collection':
+            return tips[49] ?? '';
+          case 'Collection-Exp':
+            return tips[62] ?? '';
+        }
+        return '';
+      })
     );
   }
 
