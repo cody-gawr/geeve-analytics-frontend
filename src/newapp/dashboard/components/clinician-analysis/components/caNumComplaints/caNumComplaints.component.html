@@ -6,7 +6,7 @@
     class="help-tip"
     fontIcon="help"></mat-icon>
   <mat-icon
-    *ngIf="!(isDentistMode$ | async)"
+    *ngIf="isTableIconVisible$ | async"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
@@ -27,7 +27,7 @@
     <div class="canvas-wrapper chart-box ca-num-comp-chart">
       <div
         class="pa-table"
-        *ngIf="showTableInfo && !(isDentistMode$ | async); else graphElem">
+        *ngIf="showTableInfo && (isTableIconVisible$ | async); else graphElem">
         <table>
           <thead>
             <tr>

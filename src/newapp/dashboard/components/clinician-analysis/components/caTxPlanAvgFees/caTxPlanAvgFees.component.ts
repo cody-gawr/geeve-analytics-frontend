@@ -155,6 +155,10 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isTableIconVisible$() {
+    return this.isDentistMode$.pipe(map(v => !v && this.tableData.length > 0));
+  }
+
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,

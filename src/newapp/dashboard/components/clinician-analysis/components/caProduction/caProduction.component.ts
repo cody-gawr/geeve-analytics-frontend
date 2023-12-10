@@ -156,7 +156,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$(): Observable<boolean> {
-    return this.isDentistMode$.pipe(map(v => !v));
+    return this.isDentistMode$.pipe(map(v => !v && this.tableData.length > 0));
   }
 
   get isTrendIconVisible$(): Observable<boolean> {
