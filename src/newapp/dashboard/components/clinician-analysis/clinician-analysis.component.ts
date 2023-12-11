@@ -298,8 +298,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       this.queryParams$,
       this.caFacade.hourlyRateChartName$,
       this.caFacade.hourlyRateProdSelectTab$,
-      this.caFacade.hourlyRateColSelectTab$,
-      this.caFacade.hourlyRateColExpSelectTab$,
     ])
       .pipe(
         takeUntil(this.destroy$),
@@ -310,8 +308,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
           { queryParams, trend, queryWhEnabled },
           visibility,
           prodSelectShow,
-          colSelectShow,
-          colExpSelectShow,
         ]) => {
           const { dentistId: providerId } = queryParams;
           const isTrend = trend !== 'off' && providerId;
@@ -338,14 +334,14 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               break;
             case 'Collection':
               if (!queryParams.dentistId) {
-                switch (colSelectShow) {
-                  case 'collection_all':
+                switch (prodSelectShow) {
+                  case 'hourly_rate_all':
                     caEndpoints.push('caCollectionHourlyRate');
                     break;
-                  case 'collection_dentists':
+                  case 'hourly_rate_dentists':
                     caEndpoints.push('caCollectionHourlyRateDentist');
                     break;
-                  case 'collection_oht':
+                  case 'hourly_rate_oht':
                     caEndpoints.push('caCollectionHourlyRateOht');
                 }
               } else {
@@ -355,14 +351,14 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               break;
             case 'Collection-Exp':
               if (!queryParams.dentistId) {
-                switch (colExpSelectShow) {
-                  case 'collection_exp_all':
+                switch (prodSelectShow) {
+                  case 'hourly_rate_all':
                     caEndpoints.push('caCollectionExpHourlyRate');
                     break;
-                  case 'collection_exp_dentists':
+                  case 'hourly_rate_dentists':
                     caEndpoints.push('caCollectionExpHourlyRateDentist');
                     break;
-                  case 'collection_exp_oht':
+                  case 'hourly_rate_oht':
                     caEndpoints.push('caCollectionExpHourlyRateOht');
                     break;
                 }

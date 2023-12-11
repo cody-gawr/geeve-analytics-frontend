@@ -31,8 +31,8 @@ export interface ClinicianAnalysisState {
 
   hourlyRateChartName: CA_PROD_CHART_NAME;
   hourlyRateProdSelectTab: CA_HOURLY_RATE_SELECT_TAB;
-  hourlyRateColSelectTab: CA_COL_SELECT_TAB;
-  hourlyRateColExpSelectTab: CA_COL_EXP_SELECT_TAB;
+  // hourlyRateColSelectTab: CA_COL_SELECT_TAB;
+  // hourlyRateColExpSelectTab: CA_COL_EXP_SELECT_TAB;
 
   txPlanAvgFeeChartName: CA_TX_PLAN_AVG_FEE_CHART_NAME;
   recallRateChartName: CA_RECALL_RATE_CHART_NAME;
@@ -52,8 +52,8 @@ const initiateState: ClinicianAnalysisState = {
 
   hourlyRateChartName: 'Production',
   hourlyRateProdSelectTab: 'hourly_rate_all',
-  hourlyRateColSelectTab: 'collection_all',
-  hourlyRateColExpSelectTab: 'collection_exp_all',
+  // hourlyRateColSelectTab: 'collection_all',
+  // hourlyRateColExpSelectTab: 'collection_exp_all',
 
   txPlanAvgFeeChartName: 'Avg. Proposed Fees',
   recallRateChartName: 'Recall Prebook Rate',
@@ -117,24 +117,24 @@ export const clinicianAnalysisFeature = createFeature({
         };
       }
     ),
-    on(
-      ClinicianAnalysisActions.setHourlyRateColSelectTab,
-      (state, { tabName }): ClinicianAnalysisState => {
-        return {
-          ...state,
-          hourlyRateColSelectTab: tabName,
-        };
-      }
-    ),
-    on(
-      ClinicianAnalysisActions.setHourlyRateColExpSelectTab,
-      (state, { tabName }): ClinicianAnalysisState => {
-        return {
-          ...state,
-          hourlyRateColExpSelectTab: tabName,
-        };
-      }
-    ),
+    // on(
+    //   ClinicianAnalysisActions.setHourlyRateColSelectTab,
+    //   (state, { tabName }): ClinicianAnalysisState => {
+    //     return {
+    //       ...state,
+    //       hourlyRateColSelectTab: tabName,
+    //     };
+    //   }
+    // ),
+    // on(
+    //   ClinicianAnalysisActions.setHourlyRateColExpSelectTab,
+    //   (state, { tabName }): ClinicianAnalysisState => {
+    //     return {
+    //       ...state,
+    //       hourlyRateColExpSelectTab: tabName,
+    //     };
+    //   }
+    // ),
     on(
       ClinicianAnalysisActions.setTxTplanAvgFeeChartName,
       (state, { chartName }): ClinicianAnalysisState => {
@@ -239,8 +239,8 @@ export const {
 
   selectHourlyRateChartName,
   selectHourlyRateProdSelectTab,
-  selectHourlyRateColSelectTab,
-  selectHourlyRateColExpSelectTab,
+  // selectHourlyRateColSelectTab,
+  // selectHourlyRateColExpSelectTab,
   selectTxPlanAvgFeeChartName,
   selectRecallRateChartName,
 } = clinicianAnalysisFeature;
@@ -851,8 +851,6 @@ export const selectIsLoadingCaHourlyRateAll = createSelector(
   selectTrend,
   selectHourlyRateChartName,
   selectHourlyRateProdSelectTab,
-  selectHourlyRateColSelectTab,
-  selectHourlyRateColExpSelectTab,
   selectIsLoadingCaHourlyRate,
   selectIsLoadingCaHourlyRateDentists,
   selectIsLoadingCaHourlyRateOht,
@@ -870,8 +868,6 @@ export const selectIsLoadingCaHourlyRateAll = createSelector(
     trendMode,
     hourlyRateChartName,
     hourlyRateProdTab,
-    hourlyRateColTab,
-    hourlyRatecolExpTab,
     isLoadingCaHourlyRate,
     isLoadingCaHourlyRateDentist,
     isLoadingCaHourlyRateOht,
@@ -902,12 +898,12 @@ export const selectIsLoadingCaHourlyRateAll = createSelector(
         }
       case 'Collection':
         if (isTrend) {
-          switch (hourlyRateColTab) {
-            case 'collection_all':
+          switch (hourlyRateProdTab) {
+            case 'hourly_rate_all':
               return isLoadingCaCollectionHourlyRate;
-            case 'collection_dentists':
+            case 'hourly_rate_dentists':
               return isLoadingCaCollectionHourlyRateDentists;
-            case 'collection_oht':
+            case 'hourly_rate_oht':
               return isLoadingCaCollectionHourlyRateOht;
           }
         } else {
@@ -915,12 +911,12 @@ export const selectIsLoadingCaHourlyRateAll = createSelector(
         }
       case 'Collection-Exp':
         if (isTrend) {
-          switch (hourlyRatecolExpTab) {
-            case 'collection_exp_all':
+          switch (hourlyRateProdTab) {
+            case 'hourly_rate_all':
               return isLoadingCaCollectionExpHourlyRate;
-            case 'collection_exp_dentists':
+            case 'hourly_rate_dentists':
               return isLoadingCaCollectionExpHourlyRateDentists;
-            case 'collection_exp_oht':
+            case 'hourly_rate_oht':
               return isLoadingCaCollectionExpHourlyRateOht;
           }
         } else {
