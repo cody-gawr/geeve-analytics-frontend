@@ -705,7 +705,7 @@ export const selectCaProductionTrendChartData = createSelector(
 
     let datasets: ChartDataset<'bar'>[] = [
       {
-        data: _.every(chartData, Boolean) ? chartData : [],
+        data: _.sum(chartData) != 0 ? chartData : [],
         label: '',
         // shadowOffsetX: 3,
         //   xAxisID: "x-axis-actual",
@@ -2263,7 +2263,7 @@ export const selectRecallRateChartData = createSelector(
         },
       ];
 
-      datasets[0].data = _.every(chartData, Boolean) ? chartData : [];
+      datasets[0].data = _.sum(chartData) != 0 ? chartData : [];
       return {
         datasets,
         labels: chartLabels,
@@ -2425,7 +2425,7 @@ export const selectRecallRateTrendChartData = createSelector(
       chartLabels = [];
     }
 
-    datasets[0].data = _.every(chartData, Boolean) ? chartData : [];
+    datasets[0].data = _.sum(chartData) != 0 ? chartData : [];
 
     const dynamicColors = [];
     chartLabels.forEach((label, labelIndex) => {
