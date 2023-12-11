@@ -123,10 +123,18 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     return this.caFacade.prodChartName$;
   }
 
+  get isCompare$() {
+    return this.layoutFacade.compare$;
+  }
+
   get hasData$(): Observable<boolean> {
-    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
-      map(([isDentistMode, isTrend]) => {
-        if (isDentistMode && !isTrend) {
+    return combineLatest([
+      this.isDentistMode$,
+      this.isTrend$,
+      this.isCompare$,
+    ]).pipe(
+      map(([isDentistMode, isTrend, isCompare]) => {
+        if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue > 0;
         } else {
           return (
@@ -176,24 +184,11 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.isDentistMode$,
       this.isTrend$,
-      this.hasData$,
+      this.isCompare$,
     ]).pipe(
       map(
-        ([isDentistMode, isTrend, hasData]) =>
-          isDentistMode && !isTrend && hasData
-      )
-    );
-  }
-
-  get isChartVisible$(): Observable<boolean> {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.hasData$,
-    ]).pipe(
-      map(
-        ([isDentistMode, isTrend, hasData]) =>
-          (!isDentistMode || isTrend) && hasData
+        ([isDentistMode, isTrend, isCompare]) =>
+          isDentistMode && !isTrend && !isCompare
       )
     );
   }

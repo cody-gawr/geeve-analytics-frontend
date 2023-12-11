@@ -64,6 +64,23 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isCompare$() {
+    return this.layoutFacade.compare$;
+  }
+
+  get isGaugeChartVisible$() {
+    return combineLatest([
+      this.isDentistMode$,
+      this.isTrend$,
+      this.isCompare$,
+    ]).pipe(
+      map(
+        ([isDentistMode, isTrend, isCompare]) =>
+          isDentistMode && !isTrend && !isCompare
+      )
+    );
+  }
+
   datasets: any = [{ data: [] }];
   labels = [];
   public prev: number = 0;
@@ -103,9 +120,13 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
 
   get hasData$() {
-    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
-      map(([isDentistMode, isTrend]) =>
-        isDentistMode && !isTrend
+    return combineLatest([
+      this.isDentistMode$,
+      this.isTrend$,
+      this.isCompare$,
+    ]).pipe(
+      map(([isDentistMode, isTrend, isCompare]) =>
+        isDentistMode && !(isTrend || isCompare)
           ? this.gaugeValue > 0
           : this.datasets[0]?.data.length > 0
       )

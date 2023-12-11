@@ -3,6 +3,7 @@ import { createFeature, createReducer, on, createSelector } from '@ngrx/store';
 import { layoutPageActions } from '../actions';
 import { getTodayMoment } from '@/newapp/shared/utils';
 import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
+import { selectRolesIndividual } from '@/newapp/auth/state/reducers/auth.reducer';
 
 export interface LayoutState {
   enableDateRagne: boolean;
@@ -94,6 +95,14 @@ export const {
   selectActivatedRouteTitle,
   selectCompare,
 } = layoutFeature;
+
+export const selectCompareEnabled = createSelector(
+  selectCompare,
+  selectRolesIndividual,
+  (compare, rolesInd) => {
+    return rolesInd?.type == 4 && rolesInd?.plan != 'lite' && compare;
+  }
+);
 
 export const selectIsFullMonthsDateRange = createSelector(
   selectDateRange,

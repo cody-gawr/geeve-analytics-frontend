@@ -10,8 +10,8 @@ import {
   selectColExpSelectTab,
   selectColSelectTab,
   selectHourlyRateChartName,
-  selectHourlyRateColExpSelectTab,
-  selectHourlyRateColSelectTab,
+  // selectHourlyRateColExpSelectTab,
+  // selectHourlyRateColSelectTab,
   selectHourlyRateProdSelectTab,
   selectIsLoadingCaHourlyRateAll,
   selectIsLoadingCaNumComplaints,
@@ -208,13 +208,13 @@ export class ClinicianAnalysisFacade {
     select(selectHourlyRateProdSelectTab)
   );
 
-  public readonly hourlyRateColSelectTab$ = this.store.pipe(
-    select(selectHourlyRateColSelectTab)
-  );
+  // public readonly hourlyRateColSelectTab$ = this.store.pipe(
+  //   select(selectHourlyRateColSelectTab)
+  // );
 
-  public readonly hourlyRateColExpSelectTab$ = this.store.pipe(
-    select(selectHourlyRateColExpSelectTab)
-  );
+  // public readonly hourlyRateColExpSelectTab$ = this.store.pipe(
+  //   select(selectHourlyRateColExpSelectTab)
+  // );
 
   public setHourlyRateProdSelectTab(tabName: CA_HOURLY_RATE_SELECT_TAB) {
     this.store.dispatch(

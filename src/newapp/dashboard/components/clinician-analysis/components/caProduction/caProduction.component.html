@@ -103,35 +103,38 @@
         <div class="chart-gauge ca-prod-graph">
           <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
           <ng-template #chartElem>
-            <ngx-gauge
-              *ngIf="isGaugeChartVisible$ | async"
-              type="arch"
-              [value]="gaugeValue"
-              [label]="gaugeLabel"
-              [thick]="20"
-              backgroundColor="#f4f0fa"
-              foregroundColor="#4ccfae"
-              [max]="maxGoal"
-              cap="round"
-              [duration]="2500"
-              prepend="$"
-              [size]="300">
-            </ngx-gauge>
-            <canvas
-              baseChart
-              *ngIf="isChartVisible$ | async"
-              [datasets]="datasets"
-              [labels]="labels"
-              [legend]="isLegendVisible$ | async"
-              type="bar"
-              [options]="chartOptions">
-            </canvas>
             <spin-loader
               class="empty-placeholder"
-              *ngIf="!(hasData$ | async)"
+              *ngIf="!(hasData$ | async); else ch11"
               [disableSpin]="true">
               {{ noDataAlertMessage$ | async }}
             </spin-loader>
+            <ng-template #ch11>
+              <ngx-gauge
+                *ngIf="isGaugeChartVisible$ | async; else ch10"
+                type="arch"
+                [value]="gaugeValue"
+                [label]="gaugeLabel"
+                [thick]="20"
+                backgroundColor="#f4f0fa"
+                foregroundColor="#4ccfae"
+                [max]="maxGoal"
+                cap="round"
+                [duration]="2500"
+                prepend="$"
+                [size]="300">
+              </ngx-gauge>
+              <ng-template #ch10>
+                <canvas
+                  baseChart
+                  [datasets]="datasets"
+                  [labels]="labels"
+                  [legend]="isLegendVisible$ | async"
+                  type="bar"
+                  [options]="chartOptions">
+                </canvas>
+              </ng-template>
+            </ng-template>
           </ng-template>
         </div>
       </ng-template>

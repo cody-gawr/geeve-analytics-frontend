@@ -269,9 +269,13 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get hasData$() {
-    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
-      map(([isDentistMode, isTrend]) => {
-        if (isDentistMode && !isTrend) {
+    return combineLatest([
+      this.isDentistMode$,
+      this.isTrend$,
+      this.isCompare$,
+    ]).pipe(
+      map(([isDentistMode, isTrend, isCompare]) => {
+        if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue > 0;
         } else {
           return this.datasets[0]?.data.length > 0;
@@ -308,6 +312,23 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
 
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
+  }
+
+  get isCompare$() {
+    return this.layoutFacade.compare$;
+  }
+
+  get isGaugeChartVisible$() {
+    return combineLatest([
+      this.isDentistMode$,
+      this.isTrend$,
+      this.isCompare$,
+    ]).pipe(
+      map(
+        ([isDentistMode, isTrend, isCompare]) =>
+          isDentistMode && !isTrend && !isCompare
+      )
+    );
   }
 
   constructor(

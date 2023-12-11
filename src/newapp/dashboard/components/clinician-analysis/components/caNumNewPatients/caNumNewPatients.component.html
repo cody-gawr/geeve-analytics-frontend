@@ -46,44 +46,40 @@
         <div class="chart-gauge ca-num-new-patients-graph">
           <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
           <ng-template #chartElem>
-            <ngx-gauge
-              *ngIf="
-                (isDentistMode$ | async) &&
-                !(isTrend$ | async) &&
-                (hasData$ | async)
-              "
-              type="arch"
-              [value]="gaugeValue"
-              [label]="gaugeLabel"
-              [thick]="20"
-              backgroundColor="#f4f0fa"
-              foregroundColor="#4ccfae"
-              [max]="maxGoal"
-              cap="round"
-              [duration]="2500"
-              prepend=""
-              [size]="300">
-            </ngx-gauge>
-            <canvas
-              baseChart
-              *ngIf="
-                (!(isDentistMode$ | async) || (isTrend$ | async)) &&
-                (hasData$ | async)
-              "
-              [datasets]="datasets"
-              [labels]="labels"
-              [legend]="chartLegend$ | async"
-              [type]="chartType$ | async"
-              [options]="chartOptions$ | async"
-              [plugins]="chartPlugins$ | async"
-              [colors]="newpColors">
-            </canvas>
             <spin-loader
               class="empty-placeholder"
-              *ngIf="!(hasData$ | async)"
+              *ngIf="!(hasData$ | async); else ch11"
               [disableSpin]="true">
               You have no new patients in the selected period
             </spin-loader>
+            <ng-template #ch11>
+              <ngx-gauge
+                *ngIf="isGaugeChartVisible$ | async; else ch10"
+                type="arch"
+                [value]="gaugeValue"
+                [label]="gaugeLabel"
+                [thick]="20"
+                backgroundColor="#f4f0fa"
+                foregroundColor="#4ccfae"
+                [max]="maxGoal"
+                cap="round"
+                [duration]="2500"
+                prepend=""
+                [size]="300">
+              </ngx-gauge>
+              <ng-template #ch10>
+                <canvas
+                  baseChart
+                  [datasets]="datasets"
+                  [labels]="labels"
+                  [legend]="chartLegend$ | async"
+                  [type]="chartType$ | async"
+                  [options]="chartOptions$ | async"
+                  [plugins]="chartPlugins$ | async"
+                  [colors]="newpColors">
+                </canvas>
+              </ng-template>
+            </ng-template>
           </ng-template>
         </div>
       </ng-template>

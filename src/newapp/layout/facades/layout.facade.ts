@@ -10,7 +10,7 @@ import {
   selectDurationTrendLabel,
   selectIsFullMonthsDateRange,
   selectTrend,
-  selectCompare,
+  selectCompareEnabled,
 } from '../state/reducers/layout.reducer';
 import { Moment } from 'moment';
 import { layoutPageActions } from '../state/actions';
@@ -33,7 +33,7 @@ export class LayoutFacade {
     select(selectAverage)
   );
 
-  public readonly compare$ = this.store.pipe(select(selectCompare));
+  public readonly compare$ = this.store.pipe(select(selectCompareEnabled));
 
   public readonly isFullMonthsDateRange$ = this.store.pipe(
     select(selectIsFullMonthsDateRange)
