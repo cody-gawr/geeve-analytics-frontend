@@ -334,7 +334,6 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
           },
           title: tooltipItems => {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
-            console.log({ sumV });
             return `${tooltipItems[0].label}: ${this.decimalPipe.transform(
               sumV
             )}`;

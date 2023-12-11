@@ -141,7 +141,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       this.isTrend$,
     ]).pipe(
       map(([isCompare, isDentistMode, isTrend]) => {
-        console.log({ isCompare, isDentistMode, isTrend });
         if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue > 0;
         } else {
@@ -243,7 +242,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
-        console.log({ datasets: this.datasets, data, isDentistMode });
       });
   }
 
