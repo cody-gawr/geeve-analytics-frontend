@@ -1,6 +1,7 @@
 <div class="dashboard-header-box">
   <date-range-menu class="date-range-container"></date-range-menu>
   <div class="toggle-section">
+    <compare-mode-toggle *ngIf="isEnableCompare$ | async"></compare-mode-toggle>
     <average-mode-toggle
       *ngIf="
         isAverageToggleVisible$ | async;
@@ -9,7 +10,6 @@
     <ng-template #trendModeToggleBlock
       ><trend-mode-toggle></trend-mode-toggle
     ></ng-template>
-    <compare-mode-toggle *ngIf="isEnableCompare$ | async"></compare-mode-toggle>
   </div>
 </div>
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">

@@ -11336,8 +11336,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   toggleCompareFilter(val) {
     if (
-      (this.averageToggle == true && val == 'on') ||
-      (this.averageToggle == false && val != 'on')
+      (this.averageToggle && val == 'on') ||
+      (!this.averageToggle && val != 'on')
     ) {
       return false;
     }

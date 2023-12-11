@@ -66,9 +66,12 @@ export const layoutFeature = createFeature({
       };
     }),
     on(layoutPageActions.setCompareMode, (state, { cMode }): LayoutState => {
+      const trend: TREND_MODE = cMode ? 'off' : state.trend;
+
       return {
         ...state,
         compare: cMode,
+        trend,
       };
     }),
     on(

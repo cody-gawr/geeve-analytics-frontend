@@ -29,6 +29,6 @@ export class CompareModeToggleComponent implements OnInit, OnDestroy {
   }
 
   onChangeCompareMode(event) {
-    this.layoutFacade.setCompareMode(event.value === 'on' ? true : false);
+    this.layoutFacade.setCompareMode(event.value === 'on');
   }
 }
