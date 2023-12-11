@@ -6,6 +6,7 @@ import { dynamicBarBackgroundColor } from '@/newapp/shared/utils';
 import {
   selectAverage,
   selectCompare,
+  selectCompareEnabled,
   selectTrend,
 } from '@/newapp/layout/state/reducers/layout.reducer';
 import {
@@ -424,6 +425,7 @@ export const selectCaProductionChartData = createSelector(
   selectColExpSelectTab,
   selectIsDentistMode,
   selectRolesIndividual,
+  selectCompareEnabled,
   (
     bodyList,
     selectedClinics,
@@ -433,7 +435,8 @@ export const selectCaProductionChartData = createSelector(
     colTab,
     colExpTab,
     isDentistMode,
-    rolesInd
+    rolesInd,
+    compare
   ) => {
     const isTrend = trendMode && trendMode !== 'off';
     let resBody: CaDentistProductionApiResponse | CaCollectionApiResponse =
@@ -494,7 +497,7 @@ export const selectCaProductionChartData = createSelector(
         break;
     }
 
-    if (selectedClinics.length > 1 || !isDentistMode) {
+    if (selectedClinics.length > 1 || !isDentistMode || compare) {
       let chartData = [],
         chartLabels = [],
         chartColors: any[] = [];
@@ -573,8 +576,7 @@ export const selectCaProductionChartData = createSelector(
             chartLabels,
             selectedClinics.length > 1,
             selectedClinics,
-            isTrend,
-            false
+            compare
           ),
           shadowOffsetX: 3,
           shadowOffsetY: 3,
@@ -929,7 +931,7 @@ export const selectIsLoadingCaHourlyRateAll = createSelector(
 export const selectCaHourlyRateChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
-  selectCompare,
+  selectCompareEnabled,
   selectHourlyRateChartName,
   selectHourlyRateProdSelectTab,
   selectIsDentistMode,
@@ -1056,8 +1058,7 @@ export const selectCaHourlyRateChartData = createSelector(
             chartLabels,
             selectedClinics.length > 1,
             selectedClinics,
-            false,
-            false
+            compare
           ),
           shadowOffsetX: 3,
           shadowOffsetY: 3,
@@ -1281,7 +1282,16 @@ export const selectCaNumNewPatientsChartData = createSelector(
   selectAverage,
   selectIsDentistMode,
   selectRolesIndividual,
-  (bodyList, selectedClinics, trend, average, isDentistMode, rolesInd) => {
+  selectCompareEnabled,
+  (
+    bodyList,
+    selectedClinics,
+    trend,
+    average,
+    isDentistMode,
+    rolesInd,
+    compare
+  ) => {
     let resBody: CaNumNewPatientsApiResponse = bodyList['caNumNewPatients'];
     if (!resBody?.data) {
       return {
@@ -1295,7 +1305,7 @@ export const selectCaNumNewPatientsChartData = createSelector(
       };
     }
 
-    if (!isDentistMode) {
+    if (!isDentistMode || compare) {
       let data: CaNumNewPatientsItem[] = resBody.data.slice();
       if (selectedClinics.length > 1) {
         data = _.chain(data)
@@ -1331,7 +1341,7 @@ export const selectCaNumNewPatientsChartData = createSelector(
         });
       });
 
-      if (isDentistMode && trend === 'off' && average === 'average') {
+      if (compare) {
         chartColors = [
           {
             backgroundColor: dynamicBarBackgroundColor(
@@ -1339,8 +1349,7 @@ export const selectCaNumNewPatientsChartData = createSelector(
               chartLabels,
               selectedClinics.length > 1,
               selectedClinics,
-              trend !== 'off',
-              false
+              compare
             ),
           },
         ];
@@ -1597,13 +1606,15 @@ export const selectTxPlanAvgFeesChartData = createSelector(
   selectTxPlanAvgFeeChartName,
   selectIsDentistMode,
   selectRolesIndividual,
+  selectCompareEnabled,
   (
     bodyList,
     selectedClinics,
     trendMode,
     chartName,
     isDentistMode,
-    rolesInd
+    rolesInd,
+    compare
   ) => {
     let resBody: CaTxPlanAvgFeeApiResponse = null;
 
@@ -1613,7 +1624,7 @@ export const selectTxPlanAvgFeesChartData = createSelector(
       resBody = bodyList['caTxPlanAvgProposedFees'];
     }
 
-    if (!isDentistMode) {
+    if (!isDentistMode || compare) {
       let chartData = [],
         chartLabels = [],
         chartColors;
@@ -1679,8 +1690,7 @@ export const selectTxPlanAvgFeesChartData = createSelector(
             chartLabels,
             selectedClinics.length > 1,
             selectedClinics,
-            trendMode !== 'off',
-            false
+            compare
           ),
           shadowOffsetX: 3,
           shadowOffsetY: 3,
@@ -1841,21 +1851,23 @@ export const selectIsLoadingCaTxPlanCompRateTrend = createSelector(
 export const selectTxPlanCompRateChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
-  selectTrend,
-  selectAverage,
+  // selectTrend,
+  // selectAverage,
   selectIsDentistMode,
   selectRolesIndividual,
+  selectCompareEnabled,
   (
     bodyList,
     selectedClinics,
-    trendMode,
-    averageMode,
+    // trendMode,
+    // averageMode,
     isDentistMode,
-    rolesInd
+    rolesInd,
+    compare
   ) => {
     let resBody: CaTxPlanCompRateApiResponse = bodyList['caTxPlanCompRate'];
 
-    if (!isDentistMode) {
+    if (!isDentistMode || compare) {
       let chartData = [],
         chartLabels = [],
         chartColors;
@@ -1922,8 +1934,7 @@ export const selectTxPlanCompRateChartData = createSelector(
             chartLabels,
             selectedClinics.length > 1,
             selectedClinics,
-            trendMode !== 'off',
-            false
+            compare
           ),
           shadowOffsetX: 3,
           shadowOffsetY: 3,
@@ -2152,17 +2163,19 @@ export const selectIsLoadingCaRecallRateAll = createSelector(
 export const selectRecallRateChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
-  selectTrend,
+  // selectTrend,
   selectRecallRateChartName,
   selectIsDentistMode,
   selectRolesIndividual,
+  selectCompareEnabled,
   (
     bodyList,
     selectedClinics,
-    trendMode,
+    // trendMode,
     chartName,
     isDentistMode,
-    rolesInd
+    rolesInd,
+    compare
   ) => {
     let resBody: CaRecallRateApiResponse | CaReappRateApiResponse = null;
     if (chartName === 'Recall Prebook Rate') {
@@ -2171,7 +2184,7 @@ export const selectRecallRateChartData = createSelector(
       resBody = bodyList['caReappointRate'];
     }
 
-    if (!isDentistMode) {
+    if (!isDentistMode || compare) {
       let chartData = [],
         chartLabels = [],
         chartColors;
@@ -2241,8 +2254,7 @@ export const selectRecallRateChartData = createSelector(
             chartLabels,
             selectedClinics.length > 1,
             selectedClinics,
-            trendMode !== 'off',
-            false
+            compare
           ),
           shadowOffsetX: 3,
           shadowOffsetY: 3,
@@ -2454,7 +2466,16 @@ export const selectCaNumComplaintsChartData = createSelector(
   selectAverage,
   selectIsDentistMode,
   selectRolesIndividual,
-  (bodyList, selectedClinics, trend, average, isDentistMode, rolesInd) => {
+  selectCompareEnabled,
+  (
+    bodyList,
+    selectedClinics,
+    trend,
+    average,
+    isDentistMode,
+    rolesInd,
+    compare
+  ) => {
     let resBody: CaNumComplaintsApiResponse = bodyList['caNumComplaints'];
     if (!resBody?.data) {
       return {
@@ -2468,7 +2489,7 @@ export const selectCaNumComplaintsChartData = createSelector(
       };
     }
 
-    if (!isDentistMode) {
+    if (!isDentistMode || compare) {
       let data: CaNumComplaintsItem[] = resBody.data.slice();
       if (selectedClinics.length > 1) {
         data
@@ -2503,7 +2524,7 @@ export const selectCaNumComplaintsChartData = createSelector(
         });
       });
 
-      if (isDentistMode && trend === 'off' && average === 'average') {
+      if (compare) {
         chartColors = [
           {
             backgroundColor: dynamicBarBackgroundColor(
@@ -2511,8 +2532,7 @@ export const selectCaNumComplaintsChartData = createSelector(
               chartLabels,
               selectedClinics.length > 1,
               selectedClinics,
-              trend !== 'off',
-              false
+              compare
             ),
           },
         ];

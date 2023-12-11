@@ -420,7 +420,6 @@ export function dynamicBarBackgroundColor(
   labels: string[],
   isAllClinic: boolean,
   selectedClinics: Clinic[],
-  showTrend: boolean,
   averageToggle: boolean
 ) {
   let dynamicColors = [];
@@ -436,7 +435,7 @@ export function dynamicBarBackgroundColor(
   } else {
     dynamicColors = [];
     labels.forEach((label, labelIndex) => {
-      if (!showTrend && averageToggle) {
+      if (averageToggle) {
         dynamicColors.push(label != 'Anonymous' ? COLORS.odd : COLORS.even);
       } else {
         dynamicColors.push(labelIndex % 2 === 0 ? COLORS.odd : COLORS.even);

@@ -46,12 +46,13 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
   get isAverageToggleVisible$(): Observable<boolean> {
     return combineLatest([
-      // this.layoutFacade.compare$,
+      this.layoutFacade.compare$,
       this.dentistFacade.currentDentistId$,
       this.clinicFacade.currentMultiClinicIDs$,
     ]).pipe(
       map(
-        ([dentistId, clinicIds]) => dentistId === 'all' || clinicIds.length > 1
+        ([compare, dentistId, clinicIds]) =>
+          compare || dentistId === 'all' || clinicIds.length > 1
       )
     );
   }
