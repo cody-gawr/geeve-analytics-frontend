@@ -6,8 +6,9 @@ import { DentistApiActions, DentistPageActions } from '../actions';
 import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.reducer';
 
 export interface DentistState {
-  isLoadingData: Array<'dentGet'>;
+  isLoadingData: Array<'dentGet' | 'userGetChildDentist'>;
   dentists: Dentist[] | null; // All dentists
+  dentistId: number;
   currentDentistId: 'all' | number; // Selected one
   errors: Array<JeeveError>;
 }
@@ -16,6 +17,7 @@ const initialState: DentistState = {
   isLoadingData: [],
   currentDentistId: 'all',
   dentists: null,
+  dentistId: null,
   errors: [],
 };
 
@@ -56,6 +58,46 @@ export const dentistFeature = createFeature({
         };
       }
     ),
+
+    on(DentistPageActions.loadSpecificDentist, (state, {}): DentistState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'userGetChildDentist'),
+        dentistId: null,
+        isLoadingData: _.union(isLoadingData, ['userGetChildDentist']),
+      };
+    }),
+    on(
+      DentistApiActions.loadSpecificDentistSuccess,
+      (state, { dentistId }): DentistState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, n => n.api != 'userGetChildDentist'),
+          dentistId,
+          isLoadingData: _.filter(
+            isLoadingData,
+            n => n != 'userGetChildDentist'
+          ),
+        };
+      }
+    ),
+    on(
+      DentistApiActions.loadSpecificDentistFailure,
+      (state, { error }): DentistState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          dentistId: null,
+          isLoadingData: _.filter(
+            isLoadingData,
+            n => n != 'userGetChildDentist'
+          ),
+          errors: [...errors, { ...error, api: 'userGetChildDentist' }],
+        };
+      }
+    ),
     on(
       DentistPageActions.setCurrentDentistId,
       (state, { dentistId }): DentistState => {
@@ -73,6 +115,7 @@ export const {
   selectIsLoadingData,
   selectDentists,
   selectCurrentDentistId,
+  selectDentistId,
 } = dentistFeature;
 
 export const selectDentistsLoading = createSelector(

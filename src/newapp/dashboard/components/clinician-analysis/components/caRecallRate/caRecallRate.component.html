@@ -6,7 +6,7 @@
     class="help-tip"
     fontIcon="help"></mat-icon>
   <mat-icon
-    *ngIf="!(isDentistMode$ | async)"
+    *ngIf="isTableIconVisible$ | async"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
@@ -36,7 +36,7 @@
 
       <div
         class="pa-table"
-        *ngIf="showTableInfo && !(isDentistMode$ | async); else graphElem">
+        *ngIf="showTableInfo && (isTableIconVisible$ | async); else graphElem">
         <table>
           <thead>
             <tr>
@@ -44,7 +44,7 @@
               <th>
                 {{
                   (chartName$ | async) === 'Recall Prebook Rate'
-                    ? 'Recall Preebook Rate'
+                    ? 'Recall Prebook Rate'
                     : 'Reappointment Rate'
                 }}
               </th>

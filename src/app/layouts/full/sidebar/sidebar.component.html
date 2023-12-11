@@ -112,7 +112,7 @@
           <a
             class="relative"
             appAccordionToggle
-            [routerLink]="['/dashboards/cliniciananalysis']">
+            href="/newapp/dashboard/cliniciananalysis">
             <i></i>
             <span>Clinician Analysis</span>
             <span fxFlex></span>
@@ -131,7 +131,7 @@
           <a
             class="relative"
             appAccordionToggle
-            [routerLink]="['/dashboards/clinicianproceedures']">
+            href="/newapp/dashboard/clinicianproceedures">
             <i></i>
             <span>Clinician Procedures & Referrals</span>
             <span fxFlex></span>
@@ -146,10 +146,7 @@
             permisions.indexOf('dashboard3') >= 0 ||
             user_type == 7
           ">
-          <a
-            class=""
-            appAccordionToggle
-            [routerLink]="['/dashboards/frontdesk']">
+          <a class="" appAccordionToggle href="/newapp/dashboard/frontdesk">
             <i></i>
             <span>Front Desk</span>
             <span fxFlex></span>

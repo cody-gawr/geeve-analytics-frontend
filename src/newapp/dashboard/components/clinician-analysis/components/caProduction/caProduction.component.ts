@@ -129,7 +129,11 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         if (isDentistMode && !isTrend) {
           return this.gaugeValue > 0;
         } else {
-          return this.datasets?.length > 0;
+          return (
+            this.datasets?.length > 0 &&
+            this.datasets[0]?.data?.length > 0 &&
+            this.labels.length > 0
+          );
         }
       })
     );
@@ -152,13 +156,20 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$(): Observable<boolean> {
-    return combineLatest([this.isTrend$, this.isDentistMode$]).pipe(
-      map(([isTrend, isDentistMode]) => !isDentistMode || !isTrend)
-    );
+    return this.isDentistMode$.pipe(map(v => !v && this.tableData.length > 0));
   }
 
   get isTrendIconVisible$(): Observable<boolean> {
-    return this.duration$.pipe(map(duration => duration != 'custom'));
+    return combineLatest([
+      this.duration$,
+      this.isDentistMode$,
+      this.isTrend$,
+    ]).pipe(
+      map(
+        ([duration, isDentistMode, isTrend]) =>
+          duration != 'custom' && !(isDentistMode && isTrend)
+      )
+    );
   }
 
   get isGaugeChartVisible$(): Observable<boolean> {
@@ -221,27 +232,27 @@ export class CaProductionComponent implements OnInit, OnDestroy {
               if (!isDentistMode) {
                 switch (colSelectShow) {
                   case 'collection_all':
-                    return 'You have no Collection in the selected period';
+                    return 'You have no collection in the selected period';
                   case 'collection_dentists':
                     return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
                   case 'collection_oht':
                     return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
                 }
               } else {
-                return 'You have no Collection in the selected period';
+                return 'You have no collection in the selected period';
               }
             case 'Collection-Exp':
               if (!isDentistMode) {
                 switch (colExpSelectShow) {
                   case 'collection_exp_all':
-                    return 'You have no Collection in the selected period';
+                    return 'You have no collection in the selected period';
                   case 'collection_exp_dentists':
                     return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
                   case 'collection_exp_oht':
                     return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
                 }
               } else {
-                return 'You have no Collection in the selected period';
+                return 'You have no collection in the selected period';
               }
           }
         }

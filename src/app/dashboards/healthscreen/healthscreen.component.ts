@@ -16,6 +16,7 @@ import { ChartstipsService } from '../../shared/chartstips.service';
 import { AppConstants } from '../../app.constants';
 import { environment } from '../../../environments/environment';
 import { LocalStorageService } from '../../shared/local-storage.service';
+import _ from 'lodash';
 
 export interface Dentist {
   providerId: string;
@@ -301,6 +302,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
   public visits_f;
   public utilisation_rate_f;
   public unscheduled_production_f;
+  public unscheduled_production_unit = 'K';
   public profit_g;
   public visits_g;
   public production_g;
@@ -718,6 +720,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
       'yyyy-MM-dd'
     );
     this.unscheduled_production_f = 0;
+
     this.healthscreenService
       .commonCall(this.clinic_id, startDate, endDate, 'chUnscheduledProd')
       .subscribe(
@@ -726,7 +729,13 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
             this.unscheduledproduction = true;
             let value =
               res.body.data >= 1000 ? res.body.data / 1000 : res.body.data;
-            this.unscheduled_production_f = Math.round(value);
+            if (value >= 1000) {
+              this.unscheduled_production_f = _.round(value / 1000, 1);
+              this.unscheduled_production_unit = 'M';
+            } else {
+              this.unscheduled_production_f = Math.round(value);
+              this.unscheduled_production_unit = 'K';
+            }
           }
         },
         error => {

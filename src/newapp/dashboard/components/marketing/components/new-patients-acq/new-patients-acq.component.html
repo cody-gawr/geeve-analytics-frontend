@@ -8,6 +8,10 @@
   <div class="chart-title">
     <div class="icon-title">
       <mat-icon
+        *ngIf="
+          !(isTrend$ | async) &&
+          (durationTrendLabel$ | async) !== 'Last Current'
+        "
         [matTooltip]="
           (durationTrendLabel$ | async) +
           ': $' +
@@ -94,7 +98,7 @@
           <h3>${{ newPatientsAcqVal | number: '1.0-0' }}</h3>
           <span>{{ durationLabel$ | async }}</span>
         </div>
-        <div>
+        <div *ngIf="(durationTrendLabel$ | async) !== 'Last Current'">
           <h3>${{ newPatientsAcqPrev | number: '1.0-0' }}</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>

@@ -843,9 +843,8 @@ export const selectFdUtilRateByDayChartData = createSelector(
             utilRate: utilRate,
           };
           chartData[idx] = utilRate;
-          chartLabels[
-            idx
-          ] = `${item.day}--${item.workedHour}--${item.plannedHour}`;
+          chartLabels[idx] =
+            `${item.day}--${item.workedHour}--${item.plannedHour}`;
         }
       });
 
@@ -925,7 +924,7 @@ export const selectFdUtilRateTrendChartData = createSelector(
         })
         .value()
         .forEach(item => {
-          chartData.push(item.utilRate);
+          chartData.push(_.round(item.utilRate, 1));
           chartLabels.push(moment(item.duration).format('MMM YYYY'));
         });
       chartDatasets = [
@@ -1128,7 +1127,7 @@ export const selectFdRecallRateTrendChartData = createSelector(
         })
         .value()
         .forEach(item => {
-          chartData.push(item.recallPercent);
+          chartData.push(_.round(item.recallPercent));
           chartLabels.push(
             trendMode === 'current'
               ? moment(item.duration).format('MMM YYYY')
@@ -1322,7 +1321,7 @@ export const selectFdReappointRateTrendChartData = createSelector(
         })
         .value()
         .forEach(item => {
-          chartData.push(item.reappointRate);
+          chartData.push(_.round(item.reappointRate));
           chartLabels.push(
             trendMode === 'current'
               ? moment(item.duration).format('MMM YYYY')
@@ -1336,7 +1335,7 @@ export const selectFdReappointRateTrendChartData = createSelector(
       const chartData = [],
         targetData = [];
       resBody.data.forEach(item => {
-        chartData.push(item.reappointRate);
+        chartData.push(Math.round(<number>item.reappointRate));
         if (item.goals == -1 || item.goals == null || item.goals == '') {
           targetData.push([0, 0]);
         } else {
@@ -1524,7 +1523,7 @@ export const selectFdNumTicksTrendChartData = createSelector(
     } else {
       const chartData = [];
       resBody.data.forEach(item => {
-        chartData.push(item.numTicks);
+        chartData.push(Math.round(<number>item.numTicks));
         chartLabels.push(
           trendMode === 'current'
             ? moment(item.yearMonth).format('MMM YYYY')
@@ -1681,7 +1680,7 @@ export const selectFdFtaRatioTrendChartData = createSelector(
         })
         .value()
         .forEach(item => {
-          chartData.push(item.ftaRatio);
+          chartData.push(_.round(item.ftaRatio, 1));
           chartLabels.push(item.duration);
         });
       chartDatasets = [
@@ -1826,7 +1825,7 @@ export const selectFdUtaRatioTrendChartData = createSelector(
         })
         .value()
         .forEach(item => {
-          chartData.push(item.utaRatio);
+          chartData.push(_.round(item.utaRatio, 1));
           chartLabels.push(item.duration);
         });
       chartDatasets = [

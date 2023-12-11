@@ -2,6 +2,7 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { externalTooltipHandler } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
@@ -130,6 +131,14 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     );
   }
 
+  get legend$() {
+    return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
+      map(([isTrend, isMultiClinic]) => {
+        return isTrend && isMultiClinic;
+      })
+    );
+  }
+
   public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
     position: 'bottom',
@@ -193,6 +202,9 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
         displayColors(ctx, options) {
           return !ctx.tooltip;
         },
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: tooltipItems => {
             return (
@@ -242,6 +254,9 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       },
       tooltip: {
         mode: 'x',
+        enabled: false,
+        position: 'nearest',
+        external: externalTooltipHandler,
         callbacks: {
           label: function (tooltipItems) {
             if (tooltipItems.parsed.y > 0) {

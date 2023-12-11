@@ -722,7 +722,8 @@ export const selectCpPredictorAnalysisChartData = createSelector(
 export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
   selectCpPredictorSpecialistAnalysisData,
   selectCurrentClinics,
-  (resData, clinics) => {
+  selectCurrentDentistId,
+  (resData, clinics, dentistId) => {
     if (!resData || !resData.data || resData.data.length == 0) {
       return {
         datasets: [],
@@ -767,6 +768,55 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
       return {
         datasets: chartDatasets,
         labels: chartLabels,
+      };
+    } else if (dentistId !== 'all') {
+      const chartDatasets: any[] = [
+        {
+          data: [10, 1, 5],
+          label: 'Items Predictor Specail Analysis ',
+          shadowOffsetX: 3,
+          shadowOffsetY: 2,
+          shadowBlur: 3,
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
+          pointBevelWidth: 2,
+          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+          pointShadowOffsetX: 3,
+          pointShadowOffsetY: 3,
+          pointShadowBlur: 10,
+          pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+          backgroundOverlayMode: 'multiply',
+        },
+      ];
+      const chartData = [];
+      const chartLabels = [];
+      var temp = [];
+      temp['Implant Surg'] = resData.data[0].impSurg;
+      temp['Braces'] = resData.data[0].orthoFix;
+      temp['Aligners'] = resData.data[0].orthoAlign;
+      temp['MAS'] = resData.data[0].sleep;
+      temp['Perio Surg'] = resData.data[0].perioSurg;
+      temp['Endo Re-treat'] = resData.data[0].endoRetreat;
+      temp['Veneers (indirect)'] = resData.data[0].veneersInd;
+      var tupleArray = [];
+      for (var key in temp) tupleArray.push([key, temp[key]]);
+      tupleArray.sort(function (a, b) {
+        return b[1] - a[1];
+      });
+
+      tupleArray.forEach((res, key) => {
+        chartData.push(res[1]);
+        chartLabels.push(res[0]);
+      });
+      chartDatasets[0]['data'] = chartData;
+      chartDatasets[0]['label'] = 'DentistMode-' + resData.data[0].providerName;
+      //this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
+
+      const maxData = Math.max(...chartDatasets[0]['data']);
+      return {
+        datasets: chartDatasets,
+        labels: chartLabels,
+        maxData: maxData,
       };
     } else {
       chartDatasets = [

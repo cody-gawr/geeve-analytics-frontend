@@ -31,6 +31,10 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
+  get isTableIconVisible$() {
+    return this.isDentistMode$.pipe(map(v => !v && this.tableData.length > 0));
+  }
+
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }

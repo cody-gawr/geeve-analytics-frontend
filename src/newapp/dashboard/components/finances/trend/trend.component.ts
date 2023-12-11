@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../../facades/dashboard.facade';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, map, filter } from 'rxjs';
 import { FinanceFacade } from '../../../facades/finance.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 
@@ -45,17 +45,18 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
       this.financeFacade.profitTrendChartName$,
       this.dashbordFacade.chartTips$,
     ]).pipe(
+      filter(params => !!params[1]),
       map(([chartName, tips]) => {
         if (tips) {
           switch (chartName) {
             case 'Production':
-              return tips[31];
+              return tips[31] ?? '';
             case 'Collection':
-              return tips[33];
+              return tips[33] ?? '';
             case 'Net Profit':
-              return tips[26];
+              return tips[26] ?? '';
             case 'Net Profit %':
-              return tips[27];
+              return tips[27] ?? '';
           }
         }
         return '';

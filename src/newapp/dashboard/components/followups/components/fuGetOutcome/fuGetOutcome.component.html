@@ -1,0 +1,51 @@
+<div class="chart-container">
+  <mat-icon
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"></mat-icon>
+  <div class="chart-title">Followup Outcome</div>
+  <div class="chart-content">
+    <div class="profit-prod-trend-chart">
+      <div class="profit-switch">
+        <button
+          *ngFor="let chartName of chartNames"
+          (click)="switchChartName(chartName)"
+          [ngClass]="{ active: chartName == (chartName$ | async) }">
+          {{ chartName }}
+        </button>
+      </div>
+      <div class="profit-graph">
+        <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+        <ng-template #chartElem>
+          <ngx-charts-pie-chart
+            *ngIf="!(isLoading$ | async) && hasData"
+            fxFlexAlign="center"
+            [view]="[340, 380]"
+            [scheme]="colorScheme"
+            [trimLabels]="true"
+            [maxLabelLength]="35"
+            [results]="results"
+            [legend]="false"
+            [explodeSlices]="false"
+            [labels]="true"
+            [arcWidth]="0.75"
+            [doughnut]="false"
+            [gradient]="false"
+            [tooltipDisabled]="false"
+            [tooltipText]="pieTooltipText"
+            [labelFormatting]="pieLabelText">
+          </ngx-charts-pie-chart>
+
+          <spin-loader
+            class="empty-placeholder"
+            *ngIf="!hasData && !(isLoading$ | async)"
+            [disableSpin]="true">
+            {{ noDataMessage$ | async }}
+          </spin-loader>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

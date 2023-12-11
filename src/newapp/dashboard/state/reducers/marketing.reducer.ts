@@ -850,6 +850,7 @@ export const selectNewPatientsByReferralChartData = createSelector(
         newPatientsByReferralData.data
       );
       const chartLables = _.chain(data)
+        .sortBy(a => -_.sum(a.val.map(v => v.patientsVisits)))
         .map(item => item.clinicName)
         .value();
       return {
@@ -964,6 +965,7 @@ export const selectRevByReferralChartData = createSelector(
       const data = <MkRevByReferralMultiItem[]>revByReferralData.data;
 
       const chartLables = _.chain(data)
+        .sortBy(a => -_.sum(a.val.map(v => v.invoiceAmount)))
         .map(item => item.clinicName)
         .value();
       return {
@@ -982,6 +984,7 @@ export const selectRevByReferralChartData = createSelector(
               label: refTypeName,
             };
           })
+
           .value(),
       };
     } else {
@@ -1440,7 +1443,11 @@ export const selectTotalVisitsChartData = createSelector(
     }
     const chartData = [],
       chartLabels = [];
-    totalVisitsData.data.forEach(v => {
+    let data = _.sortBy(
+      totalVisitsData.data,
+      a => -parseFloat(<string>a.numVisits)
+    );
+    data.forEach(v => {
       chartData.push(Math.round(<number>v.numVisits));
       chartLabels.push(v.clinicName);
     });
@@ -1557,8 +1564,8 @@ export const selectTotalVisitsTrendChartData = createSelector(
 
 export const selectIsActivePatientsWithPlatform = createSelector(
   selectIsActivePatients,
-  selectConnectedWith,
-  (isActive, isConnected) => {
-    return isActive && isConnected;
+  // selectConnectedWith,
+  isActive => {
+    return isActive;
   }
 );

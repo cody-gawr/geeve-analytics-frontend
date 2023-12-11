@@ -5,6 +5,8 @@ import _ from 'lodash';
 export interface FollowupsState {
   isLoadingData: Array<FU_API_ENDPOINTS>;
   errors: Array<JeeveError>;
+  fuGetOutcomeChartName: FU_OUTCOME_CHART_NAME;
+  fuGetConversionPerUserChartName: FU_OUTCOME_CHART_NAME;
 
   resBodyList: Record<FU_API_ENDPOINTS, unknown> | {};
 }
@@ -12,7 +14,8 @@ export interface FollowupsState {
 const initiateState: FollowupsState = {
   isLoadingData: [],
   errors: [],
-
+  fuGetOutcomeChartName: 'Ticks',
+  fuGetConversionPerUserChartName: 'Ticks',
   resBodyList: {},
 };
 
@@ -20,7 +23,47 @@ export const followupsFeature = createFeature({
   name: 'followups',
   reducer: createReducer(
     initiateState,
-    on(FollowupsActions.loadApiRequest, (state, { api }): FollowupsState => {
+    on(FollowupsActions.loadFuGetConversion, (state): FollowupsState => {
+      const api: FU_API_ENDPOINTS = 'fuGetConversion';
+      return {
+        ...state,
+        errors: _.filter(state.errors, n => n.api != api),
+        isLoadingData: _.union(state.isLoadingData, [api]),
+        resBodyList: { ...state.resBodyList, [api]: {} },
+      };
+    }),
+    on(FollowupsActions.loadFuGetConversionPerUser, (state): FollowupsState => {
+      const api: FU_API_ENDPOINTS = 'fuGetConversionPerUser';
+      return {
+        ...state,
+        errors: _.filter(state.errors, n => n.api != api),
+        isLoadingData: _.union(state.isLoadingData, [api]),
+        resBodyList: { ...state.resBodyList, [api]: {} },
+      };
+    }),
+    on(
+      FollowupsActions.loadFuGetFollowupCompletion,
+      (state): FollowupsState => {
+        const api: FU_API_ENDPOINTS = 'fuGetFollowupCompletion';
+        return {
+          ...state,
+          errors: _.filter(state.errors, n => n.api != api),
+          isLoadingData: _.union(state.isLoadingData, [api]),
+          resBodyList: { ...state.resBodyList, [api]: {} },
+        };
+      }
+    ),
+    on(FollowupsActions.loadFuGetOutcome, (state): FollowupsState => {
+      const api: FU_API_ENDPOINTS = 'fuGetOutcome';
+      return {
+        ...state,
+        errors: _.filter(state.errors, n => n.api != api),
+        isLoadingData: _.union(state.isLoadingData, [api]),
+        resBodyList: { ...state.resBodyList, [api]: {} },
+      };
+    }),
+    on(FollowupsActions.loadFuGetPerUser, (state): FollowupsState => {
+      const api: FU_API_ENDPOINTS = 'fuGetPerUser';
       return {
         ...state,
         errors: _.filter(state.errors, n => n.api != api),
@@ -51,12 +94,35 @@ export const followupsFeature = createFeature({
           errors: [...errors, { ...error, api: api }],
         };
       }
+    ),
+    on(
+      FollowupsActions.setFuOutComeChartName,
+      (state, { chartName }): FollowupsState => {
+        return {
+          ...state,
+          fuGetOutcomeChartName: chartName,
+        };
+      }
+    ),
+    on(
+      FollowupsActions.setFuConversionPerUserChartName,
+      (state, { chartName }): FollowupsState => {
+        return {
+          ...state,
+          fuGetConversionPerUserChartName: chartName,
+        };
+      }
     )
   ),
 });
 
-export const { selectIsLoadingData, selectErrors, selectResBodyList } =
-  followupsFeature;
+export const {
+  selectIsLoadingData,
+  selectErrors,
+  selectResBodyList,
+  selectFuGetConversionPerUserChartName,
+  selectFuGetOutcomeChartName,
+} = followupsFeature;
 
 export const selectIsLoadingFuGetConversion = createSelector(
   selectIsLoadingData,
@@ -90,9 +156,17 @@ export const selectFuGetConversionChartData = createSelector(
   bodyList => {
     //
     let resBody: FuGetConversionApiResponse = bodyList['fuGetConversion'];
-    let chartData,
+    if (!resBody) {
+      return {
+        datasets: [],
+        labels: [],
+        total: 0,
+        prev: 0,
+      };
+    }
+    let chartData = [],
       chartLabels = [];
-    resBody.data.forEach(item => {
+    resBody.data?.forEach(item => {
       chartData.push(Math.round(<number>item.bookedPercent));
       chartLabels.push(item.type);
     });
@@ -102,6 +176,7 @@ export const selectFuGetConversionChartData = createSelector(
           data: chartData,
         },
       ],
+      labels: chartLabels,
       total: resBody.total,
       prev: resBody.totalTa,
       goal: resBody?.goals,
@@ -114,28 +189,48 @@ export const selectFuGetConversionPerUserChartData = createSelector(
   bodyList => {
     let resBody: FuGetConversionPerUserApiResponse =
       bodyList['fuGetConversionPerUser'];
+    if (!resBody) {
+      return {
+        datasetsFta: [],
+        labelsFta: [],
+        datasetsUta: [],
+        labelsUta: [],
+        datasetsRecalls: [],
+        labelsRecalls: [],
+        datasetsTicks: [],
+        labelsTicks: [],
+        totalFta: 0,
+        totalUta: 0,
+        totalRecalls: 0,
+        totalTicks: 0,
+        prevTicks: 0,
+        prevRecalls: 0,
+        prevFta: 0,
+        prevUta: 0,
+      };
+    }
     let chartDataFtas = [],
       chartLabelsFtas = [];
-    resBody.data.ftas?.forEach(fta => {
+    resBody.data?.ftas?.forEach(fta => {
       chartDataFtas.push(Math.round(<number>fta.bookedPercent));
       chartLabelsFtas.push(fta.completedBy);
     });
     let chartDataUtas = [],
       chartLabelsUtas = [];
-    resBody.data.utas?.forEach(uta => {
+    resBody.data?.utas?.forEach(uta => {
       chartDataUtas.push(Math.round(<number>uta.bookedPercent));
       chartLabelsUtas.push(uta.completedBy);
     });
     let chartDataRecalls = [],
       chartLabelsRecalls = [];
-    resBody.data.recalls?.forEach(recall => {
+    resBody.data?.recalls?.forEach(recall => {
       chartDataRecalls.push(Math.round(<number>recall.bookedPercent));
       chartLabelsRecalls.push(recall.completedBy);
     });
 
     let chartDataTicks = [],
       chartLabelsTicks = [];
-    resBody.data.ticks?.forEach(ticks => {
+    resBody.data?.ticks?.forEach(ticks => {
       chartDataTicks.push(Math.round(<number>ticks.bookedPercent));
       chartLabelsTicks.push(ticks.completedBy);
     });
@@ -166,9 +261,17 @@ export const selectFuGetFollowupCompletionChartData = createSelector(
   bodyList => {
     let resBody: FuGetFollowupCompletionApiResponse =
       bodyList['fuGetFollowupCompletion'];
+    if (!resBody) {
+      return {
+        datasets: [],
+        labels: [],
+        total: 0,
+        prev: 0,
+      };
+    }
     let chartData = [],
       chartLabels = [];
-    resBody.data.forEach(item => {
+    resBody.data?.forEach(item => {
       if (
         parseInt(<string>item.completionRate) >= 0 &&
         parseInt(<string>item.numTotal) > 0
@@ -184,6 +287,7 @@ export const selectFuGetFollowupCompletionChartData = createSelector(
           data: chartData,
         },
       ],
+      labels: chartLabels,
       total: resBody.total,
       prev: resBody.totalTa,
       goal: resBody?.goals,
@@ -195,32 +299,42 @@ export const selectFuGetOutcomeChartData = createSelector(
   selectResBodyList,
   bodyList => {
     let resBody: FuGetOutcomeApiResponse = bodyList['fuGetOutcome'];
+    if (!resBody) {
+      return {
+        total: 0,
+        prev: 0,
+        ticks: [],
+        recalls: [],
+        utas: [],
+        ftas: [],
+      };
+    }
     let tick = [],
       recall = [],
       fta = [],
       uta = [];
-    resBody.data.ticks?.forEach(item => {
+    resBody.data?.ticks?.forEach(item => {
       tick.push({
         name: item.status,
         value: item.statusPercent,
       });
     });
 
-    resBody.data.recalls?.forEach(item => {
+    resBody.data?.recalls?.forEach(item => {
       recall.push({
         name: item.status,
         value: item.statusPercent,
       });
     });
 
-    resBody.data.utas?.forEach(item => {
+    resBody.data?.utas?.forEach(item => {
       uta.push({
         name: item.status,
         value: item.statusPercent,
       });
     });
 
-    resBody.data.ftas?.forEach(item => {
+    resBody.data?.ftas?.forEach(item => {
       fta.push({
         name: item.status,
         value: item.statusPercent,
@@ -242,7 +356,14 @@ export const selectFuGetPerUserChartData = createSelector(
   selectResBodyList,
   bodyList => {
     let resBody: FuGetPerUserApiResponse = bodyList['fuGetPerUser'];
-
+    if (!resBody) {
+      return {
+        datasets: [],
+        labels: [],
+        total: 0,
+        prev: 0,
+      };
+    }
     let chartData1 = [],
       chartData2 = [],
       chartData3 = [],
@@ -250,7 +371,7 @@ export const selectFuGetPerUserChartData = createSelector(
       chartData5 = [],
       chartLabels = [];
 
-    resBody.data.forEach(item => {
+    resBody.data?.forEach(item => {
       chartData1.push(item.numTicks);
       chartData2.push(item.numPostop);
       chartData3.push(item.numRecall);
@@ -268,6 +389,8 @@ export const selectFuGetPerUserChartData = createSelector(
         { data: chartData5, label: 'Utas' },
       ],
       labels: chartLabels,
+      total: resBody.total,
+      prev: resBody.totalTa,
     };
   }
 );

@@ -7,6 +7,9 @@
     fontIcon="help"></mat-icon>
   <div class="chart-title">
     <mat-icon
+      *ngIf="
+        !(isTrend$ | async) && (durationTrendLabel$ | async) !== 'Last Current'
+      "
       [matTooltip]="
         (durationTrendLabel$ | async) +
         ': ' +
@@ -47,7 +50,7 @@
             baseChart
             [datasets]="datasets"
             [labels]="labels"
-            [legend]="false"
+            [legend]="legend$ | async"
             type="bar"
             [options]="chartOptions$ | async"
             [colors]="lineChartColors">
@@ -66,7 +69,7 @@
           <h3>{{ totalVisitsVal | number: '1.0-0' }}</h3>
           <span>{{ durationLabel$ | async }}</span>
         </div>
-        <div>
+        <div *ngIf="(durationTrendLabel$ | async) !== 'Last Current'">
           <h3>{{ totalVisitsPrev | number: '1.0-0' }}</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>

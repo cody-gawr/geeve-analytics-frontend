@@ -3,7 +3,7 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { formatXLabel, formatXTooltipLabel } from '@/newapp/shared/utils';
+import { formatXLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions } from 'chart.js';
@@ -62,6 +62,10 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
           durTrendLabel + ': ' + this.decimalPipe.transform(this.prev) + '%'
       )
     );
+  }
+
+  get isTableIconVisible$() {
+    return this.isDentistMode$.pipe(map(v => !v && this.tableData.length > 0));
   }
 
   datasets: any = [{ data: [] }];
@@ -208,7 +212,12 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         callbacks: {
           // use label callback to return the desired label
           label: function (tooltipItem) {
-            return tooltipItem.label + ': ' + tooltipItem.formattedValue + '%';
+            if (tooltipItem?.dataset?.label == 'Actual') {
+              return (
+                tooltipItem.label + ': ' + tooltipItem.formattedValue + '%'
+              );
+            }
+            return '';
           },
           // remove title
           title: function (tooltipItem) {

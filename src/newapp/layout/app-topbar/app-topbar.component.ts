@@ -121,6 +121,25 @@ export class AppTopbarComponent implements OnInit {
     );
   }
 
+  get isDentistUser$() {
+    return combineLatest([
+      this.clinicFacade.currentClinics$,
+      this.authFacade.rolesIndividual$,
+    ]).pipe(
+      takeUntil(this.destroy$),
+      map(([selectedClinics, roleData]) => {
+        return (
+          selectedClinics.length == 1 &&
+          [2, 3, 5, 6, 7].indexOf(roleData?.type) < 0 &&
+          [
+            '/newapp/dashboard/cliniciananalysis',
+            '/newapp/dashboard/clinicianproceedures',
+          ].includes(this.activatedUrl)
+        );
+      })
+    );
+  }
+
   selectedClinic: 'all' | number | null = null;
   selectedMultiClinics: Array<'all' | number> = [];
 
@@ -163,22 +182,30 @@ export class AppTopbarComponent implements OnInit {
     combineLatest([
       this.isEnableDentistDropdown$,
       this.clinicFacade.currentClinics$,
+      this.isDentistUser$,
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged(
-          ([prevEnable, prevClinics], [currEnable, currClinics]) => {
-            return (
-              prevEnable == currEnable &&
-              prevClinics[0]?.id == currClinics[0]?.id
-            );
-          }
-        )
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([isEnable, clinics]) => {
-        if (isEnable && clinics.length > 0) {
-          this.dentistFacade.loadDentists(clinics[0].id, 0);
+      .subscribe(params => {
+        const [isEnable, clinics, isDentistUser] = params;
+        if (clinics.length > 0) {
+          if (isEnable) {
+            this.dentistFacade.loadDentists(clinics[0].id, 0);
+          } else if (isDentistUser) {
+            this.dentistFacade.loadSpecificDentist(clinics[0].id);
+          }
         }
+      });
+
+    combineLatest([this.dentistFacade.dentistId$, this.isDentistUser$])
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(([dentistId, isDentistUser]) => dentistId && isDentistUser)
+      )
+      .subscribe(([dentistId]) => {
+        this.dentistFacade.setCurrentDentistId(dentistId);
       });
 
     this.layoutFacade.activatedRouteTitle$
@@ -292,6 +319,7 @@ export class AppTopbarComponent implements OnInit {
 
   onChangeCurrentClinic(event: MatSelectChange) {
     this.clinicFacade.setCurrentSingleClinicId(event.value);
+    this.dentistFacade.setCurrentDentistId('all');
   }
 
   onChangeCurrentDentist(event: MatSelectChange) {
@@ -333,6 +361,7 @@ export class AppTopbarComponent implements OnInit {
     const values = <number[]>this.selectedMultiClinics.filter(v => v !== 'all');
     if (values.length > 0) {
       this.clinicFacade.setCurrentMultiClinicIDs(values);
+      this.dentistFacade.setCurrentDentistId('all');
     } else {
       this.toastr.error('You must select one clinic at least!');
     }

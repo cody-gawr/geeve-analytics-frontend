@@ -188,6 +188,10 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     return this.clinicFacade.currentClinics$;
   }
 
+  get isTableIconVisible$(): Observable<boolean> {
+    return this.isDentistMode$.pipe(map(v => !v && this.tableData.length > 0));
+  }
+
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,

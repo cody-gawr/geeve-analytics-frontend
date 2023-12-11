@@ -101,13 +101,6 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
 
   get hasData() {
     return this.labels.length > 0;
-    // return this.isTrend$.pipe(
-    //   map(isTrend =>
-    //     isTrend
-    //       ? this.labels.length > 0
-    //       : this.labels.length > 0 && this.maxVal > 0
-    //   )
-    // );
   }
 
   get noDataAlertMessage$() {

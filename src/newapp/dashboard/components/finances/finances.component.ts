@@ -7,6 +7,7 @@ import {
   combineLatest,
   map,
   distinctUntilChanged,
+  filter,
 } from 'rxjs';
 import { FinanceFacade } from '../../facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
@@ -46,6 +47,16 @@ export class FinancesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.clinicFacade.currentClinicId$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(v => !!v),
+        distinctUntilChanged()
+      )
+      .subscribe(clinicIds => {
+        this.dashbordFacade.loadChartTips(5, clinicIds);
+      });
+
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -78,8 +89,6 @@ export class FinancesComponent implements OnInit, OnDestroy {
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
-
-        this.dashbordFacade.loadChartTips(5, clinicId);
 
         const queryWhEnabled =
           route && route.wh !== undefined ? parseInt(route.wh) : undefined;
