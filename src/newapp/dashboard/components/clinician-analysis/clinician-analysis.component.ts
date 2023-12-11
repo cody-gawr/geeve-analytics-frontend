@@ -8,6 +8,7 @@ import {
   combineLatest,
   map,
   distinctUntilChanged,
+  filter,
 } from 'rxjs';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
@@ -15,35 +16,6 @@ import moment from 'moment';
 import { ClinicianAnalysisFacade } from '../../facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
-
-const caEndpoints = [
-  'caDentistProduction',
-  'caCollection',
-  'caCollectionExp',
-  'caDentistProductionDentist',
-  'caDentistProductionOht',
-  'caCollectionDentists',
-  'caCollectionOht',
-  'caCollectionExpDentists',
-  'caCollectionExpOht',
-  'caHourlyRate',
-  'caCollectionHourlyRate',
-  'caCollectionExpHourlyRate',
-  'caHourlyRateDentists',
-  'caHourlyRateOht',
-  'caCollectionHourlyRateDentist',
-  'caCollectionHourlyRateOht',
-  'caCollectionExpHourlyRateDentist',
-  'caCollectionExpHourlyRateOht',
-
-  'caNumNewPatients',
-  'caTxPlanAvgProposedFees',
-  'caTxPlanAvgCompletedFees',
-  'caTxPlanCompRate',
-  'caRecallRate',
-  'caReappointRate',
-  'caNumComplaints',
-];
 
 @Component({
   selector: 'clinician-analysis',
@@ -78,6 +50,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       this.caFacade.prodChartName$,
       this.dashbordFacade.chartTips$,
     ]).pipe(
+      filter(params => !!params[1]),
       map(([chartName, tips]) => {
         switch (chartName) {
           case 'Production':
@@ -108,35 +81,32 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     private authFacade: AuthFacade
   ) {}
 
-  ngOnInit(): void {
-    combineLatest([
+  get queryParams$() {
+    return combineLatest([
       this.clinicFacade.currentClinics$,
       this.layoutFacade.dateRange$,
       this.router.routerState.root.queryParams,
       this.dentistFacade.currentDentistId$,
       this.layoutFacade.trend$,
-    ])
-      .pipe(
-        takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
-      )
-      .subscribe(params => {
+    ]).pipe(
+      takeUntil(this.destroy$),
+      filter(params => params[0]?.length > 0),
+      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+      map(params => {
         const [clinics, dateRange, route, dentistId, trend] = params;
-        if (clinics.length == 0) return;
 
-        const isTrend = trend !== 'off' && dentistId !== 'all';
         const providerId =
           dentistId !== 'all' && clinics.length == 1 ? dentistId : undefined;
+        const isTrend = trend !== 'off' && providerId;
 
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
-        const clinicIds = clinics.map(v => v.id).join(',');
-        this.dashbordFacade.loadChartTips(1, clinicIds);
+
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
 
         const queryParams = {
-          clinicId: clinicIds,
+          clinicId: clinics.map(v => v.id).join(','),
           startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
           endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
           duration: duration,
@@ -144,35 +114,55 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
           dentistId: providerId,
         };
 
-        if (providerId) {
-          const endpoints = [
-            'caDentistProductionTrend',
-            'caCollectionTrend',
-            'caCollectionExpTrend',
+        return { queryParams, isTrend, trend, queryWhEnabled };
+      })
+    );
+  }
+
+  ngOnInit(): void {
+    this.clinicFacade.currentClinicId$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(v => !!v),
+        distinctUntilChanged()
+      )
+      .subscribe(clinicIds => {
+        this.dashbordFacade.loadChartTips(1, clinicIds);
+      });
+
+    combineLatest([this.queryParams$])
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
+      .subscribe(([{ queryParams, isTrend, trend, queryWhEnabled }]) => {
+        if (!isTrend) {
+          const caEndpoints = [
+            'caNumNewPatients',
+            'caTxPlanCompRate',
+            'caNumComplaints',
           ];
 
-          if (isTrend) {
-            endpoints.push(
-              'caHourlyRateTrend',
-              'caCollectionHourlyRateTrend',
-              'caCollectionExpHourlyRateTrend',
-              'caNumNewPatientsTrend',
-              'caTxPlanAvgProposedFeesTrend',
-              'caTxPlanAvgCompletedFeesTrend',
-              'caTxPlanCompRateTrend',
-              'caRecallRateTrend',
-              'caReappointRateTrend',
-              'caNumComplaintsTrend'
-            );
+          for (const api of caEndpoints) {
+            this.caFacade.loadNoneTrendApiRequest({
+              ...queryParams,
+              api,
+            });
           }
-
+        } else {
+          const endpoints = [];
+          endpoints.push(
+            'caNumNewPatientsTrend',
+            'caTxPlanCompRateTrend',
+            'caNumComplaintsTrend'
+          );
           endpoints.forEach(api => {
             const params = {
-              clinicId: clinicIds,
+              clinicId: queryParams.clinicId,
               mode:
                 trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
               queryWhEnabled,
-              dentistId: providerId,
+              dentistId: queryParams.dentistId,
             };
             this.caFacade.loadTrendApiRequest({
               ...params,
@@ -180,16 +170,303 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
             });
           });
         }
+      });
 
-        if (!isTrend) {
-          for (const api of caEndpoints) {
-            this.caFacade.loadNoneTrendApiRequest({
-              ...queryParams,
-              api,
+    combineLatest([
+      this.queryParams$,
+      this.caFacade.prodChartName$,
+      this.caFacade.prodSelectTab$,
+      this.caFacade.colSelectTab$,
+      this.caFacade.colExpSelectTab$,
+    ])
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
+      .subscribe(
+        ([
+          { queryParams, isTrend, trend, queryWhEnabled },
+          visibility,
+          prodSelectShow,
+          colSelectShow,
+          colExpSelectShow,
+        ]) => {
+          const caEndpoints = [],
+            caTrendEndpoints = [];
+
+          switch (visibility) {
+            case 'Production':
+              if (!queryParams.dentistId) {
+                switch (prodSelectShow) {
+                  case 'production_all':
+                    caEndpoints.push('caDentistProduction');
+                    break;
+                  case 'production_dentists':
+                    caEndpoints.push('caDentistProductionDentist');
+                    break;
+                  case 'production_oht':
+                    caEndpoints.push('caDentistProductionOht');
+                }
+              } else {
+                caEndpoints.push('caDentistProduction');
+                caTrendEndpoints.push('caDentistProductionTrend');
+              }
+              break;
+            case 'Collection':
+              if (!queryParams.dentistId) {
+                switch (colSelectShow) {
+                  case 'collection_all':
+                    caEndpoints.push('caCollection');
+                    break;
+                  case 'collection_dentists':
+                    caEndpoints.push('caCollectionDentists');
+                    break;
+                  case 'collection_oht':
+                    caEndpoints.push('caCollectionOht');
+                }
+              } else {
+                caEndpoints.push('caCollection');
+                caTrendEndpoints.push('caCollectionTrend');
+              }
+              break;
+            case 'Collection-Exp':
+              if (!queryParams.dentistId) {
+                switch (colExpSelectShow) {
+                  case 'collection_exp_all':
+                    caEndpoints.push('caCollectionExp');
+                    break;
+                  case 'collection_exp_dentists':
+                    caEndpoints.push('caCollectionExpDentists');
+                    break;
+                  case 'collection_exp_oht':
+                    caEndpoints.push('caCollectionExpOht');
+                    break;
+                }
+              } else {
+                caEndpoints.push('caCollectionExp');
+                caTrendEndpoints.push('caCollectionExpTrend');
+              }
+          }
+
+          if (!isTrend) {
+            for (const api of caEndpoints) {
+              this.caFacade.loadNoneTrendApiRequest({
+                ...queryParams,
+                api,
+              });
+            }
+          } else {
+            caTrendEndpoints.forEach(api => {
+              const params = {
+                clinicId: queryParams.clinicId,
+                mode:
+                  trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+                queryWhEnabled,
+                dentistId: queryParams.dentistId,
+              };
+              this.caFacade.loadTrendApiRequest({
+                ...params,
+                api: api,
+              });
             });
           }
         }
-      });
+      );
+
+    combineLatest([
+      this.queryParams$,
+      this.caFacade.hourlyRateChartName$,
+      this.caFacade.hourlyRateProdSelectTab$,
+      this.caFacade.hourlyRateColSelectTab$,
+      this.caFacade.hourlyRateColExpSelectTab$,
+    ])
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
+      .subscribe(
+        ([
+          { queryParams, isTrend, trend, queryWhEnabled },
+          visibility,
+          prodSelectShow,
+          colSelectShow,
+          colExpSelectShow,
+        ]) => {
+          const caEndpoints = [],
+            caTrendEndpoints = [];
+
+          switch (visibility) {
+            case 'Production':
+              if (!queryParams.dentistId) {
+                switch (prodSelectShow) {
+                  case 'hourly_rate_all':
+                    caEndpoints.push('caHourlyRate');
+                    break;
+                  case 'hourly_rate_dentists':
+                    caEndpoints.push('caHourlyRateDentists');
+                    break;
+                  case 'hourly_rate_oht':
+                    caEndpoints.push('caHourlyRateOht');
+                }
+              } else {
+                caEndpoints.push('caHourlyRate');
+                caTrendEndpoints.push('caHourlyRateTrend');
+              }
+              break;
+            case 'Collection':
+              if (!queryParams.dentistId) {
+                switch (colSelectShow) {
+                  case 'collection_all':
+                    caEndpoints.push('caCollectionHourlyRate');
+                    break;
+                  case 'collection_dentists':
+                    caEndpoints.push('caCollectionHourlyRateDentist');
+                    break;
+                  case 'collection_oht':
+                    caEndpoints.push('caCollectionHourlyRateOht');
+                }
+              } else {
+                caEndpoints.push('caCollectionHourlyRate');
+                caTrendEndpoints.push('caCollectionHourlyRateTrend');
+              }
+              break;
+            case 'Collection-Exp':
+              if (!queryParams.dentistId) {
+                switch (colExpSelectShow) {
+                  case 'collection_exp_all':
+                    caEndpoints.push('caCollectionExpHourlyRate');
+                    break;
+                  case 'collection_exp_dentists':
+                    caEndpoints.push('caCollectionExpHourlyRateDentist');
+                    break;
+                  case 'collection_exp_oht':
+                    caEndpoints.push('caCollectionExpHourlyRateOht');
+                    break;
+                }
+              } else {
+                caEndpoints.push('caCollectionExpHourlyRate');
+                caTrendEndpoints.push('caCollectionExpHourlyRateTrend');
+              }
+          }
+
+          if (!isTrend) {
+            for (const api of caEndpoints) {
+              this.caFacade.loadNoneTrendApiRequest({
+                ...queryParams,
+                api,
+              });
+            }
+          } else {
+            caTrendEndpoints.forEach(api => {
+              const params = {
+                clinicId: queryParams.clinicId,
+                mode:
+                  trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+                queryWhEnabled,
+                dentistId: queryParams.dentistId,
+              };
+              this.caFacade.loadTrendApiRequest({
+                ...params,
+                api: api,
+              });
+            });
+          }
+        }
+      );
+
+    combineLatest([this.queryParams$, this.caFacade.txPlanAvgFeeChartName$])
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
+      .subscribe(
+        ([{ queryParams, isTrend, trend, queryWhEnabled }, visibility]) => {
+          const caEndpoints = [],
+            caTrendEndpoints = [];
+
+          switch (visibility) {
+            case 'Avg. Proposed Fees':
+              caEndpoints.push('caTxPlanAvgProposedFees');
+              caTrendEndpoints.push('caTxPlanAvgProposedFeesTrend');
+
+              break;
+            case 'Avg. Completed Fees':
+              caEndpoints.push('caTxPlanAvgCompletedFees');
+              caTrendEndpoints.push('caTxPlanAvgCompletedFeesTrend');
+
+              break;
+          }
+
+          if (!isTrend) {
+            for (const api of caEndpoints) {
+              this.caFacade.loadNoneTrendApiRequest({
+                ...queryParams,
+                api,
+              });
+            }
+          } else {
+            caTrendEndpoints.forEach(api => {
+              const params = {
+                clinicId: queryParams.clinicId,
+                mode:
+                  trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+                queryWhEnabled,
+                dentistId: queryParams.dentistId,
+              };
+              this.caFacade.loadTrendApiRequest({
+                ...params,
+                api: api,
+              });
+            });
+          }
+        }
+      );
+
+    combineLatest([this.queryParams$, this.caFacade.recallRateChartName$])
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
+      .subscribe(
+        ([{ queryParams, isTrend, trend, queryWhEnabled }, visibility]) => {
+          const caEndpoints = [],
+            caTrendEndpoints = [];
+
+          switch (visibility) {
+            case 'Recall Prebook Rate':
+              caEndpoints.push('caRecallRate');
+              caTrendEndpoints.push('caRecallRateTrend');
+              break;
+            case 'Reappointment Rate':
+              caEndpoints.push('caReappointRate');
+              caTrendEndpoints.push('caReappointRateTrend');
+              break;
+          }
+
+          if (!isTrend) {
+            for (const api of caEndpoints) {
+              this.caFacade.loadNoneTrendApiRequest({
+                ...queryParams,
+                api,
+              });
+            }
+          } else {
+            caTrendEndpoints.forEach(api => {
+              const params = {
+                clinicId: queryParams.clinicId,
+                mode:
+                  trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+                queryWhEnabled,
+                dentistId: queryParams.dentistId,
+              };
+              this.caFacade.loadTrendApiRequest({
+                ...params,
+                api: api,
+              });
+            });
+          }
+        }
+      );
   }
 
   ngOnDestroy(): void {

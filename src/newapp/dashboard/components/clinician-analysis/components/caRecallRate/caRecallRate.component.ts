@@ -3,7 +3,7 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { formatXLabel, formatXTooltipLabel } from '@/newapp/shared/utils';
+import { formatXLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions } from 'chart.js';

@@ -7,6 +7,7 @@ import {
   combineLatest,
   map,
   distinctUntilChanged,
+  filter,
 } from 'rxjs';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
@@ -36,6 +37,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       this.dashbordFacade.chartTips$,
       this.clinicianProcedureFacade.cpPredictorAnalysisVisibility$,
     ]).pipe(
+      filter(params => !!params[1]),
       map(([tips, visibility]) => {
         if (visibility === 'general') {
           if (tips && tips[9]) {
@@ -56,6 +58,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       this.dashbordFacade.chartTips$,
       this.clinicianProcedureFacade.cpPredictorRatioVisibility$,
     ]).pipe(
+      filter(params => !!params[1]),
       map(([tips, visibility]) => {
         if (visibility === 'indirect to large direct fillings') {
           if (tips && tips[10]) {
@@ -89,6 +92,16 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.clinicFacade.currentClinicId$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(v => !!v),
+        distinctUntilChanged()
+      )
+      .subscribe(clinicIds => {
+        this.dashbordFacade.loadChartTips(2, clinicIds);
+      });
+
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -111,7 +124,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
         const endDate = dateRange.end;
         const duration = dateRange.duration;
 
-        this.dashbordFacade.loadChartTips(2, clinicId);
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
 
         const _params = {

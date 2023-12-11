@@ -1,7 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  combineLatest,
+  map,
+  filter,
+  distinctUntilChanged,
+} from 'rxjs';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
 import moment from 'moment';
@@ -44,6 +51,16 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.clinicFacade.currentClinicId$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(v => !!v),
+        distinctUntilChanged()
+      )
+      .subscribe(clinicIds => {
+        this.dashbordFacade.loadChartTips(3, clinicIds);
+      });
+
     combineLatest([
       this.clinicFacade.currentClinics$,
       this.layoutFacade.dateRange$,
@@ -86,7 +103,6 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
         const endDate = dateRange.end;
         const duration = dateRange.duration;
 
-        this.dashbordFacade.loadChartTips(3, clinicId);
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
         this.frontDeskFacade.setErrors([]);
         switch (trend) {

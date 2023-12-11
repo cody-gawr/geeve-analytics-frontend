@@ -7,6 +7,7 @@ import {
   combineLatest,
   map,
   distinctUntilChanged,
+  filter,
 } from 'rxjs';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import moment from 'moment';
@@ -35,6 +36,16 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.clinicFacade.currentClinicId$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(v => !!v),
+        distinctUntilChanged()
+      )
+      .subscribe(clinicIds => {
+        this.dashbordFacade.loadChartTips(9, clinicIds);
+      });
+
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
@@ -49,8 +60,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
-
-        this.dashbordFacade.loadChartTips(9, clinicId);
 
         const queryParams: FuApiQueryParams = {
           clinicId: clinicId,
