@@ -933,7 +933,6 @@ export const selectIsLoadingCaHourlyRateAll = createSelector(
 export const selectCaHourlyRateChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
-  // selectTrend,
   selectCompare,
   selectHourlyRateChartName,
   selectHourlyRateProdSelectTab,
@@ -941,7 +940,6 @@ export const selectCaHourlyRateChartData = createSelector(
   (
     bodyList,
     selectedClinics,
-    // trendMode,
     compare,
     prodChartName,
     prodTab,
@@ -1062,7 +1060,6 @@ export const selectCaHourlyRateChartData = createSelector(
             chartLabels,
             selectedClinics.length > 1,
             selectedClinics,
-            // trendMode !== 'off',
             false,
             false
           ),
