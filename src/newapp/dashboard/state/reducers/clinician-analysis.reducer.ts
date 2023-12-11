@@ -1040,11 +1040,11 @@ export const selectCaHourlyRateChartData = createSelector(
         const pName =
           res.providerName +
           (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
-        if (res.providerName != null && res.providerName != 'Anonymous') {
-          chartLabels.push(pName);
-        } else {
-          chartLabels.push(pName);
-        }
+        chartLabels.push(pName);
+        // if (res.providerName != null && res.providerName != 'Anonymous') {
+        // } else {
+        //   chartLabels.push(pName);
+        // }
 
         tableData.push({
           label: pName,
