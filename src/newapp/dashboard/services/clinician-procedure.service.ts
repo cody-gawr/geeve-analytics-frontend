@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import camelcaseKeys from 'camelcase-keys';
 import moment from 'moment';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -214,8 +214,6 @@ export class ClinicianProcedureService {
       );
   }
 
-  cpReferralsDestroy = new Subject<void>();
-  cpReferralsDestroy$ = this.cpReferralsDestroy.asObservable();
   cpReferrals({
     clinicId,
     startDate,
@@ -224,8 +222,6 @@ export class ClinicianProcedureService {
     queryWhEnabled,
     dentistId = undefined,
   }): Observable<CpReferralsApiResponse> {
-    this.cpReferralsDestroy.next();
-
     return this.http
       .get(`${this.apiUrl}/ClinicianProcedures/cpReferrals`, {
         params: {
@@ -239,7 +235,6 @@ export class ClinicianProcedureService {
         withCredentials: true,
       })
       .pipe(
-        takeUntil(this.cpReferralsDestroy$),
         map(
           resBody =>
             <CpReferralsApiResponse>camelcaseKeys(resBody, { deep: true })
@@ -247,15 +242,12 @@ export class ClinicianProcedureService {
       );
   }
 
-  cpReferralsTrendDestroy = new Subject<void>();
-  cpReferralsTrendDestroy$ = this.cpReferralsDestroy.asObservable();
   cpReferralsTrend(
     clinicId: number | string,
     mode: string,
     queryWhEnabled: number,
     dentistId = undefined
   ) {
-    this.cpReferralsTrendDestroy.next();
     return this.http
       .get(`${this.apiUrl}/ClinicianProcedures/cpReferralsTrend`, {
         params: {
@@ -267,7 +259,6 @@ export class ClinicianProcedureService {
         withCredentials: true,
       })
       .pipe(
-        takeUntil(this.cpReferralsTrendDestroy$),
         map(
           resBody =>
             <CpReferralsApiResponse>camelcaseKeys(resBody, { deep: true })
@@ -306,17 +297,10 @@ export class ClinicianProcedureService {
       .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
   }
 
-  trendDestroy: Record<CP_API_TREND_ENDPOINTS, Subject<void>> | {} = {};
-  trendDestroy$: Record<CP_API_TREND_ENDPOINTS, Observable<void>> | {} = {};
   cpTrendApiRequest(
     api: CP_API_TREND_ENDPOINTS,
     queryParams: CaTrendQueryParams
   ) {
-    if (!Object.keys(this.trendDestroy).includes(api)) {
-      this.trendDestroy[api] = new Subject<void>();
-      this.trendDestroy$[api] = this.trendDestroy[api].asObservable();
-    }
-    this.trendDestroy[api].next();
     return this.http
       .get(`${this.apiUrl}/ClinicianProcedures/${api}`, {
         params: {
@@ -327,9 +311,6 @@ export class ClinicianProcedureService {
         },
         withCredentials: true,
       })
-      .pipe(
-        takeUntil(this.trendDestroy$[api]),
-        map(resBody => <any>camelcaseKeys(resBody, { deep: true }))
-      );
+      .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
   }
 }

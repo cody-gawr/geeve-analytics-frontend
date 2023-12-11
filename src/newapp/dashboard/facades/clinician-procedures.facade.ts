@@ -228,30 +228,6 @@ export class ClinicianProcedureFacade {
     );
   }
 
-  public loadNoneTrendApiRequest({
-    api,
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-    dentistId = undefined,
-  }) {
-    this.store.dispatch(
-      ClinicianProcedurePageActions.loadNoneTrendApiRequest({
-        api: api,
-        params: {
-          clinicId,
-          startDate,
-          endDate,
-          duration,
-          queryWhEnabled,
-          dentistId,
-        },
-      })
-    );
-  }
-
   public loadTrendApiRequest({
     api,
     clinicId,

@@ -7,8 +7,11 @@ import {
   mergeMap,
   switchMap,
   of,
+  Observable,
   withLatestFrom,
   filter,
+  forkJoin,
+  concat,
   tap,
 } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -57,6 +60,7 @@ export class ClinicianProcedureEffects {
       })
     );
   });
+
   // cpPredictorSpecialistAnalysis
   public readonly loadCpPredictorSpecialistAnalysis$ = createEffect(() => {
     return this.actions$.pipe(
@@ -87,6 +91,7 @@ export class ClinicianProcedureEffects {
       })
     );
   });
+
   // cpRevPerProcedure
   public readonly loadCpRevPerProcedure$ = createEffect(() => {
     return this.actions$.pipe(
@@ -111,6 +116,7 @@ export class ClinicianProcedureEffects {
       })
     );
   });
+
   // cpPredictorRatio
   public readonly loadCpPredictorRatio$ = createEffect(() => {
     return this.actions$.pipe(
@@ -135,6 +141,7 @@ export class ClinicianProcedureEffects {
       })
     );
   });
+
   // cpReferrals
   public readonly loadCpPreferrals$ = createEffect(() => {
     return this.actions$.pipe(
@@ -156,34 +163,6 @@ export class ClinicianProcedureEffects {
             )
           )
         );
-      })
-    );
-  });
-
-  // None Trend
-  public readonly loadNoneTrendApiRequest$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(ClinicianProcedurePageActions.loadNoneTrendApiRequest),
-      tap(({ api }) => console.log(api)),
-      mergeMap(({ api, params }) => {
-        return this.clinicianProcedureService
-          .cpNoneTrendApiRequest(api, params)
-          .pipe(
-            map(data =>
-              ClinicianProcedurePageActions.loadCpNoneTrendApiRequestSuccess({
-                api,
-                resBody: data,
-              })
-            ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                ClinicianProcedurePageActions.loadCpNoneTrendApiRequestFailure({
-                  api,
-                  error: error.error ?? error,
-                })
-              )
-            )
-          );
       })
     );
   });
@@ -214,4 +193,43 @@ export class ClinicianProcedureEffects {
       })
     );
   });
+
+  //   public readonly loadTrendApiRequests$ = createEffect(() => {
+  //     return this.actions$.pipe(
+  //       ofType(ClinicianProcedurePageActions.loadTrendApiRequests),
+  //       switchMap(({ requests }) => {
+  //         const observables: Record<string, Observable<any>> = requests.reduce(
+  //           (accmulator, currentValue) => {
+  //             const { api, params } = currentValue;
+  //             accmulator[api] = this.clinicianProcedureService.cpTrendApiRequest(
+  //               api,
+  //               params
+  //             );
+
+  //             return accmulator;
+  //           },
+  //           {}
+  //         );
+  //         return concat(observables).pipe(map());
+  //         // return this.clinicianProcedureService
+  //         //   .cpTrendApiRequest(api, params)
+  //         //   .pipe(
+  //         //     map(data =>
+  //         //       ClinicianProcedurePageActions.loadCpTrendApiRequestSuccess({
+  //         //         api,
+  //         //         resBody: data,
+  //         //       })
+  //         //     ),
+  //         //     catchError((error: HttpErrorResponse) =>
+  //         //       of(
+  //         //         ClinicianProcedurePageActions.loadCpTrendApiRequestFailure({
+  //         //           api,
+  //         //           error: error.error ?? error,
+  //         //         })
+  //         //       )
+  //         //     )
+  //         //   );
+  //       })
+  //     );
+  //   });
 }
