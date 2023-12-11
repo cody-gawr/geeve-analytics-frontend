@@ -15,7 +15,9 @@
     <mat-icon
       *ngIf="
         (duration$ | async) != 'custom' &&
-        (!(isDentistMode$ | async) || !(isTrend$ | async))
+        (!(isDentistMode$ | async) ||
+          !(isTrend$ | async) ||
+          !(isCompare$ | async))
       "
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"
@@ -86,6 +88,7 @@
             <ngx-gauge
               *ngIf="
                 (isDentistMode$ | async) &&
+                !(isCompare$ | async) &&
                 !(isTrend$ | async) &&
                 (hasData$ | async)
               "
@@ -104,7 +107,9 @@
             <canvas
               baseChart
               *ngIf="
-                (!(isDentistMode$ | async) || (isTrend$ | async)) &&
+                (!(isDentistMode$ | async) ||
+                  (isCompare$ | async) ||
+                  (isTrend$ | async)) &&
                 (hasData$ | async)
               "
               [datasets]="datasets"

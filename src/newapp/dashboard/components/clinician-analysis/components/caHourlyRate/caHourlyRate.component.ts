@@ -135,9 +135,14 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get hasData$() {
-    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
-      map(([isDentistMode, isTrend]) => {
-        if (isDentistMode && !isTrend) {
+    return combineLatest([
+      this.isCompare$,
+      this.isDentistMode$,
+      this.isTrend$,
+    ]).pipe(
+      map(([isCompare, isDentistMode, isTrend]) => {
+        console.log({ isCompare, isDentistMode, isTrend });
+        if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue > 0;
         } else {
           return this.datasets[0]?.data.length > 0;
@@ -156,6 +161,10 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
   get isDentistMode$() {
     return this.dentistFacade.isDentistMode$;
+  }
+
+  get isCompare$(): Observable<boolean> {
+    return this.layoutFacade.compare$;
   }
 
   get isTrend$() {
@@ -213,12 +222,15 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(([isDentistMode, isTrend, data, trendData]) => {
-        if (!isDentistMode || !isTrend) {
-          this.datasets = data.datasets ?? [];
-          this.labels = data.labels ?? [];
-        } else {
+        if (isTrend) {
           this.datasets = trendData.datasets ?? [];
           this.labels = trendData.labels ?? [];
+        } else {
+          this.datasets = data.datasets ?? [];
+          this.labels = data.labels ?? [];
+        }
+        if (!isDentistMode || !isTrend) {
+        } else {
         }
 
         this.total = data.total;
@@ -231,6 +243,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
+        console.log({ datasets: this.datasets, data, isDentistMode });
       });
   }
 

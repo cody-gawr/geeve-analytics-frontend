@@ -241,8 +241,9 @@ export class ClinicianAnalysisFacade {
     endDate,
     duration,
     queryWhEnabled,
-    dentistId = undefined,
-  }) {
+    dentistId,
+    clinician,
+  }: CaNoneTrendQueryParams & { api: CA_API_ENDPOINTS }) {
     this.store.dispatch(
       ClinicianAnalysisActions.loadNoneTrendApiRequest({
         api: api,
@@ -253,6 +254,7 @@ export class ClinicianAnalysisFacade {
           duration,
           queryWhEnabled,
           dentistId,
+          clinician,
         },
       })
     );

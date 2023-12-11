@@ -2,13 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import {
+  combineLatest,
+  distinctUntilChanged,
+  filter,
+  map,
   Observable,
   Subject,
   takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-  filter,
 } from 'rxjs';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
@@ -16,6 +16,16 @@ import moment from 'moment';
 import { ClinicianAnalysisFacade } from '../../facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
+
+interface QueryParams {
+  clinicId: string;
+  startDate: string;
+  endDate: string;
+  duration: DATE_RANGE_DURATION;
+  queryWhEnabled?: 0 | 1;
+  dentistId?: number;
+  clinician?: number;
+}
 
 @Component({
   selector: 'clinician-analysis',
@@ -87,6 +97,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.clinicFacade.currentClinics$,
       this.layoutFacade.dateRange$,
+      this.layoutFacade.compare$,
       this.router.routerState.root.queryParams,
       this.dentistFacade.currentDentistId$,
       this.layoutFacade.trend$,
@@ -94,29 +105,32 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       filter(params => params[0]?.length > 0),
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-      map(params => {
-        const [clinics, dateRange, route, dentistId, trend] = params;
-
+      map(([clinics, dateRange, compare, route, dentistId, trend]) => {
         const providerId =
           dentistId !== 'all' && clinics.length == 1 ? dentistId : undefined;
-        const isTrend = trend !== 'off' && providerId;
-
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
-
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
 
-        const queryParams = {
+        let queryParams: QueryParams = {
           clinicId: clinics.map(v => v.id).join(','),
           startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
           endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
           duration: duration,
-          queryWhEnabled,
-          dentistId: providerId,
         };
+        queryParams = compare
+          ? {
+              ...queryParams,
+              clinician: providerId,
+            }
+          : {
+              ...queryParams,
+              queryWhEnabled,
+              dentistId: providerId,
+            };
 
-        return { queryParams, isTrend, trend, queryWhEnabled };
+        return { queryParams, trend, queryWhEnabled };
       })
     );
   }
@@ -132,12 +146,15 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         this.dashbordFacade.loadChartTips(1, clinicIds);
       });
 
-    combineLatest([this.queryParams$])
+    this.queryParams$
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([{ queryParams, isTrend, trend, queryWhEnabled }]) => {
+      .subscribe(({ queryParams, trend, queryWhEnabled }) => {
+        const { dentistId: providerId } = queryParams;
+        const isTrend = trend !== 'off' && providerId;
+
         if (!isTrend) {
           const caEndpoints = [
             'caNumNewPatients',
@@ -147,8 +164,8 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
           for (const api of caEndpoints) {
             this.caFacade.loadNoneTrendApiRequest({
+              api: <CA_API_ENDPOINTS>api,
               ...queryParams,
-              api,
             });
           }
         } else {
@@ -187,12 +204,14 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         ([
-          { queryParams, isTrend, trend, queryWhEnabled },
+          { queryParams, trend, queryWhEnabled },
           visibility,
           prodSelectShow,
           colSelectShow,
           colExpSelectShow,
         ]) => {
+          const { dentistId: providerId } = queryParams;
+          const isTrend = trend !== 'off' && providerId;
           const caEndpoints = [],
             caTrendEndpoints = [];
 
@@ -288,12 +307,14 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         ([
-          { queryParams, isTrend, trend, queryWhEnabled },
+          { queryParams, trend, queryWhEnabled },
           visibility,
           prodSelectShow,
           colSelectShow,
           colExpSelectShow,
         ]) => {
+          const { dentistId: providerId } = queryParams;
+          const isTrend = trend !== 'off' && providerId;
           const caEndpoints = [],
             caTrendEndpoints = [];
 
@@ -381,94 +402,94 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(
-        ([{ queryParams, isTrend, trend, queryWhEnabled }, visibility]) => {
-          const caEndpoints = [],
-            caTrendEndpoints = [];
+      .subscribe(([{ queryParams, trend, queryWhEnabled }, visibility]) => {
+        const caEndpoints = [],
+          caTrendEndpoints = [];
+        const { dentistId: providerId } = queryParams;
+        const isTrend = trend !== 'off' && providerId;
 
-          switch (visibility) {
-            case 'Avg. Proposed Fees':
-              caEndpoints.push('caTxPlanAvgProposedFees');
-              caTrendEndpoints.push('caTxPlanAvgProposedFeesTrend');
+        switch (visibility) {
+          case 'Avg. Proposed Fees':
+            caEndpoints.push('caTxPlanAvgProposedFees');
+            caTrendEndpoints.push('caTxPlanAvgProposedFeesTrend');
 
-              break;
-            case 'Avg. Completed Fees':
-              caEndpoints.push('caTxPlanAvgCompletedFees');
-              caTrendEndpoints.push('caTxPlanAvgCompletedFeesTrend');
+            break;
+          case 'Avg. Completed Fees':
+            caEndpoints.push('caTxPlanAvgCompletedFees');
+            caTrendEndpoints.push('caTxPlanAvgCompletedFeesTrend');
 
-              break;
-          }
+            break;
+        }
 
-          if (!isTrend) {
-            for (const api of caEndpoints) {
-              this.caFacade.loadNoneTrendApiRequest({
-                ...queryParams,
-                api,
-              });
-            }
-          } else {
-            caTrendEndpoints.forEach(api => {
-              const params = {
-                clinicId: queryParams.clinicId,
-                mode:
-                  trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
-                queryWhEnabled,
-                dentistId: queryParams.dentistId,
-              };
-              this.caFacade.loadTrendApiRequest({
-                ...params,
-                api: api,
-              });
+        if (!isTrend) {
+          for (const api of caEndpoints) {
+            this.caFacade.loadNoneTrendApiRequest({
+              ...queryParams,
+              api,
             });
           }
+        } else {
+          caTrendEndpoints.forEach(api => {
+            const params = {
+              clinicId: queryParams.clinicId,
+              mode:
+                trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+              queryWhEnabled,
+              dentistId: queryParams.dentistId,
+            };
+            this.caFacade.loadTrendApiRequest({
+              ...params,
+              api: api,
+            });
+          });
         }
-      );
+      });
 
     combineLatest([this.queryParams$, this.caFacade.recallRateChartName$])
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(
-        ([{ queryParams, isTrend, trend, queryWhEnabled }, visibility]) => {
-          const caEndpoints = [],
-            caTrendEndpoints = [];
+      .subscribe(([{ queryParams, trend, queryWhEnabled }, visibility]) => {
+        const { dentistId: providerId } = queryParams;
+        const isTrend = trend !== 'off' && providerId;
+        const caEndpoints = [],
+          caTrendEndpoints = [];
 
-          switch (visibility) {
-            case 'Recall Prebook Rate':
-              caEndpoints.push('caRecallRate');
-              caTrendEndpoints.push('caRecallRateTrend');
-              break;
-            case 'Reappointment Rate':
-              caEndpoints.push('caReappointRate');
-              caTrendEndpoints.push('caReappointRateTrend');
-              break;
-          }
+        switch (visibility) {
+          case 'Recall Prebook Rate':
+            caEndpoints.push('caRecallRate');
+            caTrendEndpoints.push('caRecallRateTrend');
+            break;
+          case 'Reappointment Rate':
+            caEndpoints.push('caReappointRate');
+            caTrendEndpoints.push('caReappointRateTrend');
+            break;
+        }
 
-          if (!isTrend) {
-            for (const api of caEndpoints) {
-              this.caFacade.loadNoneTrendApiRequest({
-                ...queryParams,
-                api,
-              });
-            }
-          } else {
-            caTrendEndpoints.forEach(api => {
-              const params = {
-                clinicId: queryParams.clinicId,
-                mode:
-                  trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
-                queryWhEnabled,
-                dentistId: queryParams.dentistId,
-              };
-              this.caFacade.loadTrendApiRequest({
-                ...params,
-                api: api,
-              });
+        if (!isTrend) {
+          for (const api of caEndpoints) {
+            this.caFacade.loadNoneTrendApiRequest({
+              ...queryParams,
+              api,
             });
           }
+        } else {
+          caTrendEndpoints.forEach(api => {
+            const params = {
+              clinicId: queryParams.clinicId,
+              mode:
+                trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+              queryWhEnabled,
+              dentistId: queryParams.dentistId,
+            };
+            this.caFacade.loadTrendApiRequest({
+              ...params,
+              api: api,
+            });
+          });
         }
-      );
+      });
   }
 
   ngOnDestroy(): void {

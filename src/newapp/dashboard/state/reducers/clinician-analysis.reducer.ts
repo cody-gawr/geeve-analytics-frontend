@@ -933,14 +933,16 @@ export const selectIsLoadingCaHourlyRateAll = createSelector(
 export const selectCaHourlyRateChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
-  selectTrend,
+  // selectTrend,
+  selectCompare,
   selectHourlyRateChartName,
   selectHourlyRateProdSelectTab,
   selectIsDentistMode,
   (
     bodyList,
     selectedClinics,
-    trendMode,
+    // trendMode,
+    compare,
     prodChartName,
     prodTab,
     isDentistMode
@@ -1003,7 +1005,7 @@ export const selectCaHourlyRateChartData = createSelector(
 
         break;
     }
-    if (!isDentistMode) {
+    if (!isDentistMode || compare) {
       let chartData = [],
         chartLabels = [];
       if (!resBody?.data) {
@@ -1060,7 +1062,8 @@ export const selectCaHourlyRateChartData = createSelector(
             chartLabels,
             selectedClinics.length > 1,
             selectedClinics,
-            trendMode !== 'off',
+            // trendMode !== 'off',
+            false,
             false
           ),
           shadowOffsetX: 3,

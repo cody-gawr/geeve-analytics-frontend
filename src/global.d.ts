@@ -38,7 +38,7 @@ declare global {
     startDate: Moment | string;
     endDate: Moment | string;
     duration: DATE_RANGE_DURATION;
-    clinician?: string;
+    clinician?: number;
     dentistId?: number;
     queryWhEnabled?: number;
   }
