@@ -164,7 +164,12 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$(): Observable<boolean> {
-    return this.isDentistMode$.pipe(map(v => !v && this.tableData.length > 0));
+    return combineLatest([this.isDentistMode$, this.isCompare$]).pipe(
+      map(
+        ([isDentistMode, isCompare]) =>
+          (!isDentistMode || isCompare) && this.tableData.length > 0
+      )
+    );
   }
 
   get isTrendIconVisible$(): Observable<boolean> {
@@ -275,34 +280,37 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.isTrend$,
       this.caFacade.caProductionChartData$,
       this.caFacade.caProductionTrendChartData$,
+      this.isCompare$,
     ])
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([avgMode, isDentistMode, isTrend, data, trendData]) => {
-        if (!isDentistMode || !isTrend) {
-          this.datasets = data.datasets ?? [];
-          this.labels = data.labels ?? [];
-        } else {
-          this.datasets = trendData.datasets ?? [];
-          this.labels = trendData.labels ?? [];
-        }
-        this.total = data.total;
-        this.prev = data.prev;
-        this.average = data.average;
-        this.goal = data.goal;
-        if (!isDentistMode) {
-          this.tableData = data.tableData ?? [];
-        } else {
-          this.tableData = trendData.tableData ?? [];
-        }
+      .subscribe(
+        ([avgMode, isDentistMode, isTrend, data, trendData, isCompare]) => {
+          if (!isDentistMode || !isTrend) {
+            this.datasets = data.datasets ?? [];
+            this.labels = data.labels ?? [];
+          } else {
+            this.datasets = trendData.datasets ?? [];
+            this.labels = trendData.labels ?? [];
+          }
+          this.total = data.total;
+          this.prev = data.prev;
+          this.average = data.average;
+          this.goal = data.goal;
+          if (!isDentistMode || isCompare) {
+            this.tableData = data.tableData ?? [];
+          } else {
+            this.tableData = trendData.tableData ?? [];
+          }
 
-        this.maxGoal = data.maxGoal;
-        this.gaugeLabel = data.gaugeLabel;
-        this.gaugeValue = data.gaugeValue;
-        this.setChartOptions(isDentistMode, isTrend, avgMode);
-      });
+          this.maxGoal = data.maxGoal;
+          this.gaugeLabel = data.gaugeLabel;
+          this.gaugeValue = data.gaugeValue;
+          this.setChartOptions(isDentistMode, isTrend, avgMode);
+        }
+      );
   }
 
   ngOnDestroy(): void {

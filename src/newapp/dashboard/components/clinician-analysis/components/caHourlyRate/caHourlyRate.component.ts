@@ -197,7 +197,12 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$(): Observable<boolean> {
-    return this.isDentistMode$.pipe(map(v => !v && this.tableData.length > 0));
+    return combineLatest([this.isDentistMode$, this.isCompare$]).pipe(
+      map(
+        ([isDentistMode, isCompare]) =>
+          (!isDentistMode || isCompare) && this.tableData.length > 0
+      )
+    );
   }
 
   constructor(
@@ -236,9 +241,9 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         this.prev = data.prev;
         this.average = data.average;
         this.goal = data.goal;
-        if (!isDentistMode) {
-          this.tableData = data.tableData ?? [];
-        }
+
+        this.tableData = data.tableData ?? [];
+
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;

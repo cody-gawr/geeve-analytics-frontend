@@ -65,7 +65,12 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$() {
-    return this.isDentistMode$.pipe(map(v => !v && this.tableData.length > 0));
+    return combineLatest([this.isDentistMode$, this.isCompare$]).pipe(
+      map(
+        ([isDentistMode, isCompare]) =>
+          (!isDentistMode || isCompare) && this.tableData.length > 0
+      )
+    );
   }
 
   datasets: any = [{ data: [] }];
