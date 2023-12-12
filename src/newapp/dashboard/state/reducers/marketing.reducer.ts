@@ -1343,10 +1343,14 @@ export const selectNewPatientAcqChartData = createSelector(
     }
     const newPatientAcqVal = _.round(
       _.chain(newPatientAcqData.data)
-        .sumBy(v => v.cost)
+        .sumBy(v => (typeof v.cost == 'string' ? parseFloat(v.cost) : v.cost))
         .value() /
         _.chain(newPatientAcqData.data)
-          .sumBy(v => parseFloat(<string>v.newPatients))
+          .sumBy(v =>
+            typeof v.newPatients == 'string'
+              ? parseFloat(v.newPatients)
+              : v.newPatients
+          )
           .value()
     );
     return {

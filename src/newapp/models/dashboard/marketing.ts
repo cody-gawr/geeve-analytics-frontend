@@ -219,7 +219,7 @@ export interface MkNewPatientAcqTrendApiResponse {
 export interface MkNewPatientAcqItem {
   clinicId: number;
   clinicName: string;
-  cost: number;
+  cost: string | number;
   costPerPatient: number;
   month: null | unknown;
   newPatients: string | number;
