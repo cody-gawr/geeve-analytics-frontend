@@ -87,6 +87,20 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isTrendIconVisible$() {
+    return combineLatest([
+      this.duration$,
+      this.isDentistMode$,
+      this.isTrend$,
+      this.isCompare$,
+    ]).pipe(
+      map(
+        ([duration, isDentistMode, isTrend, isCompare]) =>
+          duration != 'custom' && !(isDentistMode || isTrend) && !isCompare
+      )
+    );
+  }
+
   datasets: any[] = [{ data: [] }];
   labels = [];
   public prev: number = 0;

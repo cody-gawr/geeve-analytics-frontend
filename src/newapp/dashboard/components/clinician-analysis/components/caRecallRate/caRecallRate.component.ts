@@ -73,6 +73,20 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isTrendIconVisible$() {
+    return combineLatest([
+      this.duration$,
+      this.isDentistMode$,
+      this.isTrend$,
+      this.isCompare$,
+    ]).pipe(
+      map(
+        ([duration, isDentistMode, isTrend, isCompare]) =>
+          duration != 'custom' && !(isDentistMode || isTrend) && !isCompare
+      )
+    );
+  }
+
   datasets: any = [{ data: [] }];
   labels = [];
   prev = 0;

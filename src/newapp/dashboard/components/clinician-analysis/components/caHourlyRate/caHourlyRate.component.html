@@ -13,12 +13,7 @@
     fontIcon="table_rows_narrow" />
   <div class="chart-title">
     <mat-icon
-      *ngIf="
-        (duration$ | async) != 'custom' &&
-        (!(isDentistMode$ | async) ||
-          !(isTrend$ | async) ||
-          !(isCompare$ | async))
-      "
+      *ngIf="isTrendIconVisible$ | async"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"
       [matTooltip]="getTrendTip$ | async"></mat-icon>

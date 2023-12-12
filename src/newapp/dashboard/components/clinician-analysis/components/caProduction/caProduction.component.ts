@@ -177,10 +177,11 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.duration$,
       this.isDentistMode$,
       this.isTrend$,
+      this.isCompare$,
     ]).pipe(
       map(
-        ([duration, isDentistMode, isTrend]) =>
-          duration != 'custom' && !(isDentistMode && isTrend)
+        ([duration, isDentistMode, isTrend, isCompare]) =>
+          duration != 'custom' && !(isDentistMode || isTrend) && !isCompare
       )
     );
   }

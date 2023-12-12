@@ -163,24 +163,25 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
   }
 
-  get isTrendIconVisible$() {
-    return combineLatest([
-      this.duration$,
-      this.isDentistMode$,
-      this.isTrend$,
-    ]).pipe(
-      map(
-        ([duration, isDentistMode, isTrend]) =>
-          duration != 'custom' && !(isDentistMode && isTrend)
-      )
-    );
-  }
-
   get isTableIconVisible$() {
     return combineLatest([this.isDentistMode$, this.isCompare$]).pipe(
       map(
         ([isDentistMode, isCompare]) =>
           (!isDentistMode || isCompare) && this.tableData.length > 0
+      )
+    );
+  }
+
+  get isTrendIconVisible$() {
+    return combineLatest([
+      this.duration$,
+      this.isDentistMode$,
+      this.isTrend$,
+      this.isCompare$,
+    ]).pipe(
+      map(
+        ([duration, isDentistMode, isTrend, isCompare]) =>
+          duration != 'custom' && !(isDentistMode || isTrend) && !isCompare
       )
     );
   }
