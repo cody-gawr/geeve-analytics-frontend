@@ -866,7 +866,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
     );
 
     if (newValue == 'all') {
-      console.log('load dentist');
       this.mkNewPatientsByReferral();
       this.mkRevenueByReferral();
       if (this.activePatients || !this.isVisibleAccountGraphs) {
@@ -972,7 +971,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
       )
       .subscribe({
         next: res => {
-          console.log(res);
           this.Apirequest = this.Apirequest - 1;
           this.enableDiabaleButton(this.Apirequest);
           if (res.status == 200) {
@@ -2777,11 +2775,6 @@ export class MarketingComponent implements OnInit, AfterViewInit {
                   backgroundColor: this.doughnutChartColors[index],
                   hoverBackgroundColor: this.doughnutChartColors[index],
                 }));
-
-              console.log({
-                rawResponse: res,
-                newPatientCostsChartData: this.newPatientCostsChartData,
-              });
             }
           },
           error: error => {
