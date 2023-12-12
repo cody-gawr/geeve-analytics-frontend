@@ -1401,10 +1401,11 @@ export const selectNewPatientAcqTrendChartData = createSelector(
       .map((items, duration) => {
         return {
           value: _.round(
-            _.sumBy(items, (item: MkNewPatientAcqItem) => <number>item.cost) /
-              _.sumBy(
-                items,
-                (item: MkNewPatientAcqItem) => <number>item.newPatients
+            _.sumBy(items, (item: MkNewPatientAcqItem) =>
+              parseFloat(<string>item.cost)
+            ) /
+              _.sumBy(items, (item: MkNewPatientAcqItem) =>
+                parseFloat(<string>item.newPatients)
               ),
             0
           ),

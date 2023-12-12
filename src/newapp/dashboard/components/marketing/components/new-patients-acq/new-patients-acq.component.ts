@@ -133,20 +133,12 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   }
 
   get chartOptions$() {
-    return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-      map(([isTrend, isMultiClinic]) => {
+    return this.isTrend$.pipe(
+      map(isTrend => {
         return isTrend ? this.barChartOptions : this.stackedChartOptions;
       })
     );
   }
-
-  // get legend$() {
-  //   return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
-  //     map(([isTrend, isMultiClinic]) => {
-  //       return isMultiClinic;
-  //     })
-  //   );
-  // }
 
   public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
