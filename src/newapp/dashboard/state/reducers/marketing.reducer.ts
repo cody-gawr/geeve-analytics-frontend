@@ -1402,10 +1402,12 @@ export const selectNewPatientAcqTrendChartData = createSelector(
         return {
           value: _.round(
             _.sumBy(items, (item: MkNewPatientAcqItem) =>
-              parseFloat(<string>item.cost)
+              typeof item.cost == 'string' ? parseFloat(item.cost) : item.cost
             ) /
               _.sumBy(items, (item: MkNewPatientAcqItem) =>
-                parseFloat(<string>item.newPatients)
+                typeof item.newPatients == 'string'
+                  ? parseFloat(item.newPatients)
+                  : item.newPatients
               ),
             0
           ),
