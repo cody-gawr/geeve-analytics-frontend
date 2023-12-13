@@ -52,6 +52,10 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
     this.marketingFacade.setActivePatients(false);
   }
 
+  get isFullMonthsDateRange$() {
+    return this.layoutFacade.isFullMonthsDateRange$;
+  }
+
   newNumPatientsVal = 0;
   newNumPatientsPrev = 0;
   newNumPatientsGoal = 0;

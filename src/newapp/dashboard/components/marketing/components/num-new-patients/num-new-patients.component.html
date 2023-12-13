@@ -54,48 +54,60 @@
         </ng-template>
       </div>
       <div class="chart-gauge num-new-patients-gauge">
-        <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-        <ng-template #chartElem>
-          <ngx-gauge
-            *ngIf="
-              !(isLoading$ | async) &&
-              (hasData$ | async) &&
-              !(isMultipleClinic$ | async) &&
-              !(isTrend$ | async)
-            "
-            type="arch"
-            [value]="newNumPatientsVal"
-            [thick]="20"
-            [labels]="['a', 'b']"
-            foregroundColor="#4ccfae"
-            backgroundColor="#f4f0fa"
-            cap="round"
-            size="250"
-            [max]="maxNewNumPatientsGoal">
-          </ngx-gauge>
-          <canvas
-            #mkNewNumPatients
-            *ngIf="
-              !(isLoading$ | async) &&
-              ((isMultipleClinic$ | async) || (isTrend$ | async)) &&
-              (hasData$ | async)
-            "
-            baseChart
-            [datasets]="datasets"
-            [labels]="labels"
-            [legend]="legend$ | async"
-            type="bar"
-            [options]="chartOptions$ | async"
-            [colors]="lineChartColors">
-          </canvas>
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="!(hasData$ | async)"
-            [disableSpin]="true">
-            You have no
-            {{ (isActivePatients$ | async) ? 'active' : 'new' }} patients in the
-            selected period
-          </spin-loader>
+        <spin-loader
+          class="empty-placeholder"
+          *ngIf="
+            !(isFullMonthsDateRange$ | async) && (isActivePatients$ | async);
+            else chElem33
+          "
+          [disableSpin]="true">
+          Please select a date range consisting of full months to view
+          Accounting charts
+        </spin-loader>
+        <ng-template #chElem33>
+          <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+          <ng-template #chartElem>
+            <ngx-gauge
+              *ngIf="
+                !(isLoading$ | async) &&
+                (hasData$ | async) &&
+                !(isMultipleClinic$ | async) &&
+                !(isTrend$ | async)
+              "
+              type="arch"
+              [value]="newNumPatientsVal"
+              [thick]="20"
+              [labels]="['a', 'b']"
+              foregroundColor="#4ccfae"
+              backgroundColor="#f4f0fa"
+              cap="round"
+              size="250"
+              [max]="maxNewNumPatientsGoal">
+            </ngx-gauge>
+            <canvas
+              #mkNewNumPatients
+              *ngIf="
+                !(isLoading$ | async) &&
+                ((isMultipleClinic$ | async) || (isTrend$ | async)) &&
+                (hasData$ | async)
+              "
+              baseChart
+              [datasets]="datasets"
+              [labels]="labels"
+              [legend]="legend$ | async"
+              type="bar"
+              [options]="chartOptions$ | async"
+              [colors]="lineChartColors">
+            </canvas>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!(hasData$ | async)"
+              [disableSpin]="true">
+              You have no
+              {{ (isActivePatients$ | async) ? 'active' : 'new' }} patients in
+              the selected period
+            </spin-loader>
+          </ng-template>
         </ng-template>
       </div>
       <div class="chart-foot" *ngIf="!(isTrend$ | async)">
