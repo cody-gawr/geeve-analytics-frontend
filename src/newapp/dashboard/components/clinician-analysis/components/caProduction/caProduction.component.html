@@ -81,7 +81,13 @@
         <table>
           <thead>
             <tr>
-              <th>{{ (isDentistMode$ | async) ? 'Week Ending' : 'Name' }}</th>
+              <th>
+                {{
+                  (isDentistMode$ | async) && !(isCompare$ | async)
+                    ? 'Week Ending'
+                    : 'Name'
+                }}
+              </th>
               <th>
                 {{
                   (chartName$ | async) === 'Production'

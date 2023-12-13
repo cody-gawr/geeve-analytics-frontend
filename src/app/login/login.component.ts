@@ -241,7 +241,7 @@ export class LoginComponent implements OnInit {
           if (permision.indexOf('healthscreen') >= 0) {
             this.goTo('/dashboards/healthscreen');
           } else if (permision.indexOf('dashboard1') >= 0) {
-            this.goTo('/dashboards/cliniciananalysis');
+            this.goTo('/newapp/dashboard/cliniciananalysis');
           } else if (permision.indexOf('dashboard2') >= 0) {
             this.goTo('/dashboards/clinicianproceedures');
           } else if (permision.indexOf('dashboard3') >= 0) {
@@ -289,7 +289,7 @@ export class LoginComponent implements OnInit {
             if (permision.indexOf('healthscreen') >= 0) {
               this.goTo('/dashboards/healthscreen');
             } else if (permision.indexOf('dashboard1') >= 0) {
-              this.goTo('/dashboards/cliniciananalysis');
+              this.goTo('/newapp/dashboard/cliniciananalysis');
             } else if (permision.indexOf('dashboard2') >= 0) {
               this.goTo('/dashboards/clinicianproceedures');
             } else if (permision.indexOf('dashboard3') >= 0) {
