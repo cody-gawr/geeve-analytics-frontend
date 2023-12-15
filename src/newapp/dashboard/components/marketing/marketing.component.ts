@@ -51,6 +51,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.layoutFacade.setTrend('off');
     this.clinicFacade.currentClinicId$
       .pipe(
         takeUntil(this.destroy$),
