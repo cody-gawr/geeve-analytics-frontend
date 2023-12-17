@@ -69,7 +69,10 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
       this.layoutFacade.trend$,
       this.dashbordFacade.connectedClinicId$,
     ])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
       .subscribe(params => {
         const [
           clinics,

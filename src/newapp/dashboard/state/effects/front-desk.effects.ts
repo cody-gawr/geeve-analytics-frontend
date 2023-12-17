@@ -1,25 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of, withLatestFrom, filter } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { FrontDeskService } from '../../services/front-desk.service';
-import {
-  FrontDeskState,
-  selectIsLoadingFdFtaRatioData,
-  selectIsLoadingFdFtaRatioTrendData,
-  selectIsLoadingFdNumTicksData,
-  selectIsLoadingFdNumTicksTrendData,
-  selectIsLoadingFdReappointRateData,
-  selectIsLoadingFdReappointRateTrendData,
-  selectIsLoadingFdRecallRateData,
-  selectIsLoadingFdRecallRateTrendData,
-  selectIsLoadingFdUtaRatioData,
-  selectIsLoadingFdUtaRatioTrendData,
-  selectIsLoadingFdUtilisationRateByDayData,
-  selectIsLoadingFdUtilisationRateData,
-  selectIsLoadingFdUtilisationRateTrendData,
-} from '../reducers/front-desk.reducer';
+import { FrontDeskState } from '../reducers/front-desk.reducer';
 import { FrontDeskApiActions, FrontDeskPageActions } from '../actions';
 
 @Injectable()
@@ -33,9 +18,7 @@ export class FrontDeskEffects {
   public readonly loadFdUtilisationRate$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdUtilisationRate),
-      withLatestFrom(this.store.select(selectIsLoadingFdUtilisationRateData)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(params => {
         return this.frontDeskService.fdUtilisationRate(params).pipe(
           map(data =>
             FrontDeskApiActions.fdUtilisationRateSuccess({
@@ -57,11 +40,7 @@ export class FrontDeskEffects {
   public readonly loadFdUtilisationRateTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdUtilisationRateTrend),
-      withLatestFrom(
-        this.store.select(selectIsLoadingFdUtilisationRateTrendData)
-      ),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.frontDeskService
           .fdUtilisationRateTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -85,11 +64,7 @@ export class FrontDeskEffects {
   public readonly loadFdUtilisationRateByDay$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdUtilisationRateByDay),
-      withLatestFrom(
-        this.store.select(selectIsLoadingFdUtilisationRateByDayData)
-      ),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(params => {
         return this.frontDeskService.fdUtilisationRateByDay(params).pipe(
           map(data =>
             FrontDeskApiActions.fdUtilisationRateByDaySuccess({
@@ -111,9 +86,7 @@ export class FrontDeskEffects {
   public readonly loadFdRecallRate$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdRecallRate),
-      withLatestFrom(this.store.select(selectIsLoadingFdRecallRateData)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(params => {
         return this.frontDeskService.fdRecallRate(params).pipe(
           map(data =>
             FrontDeskApiActions.fdRecallRateSuccess({
@@ -135,9 +108,7 @@ export class FrontDeskEffects {
   public readonly loadFdRecallRateTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdRecallRateTrend),
-      withLatestFrom(this.store.select(selectIsLoadingFdRecallRateTrendData)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.frontDeskService
           .fdRecallRateTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -162,9 +133,7 @@ export class FrontDeskEffects {
   public readonly loadFdReappointRate$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdReappointRate),
-      withLatestFrom(this.store.select(selectIsLoadingFdReappointRateData)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(params => {
         return this.frontDeskService.fdReappointRate(params).pipe(
           map(data =>
             FrontDeskApiActions.fdReappointRateSuccess({
@@ -186,11 +155,7 @@ export class FrontDeskEffects {
   public readonly loadFdReappointRateTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdReappointRateTrend),
-      withLatestFrom(
-        this.store.select(selectIsLoadingFdReappointRateTrendData)
-      ),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.frontDeskService
           .fdReappointRateTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -215,9 +180,7 @@ export class FrontDeskEffects {
   public readonly loadFdNumTicks$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdNumTicks),
-      withLatestFrom(this.store.select(selectIsLoadingFdNumTicksData)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(params => {
         return this.frontDeskService.fdNumTicks(params).pipe(
           map(data =>
             FrontDeskApiActions.fdNumTicksSuccess({
@@ -239,9 +202,7 @@ export class FrontDeskEffects {
   public readonly loadFdNumTicksTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdNumTicksTrend),
-      withLatestFrom(this.store.select(selectIsLoadingFdNumTicksTrendData)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.frontDeskService
           .fdNumTicksTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -265,9 +226,7 @@ export class FrontDeskEffects {
   public readonly loadFdFtaRatio$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdFtaRatio),
-      withLatestFrom(this.store.select(selectIsLoadingFdFtaRatioData)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(params => {
         return this.frontDeskService.fdFtaRatio(params).pipe(
           map(data =>
             FrontDeskApiActions.fdFtaRatioSuccess({
@@ -289,9 +248,7 @@ export class FrontDeskEffects {
   public readonly loadFdFtaRatioTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdFtaRatioTrend),
-      withLatestFrom(this.store.select(selectIsLoadingFdFtaRatioTrendData)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.frontDeskService
           .fdFtaRatioTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -315,9 +272,7 @@ export class FrontDeskEffects {
   public readonly loadFdUtaRatio$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdUtaRatio),
-      withLatestFrom(this.store.select(selectIsLoadingFdUtaRatioData)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([params]) => {
+      switchMap(params => {
         return this.frontDeskService.fdUtaRatio(params).pipe(
           map(data =>
             FrontDeskApiActions.fdUtaRatioSuccess({
@@ -339,9 +294,7 @@ export class FrontDeskEffects {
   public readonly loadFdUtaRatioTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdUtaRatioTrend),
-      withLatestFrom(this.store.select(selectIsLoadingFdUtaRatioTrendData)),
-      filter(([action, isLoading]) => isLoading),
-      mergeMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.frontDeskService
           .fdUtaRatioTrend(clinicId, mode, queryWhEnabled)
           .pipe(
