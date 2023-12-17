@@ -12,7 +12,6 @@ import {
   combineLatest,
   map,
   distinctUntilChanged,
-  Observable,
 } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 

@@ -49,6 +49,7 @@
     "camelcase-keys": "^8.0.2",
     "chart.js": "^4.3.0",
     "chartjs-plugin-annotation": "^3.0.1",
+    "chartjs-plugin-autocolors": "^0.2.2",
     "crypto-js": "^4.1.1",
     "d3": "^7.8.5",
     "dayjs": "^1.11.8",

@@ -53,21 +53,19 @@
           [disableSpin]="false"></spin-loader>
         <ng-template #chartElem>
           <canvas
-            *ngIf="!(isLoading$ | async) && hasData"
+            *ngIf="hasData; else chartElem01"
             baseChart
             [datasets]="datasets"
             [labels]="labels"
             [legend]="legend$ | async"
             type="bar"
-            [options]="chartOptions$ | async"
-            [colors]="bgColors">
+            [options]="chartOptions$ | async">
           </canvas>
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="!hasData"
-            [disableSpin]="true">
-            {{ noDataAlertMessage$ | async }}
-          </spin-loader>
+          <ng-template #chartElem01>
+            <spin-loader class="empty-placeholder" [disableSpin]="true">
+              {{ noDataAlertMessage$ | async }}
+            </spin-loader>
+          </ng-template>
         </ng-template>
       </div>
       <div class="pa-table" *ngIf="enablePaTable$ | async">

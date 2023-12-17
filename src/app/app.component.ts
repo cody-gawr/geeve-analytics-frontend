@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Chart } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import autocolors from 'chartjs-plugin-autocolors';
 
 @Component({
   selector: 'app-root',
@@ -54,5 +55,6 @@ export class AppComponent {
   constructor() {
     Chart.defaults.font.family = 'Gilroy-Regular';
     Chart.register(annotationPlugin);
+    Chart.register(autocolors);
   }
 }
