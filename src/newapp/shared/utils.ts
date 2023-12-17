@@ -76,6 +76,24 @@ export const getTodayMoment = (tz = 'Australia/Brisbane') => {
   return moment().tz(tz);
 };
 
+export function formatXName(tickValue: string, index: number) {
+  let value = this.getLabelForValue(index);
+  if (value && value.toString().includes('--')) {
+    let lbl = value.toString().split('--');
+    value = lbl[0];
+  }
+  return value;
+}
+
+export function formatXNameWithInitialChar(tickValue: string, index: number) {
+  let value = this.getLabelForValue(index);
+  if (value && value.toString().includes('--')) {
+    let lbl = value.toString().split('--');
+    value = lbl[0];
+  }
+  return formatXLabel(value);
+}
+
 export function formatXLabel(label: string | number) {
   if (label && typeof label == 'string') {
     const names = splitName(label);

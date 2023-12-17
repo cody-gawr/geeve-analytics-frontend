@@ -10,21 +10,22 @@
     <div class="total-discount-trend-chart">
       <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
       <ng-template #chartElem>
-        <canvas
-          *ngIf="datasets.length > 0 && hasData"
-          baseChart
-          [datasets]="datasets"
-          [labels]="labels"
-          [options]="chartOptions$ | async"
-          [legend]="legend$ | async"
-          [type]="chartType$ | async">
-        </canvas>
         <spin-loader
           class="empty-placeholder"
-          *ngIf="!(datasets.length > 0 && hasData) && !(isLoading$ | async)"
+          *ngIf="!hasData; else chartElem01"
           [disableSpin]="true">
           You have no data in the selected period
         </spin-loader>
+        <ng-template #chartElem01>
+          <canvas
+            baseChart
+            [datasets]="datasets"
+            [labels]="labels"
+            [options]="chartOptions$ | async"
+            [legend]="legend$ | async"
+            [type]="chartType$ | async">
+          </canvas>
+        </ng-template>
       </ng-template>
     </div>
   </div>

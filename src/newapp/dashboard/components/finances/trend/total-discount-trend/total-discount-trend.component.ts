@@ -57,7 +57,10 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
   ) {}
 
   get hasData() {
-    return this.datasets[0]?.data?.every(v => v !== 0);
+    return (
+      this.datasets[0]?.data?.length > 0 &&
+      this.datasets[0]?.data?.every(v => v !== 0)
+    );
   }
 
   ngOnInit(): void {
@@ -68,6 +71,7 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([chartData, trendMode, clinicId]) => {
+        console.log('char', chartData);
         if (typeof clinicId === 'string') {
           this.datasets = chartData.datasets;
           this.labels = chartData.labels;

@@ -1,6 +1,11 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FrontDeskFacade } from '@/newapp/dashboard/facades/front-desk.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import {
+  formatXLabel,
+  formatXName,
+  formatXNameWithInitialChar,
+} from '@/newapp/shared/utils';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
@@ -180,7 +185,13 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
         if (isTrend && isMultiClinic) {
           return this.stackedChartOptionsTC;
         }
-        return this.stackedChartOptionsUti;
+        let o = { ...this.stackedChartOptionsUti };
+        if (isTrend) {
+          o.scales.x.ticks.callback = formatXName;
+        } else {
+          o.scales.x.ticks.callback = formatXNameWithInitialChar;
+        }
+        return o;
       })
     );
   }
@@ -303,10 +314,10 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
           callback: function (tickValue: string, index: number) {
             let value = this.getLabelForValue(index);
             if (value && value.toString().includes('--')) {
-              let lbl = value.split('--');
+              let lbl = value.toString().split('--');
               value = lbl[0];
             }
-            return value;
+            return formatXLabel(value);
           },
         },
         stacked: true,
