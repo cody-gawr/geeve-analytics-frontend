@@ -19,7 +19,7 @@
         <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
         <ng-template #chartElem>
           <canvas
-            *ngIf="!(isLoading$ | async) && hasData"
+            *ngIf="hasData; else chartElem01"
             baseChart
             [datasets]="datasets"
             [labels]="totalDiscountChartLabels"
@@ -28,12 +28,11 @@
             [options]="pieChartOptions"
             [plugins]="plugins$ | async">
           </canvas>
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="!hasData"
-            [disableSpin]="true">
-            You have offered no discounts in the selected period
-          </spin-loader>
+          <ng-template #chartElem01>
+            <spin-loader class="empty-placeholder" [disableSpin]="true">
+              You have offered no discounts in the selected period
+            </spin-loader>
+          </ng-template>
         </ng-template>
       </div>
       <div class="chart-foot">

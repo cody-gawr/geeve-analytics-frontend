@@ -68,11 +68,7 @@
             <ng-template #chartElem2>
               <canvas
                 #fdUtilRateChart
-                *ngIf="
-                  !(isLoading$ | async) &&
-                  (hasData$ | async) &&
-                  !(isDateRageInvalid$ | async)
-                "
+                *ngIf="hasData$ | async; else chartElem03"
                 baseChart
                 [datasets]="datasets"
                 [labels]="labels"
@@ -84,12 +80,11 @@
                 type="bar"
                 [options]="chartOptions$ | async">
               </canvas>
-              <spin-loader
-                class="empty-placeholder"
-                *ngIf="!(hasData$ | async)"
-                [disableSpin]="true">
-                You have no appointments in the selected period
-              </spin-loader>
+              <ng-template #chartElem03>
+                <spin-loader class="empty-placeholder" [disableSpin]="true">
+                  You have no appointments in the selected period
+                </spin-loader>
+              </ng-template>
             </ng-template>
           </ng-template>
         </ng-template>

@@ -73,7 +73,9 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   }
 
   get hasData() {
-    return this.labels.length > 0;
+    return (
+      this.datasets?.length > 0 && this.datasets[0]?.data?.every(it => it != 0)
+    );
   }
 
   get noDataAlertMessage$() {
@@ -83,7 +85,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
           case 'indirect to large direct fillings':
             return 'You have no indirect or large direct fillings in the selected period';
           case 'rct to extraction':
-            return 'You have no RCTs or extractions in the selected period';
+            return 'You have no RCTs or Extractions in the selected period';
           case 'rct conversion':
             return 'You have no RCTs in the selected period';
         }

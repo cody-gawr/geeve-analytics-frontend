@@ -71,7 +71,7 @@
           [disableSpin]="false"></spin-loader>
         <ng-template #chartElem>
           <canvas
-            *ngIf="!(isLoading$ | async) && hasData"
+            *ngIf="hasData; else chartElem01"
             baseChart
             [datasets]="datasets"
             [labels]="labels"
@@ -79,12 +79,11 @@
             type="bar"
             [options]="chartOptions$ | async">
           </canvas>
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="!hasData"
-            [disableSpin]="true">
-            {{ noDataAlertMessage$ | async }}
-          </spin-loader>
+          <ng-template #chartElem01>
+            <spin-loader class="empty-placeholder" [disableSpin]="true">
+              {{ noDataAlertMessage$ | async }}
+            </spin-loader>
+          </ng-template>
         </ng-template>
       </div>
       <div class="chart-foot" *ngIf="!(isTrend$ | async)">
