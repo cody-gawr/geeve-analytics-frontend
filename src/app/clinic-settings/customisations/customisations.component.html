@@ -465,7 +465,7 @@
         </div>
       </div>
 
-      <div class="gray_area">
+      <div class="gray_area" *ngIf="!(isPMSCore$ | async)">
         <div class="working-days">
           <h4 class="clinic-settings-form-title">Dashboards</h4>
           <div

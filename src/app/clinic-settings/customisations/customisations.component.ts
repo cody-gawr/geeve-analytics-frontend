@@ -195,6 +195,10 @@ export class CustomisationsComponent
     return this.clinic_pms$.pipe(map(pms => pms == 'exact'));
   }
 
+  get isPMSCore$() {
+    return this.clinic_pms$.pipe(map(pms => pms == 'core'));
+  }
+
   get isPmsD4W$() {
     return this.clinic_pms$.pipe(map(pms => pms == 'd4w'));
   }
