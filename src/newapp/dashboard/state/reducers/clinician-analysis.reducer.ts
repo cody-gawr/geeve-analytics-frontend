@@ -545,7 +545,7 @@ export const selectCaProductionChartData = createSelector(
         }
 
         const pName =
-          item.providerName +
+          (item.providerName ?? '') +
           (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
 
         chartLabels.push(pName);
@@ -1278,20 +1278,10 @@ export const selectIsLoadingCaNumNewPatientsTrend = createSelector(
 export const selectCaNumNewPatientsChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
-  selectTrend,
-  selectAverage,
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
-  (
-    bodyList,
-    selectedClinics,
-    trend,
-    average,
-    isDentistMode,
-    rolesInd,
-    compare
-  ) => {
+  (bodyList, selectedClinics, isDentistMode, rolesInd, compare) => {
     let resBody: CaNumNewPatientsApiResponse = bodyList['caNumNewPatients'];
     if (!resBody?.data) {
       return {
@@ -1327,14 +1317,14 @@ export const selectCaNumNewPatientsChartData = createSelector(
       }
       let newpKey = 0;
       const tableData = [];
-      data.forEach((res, i) => {
-        chartData.push(Math.round(<number>res.newPatients));
+      data.forEach((item: CaNumNewPatientsItem, i) => {
+        chartData.push(Math.round(<number>item.newPatients));
 
         const pName =
-          res.providerName +
-          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+          (item.providerName ?? '') +
+          (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
         chartLabels.push(pName);
-        if (res.providerName != 'Anonymous') newpKey = i;
+        if (item.providerName != 'Anonymous') newpKey = i;
         tableData.push({
           label: pName,
           value: chartData[i],
@@ -1602,20 +1592,11 @@ export const selectIsLoadingCaTxPlanAvgFeeAll = createSelector(
 export const selectTxPlanAvgFeesChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
-  selectTrend,
   selectTxPlanAvgFeeChartName,
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
-  (
-    bodyList,
-    selectedClinics,
-    trendMode,
-    chartName,
-    isDentistMode,
-    rolesInd,
-    compare
-  ) => {
+  (bodyList, selectedClinics, chartName, isDentistMode, rolesInd, compare) => {
     let resBody: CaTxPlanAvgFeeApiResponse = null;
 
     if (chartName === 'Avg. Completed Fees') {
@@ -1655,12 +1636,12 @@ export const selectTxPlanAvgFeesChartData = createSelector(
       }
       const tableData = [];
       let dentistKey = 0;
-      data.forEach((res, i) => {
-        chartData.push(Math.round(<number>res.averageFees));
+      data.forEach((item: CaTxPlanAvgFeeItem, i) => {
+        chartData.push(Math.round(<number>item.averageFees));
 
         const pName =
-          res.providerName +
-          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+          (item.providerName ?? '') +
+          (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
 
         chartLabels.push(pName);
         dentistKey = i;
@@ -1851,20 +1832,10 @@ export const selectIsLoadingCaTxPlanCompRateTrend = createSelector(
 export const selectTxPlanCompRateChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
-  // selectTrend,
-  // selectAverage,
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
-  (
-    bodyList,
-    selectedClinics,
-    // trendMode,
-    // averageMode,
-    isDentistMode,
-    rolesInd,
-    compare
-  ) => {
+  (bodyList, selectedClinics, isDentistMode, rolesInd, compare) => {
     let resBody: CaTxPlanCompRateApiResponse = bodyList['caTxPlanCompRate'];
 
     if (!isDentistMode || compare) {
@@ -1899,12 +1870,12 @@ export const selectTxPlanCompRateChartData = createSelector(
       }
       const tableData = [];
       let dentistKey = 0;
-      data.forEach((res, i) => {
-        chartData.push(Math.round(<number>res.treatmentPerPlanPercentage));
+      data.forEach((item: CaTxPlanCompRateItem, i) => {
+        chartData.push(Math.round(<number>item.treatmentPerPlanPercentage));
 
         const pName =
-          res.providerName +
-          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+          (item.providerName ?? '') +
+          (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
 
         chartLabels.push(pName);
         dentistKey = i;
@@ -2163,20 +2134,11 @@ export const selectIsLoadingCaRecallRateAll = createSelector(
 export const selectRecallRateChartData = createSelector(
   selectResBodyList,
   selectCurrentClinics,
-  // selectTrend,
   selectRecallRateChartName,
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
-  (
-    bodyList,
-    selectedClinics,
-    // trendMode,
-    chartName,
-    isDentistMode,
-    rolesInd,
-    compare
-  ) => {
+  (bodyList, selectedClinics, chartName, isDentistMode, rolesInd, compare) => {
     let resBody: CaRecallRateApiResponse | CaReappRateApiResponse = null;
     if (chartName === 'Recall Prebook Rate') {
       resBody = bodyList['caRecallRate'];
@@ -2223,7 +2185,7 @@ export const selectRecallRateChartData = createSelector(
         );
 
         const pName =
-          item.providerName +
+          (item.providerName ?? '') +
           (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
 
         chartLabels.push(pName);
@@ -2510,14 +2472,14 @@ export const selectCaNumComplaintsChartData = createSelector(
       }
       let newpKey = 0;
       const tableData = [];
-      data.forEach((res, i) => {
-        chartData.push(Math.round(<number>res.numComplaints));
+      data.forEach((item: CaNumComplaintsItem, i) => {
+        chartData.push(Math.round(<number>item.numComplaints));
 
         const pName =
-          res.providerName +
-          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+          (item.providerName ?? '') +
+          (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
         chartLabels.push(pName);
-        if (res.providerName != 'Anonymous') newpKey = i;
+        if (item.providerName != 'Anonymous') newpKey = i;
         tableData.push({
           label: pName,
           value: chartData[i],

@@ -446,12 +446,12 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
             if (tooltipItem.label.includes('WE ')) {
               return tooltipItem.label + ': $' + tooltipItem.formattedValue;
             }
-            var Targetlable = '';
+            var targetLabel = '';
             const v = tooltipItem.parsed.y;
-            let Tlable = tooltipItem.dataset.label;
-            if (Tlable != '') {
-              Tlable = Tlable + ': ';
-              Targetlable = Tlable;
+            let tLabel = tooltipItem.dataset.label;
+            if (tLabel != '') {
+              tLabel = tLabel + ': ';
+              targetLabel = tLabel;
             }
             //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             let ylable = tooltipItem.parsed._custom
@@ -460,23 +460,23 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
                   tooltipItem.parsed._custom.min
                 ) / 2
               : v;
-            var tlab = 0;
+            let tLab = 0;
             if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
             } else {
               const tval =
                 tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
               if (Array.isArray(tval)) {
-                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-                if (tlab == 0) {
-                  Tlable = '';
+                tLab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+                if (tLab == 0) {
+                  tLabel = '';
                 }
               }
             }
-            if (tlab == 0 && Targetlable == 'Target: ') {
+            if (tLab == 0 && targetLabel == 'Target: ') {
               return '';
             } else {
               return (
-                Tlable +
+                tLabel +
                 splitName(tooltipItem.label).join(' ') +
                 ': $' +
                 this.decimalPipe.transform(<number>ylable)

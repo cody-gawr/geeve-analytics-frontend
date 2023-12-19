@@ -179,7 +179,7 @@ declare global {
     month: unknown;
     collection: string | number;
     providerId: string | number;
-    providerName: string;
+    providerName: string | null;
     providerType: 'OHT' | string;
     week: unknown;
     weekEnd: unknown;
@@ -263,7 +263,7 @@ declare global {
     month: unknown;
     newPatients: string | number;
     providerId: string | number;
-    providerName: string;
+    providerName: string | null;
     year: unknown;
     yearMonth: unknown;
     goals?: string | number; // trend
@@ -287,7 +287,7 @@ declare global {
     month: unknown;
     averageFees: string | number;
     providerId: string | number;
-    providerName: string;
+    providerName: string | null;
     totalFeeAll: string | number;
     totalTreatmentPlans: string | number;
     year: unknown;
@@ -315,7 +315,7 @@ declare global {
     itemsDone: string | number;
     itemsTotal: string | number;
     providerId: string | number;
-    providerName: string;
+    providerName: string | null;
     treatmentPerPlanPercentage: string | number;
     treatmentPercentage: string | number;
     year: unknown;
@@ -356,7 +356,7 @@ declare global {
     month: unknown;
     reappointRate: string | number;
     providerId: string | number;
-    providerName: string;
+    providerName: string | null;
     totalAppts: string | number;
     reappointments: string | number;
     year: unknown;
@@ -393,7 +393,7 @@ declare global {
     month: unknown;
     numComplaints: string | number;
     providerId: string | number;
-    providerName: string;
+    providerName: string | null;
     year: unknown;
     yearMonth: unknown;
   }
