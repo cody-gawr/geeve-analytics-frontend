@@ -91,9 +91,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
   get legend$() {
     return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
-      map(([v]) => {
-        return typeof v === 'string' ? true : false;
-      })
+      map(([v]) => typeof v === 'string')
     );
   }
 

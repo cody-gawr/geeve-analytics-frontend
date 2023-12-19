@@ -234,7 +234,7 @@ declare global {
     month: unknown;
     collection: string | number;
     providerId: string | number;
-    providerName: string;
+    providerName: string | null;
     providerType: 'OHT' | string;
     week: unknown;
     weekEnd: unknown;

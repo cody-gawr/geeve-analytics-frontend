@@ -1032,14 +1032,14 @@ export const selectCaHourlyRateChartData = createSelector(
         data = data.slice(0, 20);
       }
       const tableData = [];
-      data.forEach((res: CaHourlyRateItem | CaCollectionHourlyRateItem, i) => {
-        chartData.push(Math.round(<number>res.hourlyRate));
+      data.forEach((item: CaHourlyRateItem | CaCollectionHourlyRateItem, i) => {
+        chartData.push(Math.round(<number>item.hourlyRate));
 
         const pName =
-          res.providerName +
-          (selectedClinics.length > 1 ? ` - ${res.clinicName}` : '');
+          (item.providerName ?? '') +
+          (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
         chartLabels.push(pName);
-        // if (res.providerName != null && res.providerName != 'Anonymous') {
+        // if (item.providerName != null && item.providerName != 'Anonymous') {
         // } else {
         //   chartLabels.push(pName);
         // }
