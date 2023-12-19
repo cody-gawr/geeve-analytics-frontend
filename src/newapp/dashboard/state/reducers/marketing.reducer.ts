@@ -1215,7 +1215,11 @@ export const selectActivePatientsChartData = createSelector(
     }
     const chartData = [],
       chartLabels = [];
-    activePatientsData.data.forEach((v, index) => {
+    let data = _.sortBy(
+      activePatientsData.data,
+      a => -parseFloat(<string>a.activePatients)
+    );
+    data.forEach((v, index) => {
       chartData.push(Math.round(parseFloat(<string>v.activePatients)));
       chartLabels.push(v.clinicName);
     });
