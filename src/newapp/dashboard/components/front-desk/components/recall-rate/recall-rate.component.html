@@ -7,6 +7,7 @@
     fontIcon="help"></mat-icon>
   <div class="chart-title">
     <mat-icon
+      *ngIf="!(isTrend$ | async)"
       [matTooltip]="
         (durationTrendLabel$ | async) +
         ': ' +
