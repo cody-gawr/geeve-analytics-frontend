@@ -154,8 +154,10 @@ export class MarketingNewPatientByReferralComponent
               chartLabels = [];
             if (apiResData.patientsRefname[activeLabel].length > 0) {
               this.isChartClicked = true;
-              apiResData.patientsRefname[activeLabel]
+              _.chain(apiResData.patientsRefname[activeLabel])
+                .sortBy(a => -parseFloat(<string>a.numReferrals))
                 .slice(0, 15)
+                .value()
                 .forEach(item => {
                   chartData.push(
                     Math.round(parseFloat(<string>item.numReferrals))

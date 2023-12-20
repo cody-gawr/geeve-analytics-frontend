@@ -164,8 +164,10 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
               chartLabels = [];
             if (apiResData.patientsRefname[activeLabel].length > 0) {
               this.isChartClicked = true;
-              apiResData.patientsRefname[activeLabel]
+              _.chain(apiResData.patientsRefname[activeLabel])
+                .sortBy(a => -parseFloat(<string>a.invoiceAmount))
                 .slice(0, 15)
+                .value()
                 .forEach(item => {
                   chartData.push(parseFloat(<string>item.invoiceAmount));
                   chartLabels.push(item.referralName);
