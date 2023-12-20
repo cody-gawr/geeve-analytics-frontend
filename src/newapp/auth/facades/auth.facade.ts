@@ -11,6 +11,7 @@ import {
   AuthState,
   selectAuthUserData,
   selectError,
+  selectIsClinicianUser,
   selectIsLoading,
   selectIsLoadingRolesIndividual,
   selectLogoutError,
@@ -61,6 +62,10 @@ export class AuthFacade {
 
   public readonly rolesIndividual$: Observable<RolesIndividualApiResponse | null> =
     this.store.pipe(select(selectRolesIndividual));
+
+  public readonly isClinicianUser$ = this.store.pipe(
+    select(selectIsClinicianUser)
+  );
 
   public readonly rolesIndividualAndClinics$ = this.store.pipe(
     select(selectRolesIndividualAndClinics)

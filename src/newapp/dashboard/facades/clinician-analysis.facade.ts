@@ -38,6 +38,7 @@ import {
   selectCaNumComplaintsTrendChartData,
   selectIsLoadingCaNumComplaintsTrend,
   selectIsHideFooterSection,
+  selectIsTrendIconVisible,
 } from '../state/reducers/clinician-analysis.reducer';
 
 @Injectable()
@@ -114,6 +115,10 @@ export class ClinicianAnalysisFacade {
       ClinicianAnalysisActions.setRecallRateChartName({ chartName })
     );
   }
+
+  public readonly isTrendIconVisible$ = this.store.pipe(
+    select(selectIsTrendIconVisible)
+  );
 
   public readonly caProductionChartData$ = this.store.pipe(
     select(selectCaProductionChartData)

@@ -39,17 +39,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   }
 
   get isTrendIconVisible$() {
-    return combineLatest([
-      this.duration$,
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
-      map(
-        ([duration, isDentistMode, isTrend, isCompare]) =>
-          duration != 'custom' && !(isDentistMode || isTrend) && !isCompare
-      )
-    );
+    return this.caFacade.isTrendIconVisible$;
   }
 
   get duration$() {

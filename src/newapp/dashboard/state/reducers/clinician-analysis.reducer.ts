@@ -7,6 +7,7 @@ import {
   selectAverage,
   selectCompare,
   selectCompareEnabled,
+  selectDateRange,
   selectTrend,
 } from '@/newapp/layout/state/reducers/layout.reducer';
 import {
@@ -14,7 +15,10 @@ import {
   selectIsDentistMode,
 } from '@/newapp/dentist/state/reducers/dentist.reducer';
 import { COLORS } from '@/newapp/constants';
-import { selectRolesIndividual } from '@/newapp/auth/state/reducers/auth.reducer';
+import {
+  selectIsClinicianUser,
+  selectRolesIndividual,
+} from '@/newapp/auth/state/reducers/auth.reducer';
 import moment from 'moment';
 import { ChartDataset } from 'chart.js';
 
@@ -245,6 +249,21 @@ export const {
   selectTxPlanAvgFeeChartName,
   selectRecallRateChartName,
 } = clinicianAnalysisFeature;
+
+export const selectIsTrendIconVisible = createSelector(
+  selectDateRange, // v.duration
+  selectIsDentistMode,
+  selectTrend, // v !== off
+  selectCompareEnabled,
+  selectIsClinicianUser,
+  (dateRange, isDentistMode, trend, isCompare, isClinicianUser) => {
+    const isTrend = trend && trend !== 'off';
+    const duration = dateRange?.duration;
+    return isClinicianUser
+      ? duration != 'custom' && !isTrend && !isCompare
+      : duration != 'custom' && !(isDentistMode || isTrend);
+  }
+);
 
 export const selectIsLoadingCaDentistProduction = createSelector(
   selectIsLoadingData,

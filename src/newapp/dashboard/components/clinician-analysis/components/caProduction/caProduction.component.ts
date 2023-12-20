@@ -172,18 +172,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     );
   }
 
-  get isTrendIconVisible$(): Observable<boolean> {
-    return combineLatest([
-      this.duration$,
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
-      map(
-        ([duration, isDentistMode, isTrend, isCompare]) =>
-          duration != 'custom' && !(isDentistMode || isTrend) && !isCompare
-      )
-    );
+  get isTrendIconVisible$() {
+    return this.caFacade.isTrendIconVisible$;
   }
 
   get isGaugeChartVisible$(): Observable<boolean> {
