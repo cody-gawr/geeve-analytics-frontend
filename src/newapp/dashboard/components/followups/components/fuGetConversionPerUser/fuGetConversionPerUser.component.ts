@@ -126,7 +126,7 @@ export class FuGetConversionPerUserComponent implements OnInit, OnDestroy {
   }
 
   get noDataMessage$() {
-    return this.fuFacade.fuGetOutcomeChartName$.pipe(
+    return this.fuFacade.fuGetConversionPerUserChartName$.pipe(
       map(chartName => {
         switch (chartName) {
           case 'Ticks':

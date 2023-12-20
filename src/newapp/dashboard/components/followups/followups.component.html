@@ -8,7 +8,9 @@
   <fuGetFollowupCompletion
     [toolTip]="getChartTip(59) | async"
     class="fu-chart"></fuGetFollowupCompletion>
-  <fuGetOutcome [toolTip]="getChartTip(56)" class="fu-chart"></fuGetOutcome>
+  <fuGetOutcome
+    [toolTip]="getChartTip(56) | async"
+    class="fu-chart"></fuGetOutcome>
   <fuGetConversionPerUser
     [toolTip]="getChartTip(58) | async"
     class="fu-chart-1"></fuGetConversionPerUser>
