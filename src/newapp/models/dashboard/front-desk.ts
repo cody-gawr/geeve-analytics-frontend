@@ -202,7 +202,7 @@ export interface FdUtilisationRateByDayApiResponse {
 export interface FdUtilisationRateByDayItem {
   clinicId: string | number;
   clinicName: string;
-  day: string;
+  dayName: string;
   month: null | unknown;
   plannedHour: string | number;
   utilRate: number | string;

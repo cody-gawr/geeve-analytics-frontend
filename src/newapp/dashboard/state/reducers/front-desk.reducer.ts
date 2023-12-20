@@ -817,7 +817,7 @@ export const selectFdUtilRateByDayChartData = createSelector(
       chartLabels.push(`${d}--0--0`);
     });
     _.chain(resBody.data)
-      .groupBy('day')
+      .groupBy('dayName')
       .map((items, day) => {
         const plannedHour = _.sumBy(items, v =>
           parseFloat(<string>v.plannedHour)
