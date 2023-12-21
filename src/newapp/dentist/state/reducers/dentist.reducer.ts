@@ -42,6 +42,7 @@ export const dentistFeature = createFeature({
           ...state,
           errors: _.filter(errors, n => n.api != 'dentGet'),
           dentists: dentists,
+          currentDentistId: 'all',
           isLoadingData: _.filter(isLoadingData, n => n != 'dentGet'),
         };
       }

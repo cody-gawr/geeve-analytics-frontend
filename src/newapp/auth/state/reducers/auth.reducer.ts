@@ -177,3 +177,8 @@ export const selectRolesIndividualAndClinics = createSelector(
     return { ...(rolesIndividual ?? {}), hasPrimeClinics };
   }
 );
+
+export const selectIsClinicianUser = createSelector(
+  selectRolesIndividual,
+  rolesInd => rolesInd?.type == 4 && rolesInd?.plan != 'lite'
+);
