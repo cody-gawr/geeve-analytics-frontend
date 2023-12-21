@@ -128,7 +128,6 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     onClick: (event, legendItem, legend) => {
       return;
     },
-    // align : 'start',
   };
 
   public chartOptions: ChartOptions;
