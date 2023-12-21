@@ -31,10 +31,14 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get isTableIconVisible$() {
-    return combineLatest([this.isDentistMode$, this.isCompare$]).pipe(
+    return combineLatest([
+      this.isDentistMode$,
+      this.isCompare$,
+      this.hasData$,
+    ]).pipe(
       map(
-        ([isDentistMode, isCompare]) =>
-          (!isDentistMode || isCompare) && this.tableData.length > 0
+        ([isDentistMode, isCompare, hasData]) =>
+          (!isDentistMode || isCompare) && this.tableData.length > 0 && hasData
       )
     );
   }

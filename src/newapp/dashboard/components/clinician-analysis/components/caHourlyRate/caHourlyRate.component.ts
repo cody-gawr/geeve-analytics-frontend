@@ -195,10 +195,14 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$(): Observable<boolean> {
-    return combineLatest([this.isDentistMode$, this.isCompare$]).pipe(
+    return combineLatest([
+      this.isDentistMode$,
+      this.isCompare$,
+      this.hasData$,
+    ]).pipe(
       map(
-        ([isDentistMode, isCompare]) =>
-          (!isDentistMode || isCompare) && this.tableData.length > 0
+        ([isDentistMode, isCompare, hasData]) =>
+          (!isDentistMode || isCompare) && this.tableData.length > 0 && hasData
       )
     );
   }
