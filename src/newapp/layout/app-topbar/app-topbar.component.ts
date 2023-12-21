@@ -57,51 +57,6 @@ export class AppTopbarComponent implements OnInit {
     );
   }
 
-  get isMultiClinics$() {
-    return combineLatest([
-      this.authFacade.authUserData$,
-      this.authFacade.rolesIndividual$,
-      this.clinicFacade.clinics$,
-    ]).pipe(
-      filter(
-        ([authUserData, rolesIndividual, clinics]) =>
-          rolesIndividual !== null && clinics.length > 0
-      ),
-      map(data => {
-        const [authUserData, rolesIndividual, clinics] = data;
-        const result = authUserData ?? this.authFacade.getAuthUserData();
-        return {
-          multiClinicEnabled: {
-            dash1Multi: result?.dash1Multi,
-            dash2Multi: result?.dash2Multi,
-            dash3Multi: result?.dash3Multi,
-            dash4Multi: result?.dash4Multi,
-            dash5Multi: result?.dash5Multi,
-          },
-          userType: rolesIndividual ? rolesIndividual.type : 0,
-          totalClinicsLength: clinics.length,
-        };
-      }),
-      map(({ multiClinicEnabled, userType, totalClinicsLength }) => {
-        const value =
-          totalClinicsLength > 1 &&
-          ((this.activatedUrl == '/newapp/dashboard/cliniciananalysis' &&
-            multiClinicEnabled.dash1Multi == 1) ||
-            (this.activatedUrl == '/newapp/dashboard/clinicianproceedures' &&
-              multiClinicEnabled.dash2Multi == 1) ||
-            (this.activatedUrl == '/newapp/dashboard/frontdesk' &&
-              multiClinicEnabled.dash3Multi == 1) ||
-            (this.activatedUrl == '/newapp/dashboard/marketing' &&
-              multiClinicEnabled.dash4Multi == 1) ||
-            (this.activatedUrl == '/newapp/dashboard/finances' &&
-              multiClinicEnabled.dash5Multi == 1)) &&
-          ![4, 7].includes(userType);
-
-        return value;
-      })
-    );
-  }
-
   get isEnableDentistDropdown$() {
     return combineLatest([
       this.clinicFacade.currentClinics$,
@@ -138,6 +93,10 @@ export class AppTopbarComponent implements OnInit {
         );
       })
     );
+  }
+
+  get isMultiClinics$() {
+    return this.clinicFacade.isMultiSelection$;
   }
 
   selectedClinic: 'all' | number | null = null;
@@ -179,6 +138,50 @@ export class AppTopbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    combineLatest([
+      this.authFacade.authUserData$,
+      this.authFacade.rolesIndividual$,
+      this.clinicFacade.clinics$,
+    ])
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(
+          ([authUserData, rolesIndividual, clinics]) =>
+            rolesIndividual !== null && clinics.length > 0
+        ),
+        map(data => {
+          const [authUserData, rolesIndividual, clinics] = data;
+          const result = authUserData ?? this.authFacade.getAuthUserData();
+          return {
+            multiClinicEnabled: {
+              dash1Multi: result?.dash1Multi,
+              dash2Multi: result?.dash2Multi,
+              dash3Multi: result?.dash3Multi,
+              dash4Multi: result?.dash4Multi,
+              dash5Multi: result?.dash5Multi,
+            },
+            userType: rolesIndividual ? rolesIndividual.type : 0,
+            totalClinicsLength: clinics.length,
+          };
+        })
+      )
+      .subscribe(({ multiClinicEnabled, userType, totalClinicsLength }) => {
+        const value =
+          totalClinicsLength > 1 &&
+          ((this.activatedUrl == '/newapp/dashboard/cliniciananalysis' &&
+            multiClinicEnabled.dash1Multi == 1) ||
+            (this.activatedUrl == '/newapp/dashboard/clinicianproceedures' &&
+              multiClinicEnabled.dash2Multi == 1) ||
+            (this.activatedUrl == '/newapp/dashboard/frontdesk' &&
+              multiClinicEnabled.dash3Multi == 1) ||
+            (this.activatedUrl == '/newapp/dashboard/marketing' &&
+              multiClinicEnabled.dash4Multi == 1) ||
+            (this.activatedUrl == '/newapp/dashboard/finances' &&
+              multiClinicEnabled.dash5Multi == 1)) &&
+          ![4, 7].includes(userType);
+        this.clinicFacade.setMultiClinicSelection(value);
+      });
+
     combineLatest([
       this.isEnableDentistDropdown$,
       this.clinicFacade.currentClinics$,
@@ -229,10 +232,6 @@ export class AppTopbarComponent implements OnInit {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        filter(
-          ([currentClinics, isEnableAll, isMulti, clinics]) =>
-            clinics.length > 0 && isMulti !== null
-        ),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(([currentClinics, isEnableAll, isMulti, clinics]) => {
@@ -281,10 +280,6 @@ export class AppTopbarComponent implements OnInit {
       .subscribe(dentistId => {
         this.selectedDentist = dentistId;
       });
-
-    this.isMultiClinics$.subscribe((value: boolean) =>
-      this.clinicFacade.setMultiClinicSelection(value)
-    );
   }
 
   getClinicName$(clinicId: Array<number | 'all'>) {
