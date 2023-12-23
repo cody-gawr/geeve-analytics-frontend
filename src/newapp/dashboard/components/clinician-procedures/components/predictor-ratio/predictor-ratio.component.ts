@@ -74,7 +74,8 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
 
   get hasData() {
     return (
-      this.datasets?.length > 0 && this.datasets[0]?.data?.every(it => it != 0)
+      this.datasets?.length > 0 &&
+      this.datasets?.every(it => it?.data?.length > 0)
     );
   }
 

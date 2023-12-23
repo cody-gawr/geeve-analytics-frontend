@@ -156,7 +156,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
         if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue > 0;
         } else {
-          return this.datasets[0]?.data.length > 0;
+          return this.datasets?.every(it => it?.data?.length > 0);
         }
       })
     );

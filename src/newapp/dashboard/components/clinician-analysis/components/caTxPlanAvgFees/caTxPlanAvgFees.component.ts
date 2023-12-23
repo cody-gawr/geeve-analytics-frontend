@@ -128,7 +128,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
       map(([isDentistMode, isTrend, isCompare]) =>
         isDentistMode && !(isTrend || isCompare)
           ? this.gaugeValue > 0
-          : this.datasets[0]?.data.length > 0
+          : this.datasets?.every(it => it?.data?.length > 0)
       )
     );
   }

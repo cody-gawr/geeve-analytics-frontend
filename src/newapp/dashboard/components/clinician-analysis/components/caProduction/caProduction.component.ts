@@ -139,7 +139,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         } else {
           return (
             this.datasets?.length > 0 &&
-            this.datasets[0]?.data?.length > 0 &&
+            this.datasets?.every(it => it?.data?.length > 0) &&
             this.labels.length > 0
           );
         }

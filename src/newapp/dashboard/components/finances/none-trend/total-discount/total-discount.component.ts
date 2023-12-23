@@ -31,10 +31,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
   }
 
   get hasData() {
-    return (
-      this.datasets[0]?.data?.length > 0 &&
-      this.datasets[0]?.data?.every(v => v !== 0)
-    );
+    return this.datasets?.every(it => it?.data?.length > 0);
   }
 
   get trendingIcon() {
@@ -171,7 +168,9 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
 
           this.totalDiscountChartTotal = Math.round(totalDiscountTotal);
           this.totalDiscountChartLabels = chartLabels;
-          this.datasets = [{ data: chartData }];
+          this.datasets = [
+            { data: chartData?.every(val => val != 0) ? chartData : [] },
+          ];
         }
       );
   }

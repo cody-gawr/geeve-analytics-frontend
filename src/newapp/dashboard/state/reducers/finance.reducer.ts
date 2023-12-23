@@ -1293,10 +1293,11 @@ export const selectTotalDiscountTrendChartData = createSelector(
         })
         .value()
         .forEach(values => {
+          const chartData = values.map(v =>
+            _.round(parseFloat(<string>v.discounts ?? '0'))
+          );
           chartDataset.push({
-            data: values.map(v =>
-              _.round(parseFloat(<string>v.discounts ?? '0'))
-            ),
+            data: chartData?.every(val => val != 0) ? chartData : [],
             label: values[0].clinicName,
             backgroundColor: DoughnutChartColors[i],
             hoverBackgroundColor: DoughnutChartColors[i],
