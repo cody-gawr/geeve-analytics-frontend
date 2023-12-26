@@ -18,7 +18,7 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
-      <div class="active-toggle" *ngIf="!(enablePaTable$ | async)">
+      <div class="active-toggle">
         <button
           mat-flat-button
           *ngIf="isGeneral$ | async; else elem1"
