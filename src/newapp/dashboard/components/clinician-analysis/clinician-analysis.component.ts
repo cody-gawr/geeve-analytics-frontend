@@ -91,7 +91,9 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     private router: Router,
     private dentistFacade: DentistFacade,
     private authFacade: AuthFacade
-  ) {}
+  ) {
+    this.layoutFacade.setTrend('off');
+  }
 
   get queryParams$() {
     return combineLatest([

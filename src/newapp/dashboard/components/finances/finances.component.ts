@@ -44,7 +44,9 @@ export class FinancesComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private router: Router,
     private authFacade: AuthFacade
-  ) {}
+  ) {
+    this.layoutFacade.setTrend('off');
+  }
 
   ngOnInit(): void {
     this.clinicFacade.currentClinicId$

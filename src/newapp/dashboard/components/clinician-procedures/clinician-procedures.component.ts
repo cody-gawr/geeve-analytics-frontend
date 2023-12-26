@@ -89,7 +89,9 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private router: Router,
     private dentistFacade: DentistFacade
-  ) {}
+  ) {
+    this.layoutFacade.setTrend('off');
+  }
 
   ngOnInit(): void {
     this.clinicFacade.currentClinicId$

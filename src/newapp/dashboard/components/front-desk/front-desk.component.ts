@@ -48,7 +48,9 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private authFacade: AuthFacade,
     private router: Router
-  ) {}
+  ) {
+    this.layoutFacade.setTrend('off');
+  }
 
   ngOnInit(): void {
     this.clinicFacade.currentClinicId$
