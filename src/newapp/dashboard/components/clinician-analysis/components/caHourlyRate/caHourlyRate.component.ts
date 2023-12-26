@@ -148,7 +148,11 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         } else {
           return (
             this.datasets.length > 0 &&
-            this.datasets?.every(it => it?.data?.length > 0)
+            this.datasets?.some(
+              it =>
+                it?.data?.length > 0 &&
+                _.sumBy(it.data, v => parseFloat(<any>v))
+            )
           );
         }
       })
