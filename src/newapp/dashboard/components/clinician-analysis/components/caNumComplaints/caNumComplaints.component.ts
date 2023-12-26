@@ -1,10 +1,13 @@
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
-import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { COLORS } from '@/newapp/constants';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { formatXLabel } from '@/newapp/shared/utils';
+import {
+  formatXLabel,
+  generatingLegend_2,
+  generatingLegend_3,
+} from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions } from 'chart.js';
@@ -290,6 +293,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
       easing: 'easeOutSine',
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: true,
         position: 'bottom',
@@ -356,6 +360,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {
@@ -401,21 +406,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
           },
         },
       },
-      legend: {
-        position: 'top',
-        onClick: function (e, legendItem) {
-          var index = legendItem.datasetIndex;
-          var ci = this.chart;
-          if (index == 0) {
-            ci.getDatasetMeta(1).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          } else if (index == 1) {
-            ci.getDatasetMeta(0).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          }
-          ci.update();
-        },
-      },
+      legend: generatingLegend_3(),
     },
   };
 }

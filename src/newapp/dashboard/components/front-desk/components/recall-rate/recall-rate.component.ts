@@ -2,7 +2,10 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { FrontDeskFacade } from '@/newapp/dashboard/facades/front-desk.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { JeeveLineFillOptions } from '@/newapp/shared/utils';
+import {
+  JeeveLineFillOptions,
+  generatingLegend_4,
+} from '@/newapp/shared/utils';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
@@ -139,33 +142,6 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
     );
   }
 
-  public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let labels = [];
-        let bg_color = {};
-        chart.data.datasets.forEach(item => {
-          item.data.forEach((val: number) => {
-            if (val > 0) {
-              labels.push(item.label);
-              bg_color[item.label] = item.backgroundColor;
-            }
-          });
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map(item => ({
-          text: item,
-          strokeStyle: bg_color[item],
-          fillStyle: bg_color[item],
-        }));
-      },
-    },
-  };
   public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
     position: 'bottom',
@@ -225,6 +201,7 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {
@@ -311,7 +288,8 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      legend: this.stackLegendGenerator,
+      colors: { enabled: true },
+      legend: generatingLegend_4(),
       tooltip: {
         mode: 'x',
         enabled: true,
@@ -361,6 +339,7 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {

@@ -1,7 +1,10 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
-import { externalTooltipHandler } from '@/newapp/shared/utils';
+import {
+  externalTooltipHandler,
+  generatingLegend_4,
+} from '@/newapp/shared/utils';
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
@@ -52,35 +55,6 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
     this.destroy.next();
   }
 
-  public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let labels = [];
-        let bg_color = {};
-        chart.data.datasets.forEach(item => {
-          item.data.forEach((val: number) => {
-            if (val > 0) {
-              labels.push(item.label);
-              bg_color[item.label] = item.backgroundColor;
-            }
-          });
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map(item => ({
-          text: item,
-          strokeStyle: bg_color[item],
-          fillStyle: bg_color[item],
-        }));
-      },
-    },
-    // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
-  };
-
   public labelBarPercentOptionsStacked: ChartOptions<'bar'> = {
     elements: {
       point: {
@@ -117,7 +91,8 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      legend: this.stackLegendGenerator,
+      colors: { enabled: true },
+      legend: generatingLegend_4(),
       tooltip: {
         mode: 'x',
         enabled: false,

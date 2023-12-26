@@ -31,7 +31,10 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
   }
 
   get hasData() {
-    return this.datasets?.every(it => it?.data?.length > 0);
+    return (
+      this.datasets?.length > 0 &&
+      this.datasets?.every(it => it?.data?.length > 0)
+    );
   }
 
   get trendingIcon() {
@@ -90,6 +93,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: true,
         position: 'bottom',

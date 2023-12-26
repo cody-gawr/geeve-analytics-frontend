@@ -176,6 +176,7 @@ export class MarketingNewPatientByReferralComponent
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
+      colors: { enabled: true },
       tooltip: {
         enabled: false,
         position: 'nearest',
@@ -251,6 +252,7 @@ export class MarketingNewPatientByReferralComponent
       },
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: true,
       },

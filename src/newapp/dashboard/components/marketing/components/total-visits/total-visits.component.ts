@@ -194,6 +194,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: true,
       },
@@ -249,6 +250,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: false,
       },

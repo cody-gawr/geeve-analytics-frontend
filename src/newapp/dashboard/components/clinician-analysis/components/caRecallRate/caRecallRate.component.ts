@@ -3,7 +3,11 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { formatXLabel } from '@/newapp/shared/utils';
+import {
+  formatXLabel,
+  generatingLegend,
+  generatingLegend_3,
+} from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions } from 'chart.js';
@@ -97,33 +101,6 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   showTableInfo = false;
   tableData = [];
 
-  public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let bgColor = {};
-        let labels = chart.data.labels.map((value: string, i) => {
-          bgColor[value.split(' - ')[1]] =
-            chart.data.datasets[0].backgroundColor[i];
-          return value.split(' - ')[1];
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map((label, index) => ({
-          text: label,
-          strokeStyle: bgColor[label],
-          fillStyle: bgColor[label],
-        }));
-      },
-    },
-    onClick: (event, legendItem, legend) => {
-      return;
-    },
-  };
-
   public chartOptions: ChartOptions;
 
   public barChartOptions: ChartOptions<'bar'> = {
@@ -164,7 +141,8 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      legend: this.legendGenerator,
+      colors: { enabled: true },
+      legend: generatingLegend(),
       tooltip: {
         mode: 'x',
         bodyFont: {
@@ -216,6 +194,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {
@@ -237,21 +216,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
           },
         },
       },
-      legend: {
-        position: 'top',
-        onClick: function (e, legendItem) {
-          var index = legendItem.datasetIndex;
-          var ci = this.chart;
-          if (index == 0) {
-            ci.getDatasetMeta(1).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          } else if (index == 1) {
-            ci.getDatasetMeta(0).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          }
-          ci.update();
-        },
-      },
+      legend: generatingLegend_3(),
     },
     elements: {
       line: {
@@ -290,7 +255,10 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue > 0;
         } else {
-          return this.datasets?.every(it => it?.data?.length > 0);
+          return (
+            this.datasets?.length > 0 &&
+            this.datasets?.every(it => it?.data?.length > 0)
+          );
         }
       })
     );

@@ -154,6 +154,7 @@ export class FuGetPerUserComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: true,
         position: 'top',

@@ -109,6 +109,7 @@ export class CpRevPerProcedureComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         position: 'top',
         onClick: function (e) {

@@ -5,7 +5,11 @@ import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-an
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Clinic } from '@/newapp/models/clinic';
-import { formatXLabel, formatXTooltipLabel } from '@/newapp/shared/utils';
+import {
+  formatXLabel,
+  formatXTooltipLabel,
+  generatingLegend,
+} from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
@@ -142,7 +146,10 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue > 0;
         } else {
-          return this.datasets?.every(it => it?.data?.length > 0);
+          return (
+            this.datasets.length > 0 &&
+            this.datasets?.every(it => it?.data?.length > 0)
+          );
         }
       })
     );
@@ -242,7 +249,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         if (!isDentistMode || !isTrend) {
         } else {
         }
-
         this.total = data.total;
         this.prev = data.prev;
         this.average = data.average;
@@ -308,34 +314,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     this.caFacade.setHourlyRateProdSelectTab(event.value);
   }
 
-  public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let bgColor = {};
-        let labels = chart.data.labels.map((value: string, i) => {
-          bgColor[value.split(' - ')[1]] =
-            chart.data.datasets[0].backgroundColor[i];
-          return value.split(' - ')[1];
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map((label, index) => ({
-          text: label,
-          strokeStyle: bgColor[label],
-          fillStyle: bgColor[label],
-        }));
-      },
-    },
-    onClick: (event, legendItem, legend) => {
-      return;
-    },
-    // align : 'start',
-  };
-
   public barChartOptions: ChartOptions<'bar'> = {
     hover: { mode: null },
     animation: {
@@ -371,7 +349,8 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      legend: this.legendGenerator,
+      colors: { enabled: true },
+      legend: generatingLegend(),
       tooltip: {
         mode: 'x',
         bodyFont: {
@@ -425,6 +404,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       title: {
         display: false,
         text: '',

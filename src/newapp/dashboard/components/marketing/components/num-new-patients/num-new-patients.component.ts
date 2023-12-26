@@ -2,7 +2,10 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { externalTooltipHandler } from '@/newapp/shared/utils';
+import {
+  externalTooltipHandler,
+  generatingLegend_4,
+} from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
@@ -210,33 +213,6 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
       })
     );
   }
-  public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let labels = [];
-        let bgColor = {};
-        chart.data.datasets.forEach(item => {
-          item.data.forEach((val: number) => {
-            if (val > 0) {
-              labels.push(item.label);
-              bgColor[item.label] = item.backgroundColor;
-            }
-          });
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map(item => ({
-          text: item,
-          strokeStyle: bgColor[item],
-          fillStyle: bgColor[item],
-        }));
-      },
-    },
-  };
 
   public stackedChartOptions: ChartOptions<'bar'> = {
     elements: {
@@ -265,6 +241,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: true,
       },
@@ -320,7 +297,8 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      legend: this.stackLegendGenerator,
+      colors: { enabled: true },
+      legend: generatingLegend_4(),
       tooltip: {
         mode: 'x',
         enabled: false,

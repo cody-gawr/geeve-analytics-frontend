@@ -10,7 +10,10 @@ import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map, Observable } from 'rxjs';
 import { MkSelectAccountsModalComponent } from '../select-accounts-modal/select-accounts-modal.component';
-import { externalTooltipHandler } from '@/newapp/shared/utils';
+import {
+  externalTooltipHandler,
+  generatingLegend_4,
+} from '@/newapp/shared/utils';
 
 @Component({
   selector: 'new-patients-acq-chart',
@@ -140,34 +143,6 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     );
   }
 
-  public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let labels = [];
-        let bg_color = {};
-        chart.data.datasets.forEach(item => {
-          item.data.forEach((val: number) => {
-            if (val > 0) {
-              labels.push(item.label);
-              bg_color[item.label] = item.backgroundColor;
-            }
-          });
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map(item => ({
-          text: item,
-          strokeStyle: bg_color[item],
-          fillStyle: bg_color[item],
-        }));
-      },
-    },
-  };
-
   public stackedChartOptions: ChartOptions<'bar'> = {
     elements: {
       point: {
@@ -195,6 +170,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: true,
       },
@@ -246,6 +222,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       tooltip: {
         mode: 'x',
         enabled: false,
@@ -260,7 +237,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
           },
         },
       },
-      legend: this.stackLegendGenerator,
+      legend: generatingLegend_4(),
     },
   };
 

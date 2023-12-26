@@ -4,6 +4,7 @@ import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import {
   JeeveLineFillOptions,
   externalTooltipHandler,
+  generatingLegend_4,
 } from '@/newapp/shared/utils';
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import {
@@ -57,18 +58,19 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
   ) {}
 
   get hasData() {
-    return this.datasets?.every(it => it?.data?.length > 0);
+    return (
+      this.datasets?.length > 0 &&
+      this.datasets?.every(it => it?.data?.length > 0)
+    );
   }
 
   ngOnInit(): void {
     combineLatest([
       this.financeFacade.totalDiscountTrendChartData$,
-      this.layoutFacade.trend$,
       this.clinicFacade.currentClinicId$,
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([chartData, trendMode, clinicId]) => {
-        console.log('char', chartData);
+      .subscribe(([chartData, clinicId]) => {
         if (typeof clinicId === 'string') {
           this.datasets = chartData.datasets;
           this.labels = chartData.labels;
@@ -83,34 +85,6 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
     this.destroy.next();
   }
 
-  public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let labels = [];
-        let bg_color = {};
-        chart.data.datasets.forEach(item => {
-          item.data.forEach((val: number) => {
-            if (val > 0) {
-              labels.push(item.label);
-              bg_color[item.label] = item.backgroundColor;
-            }
-          });
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map(item => ({
-          text: item,
-          strokeStyle: bg_color[item],
-          fillStyle: bg_color[item],
-        }));
-      },
-    },
-    // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
-  };
   public labelBarOptionsSingleValue: ChartOptions<'line'> = {
     elements: {
       point: {
@@ -149,6 +123,7 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: true,
       },
@@ -217,7 +192,8 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      legend: this.stackLegendGenerator,
+      colors: { enabled: true },
+      legend: generatingLegend_4(),
       tooltip: {
         mode: 'x',
         enabled: false,

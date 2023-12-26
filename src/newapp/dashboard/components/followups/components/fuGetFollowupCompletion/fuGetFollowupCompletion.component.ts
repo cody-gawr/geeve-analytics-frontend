@@ -143,6 +143,7 @@ export class FuGetFollowupCompletionComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       tooltip: {
         mode: 'x',
         bodyFont: {

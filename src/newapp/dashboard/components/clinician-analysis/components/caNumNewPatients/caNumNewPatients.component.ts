@@ -5,7 +5,11 @@ import { COLORS } from '@/newapp/constants';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { formatXLabel } from '@/newapp/shared/utils';
+import {
+  formatXLabel,
+  generatingLegend_2,
+  generatingLegend_3,
+} from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Chart, ChartOptions, Plugin } from 'chart.js';
@@ -171,7 +175,10 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
         if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue > 0;
         } else {
-          return this.datasets?.every(it => it?.data?.length > 0);
+          return (
+            this.datasets?.length > 0 &&
+            this.datasets?.every(it => it?.data?.length > 0)
+          );
         }
       })
     );
@@ -308,6 +315,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
       easing: 'easeOutSine',
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: true,
         position: 'bottom',
@@ -316,15 +324,15 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
           padding: 5,
           generateLabels: chart => {
             const data = chart.data;
-            return data.labels.length && data.datasets.length
-              ? data.labels.map((label: string, i) => ({
-                  text: <string>formatXLabel(label),
-                  fillStyle:
-                    this.newpColors[0].backgroundColor[i] ?? COLORS.even,
-                  strokeStyle: '#fff',
-                  index: i,
-                }))
-              : [];
+            if (data.labels.length && data.datasets.length) {
+              return data.labels.map((label: string, i) => ({
+                text: <string>formatXLabel(label),
+                fillStyle: this.newpColors[0].backgroundColor[i] ?? COLORS.even,
+                strokeStyle: '#fff',
+                index: i,
+              }));
+            }
+            return [];
           },
         },
         onClick: function (e) {
@@ -374,6 +382,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {
@@ -420,21 +429,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
           },
         },
       },
-      legend: {
-        position: 'top',
-        onClick: function (e, legendItem) {
-          var index = legendItem.datasetIndex;
-          var ci = this.chart;
-          if (index == 0) {
-            ci.getDatasetMeta(1).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          } else if (index == 1) {
-            ci.getDatasetMeta(0).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          }
-          ci.update();
-        },
-      },
+      legend: generatingLegend_3(),
     },
   };
 

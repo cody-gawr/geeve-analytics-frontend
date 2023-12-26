@@ -6,6 +6,8 @@ import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import {
   formatXLabel,
   formatXTooltipLabel,
+  generatingLegend,
+  generatingLegend_3,
   splitName,
 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
@@ -402,33 +404,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     }
   }
 
-  public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let bgColor = {};
-        let labels = chart.data.labels.map((value: string, i) => {
-          bgColor[value.split(' - ')[1]] =
-            chart.data.datasets[0].backgroundColor[i];
-          return value.split(' - ')[1];
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map((label, index) => ({
-          text: label,
-          strokeStyle: bgColor[label],
-          fillStyle: bgColor[label],
-        }));
-      },
-    },
-    onClick: (event, legendItem, legend) => {
-      return;
-    },
-  };
-
   public chartOptions: ChartOptions;
 
   public barChartOptions: ChartOptions<'bar'> = {
@@ -466,7 +441,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      legend: this.legendGenerator,
+      colors: { enabled: true },
+      legend: generatingLegend(),
       tooltip: {
         mode: 'x',
         bodyFont: {
@@ -520,6 +496,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       title: {
         display: false,
         text: '',
@@ -577,21 +554,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
           },
         },
       },
-      legend: {
-        position: 'top',
-        onClick: function (e, legendItem) {
-          var index = legendItem.datasetIndex;
-          var ci = this.chart;
-          if (index == 0) {
-            ci.getDatasetMeta(1).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          } else if (index == 1) {
-            ci.getDatasetMeta(0).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          }
-          ci.update();
-        },
-      },
+      legend: generatingLegend_3(),
     },
   };
 }

@@ -5,6 +5,7 @@ import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import {
   JeeveLineFillOptions,
   externalTooltipHandler,
+  generatingLegend_4,
 } from '@/newapp/shared/utils';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, TooltipItem } from 'chart.js';
@@ -26,35 +27,6 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
 
   datasets: any = [{ data: [] }];
   labels = [];
-
-  public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let labels = [];
-        let bg_color = {};
-        chart.data.datasets.forEach(item => {
-          item.data.forEach((val: number) => {
-            if (val > 0) {
-              labels.push(item.label);
-              bg_color[item.label] = item.backgroundColor;
-            }
-          });
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map(item => ({
-          text: item,
-          strokeStyle: bg_color[item],
-          fillStyle: bg_color[item],
-        }));
-      },
-    },
-    // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
-  };
 
   public labelBarOptionsSingleValue: ChartOptions = {
     elements: {
@@ -94,6 +66,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: true,
       },
@@ -162,7 +135,8 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      legend: this.stackLegendGenerator,
+      colors: { enabled: true },
+      legend: generatingLegend_4(),
       tooltip: {
         mode: 'x',
         enabled: false,
@@ -188,6 +162,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
   public netProfitTrendMultiChartOptions: ChartOptions = {
     ...this.labelBarOptionsSingleValue,
     plugins: {
+      colors: { enabled: true },
       tooltip: {
         mode: 'x',
         callbacks: {
@@ -241,6 +216,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       legend: {
         display: true,
       },

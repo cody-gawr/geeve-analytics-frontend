@@ -1,4 +1,11 @@
-import { Chart, ChartType, Plugin, TooltipItem, TooltipModel } from 'chart.js';
+import {
+  Chart,
+  ChartType,
+  LegendOptions,
+  Plugin,
+  TooltipItem,
+  TooltipModel,
+} from 'chart.js';
 import moment from 'moment-timezone';
 import {
   LineHoverOptions,
@@ -461,4 +468,111 @@ export function dynamicBarBackgroundColor(
     });
   }
   return dynamicColors;
+}
+
+export function generatingLegend(): _DeepPartialObject<LegendOptions<any>> {
+  return {
+    display: true,
+    position: 'bottom',
+    labels: {
+      boxWidth: 8,
+      usePointStyle: true,
+      generateLabels: chart => {
+        let bgColor = {};
+        let labels = chart.data.labels.map((value: string, i) => {
+          bgColor[value.split(' - ')[1]] =
+            chart.data.datasets[0].backgroundColor[i];
+          return value.split(' - ')[1];
+        });
+        labels = [...new Set(labels)];
+        labels = labels.splice(0, 10);
+        return labels.map((label, index) => ({
+          text: label,
+          strokeStyle: bgColor[label],
+          fillStyle: bgColor[label],
+        }));
+      },
+    },
+    onClick: (event, legendItem, legend) => {
+      return;
+    },
+    // align : 'start',
+  };
+}
+
+export function generatingLegend_2(
+  newpColors
+): _DeepPartialObject<LegendOptions<any>> {
+  return {
+    display: true,
+    position: 'bottom',
+    labels: {
+      usePointStyle: true,
+      padding: 5,
+      generateLabels: chart => {
+        const data = chart.data;
+        if (data.labels.length && data.datasets.length) {
+          return data.labels.map((label: string, i) => ({
+            text: <string>formatXLabel(label),
+            fillStyle: newpColors[0].backgroundColor[i] ?? COLORS.even,
+            strokeStyle: '#fff',
+            index: i,
+          }));
+        }
+        return [];
+      },
+    },
+    onClick: function (e) {
+      e.native.stopPropagation();
+    },
+  };
+}
+
+export function generatingLegend_3(): _DeepPartialObject<LegendOptions<any>> {
+  return {
+    position: 'top',
+    onClick: function (e, legendItem) {
+      var index = legendItem.datasetIndex;
+      var ci = this.chart;
+      if (index == 0) {
+        ci.getDatasetMeta(1).hidden = true;
+        ci.getDatasetMeta(index).hidden = false;
+      } else if (index == 1) {
+        ci.getDatasetMeta(0).hidden = true;
+        ci.getDatasetMeta(index).hidden = false;
+      }
+      ci.update();
+    },
+  };
+}
+
+export function generatingLegend_4(): _DeepPartialObject<LegendOptions<any>> {
+  return {
+    display: true,
+    position: 'bottom',
+    labels: {
+      boxWidth: 8,
+      usePointStyle: true,
+      generateLabels: chart => {
+        let labels = [];
+        let bg_color = {};
+        chart.data.datasets.forEach(item => {
+          item.data.forEach((val: number) => {
+            if (val > 0) {
+              labels.push(item.label);
+              bg_color[item.label] = item.backgroundColor;
+            }
+          });
+        });
+        labels = [...new Set(labels)];
+        labels = labels.splice(0, 10);
+        return labels.map(item => ({
+          text: item,
+          strokeStyle: bg_color[item],
+          fillStyle: bg_color[item],
+        }));
+      },
+    },
+    // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
+  };
 }

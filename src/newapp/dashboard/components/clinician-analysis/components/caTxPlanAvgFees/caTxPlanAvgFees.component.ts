@@ -4,7 +4,12 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { formatXLabel, formatXTooltipLabel } from '@/newapp/shared/utils';
+import {
+  formatXLabel,
+  formatXTooltipLabel,
+  generatingLegend,
+  generatingLegend_3,
+} from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions } from 'chart.js';
@@ -128,7 +133,8 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
       map(([isDentistMode, isTrend, isCompare]) =>
         isDentistMode && !(isTrend || isCompare)
           ? this.gaugeValue > 0
-          : this.datasets?.every(it => it?.data?.length > 0)
+          : this.datasets?.length > 0 &&
+            this.datasets?.every(it => it?.data?.length > 0)
       )
     );
   }
@@ -272,34 +278,6 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     };
   }
 
-  public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let bgColor = {};
-        let labels = chart.data.labels.map((value: string, i) => {
-          bgColor[value.split(' - ')[1]] =
-            chart.data.datasets[0].backgroundColor[i];
-          return value.split(' - ')[1];
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map((label, index) => ({
-          text: label,
-          strokeStyle: bgColor[label],
-          fillStyle: bgColor[label],
-        }));
-      },
-    },
-    onClick: (event, legendItem, legend) => {
-      return;
-    },
-    // align : 'start',
-  };
-
   public barChartOptions: ChartOptions<'bar'> = {
     // borderRadius: 50,
     hover: { mode: null },
@@ -339,7 +317,8 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      legend: this.legendGenerator,
+      colors: { enabled: true },
+      legend: generatingLegend(),
       tooltip: {
         mode: 'x',
         bodyFont: {
@@ -397,6 +376,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
+      colors: { enabled: true },
       title: {
         display: false,
         text: '',
@@ -454,21 +434,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
           },
         },
       },
-      legend: {
-        position: 'top',
-        onClick: function (e, legendItem) {
-          var index = legendItem.datasetIndex;
-          var ci = this.chart;
-          if (index == 0) {
-            ci.getDatasetMeta(1).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          } else if (index == 1) {
-            ci.getDatasetMeta(0).hidden = true;
-            ci.getDatasetMeta(index).hidden = false;
-          }
-          ci.update();
-        },
-      },
+      legend: generatingLegend_3(),
     },
   };
 
