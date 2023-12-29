@@ -2406,7 +2406,7 @@ export const selectRecallRateTrendChartData = createSelector(
         datasets[1]['label'] = 'Target';
         datasets[1]['data'] = mappedtargetData; //this.targetData.map(v => [v - subVal, v + subVal]);
       } else {
-        datasets[0]['label'] = '';
+        datasets[0]['label'] = 'Actual';
         datasets[1]['label'] = '';
         datasets[1]['data'] = [];
       }
