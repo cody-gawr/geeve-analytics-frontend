@@ -216,7 +216,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: {
         display: true,
         position: 'top',
@@ -296,7 +296,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: {
         display: true,
         position: 'top',

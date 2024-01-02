@@ -182,7 +182,7 @@ export class FuGetConversionPerUserComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         bodyFont: {

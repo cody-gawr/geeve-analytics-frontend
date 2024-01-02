@@ -259,7 +259,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: {
         display: false,
       },

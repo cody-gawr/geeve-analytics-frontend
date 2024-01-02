@@ -95,7 +95,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: {
         display: true,
         position: 'bottom',

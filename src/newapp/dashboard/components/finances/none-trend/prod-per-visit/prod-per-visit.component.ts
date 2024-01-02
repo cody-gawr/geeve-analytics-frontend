@@ -166,7 +166,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {

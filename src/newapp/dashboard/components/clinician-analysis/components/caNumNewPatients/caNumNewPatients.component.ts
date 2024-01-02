@@ -319,7 +319,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
       easing: 'easeOutSine',
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: {
         display: true,
         position: 'bottom',
@@ -386,7 +386,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {

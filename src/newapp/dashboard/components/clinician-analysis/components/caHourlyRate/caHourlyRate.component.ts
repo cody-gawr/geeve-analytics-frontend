@@ -353,7 +353,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: generatingLegend(),
       tooltip: {
         mode: 'x',
@@ -408,7 +408,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       title: {
         display: false,
         text: '',

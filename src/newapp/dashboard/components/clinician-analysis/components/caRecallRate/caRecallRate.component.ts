@@ -141,7 +141,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: generatingLegend(),
       tooltip: {
         mode: 'x',
@@ -194,7 +194,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {

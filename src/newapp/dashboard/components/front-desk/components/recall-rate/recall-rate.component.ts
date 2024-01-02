@@ -201,7 +201,7 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {
@@ -288,7 +288,7 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: generatingLegend_4(),
       tooltip: {
         mode: 'x',
@@ -339,7 +339,7 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {

@@ -321,7 +321,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: generatingLegend(),
       tooltip: {
         mode: 'x',
@@ -380,7 +380,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       title: {
         display: false,
         text: '',

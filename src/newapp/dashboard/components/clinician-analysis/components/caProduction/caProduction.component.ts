@@ -444,7 +444,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: generatingLegend(),
       tooltip: {
         mode: 'x',
@@ -499,7 +499,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       title: {
         display: false,
         text: '',

@@ -241,7 +241,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: {
         display: true,
       },
@@ -297,7 +297,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: generatingLegend_4(),
       tooltip: {
         mode: 'x',

@@ -305,7 +305,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: generatingLegend(),
       tooltip: {
         mode: 'x',
@@ -359,7 +359,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {

@@ -115,7 +115,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: {
         display: true,
       },

@@ -66,7 +66,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: {
         display: true,
       },
@@ -135,7 +135,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: generatingLegend_4(),
       tooltip: {
         mode: 'x',
@@ -162,7 +162,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
   public netProfitTrendMultiChartOptions: ChartOptions = {
     ...this.labelBarOptionsSingleValue,
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         callbacks: {
@@ -216,7 +216,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: {
         display: true,
       },

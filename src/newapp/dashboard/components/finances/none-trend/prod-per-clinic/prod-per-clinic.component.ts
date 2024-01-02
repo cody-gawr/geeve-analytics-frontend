@@ -43,7 +43,7 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: {
         display: true,
         position: 'bottom',

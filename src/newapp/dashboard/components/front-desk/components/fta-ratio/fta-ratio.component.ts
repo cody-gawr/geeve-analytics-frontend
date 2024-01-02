@@ -240,7 +240,7 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {
@@ -327,7 +327,7 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: generatingLegend_4(),
       tooltip: {
         mode: 'x',
@@ -379,7 +379,7 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {

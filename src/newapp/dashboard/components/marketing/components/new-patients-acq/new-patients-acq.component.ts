@@ -170,7 +170,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       legend: {
         display: true,
       },
@@ -222,7 +222,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      colors: { enabled: true },
+      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         enabled: false,
