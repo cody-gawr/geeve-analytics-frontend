@@ -60,6 +60,8 @@ export class HealthScreenService {
     clinician = '',
     limit = 5
   ): Observable<any> {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWh = parseInt(urlParams.get('wh') ?? '0');
     var header = this.getHeaders();
     if (duration == '') {
       return this.http
@@ -71,7 +73,8 @@ export class HealthScreenService {
             startDate +
             '&end_date=' +
             endDate +
-            '&limit=5',
+            '&limit=5' +
+            (isWh ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -92,7 +95,8 @@ export class HealthScreenService {
           endDate +
           '&duration=' +
           duration +
-          '&limit=5',
+          '&limit=5' +
+          (isWh ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -109,6 +113,8 @@ export class HealthScreenService {
     duration = '',
     limit = 5
   ): Observable<any> {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWh = parseInt(urlParams.get('wh') ?? '0');
     var header = this.getHeaders();
     if (duration == '') {
       return this.http
@@ -121,7 +127,8 @@ export class HealthScreenService {
             '&end_date=' +
             endDate +
             '&limit=' +
-            limit,
+            limit +
+            (isWh ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -143,7 +150,8 @@ export class HealthScreenService {
           '&duration=' +
           duration +
           '&limit=' +
-          limit,
+          limit +
+          (isWh ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -160,6 +168,8 @@ export class HealthScreenService {
     endDate = '',
     duration = ''
   ): Observable<any> {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWh = parseInt(urlParams.get('wh') ?? '0');
     var header = this.getHeaders();
     if (duration == '') {
       return this.http
@@ -170,7 +180,8 @@ export class HealthScreenService {
             '&start_date=' +
             startDate +
             '&end_date=' +
-            endDate,
+            endDate +
+            (isWh ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -190,7 +201,8 @@ export class HealthScreenService {
           '&end_date=' +
           endDate +
           '&duration=' +
-          duration,
+          duration +
+          (isWh ? '&wh=1' : ''),
         header
       )
       .pipe(
