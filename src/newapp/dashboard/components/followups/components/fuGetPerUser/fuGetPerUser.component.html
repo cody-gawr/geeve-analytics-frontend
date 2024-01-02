@@ -7,6 +7,7 @@
     fontIcon="help"></mat-icon>
   <div class="chart-title">
     <mat-icon
+      *ngIf="!(isCustomDateRange$ | async)"
       [matTooltip]="
         (durationTrendLabel$ | async) +
         ': ' +
@@ -46,7 +47,7 @@
           <h3>{{ total | number: '1.0-0' }}%</h3>
           <span>{{ durationLabel$ | async }}</span>
         </div>
-        <div>
+        <div *ngIf="!(isCustomDateRange$ | async)">
           <h3>{{ prev | number: '1.0-0' }}%</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>

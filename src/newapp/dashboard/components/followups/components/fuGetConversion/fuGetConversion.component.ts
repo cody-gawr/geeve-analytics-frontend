@@ -35,6 +35,10 @@ export class FuGetConversionComponent implements OnInit, OnDestroy {
     }
   }
 
+  get isCustomDateRange$() {
+    return this.layoutFacade.dateRange$.pipe(map(v => v?.duration == 'custom'));
+  }
+
   get showGoals$() {
     return this.layoutFacade.dateRange$.pipe(
       map(val => {
@@ -76,7 +80,12 @@ export class FuGetConversionComponent implements OnInit, OnDestroy {
   }
 
   get hasData() {
-    return this.labels.length > 0;
+    return (
+      this.datasets.length > 0 &&
+      this.datasets?.some(
+        it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v))
+      )
+    );
   }
 
   constructor(

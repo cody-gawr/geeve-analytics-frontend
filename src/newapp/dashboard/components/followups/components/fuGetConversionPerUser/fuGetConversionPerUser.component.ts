@@ -25,6 +25,10 @@ export class FuGetConversionPerUserComponent implements OnInit, OnDestroy {
   total = 0;
   prev = 0;
 
+  get isCustomDateRange$() {
+    return this.layoutFacade.dateRange$.pipe(map(v => v?.duration == 'custom'));
+  }
+
   get trendingIcon() {
     if (this.total >= this.prev) {
       return 'trending_up';
