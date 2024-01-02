@@ -215,6 +215,8 @@ export class HealthScreenService {
   // Added by Hanney Sharma on 01-04-2021
   commonCall(clinic_id, startDate, endDate, functionName): Observable<any> {
     // Top production card service
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWh = parseInt(urlParams.get('wh') ?? '0');
     var header = this.getHeaders();
     return this.http
       .get(
@@ -226,7 +228,8 @@ export class HealthScreenService {
           '&start_date=' +
           startDate +
           '&end_date=' +
-          endDate,
+          endDate +
+          (isWh ? '&wh=1' : ''),
         header
       )
       .pipe(
