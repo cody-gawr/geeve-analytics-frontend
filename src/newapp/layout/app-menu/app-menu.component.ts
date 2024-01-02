@@ -164,7 +164,7 @@ const MENU_DATA: MenuNode[] = [
       // user_type==2 || permissions.contains(dashboard6) || user_type==7
       {
         title: 'Follow Ups',
-        path: 'dashboards/followups',
+        path: '/newapp/dashboard/followups',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions?.indexOf('dashboard6') >= 0 ||
