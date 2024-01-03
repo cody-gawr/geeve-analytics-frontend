@@ -271,28 +271,28 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               }
           }
 
-          if (!isTrend) {
-            for (const api of caEndpoints) {
-              this.caFacade.loadNoneTrendApiRequest({
-                ...queryParams,
-                api,
-              });
-            }
-          } else {
-            caTrendEndpoints.forEach(api => {
-              const params = {
-                clinicId: queryParams.clinicId,
-                mode:
-                  trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
-                queryWhEnabled,
-                dentistId: queryParams.dentistId,
-              };
-              this.caFacade.loadTrendApiRequest({
-                ...params,
-                api: api,
-              });
+          //if (!isTrend) {
+          for (const api of caEndpoints) {
+            this.caFacade.loadNoneTrendApiRequest({
+              ...queryParams,
+              api,
             });
           }
+          //} else {
+          caTrendEndpoints.forEach(api => {
+            const params = {
+              clinicId: queryParams.clinicId,
+              mode:
+                trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+              queryWhEnabled,
+              dentistId: queryParams.dentistId,
+            };
+            this.caFacade.loadTrendApiRequest({
+              ...params,
+              api: api,
+            });
+          });
+          //}
         }
       );
 
