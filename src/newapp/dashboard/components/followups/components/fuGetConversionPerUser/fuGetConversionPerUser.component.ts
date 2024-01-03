@@ -122,11 +122,11 @@ export class FuGetConversionPerUserComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$;
+    return this.layoutFacade.durationLabel$.pipe(map(v => v + ' Avg'));
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$;
+    return this.layoutFacade.durationTrendLabel$.pipe(map(v => v + ' Avg'));
   }
 
   get noDataMessage$() {
