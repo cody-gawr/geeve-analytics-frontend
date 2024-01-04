@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, map } from 'rxjs';
@@ -21,6 +21,43 @@ export class AuthService {
     private httpClinet: HttpClient,
     private cookieService: CookieService
   ) {}
+
+  // login = (form: Login): Observable<LoginResponse> => {
+  //   return this.httpClinet.post<LoginResponse>(
+  //     `${this.apiUrl}/users/userLogin`,
+  //     form,
+  //     { withCredentials: true }
+  //   );
+  // };
+
+  // logout = (): Observable<LogoutResponse> => {
+  //   return this.httpClinet.post<LogoutResponse>(
+  //     `${this.apiUrl}/users/userLogout`,
+  //     {},
+  //     {
+  //       withCredentials: true
+  //     }
+  //   );
+  // };
+
+  // getRolesIndividual = (
+  //   clinicId?: number
+  // ): Observable<RolesIndividualApiResponse> => {
+  //   return this.httpClinet.get<RolesIndividualApiResponse>(
+  //     `${this.apiUrl}/Roles/rolesIndividual${
+  //       clinicId ? `?clinic_id=${clinicId}` : ''
+  //     }`,
+  //     {
+  //       withCredentials: true
+  //     }
+  //   );
+  // };
+
+  // getRoles = (): Observable<RolesApiResponse> => {
+  //   return this.httpClinet.get<RolesApiResponse>(`${this.apiUrl}/Roles/rolesGet`, {
+  //     withCredentials: true
+  //   });
+  // };
 
   login = (form: Login): Observable<LoginApiResponse> => {
     return this.httpClinet

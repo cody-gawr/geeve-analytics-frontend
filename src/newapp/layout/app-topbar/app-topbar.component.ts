@@ -45,6 +45,7 @@ export class AppTopbarComponent implements OnInit {
       this.authFacade.rolesIndividual$,
       this.clinicFacade.clinics$,
     ]).pipe(
+      takeUntil(this.destroy$),
       map(([rolesIndividual, totalClinics]) => {
         const userType = rolesIndividual ? rolesIndividual.type : 0;
         return (
@@ -61,6 +62,7 @@ export class AppTopbarComponent implements OnInit {
       this.clinicFacade.currentClinics$,
       this.authFacade.rolesIndividual$,
     ]).pipe(
+      takeUntil(this.destroy$),
       map(([selectedClinics, roleData]) => {
         return (
           selectedClinics.length == 1 &&
@@ -79,6 +81,7 @@ export class AppTopbarComponent implements OnInit {
       this.clinicFacade.currentClinics$,
       this.authFacade.rolesIndividual$,
     ]).pipe(
+      takeUntil(this.destroy$),
       map(([selectedClinics, roleData]) => {
         return (
           selectedClinics.length == 1 &&
@@ -102,11 +105,17 @@ export class AppTopbarComponent implements OnInit {
   selectedDentist: 'all' | number | null = 'all';
 
   get clinics$() {
-    return this.clinicFacade.clinics$;
+    return this.clinicFacade.clinics$.pipe(
+      takeUntil(this.destroy$),
+      map(v => v)
+    );
   }
 
   get dentists$() {
-    return this.dentistFacade.dentists$;
+    return this.dentistFacade.dentists$.pipe(
+      takeUntil(this.destroy$),
+      map(v => v)
+    );
   }
 
   constructor(
@@ -273,13 +282,14 @@ export class AppTopbarComponent implements OnInit {
       });
   }
 
-  public getClinicName$(clinicId: Array<number | 'all'>) {
+  getClinicName$(clinicId: Array<number | 'all'>) {
     return this.clinicFacade.clinics$.pipe(
-      map(values =>
-        clinicId.length > 1 && clinicId.includes('all')
-          ? 'All Clinics'
-          : values.find(v => v.id == clinicId[0])?.clinicName || ''
-      )
+      takeUntil(this.destroy$),
+      map(values => {
+        if (clinicId.length > 1 && clinicId.includes('all'))
+          return 'All Clinics';
+        else return values.find(v => v.id == clinicId[0])?.clinicName || '';
+      })
     );
   }
 
