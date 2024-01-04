@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import moment, { Moment, isMoment } from 'moment';
@@ -17,7 +10,6 @@ import {
   take,
   distinctUntilChanged,
   filter,
-  Observable,
 } from 'rxjs';
 import { LayoutFacade } from '../facades/layout.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
@@ -48,30 +40,7 @@ export class AppTopbarComponent implements OnInit {
     end: new FormControl<Moment | null>(null),
   });
 
-  public dashboards: { activatedUrl: string; property: string }[] = [
-    {
-      activatedUrl: '/newapp/dashboard/cliniciananalysis',
-      property: 'dash1Multi',
-    },
-    {
-      activatedUrl: '/newapp/dashboard/clinicianproceedures',
-      property: 'dash2Multi',
-    },
-    {
-      activatedUrl: '/newapp/dashboard/frontdesk',
-      property: 'dash3Multi',
-    },
-    {
-      activatedUrl: '/newapp/dashboard/marketing',
-      property: 'dash4Multi',
-    },
-    {
-      activatedUrl: '/newapp/dashboard/finances',
-      property: 'dash5Multi',
-    },
-  ];
-
-  get isAllClinicsEnabled$() {
+  get enableAllClinics$() {
     return combineLatest([
       this.authFacade.rolesIndividual$,
       this.clinicFacade.clinics$,
@@ -123,32 +92,8 @@ export class AppTopbarComponent implements OnInit {
     );
   }
 
-  get isMultiClinicsEnabled$(): Observable<boolean> {
-    return combineLatest([
-      this.authFacade.authUserData$,
-      this.authFacade.rolesIndividual$,
-      this.clinicFacade.clinics$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      filter(
-        ([, rolesIndividual, clinics]) =>
-          rolesIndividual !== null && clinics.length > 0
-      ),
-      map(data => {
-        const [authUserData, rolesIndividual, clinics] = data;
-        const result = authUserData ?? this.authFacade.getAuthUserData();
-        const dashboard = this.dashboards.find(
-          v => v.activatedUrl == this.activatedUrl
-        );
-        const property = !!dashboard ? dashboard.property : null;
-        return (
-          clinics.length > 1 &&
-          !!property &&
-          result[property] == 1 &&
-          ![4, 7].includes(rolesIndividual ? rolesIndividual.type : 0)
-        );
-      })
-    );
+  get isMultiClinics$() {
+    return this.clinicFacade.isMultiSelection$;
   }
 
   selectedClinic: 'all' | number | null = null;
@@ -184,10 +129,48 @@ export class AppTopbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isMultiClinicsEnabled$
-      .pipe(distinctUntilChanged())
-      .subscribe(isMultiClinicsEnabled => {
-        this.clinicFacade.setMultiClinicSelection(isMultiClinicsEnabled);
+    combineLatest([
+      this.authFacade.authUserData$,
+      this.authFacade.rolesIndividual$,
+      this.clinicFacade.clinics$,
+    ])
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(
+          ([authUserData, rolesIndividual, clinics]) =>
+            rolesIndividual !== null && clinics.length > 0
+        ),
+        map(data => {
+          const [authUserData, rolesIndividual, clinics] = data;
+          const result = authUserData ?? this.authFacade.getAuthUserData();
+          return {
+            multiClinicEnabled: {
+              dash1Multi: result?.dash1Multi,
+              dash2Multi: result?.dash2Multi,
+              dash3Multi: result?.dash3Multi,
+              dash4Multi: result?.dash4Multi,
+              dash5Multi: result?.dash5Multi,
+            },
+            userType: rolesIndividual ? rolesIndividual.type : 0,
+            totalClinicsLength: clinics.length,
+          };
+        })
+      )
+      .subscribe(({ multiClinicEnabled, userType, totalClinicsLength }) => {
+        const value =
+          totalClinicsLength > 1 &&
+          ((this.activatedUrl == '/newapp/dashboard/cliniciananalysis' &&
+            multiClinicEnabled.dash1Multi == 1) ||
+            (this.activatedUrl == '/newapp/dashboard/clinicianproceedures' &&
+              multiClinicEnabled.dash2Multi == 1) ||
+            (this.activatedUrl == '/newapp/dashboard/frontdesk' &&
+              multiClinicEnabled.dash3Multi == 1) ||
+            (this.activatedUrl == '/newapp/dashboard/marketing' &&
+              multiClinicEnabled.dash4Multi == 1) ||
+            (this.activatedUrl == '/newapp/dashboard/finances' &&
+              multiClinicEnabled.dash5Multi == 1)) &&
+          ![4, 7].includes(userType);
+        this.clinicFacade.setMultiClinicSelection(value);
       });
 
     combineLatest([
@@ -234,8 +217,8 @@ export class AppTopbarComponent implements OnInit {
 
     combineLatest([
       this.clinicFacade.currentClinics$,
-      this.isAllClinicsEnabled$,
-      this.isMultiClinicsEnabled$,
+      this.enableAllClinics$,
+      this.clinicFacade.isMultiSelection$,
       this.clinicFacade.clinics$,
     ])
       .pipe(
@@ -374,7 +357,7 @@ export class AppTopbarComponent implements OnInit {
     if (!event) {
       combineLatest([
         this.clinicFacade.currentClinics$,
-        this.isMultiClinicsEnabled$,
+        this.clinicFacade.isMultiSelection$,
         this.clinicFacade.clinics$,
       ])
         .pipe(take(1))

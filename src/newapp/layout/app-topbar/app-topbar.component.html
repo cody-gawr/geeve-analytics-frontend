@@ -42,7 +42,7 @@
           <mat-select
             multiple
             class="custom-font"
-            *ngIf="isMultiClinicsEnabled$ | async; else singleClinicsSection"
+            *ngIf="isMultiClinics$ | async; else singleClinicsSection"
             #multiClinicsSelectElem
             (selectionChange)="onChangeMultiClinics($event)"
             (openedChange)="onMultiSelectPanelOpened($event)"
