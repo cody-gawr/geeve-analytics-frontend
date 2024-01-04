@@ -2,6 +2,7 @@ import {
   Component,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewChild,
@@ -34,7 +35,7 @@ import { MatSelectChange } from '@angular/material/select';
   templateUrl: './app-topbar.component.html',
   styleUrls: ['./app-topbar.component.scss'],
 })
-export class AppTopbarComponent implements OnInit {
+export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() toggleSideBar: () => void;
   @Input() isSidenavVisible: Boolean;
   @Input() activatedUrl: string;
@@ -42,6 +43,8 @@ export class AppTopbarComponent implements OnInit {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
   title: string;
+  public activatedUrlSubject = new Subject<string>();
+  public activatedUrl$ = this.activatedUrlSubject.asObservable();
 
   range = new FormGroup({
     start: new FormControl<Moment | null>(null),
@@ -87,7 +90,7 @@ export class AppTopbarComponent implements OnInit {
     );
   }
 
-  get isEnableDentistDropdown$() {
+  get isDentistDropdownEnabled$() {
     return combineLatest([
       this.clinicFacade.currentClinics$,
       this.authFacade.rolesIndividual$,
@@ -124,31 +127,7 @@ export class AppTopbarComponent implements OnInit {
   }
 
   get isMultiClinicsEnabled$(): Observable<boolean> {
-    return combineLatest([
-      this.authFacade.authUserData$,
-      this.authFacade.rolesIndividual$,
-      this.clinicFacade.clinics$,
-    ]).pipe(
-      takeUntil(this.destroy$),
-      filter(
-        ([, rolesIndividual, clinics]) =>
-          rolesIndividual !== null && clinics.length > 0
-      ),
-      map(data => {
-        const [authUserData, rolesIndividual, clinics] = data;
-        const result = authUserData ?? this.authFacade.getAuthUserData();
-        const dashboard = this.dashboards.find(
-          v => v.activatedUrl == this.activatedUrl
-        );
-        const property = !!dashboard ? dashboard.property : null;
-        return (
-          clinics.length > 1 &&
-          !!property &&
-          result[property] == 1 &&
-          ![4, 7].includes(rolesIndividual ? rolesIndividual.type : 0)
-        );
-      })
-    );
+    return this.clinicFacade.isMultiSelection$;
   }
 
   selectedClinic: 'all' | number | null = null;
@@ -184,14 +163,59 @@ export class AppTopbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isMultiClinicsEnabled$
-      .pipe(distinctUntilChanged())
-      .subscribe(isMultiClinicsEnabled => {
-        this.clinicFacade.setMultiClinicSelection(isMultiClinicsEnabled);
-      });
+    combineLatest([
+      this.authFacade.authUserData$,
+      this.authFacade.rolesIndividual$,
+      this.clinicFacade.clinics$,
+      this.activatedUrl$,
+    ])
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(
+          ([, rolesIndividual, clinics]) =>
+            rolesIndividual !== null && clinics.length > 0
+        ),
+        map(data => {
+          const [authUserData, rolesIndividual, clinics, activatedUrl] = data;
+          console.log({ activatedUrl });
+          const result = authUserData ?? this.authFacade.getAuthUserData();
+          return {
+            multiClinicEnabled: {
+              dash1Multi: result?.dash1Multi,
+              dash2Multi: result?.dash2Multi,
+              dash3Multi: result?.dash3Multi,
+              dash4Multi: result?.dash4Multi,
+              dash5Multi: result?.dash5Multi,
+            },
+            userType: rolesIndividual ? rolesIndividual.type : 0,
+            totalClinicsLength: clinics.length,
+            activatedUrl,
+          };
+        })
+      )
+      .subscribe(
+        ({
+          multiClinicEnabled,
+          userType,
+          totalClinicsLength,
+          activatedUrl,
+        }) => {
+          const dashboard = this.dashboards.find(
+            v => v.activatedUrl == activatedUrl
+          );
+          const property = !!dashboard ? dashboard.property : null;
+          const value =
+            totalClinicsLength > 1 &&
+            !!property &&
+            multiClinicEnabled[property] == 1 &&
+            ![4, 7].includes(userType);
+
+          this.clinicFacade.setMultiClinicSelection(value);
+        }
+      );
 
     combineLatest([
-      this.isEnableDentistDropdown$,
+      this.isDentistDropdownEnabled$,
       this.clinicFacade.currentClinics$,
       this.isDentistUser$,
     ])
@@ -200,9 +224,9 @@ export class AppTopbarComponent implements OnInit {
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(params => {
-        const [isEnable, clinics, isDentistUser] = params;
+        const [isEnabled, clinics, isDentistUser] = params;
         if (clinics.length > 0) {
-          if (isEnable) {
+          if (isEnabled) {
             this.dentistFacade.loadDentists(clinics[0].id, 0);
           } else if (isDentistUser) {
             this.dentistFacade.loadSpecificDentist(clinics[0].id);
@@ -235,14 +259,16 @@ export class AppTopbarComponent implements OnInit {
     combineLatest([
       this.clinicFacade.currentClinics$,
       this.isAllClinicsEnabled$,
+      // this.clinicFacade.isMultiSelection$,
       this.isMultiClinicsEnabled$,
       this.clinicFacade.clinics$,
     ])
       .pipe(
-        takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        takeUntil(this.destroy$)
+        // distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(([currentClinics, isEnableAll, isMulti, clinics]) => {
+        console.log({ currentClinics });
         if (isMulti == null) return;
         const currentClinicIDs = currentClinics.map(c => c.id);
         if (isMulti) {
@@ -290,6 +316,14 @@ export class AppTopbarComponent implements OnInit {
       });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.activatedUrlSubject.next(changes.activatedUrl.currentValue);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+  }
+
   public getClinicName$(clinicId: Array<number | 'all'>) {
     return this.clinicFacade.clinics$.pipe(
       map(values =>
@@ -320,6 +354,7 @@ export class AppTopbarComponent implements OnInit {
   }
 
   onChangeCurrentClinic(event: MatSelectChange) {
+    console.log('onChangeCurrentClinic');
     this.clinicFacade.setCurrentSingleClinicId(event.value);
     this.layoutFacade.setTrend('off');
   }
@@ -361,6 +396,7 @@ export class AppTopbarComponent implements OnInit {
 
   onApplyMultiClinics() {
     const values = <number[]>this.selectedMultiClinics.filter(v => v !== 'all');
+    console.log(values);
     if (values.length > 0) {
       this.clinicFacade.setCurrentMultiClinicIDs(values);
       this.layoutFacade.setTrend('off');
@@ -374,7 +410,7 @@ export class AppTopbarComponent implements OnInit {
     if (!event) {
       combineLatest([
         this.clinicFacade.currentClinics$,
-        this.isMultiClinicsEnabled$,
+        this.clinicFacade.isMultiSelection$,
         this.clinicFacade.clinics$,
       ])
         .pipe(take(1))
