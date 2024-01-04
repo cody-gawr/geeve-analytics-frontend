@@ -144,10 +144,7 @@
           </ng-template>
         </div>
       </ng-template>
-
-      <div
-        class="chart-foot"
-        *ngIf="(isFooterEnabled$ | async) && !(isEachClinicD4w$ | async)">
+      <div class="chart-foot" *ngIf="isFooterEnabled$ | async">
         <div>
           <h3>{{ total | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
           <span>{{ durationLabel$ | async }}</span>
