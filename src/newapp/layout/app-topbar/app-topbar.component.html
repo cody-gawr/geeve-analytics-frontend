@@ -38,13 +38,12 @@
         </div>
       </div>
       <div class="clinic-selector-wrapper">
-        <div>{{ isMultiClinicsEnabled$ | async }}</div>
         <div class="clinic-selector-field">
           <mat-select
-            #multiClinicsSelectElem
             multiple
             class="custom-font"
             *ngIf="isMultiClinicsEnabled$ | async; else singleClinicsSection"
+            #multiClinicsSelectElem
             (selectionChange)="onChangeMultiClinics($event)"
             (openedChange)="onMultiSelectPanelOpened($event)"
             [value]="selectedMultiClinics"
@@ -81,12 +80,9 @@
               class="custom-font"
               (selectionChange)="onChangeCurrentClinic($event)"
               [value]="selectedClinic">
-              <mat-option *ngIf="isAllClinicsEnabled$ | async" value="all"
+              <mat-option *ngIf="enableAllClinics$ | async" value="all"
                 >All Clinics</mat-option
               >
-              <!-- <mat-select
-              class="custom-font"
-              (selectionChange)="onChangeCurrentClinic($event)"> -->
               <mat-option
                 class="custom-font"
                 *ngFor="let clinic of clinics$ | async"
@@ -97,7 +93,7 @@
           </ng-template>
         </div>
         <div
-          *ngIf="isDentistDropdownEnabled$ | async"
+          *ngIf="isEnableDentistDropdown$ | async"
           class="clinic-selector-field">
           <mat-select
             class="custom-font"
