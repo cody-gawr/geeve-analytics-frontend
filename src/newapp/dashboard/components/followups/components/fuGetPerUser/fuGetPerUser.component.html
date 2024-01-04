@@ -9,10 +9,7 @@
     <mat-icon
       *ngIf="!(isCustomDateRange$ | async)"
       [matTooltip]="
-        (durationTrendLabel$ | async) +
-        ': ' +
-        ((prev | number: '1.0-0') ?? '0') +
-        '%'
+        (durationTrendLabel$ | async) + ': ' + ((prev | number: '1.0-0') ?? '0')
       "
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"></mat-icon>
