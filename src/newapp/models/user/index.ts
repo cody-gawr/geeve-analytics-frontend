@@ -18,7 +18,6 @@ export interface LoginUser {
   dentistId: string;
   featuresDismissed: string;
   healthScreenMtd: string;
-  // multiClinicEnabled: number;
   dash1Multi: number; //(clinician analysis)
   dash2Multi: number; //(clinician procedures & referrals)
   dash3Multi: number; //(front desk)
