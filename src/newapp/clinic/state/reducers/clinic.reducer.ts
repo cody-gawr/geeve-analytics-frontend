@@ -156,21 +156,21 @@ export const selectCurrentClinicId = createSelector(
   }
 );
 
-export const selectIsExactCurrentClinics = createSelector(
+export const selectIsEachClinicExact = createSelector(
   selectCurrentClinics,
   clinics => {
     return clinics.every(c => c.pms == 'exact');
   }
 );
 
-export const selectIsCoreCurrentClinics = createSelector(
+export const selectIsEachClinicCore = createSelector(
   selectCurrentClinics,
   clinics => {
     return clinics.every(c => c.pms == 'core');
   }
 );
 
-export const selectIsD4wCurrentClinics = createSelector(
+export const selectIsEachClinicD4w = createSelector(
   selectCurrentClinics,
   clinics => {
     return clinics.every(c => c.pms == 'd4w');

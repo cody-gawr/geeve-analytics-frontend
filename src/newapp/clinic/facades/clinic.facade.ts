@@ -13,9 +13,9 @@ import {
   selectIsMultiSelection,
   selectCurrentClinicId,
   selectCurrentClinics,
-  selectIsExactCurrentClinics,
-  selectIsCoreCurrentClinics,
-  selectIsD4wCurrentClinics,
+  selectIsEachClinicExact,
+  selectIsEachClinicCore,
+  selectIsEachClinicD4w,
   selectIsMultiClinicsSelected,
 } from '../state/reducers/clinic.reducer';
 import { combineLatest, map } from 'rxjs';
@@ -48,16 +48,16 @@ export class ClinicFacade {
     select(selectCurrentClinics)
   );
 
-  public readonly isExactCurrentClinics$ = this.store.pipe(
-    select(selectIsExactCurrentClinics)
+  public readonly isEachClinicExact$ = this.store.pipe(
+    select(selectIsEachClinicExact)
   );
 
-  public readonly isCoreCurrentClinics$ = this.store.pipe(
-    select(selectIsCoreCurrentClinics)
+  public readonly isEachClinicCore$ = this.store.pipe(
+    select(selectIsEachClinicCore)
   );
 
-  public readonly isD4wCurrentClinics$ = this.store.pipe(
-    select(selectIsD4wCurrentClinics)
+  public readonly isEachClinicD4w$ = this.store.pipe(
+    select(selectIsEachClinicD4w)
   );
 
   public readonly currentSingleClinicId$ = this.store.pipe(

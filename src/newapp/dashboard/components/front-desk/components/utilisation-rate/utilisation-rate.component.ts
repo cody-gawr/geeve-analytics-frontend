@@ -80,10 +80,10 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   }
 
   get isExact$() {
-    return this.clinicFacade.isExactCurrentClinics$;
+    return this.clinicFacade.isEachClinicExact$;
   }
   get isCore$() {
-    return this.clinicFacade.isCoreCurrentClinics$;
+    return this.clinicFacade.isEachClinicCore$;
   }
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(

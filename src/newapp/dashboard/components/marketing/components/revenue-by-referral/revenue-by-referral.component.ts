@@ -32,8 +32,8 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
 
   get isExactOrCore$() {
     return combineLatest([
-      this.clinicFacade.isExactCurrentClinics$,
-      this.clinicFacade.isCoreCurrentClinics$,
+      this.clinicFacade.isEachClinicExact$,
+      this.clinicFacade.isEachClinicCore$,
     ]).pipe(
       map(values => {
         return values[0] || values[1];

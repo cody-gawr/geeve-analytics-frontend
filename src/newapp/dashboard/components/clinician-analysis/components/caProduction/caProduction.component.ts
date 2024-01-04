@@ -84,6 +84,10 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     );
   }
 
+  public get isEachClinicD4w$(): Observable<boolean> {
+    return this.clinicFacade.isEachClinicD4w$;
+  }
+
   datasets: any[] = [{ data: [] }];
   labels = [];
   public prev: number = 0;
@@ -99,7 +103,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   public goalCount: number = 0;
   public showTableInfo: boolean = false;
-  tableData = [];
+  public tableData = [];
 
   get isLegendVisible$() {
     return combineLatest([
@@ -174,12 +178,14 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.isCompare$,
       this.hasData$,
       this.isTrend$,
+      this.isEachClinicD4w$,
     ]).pipe(
       map(
-        ([isDentistMode, isCompare, hasData, isTrend]) =>
+        ([isDentistMode, isCompare, hasData, isTrend, isEachClinicD4w]) =>
           (!(isDentistMode && isTrend) || isCompare) &&
           this.tableData.length > 0 &&
-          hasData
+          hasData &&
+          isEachClinicD4w
       )
     );
   }
