@@ -93,15 +93,16 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return combineLatest([
       this.clinicFacade.currentClinics$,
       this.authFacade.rolesIndividual$,
+      this.activatedRoute$,
     ]).pipe(
-      map(([selectedClinics, roleData]) => {
+      map(([selectedClinics, roleData, activatedRoute]) => {
         return (
           selectedClinics.length == 1 &&
           [2, 3, 5, 6, 7].indexOf(roleData?.type) < 0 &&
           [
             '/newapp/dashboard/cliniciananalysis',
             '/newapp/dashboard/clinicianproceedures',
-          ].includes(this.activatedUrl)
+          ].includes(activatedRoute)
         );
       })
     );
