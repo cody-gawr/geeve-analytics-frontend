@@ -13,6 +13,8 @@ import moment, { Moment, isMoment } from 'moment';
 import {
   map,
   Subject,
+  BehaviorSubject,
+  Observable,
   takeUntil,
   combineLatest,
   take,
@@ -42,8 +44,9 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
   public title: string;
-  public activatedRoute = new Subject<string>();
-  public activatedRoute$ = this.activatedRoute.asObservable();
+  public activatedRoute = new BehaviorSubject<string>('');
+  public activatedRoute$: Observable<string> =
+    this.activatedRoute.asObservable();
 
   range = new FormGroup({
     start: new FormControl<Moment | null>(null),
@@ -188,6 +191,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
               (activatedRoute == '/newapp/dashboard/finances' &&
                 multiClinicEnabled.dash5Multi == 1)) &&
             ![4, 7].includes(userType);
+
           this.clinicFacade.setMultiClinicSelection(value);
         }
       );
@@ -247,6 +251,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(([currentClinics, isEnableAll, isMulti, clinics]) => {
         if (isMulti == null) return;
         const currentClinicIDs = currentClinics.map(c => c.id);
+
         if (isMulti) {
           if (currentClinicIDs == undefined) return;
           if (currentClinicIDs.length === clinics.length) {
