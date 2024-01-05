@@ -57,12 +57,13 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return combineLatest([
       this.authFacade.rolesIndividual$,
       this.clinicFacade.clinics$,
+      this.activatedRoute$,
     ]).pipe(
-      map(([rolesIndividual, totalClinics]) => {
+      map(([rolesIndividual, totalClinics, activatedRoute]) => {
         const userType = rolesIndividual ? rolesIndividual.type : 0;
         return (
           totalClinics.length > 1 &&
-          ['/dashboards/healthscreen'].includes(this.activatedUrl) &&
+          ['/dashboards/healthscreen'].includes(activatedRoute) &&
           userType != 7
         );
       })
@@ -73,15 +74,16 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return combineLatest([
       this.clinicFacade.currentClinics$,
       this.authFacade.rolesIndividual$,
+      this.activatedRoute$,
     ]).pipe(
-      map(([selectedClinics, roleData]) => {
+      map(([selectedClinics, roleData, activatedRoute]) => {
         return (
           selectedClinics.length == 1 &&
           [2, 3, 5, 6, 7].indexOf(roleData?.type) >= 0 &&
           [
             '/newapp/dashboard/cliniciananalysis',
             '/newapp/dashboard/clinicianproceedures',
-          ].includes(this.activatedUrl)
+          ].includes(activatedRoute)
         );
       })
     );
@@ -207,6 +209,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
       )
       .subscribe(params => {
         const [isEnable, clinics, isDentistUser] = params;
+        console.log({ isEnable, clinics });
         if (clinics.length > 0) {
           if (isEnable) {
             this.dentistFacade.loadDentists(clinics[0].id, 0);
