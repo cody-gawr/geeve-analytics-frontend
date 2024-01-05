@@ -1,4 +1,12 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import moment, { Moment, isMoment } from 'moment';
@@ -26,14 +34,16 @@ import { MatSelectChange } from '@angular/material/select';
   templateUrl: './app-topbar.component.html',
   styleUrls: ['./app-topbar.component.scss'],
 })
-export class AppTopbarComponent implements OnInit {
+export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() toggleSideBar: () => void;
   @Input() isSidenavVisible: Boolean;
   @Input() activatedUrl: string;
   @ViewChild('multiClinicsSelectElem') multiSelectElement;
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-  title: string;
+  public title: string;
+  public activatedRoute = new Subject<string>();
+  public activatedRoute$ = this.activatedRoute.asObservable();
 
   range = new FormGroup({
     start: new FormControl<Moment | null>(null),
@@ -45,7 +55,6 @@ export class AppTopbarComponent implements OnInit {
       this.authFacade.rolesIndividual$,
       this.clinicFacade.clinics$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([rolesIndividual, totalClinics]) => {
         const userType = rolesIndividual ? rolesIndividual.type : 0;
         return (
@@ -62,7 +71,6 @@ export class AppTopbarComponent implements OnInit {
       this.clinicFacade.currentClinics$,
       this.authFacade.rolesIndividual$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([selectedClinics, roleData]) => {
         return (
           selectedClinics.length == 1 &&
@@ -81,7 +89,6 @@ export class AppTopbarComponent implements OnInit {
       this.clinicFacade.currentClinics$,
       this.authFacade.rolesIndividual$,
     ]).pipe(
-      takeUntil(this.destroy$),
       map(([selectedClinics, roleData]) => {
         return (
           selectedClinics.length == 1 &&
@@ -105,17 +112,11 @@ export class AppTopbarComponent implements OnInit {
   selectedDentist: 'all' | number | null = 'all';
 
   get clinics$() {
-    return this.clinicFacade.clinics$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.clinicFacade.clinics$;
   }
 
   get dentists$() {
-    return this.dentistFacade.dentists$.pipe(
-      takeUntil(this.destroy$),
-      map(v => v)
-    );
+    return this.dentistFacade.dentists$;
   }
 
   constructor(
@@ -142,15 +143,16 @@ export class AppTopbarComponent implements OnInit {
       this.authFacade.authUserData$,
       this.authFacade.rolesIndividual$,
       this.clinicFacade.clinics$,
+      this.activatedRoute$,
     ])
       .pipe(
         takeUntil(this.destroy$),
         filter(
-          ([authUserData, rolesIndividual, clinics]) =>
+          ([, rolesIndividual, clinics]) =>
             rolesIndividual !== null && clinics.length > 0
         ),
         map(data => {
-          const [authUserData, rolesIndividual, clinics] = data;
+          const [authUserData, rolesIndividual, clinics, activatedRoute] = data;
           const result = authUserData ?? this.authFacade.getAuthUserData();
           return {
             multiClinicEnabled: {
@@ -162,25 +164,33 @@ export class AppTopbarComponent implements OnInit {
             },
             userType: rolesIndividual ? rolesIndividual.type : 0,
             totalClinicsLength: clinics.length,
+            activatedRoute,
           };
         })
       )
-      .subscribe(({ multiClinicEnabled, userType, totalClinicsLength }) => {
-        const value =
-          totalClinicsLength > 1 &&
-          ((this.activatedUrl == '/newapp/dashboard/cliniciananalysis' &&
-            multiClinicEnabled.dash1Multi == 1) ||
-            (this.activatedUrl == '/newapp/dashboard/clinicianproceedures' &&
-              multiClinicEnabled.dash2Multi == 1) ||
-            (this.activatedUrl == '/newapp/dashboard/frontdesk' &&
-              multiClinicEnabled.dash3Multi == 1) ||
-            (this.activatedUrl == '/newapp/dashboard/marketing' &&
-              multiClinicEnabled.dash4Multi == 1) ||
-            (this.activatedUrl == '/newapp/dashboard/finances' &&
-              multiClinicEnabled.dash5Multi == 1)) &&
-          ![4, 7].includes(userType);
-        this.clinicFacade.setMultiClinicSelection(value);
-      });
+      .subscribe(
+        ({
+          multiClinicEnabled,
+          userType,
+          totalClinicsLength,
+          activatedRoute,
+        }) => {
+          const value =
+            totalClinicsLength > 1 &&
+            ((activatedRoute == '/newapp/dashboard/cliniciananalysis' &&
+              multiClinicEnabled.dash1Multi == 1) ||
+              (activatedRoute == '/newapp/dashboard/clinicianproceedures' &&
+                multiClinicEnabled.dash2Multi == 1) ||
+              (activatedRoute == '/newapp/dashboard/frontdesk' &&
+                multiClinicEnabled.dash3Multi == 1) ||
+              (activatedRoute == '/newapp/dashboard/marketing' &&
+                multiClinicEnabled.dash4Multi == 1) ||
+              (activatedRoute == '/newapp/dashboard/finances' &&
+                multiClinicEnabled.dash5Multi == 1)) &&
+            ![4, 7].includes(userType);
+          this.clinicFacade.setMultiClinicSelection(value);
+        }
+      );
 
     combineLatest([
       this.isEnableDentistDropdown$,
@@ -282,9 +292,16 @@ export class AppTopbarComponent implements OnInit {
       });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.activatedRoute.next(changes.activatedUrl.currentValue);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+  }
+
   getClinicName$(clinicId: Array<number | 'all'>) {
     return this.clinicFacade.clinics$.pipe(
-      takeUntil(this.destroy$),
       map(values => {
         if (clinicId.length > 1 && clinicId.includes('all'))
           return 'All Clinics';
