@@ -210,7 +210,6 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
       )
       .subscribe(params => {
         const [isEnable, clinics, isDentistUser] = params;
-        console.log({ isEnable, clinics });
         if (clinics.length > 0) {
           if (isEnable) {
             this.dentistFacade.loadDentists(clinics[0].id, 0);
