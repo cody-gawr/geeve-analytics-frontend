@@ -298,7 +298,9 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.activatedRoute.next(changes.activatedUrl.currentValue);
+    if (!!changes.activatedUrl) {
+      this.activatedRoute.next(changes.activatedUrl.currentValue);
+    }
   }
 
   ngOnDestroy(): void {
