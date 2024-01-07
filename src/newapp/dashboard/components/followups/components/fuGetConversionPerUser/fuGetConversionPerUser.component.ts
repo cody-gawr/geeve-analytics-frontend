@@ -55,8 +55,8 @@ export class FuGetConversionPerUserComponent implements OnInit, OnDestroy {
   }
 
   pieLabelText(labels) {
-    const labl = labels.split('--');
-    return labl[0].charAt(0).toUpperCase() + labl[0].slice(1);
+    const label = labels.split('--');
+    return label[0].charAt(0).toUpperCase() + label[0].slice(1);
   }
 
   public colorScheme = {
