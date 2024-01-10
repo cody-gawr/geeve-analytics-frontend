@@ -10,6 +10,8 @@ import {
   selectIsActivePatientsWithPlatform,
   selectIsLoadingAllData,
   selectIsLoadingAllTrendData,
+  selectIsLoadingMkActivePatients,
+  selectIsLoadingMkActivePatientsTrend,
   selectIsLoadingMkMyobAccounts,
   selectIsLoadingMkNewPatientAcq,
   selectIsLoadingMkNewPatientAcqTrend,
@@ -130,6 +132,14 @@ export class MarketingFacade {
 
   public readonly isLoadingNewNumPatientsTrend$ = this.store.pipe(
     select(selectIsLoadingMkNumNewPatientsTrend)
+  );
+
+  public readonly isLoadingMkActivePatients$ = this.store.pipe(
+    select(selectIsLoadingMkActivePatients)
+  );
+
+  public readonly isLoadingMkActivePatientsTrend$ = this.store.pipe(
+    select(selectIsLoadingMkActivePatientsTrend)
   );
 
   public readonly isLoadingNewPatientsAcq$ = this.store.pipe(

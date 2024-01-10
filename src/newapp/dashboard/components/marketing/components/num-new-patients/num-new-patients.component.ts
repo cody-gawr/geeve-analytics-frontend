@@ -72,13 +72,26 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
 
   get isLoading$() {
     return combineLatest([
-      this.isTrend$,
       this.marketingFacade.isLoadingNewNumPatients$,
       this.marketingFacade.isLoadingNewNumPatientsTrend$,
+      this.marketingFacade.isLoadingMkActivePatients$,
+      this.marketingFacade.isLoadingMkActivePatientsTrend$,
     ]).pipe(
-      map(([isTrend, isLoading, isTrendLoading]) => {
-        return isTrend ? isTrendLoading : isLoading;
-      })
+      map(
+        ([
+          isLoading,
+          isTrendLoading,
+          isActiveLoading,
+          isActiveTrendLoading,
+        ]) => {
+          return (
+            isTrendLoading ||
+            isLoading ||
+            isActiveLoading ||
+            isActiveTrendLoading
+          );
+        }
+      )
     );
   }
 

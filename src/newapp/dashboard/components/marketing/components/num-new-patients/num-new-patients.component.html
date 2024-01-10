@@ -69,7 +69,6 @@
           <ng-template #chartElem>
             <ngx-gauge
               *ngIf="
-                !(isLoading$ | async) &&
                 (hasData$ | async) &&
                 !(isMultipleClinic$ | async) &&
                 !(isTrend$ | async)
@@ -87,7 +86,6 @@
             <canvas
               #mkNewNumPatients
               *ngIf="
-                !(isLoading$ | async) &&
                 ((isMultipleClinic$ | async) || (isTrend$ | async)) &&
                 (hasData$ | async)
               "

@@ -5,22 +5,22 @@ import { catchError, map, switchMap, of, withLatestFrom, filter } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
   MarketingState,
-  selectIsLoadingMkActivePatients,
-  selectIsLoadingMkActivePatientsTrend,
-  selectIsLoadingMkMyobAccounts,
-  selectIsLoadingMkNewPatientAcq,
-  selectIsLoadingMkNewPatientAcqTrend,
-  selectIsLoadingMkNewPatientsByReferral,
-  selectIsLoadingMkNewPatientsByReferralTrend,
-  selectIsLoadingMkNumNewPatients,
-  selectIsLoadingMkNumNewPatientsTrend,
-  selectIsLoadingMkRevByReferral,
-  selectIsLoadingMkRevByReferralTrend,
-  selectIsLoadingMkSaveAcctMyob,
-  selectIsLoadingMkSaveAcctXero,
-  selectIsLoadingMkTotalVisits,
-  selectIsLoadingMkTotalVisitsTrend,
-  selectIsLoadingMkXeroAccounts,
+  // selectIsLoadingMkActivePatients,
+  // selectIsLoadingMkActivePatientsTrend,
+  // selectIsLoadingMkMyobAccounts,
+  // selectIsLoadingMkNewPatientAcq,
+  // selectIsLoadingMkNewPatientAcqTrend,
+  // selectIsLoadingMkNewPatientsByReferral,
+  // selectIsLoadingMkNewPatientsByReferralTrend,
+  // selectIsLoadingMkNumNewPatients,
+  // selectIsLoadingMkNumNewPatientsTrend,
+  // selectIsLoadingMkRevByReferral,
+  // selectIsLoadingMkRevByReferralTrend,
+  // selectIsLoadingMkSaveAcctMyob,
+  // selectIsLoadingMkSaveAcctXero,
+  // selectIsLoadingMkTotalVisits,
+  // selectIsLoadingMkTotalVisitsTrend,
+  // selectIsLoadingMkXeroAccounts,
 } from '../reducers/marketing.reducer';
 import { MarketingApiActions, MarketingPageActions } from '../actions';
 import { MarketingService } from '../../services/marketing.service';
@@ -36,10 +36,8 @@ export class MarketingEffects {
   public readonly loadMkNewPatientsByReferral$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkNewPatientsByReferral),
-      withLatestFrom(this.store.select(selectIsLoadingMkNewPatientsByReferral)),
-      filter(([action, isLoading]) => isLoading),
       switchMap(
-        ([{ clinicId, startDate, endDate, duration, queryWhEnabled }]) => {
+        ({ clinicId, startDate, endDate, duration, queryWhEnabled }) => {
           return this.marketingService
             .mkNewPatientsByReferral(
               clinicId,
@@ -70,11 +68,7 @@ export class MarketingEffects {
   public readonly loadMkNewPatientsByReferralTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkNewPatientsByReferralTrend),
-      withLatestFrom(
-        this.store.select(selectIsLoadingMkNewPatientsByReferralTrend)
-      ),
-      filter(([action, isLoading]) => isLoading),
-      switchMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.marketingService
           .mkNewPatientsByReferralTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -98,10 +92,8 @@ export class MarketingEffects {
   public readonly loadMkRevenueByReferral$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkRevenueByReferral),
-      withLatestFrom(this.store.select(selectIsLoadingMkRevByReferral)),
-      filter(([action, isLoading]) => isLoading),
       switchMap(
-        ([{ clinicId, startDate, endDate, duration, queryWhEnabled }]) => {
+        ({ clinicId, startDate, endDate, duration, queryWhEnabled }) => {
           return this.marketingService
             .mkRevByReferral(
               clinicId,
@@ -132,9 +124,7 @@ export class MarketingEffects {
   public readonly loadMkRevenueByReferralTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkRevByReferralTrend),
-      withLatestFrom(this.store.select(selectIsLoadingMkRevByReferralTrend)),
-      filter(([action, isLoading]) => isLoading),
-      switchMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.marketingService
           .mkRevByReferralTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -158,10 +148,8 @@ export class MarketingEffects {
   public readonly loadMkNumNewPatients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkNumNewPatients),
-      withLatestFrom(this.store.select(selectIsLoadingMkNumNewPatients)),
-      filter(([action, isLoading]) => isLoading),
       switchMap(
-        ([{ clinicId, startDate, endDate, duration, queryWhEnabled }]) => {
+        ({ clinicId, startDate, endDate, duration, queryWhEnabled }) => {
           return this.marketingService
             .mkNumNewPatients(
               clinicId,
@@ -192,10 +180,8 @@ export class MarketingEffects {
   public readonly loadMkActivePatients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkActivePatients),
-      withLatestFrom(this.store.select(selectIsLoadingMkActivePatients)),
-      filter(([action, isLoading]) => isLoading),
       switchMap(
-        ([{ clinicId, startDate, endDate, duration, queryWhEnabled }]) => {
+        ({ clinicId, startDate, endDate, duration, queryWhEnabled }) => {
           return this.marketingService
             .mkActivePatients(
               clinicId,
@@ -226,9 +212,7 @@ export class MarketingEffects {
   public readonly loadMkActivePatientsTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkActivePatientsTrend),
-      withLatestFrom(this.store.select(selectIsLoadingMkActivePatientsTrend)),
-      filter(([action, isLoading]) => isLoading),
-      switchMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.marketingService
           .mkActivePatientsTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -252,9 +236,7 @@ export class MarketingEffects {
   public readonly loadMkNumNewPatientsTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkNumNewPatientsTrend),
-      withLatestFrom(this.store.select(selectIsLoadingMkNumNewPatientsTrend)),
-      filter(([action, isLoading]) => isLoading),
-      switchMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.marketingService
           .mkNumNewPatientsTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -278,19 +260,15 @@ export class MarketingEffects {
   public readonly loadMkNewPatientAcq$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkNewPatientAcq),
-      withLatestFrom(this.store.select(selectIsLoadingMkNewPatientAcq)),
-      filter(([action, isLoading]) => isLoading),
       switchMap(
-        ([
-          {
-            clinicId,
-            startDate,
-            endDate,
-            duration,
-            connectedWith,
-            queryWhEnabled,
-          },
-        ]) => {
+        ({
+          clinicId,
+          startDate,
+          endDate,
+          duration,
+          connectedWith,
+          queryWhEnabled,
+        }) => {
           return this.marketingService
             .mkNewPatientAcq(
               clinicId,
@@ -322,9 +300,7 @@ export class MarketingEffects {
   public readonly loadMkNewPatientAcqTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkNewPatientAcqTrend),
-      withLatestFrom(this.store.select(selectIsLoadingMkNewPatientAcqTrend)),
-      filter(([action, isLoading]) => isLoading),
-      switchMap(([{ clinicId, mode, connectedWith, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, connectedWith, queryWhEnabled }) => {
         return this.marketingService
           .mkNewPatientAcqTrend(clinicId, mode, connectedWith, queryWhEnabled)
           .pipe(
@@ -348,10 +324,8 @@ export class MarketingEffects {
   public readonly loadMkTotalVisits$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkTotalVisits),
-      withLatestFrom(this.store.select(selectIsLoadingMkTotalVisits)),
-      filter(([action, isLoading]) => isLoading),
       switchMap(
-        ([{ clinicId, startDate, endDate, duration, queryWhEnabled }]) => {
+        ({ clinicId, startDate, endDate, duration, queryWhEnabled }) => {
           return this.marketingService
             .mkTotalVisits(
               clinicId,
@@ -382,9 +356,7 @@ export class MarketingEffects {
   public readonly loadMkTotalVisitsTrend$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkTotalVisitsTrend),
-      withLatestFrom(this.store.select(selectIsLoadingMkTotalVisitsTrend)),
-      filter(([action, isLoading]) => isLoading),
-      switchMap(([{ clinicId, mode, queryWhEnabled }]) => {
+      switchMap(({ clinicId, mode, queryWhEnabled }) => {
         return this.marketingService
           .mkTotalVisitsTrend(clinicId, mode, queryWhEnabled)
           .pipe(
@@ -408,9 +380,7 @@ export class MarketingEffects {
   public readonly loadMkXeroAccounts$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkGetXeroAccounts),
-      withLatestFrom(this.store.select(selectIsLoadingMkXeroAccounts)),
-      filter(([action, isLoading]) => isLoading),
-      switchMap(([{ clinicId, userId }]) => {
+      switchMap(({ clinicId, userId }) => {
         return this.marketingService.mkGetXeroAcct(clinicId, userId).pipe(
           map(data =>
             MarketingApiActions.mkGetXeroAcctSuccess({
@@ -432,9 +402,7 @@ export class MarketingEffects {
   public readonly loadMkMyobAccounts$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.loadMkGetMyobAccounts),
-      withLatestFrom(this.store.select(selectIsLoadingMkMyobAccounts)),
-      filter(([action, isLoading]) => isLoading),
-      switchMap(([{ clinicId, userId }]) => {
+      switchMap(({ clinicId, userId }) => {
         return this.marketingService.mkGetMyobAcct(clinicId, userId).pipe(
           map(data =>
             MarketingApiActions.mkGetMyobAcctSuccess({
@@ -456,9 +424,7 @@ export class MarketingEffects {
   public readonly saveMkMyobAccounts$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.saveAcctMyob),
-      withLatestFrom(this.store.select(selectIsLoadingMkSaveAcctMyob)),
-      filter(([action, isLoading]) => isLoading),
-      switchMap(([{ clinicId, categories }]) => {
+      switchMap(({ clinicId, categories }) => {
         return this.marketingService.mkSaveAcctMyob(clinicId, categories).pipe(
           map(data => MarketingApiActions.mkSaveAcctMyobSuccess()),
           catchError((error: HttpErrorResponse) =>
@@ -476,9 +442,7 @@ export class MarketingEffects {
   public readonly saveMkXeroAccounts$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MarketingPageActions.saveAcctXero),
-      withLatestFrom(this.store.select(selectIsLoadingMkSaveAcctXero)),
-      filter(([action, isLoading]) => isLoading),
-      switchMap(([{ clinicId, categories }]) => {
+      switchMap(({ clinicId, categories }) => {
         return this.marketingService.mkSaveAcctXero(clinicId, categories).pipe(
           map(data => MarketingApiActions.mkSaveAcctXeroSuccess()),
           catchError((error: HttpErrorResponse) =>
