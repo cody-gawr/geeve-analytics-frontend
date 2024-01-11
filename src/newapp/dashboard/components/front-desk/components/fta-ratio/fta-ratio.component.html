@@ -8,11 +8,7 @@
   <div class="chart-title">
     <mat-icon
       *ngIf="!(isTrend$ | async)"
-      [matTooltip]="
-        (durationTrendLabel$ | async) +
-        ': ' +
-        (fdFtaRatioPrev | number: '1.0-0')
-      "
+      [matTooltip]="(durationTrendLabel$ | async) + ': ' + fdFtaRatioPrev + '%'"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"></mat-icon>
     <span> FTA Ratio (%) </span>
