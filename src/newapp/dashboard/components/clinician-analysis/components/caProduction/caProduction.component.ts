@@ -20,6 +20,7 @@ import _ from 'lodash';
 import {
   Observable,
   Subject,
+  BehaviorSubject,
   takeUntil,
   combineLatest,
   map,
@@ -102,7 +103,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   public gaugeLabel: string = '';
 
   public goalCount: number = 0;
-  public showTableInfo: boolean = false;
+  public isTableViewEnabled = new BehaviorSubject<boolean>(false);
+  public isTableViewEnabled$ = this.isTableViewEnabled.asObservable();
   public tableData = [];
 
   get isLegendVisible$() {
@@ -161,6 +163,16 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isFooterEnabled$(): Observable<boolean> {
+    return combineLatest([
+      this.caFacade.isHideFooterSection$,
+      this.isTableIconVisible$,
+      this.isTableViewEnabled$,
+    ]).pipe(
+      map(
+        ([isFooterSectionHidden, isTableIconVisible, isTableViewEnabled]) =>
+          !(isFooterSectionHidden || isTableViewEnabled) && isTableIconVisible
+      )
+    );
     return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
     // return combineLatest([
     //   this.caFacade.isHideFooterSection$,
@@ -351,9 +363,10 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     this.caFacade.setProdChartName(chartName);
   }
 
-  toggleTableInfo() {
-    this.showTableInfo = !this.showTableInfo;
+  toggleTableView() {
+    this.isTableViewEnabled.next(!this.isTableViewEnabled.value);
   }
+
   getAvgPluginOptions(
     avgVal: number
   ): _DeepPartialObject<AnnotationPluginOptions> {
