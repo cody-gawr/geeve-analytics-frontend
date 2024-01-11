@@ -261,7 +261,7 @@ export const selectIsTrendIconVisible = createSelector(
     const duration = dateRange?.duration;
     return isClinicianUser
       ? duration != 'custom' && !isTrend && !isCompare
-      : duration != 'custom' && !(isDentistMode || isTrend);
+      : duration != 'custom' && !(isDentistMode && isTrend);
   }
 );
 

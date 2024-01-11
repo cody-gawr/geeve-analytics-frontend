@@ -161,17 +161,17 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isFooterEnabled$(): Observable<boolean> {
-    // return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
-    return combineLatest([
-      this.caFacade.isHideFooterSection$,
-      this.isDentistMode$,
-      this.isEachClinicD4w$,
-    ]).pipe(
-      map(
-        ([isHideFooterSection, isDentistMode, isEachClinicD4w]) =>
-          !(isHideFooterSection || (isDentistMode && isEachClinicD4w))
-      )
-    );
+    return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
+    // return combineLatest([
+    //   this.caFacade.isHideFooterSection$,
+    //   this.isDentistMode$,
+    //   this.isEachClinicD4w$,
+    // ]).pipe(
+    //   map(
+    //     ([isHideFooterSection, isDentistMode, isEachClinicD4w]) =>
+    //       !(isHideFooterSection || (isDentistMode && isEachClinicD4w))
+    //   )
+    // );
   }
 
   get isDentistMode$() {
