@@ -11,7 +11,8 @@
       [matTooltip]="
         (durationTrendLabel$ | async) +
         ': ' +
-        (fdReappointRatePrev | number: '1.0-0')
+        (fdReappointRatePrev | number: '1.0-0') +
+        '%'
       "
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"></mat-icon>
