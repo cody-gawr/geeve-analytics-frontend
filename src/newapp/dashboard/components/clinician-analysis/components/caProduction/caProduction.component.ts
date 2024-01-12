@@ -196,25 +196,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     return this.clinicFacade.isMultiClinicsSelected$;
   }
 
-  // get isTableIconVisible$(): Observable<boolean> {
-  //   return combineLatest([
-  //     this.isDentistMode$,
-  //     this.isCompare$,
-  //     this.hasData$,
-  //     this.isTrend$,
-  //     this.isEachClinicD4w$,
-  //     this.isWeeklyModeEnabled$
-  //   ]).pipe(
-  //     map(
-  //       ([isDentistMode, isCompare, hasData, isTrend, isEachClinicD4w, isWeeklyModeEnabled]) =>
-  //         (!(isDentistMode && isTrend) || isCompare) &&
-  //         this.tableData.length > 0 &&
-  //         hasData &&
-  //         isEachClinicD4w
-  //     )
-  //   );
-  // }
-
   get isTableIconVisible$(): Observable<boolean> {
     return combineLatest([
       this.isDentistMode$,
@@ -223,13 +204,32 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.isTrend$,
       this.isEachClinicD4w$,
     ]).pipe(
-      map(
-        ([isDentistMode, isCompare, hasData, isTrend, isEachClinicD4w]) =>
-          (isDentistMode || isCompare) &&
-          ((this.tableData.length > 0 && hasData) || isEachClinicD4w)
-      )
+      map(([isDentistMode, isCompare, hasData, isTrend, isEachClinicD4w]) => {
+        console.log(this.tableData.length);
+        return (
+          (!(isDentistMode && isTrend) || isCompare) &&
+          (this.tableData.length > 0 || hasData) &&
+          isEachClinicD4w
+        );
+      })
     );
   }
+
+  // get isTableIconVisible$(): Observable<boolean> {
+  //   return combineLatest([
+  //     this.isDentistMode$,
+  //     this.isCompare$,
+  //     this.hasData$,
+  //     this.isTrend$,
+  //     this.isEachClinicD4w$,
+  //   ]).pipe(
+  //     map(
+  //       ([isDentistMode, isCompare, hasData, isTrend, isEachClinicD4w]) =>
+  //         (isDentistMode || isCompare) &&
+  //         ((this.tableData.length > 0 && hasData) || isEachClinicD4w)
+  //     )
+  //   );
+  // }
 
   get isTrendIconVisible$() {
     return this.caFacade.isTrendIconVisible$;
