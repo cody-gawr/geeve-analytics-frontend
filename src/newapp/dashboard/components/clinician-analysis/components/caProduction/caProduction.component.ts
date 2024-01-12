@@ -196,6 +196,25 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     return this.clinicFacade.isMultiClinicsSelected$;
   }
 
+  // get isTableIconVisible$(): Observable<boolean> {
+  //   return combineLatest([
+  //     this.isDentistMode$,
+  //     this.isCompare$,
+  //     this.hasData$,
+  //     this.isTrend$,
+  //     this.isEachClinicD4w$,
+  //     this.isWeeklyModeEnabled$
+  //   ]).pipe(
+  //     map(
+  //       ([isDentistMode, isCompare, hasData, isTrend, isEachClinicD4w, isWeeklyModeEnabled]) =>
+  //         (!(isDentistMode && isTrend) || isCompare) &&
+  //         this.tableData.length > 0 &&
+  //         hasData &&
+  //         isEachClinicD4w
+  //     )
+  //   );
+  // }
+
   get isTableIconVisible$(): Observable<boolean> {
     return combineLatest([
       this.isDentistMode$,
@@ -206,10 +225,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend, isEachClinicD4w]) =>
-          (!(isDentistMode && isTrend) || isCompare) &&
-          this.tableData.length > 0 &&
-          hasData &&
-          isEachClinicD4w
+          (isDentistMode || isCompare) &&
+          ((this.tableData.length > 0 && hasData) || isEachClinicD4w)
       )
     );
   }
