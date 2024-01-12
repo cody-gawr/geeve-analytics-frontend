@@ -24,6 +24,7 @@ import {
   takeUntil,
   combineLatest,
   map,
+  filter,
   distinctUntilChanged,
 } from 'rxjs';
 
@@ -165,25 +166,26 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   get isFooterEnabled$(): Observable<boolean> {
     return combineLatest([
       this.caFacade.isHideFooterSection$,
-      this.isTableIconVisible$,
-      this.isTableViewEnabled$,
+      this.isWeeklyModeEnabled$,
     ]).pipe(
       map(
-        ([isFooterSectionHidden, isTableIconVisible, isTableViewEnabled]) =>
-          !(isFooterSectionHidden || isTableViewEnabled) && isTableIconVisible
+        ([isFooterSectionHidden, isWeeklyModeEnabled]) =>
+          !(isFooterSectionHidden || isWeeklyModeEnabled)
       )
     );
-    return this.caFacade.isHideFooterSection$.pipe(map(v => !v));
-    // return combineLatest([
-    //   this.caFacade.isHideFooterSection$,
-    //   this.isDentistMode$,
-    //   this.isEachClinicD4w$,
-    // ]).pipe(
-    //   map(
-    //     ([isHideFooterSection, isDentistMode, isEachClinicD4w]) =>
-    //       !(isHideFooterSection || (isDentistMode && isEachClinicD4w))
-    //   )
-    // );
+  }
+
+  get isWeeklyModeEnabled$(): Observable<boolean> {
+    return combineLatest([
+      this.isTableViewEnabled$,
+      this.isDentistMode$,
+      this.isEachClinicD4w$,
+    ]).pipe(
+      map(
+        ([isTableViewEnabled, isDentistMode, isEachClinicD4w]) =>
+          isTableViewEnabled && isDentistMode && isEachClinicD4w
+      )
+    );
   }
 
   get isDentistMode$() {
@@ -342,6 +344,12 @@ export class CaProductionComponent implements OnInit, OnDestroy {
           this.setChartOptions(isDentistMode, isTrend, avgMode);
         }
       );
+    this.dentistFacade.currentDentistId$
+      .pipe(
+        filter(dentistId => dentistId != 'all'),
+        distinctUntilChanged()
+      )
+      .subscribe(() => this.isTableViewEnabled.next(false));
   }
 
   ngOnDestroy(): void {
