@@ -8,7 +8,7 @@
   <mat-icon
     *ngIf="isTableIconVisible$ | async"
     [ngClass]="(isTableViewEnabled$ | async) ? 'active' : ''"
-    (click)="toggleTableInfo()"
+    (click)="toggleTableView()"
     class="table-info-icon"
     fontIcon="table_rows_narrow" />
   <div class="chart-title">
