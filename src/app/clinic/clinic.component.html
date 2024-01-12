@@ -8,23 +8,21 @@
         (click)="openDialog()"
         disabled="false"
         *ngIf="
-          clinicscount > createdClinicsCount &&
-          userPlan != 'lite' &&
-          user_type != 7
-        ">
-        Add Clinic
-      </button>
-      <button
-        class="sa-pull-right mat-raised-button mat-dc m-l-10"
-        mat-raised-button
-        (click)="openLimitDialog()"
-        *ngIf="
           clinicscount <= createdClinicsCount &&
-          userPlan != 'lite' &&
-          user_type != 7
+            userPlan != 'lite' &&
+            user_type != 7;
+          else disableAddingClinic
         ">
         Add Clinic
       </button>
+      <ng-template #disableAddingClinic>
+        <button
+          class="sa-pull-right mat-raised-button mat-dc m-l-10"
+          mat-raised-button
+          (click)="openLimitDialog()">
+          Add Clinic
+        </button>
+      </ng-template>
     </mat-card-title>
 
     <mat-form-field floatLabel="never">
