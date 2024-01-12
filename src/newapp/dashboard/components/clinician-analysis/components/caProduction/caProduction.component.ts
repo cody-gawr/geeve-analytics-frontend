@@ -215,22 +215,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     );
   }
 
-  // get isTableIconVisible$(): Observable<boolean> {
-  //   return combineLatest([
-  //     this.isDentistMode$,
-  //     this.isCompare$,
-  //     this.hasData$,
-  //     this.isTrend$,
-  //     this.isEachClinicD4w$,
-  //   ]).pipe(
-  //     map(
-  //       ([isDentistMode, isCompare, hasData, isTrend, isEachClinicD4w]) =>
-  //         (isDentistMode || isCompare) &&
-  //         ((this.tableData.length > 0 && hasData) || isEachClinicD4w)
-  //     )
-  //   );
-  // }
-
   get isTrendIconVisible$() {
     return this.caFacade.isTrendIconVisible$;
   }
