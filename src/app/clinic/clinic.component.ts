@@ -222,7 +222,11 @@ export class ClinicComponent implements AfterViewInit {
           )
           .subscribe(
             res => {
-              if (res.status == 200) {
+              //@audit-issue - This needs to be updated soon. Needs to check status code instead of message property.
+              if (res.body.message == 'error') {
+                this.toastr.error(res.body.data);
+                this.openLimitDialog();
+              } else if (res.status == 200) {
                 if (res.body.data.pms == 'core') {
                   let id = res.body.data.id;
                   this.getConnectCoreLink(id);
@@ -230,8 +234,6 @@ export class ClinicComponent implements AfterViewInit {
                   this.toastr.success('Clinic Added!');
                 }
                 this.getClinics();
-              } else {
-                this.toastr.error(res.body.data);
               }
             },
             error => {
