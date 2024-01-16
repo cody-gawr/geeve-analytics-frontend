@@ -46,6 +46,8 @@ export class MorningHuddleService {
   ): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWhEnabled = urlParams.get('wh') ? 1 : 0;
     if (clinician == '') {
       return this.http
         .get(
@@ -53,7 +55,8 @@ export class MorningHuddleService {
             '/MorningHuddle/mhProductionCard?clinic_id=' +
             clinic_id +
             '&date=' +
-            previousDays,
+            previousDays +
+            (isWhEnabled ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -70,7 +73,8 @@ export class MorningHuddleService {
           '&date=' +
           previousDays +
           '&clinician=' +
-          clinician,
+          clinician +
+          (isWhEnabled ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -89,6 +93,8 @@ export class MorningHuddleService {
   ): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWhEnabled = urlParams.get('wh') ? 1 : 0;
     if (clinician == '') {
       return this.http
         .get(
@@ -96,7 +102,8 @@ export class MorningHuddleService {
             '/MorningHuddle/mhRecallRateCard?clinic_id=' +
             clinic_id +
             '&date=' +
-            previousDays,
+            previousDays +
+            (isWhEnabled ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -113,7 +120,8 @@ export class MorningHuddleService {
           '&date=' +
           previousDays +
           '&clinician=' +
-          clinician,
+          clinician +
+          (isWhEnabled ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -131,6 +139,8 @@ export class MorningHuddleService {
   ): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWhEnabled = urlParams.get('wh') ? 1 : 0;
     if (clinician == '') {
       return this.http
         .get(
@@ -138,7 +148,8 @@ export class MorningHuddleService {
             '/MorningHuddle/mhReappointRateCard?clinic_id=' +
             clinic_id +
             '&date=' +
-            previousDays,
+            previousDays +
+            (isWhEnabled ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -155,7 +166,8 @@ export class MorningHuddleService {
           '&date=' +
           previousDays +
           '&clinician=' +
-          clinician,
+          clinician +
+          (isWhEnabled ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -173,6 +185,8 @@ export class MorningHuddleService {
   ): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWhEnabled = urlParams.get('wh') ? 1 : 0;
     if (clinician == '') {
       return this.http
         .get(
@@ -180,7 +194,8 @@ export class MorningHuddleService {
             '/MorningHuddle/mhDentistTable?clinic_id=' +
             clinic_id +
             '&date=' +
-            previousDays,
+            previousDays +
+            (isWhEnabled ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -197,7 +212,8 @@ export class MorningHuddleService {
           '&date=' +
           previousDays +
           '&clinician=' +
-          clinician,
+          clinician +
+          (isWhEnabled ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -403,6 +419,8 @@ export class MorningHuddleService {
   ): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWhEnabled = urlParams.get('wh') ? 1 : 0;
     return this.http
       .get(
         this.apiUrl +
@@ -411,7 +429,8 @@ export class MorningHuddleService {
           '&date=' +
           previousDays +
           '&provider_id=' +
-          currentDentist,
+          currentDentist +
+          (isWhEnabled ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -511,6 +530,8 @@ export class MorningHuddleService {
   ): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWhEnabled = urlParams.get('wh') ? 1 : 0;
     if (clinician == '') {
       return this.http
         .get(
@@ -518,7 +539,8 @@ export class MorningHuddleService {
             '/MorningHuddle/mhUnschedHoursCurrent?clinic_id=' +
             clinic_id +
             '&date=' +
-            previousDays,
+            previousDays +
+            (isWhEnabled ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -535,7 +557,8 @@ export class MorningHuddleService {
           '&date=' +
           previousDays +
           '&clinician=' +
-          clinician,
+          clinician +
+          (isWhEnabled ? '&wh=1' : ''),
         header
       )
       .pipe(
@@ -718,6 +741,8 @@ export class MorningHuddleService {
   ): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWhEnabled = urlParams.get('wh') ? 1 : 0;
     if (clinician == '') {
       return this.http
         .get(
@@ -725,7 +750,8 @@ export class MorningHuddleService {
             '/MorningHuddle/mhReminders?clinic_id=' +
             clinic_id +
             '&date=' +
-            previousDays,
+            previousDays +
+            (isWhEnabled ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -742,7 +768,8 @@ export class MorningHuddleService {
           '&date=' +
           previousDays +
           '&clinician=' +
-          clinician,
+          clinician +
+          (isWhEnabled ? '&wh=1' : ''),
         header
       )
       .pipe(
