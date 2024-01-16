@@ -112,10 +112,12 @@ export class MarketingComponent implements OnInit, OnDestroy {
             };
             this.marketingFacade.loadRevByReferral(params);
             this.marketingFacade.loadMkNewPatientsByReferral(params);
-            this.marketingFacade.loadNewPatientsAcq({
-              ...params,
-              connectedWith,
-            });
+            if (['xero', 'myob'].includes(connectedWith)) {
+              this.marketingFacade.loadNewPatientsAcq({
+                ...params,
+                connectedWith,
+              });
+            }
             this.marketingFacade.loadNewNumPatients(params);
             this.marketingFacade.loadActivePatients(params);
 
@@ -133,12 +135,14 @@ export class MarketingComponent implements OnInit, OnDestroy {
               mode: trend === 'current' ? 'c' : 'h',
               queryWhEnabled,
             });
-            this.marketingFacade.loadNewPatientsAcqTrend({
-              clinicId,
-              mode: trend === 'current' ? 'c' : 'h',
-              queryWhEnabled,
-              connectedWith,
-            });
+            if (['xero', 'myob'].includes(connectedWith)) {
+              this.marketingFacade.loadNewPatientsAcqTrend({
+                clinicId,
+                mode: trend === 'current' ? 'c' : 'h',
+                queryWhEnabled,
+                connectedWith,
+              });
+            }
             this.marketingFacade.loadNewNumPatientsTrend({
               clinicId,
               mode: trend === 'current' ? 'c' : 'h',
