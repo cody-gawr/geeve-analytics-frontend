@@ -82,9 +82,7 @@ export class FuGetConversionComponent implements OnInit, OnDestroy {
   get hasData() {
     return (
       this.datasets.length > 0 &&
-      this.datasets?.some(
-        it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v))
-      )
+      this.datasets?.some(it => it?.data?.length > 0)
     );
   }
 
