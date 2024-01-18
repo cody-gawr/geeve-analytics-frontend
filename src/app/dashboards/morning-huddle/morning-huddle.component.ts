@@ -1034,11 +1034,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             if (res.body.data == '204') {
             } else {
               this.followupPostOpCalls = res.body.data;
-              if (this.postopCallsPostOp == true) {
+              if (this.postopCallsPostOp) {
                 this.followupPostOpCallsInComp = this.followupPostOpCalls;
               } else {
                 this.followupPostOpCallsInComp =
-                  this.followupPostOpCalls.filter(p => p.is_complete != true);
+                  this.followupPostOpCalls.filter(p => !p.is_complete);
               }
             }
 
@@ -1081,11 +1081,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             if (res.body.data == '204') {
             } else {
               this.followupOverDueRecall = res.body.data;
-              if (this.showCompleteOverdue == true) {
+              if (this.showCompleteOverdue) {
                 this.followupOverDueRecallInCMP = this.followupOverDueRecall;
               } else {
                 this.followupOverDueRecallInCMP =
-                  this.followupOverDueRecall.filter(p => p.is_complete != true);
+                  this.followupOverDueRecall.filter(p => !p.is_complete);
               }
             }
 
@@ -1173,11 +1173,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           if (res.body.data == '204') {
           } else {
             this.followupTickFollowups = res.body.data;
-            if (this.showCompleteTick == true) {
+            if (this.showCompleteTick) {
               this.followupTickFollowupsInCMP = this.followupTickFollowups;
             } else {
               this.followupTickFollowupsInCMP =
-                this.followupTickFollowups.filter(p => p.is_complete != true);
+                this.followupTickFollowups.filter(p => !p.is_complete);
             }
 
             this.followupTickFollowupsInCMP.forEach(tool => {
@@ -1238,11 +1238,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             if (res.body.data == '204') {
             } else {
               this.followupFtaFollowups = res.body.data;
-              if (this.showCompleteFta == true) {
+              if (this.showCompleteFta) {
                 this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
               } else {
                 this.followupFtaFollowupsInCMP =
-                  this.followupFtaFollowups.filter(p => p.is_complete != true);
+                  this.followupFtaFollowups.filter(p => !p.is_complete);
               }
               this.followupFtaFollowups.forEach(tool => {
                 this.tipFtaDoneCode[tool.patient_id] = {
@@ -1368,7 +1368,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.endOfDaysTasksDate = this.datepipe
                 .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
                 .replace(/\s/, 'T');
-              if (this.showComplete == true) {
+              if (this.showComplete) {
                 this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
               } else {
                 this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(
@@ -1417,7 +1417,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.endOfDaysTasksDate = this.datepipe
                 .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
                 .replace(/\s/, 'T');
-              if (this.showComplete == true) {
+              if (this.showComplete) {
                 this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
               } else {
                 this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(
@@ -1466,10 +1466,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.lquipmentList.sort = this.sort2;
               var i = 0;
               res.body.data.forEach(list => {
-                if (this.amButton == true && list.am_complete == 1) {
+                if (this.amButton && list.am_complete == 1) {
                   this.amButton = false;
                 }
-                if (this.pmButton == true && list.pm_complete == 1) {
+                if (this.pmButton && list.pm_complete == 1) {
                   this.pmButton = false;
                 }
                 var temp = { am: list.equip_qty_am, pm: list.equip_qty_pm };
@@ -1990,7 +1990,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
     } else {
       this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(
-        p => p.is_complete != true
+        p => !p.is_complete
       );
     }
     // this.endOfDaysTasksInComp.sort = this.sort1;
@@ -2002,7 +2002,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.followupPostOpCallsInComp = this.followupPostOpCalls;
     } else {
       this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
-        p => p.is_complete != true
+        p => !p.is_complete
       );
     }
   }
@@ -2012,7 +2012,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.followupOverDueRecallInCMP = this.followupOverDueRecall;
     } else {
       this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
-        p => p.is_complete != true
+        p => !p.is_complete
       );
     }
   }
@@ -2022,7 +2022,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.followupTickFollowupsInCMP = this.followupTickFollowups;
     } else {
       this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
-        p => p.is_complete != true
+        p => !p.is_complete
       );
     }
   }
