@@ -44,6 +44,8 @@ export class KpiReportService {
     clinician = ''
   ): Observable<any> {
     var header = this.getHeaders();
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWhEnabled = urlParams.get('wh') ? 1 : 0;
     if (clinician == 'all' || clinician == '') {
       return this.http
         .get(
@@ -53,7 +55,8 @@ export class KpiReportService {
             '&start_date=' +
             startDate +
             '&end_date=' +
-            endDate,
+            endDate +
+            (isWhEnabled ? '&wh=1' : ''),
           header
         )
         .pipe(
@@ -72,7 +75,8 @@ export class KpiReportService {
           '&end_date=' +
           endDate +
           '&provider_id=' +
-          clinician,
+          clinician +
+          (isWhEnabled ? '&wh=1' : ''),
         header
       )
       .pipe(
