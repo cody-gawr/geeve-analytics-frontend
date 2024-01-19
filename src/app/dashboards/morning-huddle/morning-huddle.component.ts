@@ -1642,13 +1642,18 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               this.dentistid = this._cookieService.get('dentistid');
               this.refreshScheduleTab(this.dentistid);
             } else {
-              if (this.currentDentist && this.currentDentist != 0) {
-                this.appointmentCardsTemp = (<any[]>res.body.data).filter(
-                  item =>
-                    item.provider_id == this.currentDentist ||
-                    parseInt(item.hyg_id) == this.currentDentist
-                );
-              }
+              // if (this.currentDentist && this.currentDentist != 0) {
+              //   this.appointmentCardsTemp = (<any[]>res.body.data).filter(
+              //     item =>
+              //       item.provider_id == this.currentDentist ||
+              //       parseInt(item.hyg_id) == this.currentDentist
+              //   );
+
+              //   console.log({
+              //     'appointmentCardsTemp in getAppointmentCards':
+              //       this.appointmentCardsTemp,
+              //   });
+              // }
               this.appointmentCards.data = this.appointmentCardsTemp;
               this.refreshScheduleTab(this.selectDentist);
               // this.appointmentCards.data = production.data;
