@@ -70,7 +70,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     return this.layoutFacade.durationLabel$;
   }
 
-  get showGoals$() {
+  get isGoalEnabled$() {
     return this.layoutFacade.dateRange$.pipe(map(v => v.enableGoal));
   }
 
@@ -103,7 +103,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   public gaugeValue: number = 0;
   public gaugeLabel: string = '';
 
-  public goalCount: number = 0;
+  public goalCount: number = 1;
   public isTableViewEnabled = new BehaviorSubject<boolean>(false);
   public isTableViewEnabled$ = this.isTableViewEnabled.asObservable();
   public tableData = [];
@@ -205,7 +205,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.isEachClinicD4w$,
     ]).pipe(
       map(([isDentistMode, isCompare, hasData, isTrend, isEachClinicD4w]) => {
-        console.log(this.tableData.length);
         return (
           (!(isDentistMode && isTrend) || isCompare) &&
           (this.tableData.length > 0 || hasData) &&
@@ -296,6 +295,10 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
+  }
+
+  get goalCount$(): Observable<number> {
+    return this.layoutFacade.dateRange$.pipe(map(v => v.goalCount));
   }
 
   constructor(
