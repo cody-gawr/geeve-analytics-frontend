@@ -122,7 +122,7 @@ export function formatXLabel(label: string | number) {
 
 export function formatXTooltipLabel(tooltipItem: TooltipItem<any>) {
   return tooltipItem.parsed.y < 0
-    ? '- $'
+    ? `${tooltipItem.label}:- $${tooltipItem.formattedValue.replace('-', '')}`
     : `${tooltipItem.label}: $${tooltipItem.formattedValue}`;
 }
 
