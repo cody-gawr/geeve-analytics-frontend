@@ -183,9 +183,7 @@ export class FinanceService {
     }
     return this.http
       .get<FnNetProfitApiResponse>(
-        `${this.apiUrl}/Finance/fnNetProfit${
-          connectedWith == 'myob' ? 'Myob' : ''
-        }`,
+        `${this.apiUrl}/Finance/fnNetProfit`,
         {
           params: queryParams,
           withCredentials: true,
@@ -211,9 +209,7 @@ export class FinanceService {
     }
     return this.http
       .get<FnNetProfitTrendApiResponse>(
-        `${this.apiUrl}/Finance/fnNetProfit${
-          connectedWith == 'myob' ? 'Myob' : ''
-        }Trend`,
+        `${this.apiUrl}/Finance/fnNetProfitTrend`,
         {
           params: queryParams,
           withCredentials: true,
@@ -248,9 +244,7 @@ export class FinanceService {
     }
     return this.http
       .get<FnNetProfitApiResponse>(
-        `${this.apiUrl}/Finance/fnNetProfitPercentage${
-          connectedWith == 'myob' ? 'Myob' : ''
-        }`,
+        `${this.apiUrl}/Finance/fnNetProfitPercentage`,
         {
           params: queryParams,
           withCredentials: true,
@@ -276,9 +270,7 @@ export class FinanceService {
     }
     return this.http
       .get<FnNetProfitPercentTrendApiResponse>(
-        `${this.apiUrl}/Finance/fnNetProfitPercentage${
-          connectedWith == 'myob' ? 'Myob' : ''
-        }Trend`,
+        `${this.apiUrl}/Finance/fnNetProfitPercentageTrend`,
         {
           params: queryParams,
           withCredentials: true,
@@ -316,9 +308,7 @@ export class FinanceService {
     }
     return this.http
       .get<FnExpensesApiResponse>(
-        `${this.apiUrl}/Finance/fnExpenses${
-          connectedWith == 'myob' ? 'Myob' : ''
-        }`,
+        `${this.apiUrl}/Finance/fnExpenses`,
         {
           params: queryParams,
           withCredentials: true,
@@ -344,9 +334,7 @@ export class FinanceService {
     }
     return this.http
       .get<FnExpensesTrendApiResponse>(
-        `${this.apiUrl}/Finance/fnExpenses${
-          connectedWith == 'myob' ? 'Myob' : ''
-        }Trend`,
+        `${this.apiUrl}/Finance/fnExpensesTrend`,
         {
           params: queryParams,
           withCredentials: true,
