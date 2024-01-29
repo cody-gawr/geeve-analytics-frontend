@@ -104,7 +104,7 @@ export class FinancesService {
     queryWhEnabled = 0
   ): Observable<any> {
     var header = this.getHeaders();
-    if (connectedwith == 'xero') {
+    if (connectedwith == 'xero' || connectedwith == 'myob') {
       return this.http
         .get(
           this.apiUrl +
@@ -124,27 +124,7 @@ export class FinancesService {
             return response;
           })
         );
-    } else if (connectedwith == 'myob') {
-      return this.http
-        .get(
-          this.apiUrl +
-            '/Finance/fnNetProfitMyob?clinic_id=' +
-            clinic_id +
-            '&start_date=' +
-            startDate +
-            '&end_date=' +
-            endDate +
-            '&duration=' +
-            duration +
-            (queryWhEnabled > 0 ? '&wh=1' : ''),
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
+    } 
     return null;
   }
   // NetProfitPercentage
@@ -157,7 +137,7 @@ export class FinancesService {
     queryWhEnabled = 0
   ): Observable<any> {
     var header = this.getHeaders();
-    if (connectedwith == 'xero') {
+    if (connectedwith == 'xero' || connectedwith == 'myob') {
       return this.http
         .get(
           this.apiUrl +
@@ -177,27 +157,7 @@ export class FinancesService {
             return response;
           })
         );
-    } else if (connectedwith == 'myob') {
-      return this.http
-        .get(
-          this.apiUrl +
-            '/Finance/fnNetProfitPercentageMyob?clinic_id=' +
-            clinic_id +
-            '&start_date=' +
-            startDate +
-            '&end_date=' +
-            endDate +
-            '&duration=' +
-            duration +
-            (queryWhEnabled > 0 ? '&wh=1' : ''),
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
+    } 
     return null;
   }
   // categoryExpenses
@@ -210,7 +170,7 @@ export class FinancesService {
     queryWhEnabled = 0
   ): Observable<any> {
     var header = this.getHeaders();
-    if (connectedwith == 'xero') {
+    if (connectedwith == 'xero' || connectedwith == 'myob') {
       return this.http
         .get(
           this.apiUrl +
@@ -230,27 +190,7 @@ export class FinancesService {
             return response;
           })
         );
-    } else if (connectedwith == 'myob') {
-      return this.http
-        .get(
-          this.apiUrl +
-            '/Finance/fnExpensesMyob?clinic_id=' +
-            clinic_id +
-            '&start_date=' +
-            startDate +
-            '&end_date=' +
-            endDate +
-            '&duration=' +
-            duration +
-            (queryWhEnabled > 0 ? '&wh=1' : ''),
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
+    } 
     return null;
   }
   // finProductionByClinician
@@ -625,7 +565,7 @@ export class FinancesService {
     queryWhEnabled = 0
   ): Observable<any> {
     var header = this.getHeaders();
-    if (connectedwith == 'xero') {
+    if (connectedwith == 'xero' || connectedwith == 'myob') {
       return this.http
         .get(
           this.apiUrl +
@@ -641,23 +581,7 @@ export class FinancesService {
             return response;
           })
         );
-    } else if (connectedwith == 'myob') {
-      return this.http
-        .get(
-          this.apiUrl +
-            '/Finance/fnNetProfitMyobTrend?clinic_id=' +
-            clinic_id +
-            '&mode=' +
-            mode +
-            (queryWhEnabled > 0 ? '&wh=1' : ''),
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
+    } 
     return null;
   }
 
@@ -669,7 +593,7 @@ export class FinancesService {
     queryWhEnabled = 0
   ): Observable<any> {
     var header = this.getHeaders();
-    if (connectedwith == 'xero') {
+    if (connectedwith == 'xero' || connectedwith == 'myob') {
       return this.http
         .get(
           this.apiUrl +
@@ -685,23 +609,7 @@ export class FinancesService {
             return response;
           })
         );
-    } else if (connectedwith == 'myob') {
-      return this.http
-        .get(
-          this.apiUrl +
-            '/Finance/fnNetProfitPercentageMyobTrend?clinic_id=' +
-            clinic_id +
-            '&mode=' +
-            mode +
-            (queryWhEnabled > 0 ? '&wh=1' : ''),
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
+    } 
     return null;
   }
   // finExpensesByCategoryTrend
@@ -712,7 +620,7 @@ export class FinancesService {
     queryWhEnabled = 0
   ): Observable<any> {
     var header = this.getHeaders();
-    if (connectedwith == 'xero') {
+    if (connectedwith == 'xero' || connectedwith == 'myob') {
       return this.http
         .get(
           this.apiUrl +
@@ -728,23 +636,7 @@ export class FinancesService {
             return response;
           })
         );
-    } else if (connectedwith == 'myob') {
-      return this.http
-        .get(
-          this.apiUrl +
-            '/Finance/fnExpensesMyobTrend?clinic_id=' +
-            clinic_id +
-            '&mode=' +
-            mode +
-            (queryWhEnabled > 0 ? '&wh=1' : ''),
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
+    } 
     return null;
   }
   // finExpensesByCategoryMktTrend
