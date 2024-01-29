@@ -190,9 +190,7 @@ export class MarketingService {
   ) {
     return this.http
       .get(
-        `${this.apiUrl}/Marketing/mk${
-          connectedWith == 'myob' ? 'Myob' : ''
-        }NewPatientAcq`,
+        `${this.apiUrl}/Marketing/mkNewPatientAcq`,
         {
           params: {
             clinic_id: clinicId,
@@ -220,9 +218,7 @@ export class MarketingService {
   ) {
     return this.http
       .get(
-        `${this.apiUrl}/Marketing/mk${
-          connectedWith == 'myob' ? 'Myob' : ''
-        }NewPatientAcqTrend`,
+        `${this.apiUrl}/Marketing/mkNewPatientAcqTrend`,
         {
           params: {
             clinic_id: clinicId,

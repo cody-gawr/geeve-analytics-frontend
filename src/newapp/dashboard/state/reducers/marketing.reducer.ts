@@ -620,6 +620,40 @@ export const marketingFeature = createFeature({
       }
     ),
     // mkGetMyobAcct
+    on(MarketingPageActions.loadMkGetMyobAccounts, (state): MarketingState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        myobAccounts: null,
+        errors: _.filter(errors, n => n.api != 'mkGetMyobAcct'),
+        isLoadingData: _.union(isLoadingData, ['mkGetMyobAcct']),
+      };
+    }),
+    on(
+      MarketingApiActions.mkGetMyobAcctSuccess,
+      (state, { myobAccounts }): MarketingState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, n => n.api != 'mkGetMyobAcct'),
+          myobAccounts,
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkGetMyobAcct'),
+        };
+      }
+    ),
+    on(
+      MarketingApiActions.mkGetMyobAcctFailure,
+      (state, { error }): MarketingState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          myobAccounts: null,
+          isLoadingData: _.filter(isLoadingData, n => n != 'mkGetMyobAcct'),
+          errors: [...errors, { ...error, api: 'mkGetMyobAcct' }],
+        };
+      }
+    ),
+    //saveAcct
     on(MarketingPageActions.saveAcctMyob, (state): MarketingState => {
       const { isLoadingData, errors } = state;
       return {
