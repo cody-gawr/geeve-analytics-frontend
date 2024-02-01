@@ -68,7 +68,7 @@
     <div class="canvas-wrapper chart-box ca-prod-chart">
       <div class="ca-prod-switch">
         <button
-          *ngFor="let chartName of prodChartNames"
+          *ngFor="let chartName of prodChartNames$ | async"
           (click)="switchChartName(chartName)"
           [ngClass]="{ active: chartName == (chartName$ | async) }">
           {{ chartName }}

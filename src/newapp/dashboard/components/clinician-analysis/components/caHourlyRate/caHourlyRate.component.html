@@ -45,7 +45,7 @@
     <div class="canvas-wrapper chart-box ca-hourly-chart">
       <div class="ca-hourly-switch">
         <button
-          *ngFor="let chartName of hourlyRateChartNames"
+          *ngFor="let chartName of hourlyRateChartNames$ | async"
           (click)="switchChartName(chartName)"
           [ngClass]="{ active: chartName == (chartName$ | async) }">
           {{ chartName }}

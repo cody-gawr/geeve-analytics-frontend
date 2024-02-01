@@ -176,3 +176,10 @@ export const selectIsEachClinicD4w = createSelector(
     return clinics.every(c => c.pms == 'd4w');
   }
 );
+
+export const selectIsAnyClinicHasD4w = createSelector(
+  selectCurrentClinics,
+  clinics => {
+    return clinics.some(c => c.pms == 'd4w');
+  }
+);

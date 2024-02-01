@@ -26,6 +26,7 @@ import {
   map,
   filter,
   distinctUntilChanged,
+  tap,
 } from 'rxjs';
 
 @Component({
@@ -43,6 +44,17 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     'Collection',
     'Collection-Exp',
   ];
+
+  get prodChartNames$() {
+    return this.isAnyClinicHasD4w$.pipe(
+      tap(v => console.log(v)),
+      map(v => {
+        return v
+          ? ['Production', 'Collection', 'Collection-Exp']
+          : ['Production', 'Collection'];
+      })
+    );
+  }
 
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
@@ -88,6 +100,10 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   public get isEachClinicD4w$(): Observable<boolean> {
     return this.clinicFacade.isEachClinicD4w$;
+  }
+
+  public get isAnyClinicHasD4w$(): Observable<boolean> {
+    return this.clinicFacade.isAnyClinicHasD4w$;
   }
 
   datasets: any[] = [{ data: [] }];

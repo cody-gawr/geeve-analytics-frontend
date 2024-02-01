@@ -42,6 +42,21 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     'Collection-Exp',
   ];
 
+  get hourlyRateChartNames$() {
+    return this.isAnyClinicHasD4w$.pipe(
+      map(isAnyClinicHasD4w => {
+        if (!isAnyClinicHasD4w) {
+          return this.hourlyRateChartNames.filter(v => v !== 'Collection-Exp');
+        }
+        return this.hourlyRateChartNames;
+      })
+    );
+  }
+
+  get isAnyClinicHasD4w$() {
+    return this.clinicFacade.isAnyClinicHasD4w$;
+  }
+
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }
