@@ -1363,7 +1363,7 @@ export const selectCaNumNewPatientsChartData = createSelector(
           },
         ];
       } else {
-        if (rolesInd.type == 4) {
+        if (rolesInd?.type == 4) {
           chartColors = [{ backgroundColor: [] }];
           chartColors[0].backgroundColor[newpKey] = '#1CA49F';
         } else chartColors = [{ backgroundColor: COLORS.doughnutChartColors }];
@@ -2518,7 +2518,7 @@ export const selectCaNumComplaintsChartData = createSelector(
           },
         ];
       } else {
-        if (rolesInd.type == 4) {
+        if (rolesInd?.type == 4) {
           chartColors = [{ backgroundColor: [] }];
           chartColors[0].backgroundColor[newpKey] = '#1CA49F';
         } else chartColors = [{ backgroundColor: COLORS.doughnutChartColors }];
