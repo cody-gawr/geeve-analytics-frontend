@@ -47,7 +47,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   get prodChartNames$() {
     return this.isAnyClinicHasD4w$.pipe(
-      tap(v => console.log(v)),
       map(v => {
         return v
           ? ['Production', 'Collection', 'Collection-Exp']

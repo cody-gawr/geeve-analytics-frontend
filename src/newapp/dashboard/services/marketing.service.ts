@@ -189,19 +189,16 @@ export class MarketingService {
     queryWhEnabled: number
   ) {
     return this.http
-      .get(
-        `${this.apiUrl}/Marketing/mkNewPatientAcq`,
-        {
-          params: {
-            clinic_id: clinicId,
-            start_date: startDate,
-            end_date: endDate,
-            duration: duration,
-            wh: queryWhEnabled,
-          },
-          withCredentials: true,
-        }
-      )
+      .get(`${this.apiUrl}/Marketing/mkNewPatientAcq`, {
+        params: {
+          clinic_id: clinicId,
+          start_date: startDate,
+          end_date: endDate,
+          duration: duration,
+          wh: queryWhEnabled,
+        },
+        withCredentials: true,
+      })
       .pipe(
         map(
           resBody =>
@@ -217,17 +214,14 @@ export class MarketingService {
     queryWhEnabled: number
   ) {
     return this.http
-      .get(
-        `${this.apiUrl}/Marketing/mkNewPatientAcqTrend`,
-        {
-          params: {
-            clinic_id: clinicId,
-            mode: mode,
-            wh: queryWhEnabled,
-          },
-          withCredentials: true,
-        }
-      )
+      .get(`${this.apiUrl}/Marketing/mkNewPatientAcqTrend`, {
+        params: {
+          clinic_id: clinicId,
+          mode: mode,
+          wh: queryWhEnabled,
+        },
+        withCredentials: true,
+      })
       .pipe(
         map(
           resBody =>
@@ -373,32 +367,24 @@ export class MarketingService {
   }
 
   mkSaveAcctMyob(clinicId: number | string, categories: string[]) {
+    const formData = new FormData();
+    formData.append('clinic_id', <any>clinicId);
+    formData.append('categories', <any>categories);
     return this.http
-      .post(
-        `${this.apiUrl}/Marketing/mkSaveAcctMyob`,
-        {
-          clinic_id: clinicId,
-          categories,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      .post(`${this.apiUrl}/Marketing/mkSaveAcctMyob`, formData, {
+        withCredentials: true,
+      })
       .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
   }
 
   mkSaveAcctXero(clinicId: number | string, categories: string[]) {
+    const formData = new FormData();
+    formData.append('clinic_id', <any>clinicId);
+    formData.append('categories', <any>categories);
     return this.http
-      .post(
-        `${this.apiUrl}/Marketing/mkSaveAcctXero`,
-        {
-          clinic_id: clinicId,
-          categories,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      .post(`${this.apiUrl}/Marketing/mkSaveAcctXero`, formData, {
+        withCredentials: true,
+      })
       .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
   }
 }
