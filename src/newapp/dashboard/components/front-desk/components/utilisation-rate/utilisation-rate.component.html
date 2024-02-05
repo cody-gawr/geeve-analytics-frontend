@@ -99,7 +99,7 @@
           </h3>
           <span>{{ durationLabel$ | async }} Avg</span>
         </div>
-        <div>
+        <div *ngIf="isFullMonthDate$ | async">
           <h3>{{ fdUtilRatePrev | number: '1.0-0' }}%</h3>
           <span>{{ durationTrendLabel$ | async }} Avg</span>
         </div>

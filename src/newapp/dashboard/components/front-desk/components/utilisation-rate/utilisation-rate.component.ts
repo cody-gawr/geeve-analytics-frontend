@@ -75,6 +75,10 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
     return this.layoutFacade.durationTrendLabel$;
   }
 
+  get isFullMonthDate$() {
+    return this.layoutFacade.isFullMonthsDateRange$;
+  }
+
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }

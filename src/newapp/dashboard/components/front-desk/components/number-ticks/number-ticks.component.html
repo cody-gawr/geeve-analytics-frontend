@@ -63,7 +63,7 @@
           <h3>{{ fdNumOfTicksVal | number: '1.0-0' }}</h3>
           <span>{{ durationLabel$ | async }}</span>
         </div>
-        <div>
+        <div *ngIf="isFullMonthDate$ | async">
           <h3>{{ fdNumOfTicksPrev | number: '1.0-0' }}</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>

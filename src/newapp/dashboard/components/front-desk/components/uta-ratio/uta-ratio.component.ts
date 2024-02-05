@@ -102,6 +102,10 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isFullMonthDate$() {
+    return this.layoutFacade.isFullMonthsDateRange$;
+  }
+
   constructor(
     private frontDeskFacade: FrontDeskFacade,
     private clinicFacade: ClinicFacade,

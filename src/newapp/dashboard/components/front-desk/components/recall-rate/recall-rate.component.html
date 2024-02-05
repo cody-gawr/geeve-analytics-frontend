@@ -66,7 +66,7 @@
           <h3>{{ fdRecallRateVal | number: '1.0-0' }}%</h3>
           <span>{{ durationLabel$ | async }}</span>
         </div>
-        <div>
+        <div *ngIf="isFullMonthDate$ | async">
           <h3>{{ fdRecallRatePrev | number: '1.0-0' }}%</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>

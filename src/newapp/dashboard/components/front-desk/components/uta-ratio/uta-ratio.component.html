@@ -61,7 +61,7 @@
           <h3>{{ fdUtaRatioVal }}%</h3>
           <span>{{ durationLabel$ | async }}</span>
         </div>
-        <div>
+        <div *ngIf="isFullMonthDate$ | async">
           <h3>{{ fdUtaRatioPrev }}%</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>
