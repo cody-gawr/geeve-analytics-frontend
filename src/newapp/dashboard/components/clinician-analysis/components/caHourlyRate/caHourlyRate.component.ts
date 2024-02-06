@@ -159,7 +159,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([isCompare, isDentistMode, isTrend]) => {
         if (isDentistMode && !(isTrend || isCompare)) {
-          return this.gaugeValue > 0;
+          return this.gaugeValue !== 0;
         } else {
           return (
             this.datasets.length > 0 &&

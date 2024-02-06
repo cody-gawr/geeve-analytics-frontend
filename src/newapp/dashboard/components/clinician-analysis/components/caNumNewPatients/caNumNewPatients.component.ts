@@ -173,7 +173,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([isDentistMode, isTrend, isCompare]) => {
         if (isDentistMode && !(isTrend || isCompare)) {
-          return this.gaugeValue > 0;
+          return this.gaugeValue !== 0;
         } else {
           return (
             this.datasets?.length > 0 &&
