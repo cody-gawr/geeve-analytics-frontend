@@ -756,14 +756,14 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.unschedulehoursLoader = false;
   }
 
-  public currentDentistReminder: any = 0;
+  public currentDentistReminder: number = 0;
 
   refreshReminderTab(event) {
     this.selectDentist = event;
 
     this.remindersRecallsOverdueLoader = true;
     this.todayUnscheduledBalLoader = true;
-    this.currentDentistReminder = event;
+    this.currentDentistReminder = parseInt(event ?? '0');
 
     if (this.currentDentistReminder != 0) {
       var temp = [];
