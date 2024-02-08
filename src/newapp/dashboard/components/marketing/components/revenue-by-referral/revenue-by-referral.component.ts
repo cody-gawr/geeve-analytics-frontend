@@ -188,7 +188,9 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
       tooltip: {
         enabled: false,
         position: 'nearest',
-        external: externalTooltipHandler,
+        external: args => {
+          externalTooltipHandler(args, 'pointer');
+        },
         callbacks: {
           label: tooltipItem => formatXTooltipLabel(tooltipItem),
           title: () => '',

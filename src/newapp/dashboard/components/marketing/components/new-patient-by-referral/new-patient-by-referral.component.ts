@@ -180,7 +180,9 @@ export class MarketingNewPatientByReferralComponent
       tooltip: {
         enabled: false,
         position: 'nearest',
-        external: externalTooltipHandler,
+        external: args => {
+          externalTooltipHandler(args, 'pointer');
+        },
         callbacks: {
           label: tooltipItem => {
             return (
@@ -208,7 +210,6 @@ export class MarketingNewPatientByReferralComponent
         },
       },
     },
-    elements: {},
   };
 
   public stackedChartOptionsRef: ChartOptions<'bar'> = {

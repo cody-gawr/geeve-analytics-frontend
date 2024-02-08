@@ -210,12 +210,20 @@ const getOrCreateTooltip = chart => {
   return tooltipEl;
 };
 
-export const externalTooltipHandler = <T extends ChartType>(args: {
-  chart: Chart;
-  tooltip: TooltipModel<T>;
-}) => {
+export const externalTooltipHandler = <T extends ChartType>(
+  args: {
+    chart: Chart;
+    tooltip: TooltipModel<T>;
+  },
+  pointerStyle = 'default'
+) => {
   // Tooltip Element
   const { chart, tooltip } = args;
+  if (pointerStyle === 'pointer') {
+    chart.canvas.style.cursor =
+      tooltip.opacity === 0 ? 'default' : pointerStyle;
+  }
+
   const tooltipEl = getOrCreateTooltip(chart);
 
   // Hide if no tooltip

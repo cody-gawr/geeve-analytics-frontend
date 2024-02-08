@@ -62,6 +62,10 @@ html {
   margin-left: -35px;
 }
 
+.ngx-charts .arc {
+  cursor: default !important;
+}
+
 .jeeve-app {
   @import 'assets/layout/styles/layout/layout.scss';
   .procedure-select-panel {
