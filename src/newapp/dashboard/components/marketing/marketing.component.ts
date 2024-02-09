@@ -69,7 +69,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
       this.dashbordFacade.connectedWith$,
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
-      this.authUserId$,
+      // this.authUserId$,
       this.dashbordFacade.connectedClinicId$,
     ])
       .pipe(
@@ -83,7 +83,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
           connectedWith,
           route,
           trend,
-          userId,
+          // userId,
           connectedClinicId,
         ] = params;
         if (clinicId == null) return;
@@ -162,11 +162,11 @@ export class MarketingComponent implements OnInit, OnDestroy {
             break;
         }
 
-        if (connectedWith == 'myob') {
-          this.marketingFacade.loadMkGetMyobAccounts({ clinicId, userId });
-        } else if (connectedWith == 'xero') {
-          this.marketingFacade.loadMkGetXeroAccounts({ clinicId, userId });
-        }
+        // if (connectedWith == 'myob') {
+        //   this.marketingFacade.loadMkGetMyobAccounts({ clinicId, userId });
+        // } else if (connectedWith == 'xero') {
+        //   this.marketingFacade.loadMkGetXeroAccounts({ clinicId, userId });
+        // }
       });
   }
 

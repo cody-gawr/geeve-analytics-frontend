@@ -1,3 +1,4 @@
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
@@ -7,7 +8,14 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { Subject, takeUntil, take, combineLatest, map } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  take,
+  combineLatest,
+  map,
+  distinctUntilChanged,
+} from 'rxjs';
 export interface DialogData {
   title: string;
 }
@@ -47,10 +55,48 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private dashboardFacade: DashboardFacade,
     private marketingFacade: MarketingFacade,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
+    private authFacade: AuthFacade
   ) {}
 
+  get authUserId$() {
+    return this.authFacade.authUserData$.pipe(
+      map(
+        authUserData => (authUserData ?? this.authFacade.getAuthUserData()).id
+      )
+    );
+  }
+
   ngOnInit(): void {
+    combineLatest([
+      this.clinicFacade.currentClinicId$,
+      this.authUserId$,
+      this.dashboardFacade.connectedWith$,
+      this.marketingFacade.isLoadingMkSaveMyobAccounts$,
+      this.marketingFacade.isLoadingMkSaveXeroAccounts$,
+    ])
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
+      .subscribe(params => {
+        const [
+          clinicId,
+          userId,
+          connectedWith,
+          isMyobSaveLoading,
+          isXeroSaveLoading,
+        ] = params;
+
+        if (connectedWith == 'myob') {
+          if (!isMyobSaveLoading)
+            this.marketingFacade.loadMkGetMyobAccounts({ clinicId, userId });
+        } else if (connectedWith == 'xero') {
+          if (!isXeroSaveLoading)
+            this.marketingFacade.loadMkGetXeroAccounts({ clinicId, userId });
+        }
+      });
+
     combineLatest([
       this.dashboardFacade.connectedWith$,
       this.marketingFacade.xeroAccounts$,
