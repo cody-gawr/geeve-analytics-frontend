@@ -45,7 +45,9 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMulti]) =>
-        isTrend || isMulti ? this.labels.length > 0 : this.newPatientsAcqVal > 0
+        isTrend || isMulti
+          ? this.labels.length > 0
+          : this.newPatientsAcqVal != 0
       )
     );
   }
