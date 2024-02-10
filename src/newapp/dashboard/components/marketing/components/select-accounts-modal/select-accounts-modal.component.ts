@@ -8,6 +8,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import {
   Subject,
   takeUntil,
@@ -56,7 +57,8 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
     private dashboardFacade: DashboardFacade,
     private marketingFacade: MarketingFacade,
     private clinicFacade: ClinicFacade,
-    private authFacade: AuthFacade
+    private authFacade: AuthFacade,
+    private toastService: ToastrService
   ) {}
 
   get authUserId$() {
@@ -151,20 +153,24 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmitClick() {
-    combineLatest([this.connectedWith$, this.clinicFacade.currentClinicId$])
-      .pipe(take(1))
-      .subscribe(([isCon, clinicId]) => {
-        if (isCon == 'xero') {
-          this.marketingFacade.saveXeroAccounts({
-            clinicId,
-            categories: this.selectedAccounts,
-          });
-        } else if (isCon == 'myob') {
-          this.marketingFacade.saveMyobAccounts({
-            clinicId,
-            categories: this.selectedAccounts,
-          });
-        }
-      });
+    if (this.selectedAccounts?.length > 0) {
+      combineLatest([this.connectedWith$, this.clinicFacade.currentClinicId$])
+        .pipe(take(1))
+        .subscribe(([isCon, clinicId]) => {
+          if (isCon == 'xero') {
+            this.marketingFacade.saveXeroAccounts({
+              clinicId,
+              categories: this.selectedAccounts,
+            });
+          } else if (isCon == 'myob') {
+            this.marketingFacade.saveMyobAccounts({
+              clinicId,
+              categories: this.selectedAccounts,
+            });
+          }
+        });
+    } else {
+      this.toastService.error('Please select at least one account');
+    }
   }
 }
