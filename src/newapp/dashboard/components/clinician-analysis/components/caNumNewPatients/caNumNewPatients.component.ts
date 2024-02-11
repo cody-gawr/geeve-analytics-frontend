@@ -22,6 +22,7 @@ import {
   combineLatest,
   map,
   distinctUntilChanged,
+  Observable,
 } from 'rxjs';
 
 @Component({
@@ -112,7 +113,6 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   public gaugeValue: number = 0;
   public gaugeLabel: string = '';
 
-  goalCount = 0;
   showTableInfo = false;
   tableData = [];
 
@@ -125,6 +125,10 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
       usePointStyle: true,
     },
   };
+
+  get goalCount$(): Observable<number> {
+    return this.layoutFacade.dateRange$.pipe(map(v => v.goalCount));
+  }
 
   get isLoading$() {
     return combineLatest([

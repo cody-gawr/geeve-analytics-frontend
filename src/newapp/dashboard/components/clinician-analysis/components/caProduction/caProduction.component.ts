@@ -118,7 +118,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   public gaugeValue: number = 0;
   public gaugeLabel: string = '';
 
-  public goalCount: number = 1;
   public isTableViewEnabled = new BehaviorSubject<boolean>(false);
   public isTableViewEnabled$ = this.isTableViewEnabled.asObservable();
   public tableData = [];
@@ -333,13 +332,22 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.caFacade.caProductionChartData$,
       this.caFacade.caProductionTrendChartData$,
       this.isCompare$,
+      this.goalCount$,
     ])
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(
-        ([avgMode, isDentistMode, isTrend, data, trendData, isCompare]) => {
+        ([
+          avgMode,
+          isDentistMode,
+          isTrend,
+          data,
+          trendData,
+          isCompare,
+          goalCount,
+        ]) => {
           if (!isDentistMode || !isTrend) {
             this.datasets = data.datasets ?? [];
             this.labels = data.labels ?? [];
@@ -360,7 +368,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
           this.maxGoal = data.maxGoal;
           this.gaugeLabel = data.gaugeLabel;
           this.gaugeValue = data.gaugeValue;
-          this.setChartOptions(isDentistMode, isTrend, avgMode);
+          this.setChartOptions(isDentistMode, isTrend, avgMode, goalCount);
         }
       );
     this.dentistFacade.currentDentistId$
@@ -447,14 +455,15 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   private setChartOptions(
     isDentistMode: boolean,
     isTrend: boolean,
-    avgMode: string
+    avgMode: string,
+    goalCount: number
   ): void {
     if (!isDentistMode || !isTrend) {
       let options: ChartOptions = { ...this.barChartOptions };
       if (avgMode === 'average') {
         options.plugins.annotation = this.getAvgPluginOptions(this.average);
       } else if (avgMode === 'goal') {
-        const value = this.goal * this.goalCount;
+        const value = this.goal * goalCount;
         options.plugins.annotation = this.getGoalPluginOptions(value);
       } else {
         options.plugins.annotation = {};
