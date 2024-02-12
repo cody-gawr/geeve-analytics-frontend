@@ -71,6 +71,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
       this.layoutFacade.trend$,
       // this.authUserId$,
       this.dashbordFacade.connectedClinicId$,
+      this.clinicFacade.isMultiClinicsSelected$,
     ])
       .pipe(
         takeUntil(this.destroy$),
@@ -85,6 +86,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
           trend,
           // userId,
           connectedClinicId,
+          isMultiClinics,
         ] = params;
         if (clinicId == null) return;
         const newConnectedId =
@@ -112,7 +114,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
             };
             this.marketingFacade.loadRevByReferral(params);
             this.marketingFacade.loadMkNewPatientsByReferral(params);
-            if (['xero', 'myob'].includes(connectedWith)) {
+            if (['xero', 'myob'].includes(connectedWith) || isMultiClinics) {
               this.marketingFacade.loadNewPatientsAcq({
                 ...params,
                 connectedWith,
@@ -135,7 +137,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
               mode: trend === 'current' ? 'c' : 'h',
               queryWhEnabled,
             });
-            if (['xero', 'myob'].includes(connectedWith)) {
+            if (['xero', 'myob'].includes(connectedWith) || isMultiClinics) {
               this.marketingFacade.loadNewPatientsAcqTrend({
                 clinicId,
                 mode: trend === 'current' ? 'c' : 'h',
