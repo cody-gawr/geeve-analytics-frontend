@@ -429,8 +429,7 @@ export class MorningHuddleService {
           '&date=' +
           previousDays +
           '&provider_id=' +
-          currentDentist +
-          (isWhEnabled ? '&wh=1' : ''),
+          currentDentist,
         header
       )
       .pipe(
@@ -539,8 +538,7 @@ export class MorningHuddleService {
             '/MorningHuddle/mhUnschedHoursCurrent?clinic_id=' +
             clinic_id +
             '&date=' +
-            previousDays +
-            (isWhEnabled ? '&wh=1' : ''),
+            previousDays,
           header
         )
         .pipe(
@@ -557,8 +555,7 @@ export class MorningHuddleService {
           '&date=' +
           previousDays +
           '&clinician=' +
-          clinician +
-          (isWhEnabled ? '&wh=1' : ''),
+          clinician,
         header
       )
       .pipe(
@@ -750,8 +747,7 @@ export class MorningHuddleService {
             '/MorningHuddle/mhReminders?clinic_id=' +
             clinic_id +
             '&date=' +
-            previousDays +
-            (isWhEnabled ? '&wh=1' : ''),
+            previousDays,
           header
         )
         .pipe(
@@ -768,8 +764,7 @@ export class MorningHuddleService {
           '&date=' +
           previousDays +
           '&clinician=' +
-          clinician +
-          (isWhEnabled ? '&wh=1' : ''),
+          clinician,
         header
       )
       .pipe(
