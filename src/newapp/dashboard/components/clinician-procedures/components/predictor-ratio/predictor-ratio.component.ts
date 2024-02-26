@@ -13,6 +13,7 @@ import {
   distinctUntilChanged,
 } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 
 @Component({
   selector: 'cp-predictor-ratio-chart',
@@ -119,7 +120,8 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private cpFacade: ClinicianProcedureFacade,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private dentistFacade: DentistFacade
   ) {}
 
   ngOnInit(): void {
@@ -127,31 +129,38 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
       this.cpFacade.cpPredictorRatioChartData$,
       this.cpFacade.cpPredictorRatioTrendChartData$,
       this.isTrend$,
+      this.isDentistMode$,
       this.isMultipleClinic$,
     ])
       .pipe(
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
         takeUntil(this.destroy$)
       )
-      .subscribe(([chartData, chartTrendData, isTrend, isMultiClinics]) => {
-        if (isTrend) {
-          this.datasets = chartTrendData.datasets;
-          this.labels = chartTrendData.labels;
-        } else {
-          this.datasets = chartData.datasets;
-          this.labels = chartData.labels;
-          if (isMultiClinics) {
-            this.multifulRatio = chartData.multifulRatio;
+      .subscribe(
+        ([chartData, chartTrendData, isTrend, dentistMode, isMultiClinics]) => {
+          if (dentistMode && isTrend) {
+            this.datasets = chartTrendData.datasets;
+            this.labels = chartTrendData.labels;
           } else {
-            this.predictorRatioValue = chartData.cpPredictorRatioAvr;
+            this.datasets = chartData.datasets;
+            this.labels = chartData.labels;
+            if (isMultiClinics) {
+              this.multifulRatio = chartData.multifulRatio;
+            } else {
+              this.predictorRatioValue = chartData.cpPredictorRatioAvr;
+            }
+            this.predictorRatioPrev = chartData.cpPredictorRatioPrev;
           }
-          this.predictorRatioPrev = chartData.cpPredictorRatioPrev;
         }
-      });
+      );
   }
 
   ngOnDestroy(): void {
     this.destroy.next();
+  }
+
+  get isDentistMode$() {
+    return this.dentistFacade.isDentistMode$;
   }
 
   get chartOptions$() {
