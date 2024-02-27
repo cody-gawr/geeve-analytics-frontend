@@ -168,14 +168,22 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
   }
 
   get chartType$() {
-    return combineLatest([
-      //this.isMultipleClinic$,
-      this.isTrend$,
-    ]).pipe(
-      map(([isTrend]) => {
-        return isTrend ? 'bar' : 'doughnut';
-      })
+    return this.isDentistMode$.pipe(
+      map(isDentistMode => (isDentistMode ? 'doughnut' : 'bar'))
     );
+    // return combineLatest([
+    //   //this.isMultipleClinic$,
+    //   this.isTrend$,
+
+    // ]).pipe(
+    //   map(([isTrend]) => {
+    //     return isTrend ? 'bar' : 'doughnut';
+    //   })
+    // );
+  }
+
+  get isDentistMode$() {
+    return this.dentistFacade.isDentistMode$;
   }
 
   private legendLabelOptions: _DeepPartialObject<LegendOptions<any>> = {
