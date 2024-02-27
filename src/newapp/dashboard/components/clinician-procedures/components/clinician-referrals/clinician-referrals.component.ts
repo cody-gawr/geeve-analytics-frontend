@@ -168,18 +168,15 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
   }
 
   get chartType$() {
-    return this.isDentistMode$.pipe(
-      map(isDentistMode => (isDentistMode ? 'doughnut' : 'bar'))
+    return combineLatest([
+      //this.isMultipleClinic$,
+      this.isTrend$,
+      this.isDentistMode$,
+    ]).pipe(
+      map(([isTrend, isDentist]) => {
+        return isTrend && isDentist ? 'bar' : 'doughnut';
+      })
     );
-    // return combineLatest([
-    //   //this.isMultipleClinic$,
-    //   this.isTrend$,
-
-    // ]).pipe(
-    //   map(([isTrend]) => {
-    //     return isTrend ? 'bar' : 'doughnut';
-    //   })
-    // );
   }
 
   get isDentistMode$() {
