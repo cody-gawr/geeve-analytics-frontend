@@ -86,7 +86,9 @@
           </ng-template>
         </ng-template>
       </div>
-      <div class="chart-foot" *ngIf="!(isTrend$ | async)">
+      <div
+        class="chart-foot"
+        *ngIf="!((isTrend$ | async) && (isDentistMode$ | async))">
         <div *ngIf="!(isMultipleClinic$ | async); else otherEl">
           <h3>{{ predictorRatioValue }}</h3>
           <span>{{ durationLabel$ | async }} Average</span>
