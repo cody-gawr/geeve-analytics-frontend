@@ -149,12 +149,9 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
   }
 
   get chartOptions$() {
-    return combineLatest([
-      this.isTrend$,
-      this.clinicFacade.currentClinics$,
-    ]).pipe(
-      map(([isTrend, clinics]) => {
-        if (isTrend) {
+    return this.chartType$.pipe(
+      map(chartType => {
+        if (chartType === 'bar') {
           return this.stackedChartOptions;
         } else {
           return this.pieChartOptions;
