@@ -258,15 +258,12 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(([isDentistMode, isTrend, data, trendData]) => {
-        if (isTrend) {
-          this.datasets = trendData.datasets ?? [];
-          this.labels = trendData.labels ?? [];
-        } else {
+        if (!isDentistMode || !isTrend) {
           this.datasets = data.datasets ?? [];
           this.labels = data.labels ?? [];
-        }
-        if (!isDentistMode || !isTrend) {
         } else {
+          this.datasets = trendData.datasets ?? [];
+          this.labels = trendData.labels ?? [];
         }
         this.total = data.total;
         this.prev = data.prev;

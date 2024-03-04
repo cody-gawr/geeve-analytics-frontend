@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -689,6 +690,7 @@ export class MorningHuddleService {
         })
       );
   }
+
   getTodayPostopCalls(
     clinic_id,
     previousDays,
@@ -998,6 +1000,7 @@ export class MorningHuddleService {
         })
       );
   }
+
   updateEndStatus(event, tid, thid, cid, date): Observable<any> {
     var header = this.getHeaders();
     date = date.slice(0, 10);
