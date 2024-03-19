@@ -59,7 +59,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.layoutFacade.isFullMonthsDateRange$,
       this.isTrend$,
-    ]).pipe(map(([isFull, isTrend]) => isFull && !isTrend));
+    ]).pipe(map(([isFull, isTrend]) => isFull || isTrend));
   }
 
   newNumPatientsVal = 0;
