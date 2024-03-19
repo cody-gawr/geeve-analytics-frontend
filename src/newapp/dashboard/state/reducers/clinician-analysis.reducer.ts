@@ -2182,23 +2182,23 @@ export const selectRecallRateChartData = createSelector(
       }
       let data: (CaRecallRateItem | CaReappRateItem)[] = resBody.data.slice();
 
-      if (selectedClinics.length > 1) {
-        if (chartName === 'Recall Prebook Rate') {
-          data = _.chain(data)
-            .sortBy((item: CaRecallRateItem) =>
-              parseFloat(<string>item.recallPercent)
-            )
-            .reverse()
-            .value();
-        } else {
-          data = _.chain(data)
-            .sortBy((item: CaReappRateItem) =>
-              parseFloat(<string>item.reappointRate)
-            )
-            .reverse()
-            .value();
-        }
-      }
+      // if (selectedClinics.length > 1) {
+      //   if (chartName === 'Recall Prebook Rate') {
+      //     data = _.chain(data)
+      //       .sortBy((item: CaRecallRateItem) =>
+      //         parseFloat(<string>item.recallPercent)
+      //       )
+      //       .reverse()
+      //       .value();
+      //   } else {
+      //     data = _.chain(data)
+      //       .sortBy((item: CaReappRateItem) =>
+      //         parseFloat(<string>item.reappointRate)
+      //       )
+      //       .reverse()
+      //       .value();
+      //   }
+      // }
 
       if (data.length > 20) {
         data = data.slice(0, 20);
