@@ -241,7 +241,7 @@
             </div>
           </div> -->
 
-        <div class="post-op-codes op-codes">
+        <div class="post-op-codes op-codes" *ngIf="isD4w">
           <h4 class="clinic-settings-form-title">FTA/UTA</h4>
           <div
             fxLayout="row wrap fta_uta_setting"
@@ -854,9 +854,7 @@
             (click)="linkGoogle()"
             [disabled]="googleConnected"
             class="mat-dc">
-            {{
-              googleConnected ? 'Disconnect To Google' : 'Connect To Google'
-            }}
+            {{ googleConnected ? 'Disconnect To Google' : 'Connect To Google' }}
             <mat-icon>double_arrow</mat-icon>
           </button>
         </div>

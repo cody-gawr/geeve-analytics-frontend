@@ -108,6 +108,9 @@ export class ClinicSettingsComponent implements OnInit {
   public get isExact(): boolean {
     return this.localStorageService.isEachClinicExact(this.clinic_id);
   }
+  public get isD4w(): boolean {
+    return this.localStorageService.isEachClinicPmsD4w(this.clinic_id);
+  }
   remainCredits = 0;
   costPerSMS = 0.0;
   constructor(
@@ -233,8 +236,8 @@ export class ClinicSettingsComponent implements OnInit {
     return this.email.hasError('required')
       ? 'You must enter a value'
       : this.email.hasError('email')
-      ? 'Not a valid email'
-      : '';
+        ? 'Not a valid email'
+        : '';
   }
   //get setting for teh selcted clinic
   getClinicSettings() {
