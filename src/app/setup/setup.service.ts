@@ -10,6 +10,7 @@ export class SetupService {
   public token: string;
   private headers: HttpHeaders;
   private apiUrl = environment.apiUrl;
+  private baseApiUrl = environment.baseApiUrl;
   public token_id;
 
   constructor(
@@ -187,7 +188,8 @@ export class SetupService {
     formData.append('display_name', displayName);
     formData.append('pms', pms);
     formData.append('days', days);
-    formData.append('coreURL', coreURL);
+    // formData.append('coreURL', coreURL);
+    formData.append('product', 'jeeve_analytics');
     /*formData.append('contactName', contact_name);*/
     /*formData.append('facebook', facebook);
     formData.append('twitter', twitter);
@@ -196,13 +198,11 @@ export class SetupService {
     formData.append('instagram', instagram);*/
     var header = this.getHeaders();
 
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicAdd', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.baseApiUrl + '/clinics', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      })
+    );
   }
 
   getClinicLocation(clinic_id): Observable<any> {

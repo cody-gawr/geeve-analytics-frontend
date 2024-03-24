@@ -415,7 +415,6 @@ export class KpiReportComponent implements OnInit, OnDestroy {
           this.reportData[8]['kpi_type'] = 'Discounts';
           this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
           this.reportMonths = res.body.months;
-          console.log('wfwef', this.reportData);
         }
       },
       error => {
