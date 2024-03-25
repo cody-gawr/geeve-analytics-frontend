@@ -353,14 +353,19 @@ export class ClinicComponent implements AfterViewInit {
   }
   //fileter data
   updateFilter(event) {
-    const val = event.target.value.toLowerCase();
+    const val = event?.target?.value?.toLowerCase();
 
-    // filter our data
-    const temp = this.temp.filter(function (d) {
-      return d.clinicName.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    // update the rows
-    this.rows = temp;
+    if (val) {
+      // filter our data
+      const temp = this.temp.filter(function (d) {
+        return d.clinicName.toLowerCase().indexOf(val) !== -1 || !val;
+      });
+      // update the rows
+      this.rows = temp;
+    } else {
+      this.rows = [...this.temp];
+    }
+
     // Whenever the filter changes, always go back to the first page
     this.table = data;
   }
