@@ -255,7 +255,7 @@ export class ClinicComponent implements AfterViewInit {
   //get list of clinics
   public clinicscount = 0;
   public createdClinicsCount = 0;
-  private getClinics() {
+  public getClinics() {
     this.headerService.getClinic.subscribe(
       res => {
         if (res.status == 200) {
@@ -426,11 +426,10 @@ export class ClinicComponent implements AfterViewInit {
   private connectToCore(link, id, reconnect = false) {
     var win = window.open(link, 'MsgWindow', 'width=1000,height=800');
     var self = this;
-    var timer = setInterval(function () {
+    var timer = setInterval(() => {
       if (win.closed) {
         if (reconnect) {
           self.getClinics();
-          self.updateFilter(null);
         } else {
           self.checkCoreStatus(id);
         }
