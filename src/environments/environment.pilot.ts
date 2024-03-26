@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  baseApiUrl: 'https://api.jeeve.com.au/test',
+  baseApiUrl: 'https://pilot-api.jeeve.com.au/pilot',
   apiUrl: 'https://pilot-api.jeeve.com.au/pilot/analytics',
   homeUrl: 'https://pilot-analytics.jeeve.com.au/',
   solutionsUrl: 'https://pilot-api.jeeve.com.au/pilot/solutions',

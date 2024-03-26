@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  baseApiUrl: 'https://api.jeeve.com.au/test',
+  baseApiUrl: 'https://test-api.jeeve.com.au/test',
   apiUrl: 'https://test-api.jeeve.com.au/test/analytics',
   homeUrl: 'https://test-analytics.jeeve.com.au/',
   solutionsUrl: 'https://test-api.jeeve.com.au/test/solutions',
