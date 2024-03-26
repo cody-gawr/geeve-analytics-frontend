@@ -423,16 +423,15 @@ export class ClinicComponent implements AfterViewInit {
       }
     );
   }
-  private connectToCore(link, id, reconnect = false) {
+  public connectToCore(link, id, reconnect = false) {
     var win = window.open(link, 'MsgWindow', 'width=1000,height=800');
     var self = this;
     var timer = setInterval(() => {
       if (win.closed) {
-        if (reconnect) {
-          self.getClinics();
-        } else {
+        if (!reconnect) {
           self.checkCoreStatus(id);
         }
+        self.getClinics();
         clearTimeout(timer);
       }
     }, 1000);
