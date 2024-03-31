@@ -4106,7 +4106,7 @@ export class FinancesComponent implements AfterViewInit {
     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe(
       res => {
         if (res.body.message != 'error') {
-          if (res.body.data.xero_connect == 1) {
+          if (res.body.data.connectedWith == 'xero') {
             this.xeroConnect = true;
           } else {
             this.xeroConnect = false;
@@ -4125,7 +4125,7 @@ export class FinancesComponent implements AfterViewInit {
     this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe(
       res => {
         if (res.body.message != 'error') {
-          if (res.body.data.myob_connect == 1) {
+          if (res.body.data.connectedWith == 'myob') {
             this.myobConnect = true;
           } else {
             this.myobConnect = false;

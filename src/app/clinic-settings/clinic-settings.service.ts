@@ -196,9 +196,21 @@ export class ClinicSettingsService {
 
   checkXeroStatus(clinic_id): Observable<any> {
     var header = this.getHeaders();
+    // return this.http
+    //   .get(
+    //     this.apiUrl + '/Xeros2/xeroGetStatus?getxero=1&clinic_id=' + clinic_id,
+    //     header
+    //   )
+    //   .pipe(
+    //     map((response: HttpResponse<Object>) => {
+    //       return response;
+    //     })
+    //   );
     return this.http
       .get(
-        this.apiUrl + '/Xeros2/xeroGetStatus?getxero=1&clinic_id=' + clinic_id,
+        this.apiUrl +
+          '/clinics/clinicGetAccountingPlatform?clinic_id=' +
+          clinic_id,
         header
       )
       .pipe(
@@ -220,8 +232,20 @@ export class ClinicSettingsService {
   }
   checkMyobStatus(clinic_id): Observable<any> {
     var header = this.getHeaders();
+    // return this.http
+    //   .get(this.apiUrl + '/Myob/myobGetStatus?clinic_id=' + clinic_id, header)
+    //   .pipe(
+    //     map((response: HttpResponse<Object>) => {
+    //       return response;
+    //     })
+    //   );
     return this.http
-      .get(this.apiUrl + '/Myob/myobGetStatus?clinic_id=' + clinic_id, header)
+      .get(
+        this.apiUrl +
+          '/clinics/clinicGetAccountingPlatform?clinic_id=' +
+          clinic_id,
+        header
+      )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;

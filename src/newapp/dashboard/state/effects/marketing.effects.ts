@@ -5,22 +5,6 @@ import { catchError, map, switchMap, of, withLatestFrom, filter } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
   MarketingState,
-  // selectIsLoadingMkActivePatients,
-  // selectIsLoadingMkActivePatientsTrend,
-  // selectIsLoadingMkMyobAccounts,
-  // selectIsLoadingMkNewPatientAcq,
-  // selectIsLoadingMkNewPatientAcqTrend,
-  // selectIsLoadingMkNewPatientsByReferral,
-  // selectIsLoadingMkNewPatientsByReferralTrend,
-  // selectIsLoadingMkNumNewPatients,
-  // selectIsLoadingMkNumNewPatientsTrend,
-  // selectIsLoadingMkRevByReferral,
-  // selectIsLoadingMkRevByReferralTrend,
-  // selectIsLoadingMkSaveAcctMyob,
-  // selectIsLoadingMkSaveAcctXero,
-  // selectIsLoadingMkTotalVisits,
-  // selectIsLoadingMkTotalVisitsTrend,
-  // selectIsLoadingMkXeroAccounts,
 } from '../reducers/marketing.reducer';
 import { MarketingApiActions, MarketingPageActions } from '../actions';
 import { MarketingService } from '../../services/marketing.service';
