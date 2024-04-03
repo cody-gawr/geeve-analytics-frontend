@@ -209,8 +209,7 @@ export class ClinicSettingsService {
     return this.http
       .get(
         this.apiUrl +
-          '/clinics/clinicGetAccountingPlatform?clinic_id=' +
-          clinic_id,
+          `/clinics/clinicGetAccountingPlatform?clinic_id=${clinic_id}&platform=xero`,
         header
       )
       .pipe(
@@ -242,8 +241,7 @@ export class ClinicSettingsService {
     return this.http
       .get(
         this.apiUrl +
-          '/clinics/clinicGetAccountingPlatform?clinic_id=' +
-          clinic_id,
+          `/clinics/clinicGetAccountingPlatform?clinic_id=${clinic_id}&platform=myob`,
         header
       )
       .pipe(
