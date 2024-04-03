@@ -256,7 +256,7 @@ export class ClinicSettingsService {
     return this.http
       .get(
         this.apiUrl +
-          '/Clinics/clinicGetAccountingPlatform?clinic_id=' +
+          '/clinics/clinicGetAccountingPlatform?clinic_id=' +
           clinic_id,
         header
       )

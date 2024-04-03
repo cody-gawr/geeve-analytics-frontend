@@ -36,7 +36,7 @@ export class DashboardService {
   }> => {
     return this.http
       .get<any>(
-        `${this.apiUrl}/Clinics/clinicGetAccountingPlatform?clinic_id=${clinicId}`,
+        `${this.apiUrl}/clinics/clinicGetAccountingPlatform?clinic_id=${clinicId}`,
         { withCredentials: true }
       )
       .pipe(map(res => <any>camelcaseKeys(res, { deep: true })));
