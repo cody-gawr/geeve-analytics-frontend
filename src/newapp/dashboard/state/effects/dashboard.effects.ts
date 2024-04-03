@@ -39,7 +39,7 @@ export class DashboardEffects {
         return this.dashboardService.getClinicAccountingPlatform(clinicId).pipe(
           map(res =>
             DashboardApiActions.clinicAccountingPlatformSuccess({
-              connectWith: res.data,
+              connectWith: res.data?.connectedWith ?? null,
               clinicId,
             })
           ),

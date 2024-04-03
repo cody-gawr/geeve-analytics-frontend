@@ -279,7 +279,7 @@ export class MarketingComponent implements OnInit, AfterViewInit {
           res => {
             if (res.status == 200) {
               if (res.body.data != '') {
-                self.connectedwith = res.body.data;
+                self.connectedwith = res.body.data?.connectedWith;
                 resolve(true);
               } else {
                 self.connectedwith = '';

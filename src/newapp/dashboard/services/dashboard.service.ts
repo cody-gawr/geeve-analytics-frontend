@@ -30,7 +30,10 @@ export class DashboardService {
 
   getClinicAccountingPlatform = (
     clinicId: number
-  ): Observable<{ data: CONNECT_WITH_PLATFORM; message: string }> => {
+  ): Observable<{
+    data: { connectedWith: CONNECT_WITH_PLATFORM; name: string };
+    message: string;
+  }> => {
     return this.http
       .get<any>(
         `${this.apiUrl}/Clinics/clinicGetAccountingPlatform?clinic_id=${clinicId}`,

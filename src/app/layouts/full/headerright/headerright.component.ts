@@ -1151,7 +1151,11 @@ export class AppHeaderrightComponent
     this.headerService.clinicGetAccountingPlatform(clinic_id).subscribe(res => {
       if (res.status == 200) {
         let opts = this.constants.cookieOpt as CookieOptions;
-        this._cookieService.put('a_connect', res.body.data, opts);
+        this._cookieService.put(
+          'a_connect',
+          res.body.data?.connectedWith,
+          opts
+        );
       }
     });
   }
