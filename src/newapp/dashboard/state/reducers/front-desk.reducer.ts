@@ -1144,20 +1144,20 @@ export const selectFdRecallRateTrendChartData = createSelector(
         const recallPercent = Math.round(<number>item.recallPercent);
         if (recallPercent > 0) {
           chartData.push(recallPercent);
+          if (item.goals == -1 || item.goals == null || item.goals == '') {
+            targetData.push([0, 0]);
+          } else {
+            targetData.push([
+              parseFloat(<string>item.goals) - 0.5,
+              parseFloat(<string>item.goals) + 0.5,
+            ]);
+          }
+          chartLabels.push(
+            trendMode === 'current'
+              ? moment(item.yearMonth).format('MMM YYYY')
+              : item.year
+          );
         }
-        if (item.goals == -1 || item.goals == null || item.goals == '') {
-          targetData.push([0, 0]);
-        } else {
-          targetData.push([
-            parseFloat(<string>item.goals) - 0.5,
-            parseFloat(<string>item.goals) + 0.5,
-          ]);
-        }
-        chartLabels.push(
-          trendMode === 'current'
-            ? moment(item.yearMonth).format('MMM YYYY')
-            : item.year
-        );
       });
       chartDatasets = [
         {
