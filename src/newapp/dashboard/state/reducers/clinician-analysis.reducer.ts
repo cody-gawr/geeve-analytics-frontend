@@ -2332,11 +2332,11 @@ export const selectRecallRateTrendChartData = createSelector(
             ? moment(res.yearMonth).format('MMM YYYY')
             : res.year
         );
-      }
-      if (res.goals == -1 || res.goals == null || res.goals == '') {
-        targetData.push(null);
-      } else {
-        targetData.push(res.goals);
+        if (res.goals == -1 || res.goals == null || res.goals == '') {
+          targetData.push(null);
+        } else {
+          targetData.push(res.goals);
+        }
       }
     });
 
