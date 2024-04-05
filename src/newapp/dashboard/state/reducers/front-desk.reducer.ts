@@ -1142,7 +1142,7 @@ export const selectFdRecallRateTrendChartData = createSelector(
         targetData = [];
       resBody.data.forEach(item => {
         const recallPercent = Math.round(<number>item.recallPercent);
-        if (recallPercent > 0) {
+        if (recallPercent >= 0) {
           chartData.push(recallPercent);
           if (item.goals == -1 || item.goals == null || item.goals == '') {
             targetData.push([0, 0]);
