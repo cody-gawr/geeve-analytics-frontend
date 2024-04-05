@@ -2327,17 +2327,17 @@ export const selectRecallRateTrendChartData = createSelector(
           : Math.round(<number>res.reappointRate);
       if (val >= 0) {
         chartData.push(val);
+        chartLabels.push(
+          trendMode === 'current'
+            ? moment(res.yearMonth).format('MMM YYYY')
+            : res.year
+        );
       }
       if (res.goals == -1 || res.goals == null || res.goals == '') {
         targetData.push(null);
       } else {
         targetData.push(res.goals);
       }
-      chartLabels.push(
-        trendMode === 'current'
-          ? moment(res.yearMonth).format('MMM YYYY')
-          : res.year
-      );
     });
 
     const sumpercantagevalue = chartData.reduce((acc, cur) => acc + cur, 0);
