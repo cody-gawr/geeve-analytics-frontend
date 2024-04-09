@@ -220,7 +220,7 @@ export class SetupService {
     formData.append('instagram', instagram);*/
     var header = this.getHeaders();
 
-    return this.http.post(this.baseApiUrl + '/clinics', formData, header).pipe(
+    return this.http.post(this.apiUrl + '/clinics', formData, header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
       })
