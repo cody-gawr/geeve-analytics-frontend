@@ -214,7 +214,7 @@ export class ClinicComponent implements AfterViewInit {
           }
         }
 
-        function _createClinic(prak_result?: any) {
+        const _createClinic = (prak_result?: any) => {
           this.clinicService
             .addClinic(
               result.name,
@@ -280,7 +280,7 @@ export class ClinicComponent implements AfterViewInit {
                 this.warningMessage = 'Please Provide Valid Inputs!';
               }
             );
-        }
+        };
 
         if (result.pms == 'praktika') {
           const dialogRef = this.dialog.open(
