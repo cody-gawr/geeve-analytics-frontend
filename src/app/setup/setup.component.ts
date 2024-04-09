@@ -556,7 +556,7 @@ export class SetupComponent implements AfterViewInit {
 */
     $('.ajax-loader').show();
     // address,phone_no,clinicEmail,
-    function _createClinic(prak_result?: any) {
+    const _createClinic = (prak_result?: any) => {
       this.setupService
         .addClinic(name, displayName, days, pms, coreURL)
         .subscribe(
@@ -623,7 +623,7 @@ export class SetupComponent implements AfterViewInit {
             this.warningMessage = 'Please Provide Valid Inputs!';
           }
         );
-    }
+    };
     if (pms === 'praktika') {
       const dialogRef = this.dialog.open(PraktikaConnectionDialogComponent, {
         width: '500px',
