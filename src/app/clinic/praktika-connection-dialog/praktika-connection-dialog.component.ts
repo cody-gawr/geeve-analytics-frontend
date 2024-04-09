@@ -38,25 +38,58 @@ export class PraktikaConnectionDialogComponent {
   public onSubmit() {
     this.formSubmitted = true;
     const { customer_user, customer_secret } = this.form.getRawValue();
-    this.pmsService
-      .CreatePraktikaConfig(customer_user, customer_secret, this.data.clinic_id)
-      .subscribe({
-        next: response => {
-          if (!response.response) {
+    if (this.data?.clinic_id) {
+      this.pmsService
+        .CreatePraktikaConfig(
+          customer_user,
+          customer_secret,
+          this.data.clinic_id
+        )
+        .subscribe({
+          next: response => {
+            if (!response.response) {
+              this.toastr.error(
+                'Failed to connect Praktika account',
+                'Praktika Account'
+              );
+              return;
+            }
+            this.toastr.success(
+              'Praktika account connected',
+              'Praktika Account'
+            );
+            this.dialogRef.close();
+          },
+          error: err =>
             this.toastr.error(
               'Failed to connect Praktika account',
               'Praktika Account'
+            ),
+        });
+    } else {
+      this.pmsService
+        .validatePraktikaLogin(customer_user, customer_secret)
+        .subscribe({
+          next: response => {
+            if (!response.response) {
+              this.toastr.error(
+                'Failed to connect Praktika account',
+                'Praktika Account'
+              );
+              return;
+            }
+            this.toastr.success(
+              'Praktika account connected',
+              'Praktika Account'
             );
-            return;
-          }
-          this.toastr.success('Praktika account connected', 'Praktika Account');
-          this.dialogRef.close();
-        },
-        error: err =>
-          this.toastr.error(
-            'Failed to connect Praktika account',
-            'Praktika Account'
-          ),
-      });
+            this.dialogRef.close({ customer_user, customer_secret });
+          },
+          error: err =>
+            this.toastr.error(
+              'Failed to connect Praktika account',
+              'Praktika Account'
+            ),
+        });
+    }
   }
 }

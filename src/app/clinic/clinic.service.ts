@@ -178,4 +178,21 @@ export class ClinicService {
         })
       );
   }
+
+  public validatePraktikaLogin(customer_user: string, customer_secret: string) {
+    const body = {
+      customer_user: customer_user,
+      customer_secret: customer_secret,
+    };
+    return this.http
+      .post<
+        IApiResponse<any>
+      >(`${environment.baseApiUrl}/v1/common/praktika/validate-login`, body, { withCredentials: true })
+      .pipe(
+        take(1),
+        map((response: IApiResponse<any>) => {
+          return { response };
+        })
+      );
+  }
 }

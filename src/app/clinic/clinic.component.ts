@@ -214,48 +214,90 @@ export class ClinicComponent implements AfterViewInit {
           }
         }
 
-        this.clinicService
-          .addClinic(
-            result.name,
-            result.address,
-            result.contact_name,
-            result.pms,
-            coreURL
-          )
-          .subscribe(
-            res => {
-              //@audit-issue - This needs to be updated soon. Needs to check status code instead of message property.
-              if (res.body.message == 'error') {
-                this.toastr.error(res.body.data);
-                this.openLimitDialog();
-              } else if (res.status == 200) {
-                if (res.body.data.pms == 'core') {
-                  let id = res.body.data.id;
-                  this.getConnectCoreLink(id);
-                } else if (res.body.data.pms === 'praktika') {
-                  const dialogRef = this.dialog.open(
-                    PraktikaConnectionDialogComponent,
-                    {
-                      width: '500px',
-                      data: {
-                        clinic_id: res.body.data.id,
-                      },
+        function _createClinic(prak_result?: any) {
+          this.clinicService
+            .addClinic(
+              result.name,
+              result.address,
+              result.contact_name,
+              result.pms,
+              coreURL
+            )
+            .subscribe(
+              res => {
+                //@audit-issue - This needs to be updated soon. Needs to check status code instead of message property.
+                if (res.body.message == 'error') {
+                  this.toastr.error(res.body.data);
+                  this.openLimitDialog();
+                } else if (res.status == 200) {
+                  if (res.body.data.pms == 'core') {
+                    let id = res.body.data.id;
+                    this.getConnectCoreLink(id);
+                  } else if (res.body.data.pms === 'praktika') {
+                    if (
+                      prak_result?.customer_user &&
+                      prak_result?.customer_secret
+                    ) {
+                      this.clinicService
+                        .CreatePraktikaConfig(
+                          prak_result?.customer_user,
+                          prak_result?.customer_secret,
+                          res.body.data.id
+                        )
+                        .subscribe({
+                          next: response => {
+                            if (!response.response) {
+                              this.toastr.error(
+                                'Failed to connect Praktika account',
+                                'Praktika Account'
+                              );
+                              return;
+                            }
+                            this.toastr.success(
+                              'Praktika account connected',
+                              'Praktika Account'
+                            );
+                            this.getClinics();
+                          },
+                          error: err =>
+                            this.toastr.error(
+                              'Failed to connect Praktika account',
+                              'Praktika Account'
+                            ),
+                        });
+                    } else {
+                      this.toastr.error('Please Provide Valid Inputs!');
                     }
-                  );
-                  dialogRef.afterClosed().subscribe((result: any) => {
-                    this.getClinics();
-                  });
-                  return;
-                } else {
-                  this.toastr.success('Clinic Added!');
+
+                    return;
+                  } else {
+                    this.toastr.success('Clinic Added!');
+                  }
+                  this.getClinics();
                 }
-                this.getClinics();
+              },
+              error => {
+                this.warningMessage = 'Please Provide Valid Inputs!';
               }
-            },
-            error => {
-              this.warningMessage = 'Please Provide Valid Inputs!';
+            );
+        }
+
+        if (result.pms == 'praktika') {
+          const dialogRef = this.dialog.open(
+            PraktikaConnectionDialogComponent,
+            {
+              width: '500px',
             }
           );
+          dialogRef.afterClosed().subscribe((_result: any) => {
+            if (_result?.customer_user && _result?.customer_secret) {
+              _createClinic(_result);
+            }
+          });
+          return;
+        } else {
+          _createClinic();
+        }
       }
     });
   }

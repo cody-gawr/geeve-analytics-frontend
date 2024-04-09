@@ -556,50 +556,87 @@ export class SetupComponent implements AfterViewInit {
 */
     $('.ajax-loader').show();
     // address,phone_no,clinicEmail,
-    this.setupService
-      .addClinic(name, displayName, days, pms, coreURL)
-      .subscribe(
-        res => {
-          $('.ajax-loader').hide();
-          if (res.status == 200) {
-            this.clinic_id = res.body.data.id;
-            this._cookieService.put('display_name', displayName);
-            if (res.body.data.pms == 'core') {
-              this.getConnectCoreLink();
-            } else if (res.body.data.pms === 'praktika') {
-              const dialogRef = this.dialog.open(
-                PraktikaConnectionDialogComponent,
-                {
-                  width: '500px',
-                  data: {
-                    clinic_id: res.body.data.id,
-                  },
+    function _createClinic(prak_result?: any) {
+      this.setupService
+        .addClinic(name, displayName, days, pms, coreURL)
+        .subscribe(
+          res => {
+            $('.ajax-loader').hide();
+            if (res.status == 200) {
+              this.clinic_id = res.body.data.id;
+              this._cookieService.put('display_name', displayName);
+              if (res.body.data.pms == 'core') {
+                this.getConnectCoreLink();
+              } else if (res.body.data.pms === 'praktika') {
+                if (
+                  prak_result?.customer_user &&
+                  prak_result?.customer_secret
+                ) {
+                  this.clinicService
+                    .CreatePraktikaConfig(
+                      prak_result?.customer_user,
+                      prak_result?.customer_secret,
+                      res.body.data.id
+                    )
+                    .subscribe({
+                      next: response => {
+                        if (!response.response) {
+                          this.toastr.error(
+                            'Failed to connect Praktika account',
+                            'Praktika Account'
+                          );
+                          return;
+                        }
+                        this.toastr.success(
+                          'Praktika account connected',
+                          'Praktika Account'
+                        );
+                        this.stepVal = 1;
+                        this.updateStepperStatus();
+                      },
+                      error: err =>
+                        this.toastr.error(
+                          'Failed to connect Praktika account',
+                          'Praktika Account'
+                        ),
+                    });
+                } else {
+                  this.toastr.error('Please provide Praktika credentials');
                 }
-              );
-              dialogRef.afterClosed().subscribe((result: any) => {
-                this.stepVal = 1;
-                this.updateStepperStatus();
-              });
-              return;
-            } else {
-              this.getXeroLink();
+                return;
+              } else {
+                this.getXeroLink();
+              }
+              //this.getClinicSettings();
+              this.stepVal = 1;
+              this.updateStepperStatus();
+              //this.getClinic();
+              //this.toastr.success('Clinic Added.');
+            } else if (res.status == 401) {
+              this._cookieService.put('username', '');
+              this._cookieService.put('email', '');
+              this._cookieService.put('userid', '');
+              this.router.navigateByUrl('/login');
             }
-            //this.getClinicSettings();
-            this.stepVal = 1;
-            this.updateStepperStatus();
-            //this.getClinic();
-            //this.toastr.success('Clinic Added.');
-          } else if (res.status == 401) {
-            this._cookieService.put('username', '');
-            this._cookieService.put('email', '');
-            this._cookieService.put('userid', '');
-            this.router.navigateByUrl('/login');
+          },
+          error => {
+            this.warningMessage = 'Please Provide Valid Inputs!';
           }
-        },
-        error => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
+        );
+    }
+    if (pms === 'praktika') {
+      const dialogRef = this.dialog.open(PraktikaConnectionDialogComponent, {
+        width: '500px',
+      });
+      dialogRef.afterClosed().subscribe((_result: any) => {
+        if (_result?.customer_user && _result?.customer_secret) {
+          _createClinic(_result);
         }
-      );
+      });
+    } else {
+      _createClinic();
+    }
+
     //return false;
   }
   get formArr() {
