@@ -20,6 +20,7 @@ import {
 } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { SetupService } from '../setup/setup.service';
+import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/praktika-connection-dialog.component';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -183,6 +184,7 @@ export class ClinicComponent implements AfterViewInit {
     this.user_type = this._cookieService.get('user_type');
   }
   private warningMessage: string;
+
   //open add clinic modal
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
@@ -230,6 +232,20 @@ export class ClinicComponent implements AfterViewInit {
                 if (res.body.data.pms == 'core') {
                   let id = res.body.data.id;
                   this.getConnectCoreLink(id);
+                } else if (res.body.data.pms === 'praktika') {
+                  const dialogRef = this.dialog.open(
+                    PraktikaConnectionDialogComponent,
+                    {
+                      width: '500px',
+                      data: {
+                        clinic_id: res.body.data.id,
+                      },
+                    }
+                  );
+                  dialogRef.afterClosed().subscribe((result: any) => {
+                    this.getClinics();
+                  });
+                  return;
                 } else {
                   this.toastr.success('Clinic Added!');
                 }

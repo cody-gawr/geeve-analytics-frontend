@@ -13,6 +13,7 @@ import { ClinicRoutes } from './clinic.routing';
 import { SharedMatModule } from '../shared-mat.module';
 import { SetupService } from '../setup/setup.service';
 import { FormsModule } from '@angular/forms';
+import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/praktika-connection-dialog.component';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { FormsModule } from '@angular/forms';
     DialogOverviewExampleDialogComponent,
     DialogOverviewExampleLimitDialogComponent,
     DialogLocationDialogComponent,
+    PraktikaConnectionDialogComponent,
   ],
 })
 export class ClinicModule {}

@@ -13,8 +13,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClinicService } from '../clinic/clinic.service';
 import { PlansService } from '../plans/plans.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/praktika-connection-dialog.component';
+
 @NgModule({
-  declarations: [SetupComponent, DialogLocationDialogComponent],
+  declarations: [
+    SetupComponent,
+    DialogLocationDialogComponent,
+    PraktikaConnectionDialogComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(SetupRoutes),

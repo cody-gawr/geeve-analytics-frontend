@@ -1,10 +1,19 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+
+export interface IApiResponse<T> {
+  status: string;
+  success?: boolean;
+  message: string;
+  error?: string;
+  count: number;
+  data: T;
+}
 
 @Injectable()
 export class ClinicService {
@@ -145,6 +154,27 @@ export class ClinicService {
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
+        })
+      );
+  }
+
+  public CreatePraktikaConfig(
+    customer_user: string,
+    customer_secret: string,
+    clinicID: number
+  ) {
+    const body = {
+      customer_user: customer_user,
+      customer_secret: customer_secret,
+    };
+    return this.http
+      .post<
+        IApiResponse<any>
+      >(`${environment.baseApiUrl}/v1/common/clinics/${clinicID}/pms/praktika/config`, body, { withCredentials: true })
+      .pipe(
+        take(1),
+        map((response: IApiResponse<any>) => {
+          return { response };
         })
       );
   }

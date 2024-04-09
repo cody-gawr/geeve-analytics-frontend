@@ -21,7 +21,7 @@ import {
   UntypedFormArray,
 } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import { core } from '@angular/compiler';
+import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/praktika-connection-dialog.component';
 
 @Component({
   selector: 'app-setup',
@@ -566,6 +566,21 @@ export class SetupComponent implements AfterViewInit {
             this._cookieService.put('display_name', displayName);
             if (res.body.data.pms == 'core') {
               this.getConnectCoreLink();
+            } else if (res.body.data.pms === 'praktika') {
+              const dialogRef = this.dialog.open(
+                PraktikaConnectionDialogComponent,
+                {
+                  width: '500px',
+                  data: {
+                    clinic_id: res.body.data.id,
+                  },
+                }
+              );
+              dialogRef.afterClosed().subscribe((result: any) => {
+                this.stepVal = 1;
+                this.updateStepperStatus();
+              });
+              return;
             } else {
               this.getXeroLink();
             }

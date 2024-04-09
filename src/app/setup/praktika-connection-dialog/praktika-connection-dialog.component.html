@@ -1,0 +1,85 @@
+<h1 mat-dialog-title>Praktika Connection</h1>
+<div mat-dialog-content class="sa_forms_design">
+  <form class="w-full" id="addAddCashForm" [formGroup]="FormGroup">
+    <mat-card-content class="h-full">
+      <div class="!pt-5 !pb-5 !pl-5 !pr-5 rounded-xl bg-slate-100">
+        <p>Connect your Praktika account ...</p>
+      </div>
+      <div class="flex flex-row flex-wrap items-center justify-center pt-5">
+        <div class="flex flex-col items-center">
+          <img src="assets/images/praktika_logo.svg" alt="Snow" />
+        </div>
+      </div>
+      <br />
+      <div class="sa-form-group">
+        <label>Username</label>
+        <input
+          tabindex="1"
+          name="customer_user"
+          [formControl]="form.controls['customer_user']"
+          class="form-control-dialog"
+          placeholder=""
+          required />
+        <small
+          *ngIf="
+            form.controls['customer_user'].hasError('required') &&
+            form.controls['customer_user'].touched
+          "
+          class="text-danger support-text"
+          >Username is Required.</small
+        >
+        <small
+          *ngIf="
+            form.controls['customer_user'].hasError('pattern') &&
+            form.controls['customer_user'].touched
+          "
+          class="text-danger support-text"
+          >Invalid Username !</small
+        >
+      </div>
+      <div class="sa-form-group">
+        <label>Password</label>
+        <input
+          tabindex="1"
+          type="password"
+          name="customer_secret"
+          [formControl]="form.controls['customer_secret']"
+          class="form-control-dialog"
+          placeholder=""
+          required />
+        <small
+          *ngIf="
+            form.controls['customer_secret'].hasError('required') &&
+            form.controls['customer_secret'].touched
+          "
+          class="text-danger support-text"
+          >Password is Required.</small
+        >
+        <small
+          *ngIf="
+            form.controls['customer_secret'].hasError('pattern') &&
+            form.controls['customer_secret'].touched
+          "
+          class="text-danger support-text"
+          >Password Username !</small
+        >
+      </div>
+    </mat-card-content>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button
+    [mat-dialog-close]="true"
+    mat-button
+    tabindex="-1"
+    class="mat-raised-button mat-gray">
+    Cancel
+  </button>
+  <button
+    mat-button
+    class="mat-raised-button mat-dc"
+    (click)="onSubmit()"
+    [disabled]="!form.valid">
+    Submit
+  </button>
+</div>
