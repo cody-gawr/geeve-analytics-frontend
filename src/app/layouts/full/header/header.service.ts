@@ -95,7 +95,7 @@ export class HeaderService {
   }
 
   private data = {
-    body: { message: '', data: [], hasPrimeClinics: '', purchased_total: 0 },
+    body: { message: '', data: [], hasPrimeClinics: '', purchasedTotal: 0 },
     status: 0,
   };
   private clincs = new BehaviorSubject(this.data);
