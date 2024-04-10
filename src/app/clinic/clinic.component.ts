@@ -320,7 +320,7 @@ export class ClinicComponent implements AfterViewInit {
           this.rows = res.body.data;
           if (res.body.data.length > 0) {
             this.temp = [...res.body.data];
-            this.clinicscount = res.body?.total ?? 0;
+            this.clinicscount = res.body?.purchased_total ?? 0;
             this.createdClinicsCount = res.body?.data.length ?? 0;
             this.table = data;
           }
