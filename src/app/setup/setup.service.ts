@@ -220,11 +220,13 @@ export class SetupService {
     formData.append('instagram', instagram);*/
     var header = this.getHeaders();
 
-    return this.http.post(this.apiUrl + '/clinics', formData, header).pipe(
-      map((response: HttpResponse<Object>) => {
-        return response;
-      })
-    );
+    return this.http
+      .post(this.baseApiUrl + '/v1/common/clinics', formData, header)
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        })
+      );
   }
 
   getClinicLocation(clinic_id): Observable<any> {
