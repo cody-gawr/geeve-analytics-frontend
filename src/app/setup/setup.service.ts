@@ -207,7 +207,7 @@ export class SetupService {
     const formData = new FormData();
     // address,phone_no,clinicEmail,
     formData.append('clinicName', name);
-    formData.append('display_name', displayName);
+    formData.append('displayName', displayName);
     formData.append('pms', pms);
     formData.append('days', days);
     // formData.append('coreURL', coreURL);
