@@ -53,7 +53,6 @@ export class KpiReportComponent implements OnInit, OnDestroy {
             'Dentist Production Per Day',
             'Hours Available',
             'Hours Worked',
-            'Dentist Production Per Hr',
           ].indexOf(v.kpi_type) < 0
       );
     } else {
