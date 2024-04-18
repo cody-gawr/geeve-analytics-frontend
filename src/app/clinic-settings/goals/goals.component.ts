@@ -347,7 +347,7 @@ export class GoalsComponent
   }
 
   onKeyUp(id, val, event, sn, tab) {
-    val = parseFloat(val);
+    val = parseFloat(val ? val : '0');
     if ($(event.target).hasClass('sign%') && val > 100) {
       val = 100;
       $(event.target).val(val);
@@ -363,7 +363,6 @@ export class GoalsComponent
         +$("input[name='goal63" + sn + "']").val() *
         +$("input[name='goal64" + sn + "']").val();
       $("input[name='goal1" + sn + "']").val(product == 0 ? '' : product);
-      console.log('product', product);
       this.goalsData['goals'][1][sn] = product == 0 ? -1 : product;
     }
   }
