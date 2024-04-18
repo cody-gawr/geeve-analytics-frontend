@@ -402,11 +402,16 @@ export class KpiReportComponent implements OnInit, OnDestroy {
               });
             }
             if (element.kpi_type == 'Hourly Rate') {
+              element.kpi_type = 'Dentist Production Per Hr';
               element.val.forEach(ele => {
                 if (ele.clinic_id == undefined) {
                   ele.actual = this.totalDentistProductionPerHrActual;
                 }
               });
+            }
+
+            if (element.kpi_type == 'Discount') {
+              element.kpi_type = 'Discounts';
             }
           });
           // this.reportData[8]['kpi_type'] = 'Discount';
