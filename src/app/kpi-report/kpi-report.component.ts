@@ -1,12 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { KpiReportService } from './kpi-report.service';
-import { CookieOptions, CookieService } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie';
 import { Router } from '@angular/router';
-import { DatePipe, JsonPipe } from '@angular/common';
-import { MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { DentistService } from '../dentist/dentist.service';
 import { AppConstants } from '../app.constants';
@@ -412,8 +409,8 @@ export class KpiReportComponent implements OnInit, OnDestroy {
               });
             }
           });
-          this.reportData[8]['kpi_type'] = 'Discounts';
-          this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
+          // this.reportData[8]['kpi_type'] = 'Discount';
+          // this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
           this.reportMonths = res.body.months;
         }
       },

@@ -154,7 +154,7 @@
             </span>
             <span
               class="info-icon-container kpi_report_tip"
-              *ngIf="reportD.kpi_type == 'Discounts'">
+              *ngIf="reportD.kpi_type == 'Discount'">
               <img
                 [tooltip]="this.constants.tipDiscountsKpi"
                 src="../assets/images/info-icon.png"
@@ -197,7 +197,7 @@
           <td
             *ngIf="
               reportD.kpi_type != 'Utilisation Rate' &&
-              reportD.kpi_type != 'Discounts'
+              reportD.kpi_type != 'Discount'
             ">
             <table class="report-table-main report-table">
               <tr>
@@ -224,7 +224,7 @@
               </tr>
             </table>
           </td>
-          <td *ngIf="reportD.kpi_type == 'Discounts'">
+          <td *ngIf="reportD.kpi_type == 'Discount'">
             <table class="report-table-main report-table">
               <tr>
                 <td>Actual</td>
@@ -236,7 +236,7 @@
               class="report-table-main report-table"
               *ngIf="
                 reportD.kpi_type != 'Utilisation Rate' &&
-                reportD.kpi_type != 'Discounts'
+                reportD.kpi_type != 'Discount'
               ">
               <tr>
                 <td
@@ -305,7 +305,7 @@
             </table>
             <table
               class="report-table-main report-table"
-              *ngIf="reportD.kpi_type == 'Discounts'">
+              *ngIf="reportD.kpi_type == 'Discount'">
               <td>${{ reportVal.actual | number: '1.0-0' }}</td>
             </table>
           </td>
