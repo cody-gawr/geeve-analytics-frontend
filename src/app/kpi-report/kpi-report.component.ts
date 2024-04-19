@@ -39,12 +39,12 @@ export class KpiReportComponent implements OnInit, OnDestroy {
   public dentistCount: any = {};
   dentists: Dentist[] = [{ providerId: 'all', name: 'All Dentists' }];
 
-  get isExact(): boolean {
-    return this.localStorageService.isEachClinicExact(this.clinic_id);
+  get isExactOrCore(): boolean {
+    return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
 
   get newReportData() {
-    if (this.isExact) {
+    if (this.isExactOrCore) {
       return this.reportData.filter(
         v =>
           [
@@ -53,6 +53,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
             'Dentist Production Per Day',
             'Hours Available',
             'Hours Worked',
+            'Dentist Production Per Hr',
           ].indexOf(v.kpi_type) < 0
       );
     } else {

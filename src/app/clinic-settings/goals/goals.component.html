@@ -114,7 +114,9 @@
                       autocomplete="off"
                       type="text"
                       name="goal{{ charts.c_id }}{{ sn }}"
-                      value="{{ goalsD != -1 ? goalsD : '' }}"
+                      value="{{
+                        goalsD != -1 ? (goalsD | number: '1.0-2') : ''
+                      }}"
                       (keydown)="keyDown($event)"
                       (keyup)="
                         onKeyUp(
