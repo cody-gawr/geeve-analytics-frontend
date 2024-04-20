@@ -10,6 +10,7 @@ import { DentistGoalsService } from '../../dentist-goals/dentist-goals.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { BaseComponent } from '../base/base.component';
 import { ClinicSettingsService } from '../clinic-settings.service';
+import { LocalStorageService } from '@/app/shared/local-storage.service';
 
 @Component({
   selector: 'app-goals-settings',
@@ -50,7 +51,8 @@ export class GoalsComponent
     private fb: UntypedFormBuilder,
     private toastr: ToastrService,
     private dentistService: DentistService,
-    private clinicSettingsService: ClinicSettingsService
+    private clinicSettingsService: ClinicSettingsService,
+    private localStorageService: LocalStorageService
   ) {
     super();
     this.range.push(this.year - 1);
@@ -173,6 +175,12 @@ export class GoalsComponent
     this.selectedGoalCategory$.next(event);
   }
 
+  get isExactOrCore(): boolean {
+    return this.localStorageService.isEachClinicPmsExactOrCore(
+      this.clinic_id$.value
+    );
+  }
+
   getGoalsForTabsClinic(allGoals) {
     this.tabs = [];
     var temp = {
@@ -190,6 +198,7 @@ export class GoalsComponent
       var chartTemp = {};
       res.master_charts.forEach(chart => {
         if (
+          this.isExactOrCore &&
           res.dashboard == 'KPI Report' &&
           [
             'Dentist Days',
