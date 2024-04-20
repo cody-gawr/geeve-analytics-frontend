@@ -189,6 +189,16 @@ export class GoalsComponent
       };
       var chartTemp = {};
       res.master_charts.forEach(chart => {
+        if (
+          res.dashboard == 'KPI Report' &&
+          [
+            'Dentist Days',
+            'Dentist Production Per Hour',
+            'Dentist Production Per Day',
+          ].indexOf(chart.chart) > -1
+        ) {
+          return;
+        }
         chartTemp = {
           c_id: chart.id,
           c_dashboard_id: chart.dashboard_id,

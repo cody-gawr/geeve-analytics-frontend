@@ -111,10 +111,11 @@ export class ClinicService {
     formData.append('contactName', contact_name);
     formData.append('pms', pms);
     formData.append('coreURL', coreURL);
+    formData.append('product', 'jeeve_analytics');
 
     var header = this.getHeaders();
     return this.http
-      .post(this.apiUrl + '/clinics/clinicAdd', formData, header)
+      .post(environment.baseApiUrl + '/v1/common/clinics', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
