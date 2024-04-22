@@ -1195,39 +1195,40 @@ export const selectCaHourlyRateTrendChartData = createSelector(
       {
         data: chartData,
         order: 2,
-        backgroundColor: [
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-        ],
+        // backgroundColor: [
+        //   COLORS.odd,
+        //   COLORS.even,
+        //   COLORS.odd,
+        //   COLORS.even,
+        //   COLORS.odd,
+        //   COLORS.even,
+        //   COLORS.odd,
+        //   COLORS.even,
+        //   COLORS.odd,
+        //   COLORS.even,
+        //   COLORS.odd,
+        //   COLORS.even,
+        // ],
         label: '',
-        shadowOffsetX: 3,
-        shadowOffsetY: 2,
-        shadowBlur: 3,
-        shadowColor: 'rgba(0, 0, 0, 0.3)',
-        pointBevelWidth: 2,
-        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-        pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-        pointShadowOffsetX: 3,
-        pointShadowOffsetY: 3,
-        pointShadowBlur: 10,
-        pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-        backgroundOverlayMode: 'multiply',
+        backgroundColor: 'rgba(0, 0, 255, 0.2)',
+        // shadowOffsetX: 3,
+        // shadowOffsetY: 2,
+        // shadowBlur: 3,
+        // shadowColor: 'rgba(0, 0, 0, 0.3)',
+        // pointBevelWidth: 2,
+        // pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        // pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+        // pointShadowOffsetX: 3,
+        // pointShadowOffsetY: 3,
+        // pointShadowBlur: 10,
+        // pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+        // backgroundOverlayMode: 'multiply',
       },
       {
         data: [],
         order: 1,
         label: '',
-        shadowOffsetX: 3,
+        // shadowOffsetX: 3,
         backgroundColor: 'rgba(255, 0, 128, 1)',
       },
     ];
@@ -1243,7 +1244,7 @@ export const selectCaHourlyRateTrendChartData = createSelector(
     } else if (maxVal > 2000 && maxVal < 3000) {
       subVal = 10;
     } else if (maxVal > 100 && maxVal < 2000) {
-      subVal = 1;
+      subVal = 5;
     } else if (maxVal > 51 && maxVal < 100) {
       subVal = 0.2;
     } else if (maxVal <= 50) {
@@ -1279,6 +1280,7 @@ export const selectCaHourlyRateTrendChartData = createSelector(
     return {
       datasets,
       labels: chartLabels,
+      targetData,
     };
   }
 );
