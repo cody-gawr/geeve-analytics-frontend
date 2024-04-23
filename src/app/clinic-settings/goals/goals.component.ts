@@ -208,6 +208,21 @@ export class GoalsComponent
         ) {
           return;
         }
+        if (
+          res.dashboard == 'Clinician Analysis' &&
+          [
+            'No. New Patients - Items Provider',
+            'Recall Prebook Rate - Status',
+          ].indexOf(chart.chart) > -1
+        ) {
+          return;
+        }
+        if (
+          res.dashboard == 'Marketing' &&
+          ['No. New Patients - Items Provider'].indexOf(chart.chart) > -1
+        ) {
+          return;
+        }
         chartTemp = {
           c_id: chart.id,
           c_dashboard_id: chart.dashboard_id,
