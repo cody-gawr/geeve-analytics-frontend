@@ -59,6 +59,10 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   datasets: ChartDataset[] = [];
   labels = [];
 
+  get goalCount$(): Observable<number> {
+    return this.layoutFacade.dateRange$.pipe(map(v => v.goalCount));
+  }
+
   get isLoading$() {
     return combineLatest([
       this.isTrend$,

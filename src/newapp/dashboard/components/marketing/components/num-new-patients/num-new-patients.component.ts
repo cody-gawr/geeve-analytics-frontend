@@ -180,36 +180,40 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
     this.destroy.next();
   }
 
+  // get goalCount$() {
+  //   return this.layoutFacade.dateRange$.pipe(
+  //     map(val => {
+  //       switch (val.duration) {
+  //         case 'w':
+  //         case 'm':
+  //         case 'lm':
+  //           return 1;
+  //         case 'q':
+  //         case 'lq':
+  //           return 3;
+  //         case 'cytd':
+  //           return moment().diff(moment().startOf('year'), 'months');
+  //         case 'lcytd':
+  //           return 12;
+  //         case 'fytd':
+  //           if (moment().month() + 1 <= 6) {
+  //             return moment().diff(
+  //               moment().subtract(1, 'year').month(6).date(1),
+  //               'months'
+  //             );
+  //           } else {
+  //             return moment().diff(moment().month(6).date(1), 'months');
+  //           }
+  //         case 'lfytd':
+  //           return 12;
+  //       }
+  //       return 1;
+  //     })
+  //   );
+  // }
+
   get goalCount$() {
-    return this.layoutFacade.dateRange$.pipe(
-      map(val => {
-        switch (val.duration) {
-          case 'w':
-          case 'm':
-          case 'lm':
-            return 1;
-          case 'q':
-          case 'lq':
-            return 3;
-          case 'cytd':
-            return moment().diff(moment().startOf('year'), 'months');
-          case 'lcytd':
-            return 12;
-          case 'fytd':
-            if (moment().month() + 1 <= 6) {
-              return moment().diff(
-                moment().subtract(1, 'year').month(6).date(1),
-                'months'
-              );
-            } else {
-              return moment().diff(moment().month(6).date(1), 'months');
-            }
-          case 'lfytd':
-            return 12;
-        }
-        return 1;
-      })
-    );
+    return this.layoutFacade.dateRange$.pipe(map(v => v.goalCount));
   }
 
   get chartOptions$() {

@@ -37,25 +37,29 @@ export class FuGetFollowupCompletionComponent implements OnInit, OnDestroy {
     }
   }
 
-  get showGoals$() {
-    return this.layoutFacade.dateRange$.pipe(
-      map(val => {
-        if (['m', 'lm'].indexOf(val?.duration) >= 0) {
-          return true;
-        }
-        if (
-          val &&
-          val.start &&
-          moment(val.start).date() == 1 &&
-          moment(val.end).date() ==
-            moment(val.end).clone().endOf('month').date()
-        ) {
-          return true;
-        }
+  // get showGoals$() {
+  //   return this.layoutFacade.dateRange$.pipe(
+  //     map(val => {
+  //       if (['m', 'lm'].indexOf(val?.duration) >= 0) {
+  //         return true;
+  //       }
+  //       if (
+  //         val &&
+  //         val.start &&
+  //         moment(val.start).date() == 1 &&
+  //         moment(val.end).date() ==
+  //           moment(val.end).clone().endOf('month').date()
+  //       ) {
+  //         return true;
+  //       }
 
-        return false;
-      })
-    );
+  //       return false;
+  //     })
+  //   );
+  // }
+
+  get showGoals$() {
+    return this.layoutFacade.dateRange$.pipe(map(v => v.enableGoal));
   }
 
   total = 0;

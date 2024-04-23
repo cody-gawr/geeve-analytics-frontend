@@ -37,6 +37,10 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     return this.marketingFacade.isActivePatients$;
   }
 
+  get goalCount$() {
+    return this.layoutFacade.dateRange$.pipe(map(v => v.goalCount));
+  }
+
   totalVisitsVal = 0;
   totalVisitsPrev = 0;
   totalVisitsGoal = 0;
