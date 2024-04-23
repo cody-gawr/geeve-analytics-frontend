@@ -105,7 +105,6 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   public gaugeValue: number = 0;
   public gaugeLabel: string = '';
 
-  public goalCount: number = 0;
   public showTableInfo: boolean = false;
   public tableData = [];
 
@@ -127,19 +126,24 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     return this.caFacade.hourlyRateChartName$.pipe(map(v => v));
   }
 
+  get goalCount$(): Observable<number> {
+    return this.layoutFacade.dateRange$.pipe(map(v => v.goalCount));
+  }
+
   get chartOptions$() {
     return combineLatest([
       this.avgMode$,
       this.isDentistMode$,
       this.isTrend$,
+      this.goalCount$,
     ]).pipe(
-      map(([avgMode, isDentistMode, isTrend]) => {
+      map(([avgMode, isDentistMode, isTrend, goalCount]) => {
         if (!isDentistMode || !isTrend) {
           let options: ChartOptions = { ...this.barChartOptions };
           if (avgMode === 'average') {
             options.plugins.annotation = this.getAvgPluginOptions(this.average);
           } else if (avgMode === 'goal') {
-            const value = this.goal * this.goalCount;
+            const value = this.goal * goalCount;
             options.plugins.annotation = this.getGoalPluginOptions(value);
           } else {
             options.plugins.annotation = {};
