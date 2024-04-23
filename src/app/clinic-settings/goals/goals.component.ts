@@ -381,7 +381,7 @@ export class GoalsComponent
     //$(event.target).val(val);
     val = +val;
     this.goalsData['goals'][id][sn] = val == 0 ? -1 : val;
-    if (tab === 'Prime KPI Report') {
+    if (tab === 'Prime KPI Report' && !this.isExactOrCore) {
       let product =
         +$("input[name='goal63" + sn + "']").val() *
         +$("input[name='goal64" + sn + "']").val();
