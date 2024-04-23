@@ -20,6 +20,7 @@ import {
   Subject,
   takeUntil,
   map,
+  Observable,
 } from 'rxjs';
 
 @Component({
@@ -97,7 +98,6 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   gaugeValue = 0;
   gaugeLabel = '';
 
-  goalCount = 0;
   showTableInfo = false;
   tableData = [];
 
@@ -314,7 +314,9 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
       )
     );
   }
-
+  get goalCount$(): Observable<number> {
+    return this.layoutFacade.dateRange$.pipe(map(v => v.goalCount));
+  }
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,
@@ -331,30 +333,33 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
       this.isTrend$,
       this.caFacade.caRecallRateChartData$,
       this.caFacade.caRecallRateTrendChartData$,
+      this.goalCount$,
     ])
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([avgMode, isDentistMode, isTrend, data, trendData]) => {
-        if (!isDentistMode || !isTrend) {
-          this.datasets = data.datasets ?? [];
-          this.labels = data.labels ?? [];
-        } else {
-          this.datasets = trendData.datasets ?? [];
-          this.labels = trendData.labels ?? [];
+      .subscribe(
+        ([avgMode, isDentistMode, isTrend, data, trendData, goalCount]) => {
+          if (!isDentistMode || !isTrend) {
+            this.datasets = data.datasets ?? [];
+            this.labels = data.labels ?? [];
+          } else {
+            this.datasets = trendData.datasets ?? [];
+            this.labels = trendData.labels ?? [];
+          }
+
+          this.total = data.total;
+          this.prev = data.prev;
+          this.average = data.total;
+          this.goal = data.goal;
+          this.tableData = data.tableData ?? [];
+          this.gaugeLabel = data.gaugeLabel;
+          this.gaugeValue = data.gaugeValue;
+
+          this.setChartOptions(isDentistMode, isTrend, avgMode, goalCount);
         }
-
-        this.total = data.total;
-        this.prev = data.prev;
-        this.average = data.total;
-        this.goal = data.goal;
-        this.tableData = data.tableData ?? [];
-        this.gaugeLabel = data.gaugeLabel;
-        this.gaugeValue = data.gaugeValue;
-
-        this.setChartOptions(isDentistMode, isTrend, avgMode);
-      });
+      );
   }
 
   ngOnDestroy(): void {
@@ -410,14 +415,15 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   private setChartOptions(
     isDentistMode: boolean,
     isTrend: boolean,
-    avgMode: string
+    avgMode: string,
+    goalCount: number
   ): void {
     if (!isDentistMode || !isTrend) {
       let options: ChartOptions = { ...this.barChartOptions };
       if (avgMode === 'average') {
         options.plugins.annotation = this.getAvgPluginOptions(this.average);
       } else if (avgMode === 'goal') {
-        const value = this.goal * this.goalCount;
+        const value = this.goal * goalCount;
         options.plugins.annotation = this.getGoalPluginOptions(value);
       } else {
         options.plugins.annotation = {};

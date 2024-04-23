@@ -128,10 +128,11 @@
           <h3>{{ prev | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>
-        <div *ngIf="goal >= 0 && (showGoals$ | async) == true">
-          <h3 *ngIf="goal && (goalCount$ | async)">
-            {{ goal * (goalCount$ | async) }}
-          </h3>
+        <div
+          *ngIf="
+            goal >= 0 && (showGoals$ | async) == true && (goalCount$ | async)
+          ">
+          <h3>${{ goal * (goalCount$ | async) }}</h3>
           <span>Goal</span>
         </div>
       </div>

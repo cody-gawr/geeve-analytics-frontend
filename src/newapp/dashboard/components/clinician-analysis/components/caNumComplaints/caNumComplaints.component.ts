@@ -20,6 +20,7 @@ import {
   combineLatest,
   map,
   distinctUntilChanged,
+  Observable,
 } from 'rxjs';
 
 @Component({
@@ -110,7 +111,10 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   public gaugeValue: number = 0;
   public gaugeLabel: string = '';
 
-  public goalCount: number = 0;
+  get goalCount$(): Observable<number> {
+    return this.layoutFacade.dateRange$.pipe(map(v => v.goalCount));
+  }
+
   public showTableInfo: boolean = false;
   tableData = [];
 

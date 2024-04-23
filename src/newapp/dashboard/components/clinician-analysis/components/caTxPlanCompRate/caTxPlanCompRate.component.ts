@@ -20,6 +20,7 @@ import {
   combineLatest,
   map,
   distinctUntilChanged,
+  Observable,
 } from 'rxjs';
 
 @Component({
@@ -107,7 +108,6 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   public gaugeValue: number = 0;
   public gaugeLabel: string = '';
 
-  public goalCount: number = 0;
   public showTableInfo: boolean = false;
   tableData = [];
 
@@ -117,6 +117,10 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
         return typeof v === 'string' ? true : false;
       })
     );
+  }
+
+  get goalCount$(): Observable<number> {
+    return this.layoutFacade.dateRange$.pipe(map(v => v.goalCount));
   }
 
   get isLoading$() {
@@ -192,30 +196,33 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
       this.isTrend$,
       this.caFacade.caTxPlanCompRateChartData$,
       this.caFacade.caTxPlanCompRateTrendChartData$,
+      this.goalCount$,
     ])
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([avgMode, isDentistMode, isTrend, data, trendData]) => {
-        if (!(isDentistMode && isTrend)) {
-          this.datasets = data.datasets ?? [];
-          this.labels = data.labels ?? [];
-        } else {
-          this.datasets = trendData.datasets ?? [];
-          this.labels = trendData.labels ?? [];
+      .subscribe(
+        ([avgMode, isDentistMode, isTrend, data, trendData, goalCount]) => {
+          if (!(isDentistMode && isTrend)) {
+            this.datasets = data.datasets ?? [];
+            this.labels = data.labels ?? [];
+          } else {
+            this.datasets = trendData.datasets ?? [];
+            this.labels = trendData.labels ?? [];
+          }
+
+          this.total = data.total;
+          this.prev = data.prev;
+          this.average = data.total;
+          this.goal = data.goal;
+          this.tableData = data.tableData ?? [];
+          this.gaugeLabel = data.gaugeLabel;
+          this.gaugeValue = data.gaugeValue;
+
+          this.setChartOptions(isDentistMode, isTrend, avgMode, goalCount);
         }
-
-        this.total = data.total;
-        this.prev = data.prev;
-        this.average = data.total;
-        this.goal = data.goal;
-        this.tableData = data.tableData ?? [];
-        this.gaugeLabel = data.gaugeLabel;
-        this.gaugeValue = data.gaugeValue;
-
-        this.setChartOptions(isDentistMode, isTrend, avgMode);
-      });
+      );
   }
 
   ngOnDestroy(): void {
@@ -418,14 +425,15 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   private setChartOptions(
     isDentistMode: boolean,
     isTrend: boolean,
-    avgMode: string
+    avgMode: string,
+    goalCount: number
   ): void {
     if (!isDentistMode || !isTrend) {
       let options: ChartOptions = { ...this.barChartOptionsPercent };
       if (avgMode === 'average') {
         options.plugins.annotation = this.getAvgPluginOptions(this.average);
       } else if (avgMode === 'goal') {
-        const value = this.goal * this.goalCount;
+        const value = this.goal * goalCount;
         options.plugins.annotation = this.getGoalPluginOptions(value);
       } else {
         options.plugins.annotation = {};
