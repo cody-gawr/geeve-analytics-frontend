@@ -140,21 +140,10 @@ export class GoalsComponent
     );
   }
 
-  // getClinicSettings(clinicID) {
-  //   this.dentistService.getClinicSettings(clinicID).subscribe((res) => {
-  //     if (res.status == 200) {
-  //       this.Cconsultant = res.body.data[0]['consultant'];
-  //       console.log(this.Cconsultant);
-  //     }
-  //     else if (res.status == 401) {
-  //       this.handleUnAuthorization();
-  //     }
-  //   }, error => {
-  //     console.log('error', error)
-  //   });
-  // }
-
   onTabChanged(event) {
+    if ([1, 10].indexOf(event) === -1) {
+      this.selectedGoalCategory$.next('');
+    }
     this.selectedTab = event;
     this.tabChanged = true;
   }
