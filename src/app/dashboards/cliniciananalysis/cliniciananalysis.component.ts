@@ -45,6 +45,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { formatXTooltipLabel, formatXLabel } from '../../util';
 import moment from 'moment';
+import { getSubValForGoal } from '@/newapp/shared/utils';
 
 export interface Dentist {
   providerId: string;
@@ -8734,22 +8735,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.dentistProductionTrend1 = [];
                 this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
                 let maxVal = Math.max(...this.dentistProductionTrend1);
-                var subVal = 1;
-                if (maxVal >= 20001) {
-                  subVal = 200;
-                } else if (maxVal > 5000 && maxVal < 20000) {
-                  subVal = 100;
-                } else if (maxVal > 3000 && maxVal < 5000) {
-                  subVal = 50;
-                } else if (maxVal > 2000 && maxVal < 3000) {
-                  subVal = 10;
-                } else if (maxVal > 100 && maxVal < 2000) {
-                  subVal = 1;
-                } else if (maxVal > 51 && maxVal < 100) {
-                  subVal = 0.2;
-                } else if (maxVal <= 50) {
-                  subVal = 0.1;
-                }
+                const subVal = getSubValForGoal(maxVal);
 
                 var mappedtargetData = [];
                 this.targetData.map(function (v) {
@@ -8900,22 +8886,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 this.dentistColTrend[0]['data'] = this.dentistCollectionTrend1;
 
                 let maxVal = Math.max(...this.dentistCollectionTrend1);
-                var subVal = 1;
-                if (maxVal >= 20001) {
-                  subVal = 200;
-                } else if (maxVal > 5000 && maxVal < 20000) {
-                  subVal = 100;
-                } else if (maxVal > 3000 && maxVal < 5000) {
-                  subVal = 50;
-                } else if (maxVal > 2000 && maxVal < 3000) {
-                  subVal = 10;
-                } else if (maxVal > 100 && maxVal < 2000) {
-                  subVal = 1;
-                } else if (maxVal > 51 && maxVal < 100) {
-                  subVal = 0.2;
-                } else if (maxVal <= 50) {
-                  subVal = 0.1;
-                }
+                const subVal = getSubValForGoal(maxVal);
                 var mappedcollectiontargetData = [];
                 this.collectiontargetData.map(function (v) {
                   if (v == null) {

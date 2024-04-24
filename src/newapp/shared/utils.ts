@@ -584,3 +584,23 @@ export function generatingLegend_4(): _DeepPartialObject<LegendOptions<any>> {
     // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
   };
 }
+
+export function getSubValForGoal(maxVal: number) {
+  var subVal = 1;
+  if (maxVal >= 20001) {
+    subVal = 200;
+  } else if (maxVal > 5000 && maxVal < 20000) {
+    subVal = 100;
+  } else if (maxVal > 3000 && maxVal < 5000) {
+    subVal = 50;
+  } else if (maxVal > 2000 && maxVal < 3000) {
+    subVal = 10;
+  } else if (maxVal > 100 && maxVal < 2000) {
+    subVal = 5;
+  } else if (maxVal > 51 && maxVal < 100) {
+    subVal = 0.2;
+  } else if (maxVal <= 50) {
+    subVal = 0.1;
+  }
+  return subVal;
+}

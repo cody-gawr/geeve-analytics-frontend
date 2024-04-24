@@ -2,7 +2,10 @@ import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { ClinicianAnalysisActions } from '../actions';
 import _ from 'lodash';
 import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.reducer';
-import { dynamicBarBackgroundColor } from '@/newapp/shared/utils';
+import {
+  dynamicBarBackgroundColor,
+  getSubValForGoal,
+} from '@/newapp/shared/utils';
 import {
   selectAverage,
   selectCompare,
@@ -741,23 +744,7 @@ export const selectCaProductionTrendChartData = createSelector(
     ];
 
     const maxVal = Math.max(...chartData);
-    var subVal = 1;
-    if (maxVal >= 20001) {
-      subVal = 200;
-    } else if (maxVal > 5000 && maxVal < 20000) {
-      subVal = 100;
-    } else if (maxVal > 3000 && maxVal < 5000) {
-      subVal = 50;
-    } else if (maxVal > 2000 && maxVal < 3000) {
-      subVal = 10;
-    } else if (maxVal > 100 && maxVal < 2000) {
-      subVal = 1;
-    } else if (maxVal > 51 && maxVal < 100) {
-      subVal = 0.2;
-    } else if (maxVal <= 50) {
-      subVal = 0.1;
-    }
-
+    const subVal = getSubValForGoal(maxVal);
     const mappedtargetData = [];
     targetData.map(function (v) {
       if (v == null) {
@@ -1231,22 +1218,7 @@ export const selectCaHourlyRateTrendChartData = createSelector(
     ];
 
     const maxVal = Math.max(...chartData);
-    var subVal = 1;
-    if (maxVal >= 20001) {
-      subVal = 200;
-    } else if (maxVal > 5000 && maxVal < 20000) {
-      subVal = 100;
-    } else if (maxVal > 3000 && maxVal < 5000) {
-      subVal = 50;
-    } else if (maxVal > 2000 && maxVal < 3000) {
-      subVal = 10;
-    } else if (maxVal > 100 && maxVal < 2000) {
-      subVal = 5;
-    } else if (maxVal > 51 && maxVal < 100) {
-      subVal = 0.2;
-    } else if (maxVal <= 50) {
-      subVal = 0.1;
-    }
+    const subVal = getSubValForGoal(maxVal);
 
     const mappedtargetData = [];
     targetData.map(function (v) {
@@ -1506,22 +1478,7 @@ export const selectCaNumNewPatientsTrendChartData = createSelector(
     ];
 
     const maxVal = Math.max(...chartData);
-    var subVal = 1;
-    if (maxVal >= 20001) {
-      subVal = 200;
-    } else if (maxVal > 5000 && maxVal < 20000) {
-      subVal = 100;
-    } else if (maxVal > 3000 && maxVal < 5000) {
-      subVal = 50;
-    } else if (maxVal > 2000 && maxVal < 3000) {
-      subVal = 10;
-    } else if (maxVal > 100 && maxVal < 2000) {
-      subVal = 1;
-    } else if (maxVal > 51 && maxVal < 100) {
-      subVal = 0.2;
-    } else if (maxVal <= 50) {
-      subVal = 0.1;
-    }
+    const subVal = getSubValForGoal(maxVal);
 
     const mappedtargetData = [];
     targetData.map(function (v) {

@@ -206,6 +206,7 @@ export interface MkTotalVisitsItem {
   totalFtaUta: string | number;
   year: null | unknown;
   yearMonth: null | unknown;
+  goals: number;
 }
 
 export interface MkNewPatientAcqTrendApiResponse {

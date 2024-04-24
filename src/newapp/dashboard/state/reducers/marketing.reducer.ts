@@ -32,6 +32,7 @@ import moment from 'moment';
 import { ChartDataset, Colors } from 'chart.js';
 import { selectConnectedWith } from './dashboard.reducer';
 import { COLORS } from '@/newapp/constants';
+import { getSubValForGoal } from '@/newapp/shared/utils';
 
 type MarketingEndpoints =
   | 'mkNumPatientsByReferral'
@@ -1211,10 +1212,16 @@ export const selectNumNewPatientsTrendChartData = createSelector(
       };
     } else {
       const chartData = [],
+        targetData = [],
         chartLabels = [];
       const bgColors = [];
       newNumPatientsTrendData.data.forEach((v, index) => {
         chartData.push(v.newPatients);
+        if (v.goals == -1 || !v.goals) {
+          targetData.push(null);
+        } else {
+          targetData.push(v.goals);
+        }
         chartLabels.push(
           trendMode === 'current'
             ? moment(v.yearMonth).format('MMM YYYY')
@@ -1222,11 +1229,29 @@ export const selectNumNewPatientsTrendChartData = createSelector(
         );
         bgColors.push(index % 2 == 0 ? '#119682' : '#EEEEF8');
       });
+      const mappedtargetData = [];
+      const maxVal = Math.max(...chartData);
+      const subVal = getSubValForGoal(maxVal);
+      targetData.map(function (v) {
+        if (v == null) {
+          mappedtargetData.push([v - 0, v + 0]);
+        } else {
+          mappedtargetData.push([v - subVal, v + subVal]);
+        }
+      });
       return {
         datasets: [
           {
             data: chartData,
+            label: trendMode == 'current' ? 'Actual' : '',
             backgroundColor: bgColors,
+            order: 2,
+          },
+          {
+            data: trendMode == 'current' ? mappedtargetData : [],
+            label: trendMode == 'current' ? 'Target' : '',
+            backgroundColor: 'rgba(255, 0, 128, 1)',
+            order: 1,
           },
         ],
         labels: chartLabels,
@@ -1583,10 +1608,16 @@ export const selectTotalVisitsTrendChartData = createSelector(
       };
     } else {
       const chartData = [],
+        targetData = [],
         chartLabels = [];
       const bgColors = [];
       totalVisitsTrendData.data.forEach((v, index) => {
         chartData.push(v.numVisits);
+        if (v.goals == -1 || !v.goals) {
+          targetData.push(null);
+        } else {
+          targetData.push(v.goals);
+        }
         chartLabels.push(
           trendMode === 'current'
             ? moment(v.yearMonth).format('MMM YYYY')
@@ -1594,11 +1625,28 @@ export const selectTotalVisitsTrendChartData = createSelector(
         );
         bgColors.push(index % 2 == 0 ? '#119682' : '#EEEEF8');
       });
+      const mappedtargetData = [];
+      const maxVal = Math.max(...chartData);
+      const subVal = getSubValForGoal(maxVal);
+      targetData.map(function (v) {
+        if (v == null) {
+          mappedtargetData.push([v - 0, v + 0]);
+        } else {
+          mappedtargetData.push([v - subVal, v + subVal]);
+        }
+      });
       return {
         datasets: [
           {
             data: chartData,
             backgroundColor: bgColors,
+            order: 2,
+          },
+          {
+            data: trendMode == 'current' ? mappedtargetData : [],
+            label: trendMode == 'current' ? 'Target' : '',
+            backgroundColor: 'rgba(255, 0, 128, 1)',
+            order: 1,
           },
         ],
         labels: chartLabels,
