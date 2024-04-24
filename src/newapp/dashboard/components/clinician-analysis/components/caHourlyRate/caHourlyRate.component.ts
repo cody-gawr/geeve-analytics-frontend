@@ -10,6 +10,7 @@ import {
   formatXTooltipLabel,
   generatingLegend,
   generatingLegend_3,
+  renderTooltipLabel,
 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
@@ -437,47 +438,8 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           // use label callback to return the desired label
-          label: tooltipItem => {
-            if (tooltipItem.label.includes('WE ')) {
-              return tooltipItem.label + ': $' + tooltipItem.formattedValue;
-            }
-            var targetLabel = '';
-            const v = tooltipItem.parsed.y;
-            let tLabel = tooltipItem.dataset.label;
-            if (tLabel != '') {
-              tLabel = tLabel + ': ';
-              targetLabel = tLabel;
-            }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-            let ylable = tooltipItem.parsed._custom
-              ? +(
-                  tooltipItem.parsed._custom.max +
-                  tooltipItem.parsed._custom.min
-                ) / 2
-              : v;
-            let tLab = 0;
-            if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
-            } else {
-              const tval =
-                tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
-              if (Array.isArray(tval)) {
-                tLab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-                if (tLab == 0) {
-                  tLabel = '';
-                }
-              }
-            }
-            if (tLab == 0 && targetLabel == 'Target: ') {
-              return '';
-            } else {
-              return (
-                tLabel +
-                splitName(tooltipItem.label).join(' ') +
-                ': $' +
-                this.decimalPipe.transform(<number>ylable)
-              );
-            }
-          },
+          label: tooltipItem =>
+            renderTooltipLabel(tooltipItem, '$', this.decimalPipe),
           title: function () {
             return '';
           },

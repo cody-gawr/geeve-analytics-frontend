@@ -17,6 +17,7 @@ import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { COLORS } from '../constants';
 import { Clinic } from '../models/clinic';
+import { DecimalPipe } from '@angular/common';
 
 export function splitName(label: string) {
   const regex = /\w+\s\w+(?=\s)|\w+/g;
@@ -595,12 +596,57 @@ export function getSubValForGoal(maxVal: number) {
     subVal = 50;
   } else if (maxVal > 2000 && maxVal < 3000) {
     subVal = 20;
-  } else if (maxVal > 100 && maxVal < 2000) {
+  } else if (maxVal > 1000 && maxVal < 2000) {
     subVal = 10;
+  } else if (maxVal > 100 && maxVal < 1000) {
+    subVal = 5;
   } else if (maxVal > 51 && maxVal < 100) {
     subVal = 1;
   } else if (maxVal <= 50) {
     subVal = 0.5;
   }
   return subVal;
+}
+
+export function renderTooltipLabel(
+  tooltipItem: TooltipItem<any>,
+  sign = '',
+  decimalPipe: DecimalPipe = null
+) {
+  // if (tooltipItem.label.includes('WE ')) {
+  //   return tooltipItem.label + `: ${sign}` + tooltipItem.formattedValue;
+  // }
+
+  var Targetlable = '';
+  const v = tooltipItem.parsed.y;
+  let Tlable = tooltipItem.dataset.label;
+  if (Tlable != '') {
+    Tlable = Tlable + ': ';
+    Targetlable = Tlable;
+  }
+
+  let ylable = tooltipItem.parsed._custom
+    ? +(tooltipItem.parsed._custom.max + tooltipItem.parsed._custom.min) / 2
+    : v;
+  var tlab = 0;
+  if (typeof tooltipItem.chart.data.datasets[1] !== 'undefined') {
+    const tval = tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
+    if (Array.isArray(tval)) {
+      tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
+      if (tlab == 0) {
+        Tlable = '';
+      }
+    }
+  }
+
+  if (tlab == 0 && Targetlable == 'Target: ') {
+    return '';
+  } else {
+    return (
+      Tlable +
+      splitName(tooltipItem.label).join(' ') +
+      `: ${sign}` +
+      (decimalPipe ? decimalPipe.transform(<number>ylable) : ylable)
+    );
+  }
 }

@@ -1639,6 +1639,7 @@ export const selectTotalVisitsTrendChartData = createSelector(
         datasets: [
           {
             data: chartData,
+            label: 'Actual',
             backgroundColor: bgColors,
             order: 2,
           },

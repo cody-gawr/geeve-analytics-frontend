@@ -1,4 +1,3 @@
-import { splitName } from '@/app/util';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { COLORS } from '@/newapp/constants';
@@ -7,8 +6,8 @@ import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import {
   formatXLabel,
-  generatingLegend_2,
   generatingLegend_3,
+  renderTooltipLabel,
 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
@@ -398,39 +397,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           // use label callback to return the desired label
-          label: function (tooltipItem) {
-            var Targetlable = '';
-            const v = tooltipItem.parsed.y;
-            let Tlable = tooltipItem.dataset.label;
-            if (Tlable != '') {
-              Tlable = Tlable + ': ';
-              Targetlable = Tlable;
-            }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-            let ylable = tooltipItem.parsed._custom
-              ? +(
-                  tooltipItem.parsed._custom.max +
-                  tooltipItem.parsed._custom.min
-                ) / 2
-              : v;
-            var tlab = 0;
-            if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
-            } else {
-              const tval =
-                tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
-              if (Array.isArray(tval)) {
-                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-                if (tlab == 0) {
-                  Tlable = '';
-                }
-              }
-            }
-            if (tlab == 0 && Targetlable == 'Target: ') {
-              return '';
-            } else {
-              return Tlable + tooltipItem.label + ': ' + ylable;
-            }
-          },
+          label: tooltipItem => renderTooltipLabel(tooltipItem),
           // remove title
           title: function (tooltipItem) {
             return '';

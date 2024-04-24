@@ -8,7 +8,7 @@ import {
   formatXTooltipLabel,
   generatingLegend,
   generatingLegend_3,
-  splitName,
+  renderTooltipLabel,
 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
@@ -579,47 +579,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           // use label callback to return the desired label
-          label: tooltipItem => {
-            if (tooltipItem.label.includes('WE ')) {
-              return tooltipItem.label + ': $' + tooltipItem.formattedValue;
-            }
-            var Targetlable = '';
-            const v = tooltipItem.parsed.y;
-            let Tlable = tooltipItem.dataset.label;
-            if (Tlable != '') {
-              Tlable = Tlable + ': ';
-              Targetlable = Tlable;
-            }
-
-            let ylable = tooltipItem.parsed._custom
-              ? +(
-                  tooltipItem.parsed._custom.max +
-                  tooltipItem.parsed._custom.min
-                ) / 2
-              : v;
-            var tlab = 0;
-            if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
-            } else {
-              const tval =
-                tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
-              if (Array.isArray(tval)) {
-                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-                if (tlab == 0) {
-                  Tlable = '';
-                }
-              }
-            }
-            if (tlab == 0 && Targetlable == 'Target: ') {
-              return '';
-            } else {
-              return (
-                Tlable +
-                splitName(tooltipItem.label).join(' ') +
-                ': $' +
-                this.decimalPipe.transform(<number>ylable)
-              );
-            }
-          },
+          label: tooltipItem =>
+            renderTooltipLabel(tooltipItem, '$', this.decimalPipe),
           title: function () {
             return '';
           },

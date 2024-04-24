@@ -5,13 +5,13 @@ import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import {
   externalTooltipHandler,
   generatingLegend_4,
+  renderTooltipLabel,
 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { ChartOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
-import moment from 'moment';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
@@ -274,13 +274,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
         position: 'nearest',
         external: externalTooltipHandler,
         callbacks: {
-          label: tooltipItems => {
-            return (
-              tooltipItems.label +
-              ': ' +
-              this.decimalPipe.transform(tooltipItems.parsed.y)
-            );
-          },
+          label: tooltipItem => renderTooltipLabel(tooltipItem),
           title: function () {
             return '';
           },
@@ -325,15 +319,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
         position: 'nearest',
         external: externalTooltipHandler,
         callbacks: {
-          label: function (tooltipItems) {
-            if (tooltipItems.parsed.y > 0) {
-              return (
-                tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue
-              );
-            } else {
-              return '';
-            }
-          },
+          label: tooltipItem => renderTooltipLabel(tooltipItem),
           title: tooltipItems => {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
             return `${tooltipItems[0].label}: ${this.decimalPipe.transform(
