@@ -27,6 +27,7 @@ export interface FdUtaRatioItem {
   totalUta: string | number;
   year: null | unknown;
   yearMonth: null | unknown;
+  goals?: number;
 }
 
 export interface FdFtaRatioApiResponse {
@@ -58,6 +59,7 @@ export interface FdFtaRatioItem {
   totalFta: string | number;
   year: null | unknown;
   yearMonth: null | unknown;
+  goals?: number;
 }
 
 export interface FdNumTicksApiResponse {

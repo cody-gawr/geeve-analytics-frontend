@@ -594,13 +594,13 @@ export function getSubValForGoal(maxVal: number) {
   } else if (maxVal > 3000 && maxVal < 5000) {
     subVal = 50;
   } else if (maxVal > 2000 && maxVal < 3000) {
-    subVal = 10;
+    subVal = 20;
   } else if (maxVal > 100 && maxVal < 2000) {
-    subVal = 5;
+    subVal = 10;
   } else if (maxVal > 51 && maxVal < 100) {
-    subVal = 0.2;
+    subVal = 1;
   } else if (maxVal <= 50) {
-    subVal = 0.1;
+    subVal = 0.5;
   }
   return subVal;
 }

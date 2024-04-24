@@ -25,6 +25,7 @@ import {
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
+import { getSubValForGoal } from '@/newapp/shared/utils';
 
 type FrontDeskEndpoints =
   | 'fdUtilisationRate'
@@ -1659,6 +1660,7 @@ export const selectFdFtaRatioTrendChartData = createSelector(
     }
     let chartDatasets = [];
     const chartData = [],
+      targetData = [],
       chartLabels = [];
     if (isMultiClinics) {
       _.chain(resBody.data)
@@ -1689,28 +1691,51 @@ export const selectFdFtaRatioTrendChartData = createSelector(
     } else {
       resBody.data.forEach(item => {
         chartData.push(_.round(<number>item.ftaRatio, 1));
+        if (item.goals == -1 || !item.goals) {
+          targetData.push(null);
+        } else {
+          targetData.push(item.goals);
+        }
         chartLabels.push(
           trendMode === 'current'
             ? moment(item.yearMonth).format('MMM YYYY')
             : item.year
         );
       });
+      const mappedtargetData = [];
+      const maxVal = Math.max(...chartData);
+      const subVal = getSubValForGoal(maxVal);
+      targetData.map(function (v) {
+        if (v == null) {
+          mappedtargetData.push([v - 0, v + 0]);
+        } else {
+          mappedtargetData.push([v - subVal, v + subVal]);
+        }
+      });
       chartDatasets = [
         {
           data: [],
           label: '',
-          shadowOffsetX: 3,
-          shadowOffsetY: 2,
-          shadowBlur: 3,
-          shadowColor: 'rgba(0, 0, 0, 0.3)',
-          pointBevelWidth: 2,
-          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-          pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-          pointShadowOffsetX: 3,
-          pointShadowOffsetY: 3,
-          pointShadowBlur: 10,
-          pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-          backgroundOverlayMode: 'multiply',
+          // shadowOffsetX: 3,
+          // shadowOffsetY: 2,
+          // shadowBlur: 3,
+          // shadowColor: 'rgba(0, 0, 0, 0.3)',
+          // pointBevelWidth: 2,
+          // pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          // pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+          // pointShadowOffsetX: 3,
+          // pointShadowOffsetY: 3,
+          // pointShadowBlur: 10,
+          // pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+          // backgroundOverlayMode: 'multiply',
+          order: 2,
+        },
+        {
+          data: trendMode == 'current' ? mappedtargetData : [],
+          label: trendMode == 'current' ? 'Target' : '',
+          backgroundColor: 'rgba(255, 0, 128, 1)',
+          order: 1,
+          type: 'bar',
         },
       ];
       chartDatasets[0]['data'] = chartData;
@@ -1802,7 +1827,8 @@ export const selectFdUtaRatioTrendChartData = createSelector(
         labels: [],
       };
     }
-    let chartDatasets = [];
+    let chartDatasets = [],
+      targetData = [];
     const chartData = [],
       chartLabels = [];
     if (typeof clinicId === 'string') {
@@ -1834,28 +1860,50 @@ export const selectFdUtaRatioTrendChartData = createSelector(
     } else {
       resBody.data.forEach(item => {
         chartData.push(_.round(<number>item.utaRatio, 1));
+        if (item.goals == -1 || !item.goals) {
+          targetData.push(null);
+        } else {
+          targetData.push(item.goals);
+        }
         chartLabels.push(
           trendMode === 'current'
             ? moment(item.yearMonth).format('MMM YYYY')
             : item.year
         );
       });
+      const mappedtargetData = [];
+      const maxVal = Math.max(...chartData);
+      const subVal = getSubValForGoal(maxVal);
+      targetData.map(function (v) {
+        if (v == null) {
+          mappedtargetData.push([v - 0, v + 0]);
+        } else {
+          mappedtargetData.push([v - subVal, v + subVal]);
+        }
+      });
       chartDatasets = [
         {
           data: [],
           label: '',
-          shadowOffsetX: 3,
-          shadowOffsetY: 2,
-          shadowBlur: 3,
-          shadowColor: 'rgba(0, 0, 0, 0.3)',
-          pointBevelWidth: 2,
-          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-          pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-          pointShadowOffsetX: 3,
-          pointShadowOffsetY: 3,
-          pointShadowBlur: 10,
-          pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-          backgroundOverlayMode: 'multiply',
+          // shadowOffsetX: 3,
+          // shadowOffsetY: 2,
+          // shadowBlur: 3,
+          // shadowColor: 'rgba(0, 0, 0, 0.3)',
+          // pointBevelWidth: 2,
+          // pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          // pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+          // pointShadowOffsetX: 3,
+          // pointShadowOffsetY: 3,
+          // pointShadowBlur: 10,
+          // pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+          // backgroundOverlayMode: 'multiply',
+          order: 2,
+        },
+        {
+          data: trendMode == 'current' ? mappedtargetData : [],
+          label: trendMode == 'current' ? 'Target' : '',
+          backgroundColor: 'rgba(255, 0, 128, 1)',
+          order: 1,
         },
       ];
       chartDatasets[0]['data'] = chartData;
