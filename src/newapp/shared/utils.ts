@@ -642,11 +642,13 @@ export function renderTooltipLabel(
   if (tlab == 0 && Targetlable == 'Target: ') {
     return '';
   } else {
-    return (
-      Tlable +
-      splitName(tooltipItem.label).join(' ') +
-      `: ${sign}` +
-      (decimalPipe ? decimalPipe.transform(<number>ylable) : ylable)
-    );
+    const yV = decimalPipe ? decimalPipe.transform(<number>ylable) : ylable;
+    if (sign === '%') {
+      return `${Tlable}${splitName(tooltipItem.label).join(' ')} : ${yV}${sign}`;
+    } else if (sign === '$') {
+      return `${Tlable}${splitName(tooltipItem.label).join(' ')} : ${sign}${yV}`;
+    } else {
+      return `${Tlable}${splitName(tooltipItem.label).join(' ')} : ${yV}`;
+    }
   }
 }
