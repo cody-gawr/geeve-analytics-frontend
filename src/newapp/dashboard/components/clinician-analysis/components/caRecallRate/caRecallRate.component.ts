@@ -54,7 +54,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get showGoals$() {
-    return this.layoutFacade.dateRange$.pipe(map(v => v.enableGoal));
+    return this.layoutFacade.isFullSingleMonthDateRange$;
   }
 
   get durationTrendLabel$() {

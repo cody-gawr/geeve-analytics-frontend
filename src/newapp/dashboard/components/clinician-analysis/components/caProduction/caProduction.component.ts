@@ -55,6 +55,10 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     );
   }
 
+  get showGoal$() {
+    return this.layoutFacade.isFullSingleMonthDateRange$;
+  }
+
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }
@@ -79,10 +83,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   get durationLabel$(): Observable<string> {
     return this.layoutFacade.durationLabel$;
-  }
-
-  get isGoalEnabled$() {
-    return this.layoutFacade.dateRange$.pipe(map(v => v.enableGoal));
   }
 
   get durationTrendLabel$() {

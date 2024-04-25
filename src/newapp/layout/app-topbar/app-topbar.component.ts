@@ -329,10 +329,10 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
         this.range.controls['start'].value,
         event.value,
         'custom',
-        1,
-        this.range.controls['start'].value.date() ==
-          this.range.controls['start'].value.clone().startOf('month').date() &&
-          event.value.date() == event.value.clone().endOf('month').date()
+        1
+        // this.range.controls['start'].value.date() ==
+        //   this.range.controls['start'].value.clone().startOf('month').date() &&
+        //   event.value.date() == event.value.clone().endOf('month').date()
       );
 
       this.layoutFacade.setTrend('off');
