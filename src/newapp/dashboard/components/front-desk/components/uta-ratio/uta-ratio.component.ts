@@ -31,22 +31,15 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
     return 'trending_down';
   }
 
-  // get showGoals$() {
-  //   return this.layoutFacade.dateRange$.pipe(
-  //     map(
-  //       val =>
-  //         ['m', 'lm'].indexOf(val?.duration) >= 0 ||
-  //         (val &&
-  //           val.start &&
-  //           moment(val.start).date() == 1 &&
-  //           moment(val.end).date() ==
-  //             moment(val.end).clone().endOf('month').date())
-  //     )
-  //   );
-  // }
-
   get showGoals$() {
-    return this.layoutFacade.isFullSingleMonthDateRange$;
+    return combineLatest([
+      this.layoutFacade.dateRange$,
+      this.layoutFacade.isFullSingleMonthDateRange$,
+    ]).pipe(
+      map(([v, isFullSingle]) => {
+        return v.enableGoal || isFullSingle;
+      })
+    );
   }
 
   fdUtaRatioVal = 0;

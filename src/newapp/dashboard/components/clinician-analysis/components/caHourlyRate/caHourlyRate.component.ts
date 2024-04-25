@@ -78,8 +78,14 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get showGoals$() {
-    //return this.layoutFacade.dateRange$.pipe(map(v => v.enableGoal));
-    return this.layoutFacade.isFullSingleMonthDateRange$;
+    return combineLatest([
+      this.layoutFacade.dateRange$,
+      this.layoutFacade.isFullSingleMonthDateRange$,
+    ]).pipe(
+      map(([v, isFullSingle]) => {
+        return v.enableGoal || isFullSingle;
+      })
+    );
   }
 
   get durationTrendLabel$() {

@@ -66,7 +66,14 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   }
 
   get showGoals$() {
-    return this.layoutFacade.isFullSingleMonthDateRange$;
+    return combineLatest([
+      this.layoutFacade.dateRange$,
+      this.layoutFacade.isFullSingleMonthDateRange$,
+    ]).pipe(
+      map(([v, isFullSingle]) => {
+        return v.enableGoal || isFullSingle;
+      })
+    );
   }
 
   get durationTrendLabel$() {
