@@ -104,7 +104,14 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   }
 
   get showGoal$() {
-    return this.layoutFacade.isFullSingleMonthDateRange$;
+    return combineLatest([
+      this.layoutFacade.dateRange$,
+      this.layoutFacade.isFullSingleMonthDateRange$,
+    ]).pipe(
+      map(([v, isFullSingle]) => {
+        return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
+      })
+    );
   }
 
   constructor(

@@ -47,7 +47,7 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
       this.layoutFacade.isFullSingleMonthDateRange$,
     ]).pipe(
       map(([v, isFullSingle]) => {
-        return v.enableGoal || isFullSingle;
+        return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
       })
     );
   }
