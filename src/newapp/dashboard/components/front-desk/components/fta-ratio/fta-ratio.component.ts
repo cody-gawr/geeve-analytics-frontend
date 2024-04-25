@@ -5,6 +5,7 @@ import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import {
   JeeveLineFillOptions,
   generatingLegend_4,
+  renderTooltipLabel,
 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
@@ -255,41 +256,7 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
           return !ctx.tooltip;
         },
         callbacks: {
-          label: function (tooltipItems) {
-            var Targetlable = '';
-            const v = tooltipItems.dataset.data[tooltipItems.dataIndex];
-            let Tlable = tooltipItems.dataset.label;
-            if (Tlable != '') {
-              Tlable = Tlable + ': ';
-              Targetlable = Tlable;
-            }
-
-            let ylable = tooltipItems.parsed._custom
-              ? +(
-                  tooltipItems.parsed._custom.max +
-                  tooltipItems.parsed._custom.min
-                ) / 2
-              : v;
-            var tlab = 0;
-            if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
-            } else {
-              const tval =
-                tooltipItems.chart.data.datasets[1].data[
-                  tooltipItems.dataIndex
-                ];
-              if (Array.isArray(tval)) {
-                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-                if (tlab == 0) {
-                  Tlable = '';
-                }
-              }
-            }
-            if (tlab == 0 && Targetlable == 'Target: ') {
-              return '';
-            } else {
-              return Tlable + tooltipItems.label + ': ' + ylable + '%';
-            }
-          },
+          label: tooltipItem => renderTooltipLabel(tooltipItem, '%'),
           title: function () {
             return '';
           },
@@ -394,51 +361,7 @@ export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
           return !ctx.tooltip;
         },
         callbacks: {
-          label: function (tooltipItems) {
-            let label = tooltipItems.label;
-            if ((<string>tooltipItems.label).indexOf('--') >= 0) {
-              let lbl = (<string>tooltipItems.label).split('--');
-              if (typeof lbl[3] === 'undefined') {
-                label = lbl[0];
-              } else {
-                label = lbl[0] + ' - ' + lbl[3];
-              }
-            }
-            var Targetlable = '';
-            const v = tooltipItems.dataset.data[tooltipItems.dataIndex];
-            let Tlable = tooltipItems.dataset.label;
-            if (Tlable != '') {
-              Tlable = Tlable + ': ';
-              Targetlable = Tlable;
-            }
-            //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
-            let ylable = tooltipItems.parsed._custom
-              ? +(
-                  tooltipItems.parsed._custom.max +
-                  tooltipItems.parsed._custom.min
-                ) / 2
-              : v;
-
-            var tlab = 0;
-            if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
-            } else {
-              const tval =
-                tooltipItems.chart.data.datasets[1].data[
-                  tooltipItems.dataIndex
-                ];
-              if (Array.isArray(tval)) {
-                tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
-                if (tlab == 0) {
-                  Tlable = '';
-                }
-              }
-            }
-            if (tlab == 0 && Targetlable == 'Target: ') {
-              return '';
-            } else {
-              return Tlable + label + ': ' + ylable + '%';
-            }
-          },
+          label: tooltipItem => renderTooltipLabel(tooltipItem, '%'),
           afterLabel: function (tooltipItems) {
             let hour = 0;
             let phour = 0;

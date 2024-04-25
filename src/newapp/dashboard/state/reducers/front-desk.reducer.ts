@@ -1715,7 +1715,7 @@ export const selectFdFtaRatioTrendChartData = createSelector(
       chartDatasets = [
         {
           data: [],
-          label: '',
+          label: 'Actual',
           order: 2,
         },
         {

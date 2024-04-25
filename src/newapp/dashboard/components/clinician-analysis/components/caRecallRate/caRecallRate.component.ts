@@ -7,6 +7,7 @@ import {
   formatXLabel,
   generatingLegend,
   generatingLegend_3,
+  renderTooltipLabel,
 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
@@ -202,14 +203,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           // use label callback to return the desired label
-          label: function (tooltipItem) {
-            if (tooltipItem?.dataset?.label == 'Actual') {
-              return (
-                tooltipItem.label + ': ' + tooltipItem.formattedValue + '%'
-              );
-            }
-            return '';
-          },
+          label: tooltipItem => renderTooltipLabel(tooltipItem, '%'),
           // remove title
           title: function (tooltipItem) {
             return '';
