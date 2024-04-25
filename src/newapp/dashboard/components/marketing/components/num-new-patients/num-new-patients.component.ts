@@ -56,10 +56,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
   }
 
   get isFullMonthsDateRange$() {
-    return combineLatest([
-      this.layoutFacade.isFullMonthsDateRange$,
-      this.isTrend$,
-    ]).pipe(map(([isFull, isTrend]) => isFull || isTrend));
+    return this.layoutFacade.isFullMonthsDateRange$;
   }
 
   newNumPatientsVal = 0;
