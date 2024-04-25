@@ -117,12 +117,7 @@
           <h3>{{ newNumPatientsPrev | number: '1.0-0' }}</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>
-        <div
-          *ngIf="
-            (isFullMonthsDateRange$ | async) &&
-            !(isActivePatients$ | async) &&
-            newNumPatientsGoal > 0
-          ">
+        <div *ngIf="showGoalInFooter$ | async">
           <h3>
             {{ newNumPatientsGoal * (goalCount$ | async) | number: '1.0-0' }}
           </h3>

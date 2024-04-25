@@ -11,6 +11,7 @@ import {
   selectIsFullMonthsDateRange,
   selectTrend,
   selectCompareEnabled,
+  selectIsFullSingleMonthDateRange,
 } from '../state/reducers/layout.reducer';
 import { Moment } from 'moment';
 import { layoutPageActions } from '../state/actions';
@@ -37,6 +38,10 @@ export class LayoutFacade {
 
   public readonly isFullMonthsDateRange$ = this.store.pipe(
     select(selectIsFullMonthsDateRange)
+  );
+
+  public readonly isFullSingleMonthDateRange$ = this.store.pipe(
+    select(selectIsFullSingleMonthDateRange)
   );
 
   public saveDateRange(

@@ -117,6 +117,18 @@ export const selectIsFullMonthsDateRange = createSelector(
   }
 );
 
+export const selectIsFullSingleMonthDateRange = createSelector(
+  selectDateRange,
+  ({ start, end }) => {
+    const _startDate = isMoment(start) ? start : moment(start);
+    const _endDate = isMoment(end) ? end : moment(end);
+    return (
+      _startDate.date() == 1 &&
+      _endDate.date() == _startDate.clone().endOf('month').date()
+    );
+  }
+);
+
 export const selectDurationLabel = createSelector(
   selectDateRange,
   ({ duration }) => {

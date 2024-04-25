@@ -103,6 +103,10 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     return this.layoutFacade.isFullMonthsDateRange$;
   }
 
+  get showGoal$() {
+    return this.layoutFacade.isFullSingleMonthDateRange$;
+  }
+
   constructor(
     private marketingFacade: MarketingFacade,
     private clinicFacade: ClinicFacade,

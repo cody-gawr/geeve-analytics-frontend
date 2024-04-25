@@ -83,8 +83,10 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     return this.dashboardFacade.isConnectedWith$;
   }
 
-  get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$;
+  get showGoalInFooter$() {
+    return combineLatest([this.layoutFacade.isFullSingleMonthDateRange$]).pipe(
+      map(([isFullSingle]) => isFullSingle && this.totalVisitsGoal > 0)
+    );
   }
 
   get hasData$() {

@@ -31,18 +31,21 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
     return 'trending_down';
   }
 
+  // get showGoals$() {
+  //   return this.layoutFacade.dateRange$.pipe(
+  //     map(
+  //       val =>
+  //         ['m', 'lm'].indexOf(val?.duration) >= 0 ||
+  //         (val &&
+  //           val.start &&
+  //           moment(val.start).date() == 1 &&
+  //           moment(val.end).date() ==
+  //             moment(val.end).clone().endOf('month').date())
+  //     )
+  //   );
+  // }
   get showGoals$() {
-    return this.layoutFacade.dateRange$.pipe(
-      map(
-        val =>
-          ['m', 'lm'].indexOf(val?.duration) >= 0 ||
-          (val &&
-            val.start &&
-            moment(val.start).date() == 1 &&
-            moment(val.end).date() ==
-              moment(val.end).clone().endOf('month').date())
-      )
-    );
+    return this.layoutFacade.isFullSingleMonthDateRange$;
   }
 
   fdRecallRateVal = 0;
@@ -82,10 +85,6 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
 
   get isConnectedWith$() {
     return this.dashboardFacade.isConnectedWith$;
-  }
-
-  get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$;
   }
 
   get hasData$() {

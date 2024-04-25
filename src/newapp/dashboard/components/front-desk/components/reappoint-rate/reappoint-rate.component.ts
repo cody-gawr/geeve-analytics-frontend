@@ -32,26 +32,29 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
     return 'trending_down';
   }
 
-  get showGoals$() {
-    return this.layoutFacade.dateRange$.pipe(
-      map(val => {
-        if (['m', 'lm'].indexOf(val?.duration) >= 0) {
-          return true;
-        }
+  // get showGoals$() {
+  //   return this.layoutFacade.dateRange$.pipe(
+  //     map(val => {
+  //       if (['m', 'lm'].indexOf(val?.duration) >= 0) {
+  //         return true;
+  //       }
 
-        if (
-          val &&
-          val.start &&
-          moment(val.start).date() == 1 &&
-          moment(val.end).date() ==
-            moment(val.end).clone().endOf('month').date()
-        ) {
-          return true;
-        }
+  //       if (
+  //         val &&
+  //         val.start &&
+  //         moment(val.start).date() == 1 &&
+  //         moment(val.end).date() ==
+  //           moment(val.end).clone().endOf('month').date()
+  //       ) {
+  //         return true;
+  //       }
 
-        return false;
-      })
-    );
+  //       return false;
+  //     })
+  //   );
+  // }
+  get showGoal$() {
+    return this.layoutFacade.isFullSingleMonthDateRange$;
   }
 
   fdReappointRateVal = 0;
@@ -91,10 +94,6 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
 
   get isConnectedWith$() {
     return this.dashboardFacade.isConnectedWith$;
-  }
-
-  get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$;
   }
 
   get hasData$() {

@@ -46,7 +46,7 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
   // }
 
   get showGoals$() {
-    return this.layoutFacade.dateRange$.pipe(map(v => v.enableGoal));
+    return this.layoutFacade.isFullSingleMonthDateRange$;
   }
 
   fdUtaRatioVal = 0;
@@ -92,10 +92,6 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
 
   get isConnectedWith$() {
     return this.dashboardFacade.isConnectedWith$;
-  }
-
-  get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$;
   }
 
   get hasData$() {

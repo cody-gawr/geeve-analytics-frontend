@@ -66,10 +66,6 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
     return this.dashboardFacade.isConnectedWith$;
   }
 
-  get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$;
-  }
-
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMulti]) => {

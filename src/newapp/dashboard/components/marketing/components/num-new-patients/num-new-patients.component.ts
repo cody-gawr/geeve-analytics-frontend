@@ -59,6 +59,18 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
     return this.layoutFacade.isFullMonthsDateRange$;
   }
 
+  get showGoalInFooter$() {
+    return combineLatest([
+      this.layoutFacade.isFullSingleMonthDateRange$,
+      this.isActivePatients$,
+    ]).pipe(
+      map(
+        ([isFullSingle, isActive]) =>
+          isFullSingle && !isActive && this.newNumPatientsGoal > 0
+      )
+    );
+  }
+
   newNumPatientsVal = 0;
   newNumPatientsPrev = 0;
   newNumPatientsGoal = 0;
