@@ -90,7 +90,9 @@ export class AuthFacade {
     this.layoutFacade.saveDateRange(
       getTodayMoment().startOf('month'),
       getTodayMoment(),
-      'm'
+      'm',
+      1,
+      true
     );
     localStorage.clear();
     this.cookieService.removeAll();

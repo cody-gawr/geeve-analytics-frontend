@@ -288,7 +288,9 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
       this.layoutFacde.saveDateRange(
         getTodayMoment().startOf('month'),
         getTodayMoment(),
-        'm'
+        'm',
+        1,
+        true
       );
       this.chartService.changeDuration('m');
       this.rolesUsersService.setUnAuth(false);
