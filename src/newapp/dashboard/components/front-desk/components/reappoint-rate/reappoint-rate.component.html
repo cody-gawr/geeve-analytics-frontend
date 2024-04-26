@@ -70,7 +70,7 @@
           <h3>{{ fdReappointRatePrev | number: '1.0-0' }}%</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>
-        <div *ngIf="fdReappointRateGoal > 0 && showGoals$ | async">
+        <div *ngIf="fdReappointRateGoal > 0 && showGoal$ | async">
           <h3>
             {{
               (fdReappointRateGoal > 100 ? 100 : fdReappointRateGoal)

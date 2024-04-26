@@ -117,7 +117,7 @@
           <h3>{{ newNumPatientsPrev | number: '1.0-0' }}</h3>
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>
-        <div *ngIf="showGoalInFooter$ | async">
+        <div *ngIf="newNumPatientsGoal > 0 && (showGoal$ | async)">
           <h3>
             {{ newNumPatientsGoal * (goalCount$ | async) | number: '1.0-0' }}
           </h3>
