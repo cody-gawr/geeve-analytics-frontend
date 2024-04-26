@@ -25,7 +25,6 @@ import {
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
-import { getSubValForGoal } from '@/newapp/shared/utils';
 
 type FrontDeskEndpoints =
   | 'fdUtilisationRate'
@@ -41,6 +40,8 @@ type FrontDeskEndpoints =
   | 'fdFtaRatioTrend'
   | 'fdUtaRatio'
   | 'fdUtaRatioTrend';
+
+const GOAL_THICKNESS = 0.5;
 
 export interface FrontDeskState {
   isLoadingData: Array<FrontDeskEndpoints>;
@@ -943,8 +944,8 @@ export const selectFdUtilRateTrendChartData = createSelector(
           targetData.push([0, 0]);
         } else {
           targetData.push([
-            parseFloat(<string>item.goals) - 0.5,
-            parseFloat(<string>item.goals) + 0.5,
+            parseFloat(<string>item.goals) - GOAL_THICKNESS,
+            parseFloat(<string>item.goals) + GOAL_THICKNESS,
           ]);
         }
         chartLabels.push(
@@ -1149,8 +1150,8 @@ export const selectFdRecallRateTrendChartData = createSelector(
             targetData.push([0, 0]);
           } else {
             targetData.push([
-              parseFloat(<string>item.goals) - 0.5,
-              parseFloat(<string>item.goals) + 0.5,
+              parseFloat(<string>item.goals) - GOAL_THICKNESS,
+              parseFloat(<string>item.goals) + GOAL_THICKNESS,
             ]);
           }
           chartLabels.push(
@@ -1341,8 +1342,8 @@ export const selectFdReappointRateTrendChartData = createSelector(
           targetData.push([0, 0]);
         } else {
           targetData.push([
-            parseFloat(<string>item.goals) - 0.5,
-            parseFloat(<string>item.goals) + 0.5,
+            parseFloat(<string>item.goals) - GOAL_THICKNESS,
+            parseFloat(<string>item.goals) + GOAL_THICKNESS,
           ]);
         }
         chartLabels.push(
@@ -1355,7 +1356,7 @@ export const selectFdReappointRateTrendChartData = createSelector(
         {
           data: [],
           label: '',
-          shadowOffsetX: 3,
+          // shadowOffsetX: 3,
           order: 2,
           backgroundColor: [
             '#119682',
@@ -1378,22 +1379,22 @@ export const selectFdReappointRateTrendChartData = createSelector(
             '#EEEEF8',
             '#119682',
           ],
-          shadowOffsetY: 2,
-          shadowBlur: 3,
-          shadowColor: 'rgba(0, 0, 0, 0.3)',
-          pointBevelWidth: 2,
-          pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-          pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-          pointShadowOffsetX: 3,
-          pointShadowOffsetY: 3,
-          pointShadowBlur: 10,
-          pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-          backgroundOverlayMode: 'multiply',
+          // shadowOffsetY: 2,
+          // shadowBlur: 3,
+          // shadowColor: 'rgba(0, 0, 0, 0.3)',
+          // pointBevelWidth: 2,
+          // pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+          // pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+          // pointShadowOffsetX: 3,
+          // pointShadowOffsetY: 3,
+          // pointShadowBlur: 10,
+          // pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+          // backgroundOverlayMode: 'multiply',
         },
         {
           data: [],
           label: '',
-          shadowOffsetX: 3,
+          // shadowOffsetX: 3,
           backgroundColor: 'rgba(255, 0, 128, 1)',
           order: 1,
         },
@@ -1703,13 +1704,11 @@ export const selectFdFtaRatioTrendChartData = createSelector(
         );
       });
       const mappedtargetData = [];
-      const maxVal = Math.max(...chartData);
-      const subVal = getSubValForGoal(maxVal);
       targetData.map(function (v) {
         if (v == null) {
           mappedtargetData.push([v - 0, v + 0]);
         } else {
-          mappedtargetData.push([v - subVal, v + subVal]);
+          mappedtargetData.push([v - GOAL_THICKNESS, v + GOAL_THICKNESS]);
         }
       });
       chartDatasets = [
@@ -1860,13 +1859,11 @@ export const selectFdUtaRatioTrendChartData = createSelector(
         );
       });
       const mappedtargetData = [];
-      const maxVal = Math.max(...chartData);
-      const subVal = getSubValForGoal(maxVal);
       targetData.map(function (v) {
         if (v == null) {
           mappedtargetData.push([v - 0, v + 0]);
         } else {
-          mappedtargetData.push([v - subVal, v + subVal]);
+          mappedtargetData.push([v - GOAL_THICKNESS, v + GOAL_THICKNESS]);
         }
       });
       chartDatasets = [

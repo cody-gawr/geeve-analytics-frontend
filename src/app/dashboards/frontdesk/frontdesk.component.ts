@@ -32,6 +32,8 @@ export interface Dentist {
   name: string;
 }
 
+const GOAL_THICKNESS = 0.5;
+
 @Component({
   templateUrl: './frontdesk.component.html',
   styleUrls: ['./frontdesk.component.scss'],
@@ -2708,7 +2710,10 @@ export class FrontDeskComponent implements AfterViewInit {
                     if (v == null) {
                       mappedtargetData.push([v - 0, v + 0]);
                     } else {
-                      mappedtargetData.push([v - 0.5, v + 0.5]);
+                      mappedtargetData.push([
+                        v - GOAL_THICKNESS,
+                        v + GOAL_THICKNESS,
+                      ]);
                     }
                   });
                   if (this.trendValue == 'c') {
@@ -3178,8 +3183,8 @@ export class FrontDeskComponent implements AfterViewInit {
                     mappedfdRecallPrebookRatetargetData.push([v - 0, v + 0]);
                   } else {
                     mappedfdRecallPrebookRatetargetData.push([
-                      v - 0.5,
-                      v + 0.5,
+                      v - GOAL_THICKNESS,
+                      v + GOAL_THICKNESS,
                     ]);
                   }
                 });
@@ -3343,8 +3348,8 @@ export class FrontDeskComponent implements AfterViewInit {
                     mappedtargetDataPrebookRatetargetData.push([v - 0, v + 0]);
                   } else {
                     mappedtargetDataPrebookRatetargetData.push([
-                      v - 0.5,
-                      v + 0.5,
+                      v - GOAL_THICKNESS,
+                      v + GOAL_THICKNESS,
                     ]);
                   }
                 });

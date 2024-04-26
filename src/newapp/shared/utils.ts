@@ -585,27 +585,25 @@ export function generatingLegend_4(): _DeepPartialObject<LegendOptions<any>> {
     // onClick: (event: MouseEvent, legendItem: LegendItem) => {}
   };
 }
+export function calculateYAxisMaxLimit(maxVal: number) {
+  // Calculate the order of magnitude of the max value
+  let orderOfMagnitude = Math.floor(Math.log10(maxVal));
+
+  // Calculate the divisor (i.e., 10 to the power of the order of magnitude)
+  let divisor = Math.floor(Math.pow(10, orderOfMagnitude) / 10);
+
+  // Calculate the first digit of the max value
+  let firstDigit = Math.floor(maxVal / divisor);
+
+  // Calculate the new max value for the Y-axis
+  let yAxisMaxLimit = (firstDigit + 1) * divisor;
+
+  return yAxisMaxLimit;
+}
 
 export function getSubValForGoal(maxVal: number) {
-  var subVal = 1;
-  if (maxVal >= 20001) {
-    subVal = 200;
-  } else if (maxVal > 5000 && maxVal < 20000) {
-    subVal = 100;
-  } else if (maxVal > 3000 && maxVal < 5000) {
-    subVal = 50;
-  } else if (maxVal > 2000 && maxVal < 3000) {
-    subVal = 20;
-  } else if (maxVal > 1000 && maxVal < 2000) {
-    subVal = 10;
-  } else if (maxVal > 100 && maxVal < 1000) {
-    subVal = 5;
-  } else if (maxVal > 51 && maxVal < 100) {
-    subVal = 1;
-  } else if (maxVal <= 50) {
-    subVal = 0.5;
-  }
-  return subVal;
+  const maxLimit = calculateYAxisMaxLimit(maxVal);
+  return maxLimit / 200;
 }
 
 export function renderTooltipLabel(

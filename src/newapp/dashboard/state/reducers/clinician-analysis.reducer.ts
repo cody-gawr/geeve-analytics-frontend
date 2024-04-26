@@ -25,6 +25,8 @@ import {
 import moment from 'moment';
 import { ChartDataset } from 'chart.js';
 
+const GOAL_THICKNESS = 0.5;
+
 export interface ClinicianAnalysisState {
   isLoadingData: Array<CA_API_ENDPOINTS | CA_API_ENDPOINTS_TREND>;
   errors: Array<JeeveError>;
@@ -1379,8 +1381,7 @@ export const selectCaNumNewPatientsTrendChartData = createSelector(
         tableData: [],
       };
     }
-    const targetData = [],
-      tableData = [];
+    const targetData = [];
     resBody.data.forEach((res, i) => {
       chartData.push(Math.round(<number>res.newPatients));
       if (res.goals == -1 || res.goals == null || res.goals == '') {
@@ -1934,7 +1935,7 @@ export const selectTxPlanCompRateTrendChartData = createSelector(
         if (v == null) {
           mappedtargetData.push([v - 0, v + 0]);
         } else {
-          mappedtargetData.push([v - 0.5, v + 0.5]);
+          mappedtargetData.push([v - GOAL_THICKNESS, v + GOAL_THICKNESS]);
         }
       });
 
@@ -2224,7 +2225,7 @@ export const selectRecallRateTrendChartData = createSelector(
         if (v == null) {
           mappedtargetData.push([v - 0, v + 0]);
         } else {
-          mappedtargetData.push([v - 0.5, v + 0.5]);
+          mappedtargetData.push([v - GOAL_THICKNESS, v + GOAL_THICKNESS]);
         }
       });
 
