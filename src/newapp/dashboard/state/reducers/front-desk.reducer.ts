@@ -1871,8 +1871,8 @@ export const selectFdUtaRatioTrendChartData = createSelector(
       });
       chartDatasets = [
         {
-          data: [],
-          label: '',
+          data: chartData,
+          label: 'Actual',
           order: 2,
         },
         {
@@ -1880,9 +1880,9 @@ export const selectFdUtaRatioTrendChartData = createSelector(
           label: trendMode == 'current' ? 'Target' : '',
           backgroundColor: 'rgba(255, 0, 128, 1)',
           order: 1,
+          type: 'bar',
         },
       ];
-      chartDatasets[0]['data'] = chartData;
     }
 
     return {
