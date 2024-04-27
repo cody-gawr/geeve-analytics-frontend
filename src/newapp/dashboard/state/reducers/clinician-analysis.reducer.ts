@@ -739,7 +739,7 @@ export const selectCaProductionTrendChartData = createSelector(
       },
     ];
 
-    const maxVal = Math.max(...chartData);
+    const maxVal = Math.max(...[...chartData, ...targetData]);
     const subVal = getSubValForGoal(maxVal);
     const mappedtargetData = [];
     targetData.map(function (v) {
@@ -1180,7 +1180,7 @@ export const selectCaHourlyRateTrendChartData = createSelector(
       },
     ];
 
-    const maxVal = Math.max(...chartData);
+    const maxVal = Math.max(...[...chartData, ...targetData]);
     const subVal = getSubValForGoal(maxVal);
 
     const mappedtargetData = [];
@@ -1411,7 +1411,7 @@ export const selectCaNumNewPatientsTrendChartData = createSelector(
       },
     ];
 
-    const maxVal = Math.max(...chartData);
+    const maxVal = Math.max(...[...chartData, ...targetData]);
     const subVal = getSubValForGoal(maxVal);
 
     const mappedtargetData = [];

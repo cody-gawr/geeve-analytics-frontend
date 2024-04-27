@@ -1230,7 +1230,7 @@ export const selectNumNewPatientsTrendChartData = createSelector(
         bgColors.push(index % 2 == 0 ? '#119682' : '#EEEEF8');
       });
       const mappedtargetData = [];
-      const maxVal = Math.max(...chartData);
+      const maxVal = Math.max(...[...chartData, ...targetData]);
       const subVal = getSubValForGoal(maxVal);
       targetData.map(function (v) {
         if (v == null) {
@@ -1626,7 +1626,7 @@ export const selectTotalVisitsTrendChartData = createSelector(
         bgColors.push(index % 2 == 0 ? '#119682' : '#EEEEF8');
       });
       const mappedtargetData = [];
-      const maxVal = Math.max(...chartData);
+      const maxVal = Math.max(...[...chartData, ...targetData]);
       const subVal = getSubValForGoal(maxVal);
       targetData.map(function (v) {
         if (v == null) {

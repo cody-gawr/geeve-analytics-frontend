@@ -8734,7 +8734,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                 if (this.dentistProductionTrend1.every(value => value == 0))
                   this.dentistProductionTrend1 = [];
                 this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
-                let maxVal = Math.max(...this.dentistProductionTrend1);
+                let maxVal = Math.max(
+                  ...[...this.dentistProductionTrend1, ...this.targetData]
+                );
                 const subVal = getSubValForGoal(maxVal);
 
                 var mappedtargetData = [];
@@ -8885,7 +8887,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
                   this.dentistCollectionTrend1 = [];
                 this.dentistColTrend[0]['data'] = this.dentistCollectionTrend1;
 
-                let maxVal = Math.max(...this.dentistCollectionTrend1);
+                let maxVal = Math.max(
+                  ...[
+                    ...this.dentistCollectionTrend1,
+                    ...this.collectiontargetData,
+                  ]
+                );
                 const subVal = getSubValForGoal(maxVal);
                 var mappedcollectiontargetData = [];
                 this.collectiontargetData.map(function (v) {
