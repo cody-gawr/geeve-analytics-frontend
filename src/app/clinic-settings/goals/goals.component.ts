@@ -237,6 +237,15 @@ export class GoalsComponent
       });
       this.tabs.push(temp);
     });
+    const kPINoNowPatientsChart = this.tabs[4]['charts'].find(c => c.c_id == 8);
+    const marketingNoNewPatientsChart = this.tabs[2]['charts'].find(
+      c => c.c_id == 36
+    );
+    if (marketingNoNewPatientsChart) {
+      marketingNoNewPatientsChart.goals = kPINoNowPatientsChart?.goals;
+      marketingNoNewPatientsChart.c_id = 8;
+    }
+
     var order = [63, 64, 1, 49, 15, 66, 65, 8];
     this.tabs[4].charts.sort(function (a, b) {
       return order.indexOf(a.c_id) - order.indexOf(b.c_id);
