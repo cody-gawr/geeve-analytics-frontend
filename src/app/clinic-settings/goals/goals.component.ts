@@ -188,7 +188,7 @@ export class GoalsComponent
       res.master_charts.forEach(chart => {
         if (
           this.isExactOrCore &&
-          res.dashboard == 'KPI Report' &&
+          res.id == 10 &&
           [
             'Dentist Days',
             'Dentist Production Per Hour',
@@ -198,7 +198,7 @@ export class GoalsComponent
           return;
         }
         if (
-          res.dashboard == 'Clinician Analysis' &&
+          res.id == 1 &&
           [
             'No. New Patients - Items Provider',
             'Recall Prebook Rate - Status',
@@ -207,7 +207,7 @@ export class GoalsComponent
           return;
         }
         if (
-          res.dashboard == 'Marketing' &&
+          res.id == 4 &&
           ['No. New Patients - Items Provider'].indexOf(chart.chart) > -1
         ) {
           return;
@@ -238,7 +238,9 @@ export class GoalsComponent
       this.tabs.push(temp);
     });
     const syncCharts = (cId1, cId2, tab1, tab2) => {
-      const kPINoNowPatientsChart = this.tabs[tab1]['charts'].find(c => c.c_id == cId1);
+      const kPINoNowPatientsChart = this.tabs[tab1]['charts'].find(
+        c => c.c_id == cId1
+      );
       const marketingNoNewPatientsChart = this.tabs[tab2]['charts'].find(
         c => c.c_id == cId2
       );
@@ -246,7 +248,7 @@ export class GoalsComponent
         marketingNoNewPatientsChart.goals = kPINoNowPatientsChart?.goals;
         marketingNoNewPatientsChart.c_id = cId1;
       }
-    }
+    };
 
     syncCharts(8, 36, 4, 2);
     syncCharts(4, 16, 0, 1);
