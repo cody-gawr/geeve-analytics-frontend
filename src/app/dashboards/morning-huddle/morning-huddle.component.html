@@ -1290,18 +1290,25 @@
                     <div
                       class="production_description production_description_huddle">
                       <h4>Unsched. Hours</h4>
-                      <div class="patients-num">
-                        <span
-                          class="change_value"
-                          *ngIf="!todayUnscheduledHoursLoader"
-                          >{{ todayUnscheduledHours }}</span
-                        >
-                        <span
-                          class="calculatingSp text"
-                          *ngIf="todayUnscheduledHoursLoader"
-                          >Calculating...</span
+                      <div *ngIf="isPraktika; else nonPraktikaTemplate">
+                        <span style="color: gray" class="calculatingSp text"
+                          >Coming Soon...</span
                         >
                       </div>
+                      <ng-template #nonPraktikaTemplate>
+                        <div class="patients-num">
+                          <span
+                            class="change_value"
+                            *ngIf="!todayUnscheduledHoursLoader"
+                            >{{ todayUnscheduledHours }}</span
+                          >
+                          <span
+                            class="calculatingSp text"
+                            *ngIf="todayUnscheduledHoursLoader"
+                            >Calculating...</span
+                          >
+                        </div>
+                      </ng-template>
                     </div>
                   </div>
                 </mat-card-content>

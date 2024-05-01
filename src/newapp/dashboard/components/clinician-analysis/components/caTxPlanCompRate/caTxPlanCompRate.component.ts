@@ -187,6 +187,10 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
   }
 
+  get isPraktika$() {
+    return this.clinicFacade.isEachClinicPraktika$;
+  }
+
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,

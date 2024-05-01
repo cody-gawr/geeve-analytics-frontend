@@ -114,6 +114,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         const endDate = dateRange.end;
         const duration = dateRange.duration;
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
+        const isEachClinicPraktika = clinics.every(c => c.pms === 'praktika');
 
         let queryParams: QueryParams = {
           clinicId: clinics.map(v => v.id).join(','),
@@ -132,7 +133,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               dentistId: providerId,
             };
 
-        return { queryParams, trend, queryWhEnabled };
+        return { queryParams, trend, queryWhEnabled, isEachClinicPraktika };
       })
     );
   }
@@ -153,45 +154,47 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(({ queryParams, trend, queryWhEnabled }) => {
-        const { dentistId: providerId } = queryParams;
-        const isTrend = trend !== 'off' && providerId;
+      .subscribe(
+        ({ queryParams, trend, queryWhEnabled, isEachClinicPraktika }) => {
+          const { dentistId: providerId } = queryParams;
+          const isTrend = trend !== 'off' && providerId;
 
-        if (!isTrend) {
-          const caEndpoints = [
-            'caNumNewPatients',
-            'caTxPlanCompRate',
-            'caNumComplaints',
-          ];
+          if (!isTrend) {
+            const caEndpoints = ['caNumNewPatients', 'caNumComplaints'];
 
-          for (const api of caEndpoints) {
-            this.caFacade.loadNoneTrendApiRequest({
-              api: <CA_API_ENDPOINTS>api,
-              ...queryParams,
+            if (!isEachClinicPraktika) caEndpoints.push('caTxPlanCompRate');
+
+            for (const api of caEndpoints) {
+              this.caFacade.loadNoneTrendApiRequest({
+                api: <CA_API_ENDPOINTS>api,
+                ...queryParams,
+              });
+            }
+          } else {
+            const endpoints = [];
+            endpoints.push(
+              'caNumNewPatientsTrend',
+              'caTxPlanCompRateTrend',
+              'caNumComplaintsTrend'
+            );
+
+            if (!isEachClinicPraktika) endpoints.push('caTxPlanCompRateTrend');
+            endpoints.forEach(api => {
+              const params = {
+                clinicId: queryParams.clinicId,
+                mode:
+                  trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+                queryWhEnabled,
+                dentistId: queryParams.dentistId,
+              };
+              this.caFacade.loadTrendApiRequest({
+                ...params,
+                api: api,
+              });
             });
           }
-        } else {
-          const endpoints = [];
-          endpoints.push(
-            'caNumNewPatientsTrend',
-            'caTxPlanCompRateTrend',
-            'caNumComplaintsTrend'
-          );
-          endpoints.forEach(api => {
-            const params = {
-              clinicId: queryParams.clinicId,
-              mode:
-                trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
-              queryWhEnabled,
-              dentistId: queryParams.dentistId,
-            };
-            this.caFacade.loadTrendApiRequest({
-              ...params,
-              api: api,
-            });
-          });
         }
-      });
+      );
 
     combineLatest([
       this.queryParams$,
@@ -400,48 +403,54 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
-      .subscribe(([{ queryParams, trend, queryWhEnabled }, visibility]) => {
-        const caEndpoints = [],
-          caTrendEndpoints = [];
-        const { dentistId: providerId } = queryParams;
-        const isTrend = trend !== 'off' && providerId;
+      .subscribe(
+        ([
+          { queryParams, trend, queryWhEnabled, isEachClinicPraktika },
+          visibility,
+        ]) => {
+          const caEndpoints = [],
+            caTrendEndpoints = [];
+          const { dentistId: providerId } = queryParams;
+          const isTrend = trend !== 'off' && providerId;
+          if (isEachClinicPraktika) return;
 
-        switch (visibility) {
-          case 'Avg. Proposed Fees':
-            caEndpoints.push('caTxPlanAvgProposedFees');
-            caTrendEndpoints.push('caTxPlanAvgProposedFeesTrend');
+          switch (visibility) {
+            case 'Avg. Proposed Fees':
+              caEndpoints.push('caTxPlanAvgProposedFees');
+              caTrendEndpoints.push('caTxPlanAvgProposedFeesTrend');
 
-            break;
-          case 'Avg. Completed Fees':
-            caEndpoints.push('caTxPlanAvgCompletedFees');
-            caTrendEndpoints.push('caTxPlanAvgCompletedFeesTrend');
+              break;
+            case 'Avg. Completed Fees':
+              caEndpoints.push('caTxPlanAvgCompletedFees');
+              caTrendEndpoints.push('caTxPlanAvgCompletedFeesTrend');
 
-            break;
-        }
+              break;
+          }
 
-        if (!isTrend) {
-          for (const api of caEndpoints) {
-            this.caFacade.loadNoneTrendApiRequest({
-              ...queryParams,
-              api,
+          if (!isTrend) {
+            for (const api of caEndpoints) {
+              this.caFacade.loadNoneTrendApiRequest({
+                ...queryParams,
+                api,
+              });
+            }
+          } else {
+            caTrendEndpoints.forEach(api => {
+              const params = {
+                clinicId: queryParams.clinicId,
+                mode:
+                  trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+                queryWhEnabled,
+                dentistId: queryParams.dentistId,
+              };
+              this.caFacade.loadTrendApiRequest({
+                ...params,
+                api: api,
+              });
             });
           }
-        } else {
-          caTrendEndpoints.forEach(api => {
-            const params = {
-              clinicId: queryParams.clinicId,
-              mode:
-                trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
-              queryWhEnabled,
-              dentistId: queryParams.dentistId,
-            };
-            this.caFacade.loadTrendApiRequest({
-              ...params,
-              api: api,
-            });
-          });
         }
-      });
+      );
 
     combineLatest([this.queryParams$, this.caFacade.recallRateChartName$])
       .pipe(

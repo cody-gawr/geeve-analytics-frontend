@@ -365,6 +365,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     return this.localStorageService.isEachClinicExact(this.clinic_id);
   }
 
+  public get isPraktika(): boolean {
+    return this.localStorageService.isEachClinicPmsPraktika(this.clinic_id);
+  }
+
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist'];
   displayedColumns2: string[] = ['start', 'name', 'code'];
@@ -1490,6 +1494,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   getTodayUnscheduledHours(refsh = '') {
+    if (this.isPraktika) return;
     if (refsh == '') {
       this.todayUnscheduledHoursLoader = true;
     }

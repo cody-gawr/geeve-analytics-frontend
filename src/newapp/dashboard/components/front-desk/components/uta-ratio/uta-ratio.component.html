@@ -15,65 +15,73 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
-      <div class="chart-gauge uta-ratio-gauge">
-        <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
-        <ng-template #mainElem>
-          <ngx-gauge
-            *ngIf="
-              !(isMultipleClinic$ | async) &&
-              (hasData$ | async) &&
-              !(isTrend$ | async)
-            "
-            type="arch"
-            [value]="fdUtaRatioVal"
-            [thick]="20"
-            foregroundColor="#4ccfae"
-            backgroundColor="#f4f0fa"
-            cap="round"
-            size="250"
-            append="%"
-            [max]="100">
-          </ngx-gauge>
-          <canvas
-            #fdUtaRatioChart
-            *ngIf="
-              ((isTrend$ | async) || (isMultipleClinic$ | async)) &&
-              (hasData$ | async)
-            "
-            baseChart
-            [datasets]="datasets"
-            [labels]="labels"
-            [legend]="false"
-            [type]="chartType$ | async"
-            [options]="chartOptions$ | async">
-          </canvas>
+      <spin-loader
+        class="empty-placeholder"
+        *ngIf="isPraktika$ | async; else mainElem1"
+        [disableSpin]="true">
+        Coming Soon...
+      </spin-loader>
+      <ng-template #mainElem1>
+        <div class="chart-gauge uta-ratio-gauge">
+          <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
+          <ng-template #mainElem>
+            <ngx-gauge
+              *ngIf="
+                !(isMultipleClinic$ | async) &&
+                (hasData$ | async) &&
+                !(isTrend$ | async)
+              "
+              type="arch"
+              [value]="fdUtaRatioVal"
+              [thick]="20"
+              foregroundColor="#4ccfae"
+              backgroundColor="#f4f0fa"
+              cap="round"
+              size="250"
+              append="%"
+              [max]="100">
+            </ngx-gauge>
+            <canvas
+              #fdUtaRatioChart
+              *ngIf="
+                ((isTrend$ | async) || (isMultipleClinic$ | async)) &&
+                (hasData$ | async)
+              "
+              baseChart
+              [datasets]="datasets"
+              [labels]="labels"
+              [legend]="false"
+              [type]="chartType$ | async"
+              [options]="chartOptions$ | async">
+            </canvas>
 
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="!(hasData$ | async)"
-            [disableSpin]="true">
-            You have no UTA's in the selected period
-          </spin-loader>
-        </ng-template>
-      </div>
-      <div class="chart-foot" *ngIf="!(isTrend$ | async)">
-        <div>
-          <h3>{{ fdUtaRatioVal }}%</h3>
-          <span>{{ durationLabel$ | async }}</span>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!(hasData$ | async)"
+              [disableSpin]="true">
+              You have no UTA's in the selected period
+            </spin-loader>
+          </ng-template>
         </div>
-        <div *ngIf="isFullMonthDate$ | async">
-          <h3>{{ fdUtaRatioPrev }}%</h3>
-          <span>{{ durationTrendLabel$ | async }}</span>
+        <div class="chart-foot" *ngIf="!(isTrend$ | async)">
+          <div>
+            <h3>{{ fdUtaRatioVal }}%</h3>
+            <span>{{ durationLabel$ | async }}</span>
+          </div>
+          <div *ngIf="isFullMonthDate$ | async">
+            <h3>{{ fdUtaRatioPrev }}%</h3>
+            <span>{{ durationTrendLabel$ | async }}</span>
+          </div>
+          <div *ngIf="fdUtaRatioGoal > 0 && showGoals$ | async">
+            <h3>
+              {{
+                (fdUtaRatioGoal > 100 ? 100 : fdUtaRatioGoal) | number: '1.0-0'
+              }}%
+            </h3>
+            <span>Goal</span>
+          </div>
         </div>
-        <div *ngIf="fdUtaRatioGoal > 0 && showGoals$ | async">
-          <h3>
-            {{
-              (fdUtaRatioGoal > 100 ? 100 : fdUtaRatioGoal) | number: '1.0-0'
-            }}%
-          </h3>
-          <span>Goal</span>
-        </div>
-      </div>
+      </ng-template>
     </div>
   </div>
 </div>

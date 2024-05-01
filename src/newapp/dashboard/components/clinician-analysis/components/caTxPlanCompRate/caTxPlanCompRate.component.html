@@ -22,82 +22,94 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box ca-tx-com-rate-chart">
-      <div
-        class="pa-table"
-        *ngIf="showTableInfo && (isTableIconVisible$ | async); else graphElem">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Completion Rate</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let protbl of tableData">
-              <td>{{ protbl.label }}</td>
-              <td>{{ protbl.value | number: '1.0-0' }}%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <ng-template #graphElem>
-        <div class="chart-gauge ca-tx-com-rate-graph">
-          <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-          <ng-template #chartElem>
+      <spin-loader
+        class="empty-placeholder"
+        *ngIf="isPraktika$ | async; else mainElem1"
+        [disableSpin]="true">
+        Coming Soon...
+      </spin-loader>
+      <ng-template #mainElem1>
+        <div
+          class="pa-table"
+          *ngIf="
+            showTableInfo && (isTableIconVisible$ | async);
+            else graphElem
+          ">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Completion Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let protbl of tableData">
+                <td>{{ protbl.label }}</td>
+                <td>{{ protbl.value | number: '1.0-0' }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #graphElem>
+          <div class="chart-gauge ca-tx-com-rate-graph">
             <spin-loader
-              class="empty-placeholder"
-              *ngIf="!(hasData$ | async); else ch11"
-              [disableSpin]="true">
-              You have no treatment plan items completed in the selected period
-            </spin-loader>
-            <ng-template #ch11>
-              <ngx-gauge
-                *ngIf="isGaugeChartVisible$ | async; else ch10"
-                type="arch"
-                [value]="gaugeValue"
-                [label]="gaugeLabel"
-                [thick]="20"
-                backgroundColor="#f4f0fa"
-                foregroundColor="#4ccfae"
-                [max]="100"
-                cap="round"
-                [duration]="2500"
-                append="%"
-                [size]="300">
-              </ngx-gauge>
-              <ng-template #ch10>
-                <canvas
-                  baseChart
-                  [datasets]="datasets"
-                  [labels]="labels"
-                  [legend]="legend$ | async"
-                  type="bar"
-                  [options]="chartOptions">
-                </canvas>
+              *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+            <ng-template #chartElem>
+              <spin-loader
+                class="empty-placeholder"
+                *ngIf="!(hasData$ | async); else ch11"
+                [disableSpin]="true">
+                You have no treatment plan items completed in the selected
+                period
+              </spin-loader>
+              <ng-template #ch11>
+                <ngx-gauge
+                  *ngIf="isGaugeChartVisible$ | async; else ch10"
+                  type="arch"
+                  [value]="gaugeValue"
+                  [label]="gaugeLabel"
+                  [thick]="20"
+                  backgroundColor="#f4f0fa"
+                  foregroundColor="#4ccfae"
+                  [max]="100"
+                  cap="round"
+                  [duration]="2500"
+                  append="%"
+                  [size]="300">
+                </ngx-gauge>
+                <ng-template #ch10>
+                  <canvas
+                    baseChart
+                    [datasets]="datasets"
+                    [labels]="labels"
+                    [legend]="legend$ | async"
+                    type="bar"
+                    [options]="chartOptions">
+                  </canvas>
+                </ng-template>
               </ng-template>
             </ng-template>
-          </ng-template>
+          </div>
+        </ng-template>
+        <div class="chart-foot" *ngIf="isEnableFooter$ | async">
+          <div>
+            <h3>{{ total }}%</h3>
+            <span>{{ durationLabel$ | async }}</span>
+          </div>
+
+          <div *ngIf="(duration$ | async) !== 'custom'">
+            <h3>{{ prev }}%</h3>
+            <span>{{ durationTrendLabel$ | async }}</span>
+          </div>
+          <div
+            *ngIf="
+              goal >= 0 && (showGoals$ | async) == true && (goalCount$ | async)
+            ">
+            <h3>{{ goal * (goalCount$ | async) }}%</h3>
+            <span>Goal</span>
+          </div>
         </div>
       </ng-template>
-
-      <div class="chart-foot" *ngIf="isEnableFooter$ | async">
-        <div>
-          <h3>{{ total }}%</h3>
-          <span>{{ durationLabel$ | async }}</span>
-        </div>
-
-        <div *ngIf="(duration$ | async) !== 'custom'">
-          <h3>{{ prev }}%</h3>
-          <span>{{ durationTrendLabel$ | async }}</span>
-        </div>
-        <div
-          *ngIf="
-            goal >= 0 && (showGoals$ | async) == true && (goalCount$ | async)
-          ">
-          <h3>{{ goal * (goalCount$ | async) }}%</h3>
-          <span>Goal</span>
-        </div>
-      </div>
     </div>
   </div>
 </div>

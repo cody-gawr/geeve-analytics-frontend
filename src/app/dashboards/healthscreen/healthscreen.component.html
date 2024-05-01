@@ -656,7 +656,8 @@
                     class="info-icon" />
                 </div>
               </mat-card-title>
-              <div *ngIf="isExact || isCore; else nonExactTemplate">
+              <div
+                *ngIf="isExact || isCore || isPraktika; else nonExactTemplate">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">Coming Soon...</p>
               </div>
@@ -710,35 +711,43 @@
                     class="info-icon" />
                 </div>
               </mat-card-title>
-              <div class="chart card-body no-data-placeholder">
-                <ngx-gauge
-                  class="yellow_guagechart"
-                  *ngIf="unscheduled_production_f > 0 && unscheduledproduction"
-                  [type]="gaugeType"
-                  [value]="unscheduled_production_f"
-                  [thick]="canvasWidth"
-                  [foregroundColor]="foregroundColor2"
-                  [backgroundColor]="backgroundColor"
-                  [append]="unscheduled_production_unit"
-                  [prepend]="'$'"
-                  [size]="size">
-                </ngx-gauge>
-                <div
-                  *ngIf="!unscheduledproduction"
-                  class="loader_container loader_container_middle">
-                  <img class="loader_ico" src="../assets/images/720.gif" />
-                  <div class="loader-text">Calculating...</div>
-                </div>
-                <div
-                  *ngIf="
-                    unscheduledproduction && unscheduled_production_f <= 0
-                  ">
-                  <div class="sa_nodata_div"></div>
-                  <p class="chart-placeholder-text">
-                    You have no unscheduled production in the next 7 days
-                  </p>
-                </div>
+              <div *ngIf="isPraktika; else nonExactTemplate001">
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">Coming Soon...</p>
               </div>
+              <ng-template #nonExactTemplate001>
+                <div class="chart card-body no-data-placeholder">
+                  <ngx-gauge
+                    class="yellow_guagechart"
+                    *ngIf="
+                      unscheduled_production_f > 0 && unscheduledproduction
+                    "
+                    [type]="gaugeType"
+                    [value]="unscheduled_production_f"
+                    [thick]="canvasWidth"
+                    [foregroundColor]="foregroundColor2"
+                    [backgroundColor]="backgroundColor"
+                    [append]="unscheduled_production_unit"
+                    [prepend]="'$'"
+                    [size]="size">
+                  </ngx-gauge>
+                  <div
+                    *ngIf="!unscheduledproduction"
+                    class="loader_container loader_container_middle">
+                    <img class="loader_ico" src="../assets/images/720.gif" />
+                    <div class="loader-text">Calculating...</div>
+                  </div>
+                  <div
+                    *ngIf="
+                      unscheduledproduction && unscheduled_production_f <= 0
+                    ">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">
+                      You have no unscheduled production in the next 7 days
+                    </p>
+                  </div>
+                </div>
+              </ng-template>
             </mat-card-content>
           </mat-card>
         </div>

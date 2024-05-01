@@ -93,6 +93,10 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isPraktika$() {
+    return this.clinicFacade.isEachClinicPraktika$;
+  }
+
   datasets: any = [{ data: [] }];
   labels = [];
   public prev: number = 0;

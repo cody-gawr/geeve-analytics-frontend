@@ -102,6 +102,10 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.localStorageService.isEachClinicPmsCore(this.clinic_id);
   }
 
+  public get isPraktika(): boolean {
+    return this.localStorageService.isEachClinicPmsPraktika(this.clinic_id);
+  }
+
   constructor(
     private localStorageService: LocalStorageService,
     private healthscreenService: HealthScreenService,
@@ -688,6 +692,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
       'yyyy-MM-dd'
     );
     this.utilisation_rate_f = 0;
+    if (this.isExact || this.isCore || this.isPraktika) return;
     this.healthscreenService
       .commonCall(this.clinic_id, startDate, endDate, 'chUtilisationRate')
       .subscribe(

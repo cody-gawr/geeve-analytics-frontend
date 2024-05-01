@@ -18,6 +18,7 @@ import {
   selectIsEachClinicD4w,
   selectIsMultiClinicsSelected,
   selectIsAnyClinicHasD4w,
+  selectIsEachClinicPraktika,
 } from '../state/reducers/clinic.reducer';
 import { combineLatest, map } from 'rxjs';
 
@@ -55,6 +56,10 @@ export class ClinicFacade {
 
   public readonly isEachClinicCore$ = this.store.pipe(
     select(selectIsEachClinicCore)
+  );
+
+  public readonly isEachClinicPraktika$ = this.store.pipe(
+    select(selectIsEachClinicPraktika)
   );
 
   public readonly isEachClinicD4w$ = this.store.pipe(

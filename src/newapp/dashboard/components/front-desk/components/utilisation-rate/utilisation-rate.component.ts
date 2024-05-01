@@ -63,6 +63,10 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isPraktika$() {
+    return this.clinicFacade.isEachClinicPraktika$;
+  }
+
   get isMultipleClinic$() {
     return this.clinicFacade.isMultiClinicsSelected$;
   }
