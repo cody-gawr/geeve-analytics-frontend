@@ -172,11 +172,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
             }
           } else {
             const endpoints = [];
-            endpoints.push(
-              'caNumNewPatientsTrend',
-              'caTxPlanCompRateTrend',
-              'caNumComplaintsTrend'
-            );
+            endpoints.push('caNumNewPatientsTrend', 'caNumComplaintsTrend');
 
             if (!isEachClinicPraktika) endpoints.push('caTxPlanCompRateTrend');
             endpoints.forEach(api => {
