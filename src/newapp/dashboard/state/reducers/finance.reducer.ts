@@ -1321,14 +1321,13 @@ export const selectTotalDiscountTrendChartData = createSelector(
         labels = [];
       trendData.forEach(res => {
         const discount = parseFloat(<string>res.discounts ?? '0');
-        if (discount > 0) {
-          chartData.push(discount);
-          labels.push(
-            trendMode == 'current'
-              ? moment(res.yearMonth).format('MMM YYYY')
-              : res.year
-          );
-        }
+
+        chartData.push(discount);
+        labels.push(
+          trendMode == 'current'
+            ? moment(res.yearMonth).format('MMM YYYY')
+            : res.year
+        );
       });
       return {
         data: chartData,

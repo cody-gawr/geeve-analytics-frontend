@@ -3,6 +3,7 @@
 .fd-chart {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   @include respond-from('big-desktop') {
     width: calc(33.3% - 10px);
   }
