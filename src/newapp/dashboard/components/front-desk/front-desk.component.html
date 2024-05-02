@@ -19,6 +19,7 @@
     [toolTip]="getChartTip(18) | async"
     class="fd-chart"></fd-fta-ratio-chart>
   <fd-uta-ratio-chart
+    *ngIf="!(isPraktika$ | async)"
     [toolTip]="getChartTip(19) | async"
     class="fd-chart"></fd-uta-ratio-chart>
 </div>

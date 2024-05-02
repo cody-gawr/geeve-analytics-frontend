@@ -25,6 +25,10 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
+  get isPraktika$() {
+    return this.clinicFacade.isEachClinicPraktika$;
+  }
+
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }

@@ -42,10 +42,6 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
     );
   }
 
-  get isPraktika$() {
-    return this.clinicFacade.isEachClinicPraktika$;
-  }
-
   fdUtaRatioVal = 0;
   fdUtaRatioPrev = 0;
   fdUtaRatioGoal = 0;

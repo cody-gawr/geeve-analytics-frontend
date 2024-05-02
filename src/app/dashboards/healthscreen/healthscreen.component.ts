@@ -725,7 +725,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
       'yyyy-MM-dd'
     );
     this.unscheduled_production_f = 0;
-
+    if (this.isPraktika) return;
     this.healthscreenService
       .commonCall(this.clinic_id, startDate, endDate, 'chUnscheduledProd')
       .subscribe(
