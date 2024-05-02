@@ -1273,7 +1273,7 @@
               </mat-card>
             </div>
             <div
-              *ngIf="!currentDentistReminder && !isExact"
+              *ngIf="!currentDentistReminder && !isExact && !isPraktika"
               fxFlex="calc(20% - 10px)"
               fxFlex.md="calc(50% - 10px)"
               fxFlex.sm="100"
@@ -1290,25 +1290,19 @@
                     <div
                       class="production_description production_description_huddle">
                       <h4>Unsched. Hours</h4>
-                      <div *ngIf="isPraktika; else nonPraktikaTemplate">
-                        <span style="color: gray" class="calculatingSp text"
-                          >Coming Soon...</span
+
+                      <div class="patients-num">
+                        <span
+                          class="change_value"
+                          *ngIf="!todayUnscheduledHoursLoader"
+                          >{{ todayUnscheduledHours }}</span
+                        >
+                        <span
+                          class="calculatingSp text"
+                          *ngIf="todayUnscheduledHoursLoader"
+                          >Calculating...</span
                         >
                       </div>
-                      <ng-template #nonPraktikaTemplate>
-                        <div class="patients-num">
-                          <span
-                            class="change_value"
-                            *ngIf="!todayUnscheduledHoursLoader"
-                            >{{ todayUnscheduledHours }}</span
-                          >
-                          <span
-                            class="calculatingSp text"
-                            *ngIf="todayUnscheduledHoursLoader"
-                            >Calculating...</span
-                          >
-                        </div>
-                      </ng-template>
                     </div>
                   </div>
                 </mat-card-content>
