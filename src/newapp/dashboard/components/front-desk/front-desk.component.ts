@@ -29,6 +29,10 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
     return this.clinicFacade.isEachClinicPraktika$;
   }
 
+  get isCore$() {
+    return this.clinicFacade.isEachClinicCore$;
+  }
+
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
   }
@@ -99,7 +103,9 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
           clinics.every(c => c.pms == 'core') ||
           clinics.every(c => c.pms == 'exact') ||
           clinics.every(c => c.pms == 'praktika');
-        const isEachClinicPmsPraktika = clinics.every(c => c.pms == 'praktika');
+        const isEachClinicPmsPraktika = clinics.every(
+          c => c.pms == 'praktika' || c.pms == 'core'
+        );
         if (clinicId == null) return;
 
         const newConnectedId =
