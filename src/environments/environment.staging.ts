@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  commonApiUrl: 'https://staging-api.jeeve.com.au/staging/v1/common',
   baseApiUrl: 'https://staging-api.jeeve.com.au/staging',
   apiUrl: 'https://staging-api.jeeve.com.au/staging/analytics',
   homeUrl: 'https://staging-analytics.jeeve.com.au/',

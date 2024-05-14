@@ -34,7 +34,7 @@ export class LoginService {
     formData.append('email', uname);
     formData.append('password', password);
     return this.http
-      .post(this.apiUrl + '/users/userLogin', formData, {
+      .post(environment.commonApiUrl + '/login', formData, {
         headers: this.headers,
         withCredentials: true,
         observe: 'response' as const,

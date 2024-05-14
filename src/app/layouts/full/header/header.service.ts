@@ -39,7 +39,7 @@ export class HeaderService {
     const formData = new FormData();
     var header = this.getHeaders();
     return this.http
-      .post(this.apiUrl + '/users/userLogout', formData, header)
+      .post(environment.commonApiUrl + '/logout', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
