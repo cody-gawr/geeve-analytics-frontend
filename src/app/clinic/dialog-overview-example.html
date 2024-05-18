@@ -78,6 +78,7 @@
       <option value="core">Core Practice</option>
       <option value="exact">Exact</option>
       <option value="praktika">Praktika</option>
+      <option value="dentally" *ngIf="apiUrl.includes('test')">Dentally</option>
     </select>
     <small
       *ngIf="form.controls['pms'].hasError('required') && form.controls['pms'].touched"

@@ -30,7 +30,7 @@ import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/
 })
 export class SetupComponent implements AfterViewInit {
   @ViewChild('stepper') stepper;
-  private apiUrl = environment.apiUrl;
+  public apiUrl = environment.apiUrl;
   public form: UntypedFormGroup;
   isLinear = true;
   firstFormGroup: UntypedFormGroup;
@@ -61,6 +61,7 @@ export class SetupComponent implements AfterViewInit {
   public clinicEmail;
   public address;
   public connectToCoreLink;
+  public connectToDentallyLink;
 
   public urlPattern =
     /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
@@ -76,6 +77,7 @@ export class SetupComponent implements AfterViewInit {
   public rows: any = [];
   public fileToUpload;
   public showCorePractice: boolean;
+  public showDentally: boolean;
 
   public LocationData;
   public pmsValue = '';
@@ -272,6 +274,7 @@ export class SetupComponent implements AfterViewInit {
   changePmsSelection(val) {
     this.pmsValue = val;
     this.showCorePractice = val == 'core' ? true : false;
+    this.showDentally = val == 'dentally' ? true : false;
     if (this.showCorePractice)
       this.firstFormGroup
         .get('coreURL')
@@ -384,6 +387,25 @@ export class SetupComponent implements AfterViewInit {
       res => {
         if (res.status == 200) {
           this.connectToCoreLink = res.body.data;
+        } else if (res.status == 401) {
+          this._cookieService.put('username', '');
+          this._cookieService.put('email', '');
+          this._cookieService.put('userid', '');
+          this.router.navigateByUrl('/login');
+        }
+      },
+      error => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      }
+    );
+  }
+
+  getConnectDentallyLink() {
+    // this.clinic_id = 186;
+    this.setupService.getConnectDentallyLink(this.clinic_id).subscribe(
+      res => {
+        if (res.status == 200) {
+          this.connectToDentallyLink = res.body.data;
         } else if (res.status == 401) {
           this._cookieService.put('username', '');
           this._cookieService.put('email', '');
@@ -567,7 +589,10 @@ export class SetupComponent implements AfterViewInit {
               this._cookieService.put('display_name', displayName);
               if (res.body.data.pms == 'core') {
                 this.getConnectCoreLink();
-              } else if (res.body.data.pms === 'praktika') {
+              } else if (res.body.data.pms == 'dentally') {
+                this.getConnectDentallyLink();
+              }
+              if (res.body.data.pms === 'praktika') {
                 if (
                   prak_result?.customer_user &&
                   prak_result?.customer_secret
@@ -782,6 +807,22 @@ export class SetupComponent implements AfterViewInit {
       }
     }, 1000);
   }
+
+  connectToDentally() {
+    var win = window.open(
+      this.connectToDentallyLink,
+      'MsgWindow',
+      'width=1000,height=800'
+    );
+    var self = this;
+    var timer = setInterval(function () {
+      if (win.closed) {
+        self.checkDentallyStatus();
+        // self.getClinicLocation(); //--
+        clearTimeout(timer);
+      }
+    }, 1000);
+  }
   public checkCoreStatus() {
     this.setupService.checkCoreStatus(this.clinic_id).subscribe(
       res => {
@@ -792,6 +833,19 @@ export class SetupComponent implements AfterViewInit {
             res.body.data.core_user_id
           )
             this.getClinicLocation();
+        }
+      },
+      error => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      }
+    );
+  }
+
+  public checkDentallyStatus() {
+    this.setupService.checkDentallyStatus(this.clinic_id).subscribe(
+      res => {
+        if (res.status == 200) {
+          if (res.body.data.site_id) this.getClinicLocation();
         }
       },
       error => {

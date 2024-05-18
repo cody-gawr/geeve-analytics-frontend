@@ -21,6 +21,7 @@ import {
 import Swal from 'sweetalert2';
 import { SetupService } from '../setup/setup.service';
 import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/praktika-connection-dialog.component';
+import { environment } from '@/environments/environment';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -30,6 +31,7 @@ import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/
  *AUTHOR - Teq Mavens
  */
 export class DialogOverviewExampleDialogComponent {
+  public apiUrl = environment.apiUrl;
   public form: UntypedFormGroup;
   public isConnectedCore: boolean = false;
   public showConnectButton: boolean = false;
@@ -233,6 +235,9 @@ export class ClinicComponent implements AfterViewInit {
                   if (res.body.data.pms == 'core') {
                     let id = res.body.data.id;
                     this.getConnectCoreLink(id);
+                  } else if (res.body.data.pms == 'dentally') {
+                    let id = res.body.data.id;
+                    this.getConnectDentallyLink(id);
                   } else if (res.body.data.pms === 'praktika') {
                     if (
                       prak_result?.customer_user &&
@@ -481,6 +486,25 @@ export class ClinicComponent implements AfterViewInit {
       }
     );
   }
+
+  private getConnectDentallyLink(id, reconnect = false) {
+    this.setupService.getConnectDentallyLink(id).subscribe(
+      res => {
+        if (res.status == 200) {
+          const appSuccess = res.body.success;
+          if (appSuccess) {
+            let connectToDentallyLink = res.body.data;
+            this.connectToDentally(connectToDentallyLink, id, reconnect);
+          } else {
+            this.warningMessage = res.body.message;
+          }
+        }
+      },
+      error => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      }
+    );
+  }
   public connectToCore(link, id, reconnect = false) {
     var win = window.open(link, 'MsgWindow', 'width=1000,height=800');
     var timer = setInterval(() => {
@@ -496,12 +520,40 @@ export class ClinicComponent implements AfterViewInit {
     }, 1000);
   }
 
+  public connectToDentally(link, id, reconnect = false) {
+    var win = window.open(link, 'MsgWindow', 'width=1000,height=800');
+    var timer = setInterval(() => {
+      if (win.closed) {
+        if (!reconnect) {
+          this.checkDentallyStatus(id);
+        }
+        this.headerService
+          .getClinics()
+          .subscribe(data => console.log('data', data));
+        clearTimeout(timer);
+      }
+    }, 1000);
+  }
+
   private checkCoreStatus(id) {
     this.setupService.checkCoreStatus(id).subscribe(
       res => {
         if (res.status == 200) {
           if (res.body.data.refresh_token && res.body.data.token)
             this.getClinicLocation(id);
+        }
+      },
+      error => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      }
+    );
+  }
+
+  private checkDentallyStatus(id) {
+    this.setupService.checkDentallyStatus(id).subscribe(
+      res => {
+        if (res.status == 200) {
+          if (res.body.data.site_id) this.getClinicLocation(id);
         }
       },
       error => {
@@ -574,12 +626,46 @@ export class ClinicComponent implements AfterViewInit {
     });
   }
 
+  removeDentally(event, clinicId) {
+    event.preventDefault();
+    event.stopPropagation();
+    const clinic = this.rows.find(r => r.id === clinicId);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Are you sure you want to disconnect ${clinic.clinicName} from Dentally?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    }).then(result => {
+      if (result.value) {
+        this.clinicService.removeDentallyClinic(clinicId).subscribe(res => {
+          if (res.status == 200) {
+            this.toastr.success(`Remove Dentally for ${clinic.clinicName}`);
+            clinic.dentally_clinics = [];
+          }
+        });
+      }
+    });
+  }
+
   reconnectToCore(event, clinicId) {
     event.preventDefault();
     event.stopPropagation();
     const clinic = this.rows.find(r => r.id === clinicId);
     if (clinic.core_clinics[0]?.clinic_url) {
       this.getConnectCoreLink(clinicId, true);
+    } else {
+      this.toastr.warning('No Registred Clinic URL');
+    }
+  }
+
+  reconnectToDentally(event, clinicId) {
+    event.preventDefault();
+    event.stopPropagation();
+    const clinic = this.rows.find(r => r.id === clinicId);
+    if (clinic.dentally_clinics[0]?.clinic_url) {
+      this.getConnectDentallyLink(clinicId, true);
     } else {
       this.toastr.warning('No Registred Clinic URL');
     }

@@ -113,6 +113,9 @@
                   <option value="core">Core Practice</option>
                   <option value="exact">Exact</option>
                   <option value="praktika">Praktika</option>
+                  <option value="dentally" *ngIf="apiUrl.includes('test')">
+                    Dentally
+                  </option>
                 </select>
                 <small
                   *ngIf="
@@ -254,7 +257,7 @@
 
   <mat-step id="step4" [completed]="step2Completed" [editable]="step2editable">
     <div
-      *ngIf="!showCorePractice"
+      *ngIf="!showCorePractice && !showDentally"
       fxLayout="row wrap"
       fxlayoutgap="30px"
       fxlayoutgap.md="30px"
@@ -330,6 +333,46 @@
             <div class="button-container">
               <button class="connect-button" (click)="connectToCore()">
                 Connect to Core Practice
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        fxFlex="calc(49% - 15px)"
+        fxFlex.md="calc(49% - 15px)"
+        fxFlex.sm="100"
+        fxFlex.xs="100"
+        class="order2">
+        <div class="right-img download-sync-img">
+          <img src="assets/stepper/sync_downloading.gif" />
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="showDentally"
+      fxLayout="row wrap"
+      fxlayoutgap="30px"
+      fxlayoutgap.md="30px"
+      fxlayoutgap.sm="0px"
+      fxlayoutgap.xs="0px"
+      class="download-sync">
+      <div
+        fxFlex="calc(49% - 15px)"
+        fxFlex.md="calc(49% - 15px)"
+        fxFlex.sm="100"
+        fxFlex.xs="100"
+        class="order1 setup-form-box">
+        <div class="intro_title">
+          <h2>Login to your <span>Dentally </span>account</h2>
+          <h3>to connect to Jeeve</h3>
+        </div>
+        <div class="skipwizard text-center">
+          <div class="text-center mt-2">
+            <div class="button-container">
+              <button class="connect-button" (click)="connectToDentally()">
+                Connect to Dentally
               </button>
             </div>
           </div>

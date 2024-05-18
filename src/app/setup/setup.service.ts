@@ -68,6 +68,22 @@ export class SetupService {
       );
   }
 
+  getConnectDentallyLink(clinic_id): Observable<any> {
+    var header = this.getHeaders();
+    return this.http
+      .get(
+        environment.baseApiUrl +
+          '/v1/common/dentally/getAuthorizeUrl?clinic_id=' +
+          clinic_id,
+        header
+      )
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        })
+      );
+  }
+
   getPMSLink(): Observable<any> {
     var header = this.getHeaders();
     return this.http.get(this.apiUrl + '/users/userGetPMS/token', header).pipe(
@@ -266,6 +282,22 @@ export class SetupService {
     return this.http
       .get(
         this.apiUrl + '/corepractice/checkStatus?clinic_id=' + clinic_id,
+        header
+      )
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        })
+      );
+  }
+
+  checkDentallyStatus(clinic_id): Observable<any> {
+    var header = this.getHeaders();
+    return this.http
+      .get(
+        environment.baseApiUrl +
+          '/v1/common/dentally/checkStatus?clinic_id=' +
+          clinic_id,
         header
       )
       .pipe(
