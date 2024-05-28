@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   public form: UntypedFormGroup;
   public errorLogin = false;
   public errorforAttmp = false;
-  public errorForm = { email: false, password: false };
+  public errorForm = { email: false, password: false, otp: false };
   public apiUrl = environment.apiUrl;
   public clinic_id;
   public userType;
@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
     this.form = this.fb.group({
       uname: ['', Validators.compose([Validators.required])],
       password: ['', Validators.compose([Validators.required])],
+      otp: ['']
     });
   }
 
@@ -71,9 +72,10 @@ export class LoginComponent implements OnInit {
       this.route.snapshot.queryParams['returnUrl'] || defaultUrl;
     this.router.navigateByUrl(returnUrl);
   }
-
+  mfaEnabled = false;
+  errorOTP = false;
   onSubmit() {
-    this.errorForm = { email: false, password: false };
+    this.errorForm = { email: false, password: false, otp: false };
     if (this.form.controls['uname'].hasError('required')) {
       this.errorForm.email = true;
     }
@@ -81,15 +83,26 @@ export class LoginComponent implements OnInit {
       this.errorForm.password = true;
     }
 
+    if(!this.form.value.otp && this.mfaEnabled){
+      this.errorForm.otp = true;
+    }
+
+    if(this.errorForm.email || this.errorForm.password || this.errorForm.otp) return;
+
     this.errorLogin = false;
     this.errorforAttmp = false;
+    this.errorOTP = false;
 
     this.loginService
-      .login(this.form.value.uname.trim(), this.form.value.password)
+      .login(this.form.value.uname.trim(), this.form.value.password, this.form.value.otp)
       .subscribe({
         next: res => {
           this._cookieService.removeAll();
           if (res.status == 200) {
+            if(res.body.data.mfa_enabled && !res.body.data.data){
+              this.mfaEnabled = true;
+              return;
+            }
             var datares = [];
             localStorage.setItem(
               'authUserData',
@@ -107,7 +120,7 @@ export class LoginComponent implements OnInit {
             datares['login_status'] = res.body.data.data.status;
             datares['display_name'] = res.body.data.data.display_name;
             datares['dentistid'] = res.body.data.data.dentist_id;
-
+            datares['mfa_enabled'] = res.body.data.data.mfa_enabled;
             datares['features_dismissed'] =
               res.body.data.data.features_dismissed;
             datares['health_screen_mtd'] = res.body.data.data.health_screen_mtd;
@@ -126,6 +139,7 @@ export class LoginComponent implements OnInit {
               res.body.data.data.dash1_multi,
               opts
             );
+            this._cookieService.put('mfa_enabled', datares['mfa_enabled']);
             this._cookieService.put(
               'dash2_multi',
               res.body.data.data.dash2_multi,
@@ -221,9 +235,13 @@ export class LoginComponent implements OnInit {
           }
         },
         error: error => {
+          console.log(error)
           if (error.status == 429) {
             this.errorforAttmp = true;
-          } else {
+          } else if(error.error?.mfa_failed) {
+            this.errorOTP = true;
+          }
+          else {
             this.errorLogin = true;
           }
         },

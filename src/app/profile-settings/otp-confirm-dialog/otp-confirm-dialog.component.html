@@ -1,0 +1,26 @@
+<div class="dialog-header">
+  <h1 mat-dialog-title>Are you sure removing 2FA?</h1>
+  <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
+</div>
+<div mat-dialog-content>
+    <div>
+      <mat-form-field floatLabel="never">
+        <mat-label>Enter OTP Code</mat-label>
+        <input matInput type="text"  [(ngModel)]="verifyCode"/>
+      </mat-form-field>
+      <span class="text-danger support-text" *ngIf="isInvalid">
+          Invalid Code
+      </span>
+    </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-stroked-button
+    class="mat-dc"
+    mat-button
+    [disabled]="!verifyCode"
+    (click)="disable2FA()">
+    Confirm To Remove
+  </button>
+</div>

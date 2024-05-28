@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
-  commonApiUrl: 'https://test-api.jeeve.com.au/test/v1/common',
-  baseApiUrl: 'https://test-api.jeeve.com.au/test',
-  apiUrl: 'https://test-api.jeeve.com.au/test/analytics',
+  commonApiUrl: 'http://localhost:8080/v1/common',
+  baseApiUrl: 'http://localhost:8080/local',
+  apiUrl: 'http://localhost:8080/local/analytics',
   homeUrl: 'https://test-analytics.jeeve.com.au/',
   solutionsUrl: 'https://test-api.jeeve.com.au/test/solutions',
   stripeKey:

@@ -13,6 +13,9 @@ import { StripeElementsOptions } from '@stripe/stripe-js';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { RolesUsersService } from '../roles-users/roles-users.service';
+import { NotificationService } from '@/newapp/shared/services/notification.service';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { OtpConfirmDialog } from './otp-confirm-dialog/otp-confirm-dialog.component';
 
 const passwordValidation = new UntypedFormControl('', [
   Validators.required,
@@ -134,6 +137,7 @@ export class ProfileSettingsComponent implements OnInit {
   public cardExpiry;
   public cardCvc;
   public userType;
+  public mfaEnabled;
   old_password_error;
   confirm_password_error;
   public clinic_id: any = {};
@@ -160,13 +164,16 @@ export class ProfileSettingsComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private rolesUsersService: RolesUsersService,
-    public constants: AppConstants
+    public constants: AppConstants,
+    private notifyService: NotificationService,
+    public dialog: MatDialog
   ) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
     });
     this.userType = this._cookieService.get('user_type');
+    this.mfaEnabled = this._cookieService.get('mfa_enabled') === 'true';
     this.health_screen_mtd = this._cookieService.get('health_screen_mtd');
     this.form = this.fb.group({
       currentPassword: [null, Validators.compose([Validators.required])],
@@ -208,6 +215,59 @@ export class ProfileSettingsComponent implements OnInit {
       name: ['', [Validators.required]],
     });
     // });
+  }
+  imageData: any;
+  loadedImage: boolean = false;
+  enable2FA() {
+    this.profileSettingsService.generate2FAQRCode().subscribe({
+      next: result => {
+        this.imageData = result.body.imageUrl;
+        this.loadedImage = true;
+      },
+      error: error => {
+        this.imageData = null;
+        this.loadedImage = false;
+        console.log('Error', error);
+      }
+    });
+  }
+  disable2FA() {
+    const ref = this.dialog.open(OtpConfirmDialog);
+    ref.afterClosed().subscribe(result => {
+      if(result){
+        this.mfaEnabled = false;
+        this.loadedImage = false;
+        this._cookieService.put('mfa_enabled', 'false');
+        this.notifyService.showSuccess('2FA has been removed succesfully!');
+      }
+    })
+  }
+  verifyCode: string;
+  verify2FA() {
+    if(this.verifyCode){
+      this.profileSettingsService.verifyCode(this.verifyCode).subscribe({
+        next: res => {
+          const result = res.body; 
+          if(result.status){
+            this._cookieService.put('mfa_enabled', 'true');
+            this.mfaEnabled = true;
+            this.loadedImage = false;
+            this.imageURL = null;
+            this.notifyService.showSuccess(result?.message || 'OTP verified!')
+          }else{
+            this._cookieService.put('mfa_enabled', 'false');
+            this.mfaEnabled = false;
+            this.notifyService.showError(result?.message || 'Invalid Code!')
+          }
+        },
+        error: error => {
+          console.log('Error', error);
+          this._cookieService.put('mfa_enabled', 'false');
+          this.mfaEnabled = false;
+          this.notifyService.showError(error?.error?.message || 'Invalid Code!')
+        }
+      });
+    }
   }
 
   public stripePublicKey: any = '';

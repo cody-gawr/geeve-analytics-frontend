@@ -28,11 +28,12 @@ export class LoginService {
   private apiUrl = environment.apiUrl;
 
   // Items Predictor Analysis
-  login(uname, password): Observable<any> {
+  login(uname, password, otp = ''): Observable<any> {
     const formData = new FormData();
 
     formData.append('email', uname);
     formData.append('password', password);
+    if(otp) formData.append('otp', otp);
     return this.http
       .post(environment.commonApiUrl + '/login', formData, {
         headers: this.headers,

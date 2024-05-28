@@ -46,6 +46,32 @@ export class ProfileSettingsService {
         })
       );
   }
+
+  generate2FAQRCode(): Observable<any> {
+    var header = this.getHeaders();
+    return this.http
+      .get(environment.commonApiUrl + '/generateQR', header)
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        })
+      );
+  }
+
+  verifyCode(code: string, remove = false): Observable<any> {
+    var header = this.getHeaders();
+    const formData = new FormData();
+    formData.append('otp', code);
+    if(remove) formData.append('remove', 'yes');
+    return this.http
+      .post(environment.commonApiUrl + '/verifyOTP', formData, header)
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        })
+      );
+  }
+
   // Get updateprofileSettings
   updateprofileSettings(displayName, email): Observable<any> {
     const formData = new FormData();

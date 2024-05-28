@@ -11,6 +11,7 @@ import { ProfileSettingsComponent } from './profile-settings.component';
 import { ProfileSettingsService } from './profile-settings.service';
 import { NgxStripeModule } from 'ngx-stripe';
 import { SharedModule } from '../shared/shared.module';
+import { OtpConfirmDialog } from './otp-confirm-dialog/otp-confirm-dialog.component';
 
 @NgModule({
   imports: [
@@ -26,6 +27,6 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule,
   ],
   providers: [ProfileSettingsService],
-  declarations: [ProfileSettingsComponent],
+  declarations: [ProfileSettingsComponent, OtpConfirmDialog],
 })
 export class ProfileSettingsModule {}

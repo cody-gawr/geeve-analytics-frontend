@@ -22,12 +22,30 @@
           </div>
 
           <div fxLayout="row wrap">
+            <div
+            *ngIf="mfaEnabled"
+            fxFlex.gt-sm="100"
+            fxFlex.gt-xs="100"
+            fxFlex="100"
+            class="dc_input">
+            <mat-form-field floatLabel="never">
+              <input
+                matInput
+                type="text"
+                placeholder="OTP Code"
+                [formControl]="form.controls['otp']" />
+            </mat-form-field>
+            <small *ngIf="errorForm.otp" class="text-danger support-text"
+              >OTP is required.</small
+            >
+          </div>
             <!-- col full-->
             <div
+              
               fxFlex.gt-sm="100"
               fxFlex.gt-xs="100"
               fxFlex="100"
-              class="dc_input">
+              [class]="'dc_input' + (mfaEnabled ? ' hidden': '')">
               <mat-form-field floatLabel="never">
                 <input
                   type="email"
@@ -44,7 +62,7 @@
               fxFlex.gt-sm="100"
               fxFlex.gt-xs="100"
               fxFlex="100"
-              class="dc_input">
+              [class]="'dc_input' + (mfaEnabled ? ' hidden': '')">
               <mat-form-field floatLabel="never">
                 <input
                   matInput
@@ -56,6 +74,7 @@
                 >Password is required.</small
               >
             </div>
+
             <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
               <small *ngIf="errorLogin" class="text-danger support-text"
                 >Incorrect Email or Password.</small
@@ -63,6 +82,9 @@
               <small *ngIf="errorforAttmp" class="text-danger support-text"
                 >Your account is blocked due to too many failed logins, please
                 try again in 15 minutes.</small
+              >
+              <small *ngIf="errorOTP" class="text-danger support-text"
+                >Invalid OTP</small
               >
             </div>
             <!-- col half-->

@@ -519,6 +519,63 @@
     </mat-card-content>
   </mat-expansion-panel>
   <!-- Health screen End -->
+  <!-- 2FA -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title> 2FA</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <!-- section Start -->
+      <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
+        <div
+          fxLayout="row wrap"
+          fxLayoutGap="20px"
+          fxLayoutGap.md="20px"
+          fxLayoutGap.sm="20px"
+          fxLayoutGap.xs="0">
+          
+              <div>
+                <div class="d-flex" style="align-items: center;" *ngIf="loadedImage && !mfaEnabled; else btn2fagroup">
+                  <img [src]="imageData" width="250px" height="250px"/>
+                  <div>
+                    <div class="sa-form-group">
+                      <input type="text" placeholder="Type Code" [(ngModel)]="verifyCode">
+                    </div>
+                    <button (click)="verify2FA()" [disabled]="!verifyCode" class="save-button" style="margin-top: 0">Verify</button>
+                  </div>
+                  
+                </div>
+                <ng-template #btn2fagroup>
+                  <div class="button-container">
+                    <button
+                      *ngIf="mfaEnabled; else btn2fa"
+                      color="warn"
+                      class="save-button"
+                      (click)="disable2FA()"
+                    >
+                      Remove 2FA
+                    </button>
+                    <ng-template #btn2fa>
+                      <button
+                        class="save-button"
+                        (click)="enable2FA()"
+                      >
+                        Enable 2FA
+                      </button>
+                    </ng-template>
+                  </div>
+                </ng-template>
+
+
+              </div>
+            
+        
+        </div>
+      </div>
+      <!-- section Start -->
+    </mat-card-content>
+  </mat-expansion-panel>
+  <!-- 2FA End -->
 </mat-accordion>
 <!-- <mat-card  fxFlex.xs="100" fxFlex.sm="100" fxFlex="calc(50% - 10px)">
 <mat-card-content fxLayout.lt-lg="column">
