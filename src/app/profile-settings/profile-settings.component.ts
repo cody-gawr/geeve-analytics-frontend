@@ -219,17 +219,9 @@ export class ProfileSettingsComponent implements OnInit {
   imageData: any;
   loadedImage: boolean = false;
   enable2FA() {
-    this.profileSettingsService.generate2FAQRCode().subscribe({
-      next: result => {
-        this.imageData = result.body.imageUrl;
-        this.loadedImage = true;
-      },
-      error: error => {
-        this.imageData = null;
-        this.loadedImage = false;
-        console.log('Error', error);
-      }
-    });
+    
+    this.imageData = environment.commonApiUrl + '/generateQR';
+    this.loadedImage = true;
   }
   disable2FA() {
     const ref = this.dialog.open(OtpConfirmDialog);

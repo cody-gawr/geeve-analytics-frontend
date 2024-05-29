@@ -47,17 +47,6 @@ export class ProfileSettingsService {
       );
   }
 
-  generate2FAQRCode(): Observable<any> {
-    var header = this.getHeaders();
-    return this.http
-      .get(environment.commonApiUrl + '/generateQR', header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
-  }
-
   verifyCode(code: string, remove = false): Observable<any> {
     var header = this.getHeaders();
     const formData = new FormData();
