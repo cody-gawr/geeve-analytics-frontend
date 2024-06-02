@@ -216,51 +216,64 @@ export class ProfileSettingsComponent implements OnInit {
     });
     // });
   }
-  imageData: any;
-  loadedImage: boolean = false;
-  enable2FA() {
-    
-    this.imageData = environment.commonApiUrl + '/generateQR';
-    this.loadedImage = true;
-  }
-  disable2FA() {
-    const ref = this.dialog.open(OtpConfirmDialog);
-    ref.afterClosed().subscribe(result => {
-      if(result){
-        this.mfaEnabled = false;
-        this.loadedImage = false;
-        this._cookieService.put('mfa_enabled', 'false');
-        this.notifyService.showSuccess('2FA has been removed succesfully!');
-      }
-    })
-  }
-  verifyCode: string;
-  verify2FA() {
-    if(this.verifyCode){
-      this.profileSettingsService.verifyCode(this.verifyCode).subscribe({
-        next: res => {
-          const result = res.body; 
-          if(result.status){
-            this._cookieService.put('mfa_enabled', 'true');
-            this.mfaEnabled = true;
-            this.loadedImage = false;
-            this.imageURL = null;
-            this.notifyService.showSuccess(result?.message || 'OTP verified!')
-          }else{
-            this._cookieService.put('mfa_enabled', 'false');
-            this.mfaEnabled = false;
-            this.notifyService.showError(result?.message || 'Invalid Code!')
-          }
-        },
-        error: error => {
-          console.log('Error', error);
-          this._cookieService.put('mfa_enabled', 'false');
-          this.mfaEnabled = false;
-          this.notifyService.showError(error?.error?.message || 'Invalid Code!')
+  // imageData: any;
+  onSubmit() {
+    // this.formSubmitted = true;
+    const ref = this.dialog.open(OtpConfirmDialog, {
+        data: {
+            MfaEnabled: this.mfaEnabled
         }
-      });
-    }
+    });
+
+    ref.afterClosed().subscribe({
+        next: (res: any) => {
+          if(res !== undefined){
+            this.mfaEnabled = res;
+            this._cookieService.put('mfa_enabled', res.toString());
+          }
+        }
+    });
   }
+  // enable2FA() {
+  //   this.imageData = environment.commonApiUrl + '/generateQR';
+  // }
+  // disable2FA() {
+  //   const ref = this.dialog.open(OtpConfirmDialog);
+  //   ref.afterClosed().subscribe(result => {
+  //     if(result){
+  //       this.mfaEnabled = false;
+  //       this.imageData = '';
+  //       this._cookieService.put('mfa_enabled', 'false');
+  //       this.notifyService.showSuccess('2FA has been removed succesfully!');
+  //     }
+  //   })
+  // }
+  // verifyCode: string;
+  // verify2FA() {
+  //   if(this.verifyCode){
+  //     this.profileSettingsService.verifyCode(this.verifyCode).subscribe({
+  //       next: res => {
+  //         const result = res.body; 
+  //         if(result.status){
+  //           this._cookieService.put('mfa_enabled', 'true');
+  //           this.mfaEnabled = true;
+  //           this.imageURL = null;
+  //           this.notifyService.showSuccess(result?.message || 'OTP verified!')
+  //         }else{
+  //           this._cookieService.put('mfa_enabled', 'false');
+  //           this.mfaEnabled = false;
+  //           this.notifyService.showError(result?.message || 'Invalid Code!')
+  //         }
+  //       },
+  //       error: error => {
+  //         console.log('Error', error);
+  //         this._cookieService.put('mfa_enabled', 'false');
+  //         this.mfaEnabled = false;
+  //         this.notifyService.showError(error?.error?.message || 'Invalid Code!')
+  //       }
+  //     });
+  //   }
+  // }
 
   public stripePublicKey: any = '';
   getStripeKey() {

@@ -28,11 +28,12 @@
             fxFlex.gt-xs="100"
             fxFlex="100"
             class="dc_input">
+            <p class="text-center" style="margin-bottom:0;">Enter the 6-digit code found in your authenticator app</p>
             <mat-form-field floatLabel="never">
               <input
                 matInput
                 type="text"
-                placeholder="OTP Code"
+                placeholder="Authentication Code"
                 [formControl]="form.controls['otp']" />
             </mat-form-field>
             <small *ngIf="errorForm.otp" class="text-danger support-text"
@@ -41,7 +42,6 @@
           </div>
             <!-- col full-->
             <div
-              
               fxFlex.gt-sm="100"
               fxFlex.gt-xs="100"
               fxFlex="100"
@@ -88,7 +88,7 @@
               >
             </div>
             <!-- col half-->
-            <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+            <div [class]="(mfaEnabled ? 'hidden': '')" fxFlex.gt-sm="50" fxFlex.gt-xs="50">
               <!--  [routerLink]="['/authentication/forgot']" -->
               <a href="/authentication/forgot" class="link">Forgot Password?</a>
             </div>

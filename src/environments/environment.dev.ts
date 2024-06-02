@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   commonApiUrl: 'http://localhost:8080/v1/common',
-  baseApiUrl: 'http://localhost:8080/local',
+  baseApiUrl: 'http://localhost:8080',
   apiUrl: 'http://localhost:8080/local/analytics',
   homeUrl: 'https://test-analytics.jeeve.com.au/',
   solutionsUrl: 'https://test-api.jeeve.com.au/test/solutions',

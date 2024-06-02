@@ -522,7 +522,7 @@
   <!-- 2FA -->
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title> 2FA</mat-panel-title>
+      <mat-panel-title>Two-Factor Authentication</mat-panel-title>
     </mat-expansion-panel-header>
     <mat-card-content>
       <!-- section Start -->
@@ -533,43 +533,11 @@
           fxLayoutGap.md="20px"
           fxLayoutGap.sm="20px"
           fxLayoutGap.xs="0">
-          
               <div>
-                <div class="d-flex" style="align-items: center;" *ngIf="loadedImage && !mfaEnabled; else btn2fagroup">
-                  <img [src]="imageData" width="250px" height="250px"/>
-                  <div>
-                    <div class="sa-form-group">
-                      <input type="text" placeholder="Type Code" [(ngModel)]="verifyCode">
-                    </div>
-                    <button (click)="verify2FA()" [disabled]="!verifyCode" class="save-button" style="margin-top: 0">Verify</button>
-                  </div>
-                  
-                </div>
-                <ng-template #btn2fagroup>
                   <div class="button-container">
-                    <button
-                      *ngIf="mfaEnabled; else btn2fa"
-                      color="warn"
-                      class="save-button"
-                      (click)="disable2FA()"
-                    >
-                      Remove 2FA
-                    </button>
-                    <ng-template #btn2fa>
-                      <button
-                        class="save-button"
-                        (click)="enable2FA()"
-                      >
-                        Enable 2FA
-                      </button>
-                    </ng-template>
+                    <button mat-button (click)="onSubmit()" class="mat-flat-button mat-dc">{{mfaEnabled?'Disable Two-Factor Authentication':'Two-Factor Authentication'}}</button>
                   </div>
-                </ng-template>
-
-
               </div>
-            
-        
         </div>
       </div>
       <!-- section Start -->
