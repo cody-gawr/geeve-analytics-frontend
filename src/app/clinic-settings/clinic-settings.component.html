@@ -700,7 +700,7 @@
           </div> -->
 
         <div class="sa-form-group-btn">
-          <button class="save-button" type="submit" [disabled]="!form.valid">
+          <button class="save-button" type="submit" [disabled]="!!form.errors || !form.touched">
             Save
           </button>
         </div>
