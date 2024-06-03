@@ -145,7 +145,7 @@ export class ClinicSettingsComponent implements OnInit {
         // practice_size: [null, Validators.compose([Validators.required])],
         post_op_calls: [null],
         subtracted_accounts: [null],
-        fta_uta: [null, Validators.compose([Validators.required])],
+        fta_uta: [null],
         post_op_calls_days: [null, Validators.compose([Validators.required])],
         recall_weeks: [null, Validators.compose([Validators.required])],
         tick_days: [null, Validators.compose([Validators.required])],
@@ -175,7 +175,7 @@ export class ClinicSettingsComponent implements OnInit {
         timezone: [null],
         post_op_calls: [null],
         subtracted_accounts: [null],
-        fta_uta: [null, Validators.compose([Validators.required])],
+        fta_uta: [null],
         post_op_calls_days: [null, Validators.compose([Validators.required])],
         recall_weeks: [null, Validators.compose([Validators.required])],
         tick_days: [null, Validators.compose([Validators.required])],
@@ -420,6 +420,8 @@ export class ClinicSettingsComponent implements OnInit {
   }
 
   onSaveExtraSettings() {
+    console.log(this.form.valid, this.form);
+    return;
     $('.ajax-loader').show();
     this.saveExtraSettings().subscribe({
       next: res => {
