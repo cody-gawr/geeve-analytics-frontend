@@ -420,8 +420,6 @@ export class ClinicSettingsComponent implements OnInit {
   }
 
   onSaveExtraSettings() {
-    console.log(this.form.valid, this.form);
-    return;
     $('.ajax-loader').show();
     this.saveExtraSettings().subscribe({
       next: res => {
