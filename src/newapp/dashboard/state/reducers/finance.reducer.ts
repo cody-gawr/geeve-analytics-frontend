@@ -1297,7 +1297,7 @@ export const selectTotalDiscountTrendChartData = createSelector(
             _.round(parseFloat(<string>v.discounts ?? '0'))
           );
           chartDataset.push({
-            data: chartData?.every(val => val != 0) ? chartData : [],
+            data: _.sum(chartData) > 0 ? chartData : [],
             label: values[0].clinicName,
             backgroundColor: DoughnutChartColors[i],
             hoverBackgroundColor: DoughnutChartColors[i],
