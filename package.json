@@ -7,6 +7,7 @@
     "start": "ng serve",
     "start:staging": "ng serve --open  --port 443 --disable-host-check --ssl --host local.jeeve.com.au --configuration=staging",
     "start:dev": "ng serve --open  --port 443 --disable-host-check --ssl --host local.jeeve.com.au --configuration=dev",
+    "start:test": "ng serve --open  --port 443 --disable-host-check --ssl --host local.jeeve.com.au --configuration=test",
     "build": "ng build",
     "build-prod": "ng build -c=production --output-hashing=all",
     "build-prod-non-optimized": "ng build -c=prod-non-optimized --output-hashing=all",
