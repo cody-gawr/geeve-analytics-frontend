@@ -113,6 +113,7 @@ export class FrontDeskService {
           end_date: endDate,
           duration: duration,
           wh: queryWhEnabled,
+          dashboard_id: 3,
         },
         withCredentials: true,
       })
@@ -135,6 +136,7 @@ export class FrontDeskService {
           clinic_id: clinicId,
           mode,
           wh: queryWhEnabled,
+          dashboard_id: 3,
         },
         withCredentials: true,
       })
@@ -155,6 +157,7 @@ export class FrontDeskService {
           end_date: endDate,
           duration: duration,
           wh: queryWhEnabled,
+          dashboard_id: 3,
         },
         withCredentials: true,
       })
@@ -177,6 +180,7 @@ export class FrontDeskService {
           clinic_id: clinicId,
           mode,
           wh: queryWhEnabled,
+          dashboard_id: 3,
         },
         withCredentials: true,
       })
