@@ -145,6 +145,7 @@ export class MarketingService {
           end_date: endDate,
           duration: duration,
           wh: queryWhEnabled,
+          dashboard_id: 4,
         },
         withCredentials: true,
       })
@@ -167,6 +168,7 @@ export class MarketingService {
           clinic_id: clinicId,
           mode,
           wh: queryWhEnabled,
+          dashboard_id: 4,
         },
         withCredentials: true,
       })
