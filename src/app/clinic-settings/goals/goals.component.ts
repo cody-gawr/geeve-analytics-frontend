@@ -313,6 +313,7 @@ export class GoalsComponent
   onSubmit() {
     this.goalsData.goals[16] = this.goalsData.goals[4];
     this.goalsData.goals[17] = this.goalsData.goals[5];
+    this.goalsData.goals[36] = this.goalsData.goals[8];
     let myJsonString = JSON.stringify(this.goalsData);
     $('.ajax-loader').show();
     if (this.selectedGoalCategory$.value === '') {
