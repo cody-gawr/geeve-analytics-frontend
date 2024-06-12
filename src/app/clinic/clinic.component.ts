@@ -553,7 +553,8 @@ export class ClinicComponent implements AfterViewInit {
     this.setupService.checkDentallyStatus(id).subscribe(
       res => {
         if (res.status == 200) {
-          if (res.body.data.site_id) this.getClinicLocation(id);
+          if (res.body.data.site_id) {
+          }
         }
       },
       error => {
