@@ -183,23 +183,23 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
         }
         break;
       case 'lfytd':
-        if (moment().month() >= 5) {
-          this.layoutFacade.saveDateRange(
-            moment().subtract(1, 'years').month(6).date(1),
-            moment().month(5).date(30),
-            duration,
-            12,
-            false
-          );
-        } else {
-          this.layoutFacade.saveDateRange(
-            moment().subtract(2, 'years').month(6).date(1),
-            moment().subtract(1, 'years').month(5).date(30),
-            duration,
-            12,
-            false
-          );
-        }
+        // if (moment().month() >= 5) {
+        //   this.layoutFacade.saveDateRange(
+        //     moment().subtract(1, 'years').month(6).date(1),
+        //     moment().month(5).date(30),
+        //     duration,
+        //     12,
+        //     false
+        //   );
+        // } else {
+        this.layoutFacade.saveDateRange(
+          moment().subtract(2, 'years').month(6).date(1),
+          moment().subtract(1, 'years').month(5).date(30),
+          duration,
+          12,
+          false
+        );
+        //}
         break;
     }
     this.layoutFacade.setTrend('off');
