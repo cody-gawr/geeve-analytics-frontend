@@ -45,9 +45,9 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   ];
 
   get hourlyRateChartNames$() {
-    return this.isAnyClinicHasD4w$.pipe(
-      map(isAnyClinicHasD4w => {
-        if (!isAnyClinicHasD4w) {
+    return this.isEachClinicD4w$.pipe(
+      map(isEachClinicD4w => {
+        if (!isEachClinicD4w) {
           return this.hourlyRateChartNames.filter(v => v !== 'Collection-Exp');
         }
         return this.hourlyRateChartNames;
@@ -55,8 +55,8 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     );
   }
 
-  get isAnyClinicHasD4w$() {
-    return this.clinicFacade.isAnyClinicHasD4w$;
+  get isEachClinicD4w$() {
+    return this.clinicFacade.isEachClinicD4w$;
   }
 
   get duration$() {

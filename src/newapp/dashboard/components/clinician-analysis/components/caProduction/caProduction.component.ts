@@ -46,7 +46,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   ];
 
   get prodChartNames$() {
-    return this.isAnyClinicHasD4w$.pipe(
+    return this.isEachClinicD4w$.pipe(
       map(v => {
         return v
           ? ['Production', 'Collection', 'Collection-Exp']
@@ -106,10 +106,6 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   public get isEachClinicD4w$(): Observable<boolean> {
     return this.clinicFacade.isEachClinicD4w$;
-  }
-
-  public get isAnyClinicHasD4w$(): Observable<boolean> {
-    return this.clinicFacade.isAnyClinicHasD4w$;
   }
 
   datasets: any[] = [{ data: [] }];
