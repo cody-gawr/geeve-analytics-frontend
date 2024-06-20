@@ -477,6 +477,11 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public get isExactOrCore(): boolean {
     return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
+  public get isExactOrCoreOrPraktika(): boolean {
+    return this.localStorageService.isEachClinicExactOrCoreOrPraktika(
+      this.clinic_id
+    );
+  }
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private datepipe: DatePipe,

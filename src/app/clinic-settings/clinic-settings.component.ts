@@ -108,6 +108,11 @@ export class ClinicSettingsComponent implements OnInit {
   public get isExact(): boolean {
     return this.localStorageService.isEachClinicExact(this.clinic_id);
   }
+  public get isExactOrPraktikaOrCore(): boolean {
+    return this.localStorageService.isEachClinicExactOrCoreOrPraktika(
+      this.clinic_id
+    );
+  }
   public get isD4w(): boolean {
     return this.localStorageService.isEachClinicPmsD4w(this.clinic_id);
   }

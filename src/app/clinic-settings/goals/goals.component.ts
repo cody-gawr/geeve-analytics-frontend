@@ -170,6 +170,12 @@ export class GoalsComponent
     );
   }
 
+  get isExactOrCoreOrPraktika(): boolean {
+    return this.localStorageService.isEachClinicExactOrCoreOrPraktika(
+      this.clinic_id$.value
+    );
+  }
+
   getGoalsForTabsClinic(allGoals) {
     this.tabs = [];
     var temp = {
@@ -194,6 +200,13 @@ export class GoalsComponent
             'Dentist Production Per Hour',
             'Dentist Production Per Day',
           ].indexOf(chart.chart) > -1
+        ) {
+          return;
+        }
+        if (
+          this.isExactOrCoreOrPraktika &&
+          res.id == 3 &&
+          ['UTA ratio'].indexOf(chart.chart) > -1
         ) {
           return;
         }

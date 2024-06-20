@@ -361,6 +361,12 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
 
+  public get isExactOrCoreOrPraktika(): boolean {
+    return this.localStorageService.isEachClinicExactOrCoreOrPraktika(
+      this.clinic_id
+    );
+  }
+
   public get isExact(): boolean {
     return this.localStorageService.isEachClinicExact(this.clinic_id);
   }
