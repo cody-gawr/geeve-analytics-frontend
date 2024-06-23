@@ -738,19 +738,19 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
         .map(item => item.clinicName)
         .value();
       const descriptionMap: Record<string, string> = {
-        imp_surg: 'Implant Surg',
-        ortho_fix: 'Braces',
-        ortho_align: 'Aligners',
+        impSurg: 'Implant Surg',
+        orthoFix: 'Braces',
+        orthoAlign: 'Aligners',
         sleep: 'MAS',
-        perio_surg: 'Perio Surg',
-        endo_retreat: 'Endo Re-treat',
-        veneers_ind: 'Veneers (indirect)',
+        perioSurg: 'Perio Surg',
+        endoRetreat: 'Endo Re-treat',
+        veneersInd: 'Veneers (indirect)',
       };
       Object.entries(descriptionMap).forEach(
         ([property, description], index) => {
           const data: number[] = _.chain(resData.data)
             .groupBy('clinicId')
-            .map(items => {
+            .map((items, clinicId) => {
               return _.chain(items)
                 .sumBy(item => Number(item[property]) || 0)
                 .value();
