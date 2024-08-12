@@ -134,6 +134,6 @@ export class LocalStorageService {
   ) {
     let clinics = this.getObject<any[]>('clinics') || [];
     const clinic = clinics.find(c => c.id == parseInt(<string>clinicId));
-    return clinic.pms && clinic.pms == pms;
+    return clinic?.pms && clinic?.pms == pms;
   }
 }
