@@ -12,7 +12,7 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { MkSelectExpensesModalComponent } from '../select-expenses-modal/select-expenses-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
-
+  
 @Component({
   selector: 'finance-expense-chart',
   templateUrl: './expenses.component.html',
@@ -91,44 +91,16 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([resBody, clinicId]) => {
-        if (resBody === null) return;
+        if (resBody === null) {
+          this.datasets = [];
+          this.selectedData = [];
+          return;
+        };
         const expenses = resBody.data,
           production = resBody.production;
         if (typeof clinicId === 'string') {
           this.datasets = [];
           let i = 0;
-          // _.chain(expenses)
-          //   .groupBy('accountName')
-          //   .map((items, accountName) => {
-          //     return {
-          //       items,
-          //       accountName,
-          //     };
-          //   })
-          //   .value()
-          //   .forEach(v => {
-          //     const bgColor = DoughnutChartColors[i];
-          //     i++;
-          //     this.datasets.push({
-          //       data: _.chain(v.items)
-          //         .orderBy('clinicId', 'asc')
-          //         .value()
-          //         .map(item => {
-          //           const clinicProd = parseFloat(
-          //             <string>(
-          //               resBody.productions.find(
-          //                 p => p.clinicId == item.clinicId
-          //               )?.production
-          //             )
-          //           );
-          //           return ((item.expense / clinicProd) * 100).toFixed(1);
-          //         }),
-          //       label: v.accountName,
-          //       backgroundColor: bgColor,
-          //       hoverBackgroundColor: bgColor,
-          //     });
-          //   });
-
           _.chain(expenses)
             .groupBy('accountName')
             .map((accItems, accountName) => {
