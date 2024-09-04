@@ -67,6 +67,20 @@
             [value]="value" />
         </ng-template>
       </ngx-datatable-column>
+      <ngx-datatable-column name="pms">
+        <ng-template let-column="pms" ngx-datatable-header-template>
+          <span>PMS</span>
+        </ng-template>
+        <ng-template
+          ngx-datatable-cell-template
+          let-rowIndex="rowIndex"
+          let-row="row"
+          let-value="value">
+          <span>
+            {{ value }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
       <ngx-datatable-column name="Address">
         <ng-template
           ngx-datatable-cell-template
@@ -139,19 +153,25 @@
               ><i class="ti-pencil m-r-10"></i
             ></a>
             <button
-              *ngIf="row.pms == 'core' && row.core_sessions?.length > 0"
+              *ngIf="row.connected === true"
               mat-button
-              (click)="removeCore($event, value)"
+              (click)="removePmsConnection($event, value)"
               color="warn">
               DISCONNECT
             </button>
             <button
               class="golden"
               style="color: white"
-              *ngIf="row.pms == 'core' && !row.core_sessions?.length"
+              *ngIf="row.connected === false"
               mat-button
-              (click)="reconnectToCore($event, value)">
+              (click)="reconnectPms($event, value)">
               RECONNECT
+            </button>
+            <button
+              *ngIf="row.connected === undefined && ['core', 'dentally', 'praktika', 'xero', 'myob'].indexOf(row.pms) > -1"
+              mat-button
+              disabled>
+              checking pms status...
             </button>
           </div>
           <!--     <button class="action_btn danger" mat-menu-item (click) = "deleteClinic(rowIndex)">

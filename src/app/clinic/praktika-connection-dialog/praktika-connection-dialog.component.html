@@ -64,6 +64,13 @@
           >Password Username !</small
         >
       </div>
+      <div lass="sa-form-group" *ngIf="customers.length > 0">
+        <label>Select Customer</label>
+        <select formControlName="customer_id">
+            <option *ngFor="let option of customers" [value]="option.id">
+                {{option.name}}</option>
+        </select>
+      </div>
     </mat-card-content>
   </form>
 </div>
@@ -80,6 +87,6 @@
     class="mat-raised-button mat-dc"
     (click)="onSubmit()"
     [disabled]="!form.valid">
-    Submit
+    {{customers.length > 0? 'Submit': 'Next'}}
   </button>
 </div>

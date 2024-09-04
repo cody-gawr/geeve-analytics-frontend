@@ -58,7 +58,7 @@ export class SetupService {
     var header = this.getHeaders();
     return this.http
       .get(
-        this.apiUrl + '/corepractice/getAuthorizeUrl?clinic_id=' + clinic_id,
+         environment.baseApiUrl + '/v1/common/corepractice/getAuthorizeUrl?clinic_id=' + clinic_id,
         header
       )
       .pipe(
@@ -281,7 +281,8 @@ export class SetupService {
     var header = this.getHeaders();
     return this.http
       .get(
-        this.apiUrl + '/corepractice/checkStatus?clinic_id=' + clinic_id,
+        environment.baseApiUrl +
+          '/v1/common/corepractice/checkStatus?clinic_id=' + clinic_id,
         header
       )
       .pipe(

@@ -6,7 +6,10 @@ import { ClinicService } from '../clinic.service';
 
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-
+interface Customer {
+  id: number;
+  name: string;
+}
 @Component({
   selector: 'app-praktika-connection-dialog',
   templateUrl: './praktika-connection-dialog.component.html',
@@ -15,6 +18,7 @@ import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dia
 export class PraktikaConnectionDialogComponent {
   public form: FormGroup;
   public formSubmitted: boolean = false;
+  public customers: Customer[];
   constructor(
     private formBuilder: FormBuilder,
     private pmsService: ClinicService,
@@ -28,7 +32,9 @@ export class PraktikaConnectionDialogComponent {
     this.form = this.formBuilder.group({
       customer_user: ['', [Validators.required]],
       customer_secret: ['', [Validators.required]],
+      customer_id: ['']
     });
+    this.customers = [];
   }
 
   get FormGroup(): FormGroup {
@@ -37,13 +43,14 @@ export class PraktikaConnectionDialogComponent {
 
   public onSubmit() {
     this.formSubmitted = true;
-    const { customer_user, customer_secret } = this.form.getRawValue();
-    if (this.data?.clinic_id) {
+    const { customer_user, customer_secret, customer_id } = this.form.getRawValue();
+    if (this.customers.length > 0 && customer_id) {
       this.pmsService
         .CreatePraktikaConfig(
           customer_user,
           customer_secret,
-          this.data.clinic_id
+          this.data.clinic_id,
+          customer_id
         )
         .subscribe({
           next: response => {
@@ -58,7 +65,7 @@ export class PraktikaConnectionDialogComponent {
               'Praktika account connected',
               'Praktika Account'
             );
-            this.dialogRef.close();
+            this.dialogRef.close('success');
           },
           error: err =>
             this.toastr.error(
@@ -82,7 +89,12 @@ export class PraktikaConnectionDialogComponent {
               'Praktika account connected',
               'Praktika Account'
             );
-            this.dialogRef.close({ customer_user, customer_secret });
+            if(!this.data?.clinic_id){
+              this.dialogRef.close({ customer_user, customer_secret });
+            }else{
+              this.customers = response.response?.data?.customers;
+              this.form.controls['customer_id'].setValue(this.customers[0]?.id);
+            }
           },
           error: err =>
             this.toastr.error(

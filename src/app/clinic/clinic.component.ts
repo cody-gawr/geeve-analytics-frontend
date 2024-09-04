@@ -4,6 +4,7 @@ import {
   ViewChild,
   AfterViewInit,
   ViewEncapsulation,
+  OnDestroy,
 } from '@angular/core';
 import { ClinicService } from './clinic.service';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
@@ -22,6 +23,10 @@ import Swal from 'sweetalert2';
 import { SetupService } from '../setup/setup.service';
 import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/praktika-connection-dialog.component';
 import { environment } from '@/environments/environment';
+import { DentallyConnectionDialogComponent } from './dentally-connection-dialog/dentally-connection-dialog.component';
+import { MyobConnectionDialogComponent } from './myob-connection-dialog/myob-connection-dialog.component';
+import { XeroConnectionDialogComponent } from './xero-connection-dialog/xero-connection-dialog.component';
+import { CoreConnectionDialogComponent } from './core-connection-dialog/core-connection-dialog.component';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -127,7 +132,7 @@ const data: any = require('@/assets/company.json');
  *Main Clinic Component
  *AUTHOR - Teq Mavens
  */
-export class ClinicComponent implements AfterViewInit {
+export class ClinicComponent implements AfterViewInit, OnDestroy {
   name: string;
   address: string;
   contact_name: string;
@@ -156,6 +161,7 @@ export class ClinicComponent implements AfterViewInit {
 
   loadingIndicator = true;
   reorderable = true;
+  checkStatusInterval = null;
 
   columns = [
     { prop: 'sr' },
@@ -184,9 +190,120 @@ export class ClinicComponent implements AfterViewInit {
     this.getClinics();
     this.userPlan = this._cookieService.get('user_plan');
     this.user_type = this._cookieService.get('user_type');
+    this.checkPmsStatus();
+    this.checkStatusInterval = setInterval(() => {
+      // every 2 sconds
+      this.checkPmsStatus();
+    }, 10000)
   }
   private warningMessage: string;
 
+  checkPmsStatus() {
+    if(this.rows && this.rows.length > 0){
+      // check status
+      for(const row of this.rows){
+        const pms = row.pms;
+        switch(pms){
+          case 'core':
+            this.setupService.checkCoreStatus(row.id).subscribe(
+              {
+                next: res => {
+                  if (res.status == 200) {
+                    if (res.body.data.refresh_token && res.body.data.token && res.body.data.core_user_id){
+                      //
+                      row.connected = true;
+                    }else{
+                      row.connected = false;
+                    }
+                  }
+                },
+                error: error => {
+                  console.error(error);
+                  row.connected = false;
+                }
+              }
+            );
+            break;
+          case 'dentally':
+            this.setupService.checkDentallyStatus(row.id).subscribe(
+              {
+                next: res => {
+                  if (res.status == 200) {
+                    if (res.body.data.site_id) {
+                      row.connected = true;
+                    }else{
+                      row.connected = false;
+                    }
+                  }
+                },
+                error: error => {
+                  console.error(error);
+                  row.connected = false;
+                }
+              }
+            );
+            break;
+          case 'praktika':
+            this.clinicService.checkPraktikaStatus(row.id).subscribe(
+              {
+                next: (data) => {
+                  if (data.success) {
+                    row.connected = true;
+                  } else {
+                    row.connected = false;
+                  }
+                }, error: err => {
+                  row.connected = false;
+                },
+              }
+            );
+            break;
+          case 'myob':
+            this.setupService.checkMyobStatus(row.id).subscribe(
+              res => {
+                if (res.body.message != 'error') {
+                  if (res.body.data.connectedWith == 'myob') {
+                    row.connected = true;
+                  } else {
+                    row.connected = false;
+                  }
+                } else {
+                  row.connected = false;
+                }
+              },
+              error => {
+                row.connected = false;
+              }
+            );
+            break;
+          case 'xero':
+            this.setupService.checkXeroStatus(row.id).subscribe(
+              {
+                next: res => {
+                  if (res.body.message != 'error') {
+                    if (res.body.data.connectedWith == 'xero') {
+                      row.connected = true;
+                    } else {
+                      row.connected = false;
+                    }
+                  } else {
+                    row.connected = false;
+                  }
+                },
+                error: error => {
+                  row.connected = false;
+                }
+              }
+            );
+            break;
+        }
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    if(this.checkStatusInterval) clearInterval(this.checkStatusInterval);
+  }
   //open add clinic modal
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
@@ -539,7 +656,7 @@ export class ClinicComponent implements AfterViewInit {
     this.setupService.checkCoreStatus(id).subscribe(
       res => {
         if (res.status == 200) {
-          if (res.body.data.refresh_token && res.body.data.token)
+          if (res.body.data.refresh_token && res.body.data.token && res.body.data.core_user_id)
             this.getClinicLocation(id);
         }
       },
@@ -604,25 +721,62 @@ export class ClinicComponent implements AfterViewInit {
     });
   }
 
-  removeCore(event, clinicId) {
+  removePmsConnection(event, clinicId) {
     event.preventDefault();
     event.stopPropagation();
     const clinic = this.rows.find(r => r.id === clinicId);
     Swal.fire({
       title: 'Are you sure?',
-      text: `Are you sure you want to disconnect ${clinic.clinicName} from Core Practice?`,
+      text: `Are you sure you want to disconnect ${clinic.clinicName} from ${clinic.pms}?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
     }).then(result => {
       if (result.value) {
-        this.clinicService.removeClinic(clinicId).subscribe(res => {
-          if (res.status == 200) {
-            this.toastr.success(`Remove Core for ${clinic.clinicName}`);
-            clinic.core_sessions = [];
-          }
-        });
+        switch(clinic.pms){
+          case 'core':
+            this.clinicService.removeClinic(clinicId).subscribe(res => {
+              if (res.status == 200) {
+                this.toastr.success(`Remove Core for ${clinic.clinicName}`);
+                clinic.core_sessions = [];
+                clinic.connected = false;
+              }
+            });
+            break;
+          case 'dentally':
+            this.clinicService.removeDentallyClinic(clinic.id).subscribe(
+              {
+                next: (res) => {
+                  console.log('dentally disconnected:', res)
+                  clinic.connected = false;
+                },
+                error: (err) => {
+                  console.log(err);
+                }
+              }
+            );
+            break;
+          case 'praktika':
+            this.clinicService.removePraktikaClinic(clinic.id).subscribe(
+              {
+                next: (res) => {
+                  console.log('praktika disconnected:', res)
+                  clinic.connected = false;
+                },
+                error: (err) => {
+                  console.log(err);
+                }
+              }
+            );
+            break;
+          case 'myob':
+            break;
+          case 'xero':
+            break;
+
+        }
+
       }
     });
   }
@@ -650,15 +804,166 @@ export class ClinicComponent implements AfterViewInit {
     });
   }
 
-  reconnectToCore(event, clinicId) {
+  reconnectPms(event, clinicId) {
     event.preventDefault();
     event.stopPropagation();
     const clinic = this.rows.find(r => r.id === clinicId);
-    if (clinic.core_clinics[0]?.clinic_url) {
-      this.getConnectCoreLink(clinicId, true);
-    } else {
-      this.toastr.warning('No Registred Clinic URL');
+    switch(clinic.pms){
+      case 'core':
+        const dialogRef_core = this.dialog.open(CoreConnectionDialogComponent, {
+          data: {
+            id: clinicId,
+          },
+          width: '500px',
+        });
+        dialogRef_core.afterClosed().subscribe((result: any) => {
+          if (result === 'success') {
+            clinic.connected = undefined;
+            this.setupService.checkCoreStatus(clinic.id).subscribe(
+              {
+                next: res => {
+                  if (res.status == 200) {
+                    if (res.body.data.refresh_token && res.body.data.token && res.body.data.core_user_id){
+                      //
+                      clinic.connected = true;
+                    }else{
+                      clinic.connected = false;
+                    }
+                  }
+                },
+                error: error => {
+                  console.error(error);
+                  clinic.connected = false;
+                }
+              }
+            );
+          }
+        });
+        // if (clinic.core_clinics[0]?.clinic_url) {
+        //   this.getConnectCoreLink(clinicId, true);
+        // } else {
+        //   this.toastr.warning('No Registred Clinic URL');
+        // }
+        break;
+      case 'dentally':
+        const dialogRef_dentally = this.dialog.open(DentallyConnectionDialogComponent, {
+          data: {
+            id: clinicId,
+          },
+          width: '500px',
+        });
+        dialogRef_dentally.afterClosed().subscribe((result: any) => {
+          if (result === 'success') {
+            clinic.connected = undefined;
+            this.setupService.checkDentallyStatus(clinic.id).subscribe(
+              {
+                next: res => {
+                  if (res.status == 200) {
+                    if (res.body.data.site_id) {
+                      clinic.connected = true;
+                    }else{
+                      clinic.connected = false;
+                    }
+                  }
+                },
+                error: error => {
+                  console.error(error);
+                  clinic.connected = false;
+                }
+              }
+            );
+          }
+        });
+        break;
+      case 'praktika':
+        const dialogRef = this.dialog.open(
+          PraktikaConnectionDialogComponent,
+          {
+            width: '500px',
+            data: { clinic_id: clinic.id }
+          }
+        );
+        dialogRef.afterClosed().subscribe((_result: any) => {
+          if(_result == 'success'){
+            clinic.connected = undefined;
+            this.clinicService.checkPraktikaStatus(clinic.id).subscribe(
+              {
+                next: (data) => {
+                  if (data.success) {
+                    clinic.connected = true;
+                  } else {
+                    clinic.connected = false;
+                  }
+                }, error: err => {
+                  clinic.connected = false;
+                },
+              }
+            );
+          }
+        });
+        break;
+      case 'myob':
+        const dialogRef_myob = this.dialog.open(
+          MyobConnectionDialogComponent,
+          {
+            width: '500px',
+            data: { id: clinic.id }
+          }
+        );
+        dialogRef_myob.afterClosed().subscribe((_result: any) => {
+          if(_result == 'success'){
+            clinic.connected = undefined;
+            this.setupService.checkMyobStatus(clinic.id).subscribe(
+              res => {
+                if (res.body.message != 'error') {
+                  if (res.body.data.connectedWith == 'myob') {
+                    clinic.connected = true;
+                  } else {
+                    clinic.connected = false;
+                  }
+                } else {
+                  clinic.connected = false;
+                }
+              },
+              error => {
+                clinic.connected = false;
+              }
+            );
+          }
+        });
+        break;
+      case 'xero':
+        const dialogRef_xero = this.dialog.open(
+          XeroConnectionDialogComponent,
+          {
+            width: '500px',
+            data: { id: clinic.id }
+          }
+        );
+        dialogRef_xero.afterClosed().subscribe((_result: any) => {
+          if(_result == 'success'){
+            clinic.connected = undefined;
+            this.setupService.checkXeroStatus(clinic.id).subscribe(
+              res => {
+                if (res.body.message != 'error') {
+                  if (res.body.data.connectedWith == 'xero') {
+                    clinic.connected = true;
+                  } else {
+                    clinic.connected = false;
+                  }
+                } else {
+                  clinic.connected = false;
+                }
+              },
+              error => {
+                clinic.connected = false;
+              }
+            );
+          }
+        });
+        break;
     }
+
   }
 
   reconnectToDentally(event, clinicId) {

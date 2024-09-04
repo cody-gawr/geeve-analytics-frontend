@@ -1,0 +1,20 @@
+
+<h1 mat-dialog-title>Xero Connection</h1>
+
+<div mat-dialog-content class="sa_forms_design">
+    <div class="!pt-5 !pb-5 !pl-5 !pr-5 rounded-xl bg-slate-100">
+        <p>Connect your Xero account ...</p>
+    </div>
+    <div class="flex flex-row flex-wrap items-center justify-center pt-5">
+        <div class="flex flex-col items-center">
+        </div>
+    </div>
+
+    <br>
+</div>
+<div mat-dialog-actions>
+    <button [mat-dialog-close]="true" mat-button class="mat-raised-button mat-gray">Cancel</button>
+    <button mat-button class="mat-raised-button mat-dc" *ngIf="this.data.id" (click)="onSubmit()">Connect
+        to
+        Xero</button>
+</div>

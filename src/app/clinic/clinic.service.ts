@@ -105,6 +105,24 @@ export class ClinicService {
       );
   }
 
+  removePraktikaClinic(clinicId: string): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('clinic_id', clinicId);
+    var header = this.getHeaders();
+    return this.http
+      .post(
+        environment.baseApiUrl + '/v1/common/praktika/disconnect',
+        formData,
+        header
+      )
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        })
+      );
+  }
+
   // Update Clinic
   updateClinic(clinic_id, value, column): Observable<any> {
     const formData = new FormData();
@@ -180,11 +198,13 @@ export class ClinicService {
   public CreatePraktikaConfig(
     customer_user: string,
     customer_secret: string,
-    clinicID: number
+    clinicID: number,
+    customer_id?: number
   ) {
     const body = {
       customer_user: customer_user,
       customer_secret: customer_secret,
+      customer_id
     };
     return this.http
       .post<
@@ -196,6 +216,15 @@ export class ClinicService {
           return { response };
         })
       );
+  }
+
+  public checkPraktikaStatus(
+    clinicId: number
+  ){
+    return this.http.get<IApiResponse<null>>(
+      `${environment.baseApiUrl}/v1/common/praktika/checkStatus?clinic_id=${clinicId}`,
+      { withCredentials: true },
+    );
   }
 
   public validatePraktikaLogin(customer_user: string, customer_secret: string) {
@@ -213,5 +242,12 @@ export class ClinicService {
           return { response };
         })
       );
+  }
+
+  public getDentallyAuthorizeUrl(clinicId: number) {
+    return this.http.get<IApiResponse<any>>(
+      `${environment.baseApiUrl}/v1/common/dentally/getAuthorizeUrl?clinic_id=${clinicId}`,
+      { withCredentials: true },
+    );
   }
 }

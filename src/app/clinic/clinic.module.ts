@@ -14,6 +14,10 @@ import { SharedMatModule } from '../shared-mat.module';
 import { SetupService } from '../setup/setup.service';
 import { FormsModule } from '@angular/forms';
 import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/praktika-connection-dialog.component';
+import { DentallyConnectionDialogComponent } from './dentally-connection-dialog/dentally-connection-dialog.component';
+import { MyobConnectionDialogComponent } from './myob-connection-dialog/myob-connection-dialog.component';
+import { XeroConnectionDialogComponent } from './xero-connection-dialog/xero-connection-dialog.component';
+import { CoreConnectionDialogComponent } from './core-connection-dialog/core-connection-dialog.component';
 
 @NgModule({
   imports: [
@@ -30,6 +34,10 @@ import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/
     DialogOverviewExampleLimitDialogComponent,
     DialogLocationDialogComponent,
     PraktikaConnectionDialogComponent,
+    DentallyConnectionDialogComponent,
+    MyobConnectionDialogComponent,
+    XeroConnectionDialogComponent,
+    CoreConnectionDialogComponent
   ],
 })
 export class ClinicModule {}
