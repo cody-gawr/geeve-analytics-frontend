@@ -310,11 +310,11 @@ export class DateMenuBarComponent
     } else if (duration == 'lfytd') {
       var date = new Date();
       this.startDate = this.datePipe.transform(
-        new Date(date.getFullYear() - 2, 6, 1),
+        new Date(date.getFullYear() - 1, 7, 1),
         'yyyy-MM-dd'
       );
       this.endDate = this.datePipe.transform(
-        new Date(date.getFullYear() - 1, 5, 30),
+        new Date(date.getFullYear() , 6, 30),
         'yyyy-MM-dd'
       );
     }
