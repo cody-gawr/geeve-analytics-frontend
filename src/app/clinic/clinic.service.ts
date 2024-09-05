@@ -209,7 +209,7 @@ export class ClinicService {
     return this.http
       .post<
         IApiResponse<any>
-      >(`${environment.baseApiUrl}/v1/common/clinics/${clinicID}/pms/praktika/config`, body, { withCredentials: true })
+      >(`${environment.baseApiUrl}/v1/common/praktika/config?clinic_id=${clinicID}`, body, { withCredentials: true })
       .pipe(
         take(1),
         map((response: IApiResponse<any>) => {
