@@ -42,7 +42,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
                 : { returnUrl: this.router.url },
             });
           }
-        } else if ([403, 410].indexOf(error.status) > -1) {
+        } else if ([403, 400].indexOf(error.status) > -1) {
           // const errMsg = getApiErrorMesssage(error);
           // this.toastr.warning(``, getApiErrorMesssage(error));
           // this.router.navigateByUrl("/dashboards/healthscreen");
