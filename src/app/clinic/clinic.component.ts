@@ -191,10 +191,10 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
     this.userPlan = this._cookieService.get('user_plan');
     this.user_type = this._cookieService.get('user_type');
     this.checkPmsStatus();
-    this.checkStatusInterval = setInterval(() => {
-      // every 2 sconds
-      this.checkPmsStatus();
-    }, 10000)
+    // this.checkStatusInterval = setInterval(() => {
+    //   // every 2 sconds
+    //   this.checkPmsStatus();
+    // }, 10000)
   }
   private warningMessage: string;
 
