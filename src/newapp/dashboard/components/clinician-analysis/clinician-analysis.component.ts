@@ -162,7 +162,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
           if (!isTrend) {
             const caEndpoints = ['caNumNewPatients', 'caNumComplaints'];
 
-            if (!isEachClinicPraktika) caEndpoints.push('caTxPlanCompRate');
+            caEndpoints.push('caTxPlanCompRate');
 
             for (const api of caEndpoints) {
               this.caFacade.loadNoneTrendApiRequest({
@@ -174,7 +174,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
             const endpoints = [];
             endpoints.push('caNumNewPatientsTrend', 'caNumComplaintsTrend');
 
-            if (!isEachClinicPraktika) endpoints.push('caTxPlanCompRateTrend');
+            endpoints.push('caTxPlanCompRateTrend');
             endpoints.forEach(api => {
               const params = {
                 clinicId: queryParams.clinicId,
@@ -408,7 +408,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
             caTrendEndpoints = [];
           const { dentistId: providerId } = queryParams;
           const isTrend = trend !== 'off' && providerId;
-          if (isEachClinicPraktika) return;
 
           switch (visibility) {
             case 'Avg. Proposed Fees':
