@@ -32,14 +32,14 @@
             *ngIf="isByDayData$ | async; else elem1"
             (click)="disableIsByDayData()"
             mat-stroked-button>
-            By Appt Book
+            {{(isPraktika$ | async) ? 'By Provider' : 'By ApptBook'}}
           </button>
           <ng-template #elem1>
             <button
               mat-flat-button
               (click)="disableIsByDayData()"
               color="primary">
-              By ApptBook
+              {{(isPraktika$ | async) ? 'By Provider' : 'By ApptBook'}}
             </button>
           </ng-template>
 
