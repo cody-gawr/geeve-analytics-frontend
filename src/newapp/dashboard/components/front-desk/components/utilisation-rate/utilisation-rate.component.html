@@ -20,13 +20,13 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
-      <spin-loader
+      <!-- <spin-loader
         class="empty-placeholder"
         *ngIf="isPraktika$ | async; else mainElem1"
         [disableSpin]="true">
         Coming Soon...
-      </spin-loader>
-      <ng-template #mainElem1>
+      </spin-loader> -->
+      <!-- <ng-template #mainElem1> -->
         <div class="active-toggle" *ngIf="!(isTrend$ | async)">
           <button
             *ngIf="isByDayData$ | async; else elem1"
@@ -127,7 +127,7 @@
             <span>Goal</span>
           </div>
         </div>
-      </ng-template>
+      <!-- </ng-template> -->
     </div>
   </div>
 </div>

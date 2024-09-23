@@ -657,7 +657,7 @@
                 </div>
               </mat-card-title>
               <div
-                *ngIf="isExact || isCore || isPraktika; else nonExactTemplate">
+                *ngIf="isExact || isCore ; else nonExactTemplate">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">Coming Soon...</p>
               </div>
@@ -711,11 +711,11 @@
                     class="info-icon" />
                 </div>
               </mat-card-title>
-              <div *ngIf="isPraktika; else nonExactTemplate001">
+              <!-- <div *ngIf="isPraktika; else nonExactTemplate001">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">Coming Soon...</p>
               </div>
-              <ng-template #nonExactTemplate001>
+              <ng-template #nonExactTemplate001> -->
                 <div class="chart card-body no-data-placeholder">
                   <ngx-gauge
                     class="yellow_guagechart"
@@ -747,7 +747,7 @@
                     </p>
                   </div>
                 </div>
-              </ng-template>
+              <!-- </ng-template> -->
             </mat-card-content>
           </mat-card>
         </div>

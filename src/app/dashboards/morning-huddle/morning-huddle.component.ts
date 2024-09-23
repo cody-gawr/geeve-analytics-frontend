@@ -1500,7 +1500,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   getTodayUnscheduledHours(refsh = '') {
-    if (this.isPraktika) return;
+    // if (this.isPraktika) return;
     if (refsh == '') {
       this.todayUnscheduledHoursLoader = true;
     }
