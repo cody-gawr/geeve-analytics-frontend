@@ -99,12 +99,11 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
               ? clinics.map(c => c.id).join(',')
               : clinics[0].id
             : null;
-        const isEachClinicPmsCoreOrExactOrPraktika =
+        const isEachClinicPmsCoreOrExact =
           clinics.every(c => c.pms == 'core') ||
-          clinics.every(c => c.pms == 'exact') ||
-          clinics.every(c => c.pms == 'praktika');
-        const isEachClinicPmsPraktika = clinics.every(
-          c => c.pms == 'praktika' || c.pms == 'core'
+          clinics.every(c => c.pms == 'exact');
+        const isEachClinicPms = clinics.every(
+          c => c.pms == 'core'
         );
         if (clinicId == null) return;
 
@@ -132,7 +131,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
               queryWhEnabled,
               connectedWith: connectedWith,
             };
-            if (!isEachClinicPmsCoreOrExactOrPraktika) {
+            if (!isEachClinicPmsCoreOrExact) {
               this.frontDeskFacade.loadFdUtilisationRate(params);
               this.frontDeskFacade.loadFdUtilisationRateByDay(params);
             }
@@ -140,13 +139,13 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
             this.frontDeskFacade.loadFdReappointRate(params);
             this.frontDeskFacade.loadFdNumTicks(params);
             this.frontDeskFacade.loadFdFtaRatio(params);
-            if (!isEachClinicPmsPraktika) {
+            if (!isEachClinicPms) {
               this.frontDeskFacade.loadFdUtaRatio(params);
             }
             break;
           case 'current':
           case 'historic':
-            if (!isEachClinicPmsCoreOrExactOrPraktika) {
+            if (!isEachClinicPmsCoreOrExact) {
               this.frontDeskFacade.loadFdUtilisationRateTrend(
                 clinicId,
                 trend === 'current' ? 'c' : 'h',
@@ -173,7 +172,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
               trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
-            if (!isEachClinicPmsPraktika) {
+            if (!isEachClinicPms) {
               this.frontDeskFacade.loadFdUtaRatioTrend(
                 clinicId,
                 trend === 'current' ? 'c' : 'h',
