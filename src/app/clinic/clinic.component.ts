@@ -190,7 +190,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
     this.getClinics();
     this.userPlan = this._cookieService.get('user_plan');
     this.user_type = this._cookieService.get('user_type');
-    this.checkPmsStatus();
+    // this.checkPmsStatus();
     // this.checkStatusInterval = setInterval(() => {
     //   // every 2 sconds
     //   this.checkPmsStatus();
@@ -446,6 +446,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
             this.createdClinicsCount = res.body?.data.length ?? 0;
             this.table = data;
           }
+          this.checkPmsStatus();
         } else if (res.status == 401) {
           this._cookieService.put('username', '');
           this._cookieService.put('email', '');

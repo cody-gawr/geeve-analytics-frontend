@@ -102,8 +102,8 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
         const isEachClinicPmsCoreOrExact =
           clinics.every(c => c.pms == 'core') ||
           clinics.every(c => c.pms == 'exact');
-        const isEachClinicPms = clinics.every(
-          c => c.pms == 'core'
+        const isEachClinicPmsCoreOrPraktika = clinics.every(
+          c => c.pms == 'praktika' || c.pms == 'core'
         );
         if (clinicId == null) return;
 
@@ -139,7 +139,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
             this.frontDeskFacade.loadFdReappointRate(params);
             this.frontDeskFacade.loadFdNumTicks(params);
             this.frontDeskFacade.loadFdFtaRatio(params);
-            if (!isEachClinicPms) {
+            if (!isEachClinicPmsCoreOrPraktika) {
               this.frontDeskFacade.loadFdUtaRatio(params);
             }
             break;
@@ -172,7 +172,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
               trend === 'current' ? 'c' : 'h',
               queryWhEnabled
             );
-            if (!isEachClinicPms) {
+            if (!isEachClinicPmsCoreOrPraktika) {
               this.frontDeskFacade.loadFdUtaRatioTrend(
                 clinicId,
                 trend === 'current' ? 'c' : 'h',
