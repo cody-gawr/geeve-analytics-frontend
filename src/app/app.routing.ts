@@ -176,14 +176,26 @@ export const AppRoutes: Routes = [
       },
     ],
   },
+  // {
+  //   path: '',
+  //   component: StepperComponent,
+  //   children: [
+  //     {
+  //       path: 'setup',
+  //       loadChildren: () =>
+  //         import('./setup/setup.module').then(m => m.SetupModule),
+  //       canActivate: [AuthGuard],
+  //     },
+  //   ],
+  // },
   {
     path: '',
-    component: StepperComponent,
+    component: NewAppBlankComponent,
     children: [
       {
         path: 'setup',
         loadChildren: () =>
-          import('./setup/setup.module').then(m => m.SetupModule),
+          import('../newapp/setup/setup.module').then(m => m.SetupModule),
         canActivate: [AuthGuard],
       },
     ],

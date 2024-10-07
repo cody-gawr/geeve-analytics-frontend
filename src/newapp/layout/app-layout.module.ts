@@ -21,10 +21,12 @@ import { layoutFeature } from './state/reducers/layout.reducer';
 import { dentistFeature } from '../dentist/state/reducers/dentist.reducer';
 import { DentistEffects } from '../dentist/state/effects/dentist.effects';
 import { DentistFacade } from '../dentist/facades/dentists.facade';
+import { SetupLayoutComponent } from './setup-layout/setup-layout.component';
 
 const components = [
   AppTopbarComponent,
   AppLayoutComponent,
+  SetupLayoutComponent,
   AppSidebarComponent,
   AppMenuComponent,
 ];
@@ -49,7 +51,7 @@ const services = [
     EffectsModule.forFeature([AuthEffects, ClinicEffects, DentistEffects]),
   ],
   declarations: [...components],
-  exports: [AppLayoutComponent],
+  exports: [AppLayoutComponent, SetupLayoutComponent],
   providers: [...services],
 })
 export class AppLayoutModule {}

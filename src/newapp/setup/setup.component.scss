@@ -1,0 +1,56 @@
+
+.setup-card-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    padding: 25px;
+    // background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 100,50 50,100 0,50" fill="%23009688"/></svg>'); // SVG background
+    // background-size: cover; // Ensure the SVG covers the entire div
+    .setup-card {
+        padding: 15px;
+        .setup-card-header {
+            justify-content: center;
+        }
+        .setup-card-title {
+            font-size: 24px;
+            text-align: center;
+        }.setup-card-subtitle {
+            font-size: 16px;
+            text-align: center;
+            padding: 15px 0;
+        }
+        table {
+            width: 100%;
+        }
+        .setup-card-actions {
+            margin-top: 25px;
+            display: flex;
+            justify-content: right;
+        }
+    }
+
+    .setup-card-box {
+        flex: 3;
+        display: flex;
+        justify-content: center;
+    }
+
+    .bg img {
+        max-width: 400px;
+    }
+
+    .bg {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+}
+
+
+
+
+
+
+

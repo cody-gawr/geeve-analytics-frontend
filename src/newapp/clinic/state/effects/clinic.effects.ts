@@ -30,4 +30,79 @@ export class ClinicEffects {
       })
     );
   });
+
+  public readonly loadUserClinics$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ClinicPageActions.loadUserClinics),
+      mergeMap(() => {
+        return this.clinicService.getUserClinics().pipe(
+          map(res =>
+            ClinicApiActions.loadUserClinicsSuccess({
+              clinics: res.data,
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(ClinicApiActions.loadUserClinicsFailure({ error: error.error ?? error }))
+          )
+        );
+      })
+    );
+  });
+
+  public readonly loadCoreSyncStatus$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ClinicPageActions.loadCoreSyncStatus),
+      mergeMap(({ clinicId }) => {
+        return this.clinicService.checkCoreSyncStatus(clinicId).pipe(
+          map(res =>
+            ClinicApiActions.checkCoreSyncSuccess({
+              clinicId,
+              hasCoreSync: res.data.refresh_token && res.data.token && res.data.core_user_id,
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(ClinicApiActions.checkCoreSyncFailure({ clinicId, error: error.error ?? error }))
+          )
+        );
+      })
+    );
+  });
+
+  public readonly loadDentallySyncStatus$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ClinicPageActions.loadDentallySyncStatus),
+      mergeMap(({ clinicId }) => {
+        return this.clinicService.checkDentallySyncStatus(clinicId).pipe(
+          map(res =>
+            ClinicApiActions.checkDentallySyncSuccess({
+              clinicId,
+              hasDentallySync: !!res.data.site_id,
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(ClinicApiActions.checkDentallySyncFailure({ clinicId, error: error.error ?? error }))
+          )
+        );
+      })
+    );
+  });
+
+  public readonly loadPraktikaSyncStatus$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ClinicPageActions.loadPraktikaSyncStatus),
+      mergeMap(({ clinicId }) => {
+        return this.clinicService.checkPraktikaSyncStatus(clinicId).pipe(
+          map(res =>
+            ClinicApiActions.checkPraktikaSyncSuccess({
+              clinicId,
+              hasPraktikaSync: true,
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(ClinicApiActions.checkPraktikaSyncFailure({ clinicId, error: error.error ?? error }))
+          )
+        );
+      })
+    );
+  });
 }

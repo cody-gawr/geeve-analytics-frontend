@@ -1,0 +1,54 @@
+
+<div class="dialog-header">
+    <h1 mat-dialog-title>
+        Connect Praktika
+    </h1>
+    <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
+</div>
+<form class="w-full" id="addAddCashForm" [formGroup]="FormGroup">
+    <div mat-dialog-content>
+        <div class="!pt-5 !pb-5 !pl-5 !pr-5 rounded-xl bg-slate-100">
+            <p>Connect your Praktika account ...</p>
+        </div>
+        <div class="flex flex-row flex-wrap items-center justify-center pt-5">
+            <div class="flex flex-col items-center">
+                <img src="assets/images/praktika_logo.svg" alt="Snow">
+            </div>
+        </div>
+        <br>
+        <div>
+            <mat-label class="flex gap-x-1">Username <mat-icon class="icon" color="primary" matTooltip="Username"
+                    class="infoTooltip" matTooltipClass="dark-tooltip">info</mat-icon></mat-label>
+            <mat-form-field class="w-full">
+                <input matInput name="customer_user" formControlName="customer_user" />
+                <mat-error class="mb-3" *ngIf="FormGroup.controls['customer_user'].invalid">Invalid
+                    Username.
+                    Please
+                    check!</mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-label class="flex gap-x-1">Password <mat-icon class="icon" color="primary" matTooltip="Password"
+                    class="infoTooltip" matTooltipClass="dark-tooltip">info</mat-icon></mat-label>
+            <mat-form-field class="w-full">
+                <input matInput name="customer_secret" type="password" formControlName="customer_secret" />
+                <mat-error class="mb-3" *ngIf="FormGroup.controls['customer_secret'].invalid">Password is
+                    required</mat-error>
+            </mat-form-field>
+        </div>
+        <div *ngIf="customers.length > 0">
+            <mat-label class="flex gap-x-1">Select Customer</mat-label>
+            <mat-form-field class="w-full">
+                <mat-select formControlName="customer_id" matNativeControl>
+                    <mat-option *ngFor="let option of customers" [value]="option.id">
+                        {{option.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="justify-between">
+        <button [mat-dialog-close]="true" mat-flat-button cancelButton>Cancel</button>
+        <button mat-flat-button color="primary" (click)="onSubmit()">{{customers.length > 0? 'Submit': 'Next'}}</button>
+    </div>
+</form>
+

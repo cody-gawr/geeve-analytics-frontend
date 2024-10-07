@@ -1,0 +1,23 @@
+.setup-layout-main-container {
+    background-color: white;
+    .setup-page-logo {
+        width: 100%;
+        padding: 6px 20px 4px 0;
+        text-align: left;
+        margin-bottom: 0px;
+        min-height: 66px;
+        img {
+            max-width: 100%;
+            padding: 6px 10px;
+            max-height: 52px;
+        }
+    }
+    
+    .setup-layout-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+    }
+}
+

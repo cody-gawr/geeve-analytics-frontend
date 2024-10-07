@@ -1,11 +1,17 @@
-import { Clinic } from '../../../models/clinic';
+import { Clinic, IClinicDTO } from '../../../models/clinic';
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { ClinicApiActions, ClinicPageActions } from '../actions';
+import _ from 'lodash';
 
 export interface ClinicState {
+  isLoadingFlags: Array<'userClinics' | 'coreSync' | string>;
+  errors: Array<JeeveError>;
+
   success: boolean;
+  userClinicsSuccess: boolean;
   isLoading: boolean;
   clinics: Clinic[]; // All clinics
+  userClinics: IClinicDTO[]; // User clinics
   currentSingleClinicId: 'all' | number | null; // For signle selection
   currentMultiClinicIds: number[];
   error: string | null;
@@ -14,11 +20,16 @@ export interface ClinicState {
 }
 
 const initialState: ClinicState = {
+  isLoadingFlags: [],
+  errors: [],
+
   success: false,
+  userClinicsSuccess: false,
   isLoading: false,
   currentSingleClinicId: null,
   currentMultiClinicIds: [],
   clinics: [],
+  userClinics: [],
   error: null,
   hasPrimeClinics: 'no',
   isMultiSelection: null,
@@ -108,15 +119,181 @@ export const clinicFeature = createFeature({
           isMultiSelection: value,
         };
       }
-    )
+    ),
+    on(ClinicPageActions.loadUserClinics, (state): ClinicState => {
+      return {
+        ...state,
+        userClinicsSuccess: false,
+        errors: _.filter(state.errors, n => n.api != 'userClinics'),
+        isLoadingFlags: _.union(state.isLoadingFlags, ['userClinics']),
+        userClinics: [],
+      };
+    }),
+    on(
+      ClinicApiActions.loadUserClinicsSuccess,
+      (state, { clinics }): ClinicState => {
+        return {
+          ...state,
+          userClinicsSuccess: true,
+          errors: _.filter(state.errors, n => n.api != 'userClinics'),
+          isLoadingFlags: _.filter(
+            state.isLoadingFlags,
+            n => n != 'userClinics'
+          ),
+          userClinics: clinics,
+        };
+      }
+    ),
+    on(ClinicApiActions.loadUserClinicsFailure, (state, { error }): ClinicState => {
+      return {
+        ...state,
+        userClinicsSuccess: false,
+        isLoadingFlags: _.filter(
+          state.isLoadingFlags,
+          n => n != 'userClinics'
+        ),
+        errors: [...state.errors, { ...error, api: 'userClinics' }],
+      };
+    }),
+    // Check the status of core sync
+    on(
+      ClinicPageActions.loadCoreSyncStatus,
+      (state, {clinicId}): ClinicState => {
+        return {
+          ...state,
+          errors: _.filter(state.errors, n => n.api != `coreSync${clinicId}`),
+          isLoadingFlags: _.union(state.isLoadingFlags, [`coreSync${clinicId}`]),
+        };
+      }
+    ),
+    on(
+      ClinicApiActions.checkCoreSyncSuccess,
+      (state, { clinicId, hasCoreSync }): ClinicState => {
+        const { userClinics } = state;
+        const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'core');
+        if(clinic) clinic.connected = hasCoreSync;
+        return {
+          ...state,
+          errors: _.filter(state.errors, n => n.api != `coreSync${clinicId}`),
+          isLoadingFlags: _.filter(
+            state.isLoadingFlags,
+            n => n != `coreSync${clinicId}`
+          ),
+        }
+      }
+    ),
+    on(
+      ClinicApiActions.checkCoreSyncFailure,
+      (state, { clinicId, error }): ClinicState => {
+        const { userClinics } = state;
+        const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'core');
+        if(clinic) clinic.connected = false;
+        return {
+          ...state,
+          errors: [...state.errors, { ...error, api: `coreSync${clinicId}` }],
+          isLoadingFlags: _.filter(
+            state.isLoadingFlags,
+            n => n != `coreSync${clinicId}`
+          ),
+        }
+      }
+    ),
+    //Dentally sync
+    on(
+      ClinicPageActions.loadDentallySyncStatus,
+      (state, {clinicId}): ClinicState => {
+        return {
+          ...state,
+          errors: _.filter(state.errors, n => n.api != `dentallySync${clinicId}`),
+          isLoadingFlags: _.union(state.isLoadingFlags, [`dentallySync${clinicId}`]),
+        };
+      }
+    ),
+    on(
+      ClinicApiActions.checkDentallySyncSuccess,
+      (state, { clinicId, hasDentallySync }): ClinicState => {
+        const { userClinics } = state;
+        const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'dentally');
+        if(clinic) clinic.connected = hasDentallySync;
+        return {
+          ...state,
+          errors: _.filter(state.errors, n => n.api != `dentallySync${clinicId}`),
+          isLoadingFlags: _.filter(
+            state.isLoadingFlags,
+            n => n != `dentallySync${clinicId}`
+          ),
+        }
+      }
+    ),
+    on(
+      ClinicApiActions.checkDentallySyncFailure,
+      (state, { clinicId, error }): ClinicState => {
+        const { userClinics } = state;
+        const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'dentally');
+        if(clinic) clinic.connected = false;
+        return {
+          ...state,
+          errors: [...state.errors, { ...error, api: `dentallySync${clinicId}` }],
+          isLoadingFlags: _.filter(
+            state.isLoadingFlags,
+            n => n != `dentallySync${clinicId}`
+          ),
+        }
+      }
+    ),
+    //Praktika sync
+    on(
+      ClinicPageActions.loadPraktikaSyncStatus,
+      (state, {clinicId}): ClinicState => {
+        return {
+          ...state,
+          errors: _.filter(state.errors, n => n.api != `praktikaSync${clinicId}`),
+          isLoadingFlags: _.union(state.isLoadingFlags, [`praktikaSync${clinicId}`]),
+        };
+      }
+    ),
+    on(
+      ClinicApiActions.checkPraktikaSyncSuccess,
+      (state, { clinicId, hasPraktikaSync }): ClinicState => {
+        const { userClinics } = state;
+        const clinic = userClinics.find(clinic => clinic.id === clinicId  && clinic.pms.toLowerCase() === 'praktika');
+        if(clinic) clinic.connected = hasPraktikaSync;
+        return {
+          ...state,
+          errors: _.filter(state.errors, n => n.api != `praktikaSync${clinicId}`),
+          isLoadingFlags: _.filter(
+            state.isLoadingFlags,
+            n => n != `praktikaSync${clinicId}`
+          ),
+        }
+      }
+    ),
+    on(
+      ClinicApiActions.checkPraktikaSyncFailure,
+      (state, { clinicId, error }): ClinicState => {
+        const { userClinics } = state;
+        const clinic = userClinics.find(clinic => clinic.id === clinicId  && clinic.pms.toLowerCase() === 'praktika');
+        if(clinic) clinic.connected = false;
+        return {
+          ...state,
+          errors: [...state.errors, { ...error, api: `praktikaSync${clinicId}` }],
+          isLoadingFlags: _.filter(
+            state.isLoadingFlags,
+            n => n != `praktikaSync${clinicId}`
+          ),
+        }
+      }
+    ),
   ),
 });
 
 export const {
   selectSuccess,
+  selectUserClinicsSuccess,
   selectError,
   selectIsLoading,
   selectClinics,
+  selectUserClinics,
   selectCurrentSingleClinicId,
   selectCurrentMultiClinicIds,
   selectHasPrimeClinics,

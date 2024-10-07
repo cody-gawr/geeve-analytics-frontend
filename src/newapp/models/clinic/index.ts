@@ -109,6 +109,30 @@ export interface ClinicsListApiResponse {
   hasPrimeClinics: 'yes' | 'no';
 }
 
+export interface IClinicDTO {
+  id?: number;
+  user_id?: number;
+  clinicName: string;
+  contactName: string;
+  address: string;
+  stepper: number;
+  phoneNo?: string | null;
+  clinicEmail?: string | null;
+  timezone: string;
+  pms: string;
+  created?: string;
+  is_deleted?: boolean;
+  has_subscription?: number;
+  stepper_status?: number;
+  fta_uta: string;
+  days: string;
+  aba_bank: string;
+  aba_de_username: string;
+  aba_de_user_id: string;
+  receiving_account_id: number;
+  connected?: boolean;
+}
+
 export interface MasterUsersListApiResponse {
   data: Array<MasterUser>;
 }
@@ -119,6 +143,7 @@ export interface UpdateClinicDetailResponse {
 
 export interface JeeveResponse<T> {
   data: T;
+  success?: boolean;
 }
 
 export interface ClinicSetting {

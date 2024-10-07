@@ -1,0 +1,58 @@
+<div class="setup-card-container">
+    <div class="setup-card-box">
+        <mat-card class="setup-card">
+            <mat-card-header class="setup-card-header">
+                <mat-card-title class="setup-card-title">Welcome to Jeeve Analytics</mat-card-title>
+                <mat-card-subtitle class="setup-card-subtitle">Please select configure your clinics below</mat-card-subtitle>
+              </mat-card-header>
+            <mat-card-content>
+                <table mat-table
+                [dataSource]="dataSource">
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> ID </th>
+                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.clinicName}} </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="pms">
+                        <th mat-header-cell *matHeaderCellDef> PMS </th>
+                        <td mat-cell *matCellDef="let element"> {{element.pms}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef> Status </th>
+                        <td mat-cell *matCellDef="let element"> {{element.connected === undefined? 'Checking...': (element.connected?'Connected':'Not connected')}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let element">
+                            <!-- <button *ngIf="element.connected; else noconnect" mat-stroked-button color="warn">Disconnect</button>
+                            <ng-template #noconnect>
+                                <button mat-flat-button color="primary">Connect</button>
+                            </ng-template> -->
+    
+                            <button (click)="openDialogForOauthProcess(element)"  *ngIf="element.connected === false" mat-flat-button color="primary">Connect</button>
+                        </td>
+                    </ng-container>
+                    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns:displayedColumns"></tr>
+                </table>
+            </mat-card-content>
+            <mat-card-actions class="setup-card-actions">
+                <button (click)="continue()" mat-button color="primary">
+                    <span>Continue</span>
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <div class="bg">
+        <img src="assets/stepper/Gif1.gif" alt="Snow">
+    </div>
+</div>

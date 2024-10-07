@@ -1,0 +1,48 @@
+.mat-mdc-card-header {
+  padding: 0px 16px 0px 16px;
+  margin: 16px 0px 16px 0px;
+}
+
+.input {
+  display: flex;
+  flex-direction: row;
+
+  & input {
+    margin-left: 0px;
+  }
+}
+
+.infoTooltip {
+  transform: scale(0.75);
+  margin-left: 4px;
+}
+
+::ng-deep .dark-tooltip {
+  color: #ffffff;
+  --mdc-plain-tooltip-container-color: #009879 !important;
+  --mdc-plain-tooltip-supporting-text-color: ■#ffffff;
+  --mdc-plain-tooltip-supporting-text-tracking: 0.0333333333em;
+  margin-left: 5px;
+}
+
+::ng-deep #addAddCashForm .mat-mdc-form-field-infix {
+  min-height: 39px;
+}
+
+::ng-deep #addAddCashForm .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+
+::ng-deep #addAddCashForm .mdc-notched-outline__leading {
+  border-color: #9e9e9e !important;
+}
+
+::ng-deep #addAddCashForm .mdc-notched-outline__notch {
+  border-color: #9e9e9e !important;
+}
+
+::ng-deep #addAddCashForm .mdc-notched-outline__trailing {
+  border-color: #9e9e9e !important;
+}

@@ -1,4 +1,4 @@
-import { Clinic } from '../../models/clinic';
+import { Clinic, IClinicDTO } from '../../models/clinic';
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -19,6 +19,8 @@ import {
   selectIsMultiClinicsSelected,
   selectIsAnyClinicHasD4w,
   selectIsEachClinicPraktika,
+  selectUserClinics,
+  selectUserClinicsSuccess,
 } from '../state/reducers/clinic.reducer';
 import { combineLatest, map } from 'rxjs';
 
@@ -30,12 +32,20 @@ export class ClinicFacade {
     select(selectSuccess)
   );
 
+  public readonly userClinicsSuccess$: Observable<boolean> = this.store.pipe(
+    select(selectUserClinicsSuccess)
+  );
+
   public readonly error$: Observable<string> = this.store.pipe(
     select(selectError)
   );
 
   public readonly clinics$: Observable<Clinic[]> = this.store.pipe(
     select(selectClinics)
+  );
+
+  public readonly userClinics$: Observable<IClinicDTO[]> = this.store.pipe(
+    select(selectUserClinics)
   );
 
   public readonly currentMultiClinicIDs$ = this.store.pipe(
@@ -90,6 +100,10 @@ export class ClinicFacade {
     this.store.dispatch(ClinicPageActions.loadClinics());
   }
 
+  public loadUserClinics() {
+    this.store.dispatch(ClinicPageActions.loadUserClinics());
+  }
+
   public setCurrentSingleClinicId(clinicId: 'all' | number | null) {
     this.store.dispatch(
       ClinicPageActions.setCurrentSingleClinicId({ clinicId })
@@ -125,5 +139,17 @@ export class ClinicFacade {
 
   public setMultiClinicSelection(value: boolean) {
     this.store.dispatch(ClinicPageActions.setMultiClinicSelection({ value }));
+  }
+
+  public loadCoreSyncStatus(clinicId: number) {
+    this.store.dispatch(ClinicPageActions.loadCoreSyncStatus({ clinicId }));
+  }
+
+  public loadDentallySyncStatus(clinicId: number) {
+    this.store.dispatch(ClinicPageActions.loadDentallySyncStatus({ clinicId }));
+  }
+
+  public loadPraktikaSyncStatus(clinicId: number) {
+    this.store.dispatch(ClinicPageActions.loadPraktikaSyncStatus({ clinicId }));
   }
 }

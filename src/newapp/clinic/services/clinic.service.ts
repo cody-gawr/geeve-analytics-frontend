@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 import _ from 'lodash';
 
-import { ClinicsListApiResponse } from '../../models/clinic';
+import { ClinicsListApiResponse, IClinicDTO, JeeveResponse } from '../../models/clinic';
 import { environment } from '@/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import camelcaseKeys from 'camelcase-keys';
 
 @Injectable({
@@ -12,6 +12,7 @@ import camelcaseKeys from 'camelcase-keys';
 })
 export class ClinicService {
   private apiUrl = environment.apiUrl;
+  private commonUrl = environment.commonApiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -22,4 +23,93 @@ export class ClinicService {
       })
       .pipe(map(res => <any>camelcaseKeys(res, { deep: true })));
   }
+
+  public getUserClinics(): Observable<JeeveResponse<IClinicDTO[]>> {
+    return this.http
+      .get<JeeveResponse<IClinicDTO[]>>(`${this.commonUrl}/clinics`, {
+        withCredentials: true,
+        params: { product: 'jeeve_analytics' },
+      }).pipe(map(res => res));
+  }
+
+  public checkCoreSyncStatus(clinicId: number): Observable<JeeveResponse<{
+    refresh_token: boolean,
+    token: boolean,
+    core_user_id: boolean
+  }>> {
+    return this.http
+      .get<JeeveResponse<{
+        refresh_token: boolean,
+        token: boolean,
+        core_user_id: boolean
+      }>>(`${this.commonUrl}/corepractice/checkStatus`, {
+        withCredentials: true,
+        params: { clinic_id: clinicId}
+      }).pipe(map(res => res));
+  }
+
+  public checkDentallySyncStatus(clinicId: number): Observable<JeeveResponse<{
+    site_id: string
+  }>> {
+    return this.http
+      .get<JeeveResponse<{
+        site_id: string
+      }>>(`${this.commonUrl}/dentally/checkStatus`, {
+        withCredentials: true,
+        params: { clinic_id: clinicId}
+      }).pipe(map(res => res));
+  }
+
+  public checkPraktikaSyncStatus(clinicId: number): Observable<JeeveResponse<null>> {
+    return this.http
+      .get<JeeveResponse<null>>(`${this.commonUrl}/praktika/checkStatus`, {
+        withCredentials: true,
+        params: { clinic_id: clinicId}
+      }).pipe(map(res => res));
+  }
+
+  public getClinicAuthorizeUrl(clinicId: number) {
+    return this.http.get<JeeveResponse<any>>(
+      `${environment.commonApiUrl}/corepractice/getAuthorizeUrl?clinic_id=${clinicId}`,
+      { withCredentials: true },
+    );
+  }
+
+  public getDentallyAuthorizeUrl(clinicId: number) {
+    return this.http.get<JeeveResponse<any>>(
+      `${environment.commonApiUrl}/dentally/getAuthorizeUrl?clinic_id=${clinicId}`,
+      { withCredentials: true },
+    );
+  }
+
+  public CreatePraktikaConfig(customer_user: string, customer_secret: string, clinicID: number, customer_id?: number) {
+    const body = {
+      customer_user: customer_user,
+      customer_secret: customer_secret,
+      customer_id
+    }
+    return this.http.post<JeeveResponse<any>>(`${environment.commonApiUrl}/praktika/config?clinic_id=${clinicID}`, body, { withCredentials: true })
+      .pipe(take(1), map((response: JeeveResponse<any>) => {
+        return { response };
+      }))
+  }
+
+
+  public validatePraktikaLogin(customer_user: string, customer_secret: string) {
+    const body = {
+      customer_user: customer_user,
+      customer_secret: customer_secret,
+    };
+    return this.http
+      .post<
+        JeeveResponse<any>
+      >(`${environment.commonApiUrl}/praktika/validate-login`, body, { withCredentials: true })
+      .pipe(
+        take(1),
+        map((response: JeeveResponse<any>) => {
+          return { response };
+        })
+      );
+  }
+
 }
