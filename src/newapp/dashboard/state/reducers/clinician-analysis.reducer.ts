@@ -580,7 +580,7 @@ export const selectCaProductionChartData = createSelector(
           value: chartData[i],
         });
       });
-
+      
       if (rolesInd.type === 4) {
         chartColors = [
           {
@@ -649,7 +649,7 @@ export const selectCaProductionChartData = createSelector(
         gaugeValue = Math.round(
           chartName === 'Production' ? res.production : res.collection
         );
-
+        
         gaugeLabel = res.providerName;
       });
       const goal = parseInt(<string>resBody.goals);
@@ -770,6 +770,7 @@ export const selectCaProductionTrendChartData = createSelector(
     return {
       datasets,
       labels: chartLabels,
+      tableData
     };
   }
 );
