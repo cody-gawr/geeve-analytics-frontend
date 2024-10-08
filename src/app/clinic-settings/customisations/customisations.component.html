@@ -522,6 +522,7 @@
               fxLayoutGap.sm="0px"
               fxLayoutGap.xs="0">
               <div
+                *ngIf="isPmsD4W$ | async"
                 fxFlex="calc(32% - 10px)"
                 fxFlex.md="calc(32% - 10px)"
                 fxFlex.sm="calc(32% - 10px)"
@@ -577,6 +578,7 @@
                 </div>
               </div>
               <div
+                *ngIf="isPmsD4W$ | async"
                 fxFlex="calc(32% - 10px)"
                 fxFlex.md="calc(32% - 10px)"
                 fxFlex.sm="calc(32% - 10px)"
