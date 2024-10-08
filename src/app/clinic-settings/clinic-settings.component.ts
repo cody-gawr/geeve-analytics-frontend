@@ -103,18 +103,18 @@ export class ClinicSettingsComponent implements OnInit {
   isSMSEnabled = false;
 
   public get isExactOrCore(): boolean {
-    return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
+    return this.localStorageService.isEachClinicPmsExactOrCore(this.id);
   }
   public get isExact(): boolean {
-    return this.localStorageService.isEachClinicExact(this.clinic_id);
+    return this.localStorageService.isEachClinicExact(this.id);
   }
   public get isExactOrPraktikaOrCore(): boolean {
     return this.localStorageService.isEachClinicExactOrCoreOrPraktika(
-      this.clinic_id
+      this.id
     );
   }
   public get isD4w(): boolean {
-    return this.localStorageService.isEachClinicPmsD4w(this.clinic_id);
+    return this.localStorageService.isEachClinicPmsD4w(this.id);
   }
   remainCredits = 0;
   costPerSMS = 0.0;
@@ -155,16 +155,18 @@ export class ClinicSettingsComponent implements OnInit {
         recall_weeks: [null, Validators.compose([Validators.required])],
         tick_days: [null, Validators.compose([Validators.required])],
         fta_followup_days: [null, Validators.compose([Validators.required])],
-        uta_followup_days: this.isExact
-          ? null
-          : [null, Validators.compose([Validators.required])],
+        // uta_followup_days: this.isExactOrPraktikaOrCore
+        //   ? null
+        //   : [null, Validators.compose([Validators.required])],
+        uta_followup_days: [null],
         fta_followup_days_later: [
           null,
           Validators.compose([Validators.required]),
         ],
-        uta_followup_days_later: this.isExact
-          ? null
-          : [null, Validators.compose([Validators.required])],
+        // uta_followup_days_later: this.isExactOrPraktikaOrCore
+        //   ? null
+        //   : [null, Validators.compose([Validators.required])],
+        uta_followup_days_later: [null],
         referral_weeks: [null, Validators.compose([Validators.required])],
         // unscheduled_patients_days: [null, Validators.compose([Validators.required])],
         // facebook: [null],
@@ -185,16 +187,18 @@ export class ClinicSettingsComponent implements OnInit {
         recall_weeks: [null, Validators.compose([Validators.required])],
         tick_days: [null, Validators.compose([Validators.required])],
         fta_followup_days: [null, Validators.compose([Validators.required])],
-        uta_followup_days: this.isExact
-          ? null
-          : [null, Validators.compose([Validators.required])],
+        // uta_followup_days: this.isExactOrPraktikaOrCore
+        //   ? null
+        //   : [null, Validators.compose([Validators.required])],
+        uta_followup_days: [null],
         fta_followup_days_later: [
           null,
           Validators.compose([Validators.required]),
         ],
-        uta_followup_days_later: this.isExact
-          ? null
-          : [null, Validators.compose([Validators.required])],
+        // uta_followup_days_later: this.isExactOrPraktikaOrCore
+        //   ? null
+        //   : [null, Validators.compose([Validators.required])],
+        uta_followup_days_later: [null],
       });
     }
 
