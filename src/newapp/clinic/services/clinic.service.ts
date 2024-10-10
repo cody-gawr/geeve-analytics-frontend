@@ -35,13 +35,15 @@ export class ClinicService {
   public checkCoreSyncStatus(clinicId: number): Observable<JeeveResponse<{
     refresh_token: boolean,
     token: boolean,
-    core_user_id: boolean
+    core_user_id: boolean,
+    sync_successes: number
   }>> {
     return this.http
       .get<JeeveResponse<{
         refresh_token: boolean,
         token: boolean,
-        core_user_id: boolean
+        core_user_id: boolean,
+        sync_successes: number
       }>>(`${this.commonUrl}/corepractice/checkStatus`, {
         withCredentials: true,
         params: { clinic_id: clinicId}
@@ -49,20 +51,21 @@ export class ClinicService {
   }
 
   public checkDentallySyncStatus(clinicId: number): Observable<JeeveResponse<{
-    site_id: string
+    site_id: string,
+    sync_successes: number,
   }>> {
     return this.http
       .get<JeeveResponse<{
-        site_id: string
+        site_id: string, sync_successes: number
       }>>(`${this.commonUrl}/dentally/checkStatus`, {
         withCredentials: true,
         params: { clinic_id: clinicId}
       }).pipe(map(res => res));
   }
 
-  public checkPraktikaSyncStatus(clinicId: number): Observable<JeeveResponse<null>> {
+  public checkPraktikaSyncStatus(clinicId: number): Observable<JeeveResponse<{sync_successes: number}>> {
     return this.http
-      .get<JeeveResponse<null>>(`${this.commonUrl}/praktika/checkStatus`, {
+      .get<JeeveResponse<any>>(`${this.commonUrl}/praktika/checkStatus`, {
         withCredentials: true,
         params: { clinic_id: clinicId}
       }).pipe(map(res => res));

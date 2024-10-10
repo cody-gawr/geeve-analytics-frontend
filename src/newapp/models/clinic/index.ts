@@ -131,6 +131,7 @@ export interface IClinicDTO {
   aba_de_user_id: string;
   receiving_account_id: number;
   connected?: boolean;
+  numberOfSuccess?: number;
 }
 
 export interface MasterUsersListApiResponse {

@@ -58,6 +58,7 @@ export class ClinicEffects {
             ClinicApiActions.checkCoreSyncSuccess({
               clinicId,
               hasCoreSync: res.data.refresh_token && res.data.token && res.data.core_user_id,
+              numberOfSuccess: res.data.sync_successes
             })
           ),
           catchError((error: HttpErrorResponse) =>
@@ -77,6 +78,7 @@ export class ClinicEffects {
             ClinicApiActions.checkDentallySyncSuccess({
               clinicId,
               hasDentallySync: !!res.data.site_id,
+              numberOfSuccess: res.data.sync_successes
             })
           ),
           catchError((error: HttpErrorResponse) =>
@@ -96,6 +98,7 @@ export class ClinicEffects {
             ClinicApiActions.checkPraktikaSyncSuccess({
               clinicId,
               hasPraktikaSync: true,
+              numberOfSuccess: res.data.sync_successes
             })
           ),
           catchError((error: HttpErrorResponse) =>

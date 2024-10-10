@@ -1,3 +1,4 @@
+import { AuthFacade } from "@/newapp/auth/facades/auth.facade";
 import { Component } from "@angular/core";
 
 
@@ -7,7 +8,14 @@ import { Component } from "@angular/core";
     styleUrls: ['./setup-layout.component.scss']
 })
 export class SetupLayoutComponent {
-    constructor(){
-
+    constructor(private authFacade: AuthFacade){
     }
+
+    get isLoading$() {
+        return this.authFacade.isLoading$;
+    }
+
+    logout = () => {
+        this.authFacade.logout();
+    };
 }

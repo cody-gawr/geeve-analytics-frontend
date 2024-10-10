@@ -27,7 +27,7 @@ export const loadUserClinicsFailure = createAction(
 // Check the status of core sync
 export const checkCoreSyncSuccess = createAction(
   '[Clinic API] Check Core Sync Success',
-  props<{ clinicId: number, hasCoreSync: boolean }>()
+  props<{ clinicId: number, hasCoreSync: boolean, numberOfSuccess: number }>()
 );
 
 export const checkCoreSyncFailure = createAction(
@@ -38,7 +38,7 @@ export const checkCoreSyncFailure = createAction(
 // Check the status of Dentally sync
 export const checkDentallySyncSuccess = createAction(
   '[Clinic API] Check Dentally Sync Success',
-  props<{ clinicId: number, hasDentallySync: boolean }>()
+  props<{ clinicId: number, hasDentallySync: boolean, numberOfSuccess: number }>()
 );
 
 export const checkDentallySyncFailure = createAction(
@@ -49,7 +49,7 @@ export const checkDentallySyncFailure = createAction(
 // Check the status of Praktika sync
 export const checkPraktikaSyncSuccess = createAction(
   '[Clinic API] Check Praktika Sync Success',
-  props<{ clinicId: number, hasPraktikaSync: boolean }>()
+  props<{ clinicId: number, hasPraktikaSync: boolean, numberOfSuccess: number }>()
 );
 
 export const checkPraktikaSyncFailure = createAction(

@@ -21,6 +21,7 @@ import {
   selectIsEachClinicPraktika,
   selectUserClinics,
   selectUserClinicsSuccess,
+  selectIsLoadingSyncStatus,
 } from '../state/reducers/clinic.reducer';
 import { combineLatest, map } from 'rxjs';
 
@@ -30,6 +31,10 @@ export class ClinicFacade {
 
   public readonly success$: Observable<boolean> = this.store.pipe(
     select(selectSuccess)
+  );
+
+  public readonly isLoadingSyncStatus$: Observable<boolean> = this.store.pipe(
+    select(selectIsLoadingSyncStatus)
   );
 
   public readonly userClinicsSuccess$: Observable<boolean> = this.store.pipe(

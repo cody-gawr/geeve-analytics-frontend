@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ClinicFacade } from "../clinic/facades/clinic.facade";
 import { IClinicDTO } from "../models/clinic";
-import { Subject, takeUntil, map, filter, combineLatest, distinctUntilChanged } from 'rxjs';
+import { Subject, takeUntil, combineLatest, distinctUntilChanged } from 'rxjs';
 import { Router } from "@angular/router";
 import { PraktikaConnectionDialogComponent } from "./components/praktika-connection-dialog/praktika-connection-dialog.component";
 import { CoreConnectionDialogComponent } from "./components/core-connection-dialog/core-connection-dialog.component";
@@ -33,7 +33,14 @@ export class SetupComponent implements OnInit, OnDestroy {
         private toastr: ToastrService,
     ) {
         clinicFacade.loadUserClinics();
-
+        clinicFacade.isLoadingSyncStatus$.pipe(
+          takeUntil(this.destroy$),
+          distinctUntilChanged()
+        ).subscribe(isLoading => {
+          if(this.dataSource.length > 0 && this.dataSource.every(clinic => clinic.connected && clinic.numberOfSuccess > 0)){
+            this.router.navigateByUrl('/dashboards/healthscreen');
+          }
+        });
     }
 
     ngOnInit() {
@@ -45,7 +52,6 @@ export class SetupComponent implements OnInit, OnDestroy {
             clinics = clinics.filter(clinic => ['praktika', 'dentally', 'core'].includes(clinic.pms?.toLowerCase()));
             
             if(clinics.length > 0 && success){
-                console.log('Clinics:', clinics);
                 clinics.forEach((clinic, index) => {
                     switch(clinic.pms?.toLowerCase()){
                         case 'praktika':
@@ -60,9 +66,10 @@ export class SetupComponent implements OnInit, OnDestroy {
                     }
                 });
                 this.dataSource = clinics;
-            }else if(success){
-                this.router.navigateByUrl('/dashboards/healthscreen');
             }
+            // else if(success){
+            //     this.router.navigateByUrl('/dashboards/healthscreen');
+            // }
         });
         console.log('SetupComponent initialized');
     }

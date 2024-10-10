@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     gap: 35px;
-    padding: 25px;
+    padding: 35px 25px;
     // background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 100,50 50,100 0,50" fill="%23009688"/></svg>'); // SVG background
     // background-size: cover; // Ensure the SVG covers the entire div
     .setup-card {
@@ -13,12 +13,26 @@
             justify-content: center;
         }
         .setup-card-title {
-            font-size: 24px;
+            font-size: 1.5rem;
+            line-height: 2rem;
+            font-weight: 700;
             text-align: center;
         }.setup-card-subtitle {
-            font-size: 16px;
+            font-size: 1rem;
+            font-weight: 400;
             text-align: center;
-            padding: 15px 0;
+            padding: 10px 0;
+        }
+        .clinics-table {
+            border: 1px solid rgb(229 231 235);
+            border-radius: .5rem;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            .mat-column-name {
+                font-weight: 500;
+                font-size: 0.875rem;
+                line-height: 1.25rem;
+            }
         }
         table {
             width: 100%;
@@ -27,6 +41,10 @@
             margin-top: 25px;
             display: flex;
             justify-content: right;
+            button {
+                font-size: 1rem;
+                font-weight: 700;
+            }
         }
     }
 
@@ -37,7 +55,7 @@
     }
 
     .bg img {
-        max-width: 400px;
+        // max-width: 400px;
     }
 
     .bg {
