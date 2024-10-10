@@ -707,7 +707,7 @@
             <ng-container matColumnDef="dentist">
               <th mat-header-cell *matHeaderCellDef>Dentist</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.provider_name }}
+                {{ element.jeeve_name ?? element.provider_name }}
               </td>
             </ng-container>
 
