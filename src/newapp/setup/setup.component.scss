@@ -36,6 +36,18 @@
         }
         table {
             width: 100%;
+            .chip-success {
+                background-color: aquamarine;
+                color: white;
+            }
+            .chip-pending {
+                background-color: lightpink;
+                color: white;
+            }
+            .chip-warn {
+                // background-color: navajowhite;
+                color: white;
+            }
         }
         .setup-card-actions {
             margin-top: 25px;

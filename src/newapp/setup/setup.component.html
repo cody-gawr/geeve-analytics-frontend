@@ -27,7 +27,11 @@
                         
                         <ng-container matColumnDef="status">
                             <th mat-header-cell *matHeaderCellDef> Status </th>
-                            <td mat-cell *matCellDef="let element"> {{element.connected === undefined? 'Checking...': (element.connected?(element.numberOfSuccess > 0? 'Connected': 'Data Sync Pending'):'Not connected')}} </td>
+                            <td mat-cell *matCellDef="let element"> 
+                                <mat-chip *ngIf="element.connected === undefined">Checking...</mat-chip>
+                                <mat-chip *ngIf="element.connected === true && element.numberOfSuccess > 0" class="chip-success">Connected</mat-chip>
+                                <mat-chip *ngIf="element.connected === true && element.numberOfSuccess === 0" class="chip-pending">Data Sync Pending</mat-chip>
+                                <mat-chip *ngIf="element.connected === false" class="chip-warn">Not Connected</mat-chip>
                         </ng-container>
                         
                         <ng-container matColumnDef="action">
@@ -50,7 +54,7 @@
                 <br/>
             </mat-card-content>
             <mat-card-actions class="setup-card-actions">
-                <button (click)="continue()" mat-button color="primary">
+                <button (click)="continue()" mat-flat-button color="primary">
                     <span>Continue</span>
                 </button>
             </mat-card-actions>
