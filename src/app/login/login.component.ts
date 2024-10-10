@@ -203,13 +203,8 @@ export class LoginComponent implements OnInit {
 
             if (parseInt(datares['stepper_status']) < 4) {
               this.goTo('/setup');
-              // } else if (
-              //   parseInt(datares['stepper_status']) < 4 &&
-              //   datares['user_type'] == '2'
-              // ) {
-              // this.router.navigate(['/setup']);
             } else if (datares['user_type'] == '2') {
-              this.goTo('/dashboards/healthscreen');
+              this.goTo('/setup');
             } else {
               this.clinic_id = this._cookieService.get('clinic_id');
               if (datares['user_type'] == '7') {
