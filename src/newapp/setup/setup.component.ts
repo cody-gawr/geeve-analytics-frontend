@@ -49,6 +49,7 @@ export class SetupComponent implements OnInit, OnDestroy {
             takeUntil(this.destroy$),
             //distinctUntilChanged((a, b) => JSON.stringify({...a[0], connected: undefined, success: a[1]}) === JSON.stringify({...b[0], connected: undefined, success: b[1]}))
         ).subscribe(([clinics, success]) => {
+            const totalCnt = clinics.length;
             clinics = clinics.filter(clinic => ['praktika', 'dentally', 'core'].includes(clinic.pms?.toLowerCase()));
             
             if(clinics.length > 0 && success){
@@ -67,9 +68,9 @@ export class SetupComponent implements OnInit, OnDestroy {
                 });
                 this.dataSource = clinics;
             }
-            // else if(success){
-            //     this.router.navigateByUrl('/dashboards/healthscreen');
-            // }
+            else if(totalCnt > 0 && success){
+                this.router.navigateByUrl('/dashboards/healthscreen');
+            }
         });
         console.log('SetupComponent initialized');
     }
