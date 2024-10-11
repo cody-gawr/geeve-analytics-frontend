@@ -1676,10 +1676,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                 person => person.provider_id == val.provider_id
               );
               if (dentists.length == 0) {
-                var nm =
-                  val.jeeve_name != '' && val.jeeve_name
-                    ? val.jeeve_name
-                    : val.provider_name;
+                var nm = val.provider_name;
+                  // val.jeeve_name != '' && val.jeeve_name
+                  //   ? val.jeeve_name
+                  //   : val.provider_name;
                 var temp = {
                   provider_id: val.provider_id,
                   provider_name: nm,
