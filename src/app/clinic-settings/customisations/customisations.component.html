@@ -515,6 +515,7 @@
           </div>
           <ng-template #elseBlock>
             <div
+              *ngIf="isPmsD4W$ | async"
               class="clinic-setting-form"
               fxLayout="row wrap"
               fxLayoutGap="20px"
@@ -522,7 +523,6 @@
               fxLayoutGap.sm="0px"
               fxLayoutGap.xs="0">
               <div
-                *ngIf="isPmsD4W$ | async"
                 fxFlex="calc(32% - 10px)"
                 fxFlex.md="calc(32% - 10px)"
                 fxFlex.sm="calc(32% - 10px)"
@@ -578,7 +578,6 @@
                 </div>
               </div>
               <div
-                *ngIf="isPmsD4W$ | async"
                 fxFlex="calc(32% - 10px)"
                 fxFlex.md="calc(32% - 10px)"
                 fxFlex.sm="calc(32% - 10px)"
