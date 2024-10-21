@@ -473,7 +473,7 @@
             <mat-form-field
               floatLabel="never"
               class="dentist-select"
-              *ngIf="clinicDentists.length > 0 && user_type != '4'">
+              *ngIf="clinicDentists.length > 0">
               <mat-select
                 (selectionChange)="refreshScheduleTab($event.value)"
                 id="setPreviousDay2"
@@ -707,7 +707,7 @@
             <ng-container matColumnDef="dentist">
               <th mat-header-cell *matHeaderCellDef>Dentist</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.provider_name }}
+                {{ element.has_jeeve_id? element.jeeve_name: element.provider_name }}
               </td>
             </ng-container>
 

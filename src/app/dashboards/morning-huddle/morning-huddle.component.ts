@@ -735,7 +735,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.appointmentCardsTemp.forEach(val => {
         if (
           val.provider_id == this.currentDentist ||
-          parseInt(val.hyg_id) == this.currentDentist
+          val.hyg_id == this.currentDentist
         ) {
           temp.push(val);
         }
@@ -808,6 +808,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public remindersRecallsOverdueTemp: any = [];
 
   getReminders(refsh = '') {
+    if(this.user_type == 4) return;
     if (refsh == '') {
       this.remindersRecallsOverdueLoader = true;
       this.scheduleNewPatientsLoader = true;
@@ -816,183 +817,185 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.clinicDentistsReminders = [];
 
     this.morningHuddleService
-      .getReminders(this.clinic_id, this.previousDays, this.user_type)
-      .subscribe({
-        next: res => {
-          this.remindersRecallsOverdueLoader = false;
-          if (res.status == 200) {
-            this.apiSuccessCount += 1;
-            this.showXrayOverdue = false;
-            this.OPGOverdue = false;
-            this.OverdueRecalls = false;
-            this.LabNeeded = false;
-            this.showStatusCode = false;
-            if (res.body.status_codes_enable == 1) {
-              this.showStatusCode = true;
-            }
-            if (res.body.xray_overdue_enable == 1) {
-              this.showXrayOverdue = true;
-            }
-            if (res.body.opg_overdue_enable == 1) {
-              this.OPGOverdue = true;
-            }
-            if (res.body.recall_overdue_enable == 1) {
-              this.OverdueRecalls = true;
-            }
-            if (res.body.lab_needed_enable == 1) {
-              this.LabNeeded = true;
-            }
-            this.remindersTotal = res.body.total;
-            if (this.isSMSEnabled) {
-              const remindersData = res.body.data.map(d => {
-                return {
-                  appoint_id: d.appoint_id,
-                  phone_number: d.mobile,
-                  patient_id: d.patient_id,
-                };
-              });
-              this.morningHuddleService
-                .getCreditStatus(
-                  this.clinic_id,
-                  remindersData,
-                  this.previousDays.split('T')[0]
-                )
-                .subscribe(v2 => {
-                  if (v2.status) {
-                    this.remainCredits = v2.data.remain_credits;
-                    this.costPerSMS = v2.data.cost_per_sms;
-                    const statusList = v2.data.sms_status_list;
+    .getReminders(this.clinic_id, this.previousDays, this.currentDentist)
+    .subscribe({
+      next: res => {
+        this.remindersRecallsOverdueLoader = false;
+        if (res.status == 200) {
+          this.apiSuccessCount += 1;
+          this.showXrayOverdue = false;
+          this.OPGOverdue = false;
+          this.OverdueRecalls = false;
+          this.LabNeeded = false;
+          this.showStatusCode = false;
+          if (res.body.status_codes_enable == 1) {
+            this.showStatusCode = true;
+          }
+          if (res.body.xray_overdue_enable == 1) {
+            this.showXrayOverdue = true;
+          }
+          if (res.body.opg_overdue_enable == 1) {
+            this.OPGOverdue = true;
+          }
+          if (res.body.recall_overdue_enable == 1) {
+            this.OverdueRecalls = true;
+          }
+          if (res.body.lab_needed_enable == 1) {
+            this.LabNeeded = true;
+          }
+          this.remindersTotal = res.body.total;
+          if (this.isSMSEnabled) {
+            const remindersData = res.body.data.map(d => {
+              return {
+                appoint_id: d.appoint_id,
+                phone_number: d.mobile,
+                patient_id: d.patient_id,
+              };
+            });
+            this.morningHuddleService
+              .getCreditStatus(
+                this.clinic_id,
+                remindersData,
+                this.previousDays.split('T')[0]
+              )
+              .subscribe(v2 => {
+                if (v2.status) {
+                  this.remainCredits = v2.data.remain_credits;
+                  this.costPerSMS = v2.data.cost_per_sms;
+                  const statusList = v2.data.sms_status_list;
 
-                    const reminderList = _.merge(res.body.data, statusList);
-                    this.remindersRecallsOverdueTemp = reminderList;
-                    this.remindersRecallsOverdue = reminderList;
-                    this.remindersRecallsOverdueDate = this.datepipe
-                      .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
-                      .replace(/\s/, 'T');
-                    if (this.user_type == '4') {
-                      this.dentistid = this._cookieService.get('dentistid');
-                      this.refreshReminderTab(this.dentistid);
-                    } else {
-                      res.body.data.forEach(val => {
-                        var isExsist = this.clinicDentistsReminders.filter(
-                          function (person) {
-                            return person.provider_id == val.provider_id;
-                          }
-                        );
-                        if (isExsist.length <= 0) {
-                          var nm =
-                            val.jeeve_name != '' && val.jeeve_name
-                              ? val.jeeve_name
-                              : val.provider_name;
-                          var temp = {
-                            provider_id: val.provider_id,
-                            provider_name: nm,
-                          };
-                          if (temp.provider_name != null)
-                            this.clinicDentistsReminders.push(temp);
+                  const reminderList = _.merge(res.body.data, statusList);
+                  this.remindersRecallsOverdueTemp = reminderList;
+                  this.remindersRecallsOverdue = reminderList;
+                  this.remindersRecallsOverdueDate = this.datepipe
+                    .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
+                    .replace(/\s/, 'T');
+                  if (this.user_type == '4') {
+                    this.dentistid = this._cookieService.get('dentistid');
+                    this.refreshReminderTab(this.dentistid);
+                  } else {
+                    res.body.data.forEach(val => {
+                      var isExsist = this.clinicDentistsReminders.filter(
+                        function (person) {
+                          return person.provider_id == val.provider_id;
                         }
+                      );
+                      if (isExsist.length <= 0) {
+                        var nm =
+                          val.jeeve_name != '' && val.jeeve_name
+                            ? val.jeeve_name
+                            : val.provider_name;
+                        var temp = {
+                          provider_id: val.provider_id,
+                          provider_name: nm,
+                        };
+                        if (temp.provider_name != null)
+                          this.clinicDentistsReminders.push(temp);
+                      }
 
-                        if (
-                          this.isExact &&
-                          this.remindersRecallsOverdue.findIndex(
-                            (a: any) => a.hyg_id && !!a.hyg_id.trim()
-                          ) >= 0
-                        ) {
-                          const hyg_id = parseInt(val.hyg_id);
-                          if (hyg_id > 0) {
-                            var isExsist1 = this.clinicDentistsReminders.filter(
-                              function (person) {
-                                return person.hyg_id == hyg_id;
-                              }
-                            );
-                            if (isExsist1.length <= 0) {
-                              var temp1 = {
-                                hyg_id: hyg_id,
-                                provider_id: null,
-                                provider_name: val.hyg_name,
-                              };
-                              if (temp1.provider_name != null)
-                                this.clinicDentistsReminders.push(temp1);
+                      if (
+                        this.isExact &&
+                        this.remindersRecallsOverdue.findIndex(
+                          (a: any) => a.hyg_id && !!a.hyg_id.trim()
+                        ) >= 0
+                      ) {
+                        const hyg_id = parseInt(val.hyg_id);
+                        if (hyg_id > 0) {
+                          var isExsist1 = this.clinicDentistsReminders.filter(
+                            function (person) {
+                              return person.hyg_id == hyg_id;
                             }
+                          );
+                          if (isExsist1.length <= 0) {
+                            var temp1 = {
+                              hyg_id: hyg_id,
+                              provider_id: null,
+                              provider_name: val.hyg_name,
+                            };
+                            if (temp1.provider_name != null)
+                              this.clinicDentistsReminders.push(temp1);
                           }
                         }
-                      });
-                      this.clinicDentistsReminders.sort(function (x, y) {
-                        let a = x.provider_name.toUpperCase(),
-                          b = y.provider_name.toUpperCase();
-                        return a == b ? 0 : a > b ? 1 : -1;
-                      });
-                    }
-                    this.refreshReminderTab(this.selectDentist);
+                      }
+                    });
+                    this.clinicDentistsReminders.sort(function (x, y) {
+                      let a = x.provider_name.toUpperCase(),
+                        b = y.provider_name.toUpperCase();
+                      return a == b ? 0 : a > b ? 1 : -1;
+                    });
                   }
-                });
+                  this.refreshReminderTab(this.selectDentist);
+                }
+              });
+          } else {
+            this.remindersRecallsOverdueTemp = res.body.data;
+            this.remindersRecallsOverdue = res.body.data;
+            this.remindersRecallsOverdueDate = this.datepipe
+              .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
+              .replace(/\s/, 'T');
+            if (this.user_type == '4') {
+              this.dentistid = this._cookieService.get('dentistid');
+              this.refreshReminderTab(this.dentistid);
             } else {
-              this.remindersRecallsOverdueTemp = res.body.data;
-              this.remindersRecallsOverdue = res.body.data;
-              this.remindersRecallsOverdueDate = this.datepipe
-                .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
-                .replace(/\s/, 'T');
-              if (this.user_type == '4') {
-                this.dentistid = this._cookieService.get('dentistid');
-                this.refreshReminderTab(this.dentistid);
-              } else {
-                res.body.data.forEach(val => {
-                  var isExsist = this.clinicDentistsReminders.filter(
+              res.body.data.forEach(val => {
+                var isExsist = this.clinicDentistsReminders.filter(
+                  function (person) {
+                    return person.provider_id == val.provider_id;
+                  }
+                );
+                if (isExsist.length <= 0) {
+                  var nm =
+                    val.jeeve_name != '' && val.jeeve_name
+                      ? val.jeeve_name
+                      : val.provider_name;
+                  var temp = {
+                    provider_id: val.provider_id,
+                    provider_name: nm,
+                  };
+                  if (temp.provider_name != null)
+                    this.clinicDentistsReminders.push(temp);
+                }
+                if (
+                  this.isExact &&
+                  this.remindersRecallsOverdue.findIndex(
+                    (a: any) => a.hyg_id && !!a.hyg_id.trim()
+                  ) >= 0
+                ) {
+                  const hyg_id = parseInt(val.hyg_id);
+                  var isExsist1 = this.clinicDentistsReminders.filter(
                     function (person) {
-                      return person.provider_id == val.provider_id;
+                      return person.hyg_id == hyg_id;
                     }
                   );
-                  if (isExsist.length <= 0) {
-                    var nm =
-                      val.jeeve_name != '' && val.jeeve_name
-                        ? val.jeeve_name
-                        : val.provider_name;
-                    var temp = {
-                      provider_id: val.provider_id,
-                      provider_name: nm,
+                  if (isExsist1.length <= 0) {
+                    var temp1 = {
+                      hyg_id: hyg_id,
+                      provider_id: null,
+                      provider_name: val.hyg_name,
                     };
-                    if (temp.provider_name != null)
-                      this.clinicDentistsReminders.push(temp);
+                    if (temp1.provider_name != null)
+                      this.clinicDentistsReminders.push(temp1);
                   }
-                  if (
-                    this.isExact &&
-                    this.remindersRecallsOverdue.findIndex(
-                      (a: any) => a.hyg_id && !!a.hyg_id.trim()
-                    ) >= 0
-                  ) {
-                    const hyg_id = parseInt(val.hyg_id);
-                    var isExsist1 = this.clinicDentistsReminders.filter(
-                      function (person) {
-                        return person.hyg_id == hyg_id;
-                      }
-                    );
-                    if (isExsist1.length <= 0) {
-                      var temp1 = {
-                        hyg_id: hyg_id,
-                        provider_id: null,
-                        provider_name: val.hyg_name,
-                      };
-                      if (temp1.provider_name != null)
-                        this.clinicDentistsReminders.push(temp1);
-                    }
-                  }
-                });
-                this.clinicDentistsReminders.sort(function (x, y) {
-                  let a = x.provider_name.toUpperCase(),
-                    b = y.provider_name.toUpperCase();
-                  return a == b ? 0 : a > b ? 1 : -1;
-                });
-              }
-              this.refreshReminderTab(this.selectDentist);
+                }
+              });
+              this.clinicDentistsReminders.sort(function (x, y) {
+                let a = x.provider_name.toUpperCase(),
+                  b = y.provider_name.toUpperCase();
+                return a == b ? 0 : a > b ? 1 : -1;
+              });
             }
-          } else if (res.status == 401) {
-            this.handleUnAuthorization();
+            this.refreshReminderTab(this.selectDentist);
           }
-        },
-        error: e => {
+        } else if (res.status == 401) {
           this.handleUnAuthorization();
-        },
-      });
+        }
+      },
+      error: e => {
+        this.handleUnAuthorization();
+      },
+    });
+    
+
   }
 
   /*  getFollowupsUnscheduledPatients(){
@@ -1616,9 +1619,16 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       .subscribe(
         (res: any) => {
           this.clinicDentists = [];
-          this.currentDentistSchedule = this.currentDentist
-            ? this.currentDentist
-            : 0;
+          this.currentDentist = this._cookieService.get('dentistid');
+          if(this.currentDentist){
+            const c_dentist = res.body.dentists?.find(d => d.providerId == this.currentDentist);
+            if(c_dentist)
+              this.currentDentistSchedule = c_dentist?.has_jeeve_id === 1? c_dentist.jeeve_id: c_dentist.providerId;
+            else this.currentDentistSchedule = 0;
+          }else{
+            this.currentDentistSchedule = 0;
+          }
+          
           this.appointmentCardsTemp = [];
           if (refsh == '') {
             this.appointmentCards = new MatTableDataSource();
@@ -1650,8 +1660,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             this.appointmentCardsTemp = res.body.data;
 
             if (this.user_type == '4') {
-              this.dentistid = this._cookieService.get('dentistid');
-              this.refreshScheduleTab(this.dentistid);
+              // this.dentistid = this._cookieService.get('dentistid');
+              this.refreshScheduleTab(this.currentDentistSchedule);
             } else {
               // if (this.currentDentist && this.currentDentist != 0) {
               //   this.appointmentCardsTemp = (<any[]>res.body.data).filter(
@@ -1672,21 +1682,23 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
             res.body.data.forEach(val => {
               // check for duplicate values
+              // const dentist = res.body.dentists?.find(
+              //   dentist => dentist.has_jeeve_id == 1 ? dentist.jeeve_id == val.provider_id: dentist.providerId == val.provider_id
+              // );
+              // if (dentist) {
+                // var nm = val.provider_name;
               const dentists = this.clinicDentists.filter(
                 person => person.provider_id == val.provider_id
               );
-              if (dentists.length == 0) {
-                var nm = val.provider_name;
-                  // val.jeeve_name != '' && val.jeeve_name
-                  //   ? val.jeeve_name
-                  //   : val.provider_name;
-                var temp = {
+              if(dentists.length === 0){
+                const temp = {
                   provider_id: val.provider_id,
-                  provider_name: nm,
+                  provider_name: val.has_jeeve_id? val.jeeve_name: val.provider_name,
                   hyg_id: null,
                 };
                 if (temp.provider_name != null) this.clinicDentists.push(temp);
               }
+              //}
 
               if (
                 this.isExact &&
@@ -1700,7 +1712,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                     person => person.hyg_id == hyg_id
                   );
                   if (dentists.length == 0) {
-                    var temp1 = {
+                    const temp1 = {
                       hyg_id: hyg_id,
                       provider_id: null,
                       provider_name: val.hyg_name,

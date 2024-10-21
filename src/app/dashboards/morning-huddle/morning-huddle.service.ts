@@ -735,30 +735,15 @@ export class MorningHuddleService {
   getReminders(
     clinic_id,
     previousDays,
-    user_type,
+    // user_type,
     clinician = ''
   ): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
-    const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = parseInt(urlParams.get('wh') ?? '0');
-    if (clinician == '') {
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const isWhEnabled = parseInt(urlParams.get('wh') ?? '0');
+    if (clinician !== '') {
       return this.http
-        .get(
-          this.apiUrl +
-            '/MorningHuddle/mhReminders?clinic_id=' +
-            clinic_id +
-            '&date=' +
-            previousDays,
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
-    return this.http
       .get(
         this.apiUrl +
           '/MorningHuddle/mhReminders?clinic_id=' +
@@ -767,6 +752,23 @@ export class MorningHuddleService {
           previousDays +
           '&clinician=' +
           clinician,
+        header
+      )
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        })
+      );
+    }
+
+
+      return this.http
+      .get(
+        this.apiUrl +
+          '/MorningHuddle/mhReminders?clinic_id=' +
+          clinic_id +
+          '&date=' +
+          previousDays,
         header
       )
       .pipe(
