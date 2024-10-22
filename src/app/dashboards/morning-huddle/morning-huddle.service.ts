@@ -742,7 +742,7 @@ export class MorningHuddleService {
     previousDays = previousDays.slice(0, 10);
     // const urlParams = new URLSearchParams(window.location.search);
     // const isWhEnabled = parseInt(urlParams.get('wh') ?? '0');
-    if (clinician !== '') {
+    if (!!clinician) {
       return this.http
       .get(
         this.apiUrl +
