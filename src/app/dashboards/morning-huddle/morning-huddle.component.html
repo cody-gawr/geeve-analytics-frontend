@@ -473,7 +473,7 @@
             <mat-form-field
               floatLabel="never"
               class="dentist-select"
-              *ngIf="clinicDentists.length > 0">
+              *ngIf="clinicDentists.length > 0 && user_type != '4'">
               <mat-select
                 (selectionChange)="refreshScheduleTab($event.value)"
                 id="setPreviousDay2"
