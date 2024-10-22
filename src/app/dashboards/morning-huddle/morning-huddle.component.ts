@@ -817,7 +817,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.clinicDentistsReminders = [];
 
     this.morningHuddleService
-    .getReminders(this.clinic_id, this.previousDays, this.currentDentist)
+    .getReminders(this.clinic_id, this.previousDays, null)
     .subscribe({
       next: res => {
         this.remindersRecallsOverdueLoader = false;
