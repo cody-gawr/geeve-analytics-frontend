@@ -1624,7 +1624,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             const c_dentist = res.body.dentists?.find(d => d.providerId == this.currentDentist);
             if(c_dentist)
               this.currentDentistSchedule = c_dentist?.has_jeeve_id === 1? c_dentist.jeeve_id: c_dentist.providerId;
-            else this.currentDentistSchedule = 0;
+            else this.currentDentistSchedule = this.currentDentist;
           }else{
             this.currentDentistSchedule = 0;
           }
