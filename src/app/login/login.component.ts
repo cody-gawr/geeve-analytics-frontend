@@ -70,7 +70,8 @@ export class LoginComponent implements OnInit {
   goTo(defaultUrl: string) {
     const returnUrl =
       this.route.snapshot.queryParams['returnUrl'] || defaultUrl;
-    this.router.navigateByUrl(returnUrl);
+    // this.router.navigateByUrl(returnUrl);
+    window.location.href = returnUrl;
   }
   mfaEnabled = false;
   errorOTP = false;
