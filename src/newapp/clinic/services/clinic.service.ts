@@ -78,6 +78,36 @@ export class ClinicService {
     );
   }
 
+  public getClinicLocations(clinic_id: number): Observable<any> {
+    return this.http
+      .get(
+        this.apiUrl + '/corepractice/getLocations?clinic_id=' + clinic_id,
+        { withCredentials: true },
+      )
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        })
+      );
+  }
+
+  saveCoreLocation(clinic_id, location_id): Observable<any> {
+    return this.http
+      .get(
+        this.apiUrl +
+          '/corepractice/saveLocation?clinic_id=' +
+          clinic_id +
+          '&location_id=' +
+          location_id,
+          { withCredentials: true },
+      )
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        })
+    );
+  }
+
   public getDentallyAuthorizeUrl(clinicId: number) {
     return this.http.get<JeeveResponse<any>>(
       `${environment.commonApiUrl}/dentally/getAuthorizeUrl?clinic_id=${clinicId}`,
