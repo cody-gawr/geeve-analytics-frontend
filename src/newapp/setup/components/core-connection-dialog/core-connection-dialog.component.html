@@ -5,7 +5,7 @@
     <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
 </div>
 <div mat-dialog-content>
-        <div class="w-full flex items-center justify-center">
+        <div class="location-box">
             <mat-form-field *ngIf="LocationData.length > 1;else otherdiv" appearance="outline">
                 <mat-label>Select Location</mat-label>
                 <mat-select [(value)]="selectedLocationId">
@@ -17,12 +17,12 @@
         </div>
 
         <ng-template #otherdiv>
-            <div class="!pt-5 !pb-5 !pl-5 !pr-5 rounded-xl bg-slate-100">
-                <p>Connect your Core account ...</p>
+            <div class="text-core">
+                <p>Please connect your Core account</p>
             </div>
-            <div class="flex flex-row flex-wrap items-center justify-center pt-5">
-                <div class="flex flex-col items-center">
-                    <img src="https://www.corepractice.com.au/Content/img/logo-core-practice@2x.png">
+            <div class="image-core">
+                <div>
+                    <img src="assets/stepper/logo-core-practice@2x.png">
                     <!-- <img src="" alt="Snow"> -->
                     <!-- https://www.corepractice.com.au/Content/img/logo-core-practice@2x.png -->
                 </div>
