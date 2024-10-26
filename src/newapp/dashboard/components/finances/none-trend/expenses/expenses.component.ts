@@ -61,7 +61,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.connectedWith$.pipe(
+    return this.clinicFacade.connectedWith$.pipe(
       map(v => v === 'xero' || v === 'myob')
     );
   }

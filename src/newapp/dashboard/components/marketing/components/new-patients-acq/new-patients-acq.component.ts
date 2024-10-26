@@ -5,7 +5,7 @@ import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { ChartOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map, Observable } from 'rxjs';
@@ -92,7 +92,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.connectedWith$.pipe(
+    return this.clinicFacade.connectedWith$.pipe(
       map(v => {
         return v === 'myob' || v === 'xero';
       })

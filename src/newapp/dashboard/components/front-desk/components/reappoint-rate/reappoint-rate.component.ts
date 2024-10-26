@@ -80,7 +80,7 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.isConnectedWith$;
+    return this.clinicFacade.isConnectedWith$;
   }
 
   get hasData$() {

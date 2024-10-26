@@ -4,7 +4,6 @@ import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { Component, Inject, OnInit, OnDestroy, Input } from '@angular/core';
 import {
-  MatDialog,
   MAT_DIALOG_DATA,
   MatDialogRef,
 } from '@angular/material/dialog';
@@ -48,13 +47,12 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
   }
 
   get connectedWith$() {
-    return this.dashboardFacade.connectedWith$;
+    return this.clinicFacade.connectedWith$;
   }
 
   constructor(
     public dialogRef: MatDialogRef<MkSelectAccountsModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private dashboardFacade: DashboardFacade,
     private marketingFacade: MarketingFacade,
     private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
@@ -73,7 +71,7 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.authUserId$,
-      this.dashboardFacade.connectedWith$,
+      this.clinicFacade.connectedWith$,
       this.marketingFacade.isLoadingMkSaveMyobAccounts$,
       this.marketingFacade.isLoadingMkSaveXeroAccounts$,
     ])
@@ -100,7 +98,7 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
       });
 
     combineLatest([
-      this.dashboardFacade.connectedWith$,
+      this.clinicFacade.connectedWith$,
       this.marketingFacade.xeroAccounts$,
       this.marketingFacade.myobAccounts$,
     ])

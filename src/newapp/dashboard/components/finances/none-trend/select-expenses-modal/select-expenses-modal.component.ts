@@ -28,7 +28,7 @@ export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
   }
 
   get connectedWith$() {
-    return this.dashboardFacade.connectedWith$;
+    return this.clinicFacade.connectedWith$;
   }
 
   constructor(

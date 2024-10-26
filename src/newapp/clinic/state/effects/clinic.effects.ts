@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap } from 'rxjs';
 import { ClinicService } from '../../services/clinic.service';
 import { ClinicApiActions, ClinicPageActions } from '../actions';
 
@@ -103,6 +103,28 @@ export class ClinicEffects {
           ),
           catchError((error: HttpErrorResponse) =>
             of(ClinicApiActions.checkPraktikaSyncFailure({ clinicId, error: error.error ?? error }))
+          )
+        );
+      })
+    );
+  });
+  public readonly getClinicAccountingPlatform$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ClinicPageActions.loadClinicAccountingPlatform),
+      switchMap(({ clinicId }) => {
+        return this.clinicService.getClinicAccountingPlatform(clinicId).pipe(
+          map(res =>
+            ClinicApiActions.clinicAccountingPlatformSuccess({
+              connectWith: res.data?.connectedWith ?? null,
+              clinicId,
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              ClinicApiActions.clinicAccountingPlatformFailure({
+                error: error.error ?? error,
+              })
+            )
           )
         );
       })

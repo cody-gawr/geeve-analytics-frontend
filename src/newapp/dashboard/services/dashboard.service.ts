@@ -28,17 +28,17 @@ export class DashboardService {
       );
   };
 
-  getClinicAccountingPlatform = (
-    clinicId: number
-  ): Observable<{
-    data: { connectedWith: CONNECT_WITH_PLATFORM; name: string };
-    message: string;
-  }> => {
-    return this.http
-      .get<any>(
-        `${this.apiUrl}/clinics/clinicGetAccountingPlatform?clinic_id=${clinicId}`,
-        { withCredentials: true }
-      )
-      .pipe(map(res => <any>camelcaseKeys(res, { deep: true })));
-  };
+  // getClinicAccountingPlatform = (
+  //   clinicId: number
+  // ): Observable<{
+  //   data: { connectedWith: CONNECT_WITH_PLATFORM; name: string };
+  //   message: string;
+  // }> => {
+  //   return this.http
+  //     .get<any>(
+  //       `${this.apiUrl}/clinics/clinicGetAccountingPlatform?clinic_id=${clinicId}`,
+  //       { withCredentials: true }
+  //     )
+  //     .pipe(map(res => <any>camelcaseKeys(res, { deep: true })));
+  // };
 }

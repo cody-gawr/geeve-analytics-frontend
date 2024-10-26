@@ -38,7 +38,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
   noPermission = true;
 
   constructor(
-    private dashbordFacade: DashboardFacade,
+    private dashboardFacade: DashboardFacade,
     private clinicFacade: ClinicFacade,
     private financeFacade: FinanceFacade,
     private layoutFacade: LayoutFacade,
@@ -56,16 +56,16 @@ export class FinancesComponent implements OnInit, OnDestroy {
         distinctUntilChanged()
       )
       .subscribe(clinicIds => {
-        this.dashbordFacade.loadChartTips(5, clinicIds);
+        this.dashboardFacade.loadChartTips(5, clinicIds);
       });
 
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
-      this.dashbordFacade.connectedWith$,
+      this.clinicFacade.connectedWith$,
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
-      this.dashbordFacade.connectedClinicId$,
+      this.clinicFacade.connectedClinicId$,
     ])
       .pipe(
         takeUntil(this.destroy$),

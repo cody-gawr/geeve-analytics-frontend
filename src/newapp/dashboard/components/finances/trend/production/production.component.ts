@@ -316,7 +316,6 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
 
   constructor(
     private financeFacade: FinanceFacade,
-    private dashboardFacade: DashboardFacade,
     private layoutFacade: LayoutFacade,
     private clinicFacade: ClinicFacade
   ) {}
@@ -344,7 +343,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
 
   get isDisconnectedPlatform$() {
     return combineLatest([
-      this.dashboardFacade.connectedWith$,
+      this.clinicFacade.connectedWith$,
       this.financeFacade.profitTrendChartName$,
     ]).pipe(
       map(([connectWith, chartName]) => {

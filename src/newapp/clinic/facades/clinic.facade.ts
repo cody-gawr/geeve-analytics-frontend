@@ -22,6 +22,10 @@ import {
   selectUserClinics,
   selectUserClinicsSuccess,
   selectIsLoadingSyncStatus,
+  selectIsLoadingClinicAccountingPlatform,
+  selectConnectedWith,
+  selectIsConnectedWith,
+  selectConnectedClinicId,
 } from '../state/reducers/clinic.reducer';
 import { combineLatest, map } from 'rxjs';
 
@@ -156,5 +160,28 @@ export class ClinicFacade {
 
   public loadPraktikaSyncStatus(clinicId: number) {
     this.store.dispatch(ClinicPageActions.loadPraktikaSyncStatus({ clinicId }));
+  }
+
+  public readonly isLoadingClinicAccounting$ = this.store.pipe(
+    select(selectIsLoadingClinicAccountingPlatform)
+  );
+  public readonly connectedWith$ = this.store.pipe(select(selectConnectedWith));
+  public readonly isConnectedWith$ = this.store.pipe(
+    select(selectIsConnectedWith)
+  );
+  public readonly connectedClinicId$ = this.store.pipe(
+    select(selectConnectedClinicId)
+  );
+
+  public loadClinicAccountingPlatform(clinicId: number) {
+    this.store.dispatch(
+      ClinicPageActions.loadClinicAccountingPlatform({ clinicId })
+    );
+  }
+
+  public setConnectedClinicId(clinicId: number) {
+    this.store.dispatch(
+      ClinicPageActions.setConnectedClinicId({ clinicId })
+    );
   }
 }

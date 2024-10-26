@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { Subject, combineLatest, map } from 'rxjs';
 import { FinanceFacade } from '../../../facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 
@@ -60,7 +60,7 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashbordFacade.connectedWith$.pipe(
+    return this.clinicFacade.connectedWith$.pipe(
       map(v => v === 'xero' || v === 'myob')
     );
   }
@@ -76,7 +76,7 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
 
   get toolTipFnProductionPerVisit$() {
     return combineLatest([
-      this.dashbordFacade.chartTips$,
+      this.dashboardFacade.chartTips$,
       this.isMultipleClinic$,
     ]).pipe(
       map(([c, v]) => {
@@ -89,7 +89,7 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private dashbordFacade: DashboardFacade,
+    private dashboardFacade: DashboardFacade,
     private financeFacade: FinanceFacade,
     private layoutFacade: LayoutFacade,
     private clinicFacade: ClinicFacade
@@ -102,7 +102,7 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
   }
 
   getChartTip(index: number) {
-    return this.dashbordFacade.chartTips$.pipe(
+    return this.dashboardFacade.chartTips$.pipe(
       map(c => {
         if (c && c[index]) {
           return c[index];

@@ -56,3 +56,15 @@ export const checkPraktikaSyncFailure = createAction(
   '[Clinic API] Check Praktika Sync Fail',
   props<{ clinicId: number, error: JeeveError }>()
 );
+
+export const clinicAccountingPlatformSuccess = createAction(
+  '[Clinic API] Load Clinic Accounting Platform Success',
+  props<{ connectWith: CONNECT_WITH_PLATFORM; clinicId: number }>()
+);
+
+export const clinicAccountingPlatformFailure = createAction(
+  '[Clinic API] Load Clinic Accounting Platform Failure',
+  props<{
+    error: JeeveError;
+  }>()
+);

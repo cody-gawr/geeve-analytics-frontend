@@ -24,7 +24,6 @@ import {
 import { LayoutFacade } from '../facades/layout.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
-import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie';
@@ -136,7 +135,6 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   setCookieVal(val: string) {
-    this.cookieService.put('clinic_id', val);
     const values = this.cookieService.get('clinic_dentist')?.split('_');
     if (val && values) {
       values[0] = val;
@@ -287,7 +285,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
       )
       .subscribe(currentClinicIDs => {
         if (currentClinicIDs.length > 0) {
-          this.dashboardFacade.loadClinicAccountingPlatform(
+          this.clinicFacade.loadClinicAccountingPlatform(
             _.min(currentClinicIDs)
           );
         }

@@ -14,14 +14,14 @@ export const loadChartTipsFailure = createAction(
   }>()
 );
 
-export const clinicAccountingPlatformSuccess = createAction(
-  '[Dashboard API] Load Clinic Accounting Platform Success',
-  props<{ connectWith: CONNECT_WITH_PLATFORM; clinicId: number }>()
-);
+// export const clinicAccountingPlatformSuccess = createAction(
+//   '[Dashboard API] Load Clinic Accounting Platform Success',
+//   props<{ connectWith: CONNECT_WITH_PLATFORM; clinicId: number }>()
+// );
 
-export const clinicAccountingPlatformFailure = createAction(
-  '[Dashboard API] Load Clinic Accounting Platform Failure',
-  props<{
-    error: JeeveError;
-  }>()
-);
+// export const clinicAccountingPlatformFailure = createAction(
+//   '[Dashboard API] Load Clinic Accounting Platform Failure',
+//   props<{
+//     error: JeeveError;
+//   }>()
+// );

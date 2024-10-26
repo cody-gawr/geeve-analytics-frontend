@@ -1,5 +1,5 @@
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { COLORS } from '@/newapp/constants';
-import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { externalTooltipHandler } from '@/newapp/shared/utils';
@@ -29,7 +29,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.connectedWith$.pipe(
+    return this.clinicFacade.connectedWith$.pipe(
       map(connectWith => connectWith === 'xero' || connectWith === 'myob')
     );
   }
@@ -37,7 +37,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
   constructor(
     private decimalPipe: DecimalPipe,
     private financeFacade: FinanceFacade,
-    private dashboardFacade: DashboardFacade,
+    private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade
   ) {}
 

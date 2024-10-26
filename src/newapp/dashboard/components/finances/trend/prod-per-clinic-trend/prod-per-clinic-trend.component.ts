@@ -1,12 +1,11 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import {
   externalTooltipHandler,
   generatingLegend_4,
 } from '@/newapp/shared/utils';
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
-import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { ChartOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
@@ -33,13 +32,12 @@ export class FinanceProdPerClinicTrendComponent implements OnInit, OnDestroy {
   }
 
   get legend$() {
-    return this.dashboardFacade.connectedWith$.pipe(map(v => v && v != 'none'));
+    return this.clinicFacade.connectedWith$.pipe(map(v => v && v != 'none'));
   }
 
   constructor(
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
-    private dashboardFacade: DashboardFacade
   ) {}
 
   ngOnInit(): void {

@@ -30,7 +30,7 @@ import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import moment from 'moment';
 import { ChartDataset, Colors } from 'chart.js';
-import { selectConnectedWith } from './dashboard.reducer';
+// import { selectConnectedWith } from './dashboard.reducer';
 import { COLORS } from '@/newapp/constants';
 import { getSubValForGoal } from '@/newapp/shared/utils';
 

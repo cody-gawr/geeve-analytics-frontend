@@ -32,26 +32,26 @@ export class DashboardEffects {
     );
   });
 
-  public readonly getClinicAccountingPlatform$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(DashboardPageActions.loadClinicAccountingPlatform),
-      switchMap(({ clinicId }) => {
-        return this.dashboardService.getClinicAccountingPlatform(clinicId).pipe(
-          map(res =>
-            DashboardApiActions.clinicAccountingPlatformSuccess({
-              connectWith: res.data?.connectedWith ?? null,
-              clinicId,
-            })
-          ),
-          catchError((error: HttpErrorResponse) =>
-            of(
-              DashboardApiActions.clinicAccountingPlatformFailure({
-                error: error.error ?? error,
-              })
-            )
-          )
-        );
-      })
-    );
-  });
+  // public readonly getClinicAccountingPlatform$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(DashboardPageActions.loadClinicAccountingPlatform),
+  //     switchMap(({ clinicId }) => {
+  //       return this.dashboardService.getClinicAccountingPlatform(clinicId).pipe(
+  //         map(res =>
+  //           DashboardApiActions.clinicAccountingPlatformSuccess({
+  //             connectWith: res.data?.connectedWith ?? null,
+  //             clinicId,
+  //           })
+  //         ),
+  //         catchError((error: HttpErrorResponse) =>
+  //           of(
+  //             DashboardApiActions.clinicAccountingPlatformFailure({
+  //               error: error.error ?? error,
+  //             })
+  //           )
+  //         )
+  //       );
+  //     })
+  //   );
+  // });
 }

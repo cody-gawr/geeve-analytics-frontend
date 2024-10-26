@@ -10,7 +10,6 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
-import moment from 'moment';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
@@ -84,7 +83,7 @@ export class FrontDeskUtaRatioComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.dashboardFacade.isConnectedWith$;
+    return this.clinicFacade.isConnectedWith$;
   }
 
   get hasData$() {

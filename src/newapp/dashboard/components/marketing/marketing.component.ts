@@ -66,11 +66,11 @@ export class MarketingComponent implements OnInit, OnDestroy {
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.layoutFacade.dateRange$,
-      this.dashbordFacade.connectedWith$,
+      this.clinicFacade.connectedWith$,
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
       // this.authUserId$,
-      this.dashbordFacade.connectedClinicId$,
+      this.clinicFacade.connectedClinicId$,
       this.clinicFacade.isMultiClinicsSelected$,
     ])
       .pipe(

@@ -74,10 +74,10 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
     combineLatest([
       this.clinicFacade.currentClinics$,
       this.layoutFacade.dateRange$,
-      this.dashbordFacade.connectedWith$,
+      this.clinicFacade.connectedWith$,
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
-      this.dashbordFacade.connectedClinicId$,
+      this.clinicFacade.connectedClinicId$,
     ])
       .pipe(
         takeUntil(this.destroy$),

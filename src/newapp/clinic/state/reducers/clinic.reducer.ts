@@ -6,7 +6,7 @@ import _ from 'lodash';
 export interface ClinicState {
   isLoadingFlags: Array<'userClinics' | 'coreSync' | string>;
   errors: Array<JeeveError>;
-
+  isLoadingData: Array<string>;
   success: boolean;
   userClinicsSuccess: boolean;
   isLoading: boolean;
@@ -17,12 +17,15 @@ export interface ClinicState {
   error: string | null;
   hasPrimeClinics: 'yes' | 'no';
   isMultiSelection: boolean;
+
+  connectedWith: CONNECT_WITH_PLATFORM;
+  connectedClinicId: number;
 }
 
 const initialState: ClinicState = {
   isLoadingFlags: [],
   errors: [],
-
+  isLoadingData: [],
   success: false,
   userClinicsSuccess: false,
   isLoading: false,
@@ -33,6 +36,9 @@ const initialState: ClinicState = {
   error: null,
   hasPrimeClinics: 'no',
   isMultiSelection: null,
+
+  connectedWith: null,
+  connectedClinicId: null,
 };
 
 export const clinicFeature = createFeature({
@@ -295,6 +301,60 @@ export const clinicFeature = createFeature({
         }
       }
     ),
+    on(
+      ClinicPageActions.loadClinicAccountingPlatform,
+      (state, {}): ClinicState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, n => n.api != 'clinicGetAccountingPlatform'),
+          connectedWith: null,
+          isLoadingData: _.union(isLoadingData, [
+            'clinicGetAccountingPlatform',
+          ]),
+        };
+      }
+    ),
+    on(
+      ClinicApiActions.clinicAccountingPlatformSuccess,
+      (state, { connectWith, clinicId }): ClinicState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, n => n.api != 'clinicGetAccountingPlatform'),
+          connectedWith: connectWith,
+          connectedClinicId: clinicId,
+          isLoadingData: _.filter(
+            isLoadingData,
+            n => n != 'clinicGetAccountingPlatform'
+          ),
+        };
+      }
+    ),
+    on(
+      ClinicApiActions.clinicAccountingPlatformFailure,
+      (state, { error }): ClinicState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          connectedWith: null,
+          isLoadingData: _.filter(
+            isLoadingData,
+            n => n != 'clinicGetAccountingPlatform'
+          ),
+          errors: [...errors, { ...error, api: 'clinicGetAccountingPlatform' }],
+        };
+      }
+    ),
+    on(
+      ClinicPageActions.setConnectedClinicId,
+      (state, { clinicId }): ClinicState => {
+        return {
+          ...state,
+          connectedClinicId: clinicId,
+        };
+      }
+    )
   ),
 });
 
@@ -310,7 +370,23 @@ export const {
   selectCurrentMultiClinicIds,
   selectHasPrimeClinics,
   selectIsMultiSelection,
+  selectIsLoadingData,
+  
+  selectConnectedWith,
+  selectConnectedClinicId,
 } = clinicFeature;
+
+export const selectIsLoadingClinicAccountingPlatform = createSelector(
+  selectIsLoadingData,
+  isLoadingData =>
+    _.findIndex(isLoadingData, l => l == 'clinicGetAccountingPlatform') >= 0
+);
+export const selectIsConnectedWith = createSelector(
+  selectConnectedWith,
+  connectWith => {
+    return connectWith && connectWith !== 'none';
+  }
+);
 
 export const selectIsLoadingSyncStatus = createSelector(
   selectIsLoadingFlags,
