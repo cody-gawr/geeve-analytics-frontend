@@ -126,7 +126,6 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private layoutFacade: LayoutFacade,
-    private dashboardFacade: DashboardFacade,
     private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
     private dentistFacade: DentistFacade,
