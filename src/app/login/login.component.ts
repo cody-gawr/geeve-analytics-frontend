@@ -12,6 +12,7 @@ import { LoginService } from './login.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import camelcaseKeys from 'camelcase-keys';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -68,13 +69,14 @@ export class LoginComponent implements OnInit {
   }
 
   goTo(defaultUrl: string) {
-    const returnUrl =
-      this.route.snapshot.queryParams['returnUrl'] || defaultUrl;
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || defaultUrl;
     // this.router.navigateByUrl(returnUrl);
     window.location.href = returnUrl;
   }
+
   mfaEnabled = false;
   errorOTP = false;
+
   onSubmit() {
     this.errorForm = { email: false, password: false, otp: false };
     if (this.form.controls['uname'].hasError('required')) {
@@ -117,7 +119,7 @@ export class LoginComponent implements OnInit {
             datares['parentid'] = res.body.data.data.parent_id;
             datares['user_type'] = res.body.data.data.user_type;
             /*datares['user_image'] = res.body.data.data.user_image;        */
-            datares['stepper_status'] = res.body.data.data.stepper_status;
+            datares['stepper_status'] = parseInt(res.body.data.data.stepper_status);
             datares['login_status'] = res.body.data.data.status;
             datares['display_name'] = res.body.data.data.display_name;
             datares['dentistid'] = res.body.data.data.dentist_id;
@@ -128,7 +130,7 @@ export class LoginComponent implements OnInit {
             let opts = this.constants.cookieOpt as CookieOptions;
 
             var nextStep = (
-              parseInt(res.body.data.data.stepper_status) + 1
+              datares['stepper_status'] + 1
             ).toString();
 
             this._cookieService.put('stepper', nextStep, opts);
@@ -202,7 +204,7 @@ export class LoginComponent implements OnInit {
               this._cookieService.put('dentist_toggle', 'false', opts);
             }
 
-            if (parseInt(datares['stepper_status']) < 4) {
+            if (datares['stepper_status'] < 4 && datares['stepper_status'] > 0) {
               this.goTo('/setup');
             } else if (datares['user_type'] == '2') {
               this.goTo('/setup');
