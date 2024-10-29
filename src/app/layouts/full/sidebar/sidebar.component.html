@@ -48,6 +48,22 @@
   </mat-list-item>
 
   <mat-list-item
+  appAccordionLink
+  routerLinkActive="selected"
+  group="string"
+  *ngIf="
+    (user_type == 2 ||
+      permisions.indexOf('campaigns') >= 0 ||
+      user_type == 7) &&
+    apiUrl.includes('test')
+  ">
+  <a class="" appAccordionToggle [routerLink]="['/newapp/campaigns']">
+    <i class="fas fa-bullhorn"></i>
+    <span>Campaigns</span>
+    <span fxFlex></span>
+  </a>
+</mat-list-item>
+  <mat-list-item
     appAccordionLink
     routerLinkActive="selected"
     group="string"
@@ -61,23 +77,7 @@
     </a>
   </mat-list-item>
 
-  <mat-list-item
-    appAccordionLink
-    routerLinkActive="selected"
-    group="string"
-    *ngIf="
-      (user_type == 2 ||
-        permisions.indexOf('campaigns') >= 0 ||
-        user_type == 7) &&
-      apiUrl.includes('test') &&
-      false
-    ">
-    <a class="" appAccordionToggle [routerLink]="['/campaigns']">
-      <i class="fas fa-users"></i>
-      <span>Campaigns</span>
-      <span fxFlex></span>
-    </a>
-  </mat-list-item>
+
 
   <mat-list-item
     appAccordionLink

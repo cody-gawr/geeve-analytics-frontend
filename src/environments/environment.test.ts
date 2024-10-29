@@ -3,6 +3,7 @@ export const environment = {
   commonApiUrl: 'https://test-api.jeeve.com.au/test/v1/common',
   baseApiUrl: 'https://test-api.jeeve.com.au/test',
   apiUrl: 'https://test-api.jeeve.com.au/test/analytics',
+  apiNodeUrl: 'https://test-api.jeeve.com.au/test/node/analytics',
   homeUrl: 'https://test-analytics.jeeve.com.au/',
   solutionsUrl: 'https://test-api.jeeve.com.au/test/solutions',
   stripeKey:

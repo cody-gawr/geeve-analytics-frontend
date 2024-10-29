@@ -16,7 +16,7 @@
     </div>
     <div class="dynamic-top-section">
       <div class="date-picker-wrapper">
-        <div class="date-picker-field">
+        <div class="date-picker-field" *ngIf="!(hideDatePicker$ | async)">
           <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
             <input
               class="custom-font"

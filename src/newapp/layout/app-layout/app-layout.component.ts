@@ -4,6 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDrawerMode } from '@angular/material/sidenav';
 import { Subject, takeUntil, map, filter } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
+import { LayoutFacade } from '../facades/layout.facade';
 
 @Component({
   selector: 'app-layout',
@@ -21,6 +22,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private router: Router,
+    private layoutFacade: LayoutFacade
   ) {
     this.router.events
       .pipe(
@@ -31,6 +33,11 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
       .subscribe(event => {
         const { url } = <NavigationEnd>event;
         this.activatedUrl = url.split('?')[0];
+        if(this.activatedUrl.includes('campaigns')) {
+          layoutFacade.setHideDatePicker(true);
+        }else{
+          layoutFacade.setHideDatePicker(false);
+        }
       });
   }
 

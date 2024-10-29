@@ -23,10 +23,11 @@ import {
   faHandshake,
   faIdCard,
   faQuestion,
-  faUsers,
+
   faCaretRight,
   faCaretDown,
   faPhoneFlip,
+  faBullhorn,
 } from '@fortawesome/free-solid-svg-icons';
 import { USER_MASTER, CONSULTANT, USER_CLINICIAN } from '@/newapp/constants';
 
@@ -90,6 +91,19 @@ const MENU_DATA: MenuNode[] = [
       );
     },
   },
+  // user_type==2 || permissions.contains(campaigns) || user_type==7
+  {
+    title: 'Campaigns',
+    path: '/newapp/campaigns',
+    icon: faBullhorn,
+    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+      return (
+        (permissions?.indexOf('campaigns') >= 0 ||
+        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
+        environment.apiUrl.includes("test")
+      );
+    },
+  },
   // user_type==2 || permissions.contains(followups) || user_type==7
   {
     title: 'Follow Ups',
@@ -100,20 +114,6 @@ const MENU_DATA: MenuNode[] = [
         permissions?.indexOf('followups') >= 0 ||
         [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
-    },
-  },
-  // (user_type==2 || permissions.indexOf(campaigns) || user_type==7) && apiUrl.includes('test')
-  {
-    title: 'Campaigns',
-    path: 'campaigns',
-    icon: faUsers,
-    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
-      return false;
-      // return (
-      //   (permissions?.indexOf("campaigns") >= 0 ||
-      //     [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
-      //   environment.apiUrl.includes("test")
-      // );
     },
   },
   // user_type==2 || permissions.indexOf('dashboard') || user_type==7

@@ -124,6 +124,10 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return this.dentistFacade.dentists$;
   }
 
+  get hideDatePicker$()  {
+    return this.layoutFacade.hideDatePicker$;
+  }
+
   constructor(
     private layoutFacade: LayoutFacade,
     private clinicFacade: ClinicFacade,
@@ -281,7 +285,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
         takeUntil(this.destroy$),
         map(currentClinics => currentClinics.map(c => c.id)),
         distinctUntilChanged((prev, curr) => _.min(prev) == _.min(curr))
-      )
+      ) 
       .subscribe(currentClinicIDs => {
         if (currentClinicIDs.length > 0) {
           this.clinicFacade.loadClinicAccountingPlatform(

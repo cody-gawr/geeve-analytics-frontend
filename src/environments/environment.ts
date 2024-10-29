@@ -9,6 +9,7 @@ export const environment = {
   commonApiUrl: 'https://test-api.jeeve.com.au/test/v1/common',
   baseApiUrl: 'https://test-api.jeeve.com.au/test',
   apiUrl: 'https://test-api.jeeve.com.au/test/analytics',
+  apiNodeUrl: 'https://test-api.jeeve.com.au/test/node/analytics',
   homeUrl: 'http://localhost/jeeveanalytics/client2/',
   solutionsUrl: 'https://api.jeeve.com.au/solutions',
   // apiUrl : "https://api.jeeve.com.au/analytics",

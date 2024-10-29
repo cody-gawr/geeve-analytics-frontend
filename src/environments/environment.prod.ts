@@ -5,6 +5,7 @@ export const environment = {
   // apiUrl : "http://localhost/jeeveanalytics/server/",
   // homeUrl:"http://localhost/jeeveanalytics/client2/"
   apiUrl: 'https://api.jeeve.com.au/analytics',
+  apiNodeUrl: 'https://api.jeeve.com.au/node/analytics',
   homeUrl: 'https://analytics.jeeve.com.au/',
   solutionsUrl: 'https://api.jeeve.com.au/solutions',
   stripeKey:

@@ -32,3 +32,8 @@ export const setActivatedRouteTitle = createAction(
   '[Layout Pages] Set Activated Route Title',
   props<{ title: string }>()
 );
+
+export const setHideDatePicker = createAction(
+  '[Layout Pages] Set Hide Date Picker',
+  props<{ hide: boolean }>()
+);

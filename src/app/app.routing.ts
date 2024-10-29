@@ -174,6 +174,14 @@ export const AppRoutes: Routes = [
           ),
         canActivate: [AuthGuard],
       },
+      {
+        path: 'campaigns',
+        loadChildren: () =>
+          import('../newapp/campaigns/campaigns.module').then(
+            m => m.CampaignsModule
+          ),
+        canActivate: [AuthGuard],
+      }
     ],
   },
   // {

@@ -2,6 +2,9 @@ import { createAction, props } from '@ngrx/store';
 
 export const loadClinics = createAction('[Clinic Page] Load Clinics');
 export const loadUserClinics = createAction('[Clinic Page] Load User Clinics');
+export const loadCampaigns = createAction('[Clinic Page] Load Campaigns', props<{
+  clinicId: number;
+}>());
 export const setCurrentSingleClinicId = createAction(
   '[Clinic Page] Set Current Clinic Id',
   props<{ clinicId: 'all' | number | null }>()
@@ -38,3 +41,4 @@ export const setConnectedClinicId = createAction(
     clinicId: number;
   }>()
 );
+  

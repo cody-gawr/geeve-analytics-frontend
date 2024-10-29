@@ -1,0 +1,27 @@
+.campaign-page-container{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    .campaign-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        gap: 15px;
+        .date-picker-wrapper {
+            display: flex;
+            justify-content: center;
+            .date-picker-field {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 14px;
+                height: 32px;
+                min-width: 280px;
+                background-color: #fafafa;
+                padding-left: 15px;
+                border-radius: 10px;
+            }
+        }
+    }
+}

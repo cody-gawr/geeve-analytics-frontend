@@ -22,12 +22,14 @@ import {
   selectUserClinics,
   selectUserClinicsSuccess,
   selectIsLoadingSyncStatus,
+  selectCampaigns,
   selectIsLoadingClinicAccountingPlatform,
   selectConnectedWith,
   selectIsConnectedWith,
   selectConnectedClinicId,
 } from '../state/reducers/clinic.reducer';
 import { combineLatest, map } from 'rxjs';
+import { ICampaign } from '@/newapp/models/clinic/campaign';
 
 @Injectable()
 export class ClinicFacade {
@@ -52,6 +54,10 @@ export class ClinicFacade {
   public readonly clinics$: Observable<Clinic[]> = this.store.pipe(
     select(selectClinics)
   );
+
+  public readonly campaigns$: Observable<ICampaign[]> = this.store.pipe(
+    select(selectCampaigns)
+  )
 
   public readonly userClinics$: Observable<IClinicDTO[]> = this.store.pipe(
     select(selectUserClinics)
@@ -107,6 +113,10 @@ export class ClinicFacade {
 
   public loadClinics() {
     this.store.dispatch(ClinicPageActions.loadClinics());
+  }
+
+  public loadCampaigns(clinicId: number) {
+    this.store.dispatch(ClinicPageActions.loadCampaigns({ clinicId }));
   }
 
   public loadUserClinics() {

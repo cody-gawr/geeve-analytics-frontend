@@ -6,6 +6,8 @@ import { ClinicsListApiResponse, IClinicDTO, JeeveResponse } from '../../models/
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import camelcaseKeys from 'camelcase-keys';
+import { ICampaign } from '@/newapp/models/clinic/campaign';
+import { Moment } from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +15,7 @@ import camelcaseKeys from 'camelcase-keys';
 export class ClinicService {
   private apiUrl = environment.apiUrl;
   private commonUrl = environment.commonApiUrl;
+  private apiNodeURL = environment.apiNodeUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -105,7 +108,7 @@ export class ClinicService {
         map((response: HttpResponse<Object>) => {
           return response;
         })
-    );
+      );
   }
 
   public getDentallyAuthorizeUrl(clinicId: number) {
@@ -143,6 +146,27 @@ export class ClinicService {
           return { response };
         })
       );
+  }
+
+  public getCampaigns(clinicId: number): Observable<JeeveResponse<{ campaigns: ICampaign[] }>> {
+    return this.http
+      .get<JeeveResponse<any>>(`${this.apiNodeURL}/clinics/campaigns`, {
+        params: {clinic_id: clinicId},
+        withCredentials: true,
+      }).pipe(map(res => res));
+  }
+
+  public getCampaingDetails(clinicId: number, campaignId: number, start: Moment, end: Moment): Observable<JeeveResponse<any>> {
+    return this.http
+      .get<JeeveResponse<any>>(`${this.apiNodeURL}/clinics/campaigns/data`, {
+        withCredentials: true,
+        params: {
+          clinic_id: clinicId,
+          campaign_id: campaignId,
+          start_date: start.format('YYYY-MM-DD'),
+          end_date: end.format('YYYY-MM-DD'),
+        },
+      }).pipe(map(res => res));
   }
 
   getClinicAccountingPlatform = (

@@ -108,6 +108,26 @@ export class ClinicEffects {
       })
     );
   });
+
+  public readonly loadCampaigns$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ClinicPageActions.loadCampaigns),
+      mergeMap(({ clinicId }) => {
+        return this.clinicService.getCampaigns(clinicId).pipe(
+          map(res =>
+            ClinicApiActions.loadCampaignsSuccess({
+              campaigns: res.data?.campaigns ?? [],
+              clinicId
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(ClinicApiActions.loadCampaignsFailure({ error: error.error ?? error, clinicId }))
+          )
+        );
+      })
+    );
+  });
+
   public readonly getClinicAccountingPlatform$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ClinicPageActions.loadClinicAccountingPlatform),

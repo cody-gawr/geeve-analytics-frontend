@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 
 import { Clinic, IClinicDTO } from '../../../models/clinic';
+import { ICampaign } from '@/newapp/models/clinic/campaign';
 
 // Load clinics from anaytics API
 export const loadClinicsSuccess = createAction(
@@ -55,6 +56,17 @@ export const checkPraktikaSyncSuccess = createAction(
 export const checkPraktikaSyncFailure = createAction(
   '[Clinic API] Check Praktika Sync Fail',
   props<{ clinicId: number, error: JeeveError }>()
+);
+
+// load Campaigns
+export const loadCampaignsSuccess = createAction(
+  '[Clinic API] Load Campaigns Success',
+  props<{ campaigns: ICampaign[], clinicId: number }>()
+);
+
+export const loadCampaignsFailure = createAction(
+  '[Clinic API] Load Campaigns Fail',
+  props<{ error: JeeveError, clinicId: number }>()
 );
 
 export const clinicAccountingPlatformSuccess = createAction(

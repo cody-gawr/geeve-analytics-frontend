@@ -12,6 +12,7 @@ import {
   selectTrend,
   selectCompareEnabled,
   selectIsFullSingleMonthDateRange,
+  selectHideDatePicker,
 } from '../state/reducers/layout.reducer';
 import { Moment } from 'moment';
 import { layoutPageActions } from '../state/actions';
@@ -85,4 +86,10 @@ export class LayoutFacade {
   public readonly durationTrendLabel$ = this.store.pipe(
     select(selectDurationTrendLabel)
   );
+
+  public readonly hideDatePicker$ = this.store.pipe(select(selectHideDatePicker));
+
+  public setHideDatePicker(hide: boolean) {
+    this.store.dispatch(layoutPageActions.setHideDatePicker({ hide }));
+  }
 }

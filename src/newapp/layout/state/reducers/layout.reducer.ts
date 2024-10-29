@@ -18,6 +18,7 @@ export interface LayoutState {
   average: C_AVG_MODE;
   activatedRouteTitle: string;
   compare: boolean;
+  hideDatePicker: boolean;
 }
 
 const initialState: LayoutState = {
@@ -33,6 +34,7 @@ const initialState: LayoutState = {
   average: 'off',
   compare: false,
   activatedRouteTitle: '',
+  hideDatePicker: false
 };
 
 export const layoutFeature = createFeature({
@@ -54,6 +56,12 @@ export const layoutFeature = createFeature({
         };
       }
     ),
+    on(layoutPageActions.setHideDatePicker, (state, { hide }): LayoutState => {
+      return {
+        ...state,
+        hideDatePicker: hide,
+      };
+    }),
     on(layoutPageActions.setTrend, (state, { trend }): LayoutState => {
       return {
         ...state,
@@ -94,6 +102,7 @@ export const {
   selectAverage,
   selectActivatedRouteTitle,
   selectCompare,
+  selectHideDatePicker,
 } = layoutFeature;
 
 export const selectCompareEnabled = createSelector(

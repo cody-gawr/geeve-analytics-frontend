@@ -3,6 +3,7 @@ export const environment = {
   commonApiUrl: 'http://localhost:8080/v1/common',
   baseApiUrl: 'http://localhost:8080',
   apiUrl: 'http://localhost:8080/local/analytics',
+  apiNodeUrl: 'https://localhost:8080/test/node/analytics',
   homeUrl: 'https://test-analytics.jeeve.com.au/',
   solutionsUrl: 'https://test-api.jeeve.com.au/test/solutions',
   stripeKey:

@@ -2,6 +2,7 @@ import { Clinic, IClinicDTO } from '../../../models/clinic';
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { ClinicApiActions, ClinicPageActions } from '../actions';
 import _ from 'lodash';
+import { ICampaign } from '@/newapp/models/clinic/campaign';
 
 export interface ClinicState {
   isLoadingFlags: Array<'userClinics' | 'coreSync' | string>;
@@ -11,6 +12,7 @@ export interface ClinicState {
   userClinicsSuccess: boolean;
   isLoading: boolean;
   clinics: Clinic[]; // All clinics
+  campaigns: ICampaign[];
   userClinics: IClinicDTO[]; // User clinics
   currentSingleClinicId: 'all' | number | null; // For signle selection
   currentMultiClinicIds: number[];
@@ -32,6 +34,7 @@ const initialState: ClinicState = {
   currentSingleClinicId: null,
   currentMultiClinicIds: [],
   clinics: [],
+  campaigns: [],
   userClinics: [],
   error: null,
   hasPrimeClinics: 'no',
@@ -302,6 +305,43 @@ export const clinicFeature = createFeature({
       }
     ),
     on(
+      ClinicPageActions.loadCampaigns,
+      (state, { clinicId }): ClinicState => {
+        return {
+          ...state,
+          errors: _.filter(state.errors, n => n.api != `campaign${clinicId}`),
+          isLoadingFlags: _.union(state.isLoadingFlags, [`campaign${clinicId}`]),
+        }
+      }
+    ),
+    on(
+      ClinicApiActions.loadCampaignsSuccess,
+      (state, { campaigns, clinicId }): ClinicState => {
+        return {
+          ...state,
+          campaigns,
+          errors: _.filter(state.errors, n => n.api != `campaign${clinicId}`),
+          isLoadingFlags: _.filter(
+            state.isLoadingFlags,
+            n => n != `campaign${clinicId}`
+          ),
+        }
+      }
+    ),
+    on(
+      ClinicApiActions.loadCampaignsFailure,
+      (state, { error, clinicId }): ClinicState => {
+        return {
+          ...state,
+          errors: [...state.errors, { ...error, api: `campaign${clinicId}` }],
+          isLoadingFlags: _.filter(
+            state.isLoadingFlags,
+            n => n != `campaign${clinicId}`
+          ),
+        }
+      }
+    ),
+    on(
       ClinicPageActions.loadClinicAccountingPlatform,
       (state, {}): ClinicState => {
         const { isLoadingData, errors } = state;
@@ -365,6 +405,7 @@ export const {
   selectIsLoading,
   selectIsLoadingFlags,
   selectClinics,
+  selectCampaigns,
   selectUserClinics,
   selectCurrentSingleClinicId,
   selectCurrentMultiClinicIds,

@@ -3,6 +3,7 @@ export const environment = {
   commonApiUrl: 'https://pilot-api.jeeve.com.au/pilot/v1/common',
   baseApiUrl: 'https://pilot-api.jeeve.com.au/pilot',
   apiUrl: 'https://pilot-api.jeeve.com.au/pilot/analytics',
+  apiNodeUrl: 'https://pilot-api.jeeve.com.au/pilot/node/analytics',
   homeUrl: 'https://pilot-analytics.jeeve.com.au/',
   solutionsUrl: 'https://pilot-api.jeeve.com.au/pilot/solutions',
   stripeKey:
