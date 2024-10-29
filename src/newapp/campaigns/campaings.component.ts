@@ -24,7 +24,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
-    displayedColumns: string[] = ['select', 'patient_id', 'patient_name', 'mobile', 'initial_tx_id', 'initial_tx_date'];
+    displayedColumns: string[] = ['select', 'patient_name', 'mobile', 'initial_tx_id', 'initial_tx_date'];
     dataSource = new MatTableDataSource<CampaignData>([]);
     selection = new SelectionModel<CampaignData>(true, []);
 
@@ -50,7 +50,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         if (!row) {
         return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
         }
-        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.patient_id + 1}`;
+        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
     }
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -111,7 +111,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
             this.range.controls['start'].value,
             this.range.controls['end'].value
         ).subscribe((res) => {
-            this.dataSource.data = res.data;
+            this.dataSource.data = res.data.map((data, index) => ({...data, position: index + 1}));
         });
     }
 }

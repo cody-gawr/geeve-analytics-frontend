@@ -28,7 +28,7 @@
                 [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
-        <button type="submit" mat-raised-button color="primary">Search</button>
+        <button [disabled]="this.range.invalid" type="submit" mat-raised-button color="primary">Search</button>
     </form>
     <div>
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -52,37 +52,29 @@
               </mat-checkbox>
             </td>
           </ng-container>
-            <!-- Position Column -->
-            <ng-container matColumnDef="patient_id">
-              <th mat-header-cell *matHeaderCellDef> Patient ID. </th>
-              <td mat-cell *matCellDef="let element"> {{element.patient_id}} </td>
-            </ng-container>
-          
-            <!-- Name Column -->
             <ng-container matColumnDef="patient_name">
               <th mat-header-cell *matHeaderCellDef> Patient Name </th>
               <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
             </ng-container>
-          
-            <!-- Weight Column -->
-            <ng-container matColumnDef="mobile">
+            <ng-container matColumnDef="initial_tx_date">
+              <th mat-header-cell *matHeaderCellDef> Treatment Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.initial_tx_date}} </td>
+            </ng-container>
+            <ng-container matColumnDef="initial_tx_id">
+              <th mat-header-cell *matHeaderCellDef> Treatment Performed </th>
+              <td mat-cell *matCellDef="let element"> {{element.initial_tx_id}} </td>
+            </ng-container>
+
+             <ng-container matColumnDef="mobile">
               <th mat-header-cell *matHeaderCellDef> Mobile </th>
               <td mat-cell *matCellDef="let element"> {{element.mobile}} </td>
             </ng-container>
           
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="initial_tx_id">
-              <th mat-header-cell *matHeaderCellDef> Initial Tx ID </th>
-              <td mat-cell *matCellDef="let element"> {{element.initial_tx_id}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="initial_tx_date">
-              <th mat-header-cell *matHeaderCellDef> Initial Tx Date </th>
-              <td mat-cell *matCellDef="let element"> {{element.initial_tx_date}} </td>
-            </ng-container>
-          
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="5">Please select a campaign and dates.</td>
+            </tr>
           </table>
           <mat-paginator [pageSizeOptions]="[15, 50, 100]"
                  showFirstLastButtons

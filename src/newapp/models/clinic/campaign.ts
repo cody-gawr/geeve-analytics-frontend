@@ -14,4 +14,5 @@ export interface CampaignData {
     mobile: string;
     patient_id: number;
     patient_name: string;
+    position?: number;
   }
