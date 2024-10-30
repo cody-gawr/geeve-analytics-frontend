@@ -24,7 +24,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
-    displayedColumns: string[] = ['select', 'patient_name', 'mobile', 'initial_tx_id', 'initial_tx_date'];
+    displayedColumns: string[] = ['select', 'patient_name', 'initial_tx_date', 'initial_tx_id', 'mobile'];
     dataSource = new MatTableDataSource<CampaignData>([]);
     selection = new SelectionModel<CampaignData>(true, []);
 
