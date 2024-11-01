@@ -175,6 +175,10 @@ span.charLimit {
 .mh-align span {
   padding: 0 10px;
 }
+
+.mh-align .mat-slide-toggle span {
+  padding: 0 1px !important;
+}
 .mh-error-align {
   float: left;
   width: 100%;

@@ -473,6 +473,7 @@ export class ClinicSettingsService {
         connectedwith: '',
         consultant: '',
         max_chart_bars: 20,
+        util_rate_include_inactive_calendar: 0
       },
     },
     status: 0,

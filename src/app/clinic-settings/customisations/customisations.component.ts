@@ -182,6 +182,7 @@ export class CustomisationsComponent
       max_chart_bars: this.visibleMaxBarSetting
         ? null
         : [null, Validators.compose([Validators.required])],
+      util_rate_include_inactive_calendar: false
     });
   }
 
@@ -349,6 +350,8 @@ export class CustomisationsComponent
               res.body.data.disc_code_3 ?? ''
             );
 
+            this.form.controls['util_rate_include_inactive_calendar'].setValue(!!res.body.data.util_rate_include_inactive_calendar);
+
             this.labCode1 = res.body.data.lab_code1;
             this.labCode2 = res.body.data.lab_code2;
             this.xrayMonths = res.body.data.xray_months;
@@ -420,6 +423,7 @@ export class CustomisationsComponent
       lab_code1: this.form.value.lab_code1,
       lab_code2: this.form.value.lab_code2,
       max_chart_bars: this.form.value.max_chart_bars,
+      util_rate_include_inactive_calendar: this.form.value.util_rate_include_inactive_calendar
     };
 
     this.customisationsService.updateCustomiseSettings(data).subscribe(

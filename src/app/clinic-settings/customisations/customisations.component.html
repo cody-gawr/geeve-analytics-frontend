@@ -654,7 +654,26 @@
               fxFlex.md="calc(32% - 10px)"
               fxFlex.sm="calc(32% - 10px)"
               fxFlex.xs="30">
-              <div class="sa-form-group sa-group"></div>
+              <div class="sa-form-group mh-align">
+                <label _ngcontent-gxr-c371=""
+                  >Utilisation Rate
+                  <div class="info-button">
+                    <div class="info-icon-container">
+                      <img
+                        [tooltip]="this.constants.statusCode"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
+                        class="info-icon" />
+                    </div></div
+                ></label>
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  style="width: 100% !important"
+                  [formControl]="form.controls['util_rate_include_inactive_calendar']">
+                  <span>Include Inactive Calendar</span>
+                </mat-slide-toggle>
+              </div>
             </div>
             <div
               fxFlex="calc(32% - 10px)"
