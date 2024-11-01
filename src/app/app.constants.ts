@@ -341,6 +341,11 @@ export class AppConstants {
     info: ' Enabling this toggle will show the Status Codes associated with each appointment in your Morning Huddle',
     direction: 'right',
   };
+  public utilRate: ITooltipData = {
+    title: 'Include Inactive Calendar',
+    info: ' Enabling this toggle will include all the calendars including inactive calendars when calculating utilisation rate.',
+    direction: 'right',
+  };
   public statusColours: ITooltipData = {
     title: 'Set Status Colours',
     info: 'Set Status Colours',

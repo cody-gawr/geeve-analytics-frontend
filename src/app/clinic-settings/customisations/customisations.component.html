@@ -654,13 +654,13 @@
               fxFlex.md="calc(32% - 10px)"
               fxFlex.sm="calc(32% - 10px)"
               fxFlex.xs="30">
-              <div class="sa-form-group mh-align">
+              <div class="sa-form-group mh-align" *ngIf="isPmsD4W$ | async">
                 <label _ngcontent-gxr-c371=""
                   >Utilisation Rate
                   <div class="info-button">
                     <div class="info-icon-container">
                       <img
-                        [tooltip]="this.constants.statusCode"
+                        [tooltip]="this.constants.utilRate"
                         src="../assets/images/info-icon.png"
                         alt="info-icon"
                         class="info-icon" />
