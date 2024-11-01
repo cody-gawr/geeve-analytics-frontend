@@ -66,6 +66,7 @@ export class CustomisationsService {
     formData.append('lab_code1', data.lab_code1);
     formData.append('lab_code2', data.lab_code2);
     formData.append('max_chart_bars', data.max_chart_bars);
+    formData.append('util_rate_include_inactive_calendar', data.util_rate_include_inactive_calendar);
 
     return this.http
       .post(this.apiUrl + '/clinics/clinicSettingsSave', formData, header)
