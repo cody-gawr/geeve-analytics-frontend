@@ -513,7 +513,7 @@ export class ClinicSettingsService {
     var header = this.getHeaders();
     return this.http
       .get(
-        this.apiUrl + '/reviews/getSocialLinks?clinic_id=' + clinic_id,
+        environment.commonApiUrl + '/sms/getSocialLinks?clinic_id=' + clinic_id,
         header
       )
       .pipe(
@@ -530,7 +530,7 @@ export class ClinicSettingsService {
     const header = this.getHeaders();
     return this.http
       .post(
-        this.apiUrl + '/reviews/settings',
+        environment.commonApiUrl + '/sms/settings',
         {
           clinic_id,
           sms_enabled,
@@ -549,7 +549,7 @@ export class ClinicSettingsService {
     var header = this.getHeaders();
     return this.http
       .get(
-        this.apiUrl + '/reviews/getGoogleAuthUrl?clinic_id=' + clinic_id,
+        environment.commonApiUrl + '/sms/getGoogleAuthUrl?clinic_id=' + clinic_id,
         header
       )
       .pipe(
@@ -567,7 +567,7 @@ export class ClinicSettingsService {
     var header = this.getHeaders();
     return this.http
       .post(
-        this.apiUrl + '/reviews/updateSocialLinks',
+        environment.commonApiUrl + '/sms/updateSocialLinks',
         {
           clinic_id,
           facebook_id: facebookId,
@@ -588,8 +588,8 @@ export class ClinicSettingsService {
     var header = this.getHeaders();
     return this.http
       .get(
-        this.apiUrl +
-          '/reviews/getReviewMsgTemplateList' +
+        environment.commonApiUrl +
+          '/sms/getReviewMsgTemplateList' +
           (clinic_id ? '?clinic_id=' + clinic_id : ''),
         header
       )
@@ -608,7 +608,7 @@ export class ClinicSettingsService {
     var header = this.getHeaders();
     return this.http
       .post(
-        this.apiUrl + '/reviews/addReviewMsgTemplate',
+        environment.commonApiUrl + '/sms/addReviewMsgTemplate',
         {
           clinic_id,
           name: name,
@@ -632,7 +632,7 @@ export class ClinicSettingsService {
     var header = this.getHeaders();
     return this.http
       .post(
-        this.apiUrl + '/reviews/updateReviewMsgTemplate',
+        environment.commonApiUrl + '/sms/updateReviewMsgTemplate',
         { id, clinic_id, name: name, msg_template: msgTemplate },
         header
       )
@@ -647,7 +647,7 @@ export class ClinicSettingsService {
     var header = this.getHeaders();
     return this.http
       .post(
-        this.apiUrl + '/reviews/removeReviewMsgTemplate',
+        environment.commonApiUrl + '/sms/removeReviewMsgTemplate',
         { id, clinic_id },
         header
       )
@@ -669,7 +669,7 @@ export class ClinicSettingsService {
     const header = this.getHeaders();
     return this.http
       .get(
-        this.apiUrl + '/reviews/getCreditData?clinic_id=' + clinic_id,
+        environment.commonApiUrl + '/sms/getCreditData?clinic_id=' + clinic_id,
         header
       )
       .pipe(

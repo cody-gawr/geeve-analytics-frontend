@@ -1105,7 +1105,7 @@ export class MorningHuddleService {
     const header = this.getHeaders();
     return this.http
       .post(
-        this.apiUrl + '/reviews/createPaymentIntent',
+        environment.commonApiUrl + '/sms/createPaymentIntent',
         {
           amount: creditAmount,
           clinic_id,
@@ -1139,7 +1139,7 @@ export class MorningHuddleService {
     const header = this.getHeaders();
     return this.http
       .post(
-        this.apiUrl + '/reviews/updateCreditStatus',
+        environment.commonApiUrl + '/sms/updateCreditStatus',
         {
           clinic_id: clinic_id,
           appts: appt_ids,
@@ -1164,7 +1164,7 @@ export class MorningHuddleService {
     const header = this.getHeaders();
     return this.http
       .post(
-        this.apiUrl + '/reviews/sendReviewMsg',
+        environment.commonApiUrl + '/sms/sendReviewMsg',
         {
           clinic_id,
           patient_id,
