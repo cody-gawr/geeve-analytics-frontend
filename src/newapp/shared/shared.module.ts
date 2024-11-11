@@ -17,6 +17,7 @@ import {
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AverageModeToggleComponent } from './components/average-mode-toggle/average-mode-toggle.component';
 import { CompareModeToggleComponent } from './components/compare-mode-toggle/compare-mode-toggle.component';
+import { DragDropButtonComponent } from './components/drag-drop-button/drag-drop-button.component';
 
 const modules = [
   AngularMaterialModule,
@@ -34,6 +35,7 @@ const components = [
   AverageModeToggleComponent,
   CompareModeToggleComponent,
   SpinLoaderComponent,
+  DragDropButtonComponent
 ];
 
 @NgModule({

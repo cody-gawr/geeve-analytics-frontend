@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid whitesmoke;
+    width: 110px;
+    height: 125px;
+    border-radius: 10px;
+    padding: 5px 0;
+    cursor: grab;
+    background-color: white;
+    .box {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+    span {
+        text-align: center;
+    }
+
+}
+
+.border-c {
+    border-color: aquamarine;
+}

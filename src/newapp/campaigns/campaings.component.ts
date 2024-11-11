@@ -13,6 +13,8 @@ import { CampaignData } from "../models/clinic/campaign";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { SelectionModel } from "@angular/cdk/collections";
+import { MatDialog } from "@angular/material/dialog";
+import { CreateCampaignDialog } from "./create-campaign-dialog/create-campaign-dialog.component";
 
   
 @Component({
@@ -56,7 +58,8 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     constructor(
         private clinicFacade: ClinicFacade,
-        private clinicService: ClinicService
+        private clinicService: ClinicService,
+        public dialog: MatDialog
     ) {
         clinicFacade.currentSingleClinicId$.pipe(
             takeUntil(this.destroy$),
@@ -112,6 +115,14 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
             this.range.controls['end'].value
         ).subscribe((res) => {
             this.dataSource.data = res.data.map((data, index) => ({...data, position: index + 1}));
+        });
+    }
+
+    openCreateCampaignDialog() {
+        const dialogRef = this.dialog.open(CreateCampaignDialog);
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`Create Campaign Dialog result: ${result}`);
         });
     }
 }

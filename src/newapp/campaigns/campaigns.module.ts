@@ -4,8 +4,8 @@ import { SharedModule } from '../shared/shared.module';
 import { CampaignsComponent } from './campaings.component';
 import { CampaignsRoutingModule } from './campaigns.routing.module';
 import { AppLayoutModule } from '../layout/app-layout.module';
-
-const services = [];
+import { CreateCampaignDialog } from './create-campaign-dialog/create-campaign-dialog.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -13,8 +13,8 @@ const services = [];
     SharedModule,
     AppLayoutModule,
     CampaignsRoutingModule,
+    DragDropModule
   ],
-  declarations: [CampaignsComponent],
-//   providers: [...services],
+  declarations: [CampaignsComponent, CreateCampaignDialog],
 })
 export class CampaignsModule {}
