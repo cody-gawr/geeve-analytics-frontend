@@ -1,5 +1,8 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface CampaignElement {
     patientName: string;
@@ -10,54 +13,43 @@ export interface CampaignElement {
     nextProvider: string;
   }
   
-  const ELEMENT_DATA: CampaignElement[] = [
-    {
-        patientName: 'test',
-        previousCampaigns: 'test',
-        lastAppointment: 'test',
-        lastProvider: 'test',
-        nextAppointment: 'test',
-        nextProvider: 'test'
-    },
-    {
-        patientName: 'test',
-        previousCampaigns: 'test',
-        lastAppointment: 'test',
-        lastProvider: 'test',
-        nextAppointment: 'test',
-        nextProvider: 'test'
-    },
-    {
-        patientName: 'test',
-        previousCampaigns: 'test',
-        lastAppointment: 'test',
-        lastProvider: 'test',
-        nextAppointment: 'test',
-        nextProvider: 'test'
-    },
-    {
-        patientName: 'test',
-        previousCampaigns: 'test',
-        lastAppointment: 'test',
-        lastProvider: 'test',
-        nextAppointment: 'test',
-        nextProvider: 'test'
-    }
-  ];
-
 @Component({
-  selector: 'create-campaign-dialog',
-  templateUrl: 'create-campaign-dialog.component.html',
-  styleUrls: ['create-campaign-dialog.component.scss'],
+  selector: 'create-campaign',
+  templateUrl: 'create-campaign.component.html',
+  styleUrls: ['create-campaign.component.scss'],
   
 })
-export class CreateCampaignDialog {
+export class CreateCampaignComponent implements AfterViewInit {
+
+    constructor(){
+        const data = [];
+        for(let i = 0; i < 200; i++){
+            data.push(    {
+                patientName: 'test',
+                previousCampaigns: 'test',
+                lastAppointment: 'test',
+                lastProvider: 'test',
+                nextAppointment: 'test',
+                nextProvider: 'test'
+            });
+        }
+        this.dataSource = new MatTableDataSource(data);
+    }
+
+    ngAfterViewInit() {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
+
     displayedColumns: string[] = [
         'patientName', 'previousCampaigns', 
         'lastAppointment', 'lastProvider', 
         'nextAppointment', 'nextProvider'
     ];
-    dataSource = ELEMENT_DATA;
+    dataSource: MatTableDataSource<CampaignElement>;
 
     todo = [
         {
@@ -85,6 +77,7 @@ export class CreateCampaignDialog {
     done = [];
   
     drop(event: CdkDragDrop<string[]>) {
+        console.log(event)
         if (event.previousContainer === event.container) {
           moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {

@@ -4,7 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CampaignsComponent } from './campaings.component';
 import { CampaignsRoutingModule } from './campaigns.routing.module';
 import { AppLayoutModule } from '../layout/app-layout.module';
-import { CreateCampaignDialog } from './create-campaign-dialog/create-campaign-dialog.component';
+import { CreateCampaignComponent } from './create-campaign/create-campaign.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
@@ -15,6 +15,6 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     CampaignsRoutingModule,
     DragDropModule
   ],
-  declarations: [CampaignsComponent, CreateCampaignDialog],
+  declarations: [CampaignsComponent, CreateCampaignComponent],
 })
 export class CampaignsModule {}

@@ -1,6 +1,5 @@
-<h2 mat-dialog-title>Create Campaign</h2>
-<mat-dialog-content>
-  <div class="container">
+
+<div class="container">
     <div class="header">
         <button mat-stroked-button [matMenuTriggerFor]="menu">
             <span>Start Campaign</span><mat-icon>more_vert</mat-icon>
@@ -22,17 +21,18 @@
     </div>
     <div class="body">
         <div class="side">
+            <h3>Filter Campaign By</h3>
             <div cdkDropList 
             #todoList="cdkDropList"
             [cdkDropListData]="todo"
             [cdkDropListConnectedTo]="[doneList]"
             (cdkDropListDropped)="drop($event)" 
-            cdkDropListOrientation="horizontal"
             class="drag-container">
                 <drag-drop-button class="drag-item" *ngFor="let item of todo" cdkDrag [iconName]="item.iconName" [title]="item.title" [enableClickable]="false"></drag-drop-button>
             </div>
         </div>
         <div class="content">
+            <h3>Applied Filters</h3>
             <div cdkDropList 
             #doneList="cdkDropList"
             [cdkDropListData]="done"
@@ -42,7 +42,7 @@
             class="drop-container">
                 <drag-drop-button class="drag-item" *ngFor="let item of done" cdkDrag [iconName]="item.iconName" [title]="item.title" [enableClickable]="true"></drag-drop-button>
             </div>
-
+            <h3>Campaign Members</h3>
             <div class="table">
                 <table mat-table [dataSource]="dataSource">
 
@@ -83,8 +83,8 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
+                <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" aria-label="Select page of patients"></mat-paginator>
             </div>
         </div>
     </div>
-  </div>
-</mat-dialog-content>
+</div>
