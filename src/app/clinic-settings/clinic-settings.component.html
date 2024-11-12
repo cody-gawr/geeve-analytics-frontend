@@ -858,7 +858,7 @@
             <mat-icon>double_arrow</mat-icon>
           </button>
         </div>
-        <div fxLayout="row" fxLayoutGap="20" style="margin: 30px 0px">
+        <!-- <div fxLayout="row" fxLayoutGap="20" style="margin: 30px 0px">
           <div fxLayout="column" fxLayoutAlign="center">
             <span
               >Review Credits:
@@ -874,7 +874,7 @@
             class="add-credits-btn">
             Add credits
           </button>
-        </div>
+        </div> -->
         <div>
           <h4 style="margin-bottom: 0px">Review Message Templates</h4>
           <div style="display: flex; justify-content: flex-end">
@@ -923,6 +923,32 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-expansion-panel>
+  <mat-expansion-panel *ngIf="isSMSEnabled">
+    <mat-expansion-panel-header>
+      <mat-panel-title> Credits </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <form class="sa_forms_design">
+        <div fxLayout="row" fxLayoutGap="20" style="margin: 30px 0px">
+          <div fxLayout="column" fxLayoutAlign="center">
+            <span
+              >Available Credits:
+              <strong style="color: #18a689">{{ remainCredits }}</strong></span
+            >
+          </div>
+
+          <button
+            mat-raised-button
+            color="dc"
+            type="button"
+            (click)="openTopUpCredits()"
+            class="add-credits-btn">
+            Add credits
+          </button>
         </div>
       </form>
     </mat-card-content>
