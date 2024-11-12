@@ -523,9 +523,9 @@
               fxLayoutGap.sm="0px"
               fxLayoutGap.xs="0">
               <div
-                fxFlex="calc(32% - 10px)"
-                fxFlex.md="calc(32% - 10px)"
-                fxFlex.sm="calc(32% - 10px)"
+                fxFlex="calc(24% - 10px)"
+                fxFlex.md="calc(24% - 10px)"
+                fxFlex.sm="calc(24% - 10px)"
                 fxFlex.xs="30">
                 <div class="sa-form-group sa-group">
                   <label
@@ -551,9 +551,9 @@
               </div>
               <div
                 *ngIf="apiUrl.includes('test')"
-                fxFlex="calc(32% - 10px)"
-                fxFlex.md="calc(32% - 10px)"
-                fxFlex.sm="calc(32% - 10px)"
+                fxFlex="calc(24% - 10px)"
+                fxFlex.md="calc(24% - 10px)"
+                fxFlex.sm="calc(24% - 10px)"
                 fxFlex.xs="30">
                 <div class="sa-form-group sa-group">
                   <label
@@ -578,9 +578,9 @@
                 </div>
               </div>
               <div
-                fxFlex="calc(32% - 10px)"
-                fxFlex.md="calc(32% - 10px)"
-                fxFlex.sm="calc(32% - 10px)"
+                fxFlex="calc(24% - 10px)"
+                fxFlex.md="calc(24% - 10px)"
+                fxFlex.sm="calc(24% - 10px)"
                 fxFlex.xs="30">
                 <div class="sa-form-group sa-group">
                   <label
@@ -604,10 +604,36 @@
                   </select>
                 </div>
               </div>
+              <div
+              fxFlex="calc(24% - 10px)"
+              fxFlex.md="calc(24% - 10px)"
+              fxFlex.sm="calc(24% - 10px)"
+              fxFlex.xs="30">
+              <div class="sa-form-group mh-align" *ngIf="isPmsD4W$ | async">
+                <label _ngcontent-gxr-c371=""
+                  >Utilisation Rate
+                  <div class="info-button">
+                    <div class="info-icon-container">
+                      <img
+                        [tooltip]="this.constants.utilRate"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
+                        class="info-icon" />
+                    </div></div
+                ></label>
+                <mat-slide-toggle
+                  fxFlex.md="30"
+                  fxFlex.xs="100"
+                  style="width: 100% !important"
+                  [formControl]="form.controls['util_rate_include_inactive_calendar']">
+                  <span>Include Inactive Calendar</span>
+                </mat-slide-toggle>
+              </div>
+            </div>
             </div>
           </ng-template>
           <div
-            *ngIf="visibleMaxBarSetting"
+            *ngIf="visibleMaxBarSetting && apiUrl.includes('test')"
             class="clinic-setting-form"
             fxLayout="row wrap"
             fxLayoutGap="20px"
@@ -649,32 +675,7 @@
                 </select>
               </div>
             </div>
-            <div
-              fxFlex="calc(32% - 10px)"
-              fxFlex.md="calc(32% - 10px)"
-              fxFlex.sm="calc(32% - 10px)"
-              fxFlex.xs="30">
-              <div class="sa-form-group mh-align" *ngIf="isPmsD4W$ | async">
-                <label _ngcontent-gxr-c371=""
-                  >Utilisation Rate
-                  <div class="info-button">
-                    <div class="info-icon-container">
-                      <img
-                        [tooltip]="this.constants.utilRate"
-                        src="../assets/images/info-icon.png"
-                        alt="info-icon"
-                        class="info-icon" />
-                    </div></div
-                ></label>
-                <mat-slide-toggle
-                  fxFlex.md="30"
-                  fxFlex.xs="100"
-                  style="width: 100% !important"
-                  [formControl]="form.controls['util_rate_include_inactive_calendar']">
-                  <span>Include Inactive Calendar</span>
-                </mat-slide-toggle>
-              </div>
-            </div>
+
             <div
               fxFlex="calc(32% - 10px)"
               fxFlex.md="calc(32% - 10px)"
