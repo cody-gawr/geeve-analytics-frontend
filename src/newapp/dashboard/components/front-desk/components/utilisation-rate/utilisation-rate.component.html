@@ -86,7 +86,9 @@
                     !(isTrend$ | async)
                   "
                   type="bar"
-                  [options]="chartOptions$ | async">
+                  [options]="chartOptions$ | async"
+                  [plugins]="chatPlugins"
+                  >
                 </canvas>
                 <ng-template #chartElem03>
                   <spin-loader class="empty-placeholder" [disableSpin]="true">

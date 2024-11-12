@@ -194,6 +194,34 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
     );
   }
 
+  public chatPlugins = [
+    {
+      afterDraw: (chart) => {
+        const ctx = chart.ctx;
+        const xAxis = chart.scales['x'];
+        const yAxis = chart.scales['y'];
+        const tooltip = chart.tooltip;
+        chart.canvas.addEventListener('mousemove', (event) => {
+          const mouseX = event.offsetX;
+          const mouseY = event.offsetY;
+          
+          if(tooltip) {
+            xAxis.ticks.forEach((tick, index) => {
+              const x = xAxis.getPixelForTick(index);
+              const y = yAxis.bottom;
+              //&& (!tooltip?.dataPoints || (tooltip?.dataPoints?.length > 0 && tooltip?.dataPoints[0]?.raw > 0))
+              if (mouseX >= x - 10 && mouseX <= x + 10 && mouseY >= y - 50 && mouseY <= y + 50) {
+                tooltip.setActiveElements([{ datasetIndex: 0, index }], { x, y });
+                tooltip.update();
+              }
+            });
+          }
+
+        });
+      },
+    }
+  ]
+
   public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
     display: true,
     position: 'bottom',
@@ -292,6 +320,7 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
           },
         },
         stacked: true,
+        
       },
       y: {
         min: 0,
