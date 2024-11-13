@@ -6,16 +6,8 @@
         </button>
         <mat-menu #menu="matMenu">
             <button mat-menu-item>
-                <mat-icon>dialpad</mat-icon>
-                <span>Redial</span>
-            </button>
-            <button mat-menu-item disabled>
-                <mat-icon>voicemail</mat-icon>
-                <span>Check voice mail</span>
-            </button>
-            <button mat-menu-item>
-                <mat-icon>notifications_off</mat-icon>
-                <span>Disable alerts</span>
+                <mat-icon>draft</mat-icon>
+                <span>Save draft</span>
             </button>
         </mat-menu>
     </div>
@@ -57,7 +49,15 @@
     
                         <ng-container matColumnDef="previousCampaigns">
                             <th mat-header-cell *matHeaderCellDef> Previous Campaigns </th>
-                            <td mat-cell *matCellDef="let element"> {{element.previousCampaigns}} </td>
+                            <td mat-cell *matCellDef="let element"> 
+                                <mat-chip-listbox aria-label="Fish selection">
+                                    <mat-chip-option>One Campaign</mat-chip-option>
+                                    <mat-chip-option>Two Campaign</mat-chip-option>
+                                    <mat-chip-option>
+                                        <mat-icon style="margin-top:5px">more_horiz</mat-icon>
+                                    </mat-chip-option>
+                                  </mat-chip-listbox>
+                            </td>
                         </ng-container>
     
                         <ng-container matColumnDef="lastAppointment">
