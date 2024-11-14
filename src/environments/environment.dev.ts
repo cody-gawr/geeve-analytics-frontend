@@ -8,5 +8,6 @@ export const environment = {
   solutionsUrl: 'https://test-api.jeeve.com.au/test/solutions',
   stripeKey:
     'pk_test_51IwzWzDUubFKxLHp1i9fEqN0jFQTWPYOslUFJ2k84twcLejkiE4nnyq5HgsHqNlez8pGy9ZvKPR9AjO2vZ1th9JY00Kv8FlSSy',
+    payUrl: 'https://test-pay.jeeve.com.au',
 };
 //

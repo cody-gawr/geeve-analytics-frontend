@@ -1,5 +1,18 @@
 <div class="sidebar-wrapper">
   <div class="sidebar-logo__wrapper">
+    <button *ngIf="products.includes('jeeve_pay')" mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>apps</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <!-- <button *ngIf="products.includes('jeeve_analytics')" mat-menu-item (click)="window.location.href='https://test-analytics.jeeve.com'">
+        <mat-icon>monitoring</mat-icon>
+        <span>Jeeve Analytics</span>
+      </button> -->
+      <button mat-menu-item (click)="goToPay()">
+        <mat-icon>paid</mat-icon>
+        <span>Jeeve Pay</span>
+      </button>
+    </mat-menu>
     <a><img alt="homepage" class="" src="assets/layout/images/logo.png" /></a>
   </div>
   <div class="user-wrapper">

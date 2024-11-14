@@ -3,6 +3,19 @@
 <!-- ============================================================== -->
 <mat-nav-list appAccordion>
   <div class="sa_sidebar_logo_main fixed-top-sidebar-logo">
+    <button *ngIf="products.includes('jeeve_pay')" style="color: darkolivegreen;" mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>apps</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <!-- <button mat-menu-item>
+        <mat-icon>monitoring</mat-icon>
+        <span>Jeeve Analytics</span>
+      </button> -->
+      <button mat-menu-item (click)="goToPay()">
+        <mat-icon>paid</mat-icon>
+        <span>Jeeve Pay</span>
+      </button>
+    </mat-menu>
     <div class="sa_sidebar_logo">
       <img src="assets/images/home/logo.png" alt="homepage" class="" />
     </div>

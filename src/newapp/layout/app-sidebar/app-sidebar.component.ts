@@ -4,6 +4,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { filter, Subject, takeUntil, map } from 'rxjs';
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { environment } from '@/environments/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,13 +15,21 @@ import { filter, Subject, takeUntil, map } from 'rxjs';
 export class AppSidebarComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-
+  isOpen = false;
+  products = [];
   constructor(
     private authFacade: AuthFacade,
     private router: Router,
     private toastr: ToastrService,
-    private localStorage: LocalStorageService
-  ) {}
+    private localStorage: LocalStorageService,
+    private clinicService: ClinicFacade
+  ) {
+    this.clinicService.currentClinics$.subscribe(clinics => {
+      if(clinics.length > 0) {
+        this.products = clinics[0].clinicProducts?.map(product => product.uniqueCode);
+      }
+    });
+  }
 
   get authUserName$() {
     return this.authFacade.authUserData$.pipe(
@@ -50,4 +60,8 @@ export class AppSidebarComponent implements OnInit, OnDestroy {
   logout = () => {
     this.authFacade.logout();
   };
+
+  goToPay() {
+    window.location.href=environment.payUrl;
+  }
 }

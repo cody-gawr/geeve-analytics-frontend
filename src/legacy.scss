@@ -549,6 +549,9 @@
 }
 
 .fixed-top-sidebar-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: sticky;
   top: 0;
   width: 103%;

@@ -141,6 +141,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   public clinic_id;
   public hasPrimeClinics;
   public userId: number;
+  public products = [];
 
   clickEvent(val) {
     this.status = !this.status;
@@ -198,7 +199,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     public constants: AppConstants,
     private clinicFacade: ClinicFacade,
     private layoutFacde: LayoutFacade,
-    private chartService: ChartService
+    private chartService: ChartService,
   ) {
     // this.router.events.subscribe((event: Event) => {
     //   if (event instanceof NavigationEnd && event.url != '/login') {
@@ -266,6 +267,12 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    this.clinicFacade.currentClinics$.subscribe(clinics => {
+      if(clinics.length > 0) {
+        this.products = clinics[0].clinicProducts?.map(product => product.uniqueCode);
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -373,5 +380,9 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {});
+  }
+
+  goToPay() {
+    window.location.href=environment.payUrl;
   }
 }

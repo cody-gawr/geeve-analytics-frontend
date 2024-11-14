@@ -45,6 +45,11 @@ export interface Clinic {
   utility_ver: string;
   whName: string;
   whServer: string;
+  clinicProducts: Array<{
+    id: number;
+    name: string;
+    uniqueCode: string;
+  }>;
 }
 
 export interface ClinicRow extends Clinic {
