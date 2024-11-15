@@ -275,31 +275,30 @@ export class LoginComponent implements OnInit {
         );
         if (permision != '' && user_type != '2' && user_type != '7') {
           if (permision.indexOf('healthscreen') >= 0) {
-            this.goTo('/dashboards/healthscreen');
+            return this.goTo('/dashboards/healthscreen');
           } else if (permision.indexOf('dashboard1') >= 0) {
-            this.goTo('/newapp/dashboard/cliniciananalysis');
+            return this.goTo('/newapp/dashboard/cliniciananalysis');
           } else if (permision.indexOf('dashboard2') >= 0) {
-            this.goTo('/dashboards/clinicianproceedures');
+            return this.goTo('/dashboards/clinicianproceedures');
           } else if (permision.indexOf('dashboard3') >= 0) {
-            this.goTo('/dashboards/frontdesk');
+            return this.goTo('/dashboards/frontdesk');
           } else if (permision.indexOf('dashboard4') >= 0) {
-            this.goTo('/dashboards/marketing');
+            return this.goTo('/dashboards/marketing');
           } else if (permision.indexOf('dashboard5') >= 0) {
-            this.goTo('/dashboards/finances');
+            return this.goTo('/dashboards/finances');
           } else if (permision.indexOf('morninghuddle') >= 0) {
-            this.goTo('/morning-huddle');
+            return this.goTo('/morning-huddle');
           } else if (permision.indexOf('lostopportunity') >= 0) {
-            this.goTo('/lost-opportunity');
+            return this.goTo('/lost-opportunity');
           } else {
-            this.goTo('/profile-settings');
+            return this.goTo('/profile-settings');
           }
-        } else if (user_type == '2' || user_type == '7') {
-          this.goTo('/dashboards/healthscreen');
+      } else if (user_type == '2' || user_type == '7') {
+          return this.goTo('/dashboards/healthscreen');
         } else {
-          this.goTo('/profile-settings');
+          return this.goTo('/profile-settings');
         }
-
-        this.showLoginForm();
+        // this.showLoginForm();
       },
       error: err => {
         this.showLoginForm();

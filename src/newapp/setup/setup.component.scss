@@ -76,7 +76,7 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
-        @include respond-to('mid-desktop') {
+        @include respond-from('mid-desktop') {
             display: none;
         }
     }
