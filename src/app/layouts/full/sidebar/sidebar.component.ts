@@ -27,6 +27,7 @@ import { CONSULTANT } from '@/newapp/constants';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { ChartService } from '@/app/dashboards/chart.service';
 import { getTodayMoment } from '@/newapp/shared/utils';
+import { ClinicService } from '@/app/clinic/clinic.service';
 
 @Component({
   selector: 'refer-friend',
@@ -200,6 +201,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     private clinicFacade: ClinicFacade,
     private layoutFacde: LayoutFacade,
     private chartService: ChartService,
+    private clinicService: ClinicService
   ) {
     // this.router.events.subscribe((event: Event) => {
     //   if (event instanceof NavigationEnd && event.url != '/login') {
@@ -268,9 +270,13 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
-    this.clinicFacade.currentClinics$.subscribe(clinics => {
-      if(clinics.length > 0) {
-        this.products = clinics[0].clinicProducts?.map(product => product.uniqueCode);
+    this.clinicService.getClinics().subscribe(res => {
+      if (res.status == 200 && res.body.data.length > 0) {
+        if(this.clinic_id == 'all' || this.clinic_id == null) {
+          this.products = res.body.data[0].clinicProducts?.map(product => product.unique_code);
+        }else{
+          this.products = res.body.data.find(clinic => clinic.id == this.clinic_id).clinicProducts?.map(product => product.unique_code);
+        }
       }
     });
   }

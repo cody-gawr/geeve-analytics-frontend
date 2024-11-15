@@ -27,18 +27,19 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    if (this._cookieService.get('userid')) {
+    if (this._cookieService.get('is_logged_in') === 'YES') {
       let urlActive = this.activatedRoute.path();
-      if (
-        !(
-          this._cookieService.get('stepper') &&
-          parseInt(this._cookieService.get('stepper')) < 4 &&
-          urlActive != '/setup' &&
-          urlActive != '/login'
-        )
-      ) {
-        return true;
-      }
+      // if (
+      //   !(
+      //     this._cookieService.get('stepper') &&
+      //     parseInt(this._cookieService.get('stepper')) < 4 &&
+      //     urlActive != '/setup' &&
+      //     urlActive != '/login'
+      //   )
+      // ) {
+      //   return true;
+      // }
+      return true;
     }
     
     this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
