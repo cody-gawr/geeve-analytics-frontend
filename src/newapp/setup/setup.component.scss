@@ -1,4 +1,5 @@
 
+@import '../../assets/layout/styles/layout/mixin';
 .setup-card-container {
     width: 100%;
     display: flex;
@@ -75,6 +76,9 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
+        @include respond-to('mid-desktop') {
+            display: none;
+        }
     }
 }
 

@@ -38,21 +38,30 @@ export class LoginComponent implements OnInit {
     public dialog: MatDialog,
     private route: ActivatedRoute
   ) {
-    if (this._cookieService.get('userid')) {
-      var user_type = this._cookieService.get('user_type');
-      this.clinic_id = this._cookieService.get('clinic_id');
-      if (user_type == '7') {
-        if (this.clinic_id != null && typeof this.clinic_id != 'undefined') {
-          this.getRolesIndividual();
-        } else {
-          this.getRolesIndividual();
-        }
-      } else {
+    // if (this._cookieService.get('userid')) {
+    //   var user_type = this._cookieService.get('user_type');
+    //   this.clinic_id = this._cookieService.get('clinic_id');
+    //   if (user_type == '7') {
+    //     if (this.clinic_id != null && typeof this.clinic_id != 'undefined') {
+    //       this.getRolesIndividual();
+    //     } else {
+    //       this.getRolesIndividual();
+    //     }
+    //   } else {
+    //     this.getRolesIndividual();
+    //   }
+    // } else {
+    //   this.showLoginForm();
+    // }
+    router.routerState.root.queryParams.subscribe(val => {
+      if (this._cookieService.get('is_logged_in') === 'YES') {
+        this.clinic_id = this._cookieService.get('clinic_id') || val.clinic_id;
         this.getRolesIndividual();
+      } else {
+        this.showLoginForm();
       }
-    } else {
-      this.showLoginForm();
-    }
+    });
+
   }
 
   showLoginForm() {
@@ -248,11 +257,22 @@ export class LoginComponent implements OnInit {
 
   getRolesIndividual() {
     var permision = '';
-    var user_type = this._cookieService.get('user_type');
+    // var user_type = this._cookieService.get('user_type');
 
     this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe({
       next: res => {
         permision = res.data;
+        const user_type = res.type.toString();
+        this._cookieService.put(
+          'user_type',
+          res.type + '',
+          this.constants.cookieOpt
+        );
+        this._cookieService.put(
+          'user_plan',
+          res.plan,
+          this.constants.cookieOpt
+        );
         if (permision != '' && user_type != '2' && user_type != '7') {
           if (permision.indexOf('healthscreen') >= 0) {
             this.goTo('/dashboards/healthscreen');
