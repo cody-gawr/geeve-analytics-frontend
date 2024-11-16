@@ -236,6 +236,7 @@ export interface PatientsRefName {
   numReferrals: string | number;
   referralName: string;
   reftypeName: string;
+  patientName: string;
   year: null | unknown;
   yearMonth: null | unknown;
 }

@@ -7,7 +7,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, Chart } from 'chart.js';
 import _ from 'lodash';
 import camelCase from 'camelcase';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, take } from 'rxjs';
 import { externalTooltipHandler } from '@/newapp/shared/utils';
 
 @Component({
@@ -27,6 +27,7 @@ export class MarketingNewPatientByReferralComponent
   labels = [];
   newPatientsByReferralVal = 0;
   isChartClicked = false;
+  newPatientsListData = [];
 
   get isLoading$() {
     return combineLatest([
@@ -127,6 +128,10 @@ export class MarketingNewPatientByReferralComponent
       });
   }
 
+  get pmsName$() {
+    return this.clinicFacade.currentClinics$.pipe(map(clinics => clinics?.length > 0 && clinics[0].pms));
+  }
+
   ngOnInit(): void {
     this.loadData();
   }
@@ -134,6 +139,8 @@ export class MarketingNewPatientByReferralComponent
   ngOnDestroy(): void {
     this.destroy.next();
   }
+
+  
 
   public chartClicked(event: any) {
     if (!this.isChartClicked && event.active.length > 0) {
@@ -145,28 +152,46 @@ export class MarketingNewPatientByReferralComponent
       combineLatest([
         this.isMultipleClinic$,
         this.marketingFacade.newPatientsByReferralData$,
+        this.pmsName$,
       ])
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(([isMulti, result]) => {
+        .pipe(take(1))
+        .subscribe(([isMulti, result, pmsName]) => {
+          const apiResData = <MkNewPatientsByReferral>result.data;
           if (result != null && !isMulti) {
-            const apiResData = <MkNewPatientsByReferral>result.data;
-            let chartData = [],
-              chartLabels = [];
-            if (apiResData.patientsRefname[activeLabel].length > 0) {
-              this.isChartClicked = true;
+            this.isChartClicked = true;
+            if(pmsName === 'praktika'){
               _.chain(apiResData.patientsRefname[activeLabel])
-                .sortBy(a => -parseFloat(<string>a.numReferrals))
-                .slice(0, 15)
-                .value()
-                .forEach(item => {
-                  chartData.push(
-                    Math.round(parseFloat(<string>item.numReferrals))
-                  );
-                  chartLabels.push(item.referralName);
-                });
+              .slice(0, 15)
+              .value()
+              .forEach(item => {
+                this.newPatientsListData.push(item.patientName);
+              });
+            }else{
+              let chartData = [],
+              chartLabels = [];
+              if (apiResData.patientsRefname[activeLabel].length > 0) {
+                _.chain(apiResData.patientsRefname[activeLabel])
+                  .groupBy('referralName')
+                  .map((items, referralName) => {
+                    return [referralName, items?.length || 0];
+                  }).sortBy(a => -a[1]).value().forEach(item => {
+                    chartLabels.push(item[0]);
+                    chartData.push(item[1]);
+                  });
+                  // .sortBy(a => -parseFloat(<string>a.numReferrals))
+                  // .slice(0, 15)
+                  // .value()
+                  // .forEach(item => {
+                  //   chartData.push(
+                  //     Math.round(parseFloat(<string>item.numReferrals))
+                  //   );
+                  //   chartLabels.push(item.referralName);
+                  // });
+              }
+              
+              this.datasets = [{ data: chartData }];
+              this.labels = chartLabels;
             }
-            this.datasets = [{ data: chartData }];
-            this.labels = chartLabels;
           }
         });
     }
