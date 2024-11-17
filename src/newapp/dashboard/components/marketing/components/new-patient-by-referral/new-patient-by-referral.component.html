@@ -19,42 +19,52 @@
           : ['canvas-wrapper', 'chart-box']
       ">
       <div
-        class="chart-gauge new-patient-by-referral-chart"
-        [ngClass]="(chartType$ | async) == 'doughnut' ? ['j-padding-20'] : []">
-        <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
-        <ng-template #mainElem>
+        class="pa-table adjust-pa-table"
+        *ngIf="isChartClicked && (pmsName$ | async) === 'praktika'; else pa01">
+        <div>
           <button
-            *ngIf="isChartClicked"
-            (click)="loadData()"
-            mat-flat-button
-            color="primary">
-            Back
-          </button>
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="!hasData; else chartElem1"
-            [disableSpin]="true">
-            You have no new patients from referral sources in the selected
-            period
-          </spin-loader>
-          <ng-template #chartElem1>
-            <div
-              class="pa-table"
-              *ngIf="isChartClicked && (pmsName$ | async) === 'praktika'; else pa01">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Patient Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let name of newPatientsListData">
-                    <td>{{ name }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <ng-template #pa01>
+              *ngIf="isChartClicked"
+              (click)="loadData()"
+              mat-flat-button
+              color="primary">
+              Back
+        </button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Patient Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let name of newPatientsListData">
+              <td>{{ name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #pa01>
+        <div
+          class="chart-gauge new-patient-by-referral-chart"
+          [ngClass]="(chartType$ | async) == 'doughnut' ? ['j-padding-20'] : []">
+          <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
+          <ng-template #mainElem>
+            <button
+              *ngIf="isChartClicked"
+              (click)="loadData()"
+              mat-flat-button
+              color="primary">
+              Back
+            </button>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!hasData; else chartElem1"
+              [disableSpin]="true">
+              You have no new patients from referral sources in the selected
+              period
+            </spin-loader>
+            <ng-template #chartElem1>
               <canvas
                 *ngIf="isExactOrCore$ | async; else cE02"
                 #mkNewPatientsByReferralCanvas
@@ -77,8 +87,8 @@
               </ng-template>
             </ng-template>
           </ng-template>
-        </ng-template>
-      </div>
+        </div>
+      </ng-template>
       <div
         class="chart-foot"
         *ngIf="!(isTrend$ | async) && (isMultipleClinic$ | async)">
