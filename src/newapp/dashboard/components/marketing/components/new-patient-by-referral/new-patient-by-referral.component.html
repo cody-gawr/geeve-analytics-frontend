@@ -13,14 +13,14 @@
           ? [
               'canvas-wrapper',
               'chart-box',
-              'j-justify-center',
+              
               'j-items-center'
             ]
           : ['canvas-wrapper', 'chart-box']
       ">
       <div
         class="pa-table adjust-pa-table"
-        *ngIf="isChartClicked && (pmsName$ | async) === 'praktika'; else pa01">
+        *ngIf="(isChartClicked && (pmsName$ | async) === 'praktika') || isChartClicked === 2; else pa01">
         <div>
           <button
               *ngIf="isChartClicked"

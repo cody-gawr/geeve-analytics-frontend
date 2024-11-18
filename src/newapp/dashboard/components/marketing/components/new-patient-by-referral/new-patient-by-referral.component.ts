@@ -26,7 +26,8 @@ export class MarketingNewPatientByReferralComponent
   datasets = [];
   labels = [];
   newPatientsByReferralVal = 0;
-  isChartClicked = false;
+  isChartClicked = 0;
+  firstActiveLabel = '';
   newPatientsListData = [];
 
   get isLoading$() {
@@ -116,7 +117,7 @@ export class MarketingNewPatientByReferralComponent
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([chartData, isTrend, trendChartData]) => {
-        this.isChartClicked = false;
+        this.isChartClicked = 0;
         if (isTrend) {
           this.datasets = trendChartData.datasets;
           this.labels = trendChartData.labels;
@@ -143,12 +144,13 @@ export class MarketingNewPatientByReferralComponent
   
 
   public chartClicked(event: any) {
-    if (!this.isChartClicked && event.active.length > 0) {
+    if (this.isChartClicked < 2 && event.active.length > 0) {
       // pms != exact or core
       const clickedElementIndex = event.active[0].index;
       const activeLabel = camelCase(
         <string>(<Chart>event.event.chart).data.labels[clickedElementIndex]
       );
+      this.newPatientsListData = [];
       combineLatest([
         this.isMultipleClinic$,
         this.marketingFacade.newPatientsByReferralData$,
@@ -158,18 +160,29 @@ export class MarketingNewPatientByReferralComponent
         .subscribe(([isMulti, result, pmsName]) => {
           const apiResData = <MkNewPatientsByReferral>result.data;
           if (result != null && !isMulti) {
-            this.isChartClicked = true;
-            if(pmsName === 'praktika'){
-              _.chain(apiResData.patientsRefname[activeLabel])
-              .slice(0, 15)
-              .value()
-              .forEach(item => {
-                this.newPatientsListData.push(item.patientName);
-              });
+            if(pmsName === 'praktika' || this.isChartClicked == 1){
+              this.isChartClicked = 2;
+              if(pmsName !== 'praktika'){
+                _.chain(apiResData.patientsRefname[this.firstActiveLabel])
+                .filter(item => camelCase(item.referralName) === activeLabel)
+                .value()
+                .forEach(item => {
+                  this.newPatientsListData.push(item.patientName);
+                });
+              }else{
+                _.chain(apiResData.patientsRefname[activeLabel])
+                .value()
+                .forEach(item => {
+                  this.newPatientsListData.push(item.patientName);
+                });
+              }
+
             }else{
               let chartData = [],
               chartLabels = [];
+              this.isChartClicked = 1;
               if (apiResData.patientsRefname[activeLabel].length > 0) {
+                this.firstActiveLabel = activeLabel;
                 _.chain(apiResData.patientsRefname[activeLabel])
                   .groupBy('referralName')
                   .map((items, referralName) => {
@@ -178,20 +191,12 @@ export class MarketingNewPatientByReferralComponent
                     chartLabels.push(item[0]);
                     chartData.push(item[1]);
                   });
-                  // .sortBy(a => -parseFloat(<string>a.numReferrals))
-                  // .slice(0, 15)
-                  // .value()
-                  // .forEach(item => {
-                  //   chartData.push(
-                  //     Math.round(parseFloat(<string>item.numReferrals))
-                  //   );
-                  //   chartLabels.push(item.referralName);
-                  // });
               }
               
               this.datasets = [{ data: chartData }];
               this.labels = chartLabels;
             }
+            
           }
         });
     }
