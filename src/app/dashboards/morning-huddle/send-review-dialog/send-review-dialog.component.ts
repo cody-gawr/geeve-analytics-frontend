@@ -76,7 +76,7 @@ export class SendReviewDialog {
       }
 
       if (v2.data) {
-        this.msgTemplates = v2.data;
+        this.msgTemplates = v2.data.filter(d => d.type === 'review');
         if (this.msgTemplates.length > 0 && !data.phone_number) {
           this.selectedReviewMsg = this.msgTemplates[0].id;
           this.onChangeReviewMsg();

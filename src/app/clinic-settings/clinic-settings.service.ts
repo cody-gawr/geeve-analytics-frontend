@@ -627,13 +627,14 @@ export class ClinicSettingsService {
     id: number,
     clinic_id: number,
     name: string,
-    msgTemplate: string
+    msgTemplate: string,
+    type: 'review' | 'campaign'
   ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .post(
         environment.commonApiUrl + '/sms/updateReviewMsgTemplate',
-        { id, clinic_id, name: name, msg_template: msgTemplate },
+        { id, clinic_id, name: name, msg_template: msgTemplate, type },
         header
       )
       .pipe(

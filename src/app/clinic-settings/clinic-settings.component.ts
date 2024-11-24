@@ -21,6 +21,7 @@ export interface ReviewMsgTemplateObject {
   id?: number;
   name: string;
   msg_template: string;
+  type: string;
 }
 
 @Component({
@@ -98,7 +99,7 @@ export class ClinicSettingsComponent implements OnInit {
     saturday: true,
   };
 
-  displayedColumns = ['name', 'msg_template', 'action'];
+  displayedColumns = ['name', 'msg_template', 'type', 'action'];
   reviewMsgTemplates = [];
   isSMSEnabled = false;
 

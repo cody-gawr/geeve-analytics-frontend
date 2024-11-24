@@ -875,8 +875,17 @@
             Add credits
           </button>
         </div> -->
+      </form>
+    </mat-card-content>
+  </mat-expansion-panel>
+  <mat-expansion-panel *ngIf="isSMSEnabled">
+    <mat-expansion-panel-header>
+      <mat-panel-title> SMS Templates </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <form class="sa_forms_design">
         <div>
-          <h4 style="margin-bottom: 0px">Review Message Templates</h4>
+          <!-- <h4 style="margin-bottom: 0px">Message Templates</h4> -->
           <div style="display: flex; justify-content: flex-end">
             <button
               mat-raised-button
@@ -885,18 +894,23 @@
               Add Template
             </button>
           </div>
-          <table mat-table [dataSource]="reviewMsgTemplates">
+          <table mat-table matSort [dataSource]="reviewMsgTemplates">
             <!-- Name Column -->
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Name</th>
               <td mat-cell *matCellDef="let element">{{ element.name }}</td>
             </ng-container>
 
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+              <td mat-cell *matCellDef="let element"><span>{{ element.type }}</span></td>
+            </ng-container>
+
             <!-- Weight Column -->
             <ng-container matColumnDef="msg_template">
               <th mat-header-cell *matHeaderCellDef>Template</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.msg_template }}
+                <p>{{ element.msg_template }}</p>
               </td>
             </ng-container>
 
