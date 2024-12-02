@@ -120,7 +120,9 @@ export class CreateCampaignComponent implements AfterViewInit {
                   this.smsTemplate = campaignData.data.sms_template;
                   this.pendingPatients = campaignData.data.pending_campaign;
                   this.description.setValue(campaignData.data.description);
+
                   this.loadFilterSettings(campaignData.data.campaign_filters);
+                  this.eventInput.next();
                   // this.campaignService.getCampaignPatients(this.clinicId, this.getFilterSettings()).subscribe((patients) => {
                   //   this.dataSource.data = patients.data;
                   //   this.selection.clear();
