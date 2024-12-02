@@ -4,7 +4,7 @@
     gap: 25px;
     .campaign-header {
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
         width: 100%;
         gap: 15px;
@@ -30,4 +30,8 @@
             }
         }
     }
+}
+
+tr.element-row:hover {
+    background: #279b8e12;
 }

@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subject} from 'rxjs';
+import { Observable, Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'drag-drop-button',
@@ -11,18 +11,23 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
   @Input() iconName: string;
-    @Input() title: string;
-    @Input() enableClickable = false;
-    isOpen = false;
-    range = new FormGroup({
-        start: new FormControl<Date | null>(null),
-        end: new FormControl<Date | null>(null),
-    });
-    value = 0;
+  @Input() filterName: string;
+  @Input() title: string;
+  @Input() selectedIcon$: Observable<string>;
+  isOpen = false;
+
   constructor() {
+
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.selectedIcon$?.pipe(takeUntil(this.destroy$)).subscribe(
+      (selectedIconName: string) => {
+        if(selectedIconName === this.filterName) this.isOpen = true;
+        else this.isOpen = false;
+      }
+    );
+  }
 
   ngOnDestroy(): void {
     this.destroy.next();

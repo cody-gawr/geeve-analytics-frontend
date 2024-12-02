@@ -1,6 +1,6 @@
 <div class="campaign-page-container">
     <div class="campaign-header">
-      <form [formGroup]="range" (submit)="submitForm()">
+      <!-- <form [formGroup]="range" (submit)="submitForm()">
           <mat-form-field subscriptSizing="dynamic" appearance="outline">
               <mat-label>Select Campaign</mat-label>
               <mat-select formControlName="campaign_id">
@@ -30,11 +30,11 @@
               <mat-date-range-picker #picker></mat-date-range-picker>
           </mat-form-field>
           <button [disabled]="this.range.invalid" type="submit" mat-raised-button color="primary">Search</button>
-      </form>
+      </form> -->
       <button type="button" (click)="openCreateCampaignDialog()" mat-raised-button color="primary">Create Campaign</button>
     </div>
     <div>
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
               <mat-checkbox (change)="$event ? toggleAllRows() : null"
@@ -51,28 +51,50 @@
               </mat-checkbox>
             </td>
           </ng-container>
-            <ng-container matColumnDef="patient_name">
-              <th mat-header-cell *matHeaderCellDef> Patient Name </th>
-              <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef> Description </th>
+              <td mat-cell *matCellDef="let element"> {{element.description}} </td>
             </ng-container>
-            <ng-container matColumnDef="initial_tx_date">
-              <th mat-header-cell *matHeaderCellDef> Treatment Date </th>
-              <td mat-cell *matCellDef="let element"> {{element.initial_tx_date}} </td>
+            <ng-container matColumnDef="created">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.created}} </td>
             </ng-container>
-            <ng-container matColumnDef="initial_tx_id">
-              <th mat-header-cell *matHeaderCellDef> Treatment Performed </th>
-              <td mat-cell *matCellDef="let element"> {{element.initial_tx_id}} </td>
+            <ng-container matColumnDef="totalPatientsCount">
+              <th mat-header-cell *matHeaderCellDef> # Patients </th>
+              <td mat-cell *matCellDef="let element"> {{element.totalPatientsCount}} </td>
             </ng-container>
 
-             <ng-container matColumnDef="mobile">
-              <th mat-header-cell *matHeaderCellDef> Mobile </th>
-              <td mat-cell *matCellDef="let element"> {{element.mobile}} </td>
+             <ng-container matColumnDef="sentMsgCount">
+              <th mat-header-cell *matHeaderCellDef> # Messages Sent </th>
+              <td mat-cell *matCellDef="let element"> {{element.sentMsgCount}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element"> 
+                <mat-icon [matMenuTriggerFor]="menu">more_horiz</mat-icon>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item>
+                      <mat-icon>refresh</mat-icon>
+                      <span>Re-send</span>
+                  </button>
+                  <button mat-menu-item>
+                    <mat-icon>send</mat-icon>
+                    <span>Submit</span>
+                  </button>
+              </mat-menu>
+              </td>
             </ng-container>
           
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            <tr class="mat-row" *matNoDataRow>
-              <td class="mat-cell" colspan="5">Please select a campaign and dates.</td>
+            <tr  mat-row *matRowDef="let row; columns: displayedColumns;" class="element-row" (click)="goViewPage(row)"></tr>
+            <tr mat-row *matNoDataRow>
+              <td class="mat-cell" colspan="7">No campaigns</td>
             </tr>
           </table>
           <mat-paginator [pageSizeOptions]="[15, 50, 100]"

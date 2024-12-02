@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CampaignsComponent } from './campaings.component';
 import { AppLayoutComponent } from '../layout/app-layout/app-layout.component';
 import { CreateCampaignComponent } from './create-campaign/create-campaign.component';
+import { ViewCampaignComponent } from './view-campaign/view-campaign.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
         {
           path: 'create',
           component: CreateCampaignComponent,
+        },
+        {
+          path: 'view',
+          component: ViewCampaignComponent
         }
       ]
     },
