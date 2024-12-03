@@ -142,4 +142,14 @@ export class CampaignService {
             }
         }).pipe(body => body);
     }
+
+    public resendCampaign(clinicId: number, campaignId: number) {
+        return this.http.get<JeeveResponse<[number, number]>>(`${this.commonUrl}/campaign/re-send`, {
+            withCredentials: true,
+            params: {
+                clinic_id: clinicId,
+                campaign_id: campaignId
+            }
+        });
+    }
 }

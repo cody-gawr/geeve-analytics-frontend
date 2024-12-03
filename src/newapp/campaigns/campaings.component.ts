@@ -18,6 +18,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { CampaignService, ICampaign } from "./services/campaign.service";
 import { MatSort } from "@angular/material/sort";
+import { NotificationService } from "../shared/services/notification.service";
 
   
 @Component({
@@ -68,7 +69,8 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         private clinicService: ClinicService,
         public dialog: MatDialog,
         private route: Router,
-        private campaignService: CampaignService
+        private campaignService: CampaignService,
+        public nofifyService: NotificationService,
     ) {
         
         clinicFacade.currentSingleClinicId$.pipe(
@@ -161,5 +163,26 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
     openCreateCampaignDialog() {
         this.route.navigate(['newapp/campaigns/create']);
+    }
+    isResending = false;
+    resendCampaign(element: ICampaign) {
+        this.isResending = true;
+        this.campaignService.resendCampaign(element.clinic_id, element.id).subscribe(
+            {
+                next: (result) => {
+                    if(result.data[0] == result.data[1]){
+                        this.nofifyService.showSuccess(`Sent successfully to ${result.data[0]} patients for "${element.description}}" campaign.`);
+                      }else{
+                        this.nofifyService.showError(`Failed ${result.data[1] - result.data[0]} patients, Succeed to ${result.data[0]} patients for "${element.description}" campaign.`);
+                      }
+                    this.loadCampaigns();
+                    this.isResending = false;
+                },
+                error: (err) => {
+                    this.isResending = false;
+                }
+            }
+
+        )
     }
 }
