@@ -15,6 +15,7 @@ import { StartCampaignDialog } from '../start-campaign-dialog/start-campaign-dia
 import { NotificationService } from '@/newapp/shared/services/notification.service';
 import { CommonDataService, ItemCode } from '@/newapp/shared/services/common-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import moment from 'moment';
 
 const DefaultFilterElements = [
   {
@@ -69,10 +70,12 @@ export class CreateCampaignComponent implements AfterViewInit {
     filterFormGroup = new FormGroup({
         patientAgeMin: new FormControl(25),
         patientAgeMax: new FormControl(75),
-        overduesStart: new FormControl<Date | null>(null),
-        overduesEnd: new FormControl<Date | null>(null),
+        // overduesStart: new FormControl<Date | null>(null),
+        // overduesEnd: new FormControl<Date | null>(null),
         incomplete_tx_planStart: new FormControl<Date | null>(null),
         incomplete_tx_planEnd: new FormControl<Date | null>(null),
+        treatmentStart: new FormControl<Date | null>(null),
+        treatmentEnd: new FormControl<Date | null>(null),
     });
     clinicId = 0;
     clinicName = '';
@@ -88,6 +91,7 @@ export class CreateCampaignComponent implements AfterViewInit {
     campaignId: number = 0;
     smsTemplate = '';
     pendingPatients = [];
+    campaignFilters: ICampaignFilter[]= [];
     constructor(
       private clinicFacade: ClinicFacade,
       private campaignService: CampaignService,
@@ -120,7 +124,7 @@ export class CreateCampaignComponent implements AfterViewInit {
                   this.smsTemplate = campaignData.data.sms_template;
                   this.pendingPatients = campaignData.data.pending_campaign;
                   this.description.setValue(campaignData.data.description);
-
+                  this.campaignFilters = campaignData.data.campaign_filters;
                   this.loadFilterSettings(campaignData.data.campaign_filters);
                   this.eventInput.next();
                   // this.campaignService.getCampaignPatients(this.clinicId, this.getFilterSettings()).subscribe((patients) => {
@@ -252,6 +256,39 @@ export class CreateCampaignComponent implements AfterViewInit {
             this.eventInput.next();
           }
         });
+
+        this.filterFormGroup.controls.treatmentStart.valueChanges.pipe(
+          debounceTime(300),
+        ).subscribe((value) => {
+          if(this.done.findIndex(item => item.filterName === 'treatment') > -1){
+            this.eventInput.next();
+          }
+        });
+
+        this.filterFormGroup.controls.treatmentEnd.valueChanges.pipe(
+          debounceTime(300),
+        ).subscribe((value) => {
+          if(this.done.findIndex(item => item.filterName === 'treatment') > -1){
+            this.eventInput.next();
+          }
+        });
+        
+        this.filterFormGroup.controls.incomplete_tx_planStart.valueChanges.pipe(
+          debounceTime(300),
+        ).subscribe((value) => {
+          if(this.done.findIndex(item => item.filterName === 'incomplete_tx_plan') > -1){
+            this.eventInput.next();
+          }
+        });
+        
+        this.filterFormGroup.controls.incomplete_tx_planEnd.valueChanges.pipe(
+          debounceTime(300),
+        ).subscribe((value) => {
+          if(this.done.findIndex(item => item.filterName === 'incomplete_tx_plan') > -1){
+            this.eventInput.next();
+          }
+        });
+        
         
     }
 
@@ -310,16 +347,25 @@ export class CreateCampaignComponent implements AfterViewInit {
       
       return this.done.map(
         d => {
-          const isDateRange = ['overdues', 'incomplete_tx_plan'].indexOf(d.filterName) > -1;
+          const isDateRange = ['treatment', 'incomplete_tx_plan'].indexOf(d.filterName) > -1;
+          const filterSettings = [];
+          if(isDateRange){
+            const start = this.filterFormGroup.controls[d.filterName + 'Start'].value;
+            const end = this.filterFormGroup.controls[d.filterName + 'End'].value;
+            filterSettings.push(start? moment(start).format('YYYY-MM-DD'): '');
+            filterSettings.push(end? moment(end).format('YYYY-MM-DD'): '');
+          }
+          if(d.filterName === 'patient_age'){
+            filterSettings.push(this.filterFormGroup.controls.patientAgeMin.value, this.filterFormGroup.controls.patientAgeMax.value);
+          } else if(d.filterName === 'health_insurance') {
+
+          } else if(d.filterName === 'treatment'){
+            filterSettings.push(...this.selectedItemCodes.value.map(v => parseInt(v)));
+          }
+
           return  {
             filter: d.filterName,
-            start_date: isDateRange ? this.filterFormGroup.controls[d.filterName + 'Start'].value: undefined,
-            end_date: isDateRange? this.filterFormGroup.controls[d.filterName + 'End'].value: undefined, // YYYY-MM-DD
-
-            patient_age: d.filterName === 'patient_age'? [
-              this.filterFormGroup.controls.patientAgeMin.value, this.filterFormGroup.controls.patientAgeMax.value]: undefined,
-            health_insurance: d.filterName === 'health_insurance'? this.healthInsurance: undefined,
-            treatment: d.filterName === 'treatment'? this.selectedItemCodes.value.map(v => parseInt(v)): undefined
+            filter_settings: filterSettings,
           }
         }
       )
@@ -328,9 +374,12 @@ export class CreateCampaignComponent implements AfterViewInit {
     loadFilterSettings(settings: ICampaignFilter[]) {
       const doneFilters = [];
       for(const setting of settings){
+        const filterValues = setting.filter_settings.split(',');
         if(setting.filter_name === 'treatment'){
           if(setting.filter_settings){
-            this.selectedItemCodes.setValue(setting.filter_settings.split(','));
+            this.filterFormGroup.controls['treatmentStart'].setValue(new Date(filterValues[0]));
+            this.filterFormGroup.controls['treatmentEnd'].setValue(new Date(filterValues[1]));
+            this.selectedItemCodes.setValue(filterValues.slice(2));
             doneFilters.push(setting.filter_name);
           }
 
@@ -341,6 +390,13 @@ export class CreateCampaignComponent implements AfterViewInit {
             this.filterFormGroup.controls.patientAgeMax.setValue(parseInt(ages[1]));
             doneFilters.push(setting.filter_name);
           }
+        } else if(setting.filter_name === 'incomplete_tx_plan'){
+            const dates = setting.filter_settings?.split(',');
+            if(dates && dates.length === 2){
+              this.filterFormGroup.controls.incomplete_tx_planStart.setValue(new Date(dates[0]));
+              this.filterFormGroup.controls.incomplete_tx_planEnd.setValue(new Date(dates[1]));
+              doneFilters.push(setting.filter_name);
+            }
         }
       }
 

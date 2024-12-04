@@ -45,7 +45,7 @@
                             </mat-slider>
                         </div>
 
-                        <mat-form-field *ngIf="['overdues', 'incomplete_tx_plan'].indexOf(selectedFilterName) > -1" class="" appearance="outline">
+                        <mat-form-field *ngIf="['treatment', 'incomplete_tx_plan'].indexOf(selectedFilterName) > -1" class="filter-box" appearance="outline">
                             <!-- <mat-label>Enter a date range</mat-label> -->
                             <mat-date-range-input [rangePicker]="picker">
                               <input matStartDate [formControlName]="selectedFilterName + 'Start'" placeholder="Start date">
@@ -59,7 +59,7 @@
                             <mat-error *ngIf="filterFormGroup.controls[selectedFilterName + 'End'].hasError('matEndDateInvalid')">Invalid end date</mat-error>
                         </mat-form-field>
                         <div class="treatment-form" *ngIf="selectedFilterName === 'treatment'">
-                            <!-- <mat-form-field class="csvlist-input"  appearance="outline">
+                            <!-- <mat-form-field class="filter-box"  appearance="outline">
                                 <mat-label>Treatment</mat-label>
                                 <mat-chip-grid #chipGrid >
                                   <mat-chip-row *ngFor="let treat of treatment"
@@ -79,6 +79,7 @@
                                          (matChipInputTokenEnd)="add($event)"/>
                                 </mat-chip-grid>
                             </mat-form-field> -->
+
                             <mat-form-field appearance="outline">
                                 <mat-label>Item Codes</mat-label>
                                 <mat-select [formControl]="selectedItemCodes" multiple>
@@ -91,7 +92,7 @@
                         </div>
                         
     
-                        <mat-form-field class="csvlist-input" *ngIf="selectedFilterName === 'health_insurance'" appearance="outline">
+                        <!-- <mat-form-field class="filter-box" *ngIf="selectedFilterName === 'health_insurance'" appearance="outline">
                             <mat-label>Health Insurance</mat-label>
                             <mat-chip-grid #chipGrid >
                               <mat-chip-row *ngFor="let healthins of healthInsurance"
@@ -110,7 +111,7 @@
                                      [matChipInputAddOnBlur]="addOnBlur"
                                      (matChipInputTokenEnd)="add($event, 'health_insurance')"/>
                             </mat-chip-grid>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </form>
                 </div>
             </div>

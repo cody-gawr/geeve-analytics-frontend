@@ -60,9 +60,10 @@ export interface ICampaign {
 
 export interface IGetPatientsFilterJson {
     filter: string, // filter name
-    start_date: string, // YYYY-MM-DD
-    end_date: string, // YYYY-MM-DD
-    items?: string // CSV format list
+    filter_settings: any[];
+    // start_date: string, // YYYY-MM-DD
+    // end_date: string, // YYYY-MM-DD
+    // items?: string // CSV format list
 }
 
 @Injectable({

@@ -53,7 +53,8 @@
                         justify-content: center;
                         align-items: center;
                         width: 100%;   
-                        .csvlist-input {
+                        padding: 0 30px;
+                        .filter-box {
                             width: 100%;
                         }
                         .patient-age-slider{
@@ -154,10 +155,6 @@
   
   .cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-  
-  .example-box:last-child {
-    border: none;
   }
   
   .drag-container.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
