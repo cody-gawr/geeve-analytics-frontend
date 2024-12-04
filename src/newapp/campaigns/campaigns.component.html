@@ -87,6 +87,10 @@
                     <mat-icon>send</mat-icon>
                     <span>Submit</span>
                   </button>
+                  <button *ngIf="element.status !== 'draft'" (click)="goViewPage(element)" mat-menu-item>
+                    <mat-icon>visibility</mat-icon>
+                    <span>View</span>
+                  </button>
               </mat-menu>
               </td>
             </ng-container>
