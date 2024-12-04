@@ -66,6 +66,9 @@ export class CreateCampaignComponent implements AfterViewInit {
     addOnBlur = true;
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
+    closeEvent = new Subject<string>();
+    closeEvent$ = this.closeEvent.asObservable();
+
     healthInsurance: string[] = [];
     filterFormGroup = new FormGroup({
         patientAgeMin: new FormControl(25),
@@ -189,6 +192,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         // });
 
         this.eventInput$.pipe(
+          takeUntil(this.destroy$),
           debounceTime(300), // Wait for 300ms of silence
           switchMap(() => {
             this.loadingData = true;
@@ -226,6 +230,14 @@ export class CreateCampaignComponent implements AfterViewInit {
           }
           
         );
+
+        this.closeEvent$.pipe(
+          takeUntil(this.destroy$)
+        ).subscribe(filterName => {
+          const index = this.done.findIndex(d => d.filter_name === filterName);
+          this.todo.push(...this.done.splice(index, 1));
+          this.eventInput.next();
+        });
 
         this.commonDataservice.getCampaignPatients().subscribe(result => {
           this.itemCodes = result.data;

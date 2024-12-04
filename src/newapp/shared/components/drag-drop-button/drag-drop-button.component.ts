@@ -1,5 +1,4 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subject, takeUntil} from 'rxjs';
 
 @Component({
@@ -14,7 +13,9 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
   @Input() filterName: string;
   @Input() title: string;
   @Input() selectedIcon$: Observable<string>;
+  @Input() closeEvent:Subject<string>;
   isOpen = false;
+  @Input() isDone = false;
 
   constructor() {
 
@@ -31,6 +32,10 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy.next();
+  }
+
+  onClose() {
+    this.closeEvent && this.closeEvent.next(this.filterName);
   }
 
 }
