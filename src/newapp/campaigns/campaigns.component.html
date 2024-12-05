@@ -1,36 +1,38 @@
 <div class="campaign-page-container">
     <div class="campaign-header">
-      <!-- <form [formGroup]="range" (submit)="submitForm()">
-          <mat-form-field subscriptSizing="dynamic" appearance="outline">
-              <mat-label>Select Campaign</mat-label>
-              <mat-select formControlName="campaign_id">
-                  <mat-option *ngFor="let campaign of Campaigns" [value]="campaign.value" (click)="this.range.controls['campaign_id'].setValue(campaign.value)">
-                    {{campaign.label}}
-                  </mat-option>
-              </mat-select>
-          </mat-form-field>
-          <mat-form-field subscriptSizing="dynamic" appearance="outline">
-              <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                  <input
-                  class="custom-font"
-                  matStartDate
-                  formControlName="start"
-                  (dateChange)="onDateRangeChange('start', $event)"
-                  placeholder="Start date" />
-                  <input
-                  class="custom-font"
-                  matEndDate
-                  formControlName="end"
-                  (dateChange)="onDateRangeChange('end', $event)"
-                  placeholder="End date" />
-              </mat-date-range-input>
-              <mat-datepicker-toggle
-                  matIconSuffix
-                  [for]="picker"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
-          </mat-form-field>
-          <button [disabled]="this.range.invalid" type="submit" mat-raised-button color="primary">Search</button>
-      </form> -->
+      <div class="date-box">
+        <form [formGroup]="range">
+            <!-- <mat-form-field subscriptSizing="dynamic" appearance="outline">
+                <mat-label>Select Campaign</mat-label>
+                <mat-select formControlName="campaign_id">
+                    <mat-option *ngFor="let campaign of Campaigns" [value]="campaign.value" (click)="this.range.controls['campaign_id'].setValue(campaign.value)">
+                      {{campaign.label}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+            <mat-form-field subscriptSizing="dynamic" appearance="outline">
+                <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                    <input
+                    class="custom-font"
+                    matStartDate
+                    formControlName="start"
+                    (dateChange)="onDateRangeChange('start', $event)"
+                    placeholder="Start date" />
+                    <input
+                    class="custom-font"
+                    matEndDate
+                    formControlName="end"
+                    (dateChange)="onDateRangeChange('end', $event)"
+                    placeholder="End date" />
+                </mat-date-range-input>
+                <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </form>
+      </div>
+
       <button type="button" (click)="openCreateCampaignDialog()" mat-raised-button color="primary">Create Campaign</button>
     </div>
     <div>

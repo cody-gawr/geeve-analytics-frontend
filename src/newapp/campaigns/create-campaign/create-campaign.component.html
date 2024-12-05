@@ -169,7 +169,7 @@
                                         <mat-icon style="margin-top:5px" >more_horiz</mat-icon>
                                     </mat-chip>
                                     <mat-menu #menu="matMenu">
-                                        <mat-chip style="margin: 0 5px;" *ngFor="let campaign of getCampaignDescription(element.prev_campaigns, 2)">
+                                        <mat-chip style="margin: 5px;" *ngFor="let campaign of getCampaignDescription(element.prev_campaigns, 2)">
                                             {{campaign.description}}</mat-chip>
                                     </mat-menu>
                                 </mat-chip-set>

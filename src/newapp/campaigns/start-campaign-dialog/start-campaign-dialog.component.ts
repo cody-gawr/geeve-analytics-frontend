@@ -6,12 +6,14 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import _ from 'lodash';
+import { CampaignElement } from '../create-campaign/create-campaign.component';
 
 export interface DialogData {
   patient_id: number;
   patient_name: string;
   sms_text: string;
-  numPatients: number;
+  // numPatients: number;
+  patients: CampaignElement[]
   clinicId: number;
   clinicName: string;
   remain_credits: number;
@@ -53,12 +55,13 @@ export class StartCampaignDialog {
     this.availableMsgLength = data.remain_credits < 5 ? data.remain_credits * 160 : 800;
   }
 
-  get numOfMessages() {
-    return Math.ceil(this.sms_text.value.length / 160);
-  }
+  // get numOfMessages() {
+  //   return Math.ceil(this.sms_text.value.length / 160);
+  // }
 
   get numTotalMessage() {
-    return this.numOfMessages * this.data.numPatients;
+    return this.data.patients.map(
+      p => Math.ceil(this.composeText(this.sms_text.value, p)?.length / 160)).reduce((acc, curr) => acc + curr, 0);
   }
 
   onNoClick(): void {
@@ -100,6 +103,19 @@ export class StartCampaignDialog {
       //   });
 
     }
+  }
+
+  composeText(smsText: string, patient: CampaignElement){
+    let renderedMsg = smsText.replaceAll(
+      '[Patient Name]',
+      patient.patient_name
+    );
+    renderedMsg = renderedMsg.replaceAll(
+      '[Clinic Name]',
+      this.data.clinicName
+    );
+
+    return renderedMsg;
   }
 
   onChangeReviewMsg() {

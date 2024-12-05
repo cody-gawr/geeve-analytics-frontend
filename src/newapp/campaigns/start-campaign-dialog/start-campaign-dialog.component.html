@@ -31,14 +31,14 @@
       rows="7"
       [maxlength]="availableMsgLength"></textarea>
     <mat-hint align="end"
-      >{{ sms_text.value.length }} / 800, {{ numOfMessages }}
+      >{{ sms_text.value.length }} / 800, {{ numTotalMessage }}
       {{
-        numOfMessages == 0 || numOfMessages > 1 ? 'messages' : 'message'
+        numTotalMessage == 0 || numTotalMessage > 1 ? 'messages' : 'message'
       }}</mat-hint
     >
   </mat-form-field>
   <br/>
-  <p class="patient-info">Total Patients: {{data.numPatients}}</p>
+  <p class="patient-info">Total Patients: {{data.patients.length}}</p>
 </div>
 <div mat-dialog-actions class="justify-between">
   <button mat-button class="mat-raised-button mat-gray" (click)="onNoClick()">

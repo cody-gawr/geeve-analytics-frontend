@@ -170,26 +170,6 @@ export class CreateCampaignComponent implements AfterViewInit {
               
             }
         });
-        
-        // this.clinicFacade.clinics$.pipe(takeUntil(this.destroy$)).subscribe(clinics => {
-        //   if(clinics.length> 0) {
-        //     this.clinicId = clinics[0].id;
-        //     this.clinicName = clinics[0].clinicName;
-        //     this.getCreditData();
-        //     combineLatest(
-        //       [
-        //         this.campaignService.getCampaigns(this.clinicId),
-        //         this.campaignService.getCampaignPatients(this.clinicId)
-        //       ]
-        //     ).subscribe(([campaigns, patients]) => {
-        //       this.campaigns = campaigns.data;
-        //       this.dataSource.data = patients.data;
-        //       this.selection.clear();
-        //       this.selection.select(...this.dataSource.data);
-        //       this.loadingData = false;
-        //     });
-        //   }
-        // });
 
         this.eventInput$.pipe(
           takeUntil(this.destroy$),
@@ -254,7 +234,6 @@ export class CreateCampaignComponent implements AfterViewInit {
         this.filterFormGroup.controls.patientAgeMax.valueChanges.pipe(
           debounceTime(300),
         ).subscribe((maxV) => {
-          console.log('ages-max', maxV)
           if(this.done.findIndex(item => item.filterName === 'patient_age') > -1){
             this.eventInput.next();
           }
@@ -263,32 +242,16 @@ export class CreateCampaignComponent implements AfterViewInit {
         this.filterFormGroup.controls.patientAgeMin.valueChanges.pipe(
           debounceTime(300),
         ).subscribe((minV) => {
-          console.log('ages-min', minV)
           if(this.done.findIndex(item => item.filterName === 'patient_age') > -1){
             this.eventInput.next();
           }
         });
 
-        this.filterFormGroup.controls.treatmentStart.valueChanges.pipe(
-          debounceTime(300),
-        ).subscribe((value) => {
-          if(this.done.findIndex(item => item.filterName === 'treatment') > -1){
-            this.eventInput.next();
-          }
-        });
 
         this.filterFormGroup.controls.treatmentEnd.valueChanges.pipe(
           debounceTime(300),
         ).subscribe((value) => {
           if(this.done.findIndex(item => item.filterName === 'treatment') > -1){
-            this.eventInput.next();
-          }
-        });
-        
-        this.filterFormGroup.controls.incomplete_tx_planStart.valueChanges.pipe(
-          debounceTime(300),
-        ).subscribe((value) => {
-          if(this.done.findIndex(item => item.filterName === 'incomplete_tx_plan') > -1){
             this.eventInput.next();
           }
         });
@@ -483,7 +446,7 @@ export class CreateCampaignComponent implements AfterViewInit {
           data: {
             patient_id: this.selection.selected[0].patient_id,
             patient_name: this.selection.selected[0].patient_name,
-            numPatients: this.selection.selected.length,
+            patients: this.selection.selected,
             clinicId: this.clinicId,
             clinicName: this.clinicName,
             remain_credits: this.remainCredits,

@@ -84,11 +84,13 @@ export class CampaignService {
         }).pipe(body => body);
     }
 
-    public getCampaigns(clinicId: number){
+    public getCampaigns(clinicId: number, start?: string, end?: string){
         return this.http.get<JeeveResponse<ICampaign[]>>(`${this.commonUrl}/campaign`, {
             withCredentials: true,
             params: {
                 clinic_id: clinicId,
+                ...(start && {start}),
+                ...(end && {end}),
             }
         }).pipe(body => body);
     }

@@ -9,7 +9,7 @@ import {
     switchMap
   } from 'rxjs';
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import { ClinicService } from "../clinic/services/clinic.service";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
@@ -19,6 +19,7 @@ import { Router } from "@angular/router";
 import { CampaignService, ICampaign } from "./services/campaign.service";
 import { MatSort } from "@angular/material/sort";
 import { NotificationService } from "../shared/services/notification.service";
+import { FormControl, FormGroup } from "@angular/forms";
 
   
 @Component({
@@ -37,6 +38,12 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     dataSource = new MatTableDataSource<ICampaign>([]);
     selection = new SelectionModel<ICampaign>(true, []);
     clinicId: number = 0;
+
+    range = new FormGroup({
+        start: new FormControl<Moment | null>(moment().startOf('month')),
+        end: new FormControl<Moment | null>(moment()),
+    });
+
     @ViewChild(MatSort) sort: MatSort;
     /** Whether the number of selected elements matches the total number of rows. */
     isAllSelected() {
@@ -94,11 +101,21 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         //     }) || [];
         // });
 
+        this.range.controls.end.valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged()).subscribe(
+            (value)=> {
+                this.loadCampaigns();
+            }
+        );
+
     
     }
     loadCampaigns() {
         if(this.clinicId){
-            this.campaignService.getCampaigns(this.clinicId).subscribe(
+            this.campaignService.getCampaigns(
+                this.clinicId, 
+                this.range.controls.start.value.format('YYYY-MM-DD'), 
+                this.range.controls.end.value.format('YYYY-MM-DD')
+            ).subscribe(
                 result => {
                     console.log('[loadCampaigns]:', result);
                     this.dataSource.data = result.data?.map(
@@ -132,13 +149,9 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         
     }
 
-    // Campaigns: any[] = [];
-    // range = new FormGroup({
-    //     start: new FormControl<Moment | null>(moment().startOf('month')),
-    //     end: new FormControl<Moment | null>(moment()),
-    //     campaign_id: new FormControl<number | null>(null),
-    //     clinic_id: new FormControl<number | null>(null),
-    // });
+    Campaigns: any[] = [];
+
+
     onDateRangeChange(
         target: 'start' | 'end',
         event: MatDatepickerInputEvent<Moment>
@@ -149,17 +162,6 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
           //this.range.controls['start'].setValue(event.value);
         }
     }
-
-    // submitForm(){
-    //     this.clinicService.getCampaingDetails(
-    //         this.range.controls['clinic_id'].value,
-    //         this.range.controls['campaign_id'].value,
-    //         this.range.controls['start'].value,
-    //         this.range.controls['end'].value
-    //     ).subscribe((res) => {
-    //         this.dataSource.data = res.data.map((data, index) => ({...data, position: index + 1}));
-    //     });
-    // }
 
     openCreateCampaignDialog() {
         this.route.navigate(['newapp/campaigns/create']);
