@@ -388,6 +388,12 @@ html {
   .custom-tooltip-top-right-discount::after {
     content: none;
   }
+  .chip-style {
+    background-color: #18a689 !important;
+    .mat-mdc-chip-action-label {
+      color: white !important;
+    }
+  }
 }
 
 .jeeve-custom-select-panel {
