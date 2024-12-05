@@ -442,7 +442,6 @@ export class CreateCampaignComponent implements AfterViewInit {
     startCampaign(isDraft = false) {
       if(this.selection.selected.length > 0 && this.description.valid){
         const dialogRef = this.dialog.open(StartCampaignDialog, {
-          width: '600px',
           data: {
             patient_id: this.selection.selected[0].patient_id,
             patient_name: this.selection.selected[0].patient_name,

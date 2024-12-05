@@ -7,37 +7,55 @@
   <mat-icon class="close-icon" (click)="onNoClick()">close</mat-icon>
 </div>
 <div mat-dialog-content>
-  <mat-form-field class="form-field">
-    <mat-label>Message Template</mat-label>
-    <mat-select
-      [disabled]="loadingData"
-      [(value)]="selectedTmpMsg"
-      (selectionChange)="onChangeReviewMsg()">
-      <mat-option value="">
-        No selected
-      </mat-option>
-      <mat-option *ngFor="let msgT of msgTemplates" [value]="msgT.id">
-        {{ msgT.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <br />
-  <mat-form-field class="form-field" [hintLabel]="'Max ' + availableMsgLength + ' characters'">
-    <mat-label>SMS Text</mat-label>
-    <textarea
-      [disabled]="loadingData"
-      matInput
-      [formControl]="sms_text"
-      rows="7"
-      [maxlength]="availableMsgLength"></textarea>
-    <mat-hint align="end"
-      >{{ sms_text.value.length }} / 800, {{ numTotalMessage }}
-      {{
-        numTotalMessage == 0 || numTotalMessage > 1 ? 'messages' : 'message'
-      }}</mat-hint
-    >
-  </mat-form-field>
-  <br/>
+  <div style="display: flex; gap: 15px">
+    <div class="sms-form">
+      <mat-form-field class="form-field">
+        <mat-label>Message Template</mat-label>
+        <mat-select
+          [disabled]="loadingData"
+          [(value)]="selectedTmpMsg"
+          (selectionChange)="onChangeReviewMsg()">
+          <mat-option value="">
+            No selected
+          </mat-option>
+          <mat-option *ngFor="let msgT of msgTemplates" [value]="msgT.id">
+            {{ msgT.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field" [hintLabel]="'Max ' + availableMsgLength + ' characters'">
+        <mat-label>SMS Text</mat-label>
+        <textarea
+          [disabled]="loadingData"
+          matInput
+          [formControl]="sms_text"
+          rows="7"
+          [maxlength]="availableMsgLength"></textarea>
+        <mat-hint align="end"
+          >{{ sms_text.value.length }} / 800, {{ numTotalMessage }}
+          {{
+            numTotalMessage == 0 || numTotalMessage > 1 ? 'messages' : 'message'
+          }}</mat-hint
+        >
+      </mat-form-field>
+    </div>
+    <div style="width: 350px;">
+      <div class="phone-f">
+        <div class="phone-h-box">
+          <div class="phone-h"></div>
+        </div>
+        <div  class="phone-s">
+          <div *ngIf="composedTextForFirstPatient && composedTextForFirstPatient.length > 0" class="phone-m">
+            {{composedTextForFirstPatient}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+
+  </div>
+
   <p class="patient-info">Total Patients: {{data.patients.length}}</p>
 </div>
 <div mat-dialog-actions class="justify-between">
@@ -49,8 +67,8 @@
     class="mat-raised-button mat-dc"
     mat-button
     (click)="onSubmitClick($event)"
-    [disabled]="!isValid && loadingData"
+    [disabled]="(!isValid && loadingData && numTotalMessage) || (data.remain_credits < numTotalMessage)"
     >
-    {{data.isDraft? 'Save': 'Send'}} {{numTotalMessage}} messages
+    {{data.isDraft? 'Save': 'Send'}} {{ numTotalMessage}} messages
   </button>
 </div>

@@ -32,7 +32,8 @@ export class StartCampaignDialog {
   selectedTmpMsg = "";
   availableMsgLength = 10;
   loadingData = true;
-
+  numTotalMessage = 0;
+  composedTextForFirstPatient = ""
   constructor(
     public dialogRef: MatDialogRef<StartCampaignDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -53,17 +54,17 @@ export class StartCampaignDialog {
       this.loadingData = false;
     });
     this.availableMsgLength = data.remain_credits < 5 ? data.remain_credits * 160 : 800;
+    this.sms_text.valueChanges.subscribe(value => {
+      this.numTotalMessage = this.data.patients.map(
+        p => Math.ceil(this.composeText(value, p)?.length / 160)).reduce((acc, curr) => acc + curr, 0);
+      this.composedTextForFirstPatient = this.composeText(value, data.patients[0]);
+     });
+    
   }
 
   // get numOfMessages() {
   //   return Math.ceil(this.sms_text.value.length / 160);
   // }
-
-  get numTotalMessage() {
-    return this.data.patients.map(
-      p => Math.ceil(this.composeText(this.sms_text.value, p)?.length / 160)).reduce((acc, curr) => acc + curr, 0);
-  }
-
   onNoClick(): void {
     this.dialogRef.close({ status: false });
   }
