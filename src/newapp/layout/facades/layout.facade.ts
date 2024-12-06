@@ -13,6 +13,7 @@ import {
   selectCompareEnabled,
   selectIsFullSingleMonthDateRange,
   selectHideDatePicker,
+  selectPaths,
 } from '../state/reducers/layout.reducer';
 import { Moment } from 'moment';
 import { layoutPageActions } from '../state/actions';
@@ -43,6 +44,10 @@ export class LayoutFacade {
 
   public readonly isFullSingleMonthDateRange$ = this.store.pipe(
     select(selectIsFullSingleMonthDateRange)
+  );
+
+  public readonly paths$ = this.store.pipe(
+    select(selectPaths)
   );
 
   public saveDateRange(
@@ -91,5 +96,9 @@ export class LayoutFacade {
 
   public setHideDatePicker(hide: boolean) {
     this.store.dispatch(layoutPageActions.setHideDatePicker({ hide }));
+  }
+
+  public savePaths(paths: {name: string, path: string}[]){
+    this.store.dispatch(layoutPageActions.setPaths({paths}));
   }
 }

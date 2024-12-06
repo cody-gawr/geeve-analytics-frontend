@@ -104,6 +104,7 @@ export class CreateCampaignComponent implements AfterViewInit {
       private route: ActivatedRoute,
       private router: Router,
     ){
+       
         this.dataSource = new MatTableDataSource([]);
 
         combineLatest([this.route.queryParams, this.clinicFacade.clinics$])

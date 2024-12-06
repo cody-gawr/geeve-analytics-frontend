@@ -37,3 +37,13 @@ export const setHideDatePicker = createAction(
   '[Layout Pages] Set Hide Date Picker',
   props<{ hide: boolean }>()
 );
+
+export const setPaths = createAction(
+  '[Layout Pages] Set Paths',
+  props<{
+    paths: {
+      name: string;
+      path: string
+    }[]
+  }>()
+);

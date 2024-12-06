@@ -19,6 +19,7 @@ export interface LayoutState {
   activatedRouteTitle: string;
   compare: boolean;
   hideDatePicker: boolean;
+  paths: { name: string, path: string }[];
 }
 
 const initialState: LayoutState = {
@@ -34,7 +35,8 @@ const initialState: LayoutState = {
   average: 'off',
   compare: false,
   activatedRouteTitle: '',
-  hideDatePicker: false
+  hideDatePicker: false,
+  paths: []
 };
 
 export const layoutFeature = createFeature({
@@ -91,7 +93,16 @@ export const layoutFeature = createFeature({
           activatedRouteTitle: title,
         };
       }
-    )
+    ),
+    on(
+      layoutPageActions.setPaths,
+      (state, { paths }): LayoutState => {
+        return {
+          ...state,
+          paths: paths,
+        };
+      }
+    ),
   ),
 });
 
@@ -103,6 +114,7 @@ export const {
   selectActivatedRouteTitle,
   selectCompare,
   selectHideDatePicker,
+  selectPaths
 } = layoutFeature;
 
 export const selectCompareEnabled = createSelector(
