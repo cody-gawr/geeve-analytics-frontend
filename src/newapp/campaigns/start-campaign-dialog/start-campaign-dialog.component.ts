@@ -46,7 +46,6 @@ export class StartCampaignDialog {
       if (v2.data) {
         this.msgTemplates = v2.data.filter(d => d.type === 'campaign');
         if (this.msgTemplates.length > 0) {
-          // this.selectedTmpMsg = this.msgTemplates[0].id;
           this.onChangeReviewMsg();
         }
       }
@@ -63,9 +62,6 @@ export class StartCampaignDialog {
     if(data.sms_text) this.sms_text.setValue(data.sms_text);
   }
 
-  // get numOfMessages() {
-  //   return Math.ceil(this.sms_text.value.length / 160);
-  // }
   onNoClick(): void {
     this.dialogRef.close({ status: false });
   }
@@ -77,33 +73,6 @@ export class StartCampaignDialog {
   onSubmitClick(event: any): void {
     if (this.isValid) {
       this.dialogRef.close({ status: true, sms_text: this.sms_text.value });
-      // this._morningHuddleService
-      //   .sendReviewMsg(
-      //     this.data.clinic_id,
-      //     this.data.patient_id,
-      //     this.sms_text.value,
-      //     this.phoneNumber.value,
-      //     this.data.appoint_id
-      //   )
-      //   .subscribe({
-      //     next: res => {
-      //       this.isWaitingResponse = false;
-      //       this.dialogRef.close({
-      //         status: res.status,
-      //         num_sms: Math.ceil(this.sms_text.value.length / 160),
-      //       });
-      //     },
-      //     error: err => {
-      //       this.isWaitingResponse = false;
-      //       this._toastrService.error(
-      //         (err.error && err.error.message) || err.message
-      //       );
-      //     },
-      //     complete: () => {
-      //       this._toastrService.success('Sent Message Sucessfully!');
-      //     },
-      //   });
-
     }
   }
 
@@ -128,17 +97,5 @@ export class StartCampaignDialog {
     if(msg){
       this.sms_text.setValue(msg.msg_template);
     }
-    
-
-    // let renderedMsg = msg.msg_template.replaceAll(
-    //   '[Patient Name]',
-    //   this.data.patient_name
-    // );
-    // renderedMsg = renderedMsg.replaceAll(
-    //   '[Clinic Name]',
-    //   this.data.clinicName
-    // );
-
-    // this.sms_text.setValue(renderedMsg);
   }
 }

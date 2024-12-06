@@ -132,26 +132,6 @@ export class CreateCampaignComponent implements AfterViewInit {
                   this.campaignFilters = campaignData.data.campaign_filters;
                   this.loadFilterSettings(campaignData.data.campaign_filters);
                   this.eventInput.next();
-                  // this.campaignService.getCampaignPatients(this.clinicId, this.getFilterSettings()).subscribe((patients) => {
-                  //   this.dataSource.data = patients.data;
-                  //   this.selection.clear();
-                  //   this.selection.select(...campaignData.data.pending_campaign?.map(d => {
-                  //     const p = this.dataSource.data.find(p => p.patient_id === d.patient_id);
-                  //     return p;
-                  //     // else return {
-                  //     //   clinic_id: d.clinic_id,
-                  //     //   patient_id: d.patient_id,
-                  //     //   patient_name: 'unknown',
-                  //     //   mobile: d.phone_number,
-                  //     //   last_appointment: 'unknown',
-                  //     //   last_provider: 'unknown',
-                  //     //   next_appointment: 'unknown',
-                  //     //   next_provider: 'unknown',
-                  //     //   prev_campaigns: 'unknown',
-                  //     // }
-                  //   }));
-                  //   this.loadingData = false;
-                  // });
                 });
               }else{
                 this.todo = DefaultFilterElements;
@@ -189,17 +169,6 @@ export class CreateCampaignComponent implements AfterViewInit {
                 this.selection.select(...this.pendingPatients?.map(d => {
                   const p = this.dataSource.data.find(p => p.patient_id === d.patient_id);
                   return p;
-                  // else return {
-                  //   clinic_id: d.clinic_id,
-                  //   patient_id: d.patient_id,
-                  //   patient_name: 'unknown',
-                  //   mobile: d.phone_number,
-                  //   last_appointment: 'unknown',
-                  //   last_provider: 'unknown',
-                  //   next_appointment: 'unknown',
-                  //   next_provider: 'unknown',
-                  //   prev_campaigns: 'unknown',
-                  // }
                 }));
               }else{
                 this.selection.select(...this.dataSource.data);
@@ -316,7 +285,6 @@ export class CreateCampaignComponent implements AfterViewInit {
             event.currentIndex,
           );
         }
-        // this.getCampaignPatients();
         this.eventInput.next();
     }
 
