@@ -109,6 +109,20 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
     
     }
+
+    choseColor(status: 'draft' | 'started' | 'completed' | 'pending') {
+        switch(status){
+            case 'draft':
+                return 'black';
+            case 'started':
+                return 'blue';
+            case 'completed':
+                return 'green';
+            case 'pending':
+                return 'yellow';
+        }
+        return 'black';
+    }
     loadCampaigns() {
         if(this.clinicId){
             this.campaignService.getCampaigns(
