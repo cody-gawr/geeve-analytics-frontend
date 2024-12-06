@@ -39,7 +39,7 @@ export class StartCampaignDialog {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private clinicSettingService: ClinicSettingsService,
   ) {
-    if(data.sms_text) this.sms_text.setValue(data.sms_text);
+    
 
     this.clinicSettingService.getReviewMsgTemplateList(this.data.clinicId).subscribe((v2) => {
 
@@ -58,8 +58,9 @@ export class StartCampaignDialog {
       this.numTotalMessage = this.data.patients.map(
         p => Math.ceil(this.composeText(value, p)?.length / 160)).reduce((acc, curr) => acc + curr, 0);
       this.composedTextForFirstPatient = this.composeText(value, data.patients[0]);
-     });
-    
+    });
+
+    if(data.sms_text) this.sms_text.setValue(data.sms_text);
   }
 
   // get numOfMessages() {

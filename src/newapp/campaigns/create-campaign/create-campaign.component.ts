@@ -95,6 +95,7 @@ export class CreateCampaignComponent implements AfterViewInit {
     smsTemplate = '';
     pendingPatients = [];
     campaignFilters: ICampaignFilter[]= [];
+    isSendingSms = false;
     constructor(
       private clinicFacade: ClinicFacade,
       private campaignService: CampaignService,
@@ -457,8 +458,8 @@ export class CreateCampaignComponent implements AfterViewInit {
         });
     
         dialogRef.afterClosed().subscribe(result => {
-          console.log('The dialog was closed', result);
           if(result?.status){
+            this.isSendingSms = true;
             const patientIds = this.selection.selected.map(s => s.patient_id);
             this.campaignService.createCampaign(
               this.clinicId,
@@ -472,15 +473,15 @@ export class CreateCampaignComponent implements AfterViewInit {
               next: (result) => {
                 if(result.data[0] == result.data[1]){
                   this.nofifyService.showSuccess(`Sent successfully to ${result.data[0]} patients for "${this.description.value}" campaign.`);
-                  
                 }else if(!isDraft){
                   this.nofifyService.showError(`Failed ${result.data[1] - result.data[0]} patients, Succeed to ${result.data[0]} patients for "${this.description.value}" campaign.`);
                 }
+                this.isSendingSms = false;
                 this.router.navigateByUrl('/newapp/campaigns');
-                console.log('[createCampaign]:', result);
               },
               error: err => {
                 console.log('Error - [createCampaign]:', err);
+                this.isSendingSms = false;
               }
             });
           }

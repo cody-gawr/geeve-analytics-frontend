@@ -1,6 +1,7 @@
 .container {
     display: flex;
     flex-direction: column;
+
     input.title {
         font-size: 18px;
         border: 1px solid cadetblue;
@@ -16,6 +17,11 @@
         border-bottom: 1px solid #e5e5e7;
         border-top: 1px solid #e5e5e7;
         padding: 10px 0;
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
         span.title {
             line-height: 1.8;
             font-weight: 800;
@@ -147,20 +153,20 @@
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
                 0 8px 10px 1px rgba(0, 0, 0, 0.14),
                 0 3px 14px 2px rgba(0, 0, 0, 0.12);
-  }
+}
   
-  .cdk-drag-placeholder {
+.cdk-drag-placeholder {
     opacity: 0;
-  }
-  
-  .cdk-drag-animating {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-  
-  .drag-container.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
+}
 
-  .drop-container.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
+.cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
+}
+
+.drag-container.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drop-container.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

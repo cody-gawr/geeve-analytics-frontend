@@ -2,15 +2,18 @@
 <div class="container">
     <div class="header">
         <input matInput class="title" placeholder="Enter Description" [formControl]="description"/>
-        <button [disabled]="!this.selection.selected" color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
-            <span (click)="$event.preventDefault();$event.stopPropagation(); startCampaign();">Start Campaign</span><mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-            <button [disabled]="!this.selection.selected" (click)="startCampaign(true)" mat-menu-item>
-                <mat-icon>edit_square</mat-icon>
-                <span>Save draft</span>
+        <div class="header-buttons">
+            <mat-spinner *ngIf="isSendingSms" style="width: 20px;height: 20px;"></mat-spinner>
+            <button [disabled]="!this.selection.selected || isSendingSms" color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
+                <span (click)="$event.preventDefault();$event.stopPropagation(); startCampaign();">Start Campaign</span><mat-icon>more_vert</mat-icon>
             </button>
-        </mat-menu>
+            <mat-menu #menu="matMenu">
+                <button [disabled]="!this.selection.selected" (click)="startCampaign(true)" mat-menu-item>
+                    <mat-icon>edit_square</mat-icon>
+                    <span>Save draft</span>
+                </button>
+            </mat-menu>
+        </div>
     </div>
     <div class="body">
         <div class="side">
@@ -133,7 +136,7 @@
             <div class="c-layout">
                 <div class="title table-label">
                     <span class="title">Campaign Members ({{selection.selected.length}} selected)</span>
-                    <mat-spinner *ngIf="loadingData" style="width: 20px;height:20px;"></mat-spinner>
+                    <mat-spinner *ngIf="loadingData" style="width: 20px;height: 20px;"></mat-spinner>
                 </div>
                 
                 <div class="table">
