@@ -18,6 +18,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AverageModeToggleComponent } from './components/average-mode-toggle/average-mode-toggle.component';
 import { CompareModeToggleComponent } from './components/compare-mode-toggle/compare-mode-toggle.component';
 import { DragDropButtonComponent } from './components/drag-drop-button/drag-drop-button.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { CustomTooltipComponent, CustomTooltipDirective } from './directives/custom-tooltip.directive';
 
 const modules = [
   AngularMaterialModule,
@@ -35,7 +37,8 @@ const components = [
   AverageModeToggleComponent,
   CompareModeToggleComponent,
   SpinLoaderComponent,
-  DragDropButtonComponent
+  DragDropButtonComponent,
+  ConfirmDialogComponent
 ];
 
 @NgModule({
@@ -44,7 +47,8 @@ const components = [
     TooltipComponent,
     TooltipDirective,
     TooltipContainerDirective,
-    //TooltipLayoutComponent,
+    CustomTooltipComponent,
+    CustomTooltipDirective,
     ...components,
   ],
   imports: [CommonModule, ...modules],
@@ -53,6 +57,8 @@ const components = [
     TimeMaskDirective,
     TooltipDirective,
     TooltipContainerDirective,
+    CustomTooltipComponent,
+    CustomTooltipDirective,
     ...components,
   ],
   providers: [],

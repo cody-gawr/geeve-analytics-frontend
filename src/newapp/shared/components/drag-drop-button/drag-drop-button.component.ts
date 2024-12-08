@@ -9,10 +9,11 @@ import { Observable, Subject, takeUntil} from 'rxjs';
 export class DragDropButtonComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-  @Input() iconName: string;
+  @Input() iconUrl: string;
+  @Input() iconUrlWhite: string;
   @Input() filterName: string;
   @Input() title: string;
-  @Input() selectedIcon$: Observable<string>;
+  @Input() selectedFilterName$: Observable<string>;
   @Input() closeEvent:Subject<string>;
   isOpen = false;
   @Input() isDone = false;
@@ -22,9 +23,9 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.selectedIcon$?.pipe(takeUntil(this.destroy$)).subscribe(
-      (selectedIconName: string) => {
-        if(selectedIconName === this.filterName) this.isOpen = true;
+    this.selectedFilterName$?.pipe(takeUntil(this.destroy$)).subscribe(
+      (selectedFilterName: string) => {
+        if(selectedFilterName === this.filterName) this.isOpen = true;
         else this.isOpen = false;
       }
     );

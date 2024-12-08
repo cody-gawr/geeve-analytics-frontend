@@ -28,7 +28,7 @@
                     cdkDropListSortingDisabled
                     cdkDropListOrientation="vertical"
                     class="drag-container">
-                        <drag-drop-button class="drag-item" *ngFor="let item of todo" cdkDrag [iconName]="item.iconName" [title]="item.title" [isDone]="false" [filterName]="item.filterName" (click)="setSelectedIcon(item.filterName)" [selectedIcon$]="selectedIcon$"></drag-drop-button>
+                        <drag-drop-button class="drag-item" *ngFor="let item of todo" cdkDrag [iconName]="item.iconName" [iconUrlWhite]="item.iconUrlWhite" [iconUrl]="item.iconUrl" [title]="item.title" [isDone]="false" [filterName]="item.filterName" (click)="setSelectedIcon(item.filterName)" [selectedIcon$]="selectedIcon$"></drag-drop-button>
                     </div>
                 </div>
                 <div class="divider-wrapper">
@@ -130,7 +130,7 @@
                 cdkDropListSortingDisabled
                 cdkDropListOrientation="horizontal"
                 class="drop-container">
-                    <drag-drop-button class="drag-item" *ngFor="let item of done" cdkDrag [iconName]="item.iconName" [isDone]="true" [closeEvent]="closeEvent" [filterName]="item.filterName" [title]="item.title" (click)="setSelectedIcon(item.filterName)" [selectedIcon$]="selectedIcon$"></drag-drop-button>
+                    <drag-drop-button class="drag-item" *ngFor="let item of done" cdkDrag [iconName]="item.iconName" [iconUrlWhite]="item.iconUrlWhite" [iconUrl]="item.iconUrl" [isDone]="true" [closeEvent]="closeEvent" [filterName]="item.filterName" [title]="item.title" (click)="setSelectedIcon(item.filterName)" [selectedIcon$]="selectedIcon$"></drag-drop-button>
                 </div>
             </div>
             <div class="c-layout">

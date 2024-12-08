@@ -20,26 +20,36 @@ import moment from 'moment';
 const DefaultFilterElements = [
   {
       iconName: 'medical_services',
+      iconUrl: '/assets/jeeve/images/treatment_1.png',
+      iconUrlWhite: '/assets/jeeve/images/treatment_1_white.png',
       title: 'Treatment',
       filterName: 'treatment'
   },
   {
       iconName: 'list_alt',
+      iconUrl: '/assets/jeeve/images/tx_plans_1.png',
+      iconUrlWhite: '/assets/jeeve/images/tx_plans_1_white.png',
       title: 'Incomplete TX Plans',
       filterName: 'incomplete_tx_plan'
   },
   {
       iconName: 'health_and_safety',
+      iconUrl: '/assets/jeeve/images/health_insurance_1.png',
+      iconUrlWhite: '/assets/jeeve/images/health_insurance_1_white.png',
       title: 'Health Insurance',
       filterName: 'health_insurance'
   },
   {
       iconName: 'schedule',
+      iconUrl: '/assets/jeeve/images/overdue_1.png',
+      iconUrlWhite: '/assets/jeeve/images/overdue_1_white.png',
       title: 'Overdues',
       filterName: 'overdues'
   },
   {
       iconName: 'personal_injury',
+      iconUrl: '/assets/jeeve/images/patient_age_1.png',
+      iconUrlWhite: '/assets/jeeve/images/patient_age_1_white.png',
       title: 'Patient Age',
       filterName: 'patient_age'
   }

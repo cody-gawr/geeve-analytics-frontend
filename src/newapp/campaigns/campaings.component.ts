@@ -33,7 +33,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     destroy$ = this.destroy.asObservable();
     displayedColumns: string[] = [
         'select', 'description', 'created', 
-        'totalPatientsCount', 'sentMsgCount', 'status', 'actions'
+        'totalPatientsCount', 'sentMsgCount', 'pendingCampaignCount', 'failedMsgCount', 'status', 'actions'
     ];
     dataSource = new MatTableDataSource<ICampaign>([]);
     selection = new SelectionModel<ICampaign>(true, []);
@@ -85,21 +85,10 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
             distinctUntilChanged(),
         ).subscribe((clinicId) => {
             if(typeof clinicId === 'number') {
-                // this.range.controls['clinic_id'].setValue(clinicId);
                 this.clinicId = clinicId;
-                // clinicFacade.loadCampaigns(clinicId);
                 this.loadCampaigns();
             }
         });
-
-        // clinicFacade.campaigns$.pipe(takeUntil(this.destroy$)).subscribe((campaigns) => {
-        //     this.Campaigns = campaigns?.map((campaign) => {
-        //         return {
-        //             value: campaign.id,
-        //             label: campaign.description
-        //         };
-        //     }) || [];
-        // });
 
         this.range.controls.end.valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged()).subscribe(
             (value)=> {
@@ -123,6 +112,13 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         }
         return 'black';
     }
+
+    choseStatusLabel(element: ICampaign){
+        if(element.status === 'draft') return 'Draft';
+        if(element.inProgressMsgCount == 0) return "Complete";
+        else return 'In Progress';
+    }
+
     loadCampaigns() {
         if(this.clinicId){
             this.campaignService.getCampaigns(
@@ -131,15 +127,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
                 this.range.controls.end.value.format('YYYY-MM-DD')
             ).subscribe(
                 result => {
-                    console.log('[loadCampaigns]:', result);
-                    this.dataSource.data = result.data?.map(
-                        (d) => {
-                            return {
-                                ...d,
-                                totalPatientsCount: d.sentMsgCount + d.pendingCampaignCount
-                            }
-                        }
-                    );
+                    this.dataSource.data = result.data;
                 }
             )
         }
@@ -179,26 +167,5 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
     openCreateCampaignDialog() {
         this.route.navigate(['newapp/campaigns/create']);
-    }
-    isResending = false;
-    resendCampaign(element: ICampaign) {
-        this.isResending = true;
-        this.campaignService.resendCampaign(element.clinic_id, element.id).subscribe(
-            {
-                next: (result) => {
-                    if(result.data[0] == result.data[1]){
-                        this.nofifyService.showSuccess(`Sent successfully to ${result.data[0]} patients for "${element.description}}" campaign.`);
-                      }else{
-                        this.nofifyService.showError(`Failed ${result.data[1] - result.data[0]} patients, Succeed to ${result.data[0]} patients for "${element.description}" campaign.`);
-                      }
-                    this.loadCampaigns();
-                    this.isResending = false;
-                },
-                error: (err) => {
-                    this.isResending = false;
-                }
-            }
-
-        )
     }
 }

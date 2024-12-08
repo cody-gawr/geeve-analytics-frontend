@@ -56,6 +56,19 @@ export interface ICampaign {
     started: string;
     sentMsgCount: number;
     pendingCampaignCount: number;
+    inProgressMsgCount: string | number;
+    failedMsgCount: string | number;
+    completedMsgCount: string | number;
+}
+
+export interface ICampaignMessage {
+    id: number;
+    created: string;
+    patient_id: number;
+    patient_name: string;
+    phone_number: string;
+    sms_text: string;
+    status: string;
 }
 
 export interface IGetPatientsFilterJson {
@@ -137,7 +150,7 @@ export class CampaignService {
     }
 
     public getCampaignSmsMessages(clinicId: number, campaignId: number){
-        return this.http.get<JeeveResponse<ICampaign[]>>(`${this.commonUrl}/campaign/sms-messages`, {
+        return this.http.get<JeeveResponse<ICampaignMessage[]>>(`${this.commonUrl}/campaign/sms-messages`, {
             withCredentials: true,
             params: {
                 clinic_id: clinicId,
@@ -153,6 +166,18 @@ export class CampaignService {
                 clinic_id: clinicId,
                 campaign_id: campaignId
             }
+        });
+    }
+
+    public resendCampaignMessages(clinicId: number, campaignId: number, messages: any) {
+        return this.http.post<JeeveResponse<[number, number]>>(`${this.commonUrl}/campaign/re-send-messages`, 
+        {
+            clinic_id: clinicId,
+            campaign_id: campaignId,
+            messages
+        },
+        {
+            withCredentials: true,
         });
     }
 }

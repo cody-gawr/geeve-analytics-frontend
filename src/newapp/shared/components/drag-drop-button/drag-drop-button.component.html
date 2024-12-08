@@ -1,8 +1,8 @@
-<div [classList]="isOpen?['container border-c']:['container']" (click)="isOpen = !isOpen" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin" [matTooltip]="title"
-    [matTooltipPositionAtOrigin]="true">
+<div [classList]="isOpen?['container border-c']:['container']" (click)="isOpen = !isOpen" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin" [appTooltip]="'<img src=' + iconUrlWhite  + '/><span>' + title + '</span>'">
     <mat-icon *ngIf="isDone" (click)="onClose()" class="close">cancel</mat-icon>
     <div class="box">
-        <mat-icon>{{iconName}}</mat-icon>
+        <!-- <mat-icon>{{iconName}}</mat-icon> -->
+        <img [src]="iconUrl"/>
         <span>{{title}}</span>
     </div>
 </div>
