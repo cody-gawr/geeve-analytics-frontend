@@ -283,8 +283,7 @@ export class CreateCampaignComponent implements AfterViewInit {
 
     done = [];
 
-    drop(event: CdkDragDrop<string[]>) {
-        console.log(event)
+    drop(event: CdkDragDrop<string[]>, type = '') {
         if (event.previousContainer === event.container) {
           moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
@@ -294,8 +293,8 @@ export class CreateCampaignComponent implements AfterViewInit {
             event.previousIndex,
             event.currentIndex,
           );
+          this.eventInput.next();
         }
-        this.eventInput.next();
     }
 
     getFilterSettings(): IGetPatientsFilterJson[] {
@@ -390,7 +389,7 @@ export class CreateCampaignComponent implements AfterViewInit {
     selectedIconObserver = new Subject<string>();
     selectedFilterName = '';
     public get selectedIcon$(): Observable<string> {
-        return this.selectedIconObserver.asObservable().pipe(tap(v => console.log('v', v)), map(v => v));
+        return this.selectedIconObserver.asObservable().pipe(map(v => v));
     }
     public setSelectedIcon (value: string) {
         this.selectedFilterName = value;
@@ -465,6 +464,24 @@ export class CreateCampaignComponent implements AfterViewInit {
           }
         });
       }
+    }
+
+    isValidForm(filterName: string){
+      if(filterName === 'patient_age'){
+        if(this.filterFormGroup.controls.patientAgeMin.value > 0) {
+          return true;
+        }
+      }else if(filterName === 'treatment'){
+        if( (this.filterFormGroup.controls.treatmentStart.value && this.filterFormGroup.controls.treatmentEnd.value) || this.selectedItemCodes.value?.length > 0){
+          return true;
+        }
+      }else if(filterName === 'incomplete_tx_plan'){
+        if(this.filterFormGroup.controls.incomplete_tx_planStart.value && this.filterFormGroup.controls.incomplete_tx_planEnd.value){
+          return true;
+        }
+      }
+
+      return false;
     }
 
     add(event: MatChipInputEvent, type = 'treatment'): void {
