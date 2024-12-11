@@ -302,7 +302,7 @@ export class CreateCampaignComponent implements AfterViewInit {
       return this.done.map(
         d => {
           const isDateRange = ['treatment', 'incomplete_tx_plan'].indexOf(d.filterName) > -1;
-          const filterSettings = [];
+          let filterSettings: any[] | undefined = [];
           if(isDateRange){
             const start = this.filterFormGroup.controls[d.filterName + 'Start'].value;
             const end = this.filterFormGroup.controls[d.filterName + 'End'].value;
@@ -315,11 +315,14 @@ export class CreateCampaignComponent implements AfterViewInit {
 
           } else if(d.filterName === 'treatment'){
             filterSettings.push(...this.selectedItemCodes.value.map(v => parseInt(v)));
+          }else if(d.filterName === 'overdues'){
+            // no filter settings
+            filterSettings = undefined;
           }
 
           return  {
             filter: d.filterName,
-            filter_settings: filterSettings,
+            ...(filterSettings && { filter_settings: filterSettings}),
           }
         }
       )
@@ -479,6 +482,8 @@ export class CreateCampaignComponent implements AfterViewInit {
         if(this.filterFormGroup.controls.incomplete_tx_planStart.value && this.filterFormGroup.controls.incomplete_tx_planEnd.value){
           return true;
         }
+      }else if(filterName === 'overdues') {
+        return true;
       }
 
       return false;

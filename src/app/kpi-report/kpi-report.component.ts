@@ -361,68 +361,70 @@ export class KpiReportComponent implements OnInit, OnDestroy {
       this.endDate,
       this.selectedDentist
     ).subscribe(
-      (res: any) => {
-        if (res.status == 200) {
+      {
+        next: (res: any) => {
+          if (res.status == 200) {
+            this.reportloader = false;
+            this.reportData = res.body.data;
+            this.reportData.forEach(element => {
+              if (element.kpi_type == 'Production') {
+                element.val.forEach(ele => {
+                  if (ele.clinic_id == undefined) {
+                    this.totalProductionActual = ele.actual;
+                  }
+                });
+              }
+              if (element.kpi_type == 'Dentist Days') {
+                element.val.forEach(ele => {
+                  if (ele.clinic_id == undefined) {
+                    this.totalDaysActual = ele.actual;
+                  }
+                });
+              }
+              if (element.kpi_type == 'Utilisation Rate') {
+                element.val.forEach(ele => {
+                  if (ele.clinic_id == undefined) {
+                    this.totalHoursAvailable = ele.available_hours;
+                  }
+                });
+              }
+            });
+            this.totalDentistProductionPerDayActual =
+              this.totalProductionActual / this.totalDaysActual;
+            this.totalDentistProductionPerHrActual =
+              this.totalProductionActual / this.totalHoursAvailable;
+  
+            this.reportData.forEach(element => {
+              if (element.kpi_type == 'Dentist Production Per Day') {
+                element.val.forEach(ele => {
+                  if (ele.clinic_id == undefined) {
+                    ele.actual = this.totalDentistProductionPerDayActual;
+                  }
+                });
+              }
+              if (element.kpi_type == 'Hourly Rate') {
+                element.kpi_type = 'Dentist Production Per Hr';
+                element.val.forEach(ele => {
+                  if (ele.clinic_id == undefined) {
+                    ele.actual = this.totalDentistProductionPerHrActual;
+                  }
+                });
+              }
+  
+              if (element.kpi_type == 'Discount') {
+                element.kpi_type = 'Discounts';
+              }
+            });
+            // this.reportData[8]['kpi_type'] = 'Discount';
+            // this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
+            this.reportMonths = res.body.months;
+          }
+        },
+        error: error => {
           this.reportloader = false;
-          this.reportData = res.body.data;
-          this.reportData.forEach(element => {
-            if (element.kpi_type == 'Production') {
-              element.val.forEach(ele => {
-                if (ele.clinic_id == undefined) {
-                  this.totalProductionActual = ele.actual;
-                }
-              });
-            }
-            if (element.kpi_type == 'Dentist Days') {
-              element.val.forEach(ele => {
-                if (ele.clinic_id == undefined) {
-                  this.totalDaysActual = ele.actual;
-                }
-              });
-            }
-            if (element.kpi_type == 'Utilisation Rate') {
-              element.val.forEach(ele => {
-                if (ele.clinic_id == undefined) {
-                  this.totalHoursAvailable = ele.available_hours;
-                }
-              });
-            }
-          });
-          this.totalDentistProductionPerDayActual =
-            this.totalProductionActual / this.totalDaysActual;
-          this.totalDentistProductionPerHrActual =
-            this.totalProductionActual / this.totalHoursAvailable;
-
-          this.reportData.forEach(element => {
-            if (element.kpi_type == 'Dentist Production Per Day') {
-              element.val.forEach(ele => {
-                if (ele.clinic_id == undefined) {
-                  ele.actual = this.totalDentistProductionPerDayActual;
-                }
-              });
-            }
-            if (element.kpi_type == 'Hourly Rate') {
-              element.kpi_type = 'Dentist Production Per Hr';
-              element.val.forEach(ele => {
-                if (ele.clinic_id == undefined) {
-                  ele.actual = this.totalDentistProductionPerHrActual;
-                }
-              });
-            }
-
-            if (element.kpi_type == 'Discount') {
-              element.kpi_type = 'Discounts';
-            }
-          });
-          // this.reportData[8]['kpi_type'] = 'Discount';
-          // this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
-          this.reportMonths = res.body.months;
+          // this.warningMessage = "Please Provide Valid Inputs!";
+          // this.toastr.error('There was an error retrieving your report data, please contact our support team.');
         }
-      },
-      error => {
-        this.reportloader = false;
-        // this.warningMessage = "Please Provide Valid Inputs!";
-        // this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       }
     );
   }

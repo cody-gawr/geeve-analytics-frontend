@@ -73,7 +73,7 @@ export interface ICampaignMessage {
 
 export interface IGetPatientsFilterJson {
     filter: string, // filter name
-    filter_settings: any[];
+    filter_settings?: any[];
     // start_date: string, // YYYY-MM-DD
     // end_date: string, // YYYY-MM-DD
     // items?: string // CSV format list
