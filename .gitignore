@@ -5,3 +5,4 @@
 /.angular/*
 .prettier*
 .vscode/
+.DS_Store
