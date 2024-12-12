@@ -14,6 +14,8 @@ export interface ISpResultPatient {
     next_appointment: string;
     next_provider: number;
     prev_campaigns: string;
+    days_overdue?: number;
+    amount?: string | number;
 }
 
 export interface ICampaignFilter {
@@ -69,6 +71,7 @@ export interface ICampaignMessage {
     phone_number: string;
     sms_text: string;
     status: string;
+    unsubscribed?: boolean;
 }
 
 export interface IGetPatientsFilterJson {
