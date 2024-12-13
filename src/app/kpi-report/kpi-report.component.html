@@ -246,14 +246,14 @@
                     reportD.kpi_type == 'Dentist Production Per Day' ||
                     reportD.kpi_type == 'Dentist Production Per Hr'
                   ">
-                  ${{ reportVal.goal | number: '1.0-2' }}
+                  ${{ reportVal.goal | number: '1.0-0' }}
                 </td>
                 <td
                   *ngIf="
                     reportD.kpi_type == 'Production Units' ||
                     reportD.kpi_type == 'New patients'
                   ">
-                  {{ reportVal.goal | number: '1.0-2' }}
+                  {{ reportVal.goal | number: '1.0-0' }}
                 </td>
                 <td *ngIf="reportD.kpi_type == 'Dentist Days'">
                   {{ reportVal.goal | number: '1.0-2' }}
@@ -267,14 +267,16 @@
                     reportD.kpi_type == 'Dentist Production Per Day' ||
                     reportD.kpi_type == 'Dentist Production Per Hr'
                   ">
-                  ${{ reportVal.actual | number: '1.0-2' }}
+                  ${{ reportVal.actual | number: '1.0-0' }}
                 </td>
                 <td
                   *ngIf="
-                    reportD.kpi_type == 'Dentist Days' ||
                     reportD.kpi_type == 'Production Units' ||
                     reportD.kpi_type == 'New patients'
                   ">
+                  {{ reportVal.actual | number: '1.0-0' }}
+                </td>
+                <td *ngIf="reportD.kpi_type == 'Dentist Days'">
                   {{ reportVal.actual | number: '1.0-2' }}
                 </td>
               </tr>
@@ -283,7 +285,7 @@
                 <td
                   *ngIf="reportVal.goal > 0"
                   [ngClass]="reportVal.goal_percent >= 100 ? 'complete' : ''">
-                  {{ reportVal.goal_percent | number: '1.0-2' }}%
+                  {{ reportVal.goal_percent | number: '1.0-0' }}%
                 </td>
               </tr>
             </table>
@@ -299,14 +301,14 @@
               <tr>
                 <td
                   [ngClass]="reportVal.hours_percent >= 100 ? 'complete' : ''">
-                  {{ reportVal.hours_percent | number: '1.0-2' }}%
+                  {{ reportVal.hours_percent | number: '1.0-0' }}%
                 </td>
               </tr>
             </table>
             <table
               class="report-table-main report-table"
               *ngIf="reportD.kpi_type == 'Discounts'">
-              <td>${{ reportVal.actual | number: '1.0-2' }}</td>
+              <td>${{ reportVal.actual | number: '1.0-0' }}</td>
             </table>
           </td>
         </tr>
