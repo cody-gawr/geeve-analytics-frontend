@@ -204,7 +204,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         this.closeEvent$.pipe(
           takeUntil(this.destroy$)
         ).subscribe(filterName => {
-          const index = this.done.findIndex(d => d.filter_name === filterName);
+          const index = this.done.findIndex(d => d.filterName === filterName);
           this.todo.push(...this.done.splice(index, 1));
           this.eventInput.next();
         });
@@ -213,7 +213,9 @@ export class CreateCampaignComponent implements AfterViewInit {
           this.itemCodes = result.data;
         })
 
-        this.selectedItemCodes.valueChanges.subscribe(
+        this.selectedItemCodes.valueChanges.pipe(
+          takeUntil(this.destroy$),
+        ).subscribe(
           value => {
             if(this.done.findIndex(item => item.filterName === 'treatment') > -1){
               this.eventInput.next();
@@ -222,6 +224,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         );
 
         this.filterFormGroup.controls.patientAgeMax.valueChanges.pipe(
+          takeUntil(this.destroy$),
           debounceTime(300),
         ).subscribe((maxV) => {
           if(this.done.findIndex(item => item.filterName === 'patient_age') > -1){
@@ -230,6 +233,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         });
 
         this.filterFormGroup.controls.patientAgeMin.valueChanges.pipe(
+          takeUntil(this.destroy$),
           debounceTime(300),
         ).subscribe((minV) => {
           if(this.done.findIndex(item => item.filterName === 'patient_age') > -1){
@@ -239,6 +243,7 @@ export class CreateCampaignComponent implements AfterViewInit {
 
 
         this.filterFormGroup.controls.treatmentEnd.valueChanges.pipe(
+          takeUntil(this.destroy$),
           debounceTime(300),
         ).subscribe((value) => {
           if(this.done.findIndex(item => item.filterName === 'treatment') > -1){
@@ -247,6 +252,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         });
         
         this.filterFormGroup.controls.incomplete_tx_planEnd.valueChanges.pipe(
+          takeUntil(this.destroy$),
           debounceTime(300),
         ).subscribe((value) => {
           if(this.done.findIndex(item => item.filterName === 'incomplete_tx_plan') > -1){
@@ -255,12 +261,21 @@ export class CreateCampaignComponent implements AfterViewInit {
         });
         
         this.filterFormGroup.controls.no_appointmentEnd.valueChanges.pipe(
+          takeUntil(this.destroy$),
           debounceTime(300),
         ).subscribe((value) => {
           if(this.done.findIndex(item => item.filterName === 'no_appointment') > -1){
             this.eventInput.next();
           }
         });
+
+        this.campaignService.selectedIcon$.pipe(
+          takeUntil(this.destroy$)
+        ).subscribe(v => {
+          this.selectedFilterName = v;
+        })
+
+        
     }
 
     selection = new SelectionModel<CampaignElement>(true, []);
@@ -405,9 +420,7 @@ export class CreateCampaignComponent implements AfterViewInit {
     topPanelHeight: number = 50; // Initial width of the left panel (in percentage)
     isDragging: boolean = false;
 
-    get selectedFilterName() {
-      return this.campaignService.selectedFilterName;
-    }
+    selectedFilterName = '';
   
     onMouseDown(event: MouseEvent) {
       this.isDragging = true;
