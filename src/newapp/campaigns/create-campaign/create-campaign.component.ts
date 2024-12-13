@@ -404,16 +404,10 @@ export class CreateCampaignComponent implements AfterViewInit {
 
     topPanelHeight: number = 50; // Initial width of the left panel (in percentage)
     isDragging: boolean = false;
-    selectedIconObserver = new Subject<string>();
-    selectedFilterName = '';
-    public get selectedIcon$(): Observable<string> {
-        return this.selectedIconObserver.asObservable().pipe(map(v => v));
-    }
-    public setSelectedIcon (value: string) {
-        this.selectedFilterName = value;
-        this.selectedIconObserver.next(value);
-    }
 
+    get selectedFilterName() {
+      return this.campaignService.selectedFilterName;
+    }
   
     onMouseDown(event: MouseEvent) {
       this.isDragging = true;
@@ -552,5 +546,13 @@ export class CreateCampaignComponent implements AfterViewInit {
         if(type === 'health_insurance')
           this.healthInsurance[index] = value;
       }
+    }
+
+    isVisibleForm(filterName: string){
+      if(this.selectedFilterName === filterName && (this.done.findIndex(d => d.filter_name === filterName) < 0)){
+        return true;
+      }
+
+      return false;
     }
 }

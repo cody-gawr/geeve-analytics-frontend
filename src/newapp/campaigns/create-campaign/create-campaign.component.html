@@ -32,8 +32,9 @@
                         [cdkDragDisabled]="!isValidForm(item.filterName)"
                         [iconName]="item.iconName" [iconUrlWhite]="item.iconUrlWhite" 
                         [iconUrl]="item.iconUrl" [title]="item.title" [isDone]="false" 
-                        [filterName]="item.filterName" (click)="setSelectedIcon(item.filterName)" 
-                        [selectedFilterName$]="selectedIcon$"></drag-drop-button>
+                        [filterName]="item.filterName" 
+                        [isOpen]="item.filterName === selectedFilterName"
+                        ></drag-drop-button>
                     </div>
                 </div>
                 <div class="divider-wrapper">
@@ -42,7 +43,7 @@
                 
                 <div class="bottom" [style.height.%]="100 - topPanelHeight">
                     <form [formGroup]="filterFormGroup">
-                        <div *ngIf="selectedFilterName === 'patient_age'" class="patient-age-slider">
+                        <div *ngIf="isVisibleForm('patient_age')" class="patient-age-slider">
                             <div class="label">
                                 <label>{{this.filterFormGroup.controls.patientAgeMin.value}}</label>
                                 <label>{{this.filterFormGroup.controls.patientAgeMax.value}}</label>
@@ -53,7 +54,7 @@
                             </mat-slider>
                         </div>
 
-                        <mat-form-field *ngIf="['treatment', 'incomplete_tx_plan', 'no_appointment'].indexOf(selectedFilterName) > -1" class="filter-box" appearance="outline">
+                        <mat-form-field *ngIf="isVisibleForm('treatment') || isVisibleForm('incomplete_tx_plan') || isVisibleForm('no_appointment')" class="filter-box" appearance="outline">
                             <!-- <mat-label>Enter a date range</mat-label> -->
                             <mat-date-range-input [rangePicker]="picker">
                               <input matStartDate [formControlName]="selectedFilterName + 'Start'" placeholder="Start date">
@@ -66,7 +67,7 @@
                             <mat-error *ngIf="filterFormGroup.controls[selectedFilterName + 'Start'].hasError('matStartDateInvalid')">Invalid start date</mat-error>
                             <mat-error *ngIf="filterFormGroup.controls[selectedFilterName + 'End'].hasError('matEndDateInvalid')">Invalid end date</mat-error>
                         </mat-form-field>
-                        <div class="treatment-form" *ngIf="selectedFilterName === 'treatment'">
+                        <div class="treatment-form" *ngIf="isVisibleForm('treatment')">
                             <!-- <mat-form-field class="filter-box"  appearance="outline">
                                 <mat-label>Treatment</mat-label>
                                 <mat-chip-grid #chipGrid >
@@ -139,8 +140,9 @@
                     [iconName]="item.iconName" 
                     [iconUrlWhite]="item.iconUrlWhite" [iconUrl]="item.iconUrl" [isDone]="true" 
                     [closeEvent]="closeEvent" [filterName]="item.filterName" 
-                    [title]="item.title" (click)="setSelectedIcon(item.filterName)" 
-                    [selec$]="selectedFilterName$"></drag-drop-button>
+                    [title]="item.title" 
+                    [isOpen]="item.filterName === selectedFilterName"
+                    ></drag-drop-button>
                 </div>
             </div>
             <div class="c-layout">

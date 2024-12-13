@@ -2,7 +2,7 @@ import { environment } from "@/environments/environment";
 import { JeeveResponse } from "@/newapp/models/clinic";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 
 export interface ISpResultPatient {
     clinic_id: number;
@@ -88,6 +88,16 @@ export interface IGetPatientsFilterJson {
 export class CampaignService {
     private apiUrl = environment.apiUrl;
     private commonUrl = environment.commonApiUrl;
+
+    selectedIconObserver = new Subject<string>();
+    selectedFilterName = '';
+    public get selectedIcon$(): Observable<string> {
+        return this.selectedIconObserver.asObservable().pipe(map(v => v));
+    }
+    public setSelectedIcon (value: string) {
+        this.selectedFilterName = value;
+        this.selectedIconObserver.next(value);
+    }
     constructor(private http: HttpClient) {}
 
     public getCampaignPatients(clinicId: number, filters: IGetPatientsFilterJson[] = []): Observable<any> {

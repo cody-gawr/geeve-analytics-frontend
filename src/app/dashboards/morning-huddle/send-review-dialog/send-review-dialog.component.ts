@@ -116,7 +116,7 @@ export class SendReviewDialog {
           this.data.patient_id,
           this.review_msg.value,
           this.phoneNumber.value,
-          this.data.appoint_id
+          this.data.appoint_id?.toString()
         )
         .subscribe({
           next: res => {

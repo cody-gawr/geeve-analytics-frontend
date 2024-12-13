@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, HostListener, ComponentRef, Component } from '@angular/core';
+import { Directive, Input, ElementRef, HostListener, ComponentRef, Component, OnDestroy } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 
@@ -30,7 +30,7 @@ export class CustomTooltipComponent {
 @Directive({
   selector: '[appTooltip]'
 })
-export class CustomTooltipDirective {
+export class CustomTooltipDirective implements OnDestroy {
   @Input('appTooltip') tooltipContent!: string;
 
   private overlayRef!: OverlayRef;
@@ -62,9 +62,17 @@ export class CustomTooltipDirective {
 
   @HostListener('mouseleave')
   hideTooltip() {
+    this.disposeTooltip();
+  }
+
+  ngOnDestroy() {
+    this.disposeTooltip();
+  }
+  private disposeTooltip() {
     if (this.overlayRef) {
       this.overlayRef.detach();
       this.overlayRef.dispose();
+      this.overlayRef = undefined!;
     }
   }
 }
