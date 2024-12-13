@@ -52,6 +52,13 @@ const DefaultFilterElements = [
       iconUrlWhite: '/assets/jeeve/images/patient_age_1_white.png',
       title: 'Patient Age',
       filterName: 'patient_age'
+  },
+  {
+      iconName: 'no_appointment',
+      iconUrl: '/assets/jeeve/images/PlaceHolderFilterIcon.png',
+      iconUrlWhite: '/assets/jeeve/images/PlaceHolderFilterIcon.png',
+      title: 'No Appointment',
+      filterName: 'no_appointment'
   }
 ];
 
@@ -87,6 +94,8 @@ export class CreateCampaignComponent implements AfterViewInit {
         // overduesEnd: new FormControl<Date | null>(null),
         incomplete_tx_planStart: new FormControl<Date | null>(null),
         incomplete_tx_planEnd: new FormControl<Date | null>(null),
+        no_appointmentStart: new FormControl<Date | null>(null),
+        no_appointmentEnd: new FormControl<Date | null>(null),
         treatmentStart: new FormControl<Date | null>(null),
         treatmentEnd: new FormControl<Date | null>(null),
     });
@@ -245,7 +254,13 @@ export class CreateCampaignComponent implements AfterViewInit {
           }
         });
         
-        
+        this.filterFormGroup.controls.no_appointmentEnd.valueChanges.pipe(
+          debounceTime(300),
+        ).subscribe((value) => {
+          if(this.done.findIndex(item => item.filterName === 'no_appointment') > -1){
+            this.eventInput.next();
+          }
+        });
     }
 
     selection = new SelectionModel<CampaignElement>(true, []);
@@ -301,7 +316,7 @@ export class CreateCampaignComponent implements AfterViewInit {
       
       return this.done.map(
         d => {
-          const isDateRange = ['treatment', 'incomplete_tx_plan'].indexOf(d.filterName) > -1;
+          const isDateRange = ['treatment', 'incomplete_tx_plan', 'no_appointment'].indexOf(d.filterName) > -1;
           let filterSettings: any[] | undefined = [];
           if(isDateRange){
             const start = this.filterFormGroup.controls[d.filterName + 'Start'].value;
@@ -484,6 +499,10 @@ export class CreateCampaignComponent implements AfterViewInit {
         }
       }else if(filterName === 'overdues') {
         return true;
+      } else if(filterName === 'no_appointment'){
+        if(this.filterFormGroup.controls.no_appointmentStart.value && this.filterFormGroup.controls.no_appointmentEnd.value){
+          return true;
+        }
       }
 
       return false;
