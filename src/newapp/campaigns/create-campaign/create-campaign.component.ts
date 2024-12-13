@@ -90,8 +90,6 @@ export class CreateCampaignComponent implements AfterViewInit {
     filterFormGroup = new FormGroup({
         patientAgeMin: new FormControl(25),
         patientAgeMax: new FormControl(75),
-        // overduesStart: new FormControl<Date | null>(null),
-        // overduesEnd: new FormControl<Date | null>(null),
         incomplete_tx_planStart: new FormControl<Date | null>(null),
         incomplete_tx_planEnd: new FormControl<Date | null>(null),
         no_appointmentStart: new FormControl<Date | null>(null),
@@ -182,6 +180,21 @@ export class CreateCampaignComponent implements AfterViewInit {
         ).subscribe(
           {
             next: (result) => {
+              if(this.done.findIndex(d => d.filterName === 'overdues') > -1){
+                this.displayedColumns = [
+                  'select', 'patientName', 'previousCampaigns', 
+                  'lastAppointment', 'lastProvider', 
+                  'nextAppointment', 'nextProvider',
+                  'days_overdue', 'amount'
+                ];
+              }else{
+                this.displayedColumns = [
+                  'select', 'patientName', 'previousCampaigns', 
+                  'lastAppointment', 'lastProvider', 
+                  'nextAppointment', 'nextProvider'
+                ];
+              }
+              
               this.dataSource.data = result.data;
               this.selection.clear();
               if(this.campaignId){
@@ -307,6 +320,7 @@ export class CreateCampaignComponent implements AfterViewInit {
       'lastAppointment', 'lastProvider', 
       'nextAppointment', 'nextProvider'
     ];
+
     dataSource: MatTableDataSource<CampaignElement>;
 
     todo = [];
