@@ -83,6 +83,7 @@ import { clinicFeature } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { layoutFeature } from '@/newapp/layout/state/reducers/layout.reducer';
+import { AppSwitchMenu } from './layouts/app-switch-menu/app-switch-menu.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -125,6 +126,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DndDirective,
     StaffMeetingsComponent,
     GraphsComponent,
+    AppSwitchMenu
   ],
   imports: [
     DemoMaterialModule,

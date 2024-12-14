@@ -387,8 +387,4 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {});
   }
-
-  goToPay() {
-    window.location.href=environment.payUrl;
-  }
 }

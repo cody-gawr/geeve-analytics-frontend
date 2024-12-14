@@ -60,8 +60,4 @@ export class AppSidebarComponent implements OnInit, OnDestroy {
   logout = () => {
     this.authFacade.logout();
   };
-
-  goToPay() {
-    window.location.href=environment.payUrl;
-  }
 }

@@ -22,6 +22,7 @@ import { dentistFeature } from '../dentist/state/reducers/dentist.reducer';
 import { DentistEffects } from '../dentist/state/effects/dentist.effects';
 import { DentistFacade } from '../dentist/facades/dentists.facade';
 import { SetupLayoutComponent } from './setup-layout/setup-layout.component';
+import { AppSwitchMenu } from './app-switch-menu/app-switch-menu.component';
 
 const components = [
   AppTopbarComponent,
@@ -29,6 +30,7 @@ const components = [
   SetupLayoutComponent,
   AppSidebarComponent,
   AppMenuComponent,
+  AppSwitchMenu
 ];
 
 const services = [
