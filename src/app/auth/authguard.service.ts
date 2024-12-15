@@ -27,8 +27,8 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
+    // let urlActive = this.activatedRoute.path();
     if (this._cookieService.get('is_logged_in') === 'YES') {
-      let urlActive = this.activatedRoute.path();
       // if (
       //   !(
       //     this._cookieService.get('stepper') &&

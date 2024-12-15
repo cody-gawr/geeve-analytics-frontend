@@ -9,7 +9,6 @@ import { TasksComponent } from './tasks/tasks.component';
 import { MorningHuddleComponent } from './dashboards/morning-huddle/morning-huddle.component';
 import { FollowupsComponent } from './followups/followups.component';
 import { CampaignsComponent } from './campaigns/campaigns.component';
-import { StepperComponent } from './layouts/stepper/stepper.component';
 import { AuthGuard } from './auth/authguard.service';
 import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
 import { NewAppBlankComponent } from './layouts/blank/new-blank.component';
@@ -184,18 +183,6 @@ export const AppRoutes: Routes = [
       }
     ],
   },
-  // {
-  //   path: '',
-  //   component: StepperComponent,
-  //   children: [
-  //     {
-  //       path: 'setup',
-  //       loadChildren: () =>
-  //         import('./setup/setup.module').then(m => m.SetupModule),
-  //       canActivate: [AuthGuard],
-  //     },
-  //   ],
-  // },
   {
     path: '',
     component: NewAppBlankComponent,

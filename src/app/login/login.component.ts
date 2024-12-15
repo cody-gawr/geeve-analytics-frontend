@@ -54,8 +54,8 @@ export class LoginComponent implements OnInit {
     //   this.showLoginForm();
     // }
     router.routerState.root.queryParams.subscribe(val => {
-      if (this._cookieService.get('is_logged_in') === 'YES') {
-        this.clinic_id = this._cookieService.get('clinic_id') || val.clinic_id;
+      if (this._cookieService.get('is_logged_in') === 'YES' && val.switchClinicId) {
+        this.clinic_id = val.switchClinicId;
         this.getRolesIndividual();
       } else {
         this.showLoginForm();
@@ -258,7 +258,7 @@ export class LoginComponent implements OnInit {
   getRolesIndividual() {
     var permision = '';
     // var user_type = this._cookieService.get('user_type');
-
+    
     this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe({
       next: res => {
         permision = res.data;
