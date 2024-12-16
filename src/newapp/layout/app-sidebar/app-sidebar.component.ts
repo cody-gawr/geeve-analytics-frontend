@@ -5,8 +5,6 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { filter, Subject, takeUntil, map } from 'rxjs';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import { environment } from '@/environments/environment';
-
 @Component({
   selector: 'app-sidebar',
   templateUrl: './app-sidebar.component.html',
@@ -17,6 +15,7 @@ export class AppSidebarComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
   isOpen = false;
   products = [];
+  currenctClinicId = 0;
   constructor(
     private authFacade: AuthFacade,
     private router: Router,
@@ -27,6 +26,7 @@ export class AppSidebarComponent implements OnInit, OnDestroy {
     this.clinicService.currentClinics$.subscribe(clinics => {
       if(clinics.length > 0) {
         this.products = clinics[0].clinicProducts?.map(product => product.uniqueCode);
+        this.currenctClinicId = clinics[0].id;
       }
     });
   }

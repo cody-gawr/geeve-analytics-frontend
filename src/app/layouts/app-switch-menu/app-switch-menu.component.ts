@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
 export class AppSwitchMenu implements OnInit, OnDestroy {
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
-
+    @Input() clinicId = 0;
     ngOnInit(): void {
         
     }
@@ -21,7 +21,7 @@ export class AppSwitchMenu implements OnInit, OnDestroy {
     }
 
     goToPay() {
-        window.location.href=environment.payUrl;
+        window.location.href=environment.payUrl + '?switchClinicId=' + this.clinicId;
     }
     
     goToAnalytics() {
