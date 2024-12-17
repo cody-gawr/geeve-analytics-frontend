@@ -3,7 +3,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, filter, map, Observable, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CampaignService, ICampaign, ICampaignFilter, IGetPatientsFilterJson } from '../services/campaign.service';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
@@ -168,6 +168,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         this.eventInput$.pipe(
           takeUntil(this.destroy$),
           debounceTime(300), // Wait for 300ms of silence
+          filter(() => this.done?.length > 0),
           switchMap(() => {
             this.loadingData = true;
             return this.campaignService.getCampaignPatients(this.clinicId, this.getFilterSettings());
@@ -524,6 +525,12 @@ export class CreateCampaignComponent implements AfterViewInit {
       return false;
     }
 
+    applyFilter(filterName: string) {
+      const index = this.todo.findIndex(d => d.filterName === filterName);
+      this.done.push(...this.todo.splice(index, 1));
+      this.eventInput.next();
+    }
+
     add(event: MatChipInputEvent, type = 'treatment'): void {
       const value = (event.value || '').trim();
   
@@ -570,11 +577,12 @@ export class CreateCampaignComponent implements AfterViewInit {
       }
     }
 
-    isVisibleForm(filterName: string){
-      if(this.selectedFilterName === filterName && (this.done.findIndex(d => d.filter_name === filterName) < 0)){
-        return true;
-      }
+    isSelected(filterName: string){
+      //&& (this.done.findIndex(d => d.filterName === filterName) < 0)
+      return this.selectedFilterName === filterName;
+    }
 
-      return false;
+    isDoneFilter() {
+      return  (this.done.findIndex(d => d.filterName === this.selectedFilterName) > -1) ;
     }
 }
