@@ -7,6 +7,7 @@ import { FrontDeskComponent } from './components/front-desk/front-desk.component
 import { ClinicianProcedureComponent } from './components/clinician-procedures/clinician-procedures.component';
 import { ClinicianAnalysisComponent } from './components/clinician-analysis/clinician-analysis.component';
 import { FollowupsComponent } from './components/followups/followups.component';
+import { UnsubscribedPageComponent } from './components/unsubscribed-page/unsubscribed-page.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
         path: 'cliniciananalysis',
         component: ClinicianAnalysisComponent,
       },
+      {
+        path: 'unsubscribed',
+        component: UnsubscribedPageComponent
+      }
     ],
   },
 ];

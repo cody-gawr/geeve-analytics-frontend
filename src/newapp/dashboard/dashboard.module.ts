@@ -82,6 +82,7 @@ import { FuGetFollowupCompletionComponent } from './components/followups/compone
 import { FuGetOutcomeComponent } from './components/followups/components/fuGetOutcome/fuGetOutcome.component';
 import { FuGetPerUserComponent } from './components/followups/components/fuGetPerUser/fuGetPerUser.component';
 import { FollowupsComponent } from './components/followups/followups.component';
+import { UnsubscribedPageComponent } from './components/unsubscribed-page/unsubscribed-page.component';
 
 @NgModule({
   imports: [
@@ -164,6 +165,8 @@ import { FollowupsComponent } from './components/followups/followups.component';
     FuGetFollowupCompletionComponent,
     FuGetOutcomeComponent,
     FuGetPerUserComponent,
+
+    UnsubscribedPageComponent
   ],
   providers: [
     DashboardService,

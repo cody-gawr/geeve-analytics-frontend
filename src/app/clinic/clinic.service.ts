@@ -159,6 +159,18 @@ export class ClinicService {
       );
   }
 
+  // Get Clinics
+  listClinics(): Observable<any> {
+    var header = this.getHeaders();
+    return this.http
+      .get(environment.baseApiUrl + '/v1/common/clinics?product=jeeve_analytics', header)
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        })
+      );
+  }
+
   getUserDetails(): Observable<any> {
     var header = this.getHeaders();
     return this.http.get(this.apiUrl + '/users/userInfo', header).pipe(

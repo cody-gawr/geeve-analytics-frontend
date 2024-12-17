@@ -12,6 +12,8 @@ import { LoginService } from './login.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import camelcaseKeys from 'camelcase-keys';
+import { forkJoin } from 'rxjs';
+import { ClinicService } from '../clinic/clinic.service';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +38,8 @@ export class LoginComponent implements OnInit {
     private rolesUsersService: RolesUsersService,
     public constants: AppConstants,
     public dialog: MatDialog,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private clinicService: ClinicService
   ) {
     // if (this._cookieService.get('userid')) {
     //   var user_type = this._cookieService.get('user_type');
@@ -55,8 +58,24 @@ export class LoginComponent implements OnInit {
     // }
     router.routerState.root.queryParams.subscribe(val => {
       if (this._cookieService.get('is_logged_in') === 'YES' && val.switchClinicId) {
-        this.clinic_id = val.switchClinicId;
-        this.getRolesIndividual();
+        this.clinic_id = parseInt(val.switchClinicId);
+      forkJoin([this.rolesUsersService.getRolesIndividual(this.clinic_id), clinicService.listClinics()])
+        .subscribe({
+          next: ([res, res2]) => {
+            let isUnsubscribed = false;
+            if(res2?.body?.data){
+              const clinic = res2.body.data.find(d => d.id === this.clinic_id);
+              if(clinic){
+                isUnsubscribed = !clinic.has_analytics_subscription;
+              }
+            }
+            this.redirectingPagesByRoles(res, isUnsubscribed);
+          },
+          error: err => {
+            this.showLoginForm();
+          },
+        });
+        // this.getRolesIndividual();
       } else {
         this.showLoginForm();
       }
@@ -254,50 +273,55 @@ export class LoginComponent implements OnInit {
         },
       });
   }
+  
+  redirectingPagesByRoles(res: any, isUnsubscribed = false){
+    var permision = res.data;
+    const user_type = res.type.toString();
+    this._cookieService.put(
+      'user_type',
+      res.type + '',
+      this.constants.cookieOpt
+    );
+    this._cookieService.put(
+      'user_plan',
+      res.plan,
+      this.constants.cookieOpt
+    );
+    if(isUnsubscribed){
+      return this.goTo('/newapp/dashboard/unsubscribed');
+    }
+    if (permision != '' && user_type != '2' && user_type != '7') {
+      if (permision.indexOf('healthscreen') >= 0) {
+        return this.goTo('/dashboards/healthscreen');
+      } else if (permision.indexOf('dashboard1') >= 0) {
+        return this.goTo('/newapp/dashboard/cliniciananalysis');
+      } else if (permision.indexOf('dashboard2') >= 0) {
+        return this.goTo('/dashboards/clinicianproceedures');
+      } else if (permision.indexOf('dashboard3') >= 0) {
+        return this.goTo('/dashboards/frontdesk');
+      } else if (permision.indexOf('dashboard4') >= 0) {
+        return this.goTo('/dashboards/marketing');
+      } else if (permision.indexOf('dashboard5') >= 0) {
+        return this.goTo('/dashboards/finances');
+      } else if (permision.indexOf('morninghuddle') >= 0) {
+        return this.goTo('/morning-huddle');
+      } else if (permision.indexOf('lostopportunity') >= 0) {
+        return this.goTo('/lost-opportunity');
+      } else {
+        return this.goTo('/profile-settings');
+      }
+  } else if (user_type == '2' || user_type == '7') {
+      return this.goTo('/dashboards/healthscreen');
+    } else {
+      return this.goTo('/profile-settings');
+    }
+  }
 
   getRolesIndividual() {
-    var permision = '';
-    // var user_type = this._cookieService.get('user_type');
     
     this.rolesUsersService.getRolesIndividual(this.clinic_id).subscribe({
       next: res => {
-        permision = res.data;
-        const user_type = res.type.toString();
-        this._cookieService.put(
-          'user_type',
-          res.type + '',
-          this.constants.cookieOpt
-        );
-        this._cookieService.put(
-          'user_plan',
-          res.plan,
-          this.constants.cookieOpt
-        );
-        if (permision != '' && user_type != '2' && user_type != '7') {
-          if (permision.indexOf('healthscreen') >= 0) {
-            return this.goTo('/dashboards/healthscreen');
-          } else if (permision.indexOf('dashboard1') >= 0) {
-            return this.goTo('/newapp/dashboard/cliniciananalysis');
-          } else if (permision.indexOf('dashboard2') >= 0) {
-            return this.goTo('/dashboards/clinicianproceedures');
-          } else if (permision.indexOf('dashboard3') >= 0) {
-            return this.goTo('/dashboards/frontdesk');
-          } else if (permision.indexOf('dashboard4') >= 0) {
-            return this.goTo('/dashboards/marketing');
-          } else if (permision.indexOf('dashboard5') >= 0) {
-            return this.goTo('/dashboards/finances');
-          } else if (permision.indexOf('morninghuddle') >= 0) {
-            return this.goTo('/morning-huddle');
-          } else if (permision.indexOf('lostopportunity') >= 0) {
-            return this.goTo('/lost-opportunity');
-          } else {
-            return this.goTo('/profile-settings');
-          }
-      } else if (user_type == '2' || user_type == '7') {
-          return this.goTo('/dashboards/healthscreen');
-        } else {
-          return this.goTo('/profile-settings');
-        }
+        this.redirectingPagesByRoles(res);
         // this.showLoginForm();
       },
       error: err => {

@@ -1,0 +1,40 @@
+.unsubscribed-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  h2 {
+    font-family: 'Gilroy-Medium';
+  }
+
+  p {
+    font-family: 'Gilroy-Regular';
+    font-size: 18px
+  }
+
+  .unsubscribed-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    background-color: white;
+    border-radius: 20px;
+    padding-left: 35px;
+    padding-right: 35px;
+    padding-top: 45px;
+    padding-bottom: 45px;
+    gap: 10px;
+    max-width: 1000px;
+    .title {
+      font-size: 32px;
+    }
+    p {
+      text-align: center;
+    }
+    a {
+      font-size: 18px;
+      background-color: #00897b;
+      color: white;
+    }
+  }
+}
