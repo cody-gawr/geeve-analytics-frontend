@@ -54,18 +54,48 @@
                             </mat-slider>
                         </div>
 
-                        <mat-form-field *ngIf="isVisibleForm('treatment') || isVisibleForm('incomplete_tx_plan') || isVisibleForm('no_appointment')" class="filter-box" appearance="outline">
+
+
+                        <mat-form-field *ngIf="isVisibleForm('treatment')" class="filter-box" appearance="outline">
                             <!-- <mat-label>Enter a date range</mat-label> -->
                             <mat-date-range-input [rangePicker]="picker">
-                              <input matStartDate [formControlName]="selectedFilterName + 'Start'" placeholder="Start date">
-                              <input matEndDate [formControlName]="selectedFilterName + 'End'" placeholder="End date">
+                              <input matStartDate formControlName="treatmentStart" placeholder="Start date">
+                              <input matEndDate formControlName="treatmentEnd" placeholder="End date">
                             </mat-date-range-input>
                             <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
                             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-date-range-picker #picker></mat-date-range-picker>
      
-                            <mat-error *ngIf="filterFormGroup.controls[selectedFilterName + 'Start'].hasError('matStartDateInvalid')">Invalid start date</mat-error>
-                            <mat-error *ngIf="filterFormGroup.controls[selectedFilterName + 'End'].hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                            <mat-error *ngIf="filterFormGroup.controls.treatmentStart.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                            <mat-error *ngIf="filterFormGroup.controls.treatmentEnd.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="isVisibleForm('incomplete_tx_plan')" class="filter-box" appearance="outline">
+                            <!-- <mat-label>Enter a date range</mat-label> -->
+                            <mat-date-range-input [rangePicker]="picker">
+                              <input matStartDate formControlName="incomplete_tx_planStart" placeholder="Start date">
+                              <input matEndDate formControlName="incomplete_tx_planEnd" placeholder="End date">
+                            </mat-date-range-input>
+                            <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+     
+                            <mat-error *ngIf="filterFormGroup.controls.incomplete_tx_planStart.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                            <mat-error *ngIf="filterFormGroup.controls.incomplete_tx_planEnd.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="isVisibleForm('no_appointment')" class="filter-box" appearance="outline">
+                            <!-- <mat-label>Enter a date range</mat-label> -->
+                            <mat-date-range-input [rangePicker]="picker">
+                              <input matStartDate formControlName="no_appointmentStart" placeholder="Start date">
+                              <input matEndDate formControlName="no_appointmentEnd" placeholder="End date">
+                            </mat-date-range-input>
+                            <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+     
+                            <mat-error *ngIf="filterFormGroup.controls.no_appointmentStart.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                            <mat-error *ngIf="filterFormGroup.controls.no_appointmentEnd.hasError('matEndDateInvalid')">Invalid end date</mat-error>
                         </mat-form-field>
                         <div class="treatment-form" *ngIf="isVisibleForm('treatment')">
                             <!-- <mat-form-field class="filter-box"  appearance="outline">

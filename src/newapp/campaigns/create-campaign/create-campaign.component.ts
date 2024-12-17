@@ -3,7 +3,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CampaignService, ICampaign, ICampaignFilter, IGetPatientsFilterJson } from '../services/campaign.service';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
@@ -133,37 +133,32 @@ export class CreateCampaignComponent implements AfterViewInit {
               this.clinicId = clinics[0].id;
               this.clinicName = clinics[0].clinicName;
               this.getCreditData();
-
+              this.campaignService.getCampaigns(this.clinicId).subscribe(
+                body => this.campaigns = body.data
+              );
               if(this.campaignId){
-                this.campaignService.getCampaigns(this.clinicId).subscribe(
-                  body => this.campaigns = body.data
-                );
                 this.campaignService.getIndividualCampaign(
                   this.clinicId,
                   this.campaignId
                 ).subscribe(campaignData => {
-                  console.log('campaign data', campaignData)
                   this.smsTemplate = campaignData.data.sms_template;
                   this.pendingPatients = campaignData.data.pending_campaign;
                   this.description.setValue(campaignData.data.description);
                   this.campaignFilters = campaignData.data.campaign_filters;
                   this.loadFilterSettings(campaignData.data.campaign_filters);
-                  this.eventInput.next();
+                  if(this.done?.length > 0) this.eventInput.next();
                 });
               }else{
                 this.todo = DefaultFilterElements;
-                combineLatest(
-                  [
-                    this.campaignService.getCampaigns(this.clinicId),
-                    this.campaignService.getCampaignPatients(this.clinicId)
-                  ]
-                ).subscribe(([campaigns, patients]) => {
-                  this.campaigns = campaigns.data;
-                  this.dataSource.data = patients.data;
-                  this.selection.clear();
-                  this.selection.select(...this.dataSource.data);
-                  this.loadingData = false;
-                });
+                this.loadingData = false;
+                // this.campaignService.getCampaignPatients(this.clinicId)
+                // .pipe(take(1))
+                // .subscribe((patients) => {
+                //   this.dataSource.data = patients.data;
+                //   this.selection.clear();
+                //   this.selection.select(...this.dataSource.data);
+                //   this.loadingData = false;
+                // });
               }
 
               
