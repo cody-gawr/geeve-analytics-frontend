@@ -125,7 +125,7 @@ export class CreateCampaignComponent implements AfterViewInit {
        
         this.dataSource = new MatTableDataSource([]);
 
-        combineLatest([this.route.queryParams, this.clinicFacade.clinics$])
+        combineLatest([this.route.queryParams, this.clinicFacade.currentClinics$])
         .pipe(takeUntil(this.destroy$))
         .subscribe(([params, clinics]) => {
             this.campaignId = parseInt(params['campaign_id']) || undefined;
