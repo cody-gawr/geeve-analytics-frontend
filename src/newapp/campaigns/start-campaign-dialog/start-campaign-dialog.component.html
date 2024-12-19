@@ -32,11 +32,10 @@
           rows="7"
           [maxlength]="availableMsgLength"></textarea>
         <mat-hint align="end"
-          >{{ sms_text.value.length }} / 800, {{ numTotalMessage }}
+          >{{ sms_text.value.length }} / 800, {{ numMessage }}
           {{
-            numTotalMessage == 0 || numTotalMessage > 1 ? 'messages' : 'message'
-          }}</mat-hint
-        >
+            numMessage == 0 || numMessage > 1 ? 'messages' : 'message'
+          }}</mat-hint>
       </mat-form-field>
     </div>
     <div style="width: 350px;">
@@ -57,6 +56,7 @@
   </div>
 
   <p class="patient-info">Total Patients: {{data.patients.length}}</p>
+  <p class="patient-info">Total Credits: {{numTotalMessage}}</p>
 </div>
 <div mat-dialog-actions class="justify-between">
   <button mat-button class="mat-raised-button mat-gray" (click)="onNoClick()">
@@ -69,6 +69,6 @@
     (click)="onSubmitClick($event)"
     [disabled]="(!isValid && loadingData) || !numTotalMessage || (data.remain_credits < numTotalMessage)"
     >
-    {{data.isDraft? 'Save': 'Send'}} {{ numTotalMessage}} messages
+    {{data.isDraft? 'Save': 'Send'}} To {{ data.patients.length}} Patients
   </button>
 </div>

@@ -33,6 +33,7 @@ export class StartCampaignDialog {
   availableMsgLength = 10;
   loadingData = true;
   numTotalMessage = 0;
+  numMessage = 0;
   composedTextForFirstPatient = ""
   constructor(
     public dialogRef: MatDialogRef<StartCampaignDialog>,
@@ -46,6 +47,7 @@ export class StartCampaignDialog {
       if (v2.data) {
         this.msgTemplates = v2.data.filter(d => d.type === 'campaign');
         if (this.msgTemplates.length > 0) {
+          if(!this.selectedTmpMsg) this.selectedTmpMsg = this.msgTemplates[0].id;
           this.onChangeReviewMsg();
         }
       }
@@ -56,6 +58,7 @@ export class StartCampaignDialog {
     this.sms_text.valueChanges.subscribe(value => {
       this.numTotalMessage = this.data.patients.map(
         p => Math.ceil(this.composeText(value, p)?.length / 160)).reduce((acc, curr) => acc + curr, 0);
+      this.numMessage = Math.ceil(value?.length / 160);
       this.composedTextForFirstPatient = this.composeText(value, data.patients[0]);
     });
 
