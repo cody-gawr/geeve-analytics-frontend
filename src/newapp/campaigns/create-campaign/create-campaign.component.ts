@@ -55,8 +55,8 @@ const DefaultFilterElements = [
   },
   {
       iconName: 'no_appointment',
-      iconUrl: '/assets/jeeve/images/PlaceHolderFilterIcon.png',
-      iconUrlWhite: '/assets/jeeve/images/PlaceHolderFilterIcon.png',
+      iconUrl: '/assets/jeeve/images/no-appointment-color.png',
+      iconUrlWhite: '/assets/jeeve/images/no-appointment.png',
       title: 'No Appointment',
       filterName: 'no_appointment'
   }
@@ -178,15 +178,15 @@ export class CreateCampaignComponent implements AfterViewInit {
               if(this.done.findIndex(d => d.filterName === 'overdues') > -1){
                 this.displayedColumns = [
                   'select', 'patientName', 'previousCampaigns', 
-                  'lastAppointment', 'lastProvider', 
-                  'nextAppointment', 'nextProvider',
+                  'lastAppointment', 
+                  'nextAppointment',
                   'days_overdue', 'amount'
                 ];
               }else{
                 this.displayedColumns = [
                   'select', 'patientName', 'previousCampaigns', 
-                  'lastAppointment', 'lastProvider', 
-                  'nextAppointment', 'nextProvider'
+                  'lastAppointment', 
+                  'nextAppointment',
                 ];
               }
               
@@ -317,8 +317,8 @@ export class CreateCampaignComponent implements AfterViewInit {
 
     displayedColumns: string[] = [
       'select', 'patientName', 'previousCampaigns', 
-      'lastAppointment', 'lastProvider', 
-      'nextAppointment', 'nextProvider'
+      'lastAppointment', 
+      'nextAppointment',
     ];
 
     dataSource: MatTableDataSource<CampaignElement>;

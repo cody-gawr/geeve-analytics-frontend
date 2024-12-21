@@ -221,25 +221,23 @@
     
                         <ng-container matColumnDef="lastAppointment">
                             <th mat-header-cell *matHeaderCellDef> Last Appointment </th>
-                            <td mat-cell *matCellDef="let element"> {{element.last_appointment}} </td>
-                        </ng-container>
-    
-    
-                        <ng-container matColumnDef="lastProvider">
-                            <th mat-header-cell *matHeaderCellDef> Last Provider </th>
-                            <td mat-cell *matCellDef="let element"> {{element.last_provider}} </td>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="last-appointment-column">
+                                    <span>{{element.last_appointment}}</span>
+                                    <span class="provider">{{element.last_provider}}</span>
+                                </div>
+                            </td>
                         </ng-container>
     
     
                         <ng-container matColumnDef="nextAppointment">
                             <th mat-header-cell *matHeaderCellDef> Next Appointment </th>
-                            <td mat-cell *matCellDef="let element"> {{element.next_appointment}} </td>
-                        </ng-container>
-    
-    
-                        <ng-container matColumnDef="nextProvider">
-                            <th mat-header-cell *matHeaderCellDef> Next provider </th>
-                            <td mat-cell *matCellDef="let element"> {{element.next_provider}} </td>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="last-appointment-column">
+                                    <span>{{element.next_appointment}}</span>
+                                    <span class="provider">{{element.next_provider}}</span>
+                                </div>
+                                 </td>
                         </ng-container>
 
                         <ng-container matColumnDef="days_overdue">

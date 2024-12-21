@@ -166,3 +166,12 @@
 .drop-container.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+.last-appointment-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .provider {
+        font-size: 12px;
+    }
+}
