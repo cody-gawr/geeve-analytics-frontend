@@ -179,14 +179,14 @@ export class CreateCampaignComponent implements AfterViewInit {
                 this.displayedColumns = [
                   'select', 'patientName', 'previousCampaigns', 
                   'lastAppointment', 
-                  'nextAppointment',
+                  'nextAppointment', 'mobile', 'email',
                   'days_overdue', 'amount'
                 ];
               }else{
                 this.displayedColumns = [
                   'select', 'patientName', 'previousCampaigns', 
                   'lastAppointment', 
-                  'nextAppointment',
+                  'nextAppointment', 'mobile', 'email'
                 ];
               }
               
@@ -318,7 +318,7 @@ export class CreateCampaignComponent implements AfterViewInit {
     displayedColumns: string[] = [
       'select', 'patientName', 'previousCampaigns', 
       'lastAppointment', 
-      'nextAppointment',
+      'nextAppointment', 'mobile', 'email',
     ];
 
     dataSource: MatTableDataSource<CampaignElement>;
@@ -398,6 +398,14 @@ export class CreateCampaignComponent implements AfterViewInit {
               this.filterFormGroup.controls.incomplete_tx_planEnd.setValue(new Date(dates[1]));
               doneFilters.push(setting.filter_name);
             }
+        } else if(setting.filter_name === 'overdues'){
+            doneFilters.push(setting.filter_name);
+        }else if(setting.filter_name === 'no_appointment'){
+          if(setting.filter_settings){
+            this.filterFormGroup.controls['no_appointmentStart'].setValue(new Date(filterValues[0]));
+            this.filterFormGroup.controls['no_appointmentEnd'].setValue(new Date(filterValues[1]));
+            doneFilters.push(setting.filter_name);
+          }
         }
       }
 
