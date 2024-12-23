@@ -3,14 +3,14 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { combineLatest, debounceTime, distinctUntilChanged, filter, map, Observable, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+import { combineLatest, debounceTime, Subject, switchMap, takeUntil } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CampaignService, ICampaign, ICampaignFilter, IGetPatientsFilterJson } from '../services/campaign.service';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatDialog } from '@angular/material/dialog';
 import { StartCampaignDialog } from '../start-campaign-dialog/start-campaign-dialog.component';
 import { NotificationService } from '@/newapp/shared/services/notification.service';
 import { CommonDataService, ItemCode } from '@/newapp/shared/services/common-data.service';
@@ -122,173 +122,159 @@ export class CreateCampaignComponent implements AfterViewInit {
       private route: ActivatedRoute,
       private router: Router,
     ){
-       
-        this.dataSource = new MatTableDataSource([]);
+      this.dataSource = new MatTableDataSource([]);
 
-        combineLatest([this.route.queryParams, this.clinicFacade.currentClinics$])
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(([params, clinics]) => {
-            this.campaignId = parseInt(params['campaign_id']) || undefined;
-            if(clinics.length> 0) {
-              this.clinicId = clinics[0].id;
-              this.clinicName = clinics[0].clinicName;
-              this.getCreditData();
-              this.campaignService.getCampaigns(this.clinicId).subscribe(
-                body => this.campaigns = body.data
-              );
-              if(this.campaignId){
-                this.campaignService.getIndividualCampaign(
-                  this.clinicId,
-                  this.campaignId
-                ).subscribe(campaignData => {
-                  this.smsTemplate = campaignData.data.sms_template;
-                  this.pendingPatients = campaignData.data.pending_campaign;
-                  this.description.setValue(campaignData.data.description);
-                  this.campaignFilters = campaignData.data.campaign_filters;
-                  this.loadFilterSettings(campaignData.data.campaign_filters);
-                  if(this.done?.length > 0) this.eventInput.next();
-                });
-              }else{
-                this.todo = DefaultFilterElements;
-                this.loadingData = false;
-                // this.campaignService.getCampaignPatients(this.clinicId)
-                // .pipe(take(1))
-                // .subscribe((patients) => {
-                //   this.dataSource.data = patients.data;
-                //   this.selection.clear();
-                //   this.selection.select(...this.dataSource.data);
-                //   this.loadingData = false;
-                // });
-              }
-
-              
-            }
-        });
-
-        this.eventInput$.pipe(
-          takeUntil(this.destroy$),
-          debounceTime(300), // Wait for 300ms of silence
-          switchMap(() => {
-            this.loadingData = true;
-            return this.campaignService.getCampaignPatients(this.clinicId, this.getFilterSettings());
-          })
-        ).subscribe(
-          {
-            next: (result) => {
-              if(this.done.findIndex(d => d.filterName === 'overdues') > -1){
-                this.displayedColumns = [
-                  'select', 'patientName', 'previousCampaigns', 
-                  'lastAppointment', 
-                  'nextAppointment', 'mobile', 'email',
-                  'days_overdue', 'amount'
-                ];
-              }else{
-                this.displayedColumns = [
-                  'select', 'patientName', 'previousCampaigns', 
-                  'lastAppointment', 
-                  'nextAppointment', 'mobile', 'email'
-                ];
-              }
-              
-              this.dataSource.data = result.data;
-              this.selection.clear();
-              if(this.campaignId){
-                this.selection.select(...this.pendingPatients?.map(d => {
-                  const p = this.dataSource.data.find(p => p.patient_id === d.patient_id);
-                  return p;
-                }));
-              }else{
-                this.selection.select(...this.dataSource.data);
-              }
-              this.loadingData = false;
-            },
-            error: (err) => {
+      combineLatest([this.route.queryParams, this.clinicFacade.currentClinics$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([params, clinics]) => {
+          this.campaignId = parseInt(params['campaign_id']) || undefined;
+          if(clinics.length> 0) {
+            this.clinicId = clinics[0].id;
+            this.clinicName = clinics[0].clinicName;
+            this.getCreditData();
+            this.campaignService.getCampaigns(this.clinicId).subscribe(
+              body => this.campaigns = body.data
+            );
+            if(this.campaignId){
+              this.campaignService.getIndividualCampaign(
+                this.clinicId,
+                this.campaignId
+              ).subscribe(campaignData => {
+                this.smsTemplate = campaignData.data.sms_template;
+                this.pendingPatients = campaignData.data.pending_campaign;
+                this.description.setValue(campaignData.data.description);
+                this.campaignFilters = campaignData.data.campaign_filters;
+                this.loadFilterSettings(campaignData.data.campaign_filters);
+                if(this.done?.length > 0) this.eventInput.next();
+              });
+            }else{
+              this.todo = [...DefaultFilterElements];
               this.loadingData = false;
             }
-          }
-          
-        );
 
-        this.closeEvent$.pipe(
-          takeUntil(this.destroy$)
-        ).subscribe(filterName => {
-          const index = this.done.findIndex(d => d.filterName === filterName);
-          this.todo.push(...this.done.splice(index, 1));
-          if(this.done?.length > 0)
-            this.eventInput.next();
-          else {
-            this.selection.clear();
-            this.dataSource.data = [];
+            
           }
-        });
+      });
 
-        this.commonDataservice.getCampaignPatients().subscribe(result => {
-          this.itemCodes = result.data;
+      this.eventInput$.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(300), // Wait for 300ms of silence
+        switchMap(() => {
+          this.loadingData = true;
+          return this.campaignService.getCampaignPatients(this.clinicId, this.getFilterSettings());
         })
-
-        this.selectedItemCodes.valueChanges.pipe(
-          takeUntil(this.destroy$),
-        ).subscribe(
-          value => {
-            if(this.done.findIndex(item => item.filterName === 'treatment') > -1){
-              this.eventInput.next();
+      ).subscribe(
+        {
+          next: (result) => {
+            if(this.done.findIndex(d => d.filterName === 'overdues') > -1){
+              this.displayedColumns = [
+                'select', 'patientName', 'previousCampaigns', 
+                'lastAppointment', 
+                'nextAppointment', 'mobile', 'email',
+                'days_overdue', 'amount'
+              ];
+            }else{
+              this.displayedColumns = [
+                'select', 'patientName', 'previousCampaigns', 
+                'lastAppointment', 
+                'nextAppointment', 'mobile', 'email'
+              ];
             }
+            
+            this.dataSource.data = result.data;
+            this.selection.clear();
+            if(this.campaignId){
+              this.selection.select(...this.dataSource.data.filter(p => this.pendingPatients.findIndex(pendingP => pendingP.patient_id == p.patient_id) > -1));
+            }else{
+              this.selection.select(...this.dataSource.data);
+            }
+            this.loadingData = false;
+          },
+          error: (err) => {
+            this.loadingData = false;
           }
-        );
+        }
+        
+      );
 
-        this.filterFormGroup.controls.patientAgeMax.valueChanges.pipe(
-          takeUntil(this.destroy$),
-          debounceTime(300),
-        ).subscribe((maxV) => {
-          if(this.done.findIndex(item => item.filterName === 'patient_age') > -1){
-            this.eventInput.next();
-          }
-        });
+      this.closeEvent$.pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(filterName => {
+        const index = this.done.findIndex(d => d.filterName === filterName);
+        this.todo.push(...this.done.splice(index, 1));
+        if(this.done?.length > 0)
+          this.eventInput.next();
+        else {
+          this.selection.clear();
+          this.dataSource.data = [];
+        }
+      });
 
-        this.filterFormGroup.controls.patientAgeMin.valueChanges.pipe(
-          takeUntil(this.destroy$),
-          debounceTime(300),
-        ).subscribe((minV) => {
-          if(this.done.findIndex(item => item.filterName === 'patient_age') > -1){
-            this.eventInput.next();
-          }
-        });
+      this.commonDataservice.getCampaignPatients().subscribe(result => {
+        this.itemCodes = result.data;
+      })
 
-
-        this.filterFormGroup.controls.treatmentEnd.valueChanges.pipe(
-          takeUntil(this.destroy$),
-          debounceTime(300),
-        ).subscribe((value) => {
+      this.selectedItemCodes.valueChanges.pipe(
+        takeUntil(this.destroy$),
+      ).subscribe(
+        value => {
           if(this.done.findIndex(item => item.filterName === 'treatment') > -1){
             this.eventInput.next();
           }
-        });
-        
-        this.filterFormGroup.controls.incomplete_tx_planEnd.valueChanges.pipe(
-          takeUntil(this.destroy$),
-          debounceTime(300),
-        ).subscribe((value) => {
-          if(this.done.findIndex(item => item.filterName === 'incomplete_tx_plan') > -1){
-            this.eventInput.next();
-          }
-        });
-        
-        this.filterFormGroup.controls.no_appointmentEnd.valueChanges.pipe(
-          takeUntil(this.destroy$),
-          debounceTime(300),
-        ).subscribe((value) => {
-          if(this.done.findIndex(item => item.filterName === 'no_appointment') > -1){
-            this.eventInput.next();
-          }
-        });
+        }
+      );
 
-        this.campaignService.selectedIcon$.pipe(
-          takeUntil(this.destroy$)
-        ).subscribe(v => {
-          this.selectedFilterName = v;
-        })
+      this.filterFormGroup.controls.patientAgeMax.valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(300),
+      ).subscribe((maxV) => {
+        if(this.done.findIndex(item => item.filterName === 'patient_age') > -1){
+          this.eventInput.next();
+        }
+      });
 
-        
+      this.filterFormGroup.controls.patientAgeMin.valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(300),
+      ).subscribe((minV) => {
+        if(this.done.findIndex(item => item.filterName === 'patient_age') > -1){
+          this.eventInput.next();
+        }
+      });
+
+
+      this.filterFormGroup.controls.treatmentEnd.valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(300),
+      ).subscribe((value) => {
+        if(this.done.findIndex(item => item.filterName === 'treatment') > -1){
+          this.eventInput.next();
+        }
+      });
+      
+      this.filterFormGroup.controls.incomplete_tx_planEnd.valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(300),
+      ).subscribe((value) => {
+        if(this.done.findIndex(item => item.filterName === 'incomplete_tx_plan') > -1){
+          this.eventInput.next();
+        }
+      });
+      
+      this.filterFormGroup.controls.no_appointmentEnd.valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(300),
+      ).subscribe((value) => {
+        if(this.done.findIndex(item => item.filterName === 'no_appointment') > -1){
+          this.eventInput.next();
+        }
+      });
+
+      this.campaignService.selectedIcon$.pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(v => {
+        this.selectedFilterName = v;
+      })  
     }
 
     selection = new SelectionModel<CampaignElement>(true, []);
@@ -375,9 +361,11 @@ export class CreateCampaignComponent implements AfterViewInit {
     loadFilterSettings(settings: ICampaignFilter[]) {
       const doneFilters = [];
       for(const setting of settings){
-        const filterValues = setting.filter_settings.split(',');
+        
         if(setting.filter_name === 'treatment'){
+          
           if(setting.filter_settings){
+            const filterValues = setting.filter_settings?.split(',');
             this.filterFormGroup.controls['treatmentStart'].setValue(new Date(filterValues[0]));
             this.filterFormGroup.controls['treatmentEnd'].setValue(new Date(filterValues[1]));
             this.selectedItemCodes.setValue(filterValues.slice(2));
@@ -401,16 +389,25 @@ export class CreateCampaignComponent implements AfterViewInit {
         } else if(setting.filter_name === 'overdues'){
             doneFilters.push(setting.filter_name);
         }else if(setting.filter_name === 'no_appointment'){
+          
           if(setting.filter_settings){
+            const filterValues = setting.filter_settings?.split(',');
             this.filterFormGroup.controls['no_appointmentStart'].setValue(new Date(filterValues[0]));
             this.filterFormGroup.controls['no_appointmentEnd'].setValue(new Date(filterValues[1]));
             doneFilters.push(setting.filter_name);
           }
         }
       }
-
-      this.todo = DefaultFilterElements.filter(d => doneFilters.indexOf(d.filterName) === -1);
-      this.done = DefaultFilterElements.filter(d => doneFilters.indexOf(d.filterName) > -1);
+      this.done = [], this.todo = [];
+      for(const filter of DefaultFilterElements){
+        if(doneFilters.indexOf(filter.filterName) > -1){
+          this.done.push({...filter});
+        }else {
+          this.todo.push({...filter});
+        }
+      }
+      // this.todo = DefaultFilterElements.filter(d => doneFilters.indexOf(d.filterName) === -1);
+      // this.done = DefaultFilterElements.filter(d => doneFilters.indexOf(d.filterName) > -1);
     }
 
     getCampaignDescription(prev_campaigns: string, isLast = false) {
