@@ -147,6 +147,14 @@ export class CampaignService {
         });
     }
 
+    public deleteCampaign(
+        clinicId: number, campaign_id: number ){
+        return this.http.delete<JeeveResponse<[number, number]>>(`${this.commonUrl}/campaign`, {
+            withCredentials: true,
+            params: { clinic_id: clinicId, campaign_id}
+        });
+    }
+
     public getCreditData(
         clinicId: number
     ){

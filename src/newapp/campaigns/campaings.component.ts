@@ -17,6 +17,7 @@ import { CampaignService, ICampaign } from "./services/campaign.service";
 import { MatSort } from "@angular/material/sort";
 import { NotificationService } from "../shared/services/notification.service";
 import { FormControl, FormGroup } from "@angular/forms";
+import { ConfirmDialogComponent } from "../shared/components/confirm-dialog/confirm-dialog.component";
 
   
 @Component({
@@ -159,6 +160,20 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         }else if(target === 'start' && !!event.value){
           //this.range.controls['start'].setValue(event.value);
         }
+    }
+
+    onDelete(row: ICampaign) {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '500px',
+            data: { title: 'Delete a campaign', message: `Are you sure you want to delete ${row.description} campaign?`, buttonColor: 'warn' },
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if(result){
+                this.campaignService.deleteCampaign(this.clinicId, row.id).subscribe(res => {
+                    this.loadCampaigns();
+                });
+            }
+        })
     }
 
     openCreateCampaignDialog() {

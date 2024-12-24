@@ -95,6 +95,10 @@
                     <mat-icon>visibility</mat-icon>
                     <span>View</span>
                   </button>
+                  <button *ngIf="element.status === 'draft'" style="color:brown" (click)="onDelete(element)" mat-menu-item>
+                    <mat-icon style="color:red">delete_forever</mat-icon>
+                    <span style="color:red">Delete</span>
+                  </button>
               </mat-menu>
               </td>
             </ng-container>
