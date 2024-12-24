@@ -4,9 +4,6 @@ import {
     distinctUntilChanged,
     Subject,
     takeUntil,
-    merge,
-    startWith,
-    switchMap
   } from 'rxjs';
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import moment, { Moment } from "moment";
@@ -143,12 +140,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     }
 
     goViewPage(row: ICampaign) {
-        if(row.status === 'started'){
-            this.route.navigateByUrl('/newapp/campaigns/view?campaign_id=' + row.id)
-        }else{
-            this.route.navigateByUrl('/newapp/campaigns/create?campaign_id=' + row.id)
-        }
-        
+        this.route.navigateByUrl('/newapp/campaigns/view?campaign_id=' + row.id)
     }
 
     Campaigns: any[] = [];
