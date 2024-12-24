@@ -140,7 +140,11 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     }
 
     goViewPage(row: ICampaign) {
-        this.route.navigateByUrl('/newapp/campaigns/view?campaign_id=' + row.id)
+        this.route.navigateByUrl('/newapp/campaigns/view?campaign_id=' + row.id);
+    }
+
+    goEditPage(row: ICampaign) {
+        this.route.navigateByUrl('/newapp/campaigns/create?campaign_id=' + row.id);
     }
 
     Campaigns: any[] = [];
