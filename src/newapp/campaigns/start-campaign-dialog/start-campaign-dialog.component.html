@@ -67,7 +67,7 @@
     class="mat-raised-button mat-dc"
     mat-button
     (click)="onSubmitClick($event)"
-    [disabled]="(!isValid && loadingData) || !numTotalMessage || (data.remain_credits < numTotalMessage)"
+    [disabled]="disabledSubmit()"
     >
     {{data.isDraft? 'Save': 'Send'}} To {{ data.patients.length}} Patients
   </button>

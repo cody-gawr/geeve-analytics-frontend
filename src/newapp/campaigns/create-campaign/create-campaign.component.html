@@ -4,8 +4,9 @@
         <input matInput class="title" placeholder="Enter Description" [formControl]="description"/>
         <div class="header-buttons">
             <mat-spinner *ngIf="isSendingSms" style="width: 20px;height: 20px;"></mat-spinner>
-            <button [disabled]="!this.selection.selected || isSendingSms" color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
-                <span (click)="$event.preventDefault();$event.stopPropagation(); startCampaign();">Start Campaign</span><mat-icon>more_vert</mat-icon>
+            <button [disabled]="!this.selection.selected?.length || isSendingSms" [hoverEffect]="false" customButton [matMenuTriggerFor]="menu">
+                <span class="more-options"><mat-icon>more_vert</mat-icon></span>
+                <span class="more-options" (click)="$event.preventDefault();$event.stopPropagation(); startCampaign();">Start Campaign</span>
             </button>
             <mat-menu #menu="matMenu">
                 <button [disabled]="!this.selection.selected" (click)="startCampaign(true)" mat-menu-item>
@@ -57,8 +58,8 @@
                         <mat-form-field *ngIf="isSelected('treatment')" class="filter-box" appearance="outline">
                             <!-- <mat-label>Enter a date range</mat-label> -->
                             <mat-date-range-input [rangePicker]="picker">
-                              <input matStartDate (click)="picker.open()" formControlName="treatmentStart" placeholder="Start date">
-                              <input matEndDate (click)="picker.open()" formControlName="treatmentEnd" placeholder="End date">
+                              <input matStartDate (focus)="picker.open()" formControlName="treatmentStart" placeholder="Start date">
+                              <input matEndDate (focus)="picker.open()" formControlName="treatmentEnd" placeholder="End date">
                             </mat-date-range-input>
                             <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
                             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -71,8 +72,8 @@
                         <mat-form-field *ngIf="isSelected('incomplete_tx_plan')" class="filter-box" appearance="outline">
                             <!-- <mat-label>Enter a date range</mat-label> -->
                             <mat-date-range-input [rangePicker]="picker">
-                              <input matStartDate (click)="picker.open()" formControlName="incomplete_tx_planStart" placeholder="Start date">
-                              <input matEndDate (click)="picker.open()" formControlName="incomplete_tx_planEnd" placeholder="End date">
+                              <input matStartDate (focus)="picker.open()" formControlName="incomplete_tx_planStart" placeholder="Start date">
+                              <input matEndDate (focus)="picker.open()" formControlName="incomplete_tx_planEnd" placeholder="End date">
                             </mat-date-range-input>
                             <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
                             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -85,8 +86,8 @@
                         <mat-form-field *ngIf="isSelected('no_appointment')" class="filter-box" appearance="outline">
                             <!-- <mat-label>Enter a date range</mat-label> -->
                             <mat-date-range-input [rangePicker]="picker">
-                              <input matStartDate (click)="picker.open()" formControlName="no_appointmentStart" placeholder="Start date">
-                              <input matEndDate (click)="picker.open()" formControlName="no_appointmentEnd" placeholder="End date">
+                              <input matStartDate (focus)="picker.open()" formControlName="no_appointmentStart" placeholder="Start date">
+                              <input matEndDate (focus)="picker.open()" formControlName="no_appointmentEnd" placeholder="End date">
                             </mat-date-range-input>
                             <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
                             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

@@ -101,4 +101,8 @@ export class StartCampaignDialog {
       this.sms_text.setValue(msg.msg_template);
     }
   }
+
+  disabledSubmit() {
+    return (!this.isValid && this.loadingData) || !this.numTotalMessage || ((this.data.remain_credits < this.numTotalMessage) && !this.data.isDraft)
+  }
 }
