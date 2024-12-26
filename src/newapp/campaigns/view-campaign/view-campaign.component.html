@@ -1,4 +1,14 @@
 <div>
+  <div style="display: flex;padding: 15px;gap: 15px;">
+    <drag-drop-button *ngFor="let item of done" cdkDrag 
+                    [iconName]="item.iconName" 
+                    [iconUrlWhite]="item.iconUrlWhite" [iconUrl]="item.iconUrl" [isDone]="false" 
+                    [filterName]="item.filterName" 
+                    [title]="item.title" 
+                    [isOpen]="false"
+                    [settings]="item.settings"
+    ></drag-drop-button>
+  </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>

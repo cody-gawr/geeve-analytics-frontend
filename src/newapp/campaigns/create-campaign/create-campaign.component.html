@@ -208,13 +208,13 @@
                             <th mat-header-cell *matHeaderCellDef> Previous Campaigns </th>
                             <td mat-cell *matCellDef="let element"> 
                                 <mat-chip-set aria-label="Previous Campaigns">
-                                    <mat-chip class="chip-style" *ngFor="let campaign of getCampaignDescription(element.prev_campaigns)">{{campaign.description}}</mat-chip>
+                                    <mat-chip class="chip-style" *ngFor="let campaign of getCampaignDescription(element.prev_campaigns)">{{campaign?.description}}</mat-chip>
                                     <mat-chip class="chip-style" [matMenuTriggerFor]="menu" *ngIf="element.prev_campaigns?.split(',').length > 2">
                                         <mat-icon style="margin-top:5px" >more_horiz</mat-icon>
                                     </mat-chip>
                                     <mat-menu #menu="matMenu">
                                         <mat-chip class="chip-style" style="margin: 5px;" *ngFor="let campaign of getCampaignDescription(element.prev_campaigns, 2)">
-                                            {{campaign.description}}</mat-chip>
+                                            {{campaign?.description}}</mat-chip>
                                     </mat-menu>
                                 </mat-chip-set>
                             </td>

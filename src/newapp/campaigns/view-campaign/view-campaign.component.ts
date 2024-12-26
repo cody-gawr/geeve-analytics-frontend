@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
-import { CampaignService, ICampaignMessage } from "../services/campaign.service";
+import { CampaignService, DefaultFilterElements, ICampaignMessage, IGetPatientsFilterJson } from "../services/campaign.service";
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { combineLatest, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute } from "@angular/router";
@@ -45,7 +45,8 @@ export class ViewCampaignComponent {
     loadCampaignMessages() {
         this.campaignService.getCampaignSmsMessages(this.clinicId, this.campaignId).subscribe(
             msg => {
-                this.dataSource.data = msg.data;
+                this.dataSource.data = msg.data.messages;
+                this.loadFilterSettings(msg.data.filters);
             }
           );
     }
@@ -117,6 +118,17 @@ export class ViewCampaignComponent {
             });
         }else{
             _sendMsgs([{id: element.id, status: element.status}]);
+        }
+    }
+
+    done = [];
+    loadFilterSettings(settings: IGetPatientsFilterJson[]) {
+        this.done = [];
+        for(const filter of DefaultFilterElements){
+            const setting = settings.find(s => s.filter === filter.filterName);
+            if(setting){
+                this.done.push({...filter, settings: setting.filter_settings});
+            }
         }
     }
 }

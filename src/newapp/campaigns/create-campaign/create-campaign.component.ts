@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { combineLatest, debounceTime, Subject, switchMap, takeUntil } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CampaignService, ICampaign, ICampaignFilter, IGetPatientsFilterJson } from '../services/campaign.service';
+import { CampaignService, DefaultFilterElements, ICampaign, ICampaignFilter, IGetPatientsFilterJson } from '../services/campaign.service';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
@@ -16,51 +16,6 @@ import { NotificationService } from '@/newapp/shared/services/notification.servi
 import { CommonDataService, ItemCode } from '@/newapp/shared/services/common-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
-
-const DefaultFilterElements = [
-  {
-      iconName: 'medical_services',
-      iconUrl: '/assets/jeeve/images/treatment_1.png',
-      iconUrlWhite: '/assets/jeeve/images/treatment_1_white.png',
-      title: 'Treatment',
-      filterName: 'treatment'
-  },
-  {
-      iconName: 'list_alt',
-      iconUrl: '/assets/jeeve/images/tx_plans_1.png',
-      iconUrlWhite: '/assets/jeeve/images/tx_plans_1_white.png',
-      title: 'Incomplete TX Plans',
-      filterName: 'incomplete_tx_plan'
-  },
-  {
-      iconName: 'health_and_safety',
-      iconUrl: '/assets/jeeve/images/health_insurance_1.png',
-      iconUrlWhite: '/assets/jeeve/images/health_insurance_1_white.png',
-      title: 'Health Insurance',
-      filterName: 'health_insurance'
-  },
-  {
-      iconName: 'schedule',
-      iconUrl: '/assets/jeeve/images/overdue_1.png',
-      iconUrlWhite: '/assets/jeeve/images/overdue_1_white.png',
-      title: 'Overdues',
-      filterName: 'overdues'
-  },
-  {
-      iconName: 'personal_injury',
-      iconUrl: '/assets/jeeve/images/patient_age_1.png',
-      iconUrlWhite: '/assets/jeeve/images/patient_age_1_white.png',
-      title: 'Patient Age',
-      filterName: 'patient_age'
-  },
-  {
-      iconName: 'no_appointment',
-      iconUrl: '/assets/jeeve/images/no-appointment-color.png',
-      iconUrlWhite: '/assets/jeeve/images/no-appointment.png',
-      title: 'No Appointment',
-      filterName: 'no_appointment'
-  }
-];
 
 export interface CampaignElement {
   clinic_id: number;

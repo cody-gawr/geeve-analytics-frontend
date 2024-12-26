@@ -49,3 +49,25 @@
     border-radius: 10px;
     margin-top: 5px;
 }
+.view-box{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightgray;
+    padding: 10px;
+    gap: 5px;
+    font-family: 'Gilroy-Medium';
+    .box-c {
+        display: flex;
+        gap: 5px;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        font-size: 12px;
+        span {
+            background: cadetblue;
+            color: white;
+            padding: 3px;
+            border-radius: 4px;
+        }
+    }
+}

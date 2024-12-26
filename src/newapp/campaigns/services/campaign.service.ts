@@ -4,6 +4,51 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, Subject, map } from 'rxjs';
 
+export const DefaultFilterElements = [
+  {
+      iconName: 'medical_services',
+      iconUrl: '/assets/jeeve/images/treatment_1.png',
+      iconUrlWhite: '/assets/jeeve/images/treatment_1_white.png',
+      title: 'Treatment',
+      filterName: 'treatment'
+  },
+  {
+      iconName: 'list_alt',
+      iconUrl: '/assets/jeeve/images/tx_plans_1.png',
+      iconUrlWhite: '/assets/jeeve/images/tx_plans_1_white.png',
+      title: 'Incomplete TX Plans',
+      filterName: 'incomplete_tx_plan'
+  },
+  {
+      iconName: 'health_and_safety',
+      iconUrl: '/assets/jeeve/images/health_insurance_1.png',
+      iconUrlWhite: '/assets/jeeve/images/health_insurance_1_white.png',
+      title: 'Health Insurance',
+      filterName: 'health_insurance'
+  },
+  {
+      iconName: 'schedule',
+      iconUrl: '/assets/jeeve/images/overdue_1.png',
+      iconUrlWhite: '/assets/jeeve/images/overdue_1_white.png',
+      title: 'Overdues',
+      filterName: 'overdues'
+  },
+  {
+      iconName: 'personal_injury',
+      iconUrl: '/assets/jeeve/images/patient_age_1.png',
+      iconUrlWhite: '/assets/jeeve/images/patient_age_1_white.png',
+      title: 'Patient Age',
+      filterName: 'patient_age'
+  },
+  {
+      iconName: 'no_appointment',
+      iconUrl: '/assets/jeeve/images/no-appointment-color.png',
+      iconUrlWhite: '/assets/jeeve/images/no-appointment.png',
+      title: 'No Appointment',
+      filterName: 'no_appointment'
+  }
+];
+
 export interface ISpResultPatient {
     clinic_id: number;
     patient_id: number;
@@ -171,7 +216,7 @@ export class CampaignService {
     }
 
     public getCampaignSmsMessages(clinicId: number, campaignId: number){
-        return this.http.get<JeeveResponse<ICampaignMessage[]>>(`${this.commonUrl}/campaign/sms-messages`, {
+        return this.http.get<JeeveResponse<{ filters: IGetPatientsFilterJson[], messages: ICampaignMessage[]}>>(`${this.commonUrl}/campaign/sms-messages`, {
             withCredentials: true,
             params: {
                 clinic_id: clinicId,
