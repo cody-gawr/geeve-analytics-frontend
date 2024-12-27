@@ -13,6 +13,10 @@
                     <mat-icon>edit_square</mat-icon>
                     <span>Save draft</span>
                 </button>
+                <button [disabled]="!this.selection.selected" (click)="downloadCampaignList()" mat-menu-item>
+                    <mat-icon>download</mat-icon>
+                    <span>Export List</span>
+                </button>
             </mat-menu>
         </div>
     </div>
@@ -208,12 +212,12 @@
                             <th mat-header-cell *matHeaderCellDef> Previous Campaigns </th>
                             <td mat-cell *matCellDef="let element"> 
                                 <mat-chip-set aria-label="Previous Campaigns">
-                                    <mat-chip class="chip-style" *ngFor="let campaign of getCampaignDescription(element.prev_campaigns)">{{campaign?.description}}</mat-chip>
-                                    <mat-chip class="chip-style" [matMenuTriggerFor]="menu" *ngIf="element.prev_campaigns?.split(',').length > 2">
+                                    <mat-chip class="chip-style" *ngFor="let campaign of element.prev_campaigns_desc?.slice(0,2)">{{campaign}}</mat-chip>
+                                    <mat-chip class="chip-style" [matMenuTriggerFor]="menu" *ngIf="element.prev_campaigns_desc?.length > 2">
                                         <mat-icon style="margin-top:5px" >more_horiz</mat-icon>
                                     </mat-chip>
                                     <mat-menu #menu="matMenu">
-                                        <mat-chip class="chip-style" style="margin: 5px;" *ngFor="let campaign of getCampaignDescription(element.prev_campaigns, 2)">
+                                        <mat-chip class="chip-style" style="margin: 5px;" *ngFor="let campaign of element.prev_campaigns_desc?.slice(2)">
                                             {{campaign?.description}}</mat-chip>
                                     </mat-menu>
                                 </mat-chip-set>

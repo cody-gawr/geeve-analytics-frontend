@@ -16,6 +16,7 @@ import { NotificationService } from '@/newapp/shared/services/notification.servi
 import { CommonDataService, ItemCode } from '@/newapp/shared/services/common-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
+import { CsvUtil } from '@/newapp/shared/utils';
 
 export interface CampaignElement {
   clinic_id: number;
@@ -136,7 +137,13 @@ export class CreateCampaignComponent implements AfterViewInit {
               ];
             }
             
-            this.dataSource.data = result.data;
+            this.dataSource.data = result.data.map(r => {
+              const prev_desc = r.prev_campaigns? this.findCampaignDescription(r.prev_campaigns): null;
+              return {...r, 
+                prev_campaigns_desc: prev_desc,
+                prev_campaigns_desc_str: prev_desc?.join(" | ")
+              }
+            });
             this.selection.clear();
             if(this.campaignId){
               this.selection.select(...this.dataSource.data.filter(p => this.pendingPatients.findIndex(pendingP => pendingP.patient_id == p.patient_id) > -1));
@@ -365,17 +372,24 @@ export class CreateCampaignComponent implements AfterViewInit {
       // this.done = DefaultFilterElements.filter(d => doneFilters.indexOf(d.filterName) > -1);
     }
 
-    getCampaignDescription(prev_campaigns: string, isLast = false) {
-      if(isLast){
-        return prev_campaigns?.split(',').slice(2).map(p => {
-          const cId = parseInt(p);
-          return this.campaigns.find(c => c.id === cId);
-        })
-      }
-      return prev_campaigns?.split(',').slice(0, 2).map(p => {
+    // getCampaignDescription(prev_campaigns: string, isLast = false) {
+    //   if(isLast){
+    //     return prev_campaigns?.split(',').slice(2).map(p => {
+    //       const cId = parseInt(p);
+    //       return this.campaigns.find(c => c.id === cId);
+    //     })
+    //   }
+    //   return prev_campaigns?.split(',').slice(0, 2).map(p => {
+    //     const cId = parseInt(p);
+    //     return this.campaigns.find(c => c.id === cId);
+    //   })
+    // }
+
+    findCampaignDescription(prev_campaigns: string) {
+      return prev_campaigns?.split(',').map(p => {
         const cId = parseInt(p);
-        return this.campaigns.find(c => c.id === cId);
-      })
+        return this.campaigns.find(c => c.id === cId)?.description || 'Unknown';
+      });
     }
 
     remainCredits = 0;
@@ -415,6 +429,25 @@ export class CreateCampaignComponent implements AfterViewInit {
     @HostListener('document:mouseup', ['$event'])
     onMouseUp() {
       this.isDragging = false; // Stop dragging
+    }
+
+    downloadCampaignList() {
+      let columns: any = {
+        patient_name: 'Patient Name',
+        prev_campaigns_desc_str: 'Previous Campaigns',
+        last_appointment: 'Last Appointment',
+        last_provider: 'Last Provider',
+        next_appointment: 'Next Appointment',
+        next_provider: 'Next Provider',
+        mobile: 'Ph Number',
+        email: 'Email',
+      };
+      if(this.done.findIndex(d => d.filterName === 'overdues') > -1){
+        columns.days_overdue = 'Overdues';
+        columns.amount = 'Amount';
+      }
+      const csvContent = CsvUtil.convertToCsv(this.dataSource.data, columns);
+      CsvUtil.downloadCsv(csvContent, `campaign${moment().format('YYYY-MM-SSTHH:mm:ss')}.csv`);
     }
 
     startCampaign(isDraft = false) {

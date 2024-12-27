@@ -650,3 +650,40 @@ export function renderTooltipLabel(
     }
   }
 }
+
+export class CsvUtil {
+
+  // Convert an array of objects to CSV
+  public static convertToCsv(data: any[], columns: Record<string, string>): string {
+    if (!data || data.length === 0) {
+      return '';
+    }
+
+
+    // Map the data to CSV rows
+    const rows = data.map(item => 
+      Object.keys(columns).map(header => item[header]).join(',')
+    );
+
+    // Join the headers with the rows to form the full CSV content
+    return [Object.values(columns).join(','), ...rows].join('\n');
+  }
+
+  // Trigger file download
+  public static downloadCsv(content: string, filename: string): void {
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+
+    // Ensure the link is not null or undefined
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+}
