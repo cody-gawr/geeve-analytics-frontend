@@ -446,7 +446,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         columns.days_overdue = 'Overdues';
         columns.amount = 'Amount';
       }
-      const csvContent = CsvUtil.convertToCsv(this.dataSource.data, columns);
+      const csvContent = CsvUtil.convertToCsv(this.selection.selected, columns);
       CsvUtil.downloadCsv(csvContent, `campaign${moment().format('YYYY-MM-SSTHH:mm:ss')}.csv`);
     }
 
