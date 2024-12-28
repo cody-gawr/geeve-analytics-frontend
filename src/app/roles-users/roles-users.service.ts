@@ -82,6 +82,20 @@ export class RolesUsersService {
       );
   }
 
+  getUserDetail(product: string = 'jeeve_analytics') {
+    var header = this.getHeaders();
+    return this.http
+    .get(
+      environment.commonApiUrl + '/users?product='+product,
+      header
+    )
+    .pipe(
+      map((response: HttpResponse<any>) => {
+        return response.body;
+      })
+    );
+  }
+
   // Get Dentist
   getRoleUserDetails(role_id): Observable<any> {
     var header = this.getHeaders();

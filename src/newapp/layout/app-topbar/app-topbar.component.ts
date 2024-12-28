@@ -29,6 +29,8 @@ import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie';
 import _ from 'lodash';
 import { MatSelectChange } from '@angular/material/select';
+import { Clinic } from '@/newapp/models/clinic';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-topbar',
@@ -46,6 +48,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   public activatedRoute = new BehaviorSubject<string>('');
   public activatedRoute$: Observable<string> =
     this.activatedRoute.asObservable();
+  public unsubscribedClinic: Clinic = null;
 
   range = new FormGroup({
     start: new FormControl<Moment | null>(null),
@@ -61,7 +64,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
       map(([rolesIndividual, totalClinics, activatedRoute]) => {
         const userType = rolesIndividual ? rolesIndividual.type : 0;
         return (
-          totalClinics.length > 1 &&
+          totalClinics?.length > 1 &&
           ['/dashboards/healthscreen'].includes(activatedRoute) &&
           userType != 7
         );
@@ -136,8 +139,17 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     private authFacade: AuthFacade,
     private dentistFacade: DentistFacade,
     private toastr: ToastrService,
-    private cookieService: CookieService
-  ) {}
+    private cookieService: CookieService,
+    private router: Router
+  ) {
+    if(router.url === '/newapp/dashboard/unsubscribed'){
+      const clinicStr = localStorage.getItem('unsubscribed_clinic');
+      this.unsubscribedClinic = clinicStr && JSON.parse(clinicStr);
+      this.selectedClinic = this.unsubscribedClinic.id;
+    }else{
+      this.unsubscribedClinic = null;
+    }
+  }
 
   setCookieVal(val: string) {
     const values = this.cookieService.get('clinic_dentist')?.split('_');
@@ -148,6 +160,13 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+    this.activatedRoute$.pipe(
+      takeUntil(this.dentists$)
+    ).subscribe(activeUrl => {
+      console.log(activeUrl)
+      alert();
+
+    });
     combineLatest([
       this.authFacade.authUserData$,
       this.authFacade.rolesIndividual$,
@@ -158,10 +177,12 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
         takeUntil(this.destroy$),
         filter(
           ([, rolesIndividual, clinics]) =>
-            rolesIndividual !== null && clinics.length > 0
+            rolesIndividual !== null && clinics?.length > 0
         ),
         map(data => {
+
           const [authUserData, rolesIndividual, clinics, activatedRoute] = data;
+          
           const result = authUserData ?? this.authFacade.getAuthUserData();
           return {
             multiClinicEnabled: {
@@ -172,7 +193,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
               dash5Multi: result?.dash5Multi,
             },
             userType: rolesIndividual ? rolesIndividual.type : 0,
-            totalClinicsLength: clinics.length,
+            totalClinicsLength: clinics?.length,
             activatedRoute,
           };
         })

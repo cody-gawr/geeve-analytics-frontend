@@ -1,10 +1,11 @@
 .mat-tree {
   margin-bottom: 75px;
-  background: linear-gradient(
-    to bottom,
-    rgb(24, 166, 137) -12%,
-    rgb(0, 111, 115) 75%
-  );
+  // background: linear-gradient(
+  //   to bottom,
+  //   rgb(24, 166, 137) -12%,
+  //   rgb(0, 111, 115) 75%
+  // );
+  background: transparent;
   .mat-tree-node a,
   .expand-tree-node {
     color: #89cdc2;

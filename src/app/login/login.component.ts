@@ -59,22 +59,26 @@ export class LoginComponent implements OnInit {
     router.routerState.root.queryParams.subscribe(val => {
       if (this._cookieService.get('is_logged_in') === 'YES' && val.switchClinicId) {
         this.clinic_id = parseInt(val.switchClinicId);
-      forkJoin([this.rolesUsersService.getRolesIndividual(this.clinic_id), clinicService.listClinics()])
-        .subscribe({
-          next: ([res, res2]) => {
-            let isUnsubscribed = false;
+        clinicService.listClinics('jeeve_pay').subscribe({
+          next: (res2) => {
+            let isUnsubscribed = false, clinic;
             if(res2?.body?.data){
-              const clinic = res2.body.data.find(d => d.id === this.clinic_id);
+              clinic = res2.body.data.find(d => d.id === this.clinic_id);
               if(clinic){
                 isUnsubscribed = !clinic.has_analytics_subscription;
               }
             }
-            this.redirectingPagesByRoles(res, isUnsubscribed);
+            if(isUnsubscribed){
+              localStorage.setItem('unsubscribed_clinic', JSON.stringify(clinic));
+              return this.goTo('/newapp/dashboard/unsubscribed');
+            }
+            // this.getRolesIndividual();
           },
           error: err => {
             this.showLoginForm();
           },
         });
+          
         // this.getRolesIndividual();
       } else {
         this.showLoginForm();
@@ -274,8 +278,8 @@ export class LoginComponent implements OnInit {
       });
   }
   
-  redirectingPagesByRoles(res: any, isUnsubscribed = false){
-    var permision = res.data;
+  redirectingPagesByRoles(res: any){
+    
     const user_type = res.type.toString();
     this._cookieService.put(
       'user_type',
@@ -287,9 +291,8 @@ export class LoginComponent implements OnInit {
       res.plan,
       this.constants.cookieOpt
     );
-    if(isUnsubscribed){
-      return this.goTo('/newapp/dashboard/unsubscribed');
-    }
+
+    var permision = res.data;
     if (permision != '' && user_type != '2' && user_type != '7') {
       if (permision.indexOf('healthscreen') >= 0) {
         return this.goTo('/dashboards/healthscreen');

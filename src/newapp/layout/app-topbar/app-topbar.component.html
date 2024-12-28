@@ -89,6 +89,9 @@
               <mat-option *ngIf="enableAllClinics$ | async" value="all"
                 >All Clinics</mat-option
               >
+              <mat-option *ngIf="!!unsubscribedClinic" class="custom-font" [value]="unsubscribedClinic.id">
+                {{ unsubscribedClinic.clinicName }}
+              </mat-option>
               <mat-option
                 class="custom-font"
                 *ngFor="let clinic of clinics$ | async"
