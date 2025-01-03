@@ -84,6 +84,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { layoutFeature } from '@/newapp/layout/state/reducers/layout.reducer';
 import { AppSwitchMenu } from './layouts/app-switch-menu/app-switch-menu.component';
+import { LoginService } from './login/login.service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -182,6 +183,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     httpInterceptors,
     ClinicFacade,
     LayoutFacade,
+    LoginService
   ],
   bootstrap: [AppComponent],
 })

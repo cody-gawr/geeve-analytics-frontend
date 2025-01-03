@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import { LoginService } from './login/login.service';
+import { CookieService } from 'ngx-cookie';
 // import { Colors } from 'chart.js';
 
 @Component({
@@ -51,10 +53,17 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 //     }
 //   }
 // }
-export class AppComponent {
-  constructor() {
-    Chart.defaults.font.family = 'Gilroy-Regular';
-    Chart.register(annotationPlugin);
-    // Chart.register(Colors);
+export class AppComponent implements OnInit{
+  constructor(
+    private loginService: LoginService, 
+    private cookieService: CookieService) {
+      Chart.defaults.font.family = 'Gilroy-Regular';
+      Chart.register(annotationPlugin);
+      // Chart.register(Colors);
+  }
+
+  ngOnInit(): void {
+    if(this.cookieService.get('is_logged_in') === "YES")
+    this.loginService.me();
   }
 }

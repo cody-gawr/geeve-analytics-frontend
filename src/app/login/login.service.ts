@@ -2,9 +2,10 @@ import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie';
+import { CookieOptions, CookieService } from 'ngx-cookie';
 import { environment } from '../../environments/environment';
-import { Router } from '@angular/router';
+import camelcaseKeys from 'camelcase-keys';
+import { AppConstants } from '../app.constants';
 
 @Injectable()
 export class LoginService {
@@ -13,7 +14,7 @@ export class LoginService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    public constants: AppConstants,
   ) {
     //append headers
     this.headers = new HttpHeaders();
@@ -46,6 +47,24 @@ export class LoginService {
         })
       );
   }
+
+  me() {
+     this.http
+      .get(environment.commonApiUrl + '/me', {
+        headers: this.headers,
+        withCredentials: true,
+        observe: 'response' as const,
+      })
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response.body;
+        })
+      ).subscribe((body:any) => {
+        if(body.status === 200)
+          this.updateUserInfo(body.data);
+      });
+  }
+
   // Items Predictor Analysis
   checkEmail(email, captcha): Observable<any> {
     const formData = new FormData();
@@ -176,5 +195,105 @@ export class LoginService {
           return response;
         })
       );
+  }
+
+  updateUserInfo(data) {
+      var datares = [];
+      localStorage.setItem(
+        'authUserData',
+        JSON.stringify(camelcaseKeys(data, { deep: true }))
+      );
+      datares['username'] = data.username;
+      datares['email'] = data.email;
+      datares['token'] = data.token;
+      datares['userid'] = data.id;
+      datares['clinicid'] = data.clinic_id;
+      datares['parentid'] = data.parent_id;
+      datares['user_type'] = data.user_type;
+      /*datares['user_image'] = data.user_image;        */
+      datares['stepper_status'] = parseInt(data.stepper_status);
+      datares['login_status'] = data.status;
+      datares['display_name'] = data.display_name;
+      datares['dentistid'] = data.dentist_id;
+      //datares['mfa_enabled'] = data.mfa_enabled;
+      datares['features_dismissed'] =
+        data.features_dismissed;
+      datares['health_screen_mtd'] = data.health_screen_mtd;
+      let opts = this.constants.cookieOpt as CookieOptions;
+
+      var nextStep = (
+        datares['stepper_status'] + 1
+      ).toString();
+
+      this._cookieService.put('stepper', nextStep, opts);
+      this._cookieService.put('userid', '', opts);
+
+      //this._cookieService.put('multiClinicEnabled', data.multi_clinic_enabled, opts);
+      this._cookieService.put(
+        'dash1_multi',
+        data.dash1_multi,
+        opts
+      );
+      this._cookieService.put('mfa_enabled', datares['mfa_enabled']);
+      this._cookieService.put(
+        'dash2_multi',
+        data.dash2_multi,
+        opts
+      );
+      this._cookieService.put(
+        'dash3_multi',
+        data.dash3_multi,
+        opts
+      );
+      this._cookieService.put(
+        'dash4_multi',
+        data.dash4_multi,
+        opts
+      );
+      this._cookieService.put(
+        'dash5_multi',
+        data.dash5_multi,
+        opts
+      );
+
+      this._cookieService.put('childid', '', opts);
+      this._cookieService.put('dentistid', '', opts);
+      this._cookieService.put('userid', datares['userid'], opts);
+      //this._cookieService.put("token", datares['token'], opts);
+      this._cookieService.put('username', datares['username'], opts);
+      this._cookieService.put('email', datares['email'], opts);
+      this._cookieService.put('user_type', datares['user_type'], opts);
+
+      this._cookieService.put(
+        'login_status',
+        datares['login_status'],
+        opts
+      );
+
+      this._cookieService.put(
+        'display_name',
+        datares['display_name'],
+        opts
+      );
+
+      this._cookieService.put(
+        'features_dismissed',
+        datares['features_dismissed'],
+        opts
+      );
+
+      this._cookieService.put(
+        'health_screen_mtd',
+        datares['health_screen_mtd'],
+        opts
+      );
+
+      /*this._cookieService.put("user_image", datares['user_image'], opts);        */
+      if (datares['user_type'] != '2' && datares['user_type'] != '7') {
+        this._cookieService.put('userid', datares['parentid'], opts);
+        this._cookieService.put('childid', datares['userid'], opts);
+        this._cookieService.put('clinicid', datares['clinicid'], opts);
+        this._cookieService.put('dentist_toggle', 'false', opts);
+      }
   }
 }
