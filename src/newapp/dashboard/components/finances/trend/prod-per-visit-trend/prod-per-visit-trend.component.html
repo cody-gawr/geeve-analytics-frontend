@@ -5,29 +5,39 @@
     color="primary"
     class="help-tip"
     fontIcon="help"></mat-icon>
-  <div class="chart-title">Production Per Visit</div>
-  <div class="chart-content prod-per-visit-trend-chart">
-    <div class="prod-per-visit-graph">
-      <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-      <ng-template #chartElem>
-        <canvas
-          *ngIf="datasets.length > 0 && datasets[0].data.length > 0"
-          baseChart
-          [datasets]="datasets"
-          [labels]="labels"
-          [options]="labelBarOptionsSingleValue"
-          [legend]="false"
-          type="line"></canvas>
-        <spin-loader
-          class="empty-placeholder"
-          *ngIf="
-            !(datasets.length > 0 && datasets[0].data.length > 0) &&
-            !(isLoading$ | async)
-          "
-          [disableSpin]="true">
-          You have no data in the selected period
-        </spin-loader>
-      </ng-template>
+  <div class="chart-title">{{chartName$ | async}}</div>
+  <div class="chart-content">
+    <div class="chart-box prod-per-visit-trend-chart">
+      <div class="chart-header">
+        <button
+            *ngFor="let chartName of chartNames"
+            (click)="switchChartName(chartName)"
+            [ngClass]="{ active: chartName == (chartName$ | async) }">
+            {{ chartName }}
+          </button>
+      </div>
+      <div class="prod-per-visit-graph">
+        <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+        <ng-template #chartElem>
+          <canvas
+            *ngIf="datasets.length > 0 && datasets[0].data.length > 0"
+            baseChart
+            [datasets]="datasets"
+            [labels]="labels"
+            [options]="labelBarOptionsSingleValue"
+            [legend]="false"
+            type="line"></canvas>
+          <spin-loader
+            class="empty-placeholder"
+            *ngIf="
+              !(datasets.length > 0 && datasets[0].data.length > 0) &&
+              !(isLoading$ | async)
+            "
+            [disableSpin]="true">
+            You have no data in the selected period
+          </spin-loader>
+        </ng-template>
+      </div>
     </div>
   </div>
 </div>

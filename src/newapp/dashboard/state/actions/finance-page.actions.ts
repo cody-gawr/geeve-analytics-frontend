@@ -126,6 +126,13 @@ export const loadFnProdByClinicianTrend = createAction(
   }>()
 );
 
+export const setProdPerVisitChartName = createAction(
+  '[Fanance Page] Set Prod Per Visit Chart Name',
+  props<{
+    chartName: FN_PROD_PER_VISIT_CHART_NAME;
+  }>()
+)
+
 export const loadFnProductionPerVisit = createAction(
   '[Fanance Page] load fnProductionPerVisit',
   props<{
@@ -139,6 +146,26 @@ export const loadFnProductionPerVisit = createAction(
 
 export const loadFnProdPerVisitTrend = createAction(
   '[Fanance Page] load fnProductionPerVisitTrend',
+  props<{
+    clinicId: string | number;
+    mode: string;
+    queryWhEnabled: number;
+  }>()
+);
+
+export const loadFnProductionPerDay = createAction(
+  '[Fanance Page] load fnProductionPerDay',
+  props<{
+    clinicId: number | string;
+    startDate: string;
+    endDate: string;
+    duration: string;
+    queryWhEnabled: number;
+  }>()
+);
+
+export const loadFnProdPerDayTrend = createAction(
+  '[Fanance Page] load fnProductionPerDayTrend',
   props<{
     clinicId: string | number;
     mode: string;

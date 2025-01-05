@@ -21,11 +21,27 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
 
   datasets: ChartDataset[] = [];
   labels = [];
+  chartNames: FN_PROD_PER_VISIT_CHART_NAME[] = [
+    'Production Per Visit',
+    'Production Per Day',
+  ];
+
+  get chartName$() {
+    return this.financeFacade.prodPerVisitChartName$;
+  }
+
+  switchChartName(chartName: FN_PROD_PER_VISIT_CHART_NAME) {
+    this.financeFacade.setProdPerVisitChartName(chartName);
+  }
 
   chartData: {
     prod: number;
-    numVisits: number;
+    numTotal: number;
     prodPerVisits: number;
+  }[] | {
+    prod: number;
+    numTotal: number;
+    prodPerDays: number;
   }[];
 
   public labelBarOptionsSingleValue: ChartOptions<'line'> = {
@@ -105,7 +121,7 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
               `Num Visits : ${new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
-              }).format(extraData.numVisits)}`
+              }).format(extraData.numTotal)}`
             );
 
             return labelItems;

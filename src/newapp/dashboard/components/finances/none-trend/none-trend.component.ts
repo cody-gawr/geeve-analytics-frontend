@@ -28,9 +28,9 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
     );
   }
 
-  get productionPerVisit$() {
-    return this.financeFacade.prodPerVisitTotal$;
-  }
+  // get productionPerVisit$() {
+  //   return this.financeFacade.prodPerVisitTotal$;
+  // }
 
   get collectionVal$() {
     return this.financeFacade.collectionVal$;

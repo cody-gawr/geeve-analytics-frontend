@@ -107,8 +107,6 @@ export class CreateCampaignComponent implements AfterViewInit {
               this.todo = [...DefaultFilterElements];
               this.loadingData = false;
             }
-
-            
           }
       });
 

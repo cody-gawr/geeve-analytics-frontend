@@ -159,6 +159,24 @@ export interface FnProdPerVisitTrendApiResponse {
   status: string | number;
 }
 
+export interface FnProductionPerDayApiResponse {
+  app: string;
+  data: FnProductionPerDayItem[];
+  mesage: string;
+  status: string | number;
+  total: number;
+  totalAverage: number;
+  totalTa: number;
+}
+
+export interface FnProdPerDayTrendApiResponse {
+  app: string;
+  data: FnProductionPerDayItem[];
+  mesage: string;
+  status: string | number;
+}
+
+
 export interface FnTotalDiscountItem {
   clinicId: string | number;
   clinicName: string;
@@ -209,6 +227,18 @@ export interface FnProductionPerVisitItem {
   month: null | unknown;
   numVisits: string | number;
   prodPerVisit: string | number;
+  production: string | number;
+  year: null | unknown;
+  yearMonth: null | unknown;
+}
+
+export interface FnProductionPerDayItem {
+  clinicId: string | number;
+  clinicName: string;
+  day: null | unknown;
+  month: null | unknown;
+  numDays: string | number;
+  prodPerDay: string | number;
   production: string | number;
   year: null | unknown;
   yearMonth: null | unknown;

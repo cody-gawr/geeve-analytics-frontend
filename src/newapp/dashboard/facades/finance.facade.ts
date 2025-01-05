@@ -17,13 +17,9 @@ import {
   selectProdByClinicianTotal,
   selectProdByClinicData,
   selectProdByClinicianTrendTotal,
-  selectProdPerVisitData,
-  selectProdPerVisitTotal,
-  selectProdPerVisitTrendTotal,
   selectTotalDiscountData,
   selectTotalDiscountTotal,
   selectTotalDiscountTrendTotal,
-  selectIsLoadingFnProdPerVisit,
   selectIsLoadingFnProdPerClinic,
   selectIsLoadingFnTotalDiscount,
   selectCollectionData,
@@ -51,12 +47,15 @@ import {
   selectProdByClinicianTrendChartData,
   selectIsLoadingFnTotalDiscountTrend,
   selectTotalDiscountTrendChartData,
-  selectIsLoadingFnProdPerVisitTrend,
   selectProdPerVisitTrendChartData,
   selectIsLoadingAllData,
   selectIsLoadingAllTrendData,
   selectProductionCollectionTrendChartData,
   selectFnExpensesData,
+  selectProdPerVisitChartName,
+  selectProdPerVisitChartData,
+  selectIsLoadingFnProdPerVisitOrDay,
+  selectIsLoadingFnProdPerVisitOrDayTrend,
 } from '../state/reducers/finance.reducer';
 import { FnNetProfitParams } from '@/newapp/models/dashboard/finance';
 import { FinancePageActions } from '../state/actions';
@@ -136,11 +135,11 @@ export class FinanceFacade {
   );
 
   public readonly isLoadingFnProdPerVisit$ = this.store.pipe(
-    select(selectIsLoadingFnProdPerVisit)
+    select(selectIsLoadingFnProdPerVisitOrDay)
   );
 
   public readonly isLoadingFnProdPerVisitTrend$ = this.store.pipe(
-    select(selectIsLoadingFnProdPerVisitTrend)
+    select(selectIsLoadingFnProdPerVisitOrDayTrend)
   );
 
   public readonly isLoadingFnProdPerClinician$ = this.store.pipe(
@@ -218,20 +217,16 @@ export class FinanceFacade {
     select(selectProdByClinicianTrendTotal)
   );
 
-  public readonly prodPerVisitData$ = this.store.pipe(
-    select(selectProdPerVisitData)
+  public readonly prodPerVisitChartData$ = this.store.pipe(
+    select(selectProdPerVisitChartData)
   );
 
   public readonly prodPerVisitTrendChartData$ = this.store.pipe(
     select(selectProdPerVisitTrendChartData)
   );
 
-  public readonly prodPerVisitTotal$ = this.store.pipe(
-    select(selectProdPerVisitTotal)
-  );
-
-  public readonly prodPerVisitTrendTotal$ = this.store.pipe(
-    select(selectProdPerVisitTrendTotal)
+  public readonly prodPerVisitChartName$ = this.store.pipe(
+    select(selectProdPerVisitChartName)
   );
 
   public readonly totalDiscountData$ = this.store.pipe(
@@ -388,6 +383,10 @@ export class FinanceFacade {
     this.store.dispatch(FinancePageActions.loadFnProductionPerVisit(params));
   }
 
+  public loadFnProductionPerDay(params: FnNetProfitParams) {
+    this.store.dispatch(FinancePageActions.loadFnProductionPerDay(params));
+  }
+
   public loadFnProductionPerVisitTrend(
     clinicId: string | number,
     mode: string,
@@ -399,6 +398,26 @@ export class FinanceFacade {
         mode,
         queryWhEnabled,
       })
+    );
+  }
+
+  public loadFnProductionPerDayTrend(
+    clinicId: string | number,
+    mode: string,
+    queryWhEnabled: number = undefined
+  ) {
+    this.store.dispatch(
+      FinancePageActions.loadFnProdPerDayTrend({
+        clinicId,
+        mode,
+        queryWhEnabled,
+      })
+    );
+  }
+
+  public setProdPerVisitChartName(chartName: FN_PROD_PER_VISIT_CHART_NAME) {
+    this.store.dispatch(
+      FinancePageActions.setProdPerVisitChartName({ chartName })
     );
   }
 

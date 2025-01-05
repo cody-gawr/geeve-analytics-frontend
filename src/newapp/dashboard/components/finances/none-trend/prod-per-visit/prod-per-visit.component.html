@@ -11,10 +11,18 @@
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"
       [matTooltip]="getTrendTip$ | async"></mat-icon>
-    <span> Production Per Visit </span>
+    <span> {{chartName$ | async}} </span>
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
+      <div class="chart-header">
+        <button
+            *ngFor="let chartName of chartNames"
+            (click)="switchChartName(chartName)"
+            [ngClass]="{ active: chartName == (chartName$ | async) }">
+            {{ chartName }}
+          </button>
+      </div>
       <div class="chart-gauge prod-per-visit-gauge">
         <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
         <ng-template #chartElem>

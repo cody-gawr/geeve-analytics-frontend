@@ -11,8 +11,10 @@ import {
   FnNetProfitPercentTrendApiResponse,
   FnNetProfitTrendApiResponse,
   FnProdByClinicianTrendApiResponse,
+  FnProdPerDayTrendApiResponse,
   FnProdPerVisitTrendApiResponse,
   FnProductionByClinicianApiResponse,
+  FnProductionPerDayApiResponse,
   FnProductionPerVisitApiResponse,
   FnTotalCollectionApiResponse,
   FnTotalCollectionTrendApiResponse,
@@ -459,6 +461,61 @@ export class FinanceService {
         map(
           res =>
             <FnProdPerVisitTrendApiResponse>camelcaseKeys(res, { deep: true })
+        )
+      );
+  }
+
+  fnProductionPerDay(params: FnNetProfitParams) {
+    const {
+      clinicId,
+      startDate = '',
+      endDate = '',
+      duration = '',
+      queryWhEnabled = undefined,
+    } = params;
+    const queryParams = {
+      clinic_id: clinicId,
+      start_date: startDate,
+      end_date: endDate,
+      duration: duration,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
+    return this.http
+      .get(`${this.apiUrl}/Finance/fnProductionPerDay`, {
+        params: queryParams,
+        withCredentials: true,
+      })
+      .pipe(
+        map(
+          res =>
+            <FnProductionPerDayApiResponse>camelcaseKeys(res, { deep: true })
+        )
+      );
+  }
+
+  fnProductionPerDayTrend(
+    clinicId: string | number,
+    mode: string,
+    queryWhEnabled: number = undefined
+  ) {
+    const queryParams = {
+      clinic_id: clinicId,
+      mode,
+    };
+    if (queryWhEnabled !== undefined) {
+      queryParams['wh'] = queryWhEnabled;
+    }
+    return this.http
+      .get(`${this.apiUrl}/Finance/fnProductionPerDayTrend`, {
+        params: queryParams,
+        withCredentials: true,
+      })
+      .pipe(
+        map(
+          res =>
+            <FnProdPerDayTrendApiResponse>camelcaseKeys(res, { deep: true })
         )
       );
   }

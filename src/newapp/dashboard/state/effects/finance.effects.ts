@@ -380,6 +380,54 @@ export class FinanceEffects {
     );
   });
 
+  public readonly loadfnProductionPerDay$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FinancePageActions.loadFnProductionPerDay),
+      mergeMap(params => {
+        return this.financeService.fnProductionPerDay(params).pipe(
+          map(res =>
+            FinanceApiActions.fnProductionPerDaySuccess({
+              prodPerDayData: res.data,
+              prodPerDayTotal: res.total,
+              prodPerDayTrendTotal: res.totalTa,
+            })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FinanceApiActions.fnProductionPerDayFailure({
+                error: error.error?.jeeveError ?? error,
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
+  public readonly loadfnProductionPerDayTrend$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FinancePageActions.loadFnProdPerDayTrend),
+      mergeMap(({ clinicId, mode, queryWhEnabled }) => {
+        return this.financeService
+          .fnProductionPerDayTrend(clinicId, mode, queryWhEnabled)
+          .pipe(
+            map(res =>
+              FinanceApiActions.fnProductionPerDayTrendSuccess({
+                prodPerDayTrendData: res.data,
+              })
+            ),
+            catchError((error: HttpErrorResponse) =>
+              of(
+                FinanceApiActions.fnProductionPerDayTrendFailure({
+                  error: error.error?.jeeveError ?? error,
+                })
+              )
+            )
+          );
+      })
+    );
+  });
+
   public readonly loadFnTotalDiscounts$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalDiscounts),

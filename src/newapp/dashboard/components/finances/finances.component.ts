@@ -115,6 +115,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
             this.financeFacade.loadFnTotalProduction(params);
             this.financeFacade.loadFnProductionByClinician(params);
             this.financeFacade.loadFnProductionPerVisit(params);
+            this.financeFacade.loadFnProductionPerDay(params);
             this.financeFacade.loadFnTotalDiscounts(params);
             this.financeFacade.loadFnTotalCollection(params);
             break;
@@ -151,6 +152,11 @@ export class FinancesComponent implements OnInit, OnDestroy {
               queryWhEnabled
             );
             this.financeFacade.loadFnProductionPerVisitTrend(
+              clinicId,
+              trend === 'current' ? 'c' : 'h',
+              queryWhEnabled
+            );
+            this.financeFacade.loadFnProductionPerDayTrend(
               clinicId,
               trend === 'current' ? 'c' : 'h',
               queryWhEnabled

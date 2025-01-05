@@ -129,6 +129,8 @@ declare global {
     | 'cpReferralsTrend'
     | 'cpPredictorRatioTrend';
 
+  type FN_PROD_PER_VISIT_CHART_NAME = 'Production Per Visit' | 'Production Per Day';
+
   interface FnProduction {
     clinicId: number | string;
     clinicName: string;

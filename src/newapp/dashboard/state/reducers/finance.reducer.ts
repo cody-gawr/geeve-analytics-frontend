@@ -13,6 +13,7 @@ import {
   FnNetProfitPercentTrendItem,
   FnProdByClinicianTrendItem,
   FnExpensesApiResponse,
+  FnProductionPerDayItem,
 } from '@/newapp/models/dashboard/finance';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import moment from 'moment';
@@ -29,6 +30,7 @@ type FInanceEndpoints =
   | 'fnExpenses'
   | 'fnProductionByClinician'
   | 'fnProductionPerVisit'
+  | 'fnProductionPerDay'
   | 'fnTotalDiscounts'
   | 'fnTotalCollection'
   | 'fnTotalProductionTrend'
@@ -36,6 +38,7 @@ type FInanceEndpoints =
   | 'fnNetProfitTrend'
   | 'fnNetProfitPercentageTrend'
   | 'fnProductionPerVisitTrend'
+  | 'fnProductionPerDayTrend'
   | 'fnExpensesTrend'
   | 'fnProductionByClinicianTrend'
   | 'fnTotalDiscountsTrend';
@@ -71,6 +74,12 @@ export interface FinanceState {
   prodPerVisitTrendData: FnProductionPerVisitItem[];
   prodPerVisitTotal: number;
   prodPerVisitTrendTotal: number;
+  prodPerVisitChartName: FN_PROD_PER_VISIT_CHART_NAME;
+
+  prodPerDayData: FnProductionPerDayItem[];
+  prodPerDayTrendData: FnProductionPerDayItem[];
+  prodPerDayTotal: number;
+  prodPerDayTrendTotal: number;
 
   totalDiscountData: FnTotalDiscountItem[];
   totalDiscountTrendData: FnTotalDiscountItem[];
@@ -134,6 +143,12 @@ const initialState: FinanceState = {
   prodPerVisitTrendData: [],
   prodPerVisitTotal: 0,
   prodPerVisitTrendTotal: 0,
+  prodPerVisitChartName: 'Production Per Visit',
+
+  prodPerDayData: [],
+  prodPerDayTrendData: [],
+  prodPerDayTotal: 0,
+  prodPerDayTrendTotal: 0,
 
   totalDiscountData: [],
   totalDiscountTrendData: [],
@@ -471,6 +486,15 @@ export const financeFeature = createFeature({
         };
       }
     ),
+    on(
+      FinancePageActions.setProdPerVisitChartName,
+      (state, { chartName }): FinanceState => {
+        return {
+          ...state,
+          prodPerVisitChartName: chartName,
+        };
+      }
+    ),
     // FnProductionPerVisit API
     on(FinancePageActions.loadFnProductionPerVisit, (state): FinanceState => {
       const { isLoadingData, errors } = state;
@@ -557,6 +581,95 @@ export const financeFeature = createFeature({
             n => n != 'fnProductionPerVisitTrend'
           ),
           errors: [...errors, { ...error, api: 'fnProductionPerVisitTrend' }],
+        };
+      }
+    ),
+    // FnProductionPerDay API
+    on(FinancePageActions.loadFnProductionPerDay, (state): FinanceState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'fnProductionPerDay'),
+        prodPerDayData: [],
+        prodPerDayTotal: 0,
+        prodPerDayTrendTotal: 0,
+        isLoadingData: _.union(isLoadingData, ['fnProductionPerDay']),
+      };
+    }),
+    on(
+      FinanceApiActions.fnProductionPerDaySuccess,
+      (
+        state,
+        { prodPerDayData, prodPerDayTotal, prodPerDayTrendTotal }
+      ): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, n => n.api != 'fnProductionPerDay'),
+          prodPerDayData: prodPerDayData,
+          prodPerDayTotal: prodPerDayTotal,
+          prodPerDayTrendTotal: prodPerDayTrendTotal,
+          isLoadingData: _.filter(
+            isLoadingData,
+            n => n != 'fnProductionPerDay'
+          ),
+        };
+      }
+    ),
+    on(
+      FinanceApiActions.fnProductionPerDayFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          prodPerDayData: [],
+          prodPerDayTotal: 0,
+          prodPerDayTrendTotal: 0,
+          isLoadingData: _.filter(
+            isLoadingData,
+            n => n != 'fnProductionPerDay'
+          ),
+          errors: [...errors, { ...error, api: 'fnProductionPerDay' }],
+        };
+      }
+    ),
+    // FnProdutionPerDayTrend API
+    on(FinancePageActions.loadFnProdPerDayTrend, (state): FinanceState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'fnProductionPerDayTrend'),
+        prodPerDayTrendData: [],
+        isLoadingData: _.union(isLoadingData, ['fnProductionPerDayTrend']),
+      };
+    }),
+    on(
+      FinanceApiActions.fnProductionPerDayTrendSuccess,
+      (state, { prodPerDayTrendData }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, n => n.api != 'fnProductionPerDayTrend'),
+          prodPerDayTrendData: prodPerDayTrendData,
+          isLoadingData: _.filter(
+            isLoadingData,
+            n => n != 'fnProductionPerDayTrend'
+          ),
+        };
+      }
+    ),
+    on(
+      FinanceApiActions.fnProductionPerDayTrendFailure,
+      (state, { error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          prodPerDayTrendData: [],
+          isLoadingData: _.filter(
+            isLoadingData,
+            n => n != 'fnProductionPerDayTrend'
+          ),
+          errors: [...errors, { ...error, api: 'fnProductionPerDayTrend' }],
         };
       }
     ),
@@ -847,6 +960,11 @@ export const {
   selectProdPerVisitTrendData,
   selectProdPerVisitTotal,
   selectProdPerVisitTrendTotal,
+  selectProdPerVisitChartName,
+  selectProdPerDayData,
+  selectProdPerDayTrendData,
+  selectProdPerDayTotal,
+  selectProdPerDayTrendTotal,
   selectTotalDiscountData,
   selectTotalDiscountTrendData,
   selectTotalDiscountTotal,
@@ -930,6 +1048,18 @@ export const selectIsLoadingFnProdPerVisitTrend = createSelector(
   loadingData =>
     _.findIndex(loadingData, l => l == 'fnProductionPerVisitTrend') >= 0
 );
+
+export const selectIsLoadingFnProdPerDay = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'fnProductionPerDay') >= 0
+);
+
+export const selectIsLoadingFnProdPerDayTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'fnProductionPerDayTrend') >= 0
+);
+
 
 export const selectIsLoadingFnProdPerClinic = createSelector(
   selectIsLoadingData,
@@ -1213,10 +1343,50 @@ export const selectNetProfitTrendChartData = createSelector(
   }
 );
 
+export const selectIsLoadingFnProdPerVisitOrDayTrend = createSelector(
+  selectIsLoadingFnProdPerVisitTrend,
+  selectIsLoadingFnProdPerDayTrend,
+  selectProdPerVisitChartName,
+  (isLoadingProdPerVisitTrend, isLoadingProdPerDayTrend, chartName) => {
+    return chartName === 'Production Per Day'? isLoadingProdPerDayTrend: isLoadingProdPerVisitTrend;
+  }
+);
+
 export const selectProdPerVisitTrendChartData = createSelector(
   selectProdPerVisitTrendData,
+  selectProdPerDayTrendData,
+  selectProdPerVisitChartName,
   selectTrend,
-  (prodPerVisitTrendData, trendMode) => {
+  (prodPerVisitTrendData, prodPerDayTrendData, chartName, trendMode) => {
+    if(chartName === 'Production Per Day'){
+      return _.chain(prodPerDayTrendData)
+      .sortBy('yearMonth')
+      .groupBy(trendMode === 'current' ? 'yearMonth' : 'year')
+      .map((values, duration) => {
+        const sumProd = _.sumBy(values, v =>
+          _.round(parseFloat(<string>v.production ?? '0'))
+        );
+        const sumDays = _.sumBy(values, v =>
+          _.round(parseFloat(<string>v.numDays ?? '0'))
+        );
+
+        const sumProdPerDays = _.sumBy(values, v =>
+          _.round(parseFloat(<string>v.prodPerDay ?? '0'))
+        );
+
+        return {
+          label:
+            trendMode == 'current'
+              ? moment(duration).format('MMM YYYY')
+              : duration,
+          value: _.round(sumProd / sumDays),
+          prod: sumProd,
+          numTotal: sumDays,
+          prodPerDays: sumProdPerDays,
+        };
+      })
+      .value();
+    }
     return _.chain(prodPerVisitTrendData)
       .sortBy('yearMonth')
       .groupBy(trendMode === 'current' ? 'yearMonth' : 'year')
@@ -1239,7 +1409,7 @@ export const selectProdPerVisitTrendChartData = createSelector(
               : duration,
           value: _.round(sumProd / sumVisits),
           prod: sumProd,
-          numVisits: sumVisits,
+          numTotal: sumVisits,
           prodPerVisits: sumProdPerVisits,
         };
       })
@@ -1247,6 +1417,65 @@ export const selectProdPerVisitTrendChartData = createSelector(
   }
 );
 
+export const selectIsLoadingFnProdPerVisitOrDay = createSelector(
+  selectIsLoadingFnProdPerVisit,
+  selectIsLoadingFnProdPerDay,
+  selectProdPerVisitChartName,
+  (isLoadingProdPerVisit, isLoadingProdPerDay, chartName) => {
+    return chartName === 'Production Per Day'? isLoadingProdPerDay: isLoadingProdPerVisit;
+  }
+);
+
+export const selectProdPerVisitChartData = createSelector(
+  selectProdPerVisitTotal,
+  selectProdPerVisitTrendTotal,
+  selectProdPerVisitData,
+
+  selectProdPerDayTotal,
+  selectProdPerDayTrendTotal,
+  selectProdPerDayData,
+
+  selectProdPerVisitChartName,
+  (val, trendVal, visitData, dayVal, dayTrendVal, dayData, chartName) => {
+    let _val: number, _trendVal: number, chartData: any;
+    const isPerDay = chartName === 'Production Per Day';
+    if(chartName === 'Production Per Day'){
+      _val = dayVal;
+      _trendVal = dayTrendVal;
+      chartData = dayData;
+    }else{
+      _val = val;
+      _trendVal = trendVal;
+      chartData = visitData;
+    }
+    const chartLabels = [];
+    const datasets = [
+      {
+        data: [],
+        label: '',
+        shadowOffsetX: 3,
+        backgroundColor: 'rgba(0, 0, 255, 0.2)',
+      },
+    ];
+
+    chartData?.forEach((d: (FnProductionPerDayItem & {numTotal: string | number}) | (FnProductionPerVisitItem & {numTotal: string | number})) => {
+      const v = <string>(isPerDay?(<FnProductionPerDayItem>d).prodPerDay:(<FnProductionPerVisitItem>d).prodPerVisit);
+      datasets[0].data.push(
+        Math.round(parseFloat(v ?? '0'))
+      );
+      chartLabels.push(d.clinicName);
+      d.numTotal = isPerDay?(<FnProductionPerDayItem>d).numDays:(<FnProductionPerVisitItem>d).numVisits;
+    });
+
+    return {
+      productionVisitVal: Math.round(_val),
+      productionVisitTrendVal: Math.round(_trendVal),
+      chartLabels,
+      chartData: isPerDay?<Array<FnProductionPerDayItem & {numTotal: string | number}>>chartData:<Array<FnProductionPerVisitItem & {numTotal: string | number}>>chartData,
+      datasets
+    }
+  }
+);
 export const selectExpensesTrendChartData = createSelector(
   selectCurrentClinics,
   selectExpensesTrendData,

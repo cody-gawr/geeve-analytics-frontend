@@ -1,7 +1,7 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { FnProductionPerVisitItem } from '@/newapp/models/dashboard/finance';
+import { FnProductionPerDayItem, FnProductionPerVisitItem } from '@/newapp/models/dashboard/finance';
 import {
   externalTooltipHandler,
   generatingLegend_3,
@@ -24,6 +24,11 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
+  chartNames: FN_PROD_PER_VISIT_CHART_NAME[] = [
+    'Production Per Visit',
+    'Production Per Day',
+  ];
+
   get trendingIcon() {
     if (this.productionVisitVal >= this.productionVisitTrendVal) {
       return 'trending_up';
@@ -34,7 +39,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   productionVisitVal = 0;
   productionVisitTrendVal = 0;
 
-  chartData: FnProductionPerVisitItem[];
+  chartData: Array<FnProductionPerVisitItem & {numTotal: number | string}> | Array<FnProductionPerDayItem & {numTotal: number | string}>;
 
   datasets = [
     {
@@ -90,6 +95,14 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
     );
   }
 
+  get chartName$() {
+    return this.financeFacade.prodPerVisitChartName$;
+  }
+
+  switchChartName(chartName: FN_PROD_PER_VISIT_CHART_NAME) {
+    this.financeFacade.setProdPerVisitChartName(chartName);
+  }
+
   constructor(
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
@@ -98,27 +111,54 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    combineLatest([
-      this.financeFacade.prodPerVisitTotal$,
-      this.financeFacade.prodPerVisitTrendTotal$,
-      this.financeFacade.prodPerVisitData$,
-    ])
+    // combineLatest([
+    //   this.financeFacade.prodPerVisitChartName$,
+
+    //   this.financeFacade.prodPerVisitTotal$,
+    //   this.financeFacade.prodPerVisitTrendTotal$,
+    //   this.financeFacade.prodPerVisitData$,
+
+    //   this.financeFacade.prodPerDayTotal$,
+    //   this.financeFacade.prodPerDayTrendTotal$,
+    //   this.financeFacade.prodPerDayData$,
+    // ])
+      this.financeFacade.prodPerVisitChartData$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([val, trendVal, visitData]) => {
-        this.productionVisitVal = Math.round(val);
-        this.productionVisitTrendVal = Math.round(trendVal);
-        const chartLabels = [];
+      .subscribe(data => {
+        this.datasets = data.datasets;
+        this.chartData = data.chartData;
+        this.labels = data.chartLabels;
+        this.productionVisitVal = data.productionVisitVal;
+        this.productionVisitTrendVal = data.productionVisitTrendVal;
+        // let _val: number, _trendVal: number, _chartData: any;
+        // if(chartName === 'Production Per Day'){
+        //   _val = dayVal;
+        //   _trendVal = dayTrendVal;
+        //   _chartData = dayData;
+        // }else{
+        //   _val = val;
+        //   _trendVal = trendVal;
+        //   _chartData = visitData;
+        // }
+        
+        // this.productionVisitVal = Math.round(_val);
+        // this.productionVisitTrendVal = Math.round(_trendVal);
 
-        this.datasets[0].data = [];
-        this.chartData = visitData;
-        visitData.forEach(d => {
-          this.datasets[0].data.push(
-            Math.round(parseFloat(<string>d.prodPerVisit ?? '0'))
-          );
-          chartLabels.push(d.clinicName);
-        });
+        // const chartLabels = [];
 
-        this.labels = chartLabels;
+        // this.datasets[0].data = [];
+        // this.chartData = _chartData;
+  
+        // this.chartData.forEach((d: (FnProductionPerDayItem & {numTotal: string | number}) | (FnProductionPerVisitItem & {numTotal: string | number})) => {
+        //   const v = <string>(chartName === 'Production Per Day'?(<FnProductionPerDayItem>d).prodPerDay:(<FnProductionPerVisitItem>d).prodPerVisit);
+        //   this.datasets[0].data.push(
+        //     Math.round(parseFloat(v ?? '0'))
+        //   );
+        //   chartLabels.push(d.clinicName);
+        //   d.numTotal = chartName === 'Production Per Day'?(<FnProductionPerDayItem>d).numDays:(<FnProductionPerVisitItem>d).numVisits;
+        // });
+
+        // this.labels = chartLabels;
       });
   }
 
@@ -202,7 +242,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
               `Num Visits : ${new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
-              }).format(parseFloat(<string>extraData.numVisits))}`
+              }).format(parseFloat(<string>extraData.numTotal))}`
             );
             return labelItems;
           },

@@ -10,6 +10,7 @@ import {
   FnNetProfitPercentTrendItem,
   FnProdByClinicianTrendItem,
   FnExpensesApiResponse,
+  FnProductionPerDayItem,
 } from '@/newapp/models/dashboard/finance';
 import { createAction, props } from '@ngrx/store';
 
@@ -195,6 +196,35 @@ export const fnProductionPerVisitTrendSuccess = createAction(
 
 export const fnProductionPerVisitTrendFailure = createAction(
   '[Finance API] Load fnProductionPerVisitTrend Failure',
+  props<{
+    error: JeeveError;
+  }>()
+);
+
+// fnProductionPerDay
+export const fnProductionPerDaySuccess = createAction(
+  '[Finance API] Load fnProductionPerDay Success',
+  props<{
+    prodPerDayData: FnProductionPerDayItem[];
+    prodPerDayTotal: number;
+    prodPerDayTrendTotal: number;
+  }>()
+);
+
+export const fnProductionPerDayFailure = createAction(
+  '[Finance API] Load fnProductionPerDay Failure',
+  props<{
+    error: JeeveError;
+  }>()
+);
+
+export const fnProductionPerDayTrendSuccess = createAction(
+  '[Finance API] Load fnProductionPerDayTrend Success',
+  props<{ prodPerDayTrendData: FnProductionPerDayItem[] }>()
+);
+
+export const fnProductionPerDayTrendFailure = createAction(
+  '[Finance API] Load fnProductionPerDayTrend Failure',
   props<{
     error: JeeveError;
   }>()
