@@ -237,7 +237,7 @@ export interface FnProductionPerDayItem {
   clinicName: string;
   day: null | unknown;
   month: null | unknown;
-  numDays: string | number;
+  workingDays: string | number;
   prodPerDay: string | number;
   production: string | number;
   year: null | unknown;

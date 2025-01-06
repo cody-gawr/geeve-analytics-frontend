@@ -1367,7 +1367,7 @@ export const selectProdPerVisitTrendChartData = createSelector(
           _.round(parseFloat(<string>v.production ?? '0'))
         );
         const sumDays = _.sumBy(values, v =>
-          _.round(parseFloat(<string>v.numDays ?? '0'))
+          _.round(parseFloat(<string>v.workingDays ?? '0'))
         );
 
         const sumProdPerDays = _.sumBy(values, v =>
@@ -1464,7 +1464,7 @@ export const selectProdPerVisitChartData = createSelector(
         Math.round(parseFloat(v ?? '0'))
       );
       chartLabels.push(d.clinicName);
-      d.numTotal = isPerDay?(<FnProductionPerDayItem>d).numDays:(<FnProductionPerVisitItem>d).numVisits;
+      d.numTotal = isPerDay?(<FnProductionPerDayItem>d).workingDays:(<FnProductionPerVisitItem>d).numVisits;
     });
 
     return {

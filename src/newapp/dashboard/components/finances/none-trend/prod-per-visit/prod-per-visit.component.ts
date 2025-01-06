@@ -111,17 +111,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // combineLatest([
-    //   this.financeFacade.prodPerVisitChartName$,
 
-    //   this.financeFacade.prodPerVisitTotal$,
-    //   this.financeFacade.prodPerVisitTrendTotal$,
-    //   this.financeFacade.prodPerVisitData$,
-
-    //   this.financeFacade.prodPerDayTotal$,
-    //   this.financeFacade.prodPerDayTrendTotal$,
-    //   this.financeFacade.prodPerDayData$,
-    // ])
       this.financeFacade.prodPerVisitChartData$
       .pipe(takeUntil(this.destroy$))
       .subscribe(data => {
@@ -130,35 +120,6 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
         this.labels = data.chartLabels;
         this.productionVisitVal = data.productionVisitVal;
         this.productionVisitTrendVal = data.productionVisitTrendVal;
-        // let _val: number, _trendVal: number, _chartData: any;
-        // if(chartName === 'Production Per Day'){
-        //   _val = dayVal;
-        //   _trendVal = dayTrendVal;
-        //   _chartData = dayData;
-        // }else{
-        //   _val = val;
-        //   _trendVal = trendVal;
-        //   _chartData = visitData;
-        // }
-        
-        // this.productionVisitVal = Math.round(_val);
-        // this.productionVisitTrendVal = Math.round(_trendVal);
-
-        // const chartLabels = [];
-
-        // this.datasets[0].data = [];
-        // this.chartData = _chartData;
-  
-        // this.chartData.forEach((d: (FnProductionPerDayItem & {numTotal: string | number}) | (FnProductionPerVisitItem & {numTotal: string | number})) => {
-        //   const v = <string>(chartName === 'Production Per Day'?(<FnProductionPerDayItem>d).prodPerDay:(<FnProductionPerVisitItem>d).prodPerVisit);
-        //   this.datasets[0].data.push(
-        //     Math.round(parseFloat(v ?? '0'))
-        //   );
-        //   chartLabels.push(d.clinicName);
-        //   d.numTotal = chartName === 'Production Per Day'?(<FnProductionPerDayItem>d).numDays:(<FnProductionPerVisitItem>d).numVisits;
-        // });
-
-        // this.labels = chartLabels;
       });
   }
 
