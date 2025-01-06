@@ -145,7 +145,6 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     if(router.url === '/newapp/dashboard/unsubscribed'){
       const clinicStr = localStorage.getItem('unsubscribed_clinic');
       this.unsubscribedClinic = clinicStr && JSON.parse(clinicStr);
-      this.selectedClinic = this.unsubscribedClinic.id;
     }else{
       this.unsubscribedClinic = null;
     }
@@ -160,13 +159,6 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.activatedRoute$.pipe(
-      takeUntil(this.dentists$)
-    ).subscribe(activeUrl => {
-      console.log(activeUrl)
-      alert();
-
-    });
     combineLatest([
       this.authFacade.authUserData$,
       this.authFacade.rolesIndividual$,

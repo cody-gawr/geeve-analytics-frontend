@@ -71,6 +71,8 @@ export class LoginComponent implements OnInit {
             if(isUnsubscribed){
               localStorage.setItem('unsubscribed_clinic', JSON.stringify(clinic));
               return this.goTo('/newapp/dashboard/unsubscribed');
+            }else{
+              return this.getRolesIndividual();
             }
             // this.getRolesIndividual();
           },

@@ -85,7 +85,7 @@
             <mat-select
               class="custom-font"
               (selectionChange)="onChangeCurrentClinic($event)"
-              [value]="selectedClinic">
+              [value]="unsubscribedClinic?.id || selectedClinic">
               <mat-option *ngIf="enableAllClinics$ | async" value="all"
                 >All Clinics</mat-option
               >
