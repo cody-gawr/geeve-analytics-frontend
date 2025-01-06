@@ -113,7 +113,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
     choseStatusLabel(element: ICampaign){
         if(element.status === 'draft') return 'Draft';
-        if(element.inProgressMsgCount == 0) return "Complete";
+        if( parseInt(<any>element.inProgressMsgCount) === 0 && parseInt(<any>element.sentMsgCount) === 0) return "Complete";
         else return 'In Progress';
     }
 
@@ -121,8 +121,8 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         if(this.clinicId){
             this.campaignService.getCampaigns(
                 this.clinicId, 
-                this.range.controls.start.value.format('YYYY-MM-DD'), 
-                this.range.controls.end.value.format('YYYY-MM-DD')
+                this.range.controls.start.value?.format('YYYY-MM-DD'), 
+                this.range.controls.end.value?.format('YYYY-MM-DD')
             ).subscribe(
                 result => {
                     this.dataSource.data = result.data;
@@ -178,5 +178,13 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
     openCreateCampaignDialog() {
         this.route.navigate(['newapp/campaigns/create']);
+    }
+
+    getPendingSmsCount(element: ICampaign) {
+        return parseInt(<any>element.pendingCampaignCount) + parseInt(<any>element.inProgressMsgCount);
+    }
+
+    getTotalSmsCount(element: ICampaign) {
+        return parseInt(<any>element.totalMsgCount) + parseInt(<any>element.pendingCampaignCount);
     }
 }

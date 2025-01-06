@@ -101,6 +101,7 @@ export interface ICampaign {
     status: 'draft' | 'started';
     created: string;
     started: string;
+    totalMsgCount: number;
     sentMsgCount: number;
     pendingCampaignCount: number;
     inProgressMsgCount: string | number;

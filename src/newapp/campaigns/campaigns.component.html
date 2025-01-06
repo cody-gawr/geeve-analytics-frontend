@@ -55,7 +55,7 @@
             </ng-container>
             <ng-container matColumnDef="totalPatientsCount">
               <th mat-header-cell *matHeaderCellDef> # Patients </th>
-              <td mat-cell *matCellDef="let element"> {{element.sentMsgCount + element.pendingCampaignCount}} </td>
+              <td mat-cell *matCellDef="let element"> {{getTotalSmsCount(element)}} </td>
             </ng-container>
 
              <ng-container matColumnDef="sentMsgCount">
@@ -65,7 +65,7 @@
 
             <ng-container matColumnDef="pendingCampaignCount">
               <th mat-header-cell *matHeaderCellDef> # Pending </th>
-              <td mat-cell *matCellDef="let element"> {{element.pendingCampaignCount}} </td>
+              <td mat-cell *matCellDef="let element"> {{getPendingSmsCount(element)}} </td>
             </ng-container>
 
             <ng-container matColumnDef="failedMsgCount">
