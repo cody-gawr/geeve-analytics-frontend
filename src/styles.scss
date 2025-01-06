@@ -244,6 +244,7 @@ html {
             padding: 2px 0px 2px;
             font-size: 12px;
             font-weight: 400;
+            font-family: Gilroy-Regular;
             cursor: pointer;
             display: inline-block;
             color: #849a99;
@@ -282,6 +283,21 @@ html {
           }
           span {
             font-size: 12px;
+          }
+        }
+
+        .active-toggle {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          gap: 10px;
+          button {
+            height: 28px !important;
+            width: 44%;
+            font-size: 12px;
+            font-weight: 400;
+            font-family: Gilroy-Regular;
           }
         }
       }
