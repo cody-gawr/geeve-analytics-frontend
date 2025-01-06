@@ -14,7 +14,7 @@ export class AppSidebarComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
   isOpen = false;
-  products = [];
+  // products = [];
   currenctClinicId = 0;
   constructor(
     private authFacade: AuthFacade,
@@ -25,7 +25,7 @@ export class AppSidebarComponent implements OnInit, OnDestroy {
   ) {
     this.clinicService.currentClinics$.subscribe(clinics => {
       if(clinics.length > 0) {
-        this.products = clinics[0].clinicProducts?.map(product => product.uniqueCode);
+        //this.products = clinics[0].clinicProducts?.map(product => product.uniqueCode);
         this.currenctClinicId = clinics[0].id;
       }
     });

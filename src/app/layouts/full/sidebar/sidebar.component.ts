@@ -142,7 +142,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   public clinic_id;
   public hasPrimeClinics;
   public userId: number;
-  public products = [];
+  // public products = [];
 
   clickEvent(val) {
     this.status = !this.status;
@@ -270,15 +270,15 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
-    this.clinicService.getClinics().subscribe(res => {
-      if (res.status == 200 && res.body.data.length > 0) {
-        if(this.clinic_id == 'all' || this.clinic_id == null) {
-          this.products = res.body.data[0].clinicProducts?.map(product => product.unique_code);
-        }else{
-          this.products = res.body.data.find(clinic => clinic.id == this.clinic_id).clinicProducts?.map(product => product.unique_code);
-        }
-      }
-    });
+    // this.clinicService.getClinics().subscribe(res => {
+    //   if (res.status == 200 && res.body.data.length > 0) {
+    //     if(this.clinic_id == 'all' || this.clinic_id == null) {
+    //       this.products = res.body.data[0].clinicProducts?.map(product => product.unique_code);
+    //     }else{
+    //       this.products = res.body.data.find(clinic => clinic.id == this.clinic_id).clinicProducts?.map(product => product.unique_code);
+    //     }
+    //   }
+    // });
   }
 
   ngAfterViewInit() {
