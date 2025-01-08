@@ -2,6 +2,8 @@ import { environment } from "@/environments/environment";
 import { JeeveResponse } from "@/newapp/models/clinic";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
+import moment, { Moment } from "moment";
 import { Observable, Subject, map } from 'rxjs';
 
 export const DefaultFilterElements = [
@@ -137,6 +139,12 @@ export class CampaignService {
 
     selectedIconObserver = new Subject<string>();
     selectedFilterName = '';
+
+    range = new FormGroup({
+        start: new FormControl<Moment | null>(moment().startOf('month')),
+        end: new FormControl<Moment | null>(moment()),
+    });
+
     public get selectedIcon$(): Observable<string> {
         return this.selectedIconObserver.asObservable().pipe(map(v => v));
     }

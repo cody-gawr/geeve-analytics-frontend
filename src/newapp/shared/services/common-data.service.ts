@@ -26,5 +26,12 @@ export class CommonDataService {
         return this.http.get<JeeveResponse<ItemCode[]>>(`${this.commonUrl}/data/item-codes`, {
             withCredentials: true,
         }).pipe(body => body);
-}
+    }
+
+    public getCampaignHealthFunds(clinicId: number) {
+        return this.http.get<JeeveResponse<string[]>>(`${environment.apiNodeUrl}/clinics/getHealthFund`, {
+            params: {clinic_id: clinicId},
+            withCredentials: true,
+        }).pipe(body => body);
+    }
 }

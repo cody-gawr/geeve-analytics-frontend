@@ -68,3 +68,13 @@ export const DoughnutChartColors1 = [
   '#87ada9',
   '#386087',
 ];
+
+
+export const CAMPAIGN_FILTERS = {
+  treatment: 'treatment',
+  patient_age: 'patient_age',
+  incomplete_tx_plan: 'incomplete_tx_plan',
+  no_appointment: 'no_appointment',
+  health_insurance: 'health_insurance',
+  overdues: 'overdues'
+}

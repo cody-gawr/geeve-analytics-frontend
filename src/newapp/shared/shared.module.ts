@@ -20,7 +20,6 @@ import { CompareModeToggleComponent } from './components/compare-mode-toggle/com
 import { DragDropButtonComponent } from './components/drag-drop-button/drag-drop-button.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { CustomTooltipComponent, CustomTooltipDirective } from './directives/custom-tooltip.directive';
-import { CustomButtonDirective } from './directives/custom-button.directive';
 
 const modules = [
   AngularMaterialModule,
@@ -40,7 +39,6 @@ const components = [
   SpinLoaderComponent,
   DragDropButtonComponent,
   ConfirmDialogComponent,
-  CustomButtonDirective,
   CustomTooltipComponent,
   CustomTooltipDirective,
   TimeMaskDirective,

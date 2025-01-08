@@ -10,7 +10,6 @@ import moment, { Moment } from "moment";
 import { ClinicService } from "../clinic/services/clinic.service";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-import { SelectionModel } from "@angular/cdk/collections";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { CampaignService, ICampaign } from "./services/campaign.service";
@@ -30,11 +29,10 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
     displayedColumns: string[] = [
-        'select', 'description', 'created', 
+        'description', 'created', 
         'totalPatientsCount', 'sentMsgCount', 'pendingCampaignCount', 'failedMsgCount', 'status', 'actions'
     ];
     dataSource = new MatTableDataSource<ICampaign>([]);
-    selection = new SelectionModel<ICampaign>(true, []);
     clinicId: number = 0;
 
     range = new FormGroup({
@@ -43,32 +41,8 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     });
 
     @ViewChild(MatSort) sort: MatSort;
-    /** Whether the number of selected elements matches the total number of rows. */
-    isAllSelected() {
-        const numSelected = this.selection.selected.length;
-        const numRows = this.dataSource.data.length;
-        return numSelected === numRows;
-    }
-
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
-    toggleAllRows() {
-        if (this.isAllSelected()) {
-        this.selection.clear();
-        return;
-        }
-
-        this.selection.select(...this.dataSource.data);
-    }
-
-    /** The label for the checkbox on the passed row */
-    checkboxLabel(row?: ICampaign): string {
-        if (!row) {
-        return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-        }
-        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
-    }
-
     @ViewChild(MatPaginator) paginator: MatPaginator;
+
     constructor(
         private clinicFacade: ClinicFacade,
         private clinicService: ClinicService,
@@ -77,6 +51,8 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         private campaignService: CampaignService,
         public nofifyService: NotificationService,
     ) {
+
+        this.range = this.campaignService.range;
         
         clinicFacade.currentSingleClinicId$.pipe(
             takeUntil(this.destroy$),
@@ -156,9 +132,9 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         event: MatDatepickerInputEvent<Moment>
       ) {
         if (target === 'end' && !!event.value) {
-          //this.range.controls['end'].setValue(event.value);
+          this.campaignService.range.controls['end'].setValue(event.value);
         }else if(target === 'start' && !!event.value){
-          //this.range.controls['start'].setValue(event.value);
+            this.campaignService.range.controls['start'].setValue(event.value);
         }
     }
 

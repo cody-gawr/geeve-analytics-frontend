@@ -17,6 +17,7 @@ import { CommonDataService, ItemCode } from '@/newapp/shared/services/common-dat
 import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { CsvUtil } from '@/newapp/shared/utils';
+import { CAMPAIGN_FILTERS } from '@/newapp/shared/constants';
 
 export interface CampaignElement {
   clinic_id: number;
@@ -58,7 +59,9 @@ export class CreateCampaignComponent implements AfterViewInit {
     loadingData = true;
     description = new FormControl('Test Campaign', [Validators.required]);
     itemCodes: ItemCode[] = [];
+    healthFunds: string[] = [];
     selectedItemCodes = new FormControl<string[]>([]);
+    selectedHealthInsurances = new FormControl<string[]>([]);
     campaigns: ICampaign[] = []
 
     eventInput = new Subject<void>();
@@ -86,6 +89,9 @@ export class CreateCampaignComponent implements AfterViewInit {
           this.campaignId = parseInt(params['campaign_id']) || undefined;
           if(clinics.length> 0) {
             this.clinicId = clinics[0].id;
+            this.commonDataservice.getCampaignHealthFunds(this.clinicId).subscribe(result => {
+              this.healthFunds = result.data;
+            });
             this.clinicName = clinics[0].clinicName;
             this.getCreditData();
             this.campaignService.getCampaigns(this.clinicId).subscribe(
@@ -172,13 +178,23 @@ export class CreateCampaignComponent implements AfterViewInit {
 
       this.commonDataservice.getCampaignPatients().subscribe(result => {
         this.itemCodes = result.data;
-      })
+      });
 
       this.selectedItemCodes.valueChanges.pipe(
         takeUntil(this.destroy$),
       ).subscribe(
         value => {
-          if(this.done.findIndex(item => item.filterName === 'treatment') > -1){
+          if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.treatment) > -1){
+            this.eventInput.next();
+          }
+        }
+      );
+
+      this.selectedHealthInsurances.valueChanges.pipe(
+        takeUntil(this.destroy$),
+      ).subscribe(
+        value => {
+          if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.health_insurance) > -1){
             this.eventInput.next();
           }
         }
@@ -188,7 +204,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         takeUntil(this.destroy$),
         debounceTime(300),
       ).subscribe((maxV) => {
-        if(this.done.findIndex(item => item.filterName === 'patient_age') > -1){
+        if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.patient_age) > -1){
           this.eventInput.next();
         }
       });
@@ -197,7 +213,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         takeUntil(this.destroy$),
         debounceTime(300),
       ).subscribe((minV) => {
-        if(this.done.findIndex(item => item.filterName === 'patient_age') > -1){
+        if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.patient_age) > -1){
           this.eventInput.next();
         }
       });
@@ -207,7 +223,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         takeUntil(this.destroy$),
         debounceTime(300),
       ).subscribe((value) => {
-        if(this.done.findIndex(item => item.filterName === 'treatment') > -1){
+        if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.treatment) > -1){
           this.eventInput.next();
         }
       });
@@ -216,7 +232,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         takeUntil(this.destroy$),
         debounceTime(300),
       ).subscribe((value) => {
-        if(this.done.findIndex(item => item.filterName === 'incomplete_tx_plan') > -1){
+        if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.incomplete_tx_plan) > -1){
           this.eventInput.next();
         }
       });
@@ -225,7 +241,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         takeUntil(this.destroy$),
         debounceTime(300),
       ).subscribe((value) => {
-        if(this.done.findIndex(item => item.filterName === 'no_appointment') > -1){
+        if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.no_appointment) > -1){
           this.eventInput.next();
         }
       });
@@ -291,7 +307,7 @@ export class CreateCampaignComponent implements AfterViewInit {
       
       return this.done.map(
         d => {
-          const isDateRange = ['treatment', 'incomplete_tx_plan', 'no_appointment'].indexOf(d.filterName) > -1;
+          const isDateRange = [CAMPAIGN_FILTERS.treatment, CAMPAIGN_FILTERS.incomplete_tx_plan, CAMPAIGN_FILTERS.no_appointment].indexOf(d.filterName) > -1;
           let filterSettings: any[] | undefined = [];
           if(isDateRange){
             const start = this.filterFormGroup.controls[d.filterName + 'Start'].value;
@@ -299,13 +315,15 @@ export class CreateCampaignComponent implements AfterViewInit {
             filterSettings.push(start? moment(start).format('YYYY-MM-DD'): '');
             filterSettings.push(end? moment(end).format('YYYY-MM-DD'): '');
           }
-          if(d.filterName === 'patient_age'){
+          if(d.filterName === CAMPAIGN_FILTERS.patient_age){
             filterSettings.push(this.filterFormGroup.controls.patientAgeMin.value, this.filterFormGroup.controls.patientAgeMax.value);
-          } else if(d.filterName === 'health_insurance') {
-
-          } else if(d.filterName === 'treatment'){
+          } else if(d.filterName === CAMPAIGN_FILTERS.treatment){
             filterSettings.push(...this.selectedItemCodes.value.map(v => parseInt(v)));
-          }else if(d.filterName === 'overdues'){
+          } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
+            filterSettings.push(...this.selectedHealthInsurances.value.map(v => v));
+          } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
+            filterSettings.push(...this.selectedHealthInsurances.value.map(v => parseInt(v)));
+          }else if(d.filterName === CAMPAIGN_FILTERS.overdues){
             // no filter settings
             filterSettings = undefined;
           }
@@ -329,6 +347,14 @@ export class CreateCampaignComponent implements AfterViewInit {
             this.filterFormGroup.controls['treatmentStart'].setValue(new Date(filterValues[0]));
             this.filterFormGroup.controls['treatmentEnd'].setValue(new Date(filterValues[1]));
             this.selectedItemCodes.setValue(filterValues.slice(2));
+            doneFilters.push(setting.filter_name);
+          }
+
+        }else if(setting.filter_name === CAMPAIGN_FILTERS.health_insurance){
+          
+          if(setting.filter_settings){
+            const filterValues = setting.filter_settings?.split(',');
+            this.selectedHealthInsurances.setValue(filterValues);
             doneFilters.push(setting.filter_name);
           }
 
@@ -366,22 +392,7 @@ export class CreateCampaignComponent implements AfterViewInit {
           this.todo.push({...filter});
         }
       }
-      // this.todo = DefaultFilterElements.filter(d => doneFilters.indexOf(d.filterName) === -1);
-      // this.done = DefaultFilterElements.filter(d => doneFilters.indexOf(d.filterName) > -1);
     }
-
-    // getCampaignDescription(prev_campaigns: string, isLast = false) {
-    //   if(isLast){
-    //     return prev_campaigns?.split(',').slice(2).map(p => {
-    //       const cId = parseInt(p);
-    //       return this.campaigns.find(c => c.id === cId);
-    //     })
-    //   }
-    //   return prev_campaigns?.split(',').slice(0, 2).map(p => {
-    //     const cId = parseInt(p);
-    //     return this.campaigns.find(c => c.id === cId);
-    //   })
-    // }
 
     findCampaignDescription(prev_campaigns: string) {
       return prev_campaigns?.split(',').map(p => {
@@ -440,12 +451,14 @@ export class CreateCampaignComponent implements AfterViewInit {
         mobile: 'Ph Number',
         email: 'Email',
       };
-      if(this.done.findIndex(d => d.filterName === 'overdues') > -1){
-        columns.days_overdue = 'Overdues';
-        columns.amount = 'Amount';
+      if(this.selection.selected?.length > 0){
+        if(this.done.findIndex(d => d.filterName === 'overdues') > -1){
+          columns.days_overdue = 'Overdues';
+          columns.amount = 'Amount';
+        }
+        const csvContent = CsvUtil.convertToCsv(this.selection.selected, columns);
+        CsvUtil.downloadCsv(csvContent, `campaign${moment().format('YYYY-MM-SSTHH:mm:ss')}.csv`);
       }
-      const csvContent = CsvUtil.convertToCsv(this.selection.selected, columns);
-      CsvUtil.downloadCsv(csvContent, `campaign${moment().format('YYYY-MM-SSTHH:mm:ss')}.csv`);
     }
 
     startCampaign(isDraft = false) {
@@ -505,6 +518,10 @@ export class CreateCampaignComponent implements AfterViewInit {
         if( (this.filterFormGroup.controls.treatmentStart.value && this.filterFormGroup.controls.treatmentEnd.value) || this.selectedItemCodes.value?.length > 0){
           return true;
         }
+      } if(filterName === CAMPAIGN_FILTERS.health_insurance) {
+        if(this.selectedHealthInsurances.value?.length > 0){
+          return true;
+        }
       }else if(filterName === 'incomplete_tx_plan'){
         if(this.filterFormGroup.controls.incomplete_tx_planStart.value && this.filterFormGroup.controls.incomplete_tx_planEnd.value){
           return true;
@@ -526,58 +543,36 @@ export class CreateCampaignComponent implements AfterViewInit {
       this.eventInput.next();
     }
 
-    add(event: MatChipInputEvent, type = 'treatment'): void {
-      const value = (event.value || '').trim();
-  
-      // Add our fruit
-      if (value) {
-        if(type === 'health_insurance')
-          this.healthInsurance.push(value);
-      }
-  
-      // Clear the input value
-      event.chipInput!.clear();
-    }
-  
-    remove(value: string, type = 'treatment'): void {
-      let index = 0;
-      if(type === 'health_insurance')
-        index = this.healthInsurance.indexOf(value);
-  
-      if (index >= 0) {
-        if(type === 'health_insurance')
-          this.healthInsurance.splice(index, 1);
-      }
-    }
-  
-    edit(targetValue: string, event: MatChipEditedEvent, type = 'treatment') {
-      const value = event.value.trim();
-  
-      // Remove fruit if it no longer has a name
-      if (!value) {
-        this.remove(targetValue, type);
-        return;
-      }
-  
-      // Edit existing fruit
-
-      let index = 0;
-      if(type === 'health_insurance'){
-        index = this.healthInsurance.indexOf(targetValue);
-      }
-      
-      if (index >= 0) {
-        if(type === 'health_insurance')
-          this.healthInsurance[index] = value;
-      }
-    }
-
     isSelected(filterName: string){
-      //&& (this.done.findIndex(d => d.filterName === filterName) < 0)
       return this.selectedFilterName === filterName;
     }
 
     isDoneFilter() {
       return  (this.done.findIndex(d => d.filterName === this.selectedFilterName) > -1) ;
+    }
+
+    getHelperTip(){
+        switch(this.selectedFilterName){
+            case CAMPAIGN_FILTERS.treatment:
+              return 'Selects patients who have had the specified item codes performed within the specified date range.'
+              break;
+            case CAMPAIGN_FILTERS.incomplete_tx_plan:
+              return 'Selects patients who have incomplete treatment plans created within the specified date range';
+              break;
+            case CAMPAIGN_FILTERS.overdues:
+              return 'Selects patients with overdue amounts';
+              break;
+            case CAMPAIGN_FILTERS.health_insurance:
+              return 'Selects patients with the specified health insurance provider/s'
+              break;
+            case CAMPAIGN_FILTERS.patient_age:
+              return 'Selects patients within the selected age range';
+              break;
+            case CAMPAIGN_FILTERS.no_appointment:
+              return 'Selects patients with no appointments scheduled within the specified date range';
+              break;
+            default:
+              return '';
+        }
     }
 }
