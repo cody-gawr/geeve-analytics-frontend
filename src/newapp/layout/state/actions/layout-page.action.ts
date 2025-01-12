@@ -38,6 +38,11 @@ export const setHideDatePicker = createAction(
   props<{ hide: boolean }>()
 );
 
+export const setHideClinicSelectionDropDown= createAction(
+  '[Layout Pages] Set Hide Clinic Selection Dropdown',
+  props<{ hide: boolean }>()
+);
+
 export const setPaths = createAction(
   '[Layout Pages] Set Paths',
   props<{

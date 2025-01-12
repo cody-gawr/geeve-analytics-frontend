@@ -33,7 +33,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
       .subscribe(event => {
         const { url } = <NavigationEnd>event;
         this.activatedUrl = url.split('?')[0];
-        if(this.activatedUrl.includes('unsubscribed')) {
+        if(this.activatedUrl.includes('campaigns') || this.activatedUrl.includes('unsubscribed')) {
           layoutFacade.setHideDatePicker(true);
         }else{
           layoutFacade.setHideDatePicker(false);
@@ -41,9 +41,10 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
         if(this.activatedUrl.includes('campaigns/create') || this.activatedUrl.includes('campaigns/view')){
           layoutFacade.savePaths([{name: 'Back to Campaigns', path: '/newapp/campaigns'}]);
-          layoutFacade.setHideDatePicker(true);
+          layoutFacade.setHideClinicSelectionDropDown(true);
         }else{
           layoutFacade.savePaths([]);
+          layoutFacade.setHideClinicSelectionDropDown(false);
         }
       });
   }

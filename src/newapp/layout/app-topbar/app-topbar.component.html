@@ -43,7 +43,7 @@
           <mat-date-range-picker #picker></mat-date-range-picker>
         </div>
       </div>
-      <div class="clinic-selector-wrapper" *ngIf="!(hideDatePicker$ | async)">
+      <div class="clinic-selector-wrapper" *ngIf="!(hideClinicSelectionDropdown$ | async)">
         <div class="clinic-selector-field">
           <mat-select
             multiple

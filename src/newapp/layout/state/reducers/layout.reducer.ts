@@ -19,6 +19,7 @@ export interface LayoutState {
   activatedRouteTitle: string;
   compare: boolean;
   hideDatePicker: boolean;
+  hideClinicSelectionDropdown: boolean;
   paths: { name: string, path: string }[];
 }
 
@@ -36,6 +37,7 @@ const initialState: LayoutState = {
   compare: false,
   activatedRouteTitle: '',
   hideDatePicker: false,
+  hideClinicSelectionDropdown: false,
   paths: []
 };
 
@@ -62,6 +64,12 @@ export const layoutFeature = createFeature({
       return {
         ...state,
         hideDatePicker: hide,
+      };
+    }),
+    on(layoutPageActions.setHideClinicSelectionDropDown, (state, { hide }): LayoutState => {
+      return {
+        ...state,
+        hideClinicSelectionDropdown: hide,
       };
     }),
     on(layoutPageActions.setTrend, (state, { trend }): LayoutState => {
@@ -114,6 +122,7 @@ export const {
   selectActivatedRouteTitle,
   selectCompare,
   selectHideDatePicker,
+  selectHideClinicSelectionDropdown,
   selectPaths
 } = layoutFeature;
 

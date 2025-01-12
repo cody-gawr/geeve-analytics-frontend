@@ -14,6 +14,7 @@ import {
   selectIsFullSingleMonthDateRange,
   selectHideDatePicker,
   selectPaths,
+  selectHideClinicSelectionDropdown,
 } from '../state/reducers/layout.reducer';
 import { Moment } from 'moment';
 import { layoutPageActions } from '../state/actions';
@@ -93,9 +94,14 @@ export class LayoutFacade {
   );
 
   public readonly hideDatePicker$ = this.store.pipe(select(selectHideDatePicker));
+  public readonly hideClinicSelectionDropdown$ = this.store.pipe(select(selectHideClinicSelectionDropdown));
 
   public setHideDatePicker(hide: boolean) {
     this.store.dispatch(layoutPageActions.setHideDatePicker({ hide }));
+  }
+
+  public setHideClinicSelectionDropDown(hide: boolean) {
+    this.store.dispatch(layoutPageActions.setHideClinicSelectionDropDown({ hide }));
   }
 
   public savePaths(paths: {name: string, path: string}[]){

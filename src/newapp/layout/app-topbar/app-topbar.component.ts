@@ -131,6 +131,10 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return this.layoutFacade.hideDatePicker$;
   }
 
+  get hideClinicSelectionDropdown$()  {
+    return this.layoutFacade.hideClinicSelectionDropdown$;
+  }
+
   paths$ = this.layoutFacade.paths$;
 
   constructor(
