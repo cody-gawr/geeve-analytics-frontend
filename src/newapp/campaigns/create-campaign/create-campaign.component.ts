@@ -207,7 +207,7 @@ export class CreateCampaignComponent implements AfterViewInit {
       )
 
       this.commonDataservice.getCampaignItemCodes().subscribe(result => {
-        this.itemCodes = result.data.sort((a, b) => parseInt(a.item_code) - parseInt(b.item_code)).map(d => ({
+        this.itemCodes = result.data.map(d => ({
           label: `${d.item_code} - ${d.item_name}`,
           value: d.item_code
         }));
