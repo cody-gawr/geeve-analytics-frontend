@@ -14,6 +14,10 @@ export class SelectMultiSelectComponent {
     @Input() label = '';
     @Input() controlData: FormControl;
     searchControl = new FormControl('');
+    searchedItems = [];
+
+    constructor(){
+    }
 
     ngOnInit(): void {
         this.searchControl.valueChanges
@@ -22,12 +26,13 @@ export class SelectMultiSelectComponent {
             debounceTime(300), // Avoid rapid filtering
             map((value) => this.filterOptions(value || ''))
           )
-          .subscribe((filtered) => (this.items = filtered));
+          .subscribe((filtered) => (this.searchedItems = filtered));
     }
 
 
     private filterOptions(value: string): OptionDataType[] {
         const filterValue = value.toLowerCase();
+        if(filterValue == '') return this.items;
         return this.items.filter((option) =>
           (option.label ?? option.value).toLowerCase().includes(filterValue)
         );

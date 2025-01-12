@@ -7,6 +7,6 @@
                 noEntriesFoundLabel="'No results found'"></ngx-mat-select-search>
         </mat-option>
         <!-- Options -->
-        <mat-option *ngFor="let item of items" [value]="item.value">{{item.label ?? item.value}}</mat-option>
+        <mat-option *ngFor="let item of searchedItems" [value]="item.value">{{item.label ?? item.value}}</mat-option>
     </mat-select>
 </mat-form-field>
