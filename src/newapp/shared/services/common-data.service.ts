@@ -22,7 +22,7 @@ export class CommonDataService {
     private commonUrl = environment.commonApiUrl;
     constructor(private http: HttpClient) {}
 
-    public getCampaignPatients() {
+    public getCampaignItemCodes() {
         return this.http.get<JeeveResponse<ItemCode[]>>(`${this.commonUrl}/data/item-codes`, {
             withCredentials: true,
         }).pipe(body => body);

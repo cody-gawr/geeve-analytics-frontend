@@ -12,7 +12,7 @@ export interface OptionDataType {label?: string, value: any};
 export class SelectMultiSelectComponent {
     @Input() items: OptionDataType[]
     @Input() label = '';
-    @Input() controlData = '';
+    @Input() controlData: FormControl;
     searchControl = new FormControl('');
 
     ngOnInit(): void {

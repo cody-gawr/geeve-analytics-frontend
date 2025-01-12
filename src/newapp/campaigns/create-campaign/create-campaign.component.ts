@@ -44,6 +44,9 @@ export class CreateCampaignComponent implements AfterViewInit {
     closeEvent = new Subject<string>();
     closeEvent$ = this.closeEvent.asObservable();
 
+    metadataEvent = new Subject<void>();
+    metadataEvent$ = this.metadataEvent.asObservable();
+
     healthInsurance: string[] = [];
     filterFormGroup = new FormGroup({
         patientAgeMin: new FormControl(25),
@@ -90,9 +93,6 @@ export class CreateCampaignComponent implements AfterViewInit {
           this.campaignId = parseInt(params['campaign_id']) || undefined;
           if(clinics.length> 0) {
             this.clinicId = clinics[0].id;
-            this.commonDataservice.getCampaignHealthFunds(this.clinicId).subscribe(result => {
-              this.healthFunds = result.data.map(v => ({value: v}));
-            });
             this.clinicName = clinics[0].clinicName;
             this.getCreditData();
             this.campaignService.getCampaigns(this.clinicId).subscribe(
@@ -107,14 +107,29 @@ export class CreateCampaignComponent implements AfterViewInit {
                 this.pendingPatients = campaignData.data.pending_campaign;
                 this.description.setValue(campaignData.data.description);
                 this.campaignFilters = campaignData.data.campaign_filters;
-                this.loadFilterSettings(campaignData.data.campaign_filters);
-                if(this.done?.length > 0) this.eventInput.next();
+                this.metadataEvent.next();
+                // this.loadFilterSettings(campaignData.data.campaign_filters);
+                // if(this.done?.length > 0) this.eventInput.next();
               });
             }else{
-              this.todo = [...DefaultFilterElements];
+              // this.todo = [...DefaultFilterElements];
               this.loadingData = false;
+              this.metadataEvent.next();
+              // this.selectedItemCodes.setValue([...this.itemCodes.map(it => it.value)]);
+              // this.selectedHealthInsurances.setValue([...this.healthFunds.map(it => it.value)]);
             }
           }
+      });
+      
+      this.metadataEvent$.pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(() => {
+        if(this.campaignId && this.campaignFilters){
+          this.loadFilterSettings(this.campaignFilters);
+          if(this.done?.length > 0) this.eventInput.next();
+        }else if(!this.loadingData){
+          this.todo = [...DefaultFilterElements];
+        }
       });
 
       this.eventInput$.pipe(
@@ -177,11 +192,26 @@ export class CreateCampaignComponent implements AfterViewInit {
         }
       });
 
-      this.commonDataservice.getCampaignPatients().subscribe(result => {
+      this.clinicFacade.currentClinics$.pipe(
+        takeUntil(this.destroy$),
+      ).subscribe(
+        clinics => {
+          if(clinics.length> 0) {
+            this.clinicId = clinics[0].id;
+            this.commonDataservice.getCampaignHealthFunds(this.clinicId).subscribe(result => {
+              this.healthFunds = result.data.map(v => ({value: v}));
+              this.metadataEvent.next();
+            });
+          }
+        }
+      )
+
+      this.commonDataservice.getCampaignItemCodes().subscribe(result => {
         this.itemCodes = result.data.sort((a, b) => parseInt(a.item_code) - parseInt(b.item_code)).map(d => ({
           label: `${d.item_code} - ${d.item_name}`,
           value: d.item_code
         }));
+        this.metadataEvent.next();
       });
 
       this.selectedItemCodes.valueChanges.pipe(
