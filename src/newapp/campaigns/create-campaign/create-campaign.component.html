@@ -4,11 +4,11 @@
         <input matInput class="title" placeholder="Enter Description" [formControl]="description"/>
         <div class="header-buttons">
             <mat-spinner *ngIf="isSendingSms" style="width: 20px;height: 20px;"></mat-spinner>
-            <button [disabled]="!this.selection.selected?.length || isSendingSms" (click)="startCampaign();" mat-flat-button color="primary">
-                Start Campaign
-            </button>
             <button [disabled]="!this.selection.selected?.length" (click)="startCampaign(true)" mat-stroked-button>
                 Save draft
+            </button>
+            <button [disabled]="!this.selection.selected?.length || isSendingSms" (click)="startCampaign();" mat-flat-button color="primary">
+                Start Campaign
             </button>
         </div>
     </div>
@@ -40,7 +40,7 @@
                 
                 <div class="bottom" [style.height.%]="100 - topPanelHeight">
                     <form [formGroup]="filterFormGroup">
-                        <p>{{getHelperTip()}}</p>
+                        <div *ngIf="!!selectedFilterName" class="bubble bubble-bottom-left">{{getHelperTip()}}</div>
                         <div *ngIf="isSelected('patient_age')" class="patient-age-slider">
                             <div class="label">
                                 <label>{{this.filterFormGroup.controls.patientAgeMin.value}}</label>
@@ -94,24 +94,14 @@
                             <mat-error *ngIf="filterFormGroup.controls.no_appointmentEnd.hasError('matEndDateInvalid')">Invalid end date</mat-error>
                         </mat-form-field>
                         <div class="treatment-form" *ngIf="isSelected('treatment')">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Item Codes</mat-label>
-                                <mat-select [formControl]="selectedItemCodes" multiple>
-                                  <mat-option *ngFor="let item of itemCodes" [value]="item.item_code">{{item.item_code}} - {{item.item_name}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <search-multi-select label="Item Codes" [controlData]="selectedItemCodes" [items]="itemCodes"></search-multi-select>
                             <mat-chip-set class="selected-item-codes" aria-label="Selected Treatments">
                                 <mat-chip *ngFor="let item of selectedItemCodes.value">{{item}}</mat-chip>
                             </mat-chip-set>
                         </div>
 
                         <div class="treatment-form" *ngIf="isSelected('health_insurance')">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Health Insurance</mat-label>
-                                <mat-select [formControl]="selectedHealthInsurances" multiple>
-                                  <mat-option *ngFor="let item of healthFunds" [value]="item">{{item}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <search-multi-select label="Health Insurance" [controlData]="selectedHealthInsurances" [items]="healthFunds"></search-multi-select>
                             <mat-chip-set class="selected-item-codes" aria-label="Selected Health Insurances">
                                 <mat-chip *ngFor="let item of selectedHealthInsurances.value">{{item}}</mat-chip>
                             </mat-chip-set>

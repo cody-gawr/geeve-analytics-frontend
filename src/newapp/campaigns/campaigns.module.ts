@@ -10,6 +10,7 @@ import { CampaignService } from './services/campaign.service';
 import { StartCampaignDialog } from './start-campaign-dialog/start-campaign-dialog.component';
 import { CommonDataService } from '../shared/services/common-data.service';
 import { ViewCampaignComponent } from './view-campaign/view-campaign.component';
+import { CsvColumnSelectDialog } from './create-campaign/csv-column-select-dialog/csv-column-select-dialog.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,7 @@ import { ViewCampaignComponent } from './view-campaign/view-campaign.component';
   ],
   declarations: [
     CampaignsComponent, CreateCampaignComponent, 
-    StartCampaignDialog, ViewCampaignComponent],
+    StartCampaignDialog, ViewCampaignComponent, CsvColumnSelectDialog],
   providers: [ CampaignService, CommonDataService]
 })
 export class CampaignsModule {}

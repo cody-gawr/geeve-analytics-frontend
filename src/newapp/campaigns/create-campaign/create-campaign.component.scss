@@ -57,13 +57,36 @@
             .panel {
                 min-height: 700px;
                 .bottom {
-                    padding-top: 25px;
-                    p {
-                        color: chocolate;
+                    padding-top: 10px;
+
+                    .bubble {
+                        position: relative;
                         max-width: 350px;
-                        font-size: 12px;
+                        font-size: 13px;
                         text-align: center;
-                    }
+                        line-height: 20px;
+                        width: 300px;
+                        background: #18a689;
+                        border-radius: 40px;
+                        padding: 20px;
+                        text-align: center;
+                        color: #fff;
+                        margin-bottom: 40px;
+                      }
+                      
+                      .bubble-bottom-left:before {
+                        content: "";
+                        width: 0px;
+                        height: 0px;
+                        position: absolute;
+                        border-left: 24px solid #18a689;
+                        border-right: 12px solid transparent;
+                        border-top: 12px solid #18a689;
+                        border-bottom: 20px solid transparent;
+    
+                        left: 32px;
+                        bottom: -24px;
+                      }
                     form {
                         display: flex;
                         flex-direction: column;
@@ -156,7 +179,7 @@
                     display: flex;
                     justify-content: space-between;
                     .table-label {
-                        align-items: end;
+                        align-items: flex-end;
                         display: flex;
                         gap:7px;
                     }

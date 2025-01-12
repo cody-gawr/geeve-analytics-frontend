@@ -20,6 +20,8 @@ import { CompareModeToggleComponent } from './components/compare-mode-toggle/com
 import { DragDropButtonComponent } from './components/drag-drop-button/drag-drop-button.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { CustomTooltipComponent, CustomTooltipDirective } from './directives/custom-tooltip.directive';
+import { SelectMultiSelectComponent } from './components/search-multi-select/search-multi-select.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 const modules = [
   AngularMaterialModule,
@@ -28,6 +30,7 @@ const modules = [
   RouterModule,
   MatTableResponsiveModule,
   FontAwesomeModule,
+  NgxMatSelectSearchModule
 ];
 
 const components = [
@@ -44,6 +47,7 @@ const components = [
   TimeMaskDirective,
   TooltipDirective,
   TooltipContainerDirective,
+  SelectMultiSelectComponent
 ];
 
 @NgModule({

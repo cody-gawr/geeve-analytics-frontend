@@ -1,0 +1,10 @@
+<div class="list-box">
+    <mat-selection-list #columns (selectionChange)="onSelectionChange(columns.selectedOptions.selected)">
+        <mat-list-option *ngFor="let name of nameOfColumns" [value]="name" [selected]="selectedColumns.includes(name)">
+            {{ columnsLabels[name] }}
+          </mat-list-option>
+    </mat-selection-list>
+    <button [disabled]="!columns.selectedOptions.selected?.length" (click)="onYesClinic();" mat-flat-button color="primary">
+        Download
+    </button>
+</div>

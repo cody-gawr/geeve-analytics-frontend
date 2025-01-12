@@ -8,7 +8,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CampaignService, DefaultFilterElements, ICampaign, ICampaignFilter, IGetPatientsFilterJson } from '../services/campaign.service';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatDialog } from '@angular/material/dialog';
 import { StartCampaignDialog } from '../start-campaign-dialog/start-campaign-dialog.component';
@@ -18,6 +17,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { CsvUtil } from '@/newapp/shared/utils';
 import { CAMPAIGN_FILTERS } from '@/newapp/shared/constants';
+import { CsvColumnSelectDialog } from './csv-column-select-dialog/csv-column-select-dialog.component';
+import { OptionDataType } from '@/newapp/shared/components/search-multi-select/search-multi-select.component';
 
 export interface CampaignElement {
   clinic_id: number;
@@ -58,8 +59,8 @@ export class CreateCampaignComponent implements AfterViewInit {
     clinicName = '';
     loadingData = true;
     description = new FormControl('Test Campaign', [Validators.required]);
-    itemCodes: ItemCode[] = [];
-    healthFunds: string[] = [];
+    itemCodes: OptionDataType[] = [];
+    healthFunds: OptionDataType[] = [];
     selectedItemCodes = new FormControl<string[]>([]);
     selectedHealthInsurances = new FormControl<string[]>([]);
     campaigns: ICampaign[] = []
@@ -90,7 +91,7 @@ export class CreateCampaignComponent implements AfterViewInit {
           if(clinics.length> 0) {
             this.clinicId = clinics[0].id;
             this.commonDataservice.getCampaignHealthFunds(this.clinicId).subscribe(result => {
-              this.healthFunds = result.data;
+              this.healthFunds = result.data.map(v => ({value: v}));
             });
             this.clinicName = clinics[0].clinicName;
             this.getCreditData();
@@ -177,7 +178,10 @@ export class CreateCampaignComponent implements AfterViewInit {
       });
 
       this.commonDataservice.getCampaignPatients().subscribe(result => {
-        this.itemCodes = result.data;
+        this.itemCodes = result.data.sort((a, b) => parseInt(a.item_code) - parseInt(b.item_code)).map(d => ({
+          label: `${d.item_code} - ${d.item_name}`,
+          value: d.item_code
+        }));
       });
 
       this.selectedItemCodes.valueChanges.pipe(
@@ -441,23 +445,44 @@ export class CreateCampaignComponent implements AfterViewInit {
     }
 
     downloadCampaignList() {
-      let columns: any = {
-        patient_name: 'Patient Name',
-        prev_campaigns_desc_str: 'Previous Campaigns',
-        last_appointment: 'Last Appointment',
-        last_provider: 'Last Provider',
-        next_appointment: 'Next Appointment',
-        next_provider: 'Next Provider',
-        mobile: 'Ph Number',
-        email: 'Email',
-      };
       if(this.selection.selected?.length > 0){
+        let columns: Record<string, string> = {
+          patient_name: 'Patient Name',
+          email: 'Email',
+          prev_campaigns_desc_str: 'Previous Campaigns',
+          last_appointment: 'Last Appointment',
+          last_provider: 'Last Provider',
+          next_appointment: 'Next Appointment',
+          next_provider: 'Next Provider',
+          mobile: 'Ph Number',
+        };
+
         if(this.done.findIndex(d => d.filterName === 'overdues') > -1){
           columns.days_overdue = 'Overdues';
           columns.amount = 'Amount';
         }
-        const csvContent = CsvUtil.convertToCsv(this.selection.selected, columns);
-        CsvUtil.downloadCsv(csvContent, `campaign${moment().format('YYYY-MM-SSTHH:mm:ss')}.csv`);
+
+        const dialogRef = this.dialog.open(
+          CsvColumnSelectDialog,
+          {
+            data: {
+              columnsData: columns,
+              selectedColumns: ['patient_name', 'email']
+            }
+          }
+        );
+
+        dialogRef.afterClosed().subscribe(result => {
+          if(result?.length > 0){
+            const selectedColumns:Record<string, string> = {};
+            result.forEach(element => {
+              selectedColumns[element] = columns[element];
+            });
+            const csvContent = CsvUtil.convertToCsv(this.selection.selected, selectedColumns);
+            CsvUtil.downloadCsv(csvContent, `campaign${moment().format('YYYY-MM-SSTHH:mm:ss')}.csv`);
+          }
+        });
+
       }
     }
 

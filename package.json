@@ -67,6 +67,7 @@
     "ngx-cookie-service": "^15.0.0",
     "ngx-daterangepicker-material": "^6.0.4",
     "ngx-gauge": "^7.0.0",
+    "ngx-mat-select-search": "^7.0.9",
     "ngx-pagination": "^6.0.3",
     "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-smart-modal": "^7.4.1",

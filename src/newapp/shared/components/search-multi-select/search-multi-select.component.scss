@@ -1,0 +1,10 @@
+mat-form-field {
+    width: 100%;
+  }
+  
+  ngx-mat-select-search {
+    mat-option {
+      display: flex;
+      align-items: center;
+    }
+  }
