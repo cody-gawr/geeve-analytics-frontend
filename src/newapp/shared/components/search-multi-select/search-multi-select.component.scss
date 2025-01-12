@@ -8,3 +8,7 @@ mat-form-field {
       align-items: center;
     }
   }
+
+::ng-deep .mat-select-search-inner {
+    background-color: white !important;
+}

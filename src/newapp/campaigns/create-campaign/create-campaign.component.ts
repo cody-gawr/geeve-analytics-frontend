@@ -574,9 +574,7 @@ export class CreateCampaignComponent implements AfterViewInit {
           return true;
         }
       } if(filterName === CAMPAIGN_FILTERS.health_insurance) {
-        if(this.selectedHealthInsurances.value?.length > 0){
-          return true;
-        }
+        return true;
       }else if(filterName === 'incomplete_tx_plan'){
         if(this.filterFormGroup.controls.incomplete_tx_planStart.value && this.filterFormGroup.controls.incomplete_tx_planEnd.value){
           return true;
