@@ -3,7 +3,7 @@
         <input matInput class="title" placeholder="Enter Description" [formControl]="description" />
         <div class="header-buttons">
             <mat-spinner *ngIf="isSendingSms" style="width: 20px;height: 20px;"></mat-spinner>
-            <button [disabled]="!this.selection.selected?.length" (click)="startCampaign(true)" mat-stroked-button>
+            <button color="primary" [disabled]="!this.selection.selected?.length" (click)="startCampaign(true)" mat-stroked-button>
                 Save draft
             </button>
             <button [disabled]="!this.selection.selected?.length || isSendingSms" (click)="startCampaign();"
