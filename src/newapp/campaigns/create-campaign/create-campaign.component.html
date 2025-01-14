@@ -33,7 +33,7 @@
 
                 <div class="bottom">
                     <form [formGroup]="filterFormGroup">
-                        <div *ngIf="!!selectedFilterName && !!getHelperTip()" class="bubble bubble-bottom-left">{{getHelperTip()}}</div>
+                        <div *ngIf="!!selectedFilterName" class="bubble bubble-bottom-left">{{getHelperTip()}}</div>
                         <div *ngIf="isSelected('patient_age')" class="patient-age-slider">
                             <div class="label">
                                 <label>{{this.filterFormGroup.controls.patientAgeMin.value}}</label>
@@ -44,6 +44,12 @@
                                 <input formControlName="patientAgeMax" matSliderEndThumb>
                             </mat-slider>
                         </div>
+                        <div class="filter-form" *ngIf="isSelected('overdues')">
+                            <mat-form-field appearance="outline">
+                                <input [formControl]="overdueDays" matInput placeholder="Days Overdue" type="number">
+                            </mat-form-field>
+                        </div>
+
 
   
                         <div class="filter-form" *ngIf="isSelected('treatment')">

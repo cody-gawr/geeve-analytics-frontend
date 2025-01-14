@@ -60,6 +60,8 @@ export class CreateCampaignComponent implements AfterViewInit {
         treatmentStart: new FormControl<Date | null>(null),
         treatmentEnd: new FormControl<Date | null>(null),
     });
+    overdueDays = new FormControl<number>(30);
+
     clinicId = 0;
     clinicName = '';
     loadingData = true;
@@ -284,6 +286,15 @@ export class CreateCampaignComponent implements AfterViewInit {
         }
       });
 
+      this.overdueDays.valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(300),
+      ).subscribe((value) => {
+        if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.overdues) > -1){
+          this.eventInput.next();
+        }
+      });
+
       this.filterFormGroup.controls.appointmentEnd.valueChanges.pipe(
         takeUntil(this.destroy$),
         debounceTime(300),
@@ -373,7 +384,7 @@ export class CreateCampaignComponent implements AfterViewInit {
             filterSettings.push(...this.selectedHealthInsurances.value.map(v => parseInt(v)));
           }else if(d.filterName === CAMPAIGN_FILTERS.overdues){
             // no filter settings
-            filterSettings = undefined;
+            filterSettings.push(this.overdueDays.value);
           }
 
           return  {
@@ -424,6 +435,8 @@ export class CreateCampaignComponent implements AfterViewInit {
               doneFilters.push(setting.filter_name);
             }
         } else if(setting.filter_name === 'overdues'){
+            const filterValues = setting.filter_settings?.split(',');
+            if(filterValues) this.overdueDays.setValue(parseInt(filterValues[0] || '30'));
             doneFilters.push(setting.filter_name);
         }else if([CAMPAIGN_FILTERS.no_appointment, CAMPAIGN_FILTERS.appointment].indexOf(setting.filter_name) > -1){
           if(setting.filter_settings){
@@ -597,7 +610,9 @@ export class CreateCampaignComponent implements AfterViewInit {
           return true;
         }
       }else if(filterName === 'overdues') {
-        return true;
+        if(this.overdueDays.value){
+          return true;
+        }
       } else if([CAMPAIGN_FILTERS.no_appointment, CAMPAIGN_FILTERS.appointment].indexOf(filterName) > -1){
         if(this.filterFormGroup.controls[filterName + 'Start'].value && this.filterFormGroup.controls[filterName + 'End'].value){
           return true;
@@ -641,6 +656,8 @@ export class CreateCampaignComponent implements AfterViewInit {
             case CAMPAIGN_FILTERS.no_appointment:
               return 'Selects patients with no appointments scheduled within the specified date range';
               break;
+            case CAMPAIGN_FILTERS.appointment:
+              return 'Selects patients with appointments scheduled within the specified date range';
             default:
               return '';
         }
