@@ -257,12 +257,12 @@
 
                         <ng-container matColumnDef="days_overdue">
                             <th mat-header-cell *matHeaderCellDef> Days Overdue </th>
-                            <td mat-cell *matCellDef="let element"> {{element.days_overdue | currency }} </td>
+                            <td mat-cell *matCellDef="let element"> {{element.days_overdue}} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="amount">
                             <th mat-header-cell *matHeaderCellDef> Amount </th>
-                            <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element.amount | currency}} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="health_fund">
