@@ -46,8 +46,8 @@
                         </div>
 
   
-                        <div *ngIf="isSelected('treatment')">
-                            <mat-form-field class="filter-box" appearance="outline">
+                        <div class="filter-form" *ngIf="isSelected('treatment')">
+                            <mat-form-field class="filter-box" appearance="outline" subscriptSizing="dynamic">
                                 <!-- <mat-label>Enter a date range</mat-label> -->
                                 <mat-date-range-input [rangePicker]="picker">
                                     <input matStartDate (focus)="picker.open()" formControlName="treatmentStart"
@@ -139,7 +139,7 @@
                         </mat-form-field>
 
 
-                        <div *ngIf="isSelected('health_insurance')">
+                        <div class="filter-form" *ngIf="isSelected('health_insurance')">
                             <mat-checkbox [(ngModel)]="healthFundIncludeNone" class="health-fund-checkbox">Include Patients Without Any Heath Fund</mat-checkbox>
 
                             <div class="multi-selection-form" >

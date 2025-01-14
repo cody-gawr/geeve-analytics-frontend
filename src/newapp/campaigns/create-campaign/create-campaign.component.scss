@@ -58,7 +58,11 @@
                 min-height: 880px;
                 .bottom {
                     padding: 15px 0;
-
+                    .filter-form {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                    }
                     .bubble {
                         width: 100%;
                         font-family: 'Gilroy-Regular';
