@@ -48,7 +48,14 @@ export const DefaultFilterElements = [
       iconUrlWhite: '/assets/jeeve/images/no-appointment.png',
       title: 'No Appointment',
       filterName: 'no_appointment'
-  }
+  },
+  {
+    iconName: 'appointment',
+    iconUrl: '/assets/jeeve/images/no-appointment-color.png',
+    iconUrlWhite: '/assets/jeeve/images/no-appointment.png',
+    title: 'Appointment',
+    filterName: 'appointment'
+}
 ];
 
 export interface ISpResultPatient {
@@ -125,9 +132,6 @@ export interface ICampaignMessage {
 export interface IGetPatientsFilterJson {
     filter: string, // filter name
     filter_settings?: any[];
-    // start_date: string, // YYYY-MM-DD
-    // end_date: string, // YYYY-MM-DD
-    // items?: string // CSV format list
 }
 
 @Injectable({

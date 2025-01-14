@@ -55,6 +55,8 @@ export class CreateCampaignComponent implements AfterViewInit {
         incomplete_tx_planEnd: new FormControl<Date | null>(null),
         no_appointmentStart: new FormControl<Date | null>(null),
         no_appointmentEnd: new FormControl<Date | null>(null),
+        appointmentStart: new FormControl<Date | null>(null),
+        appointmentEnd: new FormControl<Date | null>(null),
         treatmentStart: new FormControl<Date | null>(null),
         treatmentEnd: new FormControl<Date | null>(null),
     });
@@ -76,6 +78,8 @@ export class CreateCampaignComponent implements AfterViewInit {
     pendingPatients = [];
     campaignFilters: ICampaignFilter[]= [];
     isSendingSms = false;
+    healthFundIncludeNone = false;
+
     constructor(
       private clinicFacade: ClinicFacade,
       private campaignService: CampaignService,
@@ -146,14 +150,14 @@ export class CreateCampaignComponent implements AfterViewInit {
               this.displayedColumns = [
                 'select', 'patientName', 'previousCampaigns', 
                 'lastAppointment', 
-                'nextAppointment', 'mobile', 'email',
-                'days_overdue', 'amount'
+                'nextAppointment', 'mobile', 'email', 'health_fund',
+                'days_overdue', 'amount', 
               ];
             }else{
               this.displayedColumns = [
                 'select', 'patientName', 'previousCampaigns', 
                 'lastAppointment', 
-                'nextAppointment', 'mobile', 'email'
+                'nextAppointment', 'mobile', 'email', 'health_fund'
               ];
             }
             
@@ -280,6 +284,15 @@ export class CreateCampaignComponent implements AfterViewInit {
         }
       });
 
+      this.filterFormGroup.controls.appointmentEnd.valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(300),
+      ).subscribe((value) => {
+        if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.appointment) > -1){
+          this.eventInput.next();
+        }
+      });
+
       this.campaignService.selectedIcon$.pipe(
         takeUntil(this.destroy$)
       ).subscribe(v => {
@@ -314,7 +327,7 @@ export class CreateCampaignComponent implements AfterViewInit {
     displayedColumns: string[] = [
       'select', 'patientName', 'previousCampaigns', 
       'lastAppointment', 
-      'nextAppointment', 'mobile', 'email',
+      'nextAppointment', 'mobile', 'email', 'health_fund'
     ];
 
     dataSource: MatTableDataSource<CampaignElement>;
@@ -341,7 +354,7 @@ export class CreateCampaignComponent implements AfterViewInit {
       
       return this.done.map(
         d => {
-          const isDateRange = [CAMPAIGN_FILTERS.treatment, CAMPAIGN_FILTERS.incomplete_tx_plan, CAMPAIGN_FILTERS.no_appointment].indexOf(d.filterName) > -1;
+          const isDateRange = [CAMPAIGN_FILTERS.treatment, CAMPAIGN_FILTERS.incomplete_tx_plan, CAMPAIGN_FILTERS.no_appointment, CAMPAIGN_FILTERS.appointment].indexOf(d.filterName) > -1;
           let filterSettings: any[] | undefined = [];
           if(isDateRange){
             const start = this.filterFormGroup.controls[d.filterName + 'Start'].value;
@@ -354,6 +367,7 @@ export class CreateCampaignComponent implements AfterViewInit {
           } else if(d.filterName === CAMPAIGN_FILTERS.treatment){
             filterSettings.push(...this.selectedItemCodes.value.map(v => parseInt(v)));
           } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
+            filterSettings.push(this.healthFundIncludeNone? 1: 0);
             filterSettings.push(...this.selectedHealthInsurances.value.map(v => v));
           } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
             filterSettings.push(...this.selectedHealthInsurances.value.map(v => parseInt(v)));
@@ -375,7 +389,6 @@ export class CreateCampaignComponent implements AfterViewInit {
       for(const setting of settings){
         
         if(setting.filter_name === 'treatment'){
-          
           if(setting.filter_settings){
             const filterValues = setting.filter_settings?.split(',');
             this.filterFormGroup.controls['treatmentStart'].setValue(new Date(filterValues[0]));
@@ -383,15 +396,19 @@ export class CreateCampaignComponent implements AfterViewInit {
             this.selectedItemCodes.setValue(filterValues.slice(2));
             doneFilters.push(setting.filter_name);
           }
-
         }else if(setting.filter_name === CAMPAIGN_FILTERS.health_insurance){
           
           if(setting.filter_settings){
             const filterValues = setting.filter_settings?.split(',');
-            this.selectedHealthInsurances.setValue(filterValues);
+            if(filterValues?.length > 0){
+              this.healthFundIncludeNone = !!parseInt(filterValues[0]);
+              this.selectedHealthInsurances.setValue(filterValues.slice(1));
+            }else{
+              this.healthFundIncludeNone = false;
+              this.selectedHealthInsurances.setValue([]);
+            }
             doneFilters.push(setting.filter_name);
           }
-
         }else if(setting.filter_name === 'patient_age'){
           const ages = setting.filter_settings?.split('-');
           if(ages && ages.length === 2){
@@ -408,12 +425,11 @@ export class CreateCampaignComponent implements AfterViewInit {
             }
         } else if(setting.filter_name === 'overdues'){
             doneFilters.push(setting.filter_name);
-        }else if(setting.filter_name === 'no_appointment'){
-          
+        }else if([CAMPAIGN_FILTERS.no_appointment, CAMPAIGN_FILTERS.appointment].indexOf(setting.filter_name) > -1){
           if(setting.filter_settings){
             const filterValues = setting.filter_settings?.split(',');
-            this.filterFormGroup.controls['no_appointmentStart'].setValue(new Date(filterValues[0]));
-            this.filterFormGroup.controls['no_appointmentEnd'].setValue(new Date(filterValues[1]));
+            this.filterFormGroup.controls[setting.filter_name + 'Start'].setValue(new Date(filterValues[0]));
+            this.filterFormGroup.controls[setting.filter_name + 'End'].setValue(new Date(filterValues[1]));
             doneFilters.push(setting.filter_name);
           }
         }
@@ -485,6 +501,7 @@ export class CreateCampaignComponent implements AfterViewInit {
           next_appointment: 'Next Appointment',
           next_provider: 'Next Provider',
           mobile: 'Ph Number',
+          health_fund: 'Health Fund'
         };
 
         if(this.done.findIndex(d => d.filterName === 'overdues') > -1){
@@ -581,8 +598,8 @@ export class CreateCampaignComponent implements AfterViewInit {
         }
       }else if(filterName === 'overdues') {
         return true;
-      } else if(filterName === 'no_appointment'){
-        if(this.filterFormGroup.controls.no_appointmentStart.value && this.filterFormGroup.controls.no_appointmentEnd.value){
+      } else if([CAMPAIGN_FILTERS.no_appointment, CAMPAIGN_FILTERS.appointment].indexOf(filterName) > -1){
+        if(this.filterFormGroup.controls[filterName + 'Start'].value && this.filterFormGroup.controls[filterName + 'End'].value){
           return true;
         }
       }

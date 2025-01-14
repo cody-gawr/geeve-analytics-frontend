@@ -4,7 +4,7 @@
         <div class="header-buttons">
             <mat-spinner *ngIf="isSendingSms" style="width: 20px;height: 20px;"></mat-spinner>
             <button color="primary" [disabled]="!this.selection.selected?.length" (click)="startCampaign(true)" mat-stroked-button>
-                Save draft
+                Save Draft
             </button>
             <button [disabled]="!this.selection.selected?.length || isSendingSms" (click)="startCampaign();"
                 mat-flat-button color="primary">
@@ -31,9 +31,9 @@
                     <div class="divider" (mousedown)="onMouseDown($event)"></div>
                 </div>
 
-                <div class="bottom" [style.height.%]="100 - topPanelHeight">
+                <div class="bottom">
                     <form [formGroup]="filterFormGroup">
-                        <div *ngIf="!!selectedFilterName" class="bubble bubble-bottom-left">{{getHelperTip()}}</div>
+                        <div *ngIf="!!selectedFilterName && !!getHelperTip()" class="bubble bubble-bottom-left">{{getHelperTip()}}</div>
                         <div *ngIf="isSelected('patient_age')" class="patient-age-slider">
                             <div class="label">
                                 <label>{{this.filterFormGroup.controls.patientAgeMin.value}}</label>
@@ -45,25 +45,37 @@
                             </mat-slider>
                         </div>
 
-                        <mat-form-field *ngIf="isSelected('treatment')" class="filter-box" appearance="outline">
-                            <!-- <mat-label>Enter a date range</mat-label> -->
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate (focus)="picker.open()" formControlName="treatmentStart"
-                                    placeholder="Start date">
-                                <input matEndDate (focus)="picker.open()" formControlName="treatmentEnd"
-                                    placeholder="End date">
-                            </mat-date-range-input>
-                            <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker startView="year"></mat-date-range-picker>
-
-                            <mat-error
-                                *ngIf="filterFormGroup.controls.treatmentStart.hasError('matStartDateInvalid')">Invalid
-                                start date</mat-error>
-                            <mat-error
-                                *ngIf="filterFormGroup.controls.treatmentEnd.hasError('matEndDateInvalid')">Invalid end
-                                date</mat-error>
-                        </mat-form-field>
+  
+                        <div *ngIf="isSelected('treatment')">
+                            <mat-form-field class="filter-box" appearance="outline">
+                                <!-- <mat-label>Enter a date range</mat-label> -->
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate (focus)="picker.open()" formControlName="treatmentStart"
+                                        placeholder="Start date">
+                                    <input matEndDate (focus)="picker.open()" formControlName="treatmentEnd"
+                                        placeholder="End date">
+                                </mat-date-range-input>
+                                <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker startView="year"></mat-date-range-picker>
+    
+                                <mat-error
+                                    *ngIf="filterFormGroup.controls.treatmentStart.hasError('matStartDateInvalid')">Invalid
+                                    start date</mat-error>
+                                <mat-error
+                                    *ngIf="filterFormGroup.controls.treatmentEnd.hasError('matEndDateInvalid')">Invalid end
+                                    date</mat-error>
+                            </mat-form-field>
+    
+                            <div class="multi-selection-form" >
+                                <search-multi-select label="Item Codes" [controlData]="selectedItemCodes"
+                                    [items]="itemCodes"></search-multi-select>
+                                <mat-chip-set class="selected-item-codes" aria-label="Selected Treatments">
+                                    <mat-chip *ngIf="!selectedItemCodes.value.length">All Item Codes Selected</mat-chip>
+                                    <mat-chip *ngFor="let item of selectedItemCodes.value">{{item}}</mat-chip>
+                                </mat-chip-set>
+                            </div>
+                        </div>
 
                         <mat-form-field *ngIf="isSelected('incomplete_tx_plan')" class="filter-box"
                             appearance="outline">
@@ -105,22 +117,39 @@
                                 *ngIf="filterFormGroup.controls.no_appointmentEnd.hasError('matEndDateInvalid')">Invalid
                                 end date</mat-error>
                         </mat-form-field>
-                        <div class="treatment-form" *ngIf="isSelected('treatment')">
-                            <search-multi-select label="Item Codes" [controlData]="selectedItemCodes"
-                                [items]="itemCodes"></search-multi-select>
-                            <mat-chip-set class="selected-item-codes" aria-label="Selected Treatments">
-                                <mat-chip *ngIf="!selectedItemCodes.value.length">All Item Codes Selected</mat-chip>
-                                <mat-chip *ngFor="let item of selectedItemCodes.value">{{item}}</mat-chip>
-                            </mat-chip-set>
-                        </div>
 
-                        <div class="treatment-form" *ngIf="isSelected('health_insurance')">
-                            <search-multi-select label="Health Insurance" [controlData]="selectedHealthInsurances"
-                                [items]="healthFunds"></search-multi-select>
-                            <mat-chip-set class="selected-item-codes" aria-label="Selected Health Insurances">
-                                <mat-chip *ngIf="!selectedHealthInsurances.value.length">All Health Insurances Selected</mat-chip>
-                                <mat-chip *ngFor="let item of selectedHealthInsurances.value">{{item}}</mat-chip>
-                            </mat-chip-set>
+                        <mat-form-field *ngIf="isSelected('appointment')" class="filter-box" appearance="outline">
+                            <!-- <mat-label>Enter a date range</mat-label> -->
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate (focus)="picker.open()" formControlName="appointmentStart"
+                                    placeholder="Start date">
+                                <input matEndDate (focus)="picker.open()" formControlName="appointmentEnd"
+                                    placeholder="End date">
+                            </mat-date-range-input>
+                            <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker startView="year"></mat-date-range-picker>
+
+                            <mat-error
+                                *ngIf="filterFormGroup.controls.appointmentStart.hasError('matStartDateInvalid')">Invalid
+                                start date</mat-error>
+                            <mat-error
+                                *ngIf="filterFormGroup.controls.appointmentEnd.hasError('matEndDateInvalid')">Invalid
+                                end date</mat-error>
+                        </mat-form-field>
+
+
+                        <div *ngIf="isSelected('health_insurance')">
+                            <mat-checkbox [(ngModel)]="healthFundIncludeNone" class="health-fund-checkbox">Include Patients Without Any Heath Fund</mat-checkbox>
+
+                            <div class="multi-selection-form" >
+                                <search-multi-select label="Health Insurance" [controlData]="selectedHealthInsurances"
+                                    [items]="healthFunds"></search-multi-select>
+                                <mat-chip-set class="selected-item-codes" aria-label="Selected Health Insurances">
+                                    <mat-chip *ngIf="!selectedHealthInsurances.value.length">All Health Insurances Selected</mat-chip>
+                                    <mat-chip *ngFor="let item of selectedHealthInsurances.value">{{item}}</mat-chip>
+                                </mat-chip-set>
+                            </div>
                         </div>
 
                         <button *ngIf="!isDoneFilter() && !!this.selectedFilterName"
@@ -146,7 +175,7 @@
                 <div class="table-header">
                     <div class="title table-label">
                         <span class="title">Campaign Members ({{selection.selected.length}} selected)</span>
-                        <mat-spinner *ngIf="loadingData" style="width: 20px;height: 20px;"></mat-spinner>
+                        <mat-spinner style="width: 20px;height: 20px;" *ngIf="loadingData"></mat-spinner>
                     </div>
                     <button type="button" mat-flat-button color="primary" [disabled]="!(selection.selected?.length > 0)"
                         (click)="downloadCampaignList()">Export List</button>
@@ -180,16 +209,16 @@
                             <th mat-header-cell *matHeaderCellDef> Previous Campaigns </th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-chip-set aria-label="Previous Campaigns">
-                                    <mat-chip class="chip-style"
-                                        *ngFor="let campaign of element.prev_campaigns_desc?.slice(0,2)">{{campaign}}</mat-chip>
+                                    <!-- <mat-chip class="chip-style"
+                                        *ngFor="let campaign of element.prev_campaigns_desc?.slice(0,2)">{{campaign}}</mat-chip> -->
                                     <mat-chip class="chip-style" [matMenuTriggerFor]="menu"
-                                        *ngIf="element.prev_campaigns_desc?.length > 2">
+                                        *ngIf="element.prev_campaigns_desc?.length > 0">
                                         <mat-icon style="margin-top:5px">more_horiz</mat-icon>
                                     </mat-chip>
                                     <mat-menu #menu="matMenu">
                                         <mat-chip class="chip-style" style="margin: 5px;"
-                                            *ngFor="let campaign of element.prev_campaigns_desc?.slice(2)">
-                                            {{campaign?.description}}</mat-chip>
+                                            *ngFor="let campaign of element.prev_campaigns_desc">
+                                            {{campaign}}</mat-chip>
                                     </mat-menu>
                                 </mat-chip-set>
                             </td>
@@ -227,13 +256,18 @@
                         </ng-container>
 
                         <ng-container matColumnDef="days_overdue">
-                            <th mat-header-cell *matHeaderCellDef> Overdues </th>
-                            <td mat-cell *matCellDef="let element"> {{element.days_overdue}} </td>
+                            <th mat-header-cell *matHeaderCellDef> Days Overdue </th>
+                            <td mat-cell *matCellDef="let element"> {{element.days_overdue | currency }} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="amount">
                             <th mat-header-cell *matHeaderCellDef> Amount </th>
                             <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="health_fund">
+                            <th mat-header-cell *matHeaderCellDef> Health Fund </th>
+                            <td mat-cell *matCellDef="let element"> {{element.health_fund}} </td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

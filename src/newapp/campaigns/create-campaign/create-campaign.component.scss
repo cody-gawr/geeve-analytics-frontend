@@ -55,9 +55,9 @@
             padding:15px;
             
             .panel {
-                min-height: 700px;
+                min-height: 880px;
                 .bottom {
-                    padding-top: 10px;
+                    padding: 15px 0;
 
                     .bubble {
                         width: 100%;
@@ -73,19 +73,6 @@
                         width: 400px;
                       }
                       
-                    //   .bubble-bottom-left:before {
-                    //     content: "";
-                    //     width: 0px;
-                    //     height: 0px;
-                    //     position: absolute;
-                    //     border-left: 24px solid #18a689;
-                    //     border-right: 12px solid transparent;
-                    //     border-top: 12px solid #18a689;
-                    //     border-bottom: 20px solid transparent;
-    
-                    //     left: 32px;
-                    //     bottom: -24px;
-                    //   }
                     form {
                         display: flex;
                         flex-direction: column;
@@ -111,10 +98,11 @@
                             
                         }
 
-                        .treatment-form {
+                        .multi-selection-form {
                             display: flex;
                             flex-direction: column;
                             width: 100%;
+                            gap: 10px;
                             .selected-item-codes {
                                 width: 400px;
                                 margin-bottom: 15px;

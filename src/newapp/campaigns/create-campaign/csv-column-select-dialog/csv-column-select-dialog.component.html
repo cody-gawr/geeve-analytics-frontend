@@ -1,10 +1,29 @@
-<div class="list-box">
-    <mat-selection-list #columns (selectionChange)="onSelectionChange(columns.selectedOptions.selected)">
-        <mat-list-option *ngFor="let name of nameOfColumns" [value]="name" [selected]="selectedColumns.includes(name)">
-            {{ columnsLabels[name] }}
-          </mat-list-option>
-    </mat-selection-list>
-    <button [disabled]="!columns.selectedOptions.selected?.length" (click)="onYesClinic();" mat-flat-button color="primary">
-        Download
-    </button>
+<div class="dialog-header">
+    <h1 mat-dialog-title>
+        Export to CSV
+    </h1>
+    <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
 </div>
+<div mat-dialog-content>
+    <div class="list-box">
+        <div class="select-all">
+            <label>Select All</label>
+            <mat-checkbox
+                [checked]="allComplete"
+                [indeterminate]="someComplete()"
+                (change)="setAll($event.checked)">
+                
+            </mat-checkbox>
+        </div>
+    
+        <mat-selection-list #columns (selectionChange)="onSelectionChange(columns.selectedOptions.selected)">
+            <mat-list-option *ngFor="let name of nameOfColumns" [value]="name" [selected]="selectedColumns.includes(name)">
+                {{ columnsLabels[name] }}
+              </mat-list-option>
+        </mat-selection-list>
+        <button [disabled]="!columns.selectedOptions.selected?.length" (click)="onYesClinic();" mat-flat-button color="primary">
+            Export CSV
+        </button>
+    </div>
+</div>
+

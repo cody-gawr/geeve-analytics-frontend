@@ -15,7 +15,26 @@ interface DialogData {
 
     nameOfColumns: string[];
     columnsLabels: Record<string, string>;
+    selected_all = false
+    allComplete: boolean = false;
 
+    updateAllComplete() {
+      this.allComplete = this.selectedColumns.length === this.nameOfColumns.length;
+    }
+  
+    someComplete(): boolean {
+      return this.selectedColumns.length > 0 && !this.allComplete;
+    }
+  
+    setAll(completed: boolean) {
+      this.allComplete = completed;
+      if(completed)
+        this.selectedColumns = [...this.nameOfColumns];
+      else{
+        this.selectedColumns = []
+      }
+    }
+  
     constructor(
       public dialogRef: MatDialogRef<CsvColumnSelectDialog>,
       @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -29,7 +48,7 @@ interface DialogData {
 
     onSelectionChange(event: any) {
       this.selectedColumns = event.map((item: any) => item.value);
-      console.log('Selected Columns:', this.selectedColumns);
+      this.updateAllComplete();
     }
   
     onNoClick(): void {

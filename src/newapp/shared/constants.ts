@@ -76,5 +76,6 @@ export const CAMPAIGN_FILTERS = {
   incomplete_tx_plan: 'incomplete_tx_plan',
   no_appointment: 'no_appointment',
   health_insurance: 'health_insurance',
-  overdues: 'overdues'
+  overdues: 'overdues',
+  appointment: 'appointment'
 }
