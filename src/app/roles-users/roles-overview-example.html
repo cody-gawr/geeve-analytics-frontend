@@ -27,7 +27,7 @@
             >Clinician Analysis</mat-checkbox
           >
           <mat-checkbox
-            *ngIf="userPlan != 'lite'"
+            *ngIf="userPlan != '`lite'"
             class="role_permissions"
             [(ngModel)]="data.selectedRole['dashboard2_'+selected_id]"
             >Clinician Procedures & Referrals</mat-checkbox
@@ -65,6 +65,11 @@
         class="role_permissions"
         [(ngModel)]="data.selectedRole['morninghuddle_'+selected_id]"
         >Morning Huddle</mat-checkbox
+      >
+      <mat-checkbox
+        class="role_permissions"
+        [(ngModel)]="data.selectedRole['campaign_'+selected_id]"
+        >Campaign</mat-checkbox
       >
       <mat-checkbox
         class="role_permissions"
