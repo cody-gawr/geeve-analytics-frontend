@@ -5,14 +5,17 @@ import { JeeveResponse } from '@/newapp/models/clinic';
 import { environment } from '@/environments/environment';
 
 export interface ItemCode {
-    id: number;
-    country_code: string;
-    jeeve_item_code: string;
     item_code: string;
-    item_name: string;
-    created: Date;
-    updated: Date;
-    status: number;
+    item_display_name: string;
+
+    // id: number;
+    // country_code: string;
+    // jeeve_item_code: string;
+    // item_code: string;
+    // item_name: string;
+    // created: Date;
+    // updated: Date;
+    // status: number;
 }
 
 @Injectable({
@@ -22,8 +25,9 @@ export class CommonDataService {
     private commonUrl = environment.commonApiUrl;
     constructor(private http: HttpClient) {}
 
-    public getCampaignItemCodes() {
+    public getCampaignItemCodes(clinicId: number) {
         return this.http.get<JeeveResponse<ItemCode[]>>(`${this.commonUrl}/data/item-codes`, {
+            params: {clinic_id: clinicId},
             withCredentials: true,
         }).pipe(body => body);
     }

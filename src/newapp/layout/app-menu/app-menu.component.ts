@@ -96,6 +96,7 @@ const MENU_DATA: MenuNode[] = [
     title: 'Campaigns',
     path: '/newapp/campaigns',
     icon: faBullhorn,
+    badgeText: 'New',
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
         (permissions?.indexOf('campaigns') >= 0 ||

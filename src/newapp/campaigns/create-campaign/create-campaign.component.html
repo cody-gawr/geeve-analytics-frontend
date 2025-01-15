@@ -1,12 +1,15 @@
 <div class="container">
     <div class="header">
-        <input matInput class="title" placeholder="Enter Description" [formControl]="description" />
+        <div>
+            <input matInput class="title" placeholder="Enter Description" [formControl]="description" />
+            <mat-error *ngIf="description.invalid">You must enter a name</mat-error>
+        </div>
         <div class="header-buttons">
             <mat-spinner *ngIf="isSendingSms" style="width: 20px;height: 20px;"></mat-spinner>
-            <button color="primary" [disabled]="!this.selection.selected?.length" (click)="startCampaign(true)" mat-stroked-button>
+            <button color="primary" [disabled]="!this.selection.selected?.length || description.invalid" (click)="startCampaign(true)" mat-stroked-button>
                 Save Draft
             </button>
-            <button [disabled]="!this.selection.selected?.length || isSendingSms" (click)="startCampaign();"
+            <button [disabled]="!this.selection.selected?.length || isSendingSms || description.invalid" (click)="startCampaign();"
                 mat-flat-button color="primary">
                 Start Campaign
             </button>
@@ -44,8 +47,19 @@
                                 <input formControlName="patientAgeMax" matSliderEndThumb>
                             </mat-slider>
                         </div>
+
+                        <div *ngIf="isSelected('patient_status')" class="patient-age-slider">
+                            <mat-form-field appearance="outline" [formControl]="patientStatus">
+                                <mat-select>
+                                  <mat-option *ngFor="let status of patientStatusList" [value]="status">
+                                    {{status | uppercase}}
+                                  </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                        </div>
+
                         <div class="filter-form" *ngIf="isSelected('overdues')">
-                            <mat-form-field appearance="outline">
+                            <mat-form-field appearance="outline" style="width:150px;margin-left:10px;">
                                 <input [formControl]="overdueDays" matInput placeholder="Days Overdue" type="number">
                             </mat-form-field>
                         </div>
@@ -74,10 +88,10 @@
                             </mat-form-field>
     
                             <div class="multi-selection-form" >
-                                <search-multi-select label="Item Codes" [controlData]="selectedItemCodes"
+                                <search-multi-select [label]="'Item Codes'" [controlData]="selectedItemCodes"
                                     [items]="itemCodes"></search-multi-select>
+                                <mat-checkbox [disabled]="!selectedItemCodes.value.length" [checked]="!selectedItemCodes.value.length" (change)="toggleAllSelectItemCodes()">Selected All Item Codes</mat-checkbox>
                                 <mat-chip-set class="selected-item-codes" aria-label="Selected Treatments">
-                                    <mat-chip *ngIf="!selectedItemCodes.value.length">All Item Codes Selected</mat-chip>
                                     <mat-chip *ngFor="let item of selectedItemCodes.value">{{item}}</mat-chip>
                                 </mat-chip-set>
                             </div>
@@ -151,10 +165,11 @@
                             <div class="multi-selection-form" >
                                 <search-multi-select label="Health Insurance" [controlData]="selectedHealthInsurances"
                                     [items]="healthFunds"></search-multi-select>
-                                <mat-chip-set class="selected-item-codes" aria-label="Selected Health Insurances">
-                                    <mat-chip *ngIf="!selectedHealthInsurances.value.length">All Health Insurances Selected</mat-chip>
-                                    <mat-chip *ngFor="let item of selectedHealthInsurances.value">{{item}}</mat-chip>
-                                </mat-chip-set>
+                            <mat-checkbox [disabled]="!selectedHealthInsurances.value.length" [checked]="!selectedHealthInsurances.value.length" (change)="toggleAllHealthInsurances()">Selected All Health Insurances</mat-checkbox>                                    
+                            <mat-chip-set class="selected-item-codes" aria-label="Selected Health Insurances">
+                                
+                                <mat-chip *ngFor="let item of selectedHealthInsurances.value">{{item}}</mat-chip>
+                            </mat-chip-set>
                             </div>
                         </div>
 

@@ -69,7 +69,10 @@
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef> </th>
               <td mat-cell *matCellDef="let element"> 
-                <mat-icon [matMenuTriggerFor]="menu">more_horiz</mat-icon>
+                <div (click)="$event.preventDefault();$event.stopPropagation();">
+                  <mat-icon [matMenuTriggerFor]="menu" >more_horiz</mat-icon>
+                </div>
+                
                 <mat-menu #menu="matMenu">
                   <button *ngIf="element.status === 'draft'" (click)="goEditPage(element)" mat-menu-item>
                     <mat-icon>edit</mat-icon>

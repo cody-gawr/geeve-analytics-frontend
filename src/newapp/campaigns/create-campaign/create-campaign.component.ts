@@ -3,7 +3,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { combineLatest, debounceTime, Subject, switchMap, takeUntil } from 'rxjs';
+import { combineLatest, debounceTime, forkJoin, Subject, switchMap, takeUntil } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CampaignService, DefaultFilterElements, ICampaign, ICampaignFilter, IGetPatientsFilterJson } from '../services/campaign.service';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
@@ -61,6 +61,7 @@ export class CreateCampaignComponent implements AfterViewInit {
         treatmentEnd: new FormControl<Date | null>(null),
     });
     overdueDays = new FormControl<number>(30);
+    patientStatus = new FormControl<string>('all');
 
     clinicId = 0;
     clinicName = '';
@@ -81,6 +82,8 @@ export class CreateCampaignComponent implements AfterViewInit {
     campaignFilters: ICampaignFilter[]= [];
     isSendingSms = false;
     healthFundIncludeNone = false;
+
+    patientStatusList = ['all', 'active', 'inactive'];
 
     constructor(
       private clinicFacade: ClinicFacade,
@@ -203,21 +206,19 @@ export class CreateCampaignComponent implements AfterViewInit {
         clinics => {
           if(clinics.length> 0) {
             this.clinicId = clinics[0].id;
-            this.commonDataservice.getCampaignHealthFunds(this.clinicId).subscribe(result => {
-              this.healthFunds = result.data.map(v => ({value: v}));
-              this.metadataEvent.next();
-            });
+            forkJoin([this.commonDataservice.getCampaignHealthFunds(this.clinicId), this.commonDataservice.getCampaignItemCodes(this.clinicId)]).subscribe(
+              ([result1, result2]) => {
+                this.healthFunds = result1.data.map(v => ({value: v}));
+                this.itemCodes = result2.data.map(d => ({
+                  label: d.item_display_name,
+                  value: d.item_code
+                }));
+                this.metadataEvent.next();
+              }
+            );
           }
         }
       )
-
-      this.commonDataservice.getCampaignItemCodes().subscribe(result => {
-        this.itemCodes = result.data.map(d => ({
-          label: `${d.item_code} - ${d.item_name}`,
-          value: d.item_code
-        }));
-        this.metadataEvent.next();
-      });
 
       this.selectedItemCodes.valueChanges.pipe(
         takeUntil(this.destroy$),
@@ -253,6 +254,15 @@ export class CreateCampaignComponent implements AfterViewInit {
         debounceTime(300),
       ).subscribe((minV) => {
         if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.patient_age) > -1){
+          this.eventInput.next();
+        }
+      });
+
+      this.patientStatus.valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(300),
+      ).subscribe((minV) => {
+        if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.patient_status) > -1){
           this.eventInput.next();
         }
       });
@@ -374,6 +384,8 @@ export class CreateCampaignComponent implements AfterViewInit {
           }
           if(d.filterName === CAMPAIGN_FILTERS.patient_age){
             filterSettings.push(this.filterFormGroup.controls.patientAgeMin.value, this.filterFormGroup.controls.patientAgeMax.value);
+          } else if(d.filterName === CAMPAIGN_FILTERS.patient_status){
+            filterSettings.push(this.patientStatus.value);
           } else if(d.filterName === CAMPAIGN_FILTERS.treatment){
             filterSettings.push(...this.selectedItemCodes.value.map(v => parseInt(v)));
           } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
@@ -426,6 +438,12 @@ export class CreateCampaignComponent implements AfterViewInit {
             this.filterFormGroup.controls.patientAgeMax.setValue(parseInt(ages[1]));
             doneFilters.push(setting.filter_name);
           }
+        } else if(setting.filter_name === CAMPAIGN_FILTERS.patient_status){
+          const status = setting.filter_settings;
+          if(status){
+            this.patientStatus.setValue(status);
+          }else this.patientStatus.setValue('all');
+          doneFilters.push(setting.filter_name);
         } else if(setting.filter_name === 'incomplete_tx_plan'){
             const dates = setting.filter_settings?.split(',');
             if(dates && dates.length === 2){
@@ -545,6 +563,18 @@ export class CreateCampaignComponent implements AfterViewInit {
       }
     }
 
+    toggleAllSelectItemCodes() {
+      if(this.selectedItemCodes.value.length > 0 && this.selectedItemCodes.value.length !== this.itemCodes.length){
+        this.selectedItemCodes.setValue([]);
+      }
+    }
+
+    toggleAllHealthInsurances() {
+      if(this.selectedHealthInsurances.value.length > 0 && this.selectedHealthInsurances.value.length !== this.healthFunds.length){
+        this.selectedHealthInsurances.setValue([]);
+      }
+    }
+
     startCampaign(isDraft = false) {
       if(this.selection.selected.length > 0 && this.description.valid){
         if(isDraft){
@@ -623,6 +653,10 @@ export class CreateCampaignComponent implements AfterViewInit {
         if(this.filterFormGroup.controls.patientAgeMin.value > 0) {
           return true;
         }
+      }else if(filterName === 'patient_status'){
+        if(this.patientStatus.value) {
+          return true;
+        }
       }else if(filterName === 'treatment'){
         if( (this.filterFormGroup.controls.treatmentStart.value && this.filterFormGroup.controls.treatmentEnd.value) || this.selectedItemCodes.value?.length > 0){
           return true;
@@ -676,6 +710,8 @@ export class CreateCampaignComponent implements AfterViewInit {
               break;
             case CAMPAIGN_FILTERS.patient_age:
               return 'Selects patients within the selected age range';
+            case CAMPAIGN_FILTERS.patient_status:
+              return 'Selects patients within the selected status';
               break;
             case CAMPAIGN_FILTERS.no_appointment:
               return 'Selects patients with no appointments scheduled within the specified date range';

@@ -73,6 +73,7 @@ export const DoughnutChartColors1 = [
 export const CAMPAIGN_FILTERS = {
   treatment: 'treatment',
   patient_age: 'patient_age',
+  patient_status: 'patient_status',
   incomplete_tx_plan: 'incomplete_tx_plan',
   no_appointment: 'no_appointment',
   health_insurance: 'health_insurance',
