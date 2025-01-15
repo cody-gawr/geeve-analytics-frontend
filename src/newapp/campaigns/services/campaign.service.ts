@@ -127,6 +127,7 @@ export interface ICampaignMessage {
     sms_text: string;
     status: string;
     unsubscribed?: boolean;
+    sid?: string;
 }
 
 export interface IGetPatientsFilterJson {

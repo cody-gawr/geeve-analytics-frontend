@@ -89,7 +89,7 @@ export class ViewCampaignComponent {
 
         dialogRef.afterClosed().subscribe((result) => {
             if(result.status){
-                _sendMsgs([{id: element.id, status: element.status, sms_text: result.sms_text}]);
+                _sendMsgs([{id: element.id, status: element.status, sms_text: result.sms_text, sid: element.sid}]);
             }
         });
     }
