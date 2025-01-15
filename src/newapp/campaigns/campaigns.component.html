@@ -88,7 +88,7 @@
             </ng-container>
           
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr  mat-row *matRowDef="let row; columns: displayedColumns;" class="element-row"></tr>
+            <tr  mat-row *matRowDef="let row; columns: displayedColumns;" (click)="row.status === 'draft'?goEditPage(row):goViewPage(row)" class="element-row"></tr>
             <tr mat-row *matNoDataRow>
               <td class="mat-cell" colspan="7">No campaigns</td>
             </tr>

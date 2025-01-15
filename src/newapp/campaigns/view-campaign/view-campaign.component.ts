@@ -16,7 +16,7 @@ import { NotificationService } from "@/newapp/shared/services/notification.servi
 })
 export class ViewCampaignComponent {
     dataSource = new MatTableDataSource<ICampaignMessage>([]);
-    displayedColumns = ['select', 'created', 'patient_name', 'phone_number', 'sms_text', 'status', 'actions'];
+    displayedColumns = ['created', 'patient_name', 'phone_number', 'sms_text', 'status', 'actions'];
     clinicId: number = 0;
     campaignId: number = 0;
     campaignName: string = '';
@@ -50,32 +50,6 @@ export class ViewCampaignComponent {
             }
           );
     }
-
-    /** Whether the number of selected elements matches the total number of rows. */
-    isAllSelected() {
-        const numSelected = this.selection.selected.length;
-        const numRows = this.dataSource.data.length;
-        return numSelected === numRows;
-    }
-
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
-    toggleAllRows() {
-        if (this.isAllSelected()) {
-            this.selection.clear();
-            return;
-        }
-
-        this.selection.select(...this.dataSource.data);
-    }
-    
-    /** The label for the checkbox on the passed row */
-    checkboxLabel(row?: ICampaignMessage): string {
-        if (!row) {
-        return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-        }
-        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.patient_id + 1}`;
-    }
-
 
     isResending = false;
     resendMessage(element: ICampaignMessage) {
