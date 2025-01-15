@@ -7,17 +7,13 @@ import {
 } from '@angular/material/dialog';
 import _ from 'lodash';
 import { CampaignElement } from '../create-campaign/create-campaign.component';
-
+import { CampaignService, ICampaignMessage } from '../services/campaign.service';
+type TPatient = Pick<CampaignElement, 'patient_name'>;
 export interface DialogData {
-  patient_id: number;
-  patient_name: string;
   sms_text: string;
-  // numPatients: number;
-  patients: CampaignElement[]
+  patients: TPatient[];
   clinicId: number;
   clinicName: string;
-  remain_credits: number;
-  isDraft: boolean;
   campaignId: number;
 }
 
@@ -34,35 +30,45 @@ export class StartCampaignDialog {
   loadingData = true;
   numTotalMessage = 0;
   numMessage = 0;
-  composedTextForFirstPatient = ""
+  composedTextForFirstPatient = "";
+  remainCredits = 0;
+  usedCredits = 0;
+  costPerSMS = 0;
+
   constructor(
     public dialogRef: MatDialogRef<StartCampaignDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private clinicSettingService: ClinicSettingsService,
+    private campaignService: CampaignService,
   ) {
-    
-
     this.clinicSettingService.getReviewMsgTemplateList(this.data.clinicId).subscribe((v2) => {
 
       if (v2.data) {
         this.msgTemplates = v2.data.filter(d => d.type === 'campaign');
         if (this.msgTemplates.length > 0) {
-          if(!this.selectedTmpMsg) this.selectedTmpMsg = this.msgTemplates[0].id;
+          if(!this.selectedTmpMsg && !data.sms_text) this.selectedTmpMsg = this.msgTemplates[0].id;
           this.onChangeReviewMsg();
         }
       }
 
       this.loadingData = false;
     });
-    this.availableMsgLength = data.remain_credits < 5 ? data.remain_credits * 160 : 800;
-    this.sms_text.valueChanges.subscribe(value => {
-      this.numTotalMessage = this.data.patients.map(
-        p => Math.ceil(this.composeText(value, p)?.length / 160)).reduce((acc, curr) => acc + curr, 0);
-      this.numMessage = Math.ceil(value?.length / 160);
-      this.composedTextForFirstPatient = this.composeText(value, data.patients[0]);
-    });
+  
+    this.campaignService.getCreditData(this.data.clinicId).subscribe(result => {
+      this.remainCredits = result.data.remain_credits;
+      this.usedCredits = result.data.used_credits;
+      this.costPerSMS = result.data.cost_per_sms;
 
-    if(data.sms_text) this.sms_text.setValue(data.sms_text);
+      this.availableMsgLength = this.remainCredits < 5 ? this.remainCredits * 160 : 800;
+      this.sms_text.valueChanges.subscribe(value => {
+        this.numTotalMessage = this.data.patients.map(
+          p => Math.ceil(this.composeText(value, p)?.length / 160)).reduce((acc, curr) => acc + curr, 0);
+        this.numMessage = Math.ceil(value?.length / 160);
+        this.composedTextForFirstPatient = this.composeText(value, data.patients[0]);
+      });
+  
+      if(data.sms_text) this.sms_text.setValue(data.sms_text);
+    });
   }
 
   onNoClick(): void {
@@ -79,7 +85,7 @@ export class StartCampaignDialog {
     }
   }
 
-  composeText(smsText: string, patient: CampaignElement){
+  composeText(smsText: string, patient: TPatient){
     let renderedMsg = smsText.replaceAll(
       '[Patient Name]',
       patient.patient_name
@@ -103,6 +109,6 @@ export class StartCampaignDialog {
   }
 
   disabledSubmit() {
-    return (!this.isValid && this.loadingData) || !this.numTotalMessage || ((this.data.remain_credits < this.numTotalMessage) && !this.data.isDraft)
+    return (!this.isValid && this.loadingData) || !this.numTotalMessage || (this.remainCredits < this.numTotalMessage)
   }
 }

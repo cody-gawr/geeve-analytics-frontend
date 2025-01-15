@@ -100,7 +100,6 @@ export class CreateCampaignComponent implements AfterViewInit {
           if(clinics.length> 0) {
             this.clinicId = clinics[0].id;
             this.clinicName = clinics[0].clinicName;
-            this.getCreditData();
             this.campaignService.getCampaigns(this.clinicId).subscribe(
               body => this.campaigns = body.data
             );
@@ -464,18 +463,18 @@ export class CreateCampaignComponent implements AfterViewInit {
       });
     }
 
-    remainCredits = 0;
-    usedCredits = 0;
-    costPerSMS = 0;
-    getCreditData() {
-      if(this.clinicId){
-        this.campaignService.getCreditData(this.clinicId).subscribe(result => {
-          this.remainCredits = result.data.remain_credits;
-          this.usedCredits = result.data.used_credits;
-          this.costPerSMS = result.data.cost_per_sms;
-        });
-      }
-    }
+    // remainCredits = 0;
+    // usedCredits = 0;
+    // costPerSMS = 0;
+    // getCreditData() {
+    //   if(this.clinicId){
+    //     this.campaignService.getCreditData(this.clinicId).subscribe(result => {
+    //       this.remainCredits = result.data.remain_credits;
+    //       this.usedCredits = result.data.used_credits;
+    //       this.costPerSMS = result.data.cost_per_sms;
+    //     });
+    //   }
+    // }
 
     topPanelHeight: number = 50; // Initial width of the left panel (in percentage)
     isDragging: boolean = false;
@@ -548,17 +547,42 @@ export class CreateCampaignComponent implements AfterViewInit {
 
     startCampaign(isDraft = false) {
       if(this.selection.selected.length > 0 && this.description.valid){
+        if(isDraft){
+          this.isSendingSms = true;
+            const patientIds = this.selection.selected.map(s => s.patient_id);
+            this.campaignService.createCampaign(
+              this.clinicId,
+              this.getFilterSettings(),
+              patientIds,
+              '',
+              isDraft,
+              this.description.value,
+              this.campaignId
+            ).subscribe({
+              next: (result) => {
+                if(result.data[0] == result.data[1]){
+                  this.nofifyService.showSuccess(`Sent successfully to ${result.data[0]} patients for "${this.description.value}" campaign.`);
+                }else if(!isDraft){
+                  this.nofifyService.showError(`Failed ${result.data[1] - result.data[0]} patients, Succeed to ${result.data[0]} patients for "${this.description.value}" campaign.`);
+                }
+                this.isSendingSms = false;
+                this.router.navigateByUrl('/newapp/campaigns');
+              },
+              error: err => {
+                console.log('Error - [createCampaign]:', err);
+                this.isSendingSms = false;
+              }
+          });
+          return;
+        }
         const dialogRef = this.dialog.open(StartCampaignDialog, {
           data: {
-            patient_id: this.selection.selected[0].patient_id,
-            patient_name: this.selection.selected[0].patient_name,
             patients: this.selection.selected,
             clinicId: this.clinicId,
             clinicName: this.clinicName,
-            remain_credits: this.remainCredits,
             isDraft: isDraft,
             campaignId: this.campaignId,
-            sms_text: this.smsTemplate
+            // sms_text: this.smsTemplate
           },
         });
     

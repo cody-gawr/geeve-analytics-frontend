@@ -1,13 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { CampaignService, DefaultFilterElements, ICampaignMessage, IGetPatientsFilterJson } from "../services/campaign.service";
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
 import { combineLatest, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute } from "@angular/router";
-import { SelectionModel } from "@angular/cdk/collections";
 import { MatDialog } from "@angular/material/dialog";
-import { ConfirmDialogComponent } from "@/newapp/shared/components/confirm-dialog/confirm-dialog.component";
 import { NotificationService } from "@/newapp/shared/services/notification.service";
+import { StartCampaignDialog } from "../start-campaign-dialog/start-campaign-dialog.component";
 
 @Component({
     selector: 'view-campaign',
@@ -18,11 +17,11 @@ export class ViewCampaignComponent {
     dataSource = new MatTableDataSource<ICampaignMessage>([]);
     displayedColumns = ['created', 'patient_name', 'phone_number', 'sms_text', 'status', 'actions'];
     clinicId: number = 0;
+    clinicName: string = '';
     campaignId: number = 0;
     campaignName: string = '';
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
-    selection = new SelectionModel<ICampaignMessage>(true, []);
 
     constructor(
         private campaignService: CampaignService,
@@ -37,6 +36,7 @@ export class ViewCampaignComponent {
             this.campaignId = parseInt(params['campaign_id']) || 0;
             if(this.campaignId && clinics.length> 0) {
               this.clinicId = clinics[0].id;
+              this.clinicName = clinics[0].clinicName;
               this.loadCampaignMessages();
             }
         });
@@ -53,8 +53,9 @@ export class ViewCampaignComponent {
 
     isResending = false;
     resendMessage(element: ICampaignMessage) {
-        this.isResending = true;
+        
         const _sendMsgs = (_msg) => {
+            this.isResending = true;
             this.campaignService.resendCampaignMessages(this.clinicId, this.campaignId, _msg).subscribe(
                 {
                     next: (result) => {
@@ -73,26 +74,24 @@ export class ViewCampaignComponent {
     
             )
         }
-        if(this.selection.selected?.length > 0){
-            const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-                width: '300px',
-                data: { title: 'Confirm Action', message: `Are you sure you want to resend messages to ${this.selection.selected.length} patients` },
-            });
-          
-            dialogRef.afterClosed().subscribe((result) => {
-                if (result) {
-                    console.log('User confirmed');
-                    _sendMsgs(this.selection.selected.map(item => (
-                        {id: item.id, status: item.status}
-                    )));
-                    
-                } else {
-                    console.log('User canceled');
-                }
-            });
-        }else{
-            _sendMsgs([{id: element.id, status: element.status}]);
-        }
+
+        const dialogRef = this.dialog.open(StartCampaignDialog, {
+            data: {
+                sms_text: element.sms_text,
+                patients: [{
+                    patient_name: element.patient_name
+                }],
+                clinicId: this.clinicId,
+                clinicName: this.clinicName,
+                campaignId: this.campaignId,
+            },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if(result.status){
+                _sendMsgs([{id: element.id, status: element.status, sms_text: result.sms_text}]);
+            }
+        });
     }
 
     done = [];

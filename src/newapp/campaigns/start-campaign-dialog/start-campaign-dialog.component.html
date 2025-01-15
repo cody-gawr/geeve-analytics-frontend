@@ -1,7 +1,7 @@
 <div class="dialog-header">
   <div class="header-title">
-    <h1 mat-dialog-title>Start Campaign {{data.isDraft? '( Draft )': ''}}</h1>
-    <span>({{ data.remain_credits }} remaining)</span>
+    <h1 mat-dialog-title>Start Campaign</h1>
+    <span>({{ remainCredits }} remaining)</span>
   </div>
 
   <mat-icon class="close-icon" (click)="onNoClick()">close</mat-icon>
@@ -69,6 +69,6 @@
     (click)="onSubmitClick($event)"
     [disabled]="disabledSubmit()"
     >
-    {{data.isDraft? 'Save': 'Send'}} To {{ data.patients.length}} Patients
+    {{'Send'}} To {{ data.patients.length}} Patients
   </button>
 </div>
