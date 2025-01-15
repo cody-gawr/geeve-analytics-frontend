@@ -49,8 +49,8 @@
                         </div>
 
                         <div *ngIf="isSelected('patient_status')" class="patient-age-slider">
-                            <mat-form-field appearance="outline" [formControl]="patientStatus">
-                                <mat-select>
+                            <mat-form-field appearance="outline" >
+                                <mat-select [formControl]="patientStatus">
                                   <mat-option *ngFor="let status of patientStatusList" [value]="status">
                                     {{status | uppercase}}
                                   </mat-option>

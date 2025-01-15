@@ -43,6 +43,13 @@ export const DefaultFilterElements = [
       filterName: 'patient_age'
   },
   {
+    iconName: 'personal_injury',
+    iconUrl: '/assets/jeeve/images/patient_age_1.png',
+    iconUrlWhite: '/assets/jeeve/images/patient_age_1_white.png',
+    title: 'Patient Status',
+    filterName: 'patient_status'
+},
+  {
       iconName: 'no_appointment',
       iconUrl: '/assets/jeeve/images/no-appointment-color.png',
       iconUrlWhite: '/assets/jeeve/images/no-appointment.png',
