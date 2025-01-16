@@ -1,6 +1,6 @@
 import { ClinicSettingsService } from '@/app/clinic-settings/clinic-settings.service';
 import { Component, Inject } from '@angular/core';
-import { UntypedFormControl, Validators } from '@angular/forms';
+import { FormControl, UntypedFormControl, Validators } from '@angular/forms';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -8,8 +8,9 @@ import {
 import _ from 'lodash';
 import { CampaignElement } from '../create-campaign/create-campaign.component';
 import { CampaignService, ICampaignMessage } from '../services/campaign.service';
-type TPatient = Pick<CampaignElement, 'patient_name'>;
+type TPatient = Pick<CampaignElement, 'patient_name' | 'mobile'>;
 export interface DialogData {
+  resend?: boolean;
   sms_text: string;
   patients: TPatient[];
   clinicId: number;
@@ -24,6 +25,7 @@ export interface DialogData {
 })
 export class StartCampaignDialog {
   sms_text = new UntypedFormControl('', [Validators.required]);
+  phoneNumber = new FormControl<string>('');
   msgTemplates = [];
   selectedTmpMsg = "";
   availableMsgLength = 10;
@@ -41,6 +43,11 @@ export class StartCampaignDialog {
     private clinicSettingService: ClinicSettingsService,
     private campaignService: CampaignService,
   ) {
+    if(data.patients.length === 1 && data.resend){
+      this.phoneNumber.setValue(data.patients[0].mobile);
+    }else{
+      this.phoneNumber.setValue('');
+    }
     this.clinicSettingService.getReviewMsgTemplateList(this.data.clinicId).subscribe((v2) => {
 
       if (v2.data) {
@@ -81,7 +88,7 @@ export class StartCampaignDialog {
 
   onSubmitClick(event: any): void {
     if (this.isValid) {
-      this.dialogRef.close({ status: true, sms_text: this.sms_text.value });
+      this.dialogRef.close({ status: true, sms_text: this.sms_text.value, phone_number: this.phoneNumber.value });
     }
   }
 

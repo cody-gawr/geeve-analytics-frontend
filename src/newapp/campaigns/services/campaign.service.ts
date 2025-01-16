@@ -199,7 +199,7 @@ export class CampaignService {
 
     public createCampaign(
         clinicId: number, filters: IGetPatientsFilterJson[], 
-        patientIds: number[], sms_text: string, is_draft: boolean, description: string, campaign_id?: number ){
+        patientIds: number[], sms_text: string, is_draft: boolean, description: string, campaign_id?: number, phone_number?: string ){
         return this.http.post<JeeveResponse<[number, number]>>(`${this.commonUrl}/campaign`, {
             clinic_id: clinicId,
             filters_json: filters,
@@ -207,7 +207,8 @@ export class CampaignService {
             sms_text,
             is_draft,
             description,
-            campaign_id
+            campaign_id,
+            phone_number
         }, {
             withCredentials: true,
         });

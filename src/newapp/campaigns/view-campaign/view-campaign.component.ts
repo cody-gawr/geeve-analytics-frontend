@@ -79,17 +79,19 @@ export class ViewCampaignComponent {
             data: {
                 sms_text: element.sms_text,
                 patients: [{
-                    patient_name: element.patient_name
+                    patient_name: element.patient_name,
+                    mobile: element.phone_number
                 }],
                 clinicId: this.clinicId,
                 clinicName: this.clinicName,
                 campaignId: this.campaignId,
+                resend: true
             },
         });
 
         dialogRef.afterClosed().subscribe((result) => {
             if(result.status){
-                _sendMsgs([{id: element.id, status: element.status, sms_text: result.sms_text, sid: element.sid}]);
+                _sendMsgs([{id: element.id, status: element.status, sms_text: result.sms_text, sid: element.sid, phone_number: result.phone_number}]);
             }
         });
     }

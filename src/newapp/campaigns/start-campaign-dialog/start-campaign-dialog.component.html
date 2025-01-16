@@ -9,7 +9,7 @@
 <div mat-dialog-content>
   <div style="display: flex; gap: 15px">
     <div class="sms-form">
-      <mat-form-field class="form-field">
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Message Template</mat-label>
         <mat-select
           [disabled]="loadingData"
@@ -23,7 +23,11 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="form-field" [hintLabel]="'Max ' + availableMsgLength + ' characters'">
+      <mat-form-field class="form-field" appearance="outline" *ngIf="phoneNumber.value">
+        <mat-label>Phone Number</mat-label>
+        <input matInput placeholder="" [formControl]="phoneNumber">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-field" [hintLabel]="'Max ' + availableMsgLength + ' characters'">
         <mat-label>SMS Text</mat-label>
         <textarea
           [disabled]="loadingData"
