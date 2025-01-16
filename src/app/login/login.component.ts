@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit {
             // this.getRolesIndividual();
           },
           error: err => {
-            this.showLoginForm();
+            this.getRolesIndividual();
           },
         });
           
