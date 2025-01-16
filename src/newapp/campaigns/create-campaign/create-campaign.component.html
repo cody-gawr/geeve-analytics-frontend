@@ -1,6 +1,6 @@
 <div class="container">
     <div class="header">
-        <div>
+        <div class="campaign-name-input">
             <input matInput class="title" placeholder="Enter Description" [formControl]="description" />
             <mat-error *ngIf="description.invalid">You must enter a name</mat-error>
         </div>
@@ -88,9 +88,10 @@
                             </mat-form-field>
     
                             <div class="multi-selection-form" >
-                                <search-multi-select [label]="'Item Codes'" [controlData]="selectedItemCodes"
+                                <mat-checkbox [disabled]="!selectedItemCodes.value.length" [checked]="!selectedItemCodes.value.length" (change)="toggleAllSelectItemCodes()">All Item Codes</mat-checkbox>
+                                <search-multi-select [label]="'All Item Codes'" [controlData]="selectedItemCodes"
                                     [items]="itemCodes"></search-multi-select>
-                                <mat-checkbox [disabled]="!selectedItemCodes.value.length" [checked]="!selectedItemCodes.value.length" (change)="toggleAllSelectItemCodes()">Selected All Item Codes</mat-checkbox>
+                                
                                 <mat-chip-set class="selected-item-codes" aria-label="Selected Treatments">
                                     <mat-chip *ngFor="let item of selectedItemCodes.value">{{item}}</mat-chip>
                                 </mat-chip-set>
@@ -161,13 +162,12 @@
 
                         <div class="filter-form" *ngIf="isSelected('health_insurance')">
                             <mat-checkbox [(ngModel)]="healthFundIncludeNone" class="health-fund-checkbox">Include Patients Without Any Health Fund</mat-checkbox>
-
+                            <mat-checkbox [disabled]="!selectedHealthInsurances.value.length" [checked]="!selectedHealthInsurances.value.length" (change)="toggleAllHealthInsurances()">All Health Insurance Providers</mat-checkbox>                                    
                             <div class="multi-selection-form" >
-                                <search-multi-select label="Health Insurance" [controlData]="selectedHealthInsurances"
+                                <search-multi-select label="All Health Insurance Providers" [controlData]="selectedHealthInsurances"
                                     [items]="healthFunds"></search-multi-select>
-                            <mat-checkbox [disabled]="!selectedHealthInsurances.value.length" [checked]="!selectedHealthInsurances.value.length" (change)="toggleAllHealthInsurances()">Selected All Health Insurances</mat-checkbox>                                    
+                            
                             <mat-chip-set class="selected-item-codes" aria-label="Selected Health Insurances">
-                                
                                 <mat-chip *ngFor="let item of selectedHealthInsurances.value">{{item}}</mat-chip>
                             </mat-chip-set>
                             </div>
