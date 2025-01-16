@@ -20,7 +20,11 @@ export class AppSwitchMenu implements OnInit, OnDestroy {
     }
 
     goToPay() {
-        window.location.href=environment.payUrl + '?switchClinicId=' + this.clinicId;
+        if(this.clinicId)
+            window.location.href=environment.payUrl + '?switchClinicId=' + this.clinicId;
+        else
+            window.location.href=environment.payUrl
+
     }
     
     goToAnalytics() {
