@@ -27,19 +27,22 @@
         <mat-label>Phone Number</mat-label>
         <input matInput placeholder="" [formControl]="phoneNumber">
       </mat-form-field>
-      <mat-form-field appearance="outline" class="form-field" [hintLabel]="'Max ' + availableMsgLength + ' characters'">
+      <mat-form-field appearance="outline" class="form-field" [hintLabel]="'Max 160 Characters Per Credit'">
         <mat-label>SMS Text</mat-label>
         <textarea
           [disabled]="loadingData"
           matInput
           [formControl]="sms_text"
           rows="7"
-          [maxlength]="availableMsgLength"></textarea>
+          [maxlength]="800"></textarea>
         <mat-hint align="end"
           >{{ sms_text.value.length }} / 800, {{ numMessage }}
           {{
             numMessage == 0 || numMessage > 1 ? 'messages' : 'message'
           }}</mat-hint>
+        <mat-error *ngIf="(this.remainCredits < this.numTotalMessage)">
+          The available credits are not enough. 
+        </mat-error>
       </mat-form-field>
     </div>
     <div style="width: 350px;">

@@ -60,6 +60,7 @@
 
                         <div class="filter-form" *ngIf="isSelected('overdues')">
                             <mat-form-field appearance="outline" style="width:150px;margin-left:10px;">
+                                <mat-label>Days Overdue</mat-label>
                                 <input [formControl]="overdueDays" matInput placeholder="Days Overdue" type="number">
                             </mat-form-field>
                         </div>
@@ -89,10 +90,10 @@
     
                             <div class="multi-selection-form" >
                                 <mat-checkbox [disabled]="!selectedItemCodes.value.length" [checked]="!selectedItemCodes.value.length" (change)="toggleAllSelectItemCodes()">All Item Codes</mat-checkbox>
-                                <search-multi-select [label]="'All Item Codes'" [controlData]="selectedItemCodes"
+                                <search-multi-select [label]="(!selectedItemCodes.value.length?'All ': '') + 'Item Codes'" [controlData]="selectedItemCodes"
                                     [items]="itemCodes"></search-multi-select>
                                 
-                                <mat-chip-set class="selected-item-codes" aria-label="Selected Treatments">
+                                <mat-chip-set class="selected-chipsets" aria-label="Selected Treatments">
                                     <mat-chip *ngFor="let item of selectedItemCodes.value">{{item}}</mat-chip>
                                 </mat-chip-set>
                             </div>
@@ -164,10 +165,11 @@
                             <mat-checkbox [(ngModel)]="healthFundIncludeNone" class="health-fund-checkbox">Include Patients Without Any Health Fund</mat-checkbox>
                             <mat-checkbox [disabled]="!selectedHealthInsurances.value.length" [checked]="!selectedHealthInsurances.value.length" (change)="toggleAllHealthInsurances()">All Health Insurance Providers</mat-checkbox>                                    
                             <div class="multi-selection-form" >
-                                <search-multi-select label="All Health Insurance Providers" [controlData]="selectedHealthInsurances"
+                                <search-multi-select [label]="
+                                    (!selectedHealthInsurances.value.length?'All ': '') + 'Health Insurance Providers'" [controlData]="selectedHealthInsurances"
                                     [items]="healthFunds"></search-multi-select>
                             
-                            <mat-chip-set class="selected-item-codes" aria-label="Selected Health Insurances">
+                            <mat-chip-set class="selected-chipsets" aria-label="Selected Health Insurances">
                                 <mat-chip *ngFor="let item of selectedHealthInsurances.value">{{item}}</mat-chip>
                             </mat-chip-set>
                             </div>
@@ -230,15 +232,15 @@
                             <th mat-header-cell *matHeaderCellDef> Previous Campaigns </th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-chip-set aria-label="Previous Campaigns">
-                                    <!-- <mat-chip class="chip-style"
-                                        *ngFor="let campaign of element.prev_campaigns_desc?.slice(0,2)">{{campaign}}</mat-chip> -->
+                                    <mat-chip class="chip-style"
+                                        *ngFor="let campaign of element.prev_campaigns_desc?.slice(0,1)">{{campaign}}</mat-chip>
                                     <mat-chip class="chip-style" [matMenuTriggerFor]="menu"
-                                        *ngIf="element.prev_campaigns_desc?.length > 0">
+                                        *ngIf="element.prev_campaigns_desc?.slice(1)?.length > 0">
                                         <mat-icon style="margin-top:5px">more_horiz</mat-icon>
                                     </mat-chip>
                                     <mat-menu #menu="matMenu">
                                         <mat-chip class="chip-style" style="margin: 5px;"
-                                            *ngFor="let campaign of element.prev_campaigns_desc">
+                                            *ngFor="let campaign of element.prev_campaigns_desc?.slice(1)">
                                             {{campaign}}</mat-chip>
                                     </mat-menu>
                                 </mat-chip-set>

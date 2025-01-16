@@ -45,6 +45,7 @@ interface MenuNode {
   userTypes?: number[];
   validatorFn?: Function;
   badgeText?: string;
+  badgeStyle?: string;
 }
 
 interface MenuValidatorParams {
@@ -97,9 +98,10 @@ const MENU_DATA: MenuNode[] = [
     path: '/newapp/campaigns',
     icon: faBullhorn,
     badgeText: 'New',
+    badgeStyle: 'yellow-bg',
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        (permissions?.indexOf('campaigns') >= 0 ||
+        (permissions?.indexOf('campaign') >= 0 ||
         [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
         environment.apiUrl.includes("test")
       );
@@ -340,6 +342,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       icon: node.icon,
       level: level,
       badgeText: node.badgeText,
+      badgeStyle: node.badgeStyle,
       linkType: node.linkType,
     };
   };
