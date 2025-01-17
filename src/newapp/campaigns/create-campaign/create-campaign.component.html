@@ -164,10 +164,10 @@
 
                         <div class="filter-form" *ngIf="isSelected('health_insurance')">
                             <mat-checkbox [formControl]="healthFundIncludeNone" class="health-fund-checkbox">Include Patients Without Any Health Fund</mat-checkbox>
-                            <mat-checkbox [disabled]="!this.selectedHealthInsurances.value.length || healthFundIncludeNone.value" [checked]="getAllSelectedHealthFund()" (change)="toggleAllHealthInsurances()">All Health Insurance Providers</mat-checkbox>                                    
+                            <mat-checkbox [disabled]="!this.selectedHealthInsurances.value.length || healthFundIncludeNone.value" [checked]="getAllSelectedHealthFund()" (change)="toggleAllHealthInsurances()">{{healthFundIncludeNone.value?'':'All'}} Health Insurance Providers</mat-checkbox>                                    
                             <div class="multi-selection-form" >
                                 <search-multi-select [label]="
-                                    (!this.selectedHealthInsurances.value.length && healthFundIncludeNone.value?'All ': '') + 'Health Insurance Providers'" [controlData]="selectedHealthInsurances"
+                                    (!this.selectedHealthInsurances.value.length && !healthFundIncludeNone.value?'All ': '') + 'Health Insurance Providers'" [controlData]="selectedHealthInsurances"
                                     [items]="healthFunds"></search-multi-select>
                             
                             <mat-chip-set class="selected-chipsets" aria-label="Selected Health Insurances">
