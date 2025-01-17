@@ -1,6 +1,7 @@
 <div class="container">
     <div class="header">
         <div class="campaign-name-input">
+            <mat-label>Campaign Name:</mat-label>
             <input matInput class="title" placeholder="Enter Description" [formControl]="description" />
             <mat-error *ngIf="description.invalid">You must enter a name</mat-error>
         </div>
@@ -162,11 +163,11 @@
 
 
                         <div class="filter-form" *ngIf="isSelected('health_insurance')">
-                            <mat-checkbox [(ngModel)]="healthFundIncludeNone" class="health-fund-checkbox">Include Patients Without Any Health Fund</mat-checkbox>
-                            <mat-checkbox [disabled]="!selectedHealthInsurances.value.length" [checked]="!selectedHealthInsurances.value.length" (change)="toggleAllHealthInsurances()">All Health Insurance Providers</mat-checkbox>                                    
+                            <mat-checkbox [formControl]="healthFundIncludeNone" class="health-fund-checkbox">Include Patients Without Any Health Fund</mat-checkbox>
+                            <mat-checkbox [disabled]="!this.selectedHealthInsurances.value.length || healthFundIncludeNone.value" [checked]="getAllSelectedHealthFund()" (change)="toggleAllHealthInsurances()">All Health Insurance Providers</mat-checkbox>                                    
                             <div class="multi-selection-form" >
                                 <search-multi-select [label]="
-                                    (!selectedHealthInsurances.value.length?'All ': '') + 'Health Insurance Providers'" [controlData]="selectedHealthInsurances"
+                                    (!this.selectedHealthInsurances.value.length && healthFundIncludeNone.value?'All ': '') + 'Health Insurance Providers'" [controlData]="selectedHealthInsurances"
                                     [items]="healthFunds"></search-multi-select>
                             
                             <mat-chip-set class="selected-chipsets" aria-label="Selected Health Insurances">

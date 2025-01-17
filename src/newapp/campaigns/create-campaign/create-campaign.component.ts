@@ -81,7 +81,8 @@ export class CreateCampaignComponent implements AfterViewInit {
     pendingPatients = [];
     campaignFilters: ICampaignFilter[]= [];
     isSendingSms = false;
-    healthFundIncludeNone = false;
+    healthFundIncludeNone = new FormControl<boolean>(false);
+    healthFundAllSelected = true;
 
     patientStatusList = ['all', 'active', 'inactive'];
 
@@ -389,7 +390,7 @@ export class CreateCampaignComponent implements AfterViewInit {
           } else if(d.filterName === CAMPAIGN_FILTERS.treatment){
             filterSettings.push(...this.selectedItemCodes.value.map(v => parseInt(v)));
           } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
-            filterSettings.push(this.healthFundIncludeNone? 1: 0);
+            filterSettings.push(this.healthFundIncludeNone.value? 1: 0);
             filterSettings.push(...this.selectedHealthInsurances.value.map(v => v));
           } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
             filterSettings.push(...this.selectedHealthInsurances.value.map(v => parseInt(v)));
@@ -423,10 +424,10 @@ export class CreateCampaignComponent implements AfterViewInit {
           if(setting.filter_settings){
             const filterValues = setting.filter_settings?.split(',');
             if(filterValues?.length > 0){
-              this.healthFundIncludeNone = !!parseInt(filterValues[0]);
+              this.healthFundIncludeNone.setValue(!!parseInt(filterValues[0])); 
               this.selectedHealthInsurances.setValue(filterValues.slice(1));
             }else{
-              this.healthFundIncludeNone = false;
+              this.healthFundIncludeNone.setValue(false);
               this.selectedHealthInsurances.setValue([]);
             }
             doneFilters.push(setting.filter_name);
@@ -481,18 +482,9 @@ export class CreateCampaignComponent implements AfterViewInit {
       });
     }
 
-    // remainCredits = 0;
-    // usedCredits = 0;
-    // costPerSMS = 0;
-    // getCreditData() {
-    //   if(this.clinicId){
-    //     this.campaignService.getCreditData(this.clinicId).subscribe(result => {
-    //       this.remainCredits = result.data.remain_credits;
-    //       this.usedCredits = result.data.used_credits;
-    //       this.costPerSMS = result.data.cost_per_sms;
-    //     });
-    //   }
-    // }
+    getAllSelectedHealthFund() {
+      return (!this.selectedHealthInsurances.value.length || this.selectedHealthInsurances.value.length === this.healthFunds.length) && !this.healthFundIncludeNone.value;
+    }
 
     topPanelHeight: number = 50; // Initial width of the left panel (in percentage)
     isDragging: boolean = false;

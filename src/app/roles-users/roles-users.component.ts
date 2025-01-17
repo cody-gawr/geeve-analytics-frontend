@@ -561,8 +561,8 @@ export class RolesUsersComponent implements AfterViewInit {
             checkedRoles.push('staffmeeting');
           if (result.selectedRole['createmeeting_' + res1.id])
             checkedRoles.push('createmeeting');
-          if (result.selectedRole['campaign_' + res1.id])
-            checkedRoles.push('campaign');
+          if (result.selectedRole['campaigns_' + res1.id])
+            checkedRoles.push('campaigns');
 
           var checkedRoles1 = checkedRoles.join();
           this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe(

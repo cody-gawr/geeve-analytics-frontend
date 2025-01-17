@@ -21,6 +21,12 @@
             flex: 1;
             display: flex;
             justify-content: center;
+            align-items: center;
+            gap: 10px;
+            mat-label {
+                font-family: 'Gilroy-Medium';
+                font-size: 15px;
+            }
         }
         .header-buttons {
             display: flex;
