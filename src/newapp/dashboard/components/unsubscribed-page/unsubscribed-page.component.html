@@ -1,8 +1,8 @@
 <div class="unsubscribed-page">
   <div class="unsubscribed-card">
     <h2 class="title">Signup</h2>
-    <p>Upgrade your subscription to include Jeeve Analytics now - book a demo with one of our specialists to learn more</p>
+    <p>{{getText()}}</p>
     <img width="300px" src="/assets/jeeve/images/Vector-Smart-Object@3x.png"/>
-    <a mat-flat-button href="https://calendly.com/jeeve/60min">Book a demo</a>
+    <a *ngIf="!(this.unsubscribedClinic.has_analytics_subscription && !this.unsubscribedClinic.user_id)" mat-flat-button href="https://calendly.com/jeeve/60min">Book a demo</a>
   </div>
 </div>

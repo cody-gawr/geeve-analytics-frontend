@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
             if(res2?.body?.data){
               clinic = res2.body.data.find(d => d.id === this.clinic_id);
               if(clinic){
-                isUnsubscribed = !clinic.has_analytics_subscription;
+                isUnsubscribed = !clinic.has_analytics_subscription || !clinic.user_id;
               }
             }
             if(isUnsubscribed){
