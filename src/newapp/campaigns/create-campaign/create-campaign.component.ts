@@ -111,6 +111,9 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           if(v) {
             this.selectedHealthInsurances.setValue([]);
           }
+          if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.health_insurance) > -1){
+            this.eventInput.next();
+          }
           // this.renderId++;
       })
       combineLatest([this.route.queryParams, this.clinicFacade.currentClinics$])
