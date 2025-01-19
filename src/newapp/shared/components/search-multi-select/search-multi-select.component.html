@@ -1,4 +1,4 @@
-<mat-form-field appearance="outline" subscriptSizing="dynamic" [className]="disabled?'input-disabled':''">
+<mat-form-field appearance="outline" subscriptSizing="dynamic" [ngStyle]="disabled?{opacity: '0.4',pointerEvents: 'none'}:{}">
     <mat-label *ngIf="!!label">{{label}}</mat-label>
     <mat-select [formControl]="controlData" multiple>
         <!-- Search Box -->

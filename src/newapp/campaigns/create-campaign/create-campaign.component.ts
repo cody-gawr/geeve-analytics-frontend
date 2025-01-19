@@ -101,6 +101,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       ).subscribe((v) => {
           if(v) {
             this.selectedHealthInsurances.setValue([]);
+            this.healthFundIncludeNone.setValue(false);
           }
           // this.renderId++;
       })

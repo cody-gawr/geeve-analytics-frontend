@@ -163,7 +163,7 @@
 
 
                         <div class="filter-form" *ngIf="isSelected('health_insurance')">
-                            <mat-checkbox [formControl]="healthFundIncludeNone" class="health-fund-checkbox">Patients Without Health Insurance</mat-checkbox>
+                            <mat-checkbox [ngStyle]="healthFundInclude.value?{opacity: '0.4',pointerEvents: 'none'}:{}" [formControl]="healthFundIncludeNone" class="health-fund-checkbox">Patients Without Health Insurance</mat-checkbox>
                             <mat-checkbox [formControl]="healthFundInclude" >Patients with Health Insurance</mat-checkbox>                                    
                             <div class="multi-selection-form" >
                                 
