@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 import { debounceTime, startWith, map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
@@ -9,10 +9,11 @@ export interface OptionDataType {label?: string, value: any};
     templateUrl: 'search-multi-select.component.html',
     styleUrls: ['search-multi-select.component.scss']
 })
-export class SelectMultiSelectComponent {
-    @Input() items: OptionDataType[]
+export class SelectMultiSelectComponent implements OnInit {
+    @Input() items: OptionDataType[];
     @Input() label = '';
     @Input() controlData: FormControl;
+    @Input() disabled: boolean = false;
     searchControl = new FormControl('');
     searchedItems = [];
 

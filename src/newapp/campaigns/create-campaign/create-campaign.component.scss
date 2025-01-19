@@ -227,3 +227,14 @@
         font-size: 12px;
     }
 }
+
+ngx-mat-select-search {
+    mat-option {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+::ng-deep .mat-select-search-inner {
+    background-color: white !important;
+}

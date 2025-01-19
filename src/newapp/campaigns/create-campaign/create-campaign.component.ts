@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, HostListener, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -36,7 +36,7 @@ export interface CampaignElement {
   templateUrl: 'create-campaign.component.html',
   styleUrls: ['create-campaign.component.scss'],
 })
-export class CreateCampaignComponent implements AfterViewInit {
+export class CreateCampaignComponent implements AfterViewInit, OnInit {
     readonly separatorKeysCodes = [ENTER, COMMA] as const;
     addOnBlur = true;
     destroy = new Subject<void>();
@@ -46,6 +46,7 @@ export class CreateCampaignComponent implements AfterViewInit {
 
     metadataEvent = new Subject<void>();
     metadataEvent$ = this.metadataEvent.asObservable();
+    disableHealthFundSelection = false;
 
     healthInsurance: string[] = [];
     filterFormGroup = new FormGroup({
@@ -82,10 +83,9 @@ export class CreateCampaignComponent implements AfterViewInit {
     campaignFilters: ICampaignFilter[]= [];
     isSendingSms = false;
     healthFundIncludeNone = new FormControl<boolean>(false);
-    healthFundAllSelected = true;
+    healthFundInclude = new FormControl<boolean>(false);
 
     patientStatusList = ['all', 'active', 'inactive'];
-
     constructor(
       private clinicFacade: ClinicFacade,
       private campaignService: CampaignService,
@@ -96,7 +96,23 @@ export class CreateCampaignComponent implements AfterViewInit {
       private router: Router,
     ){
       this.dataSource = new MatTableDataSource([]);
+      this.healthFundInclude.valueChanges.pipe(
+        takeUntil(this.destroy$)
+      ).subscribe((v) => {
+          if(v) {
+            this.selectedHealthInsurances.setValue([]);
+          }
+          // this.renderId++;
+      })
 
+      this.healthFundIncludeNone.valueChanges.pipe(
+        takeUntil(this.destroy$)
+      ).subscribe((v) => {
+          if(v) {
+            this.selectedHealthInsurances.setValue([]);
+          }
+          // this.renderId++;
+      })
       combineLatest([this.route.queryParams, this.clinicFacade.currentClinics$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([params, clinics]) => {
@@ -117,15 +133,11 @@ export class CreateCampaignComponent implements AfterViewInit {
                 this.description.setValue(campaignData.data.description);
                 this.campaignFilters = campaignData.data.campaign_filters;
                 this.metadataEvent.next();
-                // this.loadFilterSettings(campaignData.data.campaign_filters);
-                // if(this.done?.length > 0) this.eventInput.next();
               });
             }else{
-              // this.todo = [...DefaultFilterElements];
+              this.healthFundInclude.setValue(true);
               this.loadingData = false;
               this.metadataEvent.next();
-              // this.selectedItemCodes.setValue([...this.itemCodes.map(it => it.value)]);
-              // this.selectedHealthInsurances.setValue([...this.healthFunds.map(it => it.value)]);
             }
           }
       });
@@ -318,7 +330,12 @@ export class CreateCampaignComponent implements AfterViewInit {
         takeUntil(this.destroy$)
       ).subscribe(v => {
         this.selectedFilterName = v;
-      })  
+      });
+
+
+    }
+    ngOnInit(): void {
+        
     }
 
     selection = new SelectionModel<CampaignElement>(true, []);
@@ -391,8 +408,6 @@ export class CreateCampaignComponent implements AfterViewInit {
             filterSettings.push(...this.selectedItemCodes.value.map(v => parseInt(v)));
           } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
             filterSettings.push(this.healthFundIncludeNone.value? 1: 0);
-            filterSettings.push(...this.selectedHealthInsurances.value.map(v => v));
-          } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
             filterSettings.push(...this.selectedHealthInsurances.value.map(v => parseInt(v)));
           }else if(d.filterName === CAMPAIGN_FILTERS.overdues){
             // no filter settings
@@ -425,7 +440,13 @@ export class CreateCampaignComponent implements AfterViewInit {
             const filterValues = setting.filter_settings?.split(',');
             if(filterValues?.length > 0){
               this.healthFundIncludeNone.setValue(!!parseInt(filterValues[0])); 
-              this.selectedHealthInsurances.setValue(filterValues.slice(1));
+              const rr = filterValues.slice(1);
+              if(rr?.length > 0){
+                this.selectedHealthInsurances.setValue(rr);
+              }else{
+                this.healthFundInclude.setValue(true);
+              }
+              
             }else{
               this.healthFundIncludeNone.setValue(false);
               this.selectedHealthInsurances.setValue([]);
@@ -558,12 +579,6 @@ export class CreateCampaignComponent implements AfterViewInit {
     toggleAllSelectItemCodes() {
       if(this.selectedItemCodes.value.length > 0 && this.selectedItemCodes.value.length !== this.itemCodes.length){
         this.selectedItemCodes.setValue([]);
-      }
-    }
-
-    toggleAllHealthInsurances() {
-      if(this.selectedHealthInsurances.value.length > 0 && this.selectedHealthInsurances.value.length !== this.healthFunds.length){
-        this.selectedHealthInsurances.setValue([]);
       }
     }
 
