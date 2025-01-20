@@ -377,6 +377,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       takeUntil(this.destroy$)
     );
   }
+  public userType: number = 0;
 
   constructor(
     private router: Router,
@@ -398,6 +399,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
           userPlan: result.plan,
           hasPrimeClinics: result.hasPrimeClinics,
         };
+        this.userType = result.type;
         const menuData: MenuNode[] = [];
 
         MENU_DATA.forEach(item => {

@@ -3,6 +3,6 @@
     <h2 class="title">Signup</h2>
     <p>{{getText()}}</p>
     <img width="300px" src="/assets/jeeve/images/Vector-Smart-Object@3x.png"/>
-    <a *ngIf="!(this.unsubscribedClinic.has_analytics_subscription && !this.unsubscribedClinic.user_id)" mat-flat-button href="https://calendly.com/jeeve/60min">Book a demo</a>
+    <a *ngIf="!(this.unsubscribedClinic?.has_analytics_subscription && !this.unsubscribedClinic?.user_id)" mat-flat-button href="https://calendly.com/jeeve/60min">Book a demo</a>
   </div>
 </div>

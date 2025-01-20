@@ -160,10 +160,10 @@ export class ClinicService {
   }
 
   // Get Clinics
-  listClinics(product: string = 'jeeve_analytics'): Observable<any> {
+  listClinics(product: string = 'jeeve_analytics', all=false): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(environment.baseApiUrl + '/v1/common/clinics?product='+product, header)
+      .get(environment.baseApiUrl + '/v1/common/clinics?product='+product + '&all=' + all, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;

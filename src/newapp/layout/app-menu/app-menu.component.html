@@ -1,6 +1,6 @@
 <mat-tree
   *ngIf="
-    dataSource.data.length > 0 && !(isLoadingRolesIndividual$ | async);
+    dataSource.data.length > 0 && userType > 0 && !(isLoadingRolesIndividual$ | async);
     else loadingSpin
   "
   [dataSource]="dataSource"
@@ -63,5 +63,5 @@
   </mat-tree-node>
 </mat-tree>
 <ng-template #loadingSpin>
-  <div class="tree-menu-loader">Loading ...</div>
+  <div class="tree-menu-loader">{{(isLoadingRolesIndividual$ | async)?'Loading ...':''}}</div>
 </ng-template>

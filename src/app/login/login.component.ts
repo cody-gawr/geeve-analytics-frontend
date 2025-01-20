@@ -12,7 +12,6 @@ import { LoginService } from './login.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import camelcaseKeys from 'camelcase-keys';
-import { forkJoin } from 'rxjs';
 import { ClinicService } from '../clinic/clinic.service';
 
 @Component({
@@ -41,25 +40,10 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private clinicService: ClinicService
   ) {
-    // if (this._cookieService.get('userid')) {
-    //   var user_type = this._cookieService.get('user_type');
-    //   this.clinic_id = this._cookieService.get('clinic_id');
-    //   if (user_type == '7') {
-    //     if (this.clinic_id != null && typeof this.clinic_id != 'undefined') {
-    //       this.getRolesIndividual();
-    //     } else {
-    //       this.getRolesIndividual();
-    //     }
-    //   } else {
-    //     this.getRolesIndividual();
-    //   }
-    // } else {
-    //   this.showLoginForm();
-    // }
     router.routerState.root.queryParams.subscribe(val => {
       if (this._cookieService.get('is_logged_in') === 'YES' && val.switchClinicId) {
         this.clinic_id = parseInt(val.switchClinicId);
-        clinicService.listClinics('jeeve_pay').subscribe({
+        clinicService.listClinics('jeeve_pay', true).subscribe({
           next: (res2) => {
             let isUnsubscribed = false, clinic;
             if(res2?.body?.data){
@@ -74,14 +58,11 @@ export class LoginComponent implements OnInit {
             }else{
               return this.getRolesIndividual();
             }
-            // this.getRolesIndividual();
           },
           error: err => {
             this.getRolesIndividual();
           },
         });
-          
-        // this.getRolesIndividual();
       } else {
         this.showLoginForm();
       }
@@ -140,6 +121,11 @@ export class LoginComponent implements OnInit {
               this.mfaEnabled = true;
               return;
             }
+            if(!res.body.data.data.user_type){
+              this.goTo('/newapp/dashboard/unsubscribed');
+              return;
+            }
+
             var datares = [];
             localStorage.setItem(
               'authUserData',
