@@ -13,10 +13,9 @@ export class SelectMultiSelectComponent implements OnInit {
     @Input() items: OptionDataType[];
     @Input() label = '';
     @Input() controlData: FormControl;
-    @Input() disabled: boolean = false;
+    @Input() disabled: boolean = true;
     searchControl = new FormControl('');
     searchedItems = [];
-
     constructor(){
     }
 
@@ -29,7 +28,6 @@ export class SelectMultiSelectComponent implements OnInit {
           )
           .subscribe((filtered) => (this.searchedItems = filtered));
     }
-
 
     private filterOptions(value: string): OptionDataType[] {
         const filterValue = value.toLowerCase();
