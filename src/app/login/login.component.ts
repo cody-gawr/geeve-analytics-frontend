@@ -41,28 +41,31 @@ export class LoginComponent implements OnInit {
     private clinicService: ClinicService
   ) {
     router.routerState.root.queryParams.subscribe(val => {
-      if (this._cookieService.get('is_logged_in') === 'YES' && val.switchClinicId) {
-        this.clinic_id = parseInt(val.switchClinicId);
-        clinicService.listClinics('jeeve_pay', true).subscribe({
-          next: (res2) => {
-            let isUnsubscribed = false, clinic;
-            if(res2?.body?.data){
-              clinic = res2.body.data.find(d => d.id === this.clinic_id);
-              if(clinic){
-                isUnsubscribed = !clinic.has_analytics_subscription || !clinic.user_id;
+      if (this._cookieService.get('is_logged_in') === 'YES') {
+        if(val.switchClinicId){
+          this.clinic_id = parseInt(val.switchClinicId);
+          clinicService.listClinics('jeeve_pay', true).subscribe({
+            next: (res2) => {
+              let isUnsubscribed = false, clinic;
+              if(res2?.body?.data){
+                clinic = res2.body.data.find(d => d.id === this.clinic_id);
+                if(clinic){
+                  isUnsubscribed = !clinic.has_analytics_subscription || clinic.no_access;
+                }
               }
-            }
-            if(isUnsubscribed){
-              localStorage.setItem('unsubscribed_clinic', JSON.stringify(clinic));
-              return this.goTo('/newapp/dashboard/unsubscribed');
-            }else{
-              return this.getRolesIndividual();
-            }
-          },
-          error: err => {
-            this.getRolesIndividual();
-          },
-        });
+              if(isUnsubscribed){
+                localStorage.setItem('unsubscribed_clinic', JSON.stringify(clinic));
+                return this.goTo('/newapp/dashboard/unsubscribed');
+              }else{
+                return this.getRolesIndividual();
+              }
+            },
+            error: err => {
+              this.getRolesIndividual();
+            },
+          });
+        }
+        this.getRolesIndividual();
       } else {
         this.showLoginForm();
       }
@@ -267,7 +270,10 @@ export class LoginComponent implements OnInit {
   }
   
   redirectingPagesByRoles(res: any){
-    
+    if(!res.type){
+      this.goTo('/newapp/dashboard/unsubscribed');
+      return;
+    }
     const user_type = res.type.toString();
     this._cookieService.put(
       'user_type',

@@ -20,7 +20,7 @@ export class UnsubscribedPageComponent {
   }
 
   getText(){
-    if(this.unsubscribedClinic?.has_analytics_subscription && !this.unsubscribedClinic?.user_id){
+    if(this.unsubscribedClinic?.has_analytics_subscription && this.unsubscribedClinic?.no_access){
       return 'Please contact your administrator to grant you access to Jeeve Analytics';
     }
     return 'Upgrade your subscription to include Jeeve Analytics now - book a demo with one of our specialists to learn more';
