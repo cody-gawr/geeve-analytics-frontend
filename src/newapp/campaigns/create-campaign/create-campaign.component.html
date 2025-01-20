@@ -164,7 +164,7 @@
 
                         <div class="filter-form" *ngIf="isSelected('health_insurance')">
                             <mat-checkbox  [formControl]="healthFundIncludeNone" class="health-fund-checkbox">Patients Without Health Insurance</mat-checkbox>
-                            <mat-checkbox [ngStyle]="healthFundInclude.value?{opacity: '0.4',pointerEvents: 'none'}:{}" [formControl]="healthFundInclude" >Patients with Health Insurance</mat-checkbox>                                    
+                            <mat-checkbox [ngStyle]="healthFundIncludeNone.value?{opacity: '0.4',pointerEvents: 'none'}:{}" [formControl]="healthFundInclude" >Patients with Health Insurance</mat-checkbox>                                    
                             <div class="multi-selection-form" >
                                 
                                 <search-multi-select [disabled]="healthFundInclude.value || healthFundIncludeNone.value" [label]="'All Health Insurance Providers'" [controlData]="selectedHealthInsurances"

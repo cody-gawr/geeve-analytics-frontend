@@ -309,7 +309,7 @@ const MENU_DATA: MenuNode[] = [
   },
   {
     title: 'Help',
-    path: 'https://jeeve.crunch.help/jeeve-analytics',
+    path: 'https://help.jeeve.com.au/portal/en/kb/jeeve-analytics',
     icon: faQuestion,
     linkType: 'open',
     validatorFn: () => true,
