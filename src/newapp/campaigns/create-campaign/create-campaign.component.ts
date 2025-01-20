@@ -101,7 +101,6 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       ).subscribe((v) => {
           if(v) {
             this.selectedHealthInsurances.setValue([]);
-            this.healthFundIncludeNone.setValue(false);
           }
           // this.renderId++;
       })
@@ -111,6 +110,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       ).subscribe((v) => {
           if(v) {
             this.selectedHealthInsurances.setValue([]);
+            this.healthFundIncludeNone.setValue(false);
           }
           if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.health_insurance) > -1){
             this.eventInput.next();
