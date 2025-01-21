@@ -163,7 +163,7 @@ export class RolesUsersService {
     // formData.append('permisions', checkedRoles);
     var header = this.getHeaders();
     return this.http
-      .patch(environment.commonApiUrl + `/user-roles/${role_id}`, {permissions: checkedRoles}, header)
+      .patch(environment.commonApiUrl + `/user-roles/${role_id}`, {permissions: checkedRoles, product: 'jeeve_analytics'}, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
