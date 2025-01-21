@@ -1,4 +1,4 @@
-<div (click)="selectFilter()" *ngIf="!(settings?.length >0)" [classList]="isOpen?['container border-c']:['container']" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin" [appTooltip]="'<img src=' + iconUrlWhite  + ' /><span>' + title + '</span>'">
+<div (click)="selectFilter()" *ngIf="!(settings?.length >0)" [classList]="isOpen?['container border-c']:['container']" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin" [appTooltip]="iconUrlWhite?'<img src=' + iconUrlWhite  + ' /><span>' + title + '</span>':''">
     <mat-icon *ngIf="isDone" (click)="onClose()" class="close">cancel</mat-icon>
     <div class="box">
         <!-- <mat-icon>{{iconName}}</mat-icon> -->

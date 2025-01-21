@@ -51,15 +51,13 @@ export const DefaultFilterElements = [
 },
   {
       iconName: 'no_appointment',
-      iconUrl: '/assets/jeeve/images/no-appointment-color.png',
-      iconUrlWhite: '/assets/jeeve/images/no-appointment.png',
+      iconUrl: '/assets/jeeve/images/no-appt-icon.png',
       title: 'No Appointment',
       filterName: 'no_appointment'
   },
   {
     iconName: 'appointment',
-    iconUrl: '/assets/jeeve/images/no-appointment-color.png',
-    iconUrlWhite: '/assets/jeeve/images/no-appointment.png',
+    iconUrl: '/assets/jeeve/images/appt-icon.png',
     title: 'Appointment',
     filterName: 'appointment'
 }
