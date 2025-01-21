@@ -819,17 +819,16 @@ export class RolesUsersComponent implements AfterViewInit {
     this.showRolesButton = false;
     this.rolesUsersService.getRoles().subscribe(
       res => {
-        if (res.status == 200) {
           this.roles = [];
           var title = 'Roles permissions';
           var tipDiscription = [];
-          res.body.data.forEach(result => {
-            if (this.user_type == result.role_id) {
+          res.data.forEach(result => {
+            if (this.user_type.toString() == result.role_id.toString()) {
               if (result.permisions.indexOf('healthscreen') >= 0) {
               }
             }
 
-            var dashboards = result.permisions.split(',');
+            var dashboards = result.permisions;
             var rr = { role: result.role, permisions: dashboards };
             tipDiscription.push(rr);
 
@@ -849,7 +848,7 @@ export class RolesUsersComponent implements AfterViewInit {
             });
           });
           this.allPermissonTip = { title: title, info: tipDiscription };
-        }
+        
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';

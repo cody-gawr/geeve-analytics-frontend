@@ -272,10 +272,9 @@ export class MenuItems {
   getRoles() {
     this.rolesUsersService.getRoles().subscribe(
       res => {
-        if (res.status == 200) {
-          res.body.data.forEach((item: any) => {
+          res.data.forEach((item: any) => {
             if (item.permisions) {
-              var dashboards = item.permisions.split(',');
+              var dashboards = item.permisions;
               if (dashboards.includes('dashboard1'))
                 this.dashboard1role.push(item.role_id.toString());
               if (dashboards.includes('dashboard2'))
@@ -296,7 +295,6 @@ export class MenuItems {
                 this.profilesettingsrole.push(item.role_id.toString());
             }
           });
-        }
       },
       error => {
         console.error('getRoles', error);

@@ -329,19 +329,21 @@ export class LoginComponent implements OnInit {
 
   getRoles() {
     this.userType = this._cookieService.get('user_type');
-    var permision = '';
+    var permision = [];
     this.rolesUsersService.getRoles().subscribe({
       next: res => {
-        if (res.status == 200) {
-          res.body.data.forEach(dt => {
+        
+          res.data.forEach(dt => {
             if (this.userType == dt['role_id']) {
               permision = dt['permisions'];
             }
           });
 
-          if (res.body.plan == 'lite') {
-            this.goTo('/dashboards/healthscreen');
-          } else if (permision != '' && this.userType != '7') {
+          // if (res.body.plan == 'lite') {
+          //   this.goTo('/dashboards/healthscreen');
+          // } else 
+          
+          if (permision?.length > 0 && this.userType != '7') {
             if (permision.indexOf('healthscreen') >= 0) {
               this.goTo('/dashboards/healthscreen');
             } else if (permision.indexOf('dashboard1') >= 0) {
@@ -366,8 +368,7 @@ export class LoginComponent implements OnInit {
           } else {
             this.goTo('/profile-settings');
           }
-        }
-        this.showLoginForm();
+        
       },
       error: err => {
         this.showLoginForm();

@@ -26,7 +26,22 @@ export interface LoginUser {
   dash5Multi: number; //(finance)
 }
 
-export interface RolesApiResponse {}
+export interface UserRole {
+  created: string;
+  id: number;
+  is_default: number;
+  is_deleted: number;
+  modified: string;
+  permisions: string[];
+  role: string;
+  role_id: number;
+  user_id: number;
+}
+
+export interface RolesApiResponse {
+  data: UserRole[];
+  message: string;
+}
 
 export interface RolesIndividualApiResponse {
   data: string[];

@@ -313,26 +313,25 @@ export class ProfileSettingsComponent implements OnInit {
   }
 
   /* CHECK PERMISSIONS */
-  public permisions = '';
+  // public permisions = '';
   public showCard = false;
   getRoles() {
     this.rolesUsersService.getRoles().subscribe({
       next: res => {
-        if (res.status == 200) {
-          res.body.data.forEach(result => {
-            if (result.role_id == this._cookieService.get('user_type'))
-              this.permisions = result.permisions;
+        let permisions = [];
+          res.data.forEach(result => {
+            if (result.role_id.toString() == this._cookieService.get('user_type'))
+              permisions = result.permisions;
           });
 
           if (
-            (this.permisions,
-            this.permisions.split(',').indexOf('profilesettings') >= 0 &&
+            (permisions &&
+            permisions.indexOf('profilesettings') >= 0 &&
               this.userType != '7')
           ) {
             this.showCard = true;
             this.getPaymentDetails();
           }
-        }
       },
       error: error => {},
     });

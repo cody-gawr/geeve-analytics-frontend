@@ -5,6 +5,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+import { RolesApiResponse } from '@/newapp/models/user';
 
 @Injectable()
 export class RolesUsersService {
@@ -46,11 +47,24 @@ export class RolesUsersService {
   }
 
   // Get Dentist
-  getRoles(): Observable<any> {
+  getRoles(): Observable<RolesApiResponse> {
     var header = this.getHeaders();
-    return this.http.get(this.apiUrl + '/Roles/rolesGet', header).pipe(
-      map((response: HttpResponse<Object>) => {
-        return response;
+    return this.http.get(environment.commonApiUrl + '/user-roles', header).pipe(
+      map((response: HttpResponse<any>) => {
+        return {
+          data: response.body.data?.map(item => ({
+            created: item.created,
+            id: item.id,
+            is_default: 0,
+            is_deleted: item.is_deleted,
+            modified: item.modified,
+            permisions: item.mapped_permissions.analytics,
+            role: item.role,
+            role_id: item.role_id,
+            user_id: item.user_id
+          })),
+          message: response.body.success?'success':'failure'
+        };
       })
     );
   }
@@ -144,17 +158,17 @@ export class RolesUsersService {
 
   // Update Clinic
   saveRoles(role_id, checkedRoles): Observable<any> {
-    const formData = new FormData();
-    formData.append('role_id', role_id);
-    formData.append('permisions', checkedRoles);
+    // const formData = new FormData();
+    // formData.append('role_id', role_id);
+    // formData.append('permisions', checkedRoles);
     var header = this.getHeaders();
     return this.http
-      .post(this.apiUrl + '/Roles/rolesUpdate', formData, header)
+      .patch(environment.commonApiUrl + `/user-roles/${role_id}`, {permissions: checkedRoles}, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
         })
-      );
+    );
   }
 
   // Update Clinic

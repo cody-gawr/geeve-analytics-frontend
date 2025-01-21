@@ -112,10 +112,27 @@ export class AuthService {
 
   getRoles = (): Observable<RolesApiResponse> => {
     return this.httpClinet
-      .get<RolesApiResponse>(`${this.apiUrl}/Roles/rolesGet`, {
+      .get<any>(`${this.apiUrl}/Roles/rolesGet`, {
         withCredentials: true,
       })
-      .pipe(map(data => <RolesApiResponse>camelcaseKeys(data, { deep: true })));
+      .pipe(
+        map((data) => {
+          return {
+            data: data?.map(item => ({
+              created: item.created,
+              id: item.id,
+              is_default: 0,
+              is_deleted: item.is_deleted,
+              modified: item.modified,
+              permisions: item.mapped_permissions.analytics,
+              role: item.role,
+              role_id: item.role_id,
+              user_id: item.user_id
+            })),
+            message: data.success?'success':'failure'
+          };
+        })
+      );
   };
 
   isAuthenticated = (): boolean => {
