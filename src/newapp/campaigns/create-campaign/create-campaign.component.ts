@@ -134,6 +134,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           if(v) {
             this.selectedHealthInsurances.setValue([]);
             this.healthFundIncludeCheckBox.setValue(false);
+          }else if(!this.selectedHealthInsurances.value?.length){
+            this.healthFundIncludeCheckBox.setValue(true);
           }
           if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.health_insurance) > -1){
             this.eventInput.next();
@@ -761,15 +763,15 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       if(event.checked){
         this.selectedItemCodes.setValue([]);
       }else if(!this.selectedItemCodes.value?.length){
-        this.itemCodesAllCheckBox.setValue(true);
-        this.dialog.open(ConfirmDialogComponent, {
-          data: {
-            title: 'Alert',
-            message: 'You have to select specific items in the below dropdown!',
-            hideNoBtn: true,
-            okLabel: 'Ok'
-          }
-        });
+        // this.itemCodesAllCheckBox.setValue(true);
+        // this.dialog.open(ConfirmDialogComponent, {
+        //   data: {
+        //     title: 'Alert',
+        //     message: 'You have to select specific items in the below dropdown!',
+        //     hideNoBtn: true,
+        //     okLabel: 'Ok'
+        //   }
+        // });
       }
     }
 
@@ -778,15 +780,16 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         this.selectedHealthInsurances.setValue([]);
         this.healthFundIncludeNoneCheckBox.setValue(false);
       }else if(!this.selectedHealthInsurances.value?.length){
-        this.healthFundIncludeCheckBox.setValue(true);
-        this.dialog.open(ConfirmDialogComponent, {
-          data: {
-            title: 'Alert',
-            message: 'You have to select specific items in the below dropdown!',
-            hideNoBtn: true,
-            okLabel: 'Ok'
-          }
-        });
+        this.healthFundIncludeNoneCheckBox.setValue(true);
+        // this.healthFundIncludeCheckBox.setValue(true);
+        // this.dialog.open(ConfirmDialogComponent, {
+        //   data: {
+        //     title: 'Alert',
+        //     message: 'You have to select specific items in the below dropdown!',
+        //     hideNoBtn: true,
+        //     okLabel: 'Ok'
+        //   }
+        // });
       }
     }
 }
