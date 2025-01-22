@@ -24,7 +24,7 @@ export const DefaultFilterElements = [
   {
       iconName: 'health_and_safety',
       iconUrl: '/assets/jeeve/images/health_insurance_1.png',
-      iconUrlWhite: '/assets/jeeve/images/health_insurance_1_white.png',
+      //iconUrlWhite: '/assets/jeeve/images/health_insurance_1_white.png',
       title: 'Health Insurance',
       filterName: 'health_insurance'
   },

@@ -56,7 +56,7 @@
     (user_type == 2 ||
       permisions.indexOf('campaigns') >= 0 ||
       user_type == 7) &&
-    apiUrl.includes('test')
+    (apiUrl.includes('test') || userId === 1)
   ">
   <a class="" appAccordionToggle [routerLink]="['/newapp/campaigns']">
     <i class="fas fa-bullhorn"></i>

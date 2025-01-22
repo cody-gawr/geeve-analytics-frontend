@@ -53,6 +53,7 @@ interface MenuValidatorParams {
   userType?: number;
   userPlan?: string;
   hasPrimeClinics?: string;
+  userId?: string | number;
 }
 
 const MENU_DATA: MenuNode[] = [
@@ -99,11 +100,11 @@ const MENU_DATA: MenuNode[] = [
     icon: faBullhorn,
     badgeText: 'New',
     badgeStyle: 'yellow-bg',
-    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+    validatorFn: ({ permissions, userType, userId }: MenuValidatorParams) => {
       return (
+        (userId.toString() === '1' || environment.apiUrl.includes("test")) &&
         (permissions?.indexOf('campaigns') >= 0 ||
-        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
-        environment.apiUrl.includes("test")
+        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0)
       );
     },
   },
@@ -393,11 +394,13 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.authFacade.rolesIndividualAndClinics$
       .pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe(result => {
+        const user = this.authFacade.getAuthUserData();
         const params: MenuValidatorParams = {
           permissions: result.data,
           userType: result.type,
           userPlan: result.plan,
           hasPrimeClinics: result.hasPrimeClinics,
+          userId: user?.id
         };
         this.userType = result.type;
         const menuData: MenuNode[] = [];
