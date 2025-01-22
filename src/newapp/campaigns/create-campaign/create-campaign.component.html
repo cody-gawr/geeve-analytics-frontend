@@ -90,8 +90,8 @@
                             </mat-form-field>
     
                             <div class="multi-selection-form" >
-                                <mat-checkbox [formControl]="allItemCodesSelected">All Item Codes</mat-checkbox>
-                                <search-multi-select [disabled]="allItemCodesSelected.value" [label]="'All Item Codes'" [controlData]="selectedItemCodes"
+                                <mat-checkbox [formControl]="itemCodesAllCheckBox" (change)="toggleAllSelectedItemCodes($event)">All Item Codes</mat-checkbox>
+                                <search-multi-select [label]="'All Item Codes'" [controlData]="selectedItemCodes"
                                     [items]="itemCodes"></search-multi-select>
                                 
                                 <mat-chip-set class="selected-chipsets" aria-label="Selected Treatments">
@@ -163,11 +163,11 @@
 
 
                         <div class="filter-form" *ngIf="isSelected('health_insurance')">
-                            <mat-checkbox  [formControl]="healthFundIncludeNone" class="health-fund-checkbox">Patients Without Health Insurance</mat-checkbox>
-                            <mat-checkbox [ngStyle]="healthFundIncludeNone.value?{opacity: '0.4',pointerEvents: 'none'}:{}" [formControl]="healthFundInclude" >Patients with Health Insurance</mat-checkbox>                                    
+                            <mat-checkbox [formControl]="healthFundIncludeNoneCheckBox" class="health-fund-checkbox">Patients Without Health Insurance</mat-checkbox>
+                            <mat-checkbox [formControl]="healthFundIncludeCheckBox" (change)="toggleHealthFundInclude($event)" >Patients with Health Insurance</mat-checkbox>                                    
                             <div class="multi-selection-form" >
                                 
-                                <search-multi-select [disabled]="healthFundInclude.value || healthFundIncludeNone.value" [label]="'All Health Insurance Providers'" [controlData]="selectedHealthInsurances"
+                                <search-multi-select [label]="'All Health Insurance Providers'" [controlData]="selectedHealthInsurances"
                                     [items]="healthFunds"></search-multi-select>
                             
                                 <mat-chip-set class="selected-chipsets" aria-label="Selected Health Insurances">

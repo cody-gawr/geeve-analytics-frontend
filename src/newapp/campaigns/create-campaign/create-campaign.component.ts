@@ -19,6 +19,7 @@ import { CsvUtil } from '@/newapp/shared/utils';
 import { CAMPAIGN_FILTERS } from '@/newapp/shared/constants';
 import { CsvColumnSelectDialog } from './csv-column-select-dialog/csv-column-select-dialog.component';
 import { OptionDataType } from '@/newapp/shared/components/search-multi-select/search-multi-select.component';
+import { ConfirmDialogComponent } from '@/newapp/shared/components/confirm-dialog/confirm-dialog.component';
 
 export interface CampaignElement {
   clinic_id: number;
@@ -82,9 +83,9 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     pendingPatients = [];
     campaignFilters: ICampaignFilter[]= [];
     isSendingSms = false;
-    allItemCodesSelected = new FormControl<boolean>(false);
-    healthFundIncludeNone = new FormControl<boolean>(false);
-    healthFundInclude = new FormControl<boolean>(false);
+    itemCodesAllCheckBox = new FormControl<boolean>(false);
+    healthFundIncludeNoneCheckBox = new FormControl<boolean>(false);
+    healthFundIncludeCheckBox = new FormControl<boolean>(false);
 
     patientStatusList = ['all', 'active', 'inactive'];
     constructor(
@@ -118,21 +119,21 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       );
 
       this.dataSource = new MatTableDataSource([]);
-      this.healthFundInclude.valueChanges.pipe(
-        takeUntil(this.destroy$)
-      ).subscribe((v) => {
-          if(v) {
-            this.selectedHealthInsurances.setValue([]);
-          }
-          // this.renderId++;
-      })
+      // this.healthFundIncludeCheckBox.valueChanges.pipe(
+      //   takeUntil(this.destroy$)
+      // ).subscribe((v) => {
+      //     if(v) {
+      //       this.selectedHealthInsurances.setValue([]);
+      //     }
+      //     // this.renderId++;
+      // })
 
-      this.healthFundIncludeNone.valueChanges.pipe(
+      this.healthFundIncludeNoneCheckBox.valueChanges.pipe(
         takeUntil(this.destroy$)
       ).subscribe((v) => {
           if(v) {
             this.selectedHealthInsurances.setValue([]);
-            this.healthFundInclude.setValue(false);
+            this.healthFundIncludeCheckBox.setValue(false);
           }
           if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.health_insurance) > -1){
             this.eventInput.next();
@@ -140,13 +141,13 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           // this.renderId++;
       });
 
-      this.allItemCodesSelected.valueChanges.pipe(
-        takeUntil(this.destroy$)
-      ).subscribe((v) => {
-          if(v) {
-            this.selectedItemCodes.setValue([]);
-          }
-      });
+      // this.allItemCodesSelected.valueChanges.pipe(
+      //   takeUntil(this.destroy$)
+      // ).subscribe((v) => {
+      //     if(v) {
+      //       this.selectedItemCodes.setValue([]);
+      //     }
+      // });
       combineLatest([this.route.queryParams, this.clinicFacade.currentClinics$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([params, clinics]) => {
@@ -169,7 +170,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
                 this.metadataEvent.next();
               });
             }else{
-              this.healthFundInclude.setValue(true);
+              this.healthFundIncludeCheckBox.setValue(true);
+              this.itemCodesAllCheckBox.setValue(true);
               this.loadingData = false;
               this.metadataEvent.next();
             }
@@ -251,6 +253,12 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         takeUntil(this.destroy$),
       ).subscribe(
         value => {
+          if(value?.length > 0 && value?.length !== this.itemCodes?.length){
+            this.itemCodesAllCheckBox.setValue(false);
+          }
+          else{
+            this.itemCodesAllCheckBox.setValue(true);
+          }
           if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.treatment) > -1){
             this.eventInput.next();
           }
@@ -261,6 +269,13 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         takeUntil(this.destroy$),
       ).subscribe(
         value => {
+          if(value?.length > 0 && value?.length !== this.healthFunds?.length){
+            this.healthFundIncludeCheckBox.setValue(false);
+            this.healthFundIncludeNoneCheckBox.setValue(false);
+          }else {
+            this.healthFundIncludeCheckBox.setValue(true);
+          }
+
           if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.health_insurance) > -1){
             this.eventInput.next();
           }
@@ -419,10 +434,14 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           } else if(d.filterName === CAMPAIGN_FILTERS.patient_status){
             filterSettings.push(this.patientStatus.value);
           } else if(d.filterName === CAMPAIGN_FILTERS.treatment){
-            filterSettings.push(...this.selectedItemCodes.value.map(v => parseInt(v)));
+            if(this.selectedItemCodes.value?.length > 0 && (this.selectedItemCodes.value?.length < this.itemCodes?.length)){
+              filterSettings.push(...this.selectedItemCodes.value.map(v => parseInt(v)));
+            }
           } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
-            filterSettings.push(this.healthFundIncludeNone.value? 1: 0);
-            filterSettings.push(...this.selectedHealthInsurances.value.map(v => parseInt(v)));
+            filterSettings.push(this.healthFundIncludeNoneCheckBox.value? 1: 0);
+            if(this.selectedHealthInsurances.value?.length > 0 && (this.selectedHealthInsurances.value?.length < this.healthFunds?.length)){
+              filterSettings.push(...this.selectedHealthInsurances.value.map(v => parseInt(v)));
+            }
           }else if(d.filterName === CAMPAIGN_FILTERS.overdues){
             // no filter settings
             filterSettings.push(this.overdueDays.value);
@@ -453,16 +472,16 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           if(setting.filter_settings){
             const filterValues = setting.filter_settings?.split(',');
             if(filterValues?.length > 0){
-              this.healthFundIncludeNone.setValue(!!parseInt(filterValues[0])); 
+              this.healthFundIncludeNoneCheckBox.setValue(!!parseInt(filterValues[0])); 
               const rr = filterValues.slice(1);
               if(rr?.length > 0){
                 this.selectedHealthInsurances.setValue(rr);
               }else{
-                this.healthFundInclude.setValue(true);
+                this.healthFundIncludeCheckBox.setValue(true);
               }
               
             }else{
-              this.healthFundIncludeNone.setValue(false);
+              this.healthFundIncludeNoneCheckBox.setValue(false);
               this.selectedHealthInsurances.setValue([]);
             }
             doneFilters.push(setting.filter_name);
@@ -518,7 +537,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     }
 
     getAllSelectedHealthFund() {
-      return (!this.selectedHealthInsurances.value.length || this.selectedHealthInsurances.value.length === this.healthFunds.length) && !this.healthFundIncludeNone.value;
+      return (!this.selectedHealthInsurances.value.length || this.selectedHealthInsurances.value.length === this.healthFunds.length) && !this.healthFundIncludeNoneCheckBox.value;
     }
 
     topPanelHeight: number = 50; // Initial width of the left panel (in percentage)
@@ -736,5 +755,38 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
             default:
               return '';
         }
+    }
+
+    toggleAllSelectedItemCodes(event: any){
+      if(event.checked){
+        this.selectedItemCodes.setValue([]);
+      }else if(!this.selectedItemCodes.value?.length){
+        this.itemCodesAllCheckBox.setValue(true);
+        this.dialog.open(ConfirmDialogComponent, {
+          data: {
+            title: 'Alert',
+            message: 'You have to select specific items in the below dropdown!',
+            hideNoBtn: true,
+            okLabel: 'Ok'
+          }
+        });
+      }
+    }
+
+    toggleHealthFundInclude(event: any) {
+      if(event.checked){
+        this.selectedHealthInsurances.setValue([]);
+        this.healthFundIncludeNoneCheckBox.setValue(false);
+      }else if(!this.selectedHealthInsurances.value?.length){
+        this.healthFundIncludeCheckBox.setValue(true);
+        this.dialog.open(ConfirmDialogComponent, {
+          data: {
+            title: 'Alert',
+            message: 'You have to select specific items in the below dropdown!',
+            hideNoBtn: true,
+            okLabel: 'Ok'
+          }
+        });
+      }
     }
 }
