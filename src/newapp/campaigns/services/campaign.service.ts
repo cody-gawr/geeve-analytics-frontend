@@ -10,14 +10,14 @@ export const DefaultFilterElements = [
   {
       iconName: 'medical_services',
       iconUrl: '/assets/jeeve/images/treatment_1.png',
-      iconUrlWhite: '/assets/jeeve/images/treatment_1_white.png',
+      //iconUrlWhite: '/assets/jeeve/images/treatment_1_white.png',
       title: 'Treatment',
       filterName: 'treatment'
   },
   {
       iconName: 'list_alt',
       iconUrl: '/assets/jeeve/images/tx_plans_1.png',
-      iconUrlWhite: '/assets/jeeve/images/tx_plans_1_white.png',
+      //iconUrlWhite: '/assets/jeeve/images/tx_plans_1_white.png',
       title: 'Incomplete TX Plans',
       filterName: 'incomplete_tx_plan'
   },
@@ -31,21 +31,20 @@ export const DefaultFilterElements = [
   {
       iconName: 'schedule',
       iconUrl: '/assets/jeeve/images/overdue_1.png',
-      iconUrlWhite: '/assets/jeeve/images/overdue_1_white.png',
+      //iconUrlWhite: '/assets/jeeve/images/overdue_1_white.png',
       title: 'Overdues',
       filterName: 'overdues'
   },
   {
       iconName: 'personal_injury',
       iconUrl: '/assets/jeeve/images/patient_age_1.png',
-      iconUrlWhite: '/assets/jeeve/images/patient_age_1_white.png',
+      //conUrlWhite: '/assets/jeeve/images/patient_age_1_white.png',
       title: 'Patient Age',
       filterName: 'patient_age'
   },
   {
-    iconName: 'personal_injury',
-    iconUrl: '/assets/jeeve/images/patient_age_1.png',
-    iconUrlWhite: '/assets/jeeve/images/patient_age_1_white.png',
+    iconName: 'personal_status',
+    iconUrl: '/assets/jeeve/images/patient-status.png',
     title: 'Patient Status',
     filterName: 'patient_status'
 },

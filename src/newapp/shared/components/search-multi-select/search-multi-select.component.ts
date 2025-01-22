@@ -13,7 +13,7 @@ export class SelectMultiSelectComponent implements OnInit {
     @Input() items: OptionDataType[];
     @Input() label = '';
     @Input() controlData: FormControl;
-    @Input() disabled: boolean = true;
+    @Input() disabled: boolean = false;
     searchControl = new FormControl('');
     searchedItems = [];
     constructor(){

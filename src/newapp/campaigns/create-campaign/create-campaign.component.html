@@ -90,8 +90,8 @@
                             </mat-form-field>
     
                             <div class="multi-selection-form" >
-                                <mat-checkbox [disabled]="!selectedItemCodes.value.length" [checked]="!selectedItemCodes.value.length" (change)="toggleAllSelectItemCodes()">All Item Codes</mat-checkbox>
-                                <search-multi-select [label]="(!selectedItemCodes.value.length?'All ': '') + 'Item Codes'" [controlData]="selectedItemCodes"
+                                <mat-checkbox [formControl]="allItemCodesSelected">All Item Codes</mat-checkbox>
+                                <search-multi-select [disabled]="allItemCodesSelected.value" [label]="'All Item Codes'" [controlData]="selectedItemCodes"
                                     [items]="itemCodes"></search-multi-select>
                                 
                                 <mat-chip-set class="selected-chipsets" aria-label="Selected Treatments">

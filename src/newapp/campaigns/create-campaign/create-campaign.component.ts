@@ -82,6 +82,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     pendingPatients = [];
     campaignFilters: ICampaignFilter[]= [];
     isSendingSms = false;
+    allItemCodesSelected = new FormControl<boolean>(false);
     healthFundIncludeNone = new FormControl<boolean>(false);
     healthFundInclude = new FormControl<boolean>(false);
 
@@ -95,6 +96,27 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       private route: ActivatedRoute,
       private router: Router,
     ){
+
+      this.clinicFacade.currentClinics$.pipe(
+        takeUntil(this.destroy$),
+      ).subscribe(
+        clinics => {
+          if(clinics.length> 0) {
+            this.clinicId = clinics[0].id;
+            forkJoin([this.commonDataservice.getCampaignHealthFunds(this.clinicId), this.commonDataservice.getCampaignItemCodes(this.clinicId)]).subscribe(
+              ([result1, result2]) => {
+                this.healthFunds = result1.data.map(v => ({value: v}));
+                this.itemCodes = result2.data.map(d => ({
+                  label: d.item_display_name,
+                  value: d.item_code
+                }));
+                this.metadataEvent.next();
+              }
+            );
+          }
+        }
+      );
+
       this.dataSource = new MatTableDataSource([]);
       this.healthFundInclude.valueChanges.pipe(
         takeUntil(this.destroy$)
@@ -116,7 +138,15 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
             this.eventInput.next();
           }
           // this.renderId++;
-      })
+      });
+
+      this.allItemCodesSelected.valueChanges.pipe(
+        takeUntil(this.destroy$)
+      ).subscribe((v) => {
+          if(v) {
+            this.selectedItemCodes.setValue([]);
+          }
+      });
       combineLatest([this.route.queryParams, this.clinicFacade.currentClinics$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([params, clinics]) => {
@@ -216,26 +246,6 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           this.dataSource.data = [];
         }
       });
-
-      this.clinicFacade.currentClinics$.pipe(
-        takeUntil(this.destroy$),
-      ).subscribe(
-        clinics => {
-          if(clinics.length> 0) {
-            this.clinicId = clinics[0].id;
-            forkJoin([this.commonDataservice.getCampaignHealthFunds(this.clinicId), this.commonDataservice.getCampaignItemCodes(this.clinicId)]).subscribe(
-              ([result1, result2]) => {
-                this.healthFunds = result1.data.map(v => ({value: v}));
-                this.itemCodes = result2.data.map(d => ({
-                  label: d.item_display_name,
-                  value: d.item_code
-                }));
-                this.metadataEvent.next();
-              }
-            );
-          }
-        }
-      )
 
       this.selectedItemCodes.valueChanges.pipe(
         takeUntil(this.destroy$),
@@ -577,12 +587,6 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           }
         });
 
-      }
-    }
-
-    toggleAllSelectItemCodes() {
-      if(this.selectedItemCodes.value.length > 0 && this.selectedItemCodes.value.length !== this.itemCodes.length){
-        this.selectedItemCodes.setValue([]);
       }
     }
 
