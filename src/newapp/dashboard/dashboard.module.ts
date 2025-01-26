@@ -83,6 +83,7 @@ import { FuGetOutcomeComponent } from './components/followups/components/fuGetOu
 import { FuGetPerUserComponent } from './components/followups/components/fuGetPerUser/fuGetPerUser.component';
 import { FollowupsComponent } from './components/followups/followups.component';
 import { UnsubscribedPageComponent } from './components/unsubscribed-page/unsubscribed-page.component';
+import { MkProdByPostCodeComponent } from './components/marketing/components/prod-by-postcode/prod-by-postcode.component';
 
 @NgModule({
   imports: [
@@ -135,6 +136,7 @@ import { UnsubscribedPageComponent } from './components/unsubscribed-page/unsubs
     MarketingNewPatientsAcqComponent,
     MarketingTotalVisitsComponent,
     MkSelectAccountsModalComponent,
+    MkProdByPostCodeComponent,
 
     FrontDeskComponent,
     FrontDeskUtilRateComponent,

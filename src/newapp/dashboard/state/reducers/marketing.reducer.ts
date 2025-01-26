@@ -1,10 +1,11 @@
-import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on, select } from '@ngrx/store';
 import _ from 'lodash';
 import { JeeveError } from '@/newapp/models';
 import { MarketingApiActions, MarketingPageActions } from '../actions';
 import {
   MkActivePatientsApiResponse,
   MkActivePatientsTrendApiResponse,
+  MkChartDescResponse,
   MkNewPatientAcqApiResponse,
   MkNewPatientAcqItem,
   MkNewPatientAcqTrendApiResponse,
@@ -21,6 +22,8 @@ import {
   MkTotalVisitsApiResponse,
   MkTotalVisitsTrendApiResponse,
   MkXeroOrMyobAccountsApiResponse,
+  ProdByAge,
+  ProdByPostCode,
 } from '@/newapp/models/dashboard/marketing';
 import {
   selectCurrentClinicId,
@@ -30,27 +33,8 @@ import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import moment from 'moment';
 import { ChartDataset, Colors } from 'chart.js';
-// import { selectConnectedWith } from './dashboard.reducer';
 import { COLORS } from '@/newapp/constants';
-import { getSubValForGoal } from '@/newapp/shared/utils';
-
-type MarketingEndpoints =
-  | 'mkNumPatientsByReferral'
-  | 'mkRevByReferral'
-  | 'mkNumNewPatients'
-  | 'mkNewPatientAcq'
-  | 'mkTotalVisits'
-  | 'mkNumPatientsByReferralTrend'
-  | 'mkRevByReferralTrend'
-  | 'mkTotalVisitsTrend'
-  | 'mkNumNewPatientsTrend'
-  | 'mkNewPatientAcqTrend'
-  | 'mkActivePatients'
-  | 'mkActivePatientsTrend'
-  | 'mkGetXeroAcct'
-  | 'mkGetMyobAcct'
-  | 'mkSaveAcctMyob'
-  | 'mkSaveAcctXero';
+import { convertEndpointToDataKey, getSubValForGoal } from '@/newapp/shared/utils';
 
 export interface MarketingState {
   isLoadingData: Array<MarketingEndpoints>;
@@ -70,6 +54,12 @@ export interface MarketingState {
   isActivePatients: boolean;
   xeroAccounts: MkXeroOrMyobAccountsApiResponse | null;
   myobAccounts: MkXeroOrMyobAccountsApiResponse | null;
+
+  prodByPostCodeChartName: MK_PROD_BY_POSTCODE_CHART_NAME;
+  prodByPostCodeData: MkChartDescResponse<ProdByPostCode[]>,
+  prodByPostCodeTrendData: MkChartDescResponse<ProdByPostCode[]>,
+  prodByAgeData: MkChartDescResponse<ProdByAge[]>,
+  prodByAgeTrendData: MkChartDescResponse<ProdByAge[]>,
 }
 
 const initialState: MarketingState = {
@@ -90,6 +80,12 @@ const initialState: MarketingState = {
   xeroAccounts: null,
   isActivePatients: false,
   myobAccounts: null,
+
+  prodByPostCodeChartName: 'Production By Post Code',
+  prodByPostCodeData: null,
+  prodByPostCodeTrendData: null,
+  prodByAgeData: null,
+  prodByAgeTrendData: null,
 };
 
 export const marketingFeature = createFeature({
@@ -724,7 +720,51 @@ export const marketingFeature = createFeature({
         ...state,
         errors: errors,
       };
-    })
+    }),
+    on(
+      MarketingPageActions.setProdByPostCodeChartName,
+      (state, { chartName }): MarketingState => {
+        return {
+          ...state,
+          prodByPostCodeChartName: chartName,
+        };
+      }
+    ),
+
+    // mkProdByCode/mkProdByCodeTrend/mkProdByAge/mkProdByAgeTrend
+    on(MarketingPageActions.loadMkChartDescription, (state, { chartDescription }): MarketingState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        activePatientsData: null,
+        errors: _.filter(errors, n => n.api != chartDescription),
+        isLoadingData: _.union(isLoadingData, [chartDescription]),
+      };
+    }),
+    on(
+      MarketingApiActions.mkChartDescriptionSuccess,
+      (state, { chartDesc, mkChartDescData }): MarketingState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, n => n.api != chartDesc),
+          [convertEndpointToDataKey(chartDesc)]: mkChartDescData,
+          isLoadingData: _.filter(isLoadingData, n => n != chartDesc),
+        };
+      }
+    ),
+    on(
+      MarketingApiActions.mkChartDescriptionFailure,
+      (state, { chartDesc, error }): MarketingState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          [convertEndpointToDataKey(chartDesc)]: null,
+          isLoadingData: _.filter(isLoadingData, n => n != chartDesc),
+          errors: [...errors, { ...error, api: chartDesc }],
+        };
+      }
+    ),
   ),
 });
 
@@ -746,6 +786,11 @@ export const {
   selectIsActivePatients,
   selectXeroAccounts,
   selectMyobAccounts,
+  selectProdByPostCodeChartName,
+  selectProdByPostCodeData,
+  selectProdByPostCodeTrendData,
+  selectProdByAgeData,
+  selectProdByAgeTrendData
 } = marketingFeature;
 
 // Loading State
@@ -831,6 +876,27 @@ export const selectIsLoadingMkSaveAcctMyob = createSelector(
 export const selectIsLoadingMkSaveAcctXero = createSelector(
   selectIsLoadingData,
   loadingData => _.findIndex(loadingData, l => l == 'mkSaveAcctXero') >= 0
+);
+
+export const selectIsLoadingMkProdByPostCode = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'mkProdByPostCode') >= 0
+);
+
+export const selectIsLoadingMkProdByPostCodeTrend = createSelector(
+  selectIsLoadingData,
+  loadingData =>
+    _.findIndex(loadingData, l => l == 'mkProdByPostCodeTrend') >= 0
+);
+
+export const selectIsLoadingMkProdByAge = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'mkProdByAge') >= 0
+);
+
+export const selectIsLoadingMkProdByAgeTrend = createSelector(
+  selectIsLoadingData,
+  loadingData => _.findIndex(loadingData, l => l == 'mkProdByAgeTrend') >= 0
 );
 
 export const selectIsLoadingAllData = createSelector(
@@ -1653,6 +1719,262 @@ export const selectTotalVisitsTrendChartData = createSelector(
         labels: chartLabels,
       };
     }
+  }
+);
+
+export const selectMkProdByPostCodeChartData = createSelector(
+  selectProdByPostCodeData,
+  (
+    prodByPostCodeData,
+  ) => {
+    const data = prodByPostCodeData;
+    if (!data) {
+      return {
+        datasets: [],
+        labels: [],
+      };
+    }
+    const chartData = [], chartLabels = [];
+    data.data.forEach(item => {
+      chartData.push(Math.round(<number>item.production));
+      chartLabels.push(item.postcode);
+    });
+    const chartDatasets = [
+      {
+        data: [],
+        label: 'Total Production By Post Code',
+        shadowOffsetX: 3,
+        shadowOffsetY: 3,
+        shadowBlur: 5,
+        shadowColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: [
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
+        ],
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundOverlayMode: 'multiply',
+      },
+    ];
+    chartDatasets[0]['data'] = chartData;
+    return {
+      datasets: chartDatasets,
+      labels: chartLabels,
+    };
+  }
+);
+
+export const selectProdByPostCodeTrendChartData = createSelector(
+  selectProdByPostCodeTrendData,
+  selectTrend,
+  (
+    trendChartData,
+    trendMode
+  ): { datasets: ChartDataset[]; labels: string[] } => {
+    if (trendChartData == null) {
+      return {
+        datasets: [],
+        labels: [],
+      };
+    }
+    let i = 0;
+    const chartLabels = [];
+    const uniquePostCodes = _.uniqBy(
+      trendChartData.data,
+      'postcode'
+    ).map((c) => c.postcode);
+    const datasets = _.chain(trendChartData.data)
+      .groupBy(trendMode === 'current' ? 'year_month' : 'year')
+      .map((values: ProdByPostCode[], key: string) => {
+        chartLabels.push(
+          trendMode === 'current'
+            ? moment(key).format('MMM YYYY')
+            : key
+        );
+        const valuesInDur = uniquePostCodes.map((r) => ({
+          postcode: r,
+          productions: _.round(
+            _.sumBy(
+              values.filter((v) => v.postcode == r),
+              (item: ProdByPostCode) => Number(item.production)
+            ),
+            0
+          ),
+        }))
+        return valuesInDur.map(v1 => {
+          return {
+            duration: key,
+            ...v1,
+          };
+        });
+      })
+      .flatten()
+      .groupBy('postcode')
+      .map((v, postcode) => {
+        const bgColor = DoughnutChartColors[i];
+        i++;
+        return {
+          data: v.map(v1 => v1.productions),
+          label: postcode,
+          backgroundColor: bgColor,
+          hoverBackgroundColor: bgColor,
+        };
+      })
+      .value();
+
+    return {
+      datasets,
+      labels: chartLabels,
+    };
+  }
+);
+
+export const selectMkProdByAgeChartData = createSelector(
+  selectProdByAgeData,
+  (
+    prodByAgeData,
+  ) => {
+    const data = prodByAgeData;
+    if (!data) {
+      return {
+        datasets: [],
+        labels: [],
+      };
+    }
+    const uniqueAges = [
+      'adult',
+      'child',
+      'elderly',
+      'multiage',
+      'senior',
+      'unspecified',
+      'young',
+    ];
+    const chartData = [], chartLabels = [];
+    
+    uniqueAges.forEach(age => {
+      chartData.push(_.sumBy(data.data, (item: ProdByAge) => Number(item[`prod_${age}`] || 0)));
+      chartLabels.push(age);
+    });
+  
+    const chartDatasets = [
+      {
+        data: [],
+        label: 'Total Production By Age',
+        shadowOffsetX: 3,
+        shadowOffsetY: 3,
+        shadowBlur: 5,
+        shadowColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: [
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
+          '#119682',
+          '#eeeef8',
+        ],
+        pointBevelWidth: 2,
+        pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+        pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+        pointShadowOffsetX: 3,
+        pointShadowOffsetY: 3,
+        pointShadowBlur: 10,
+        pointShadowColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundOverlayMode: 'multiply',
+      },
+    ];
+    chartDatasets[0]['data'] = chartData;
+    return {
+      datasets: chartDatasets,
+      labels: chartLabels,
+    };
+  }
+);
+
+export const selectProdByAgeTrendChartData = createSelector(
+  selectProdByAgeTrendData,
+  selectTrend,
+  (
+    trendChartData,
+    trendMode
+  ): { datasets: ChartDataset[]; labels: string[] } => {
+    if (trendChartData == null) {
+      return {
+        datasets: [],
+        labels: [],
+      };
+    }
+    let i = 0;
+    const chartLabels = [];
+    const uniqueAges = [
+      'adult',
+      'child',
+      'elderly',
+      'multiage',
+      'senior',
+      'unspecified',
+      'young',
+    ];
+    const datasets = _.chain(trendChartData.data)
+      .groupBy(trendMode === 'current' ? 'year_month' : 'year')
+      .map((values: ProdByAge[], key: string) => {
+        chartLabels.push(
+          trendMode === 'current'
+            ? moment(key).format('MMM YYYY')
+            : key
+        );
+        const valuesInDur = uniqueAges.map((r) => ({
+          age: r,
+          productions: _.round(
+            _.sumBy(
+              values,
+              (item: ProdByAge) => Number(item[`prod_${r}`] || 0)
+            ),
+            0
+          ),
+        }))
+        return valuesInDur.map(v1 => {
+          return {
+            duration: key,
+            ...v1,
+          };
+        });
+      })
+      .flatten()
+      .groupBy('age')
+      .map((v, age) => {
+        const bgColor = DoughnutChartColors[i];
+        i++;
+        return {
+          data: v.map(v1 => v1.productions),
+          label: age,
+          backgroundColor: bgColor,
+          hoverBackgroundColor: bgColor,
+        };
+      })
+      .value();
+
+    return {
+      datasets,
+      labels: chartLabels,
+    };
   }
 );
 

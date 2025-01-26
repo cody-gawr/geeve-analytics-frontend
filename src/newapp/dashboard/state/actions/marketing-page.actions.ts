@@ -1,3 +1,4 @@
+import { ChartDescParams } from '@/newapp/models/dashboard/marketing';
 import { createAction, props } from '@ngrx/store';
 
 export const loadMkNewPatientsByReferral = createAction(
@@ -122,6 +123,11 @@ export const loadMkTotalVisitsTrend = createAction(
   }>()
 );
 
+export const loadMkChartDescription = createAction(
+  '[Marketing Page] Load Market Chart Description',
+  props<ChartDescParams>()
+);
+
 export const setIsActivePatients = createAction(
   '[Marketing Page] Set setIsActivePatients',
   props<{
@@ -165,5 +171,12 @@ export const setErrors = createAction(
   '[Marketing Page] Set errors',
   props<{
     errors: JeeveError[];
+  }>()
+);
+
+export const setProdByPostCodeChartName = createAction(
+  '[Marketing Page] Set Prod By Post Code',
+  props<{
+    chartName: MK_PROD_BY_POSTCODE_CHART_NAME;
   }>()
 );

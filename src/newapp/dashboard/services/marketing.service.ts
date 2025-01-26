@@ -13,9 +13,9 @@ import {
   MkTotalVisitsApiResponse,
   MkTotalVisitsTrendApiResponse,
   MkNumNewPatientsTrendApiResponse,
-  MkActiveNewPatientsItem,
   MkActivePatientsApiResponse,
   MkXeroOrMyobAccountsApiResponse,
+  ChartDescParams,
 } from '@/newapp/models/dashboard/marketing';
 
 @Injectable({
@@ -25,6 +25,29 @@ export class MarketingService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
+
+  mkChartDescriptionCall<K>(
+    params: ChartDescParams,
+  ) {
+    return this.http
+      .get(`${this.apiUrl}/Marketing/${params.chartDescription}`, {
+        params: {
+          clinic_id: params.clinicId,
+          ...(params.mode ? {mode: params.mode}: {}),
+          ...(params.startDate ? {start_date: params.startDate}: {}),
+          ...(params.endDate ? {start_date: params.endDate}: {}),
+          ...(params.duration ? {duration: params.duration}: {}),
+          wh: params.queryWhEnabled,
+        },
+        withCredentials: true,
+      })
+      .pipe(
+        map(
+          resBody => <K>resBody
+        )
+      );
+  }
+
   // Items Predictor Analysis
   mkNewPatientsByReferral(
     clinicId: number | string,

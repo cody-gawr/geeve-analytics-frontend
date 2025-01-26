@@ -130,6 +130,29 @@ declare global {
     | 'cpPredictorRatioTrend';
 
   type FN_PROD_PER_VISIT_CHART_NAME = 'Production Per Visit' | 'Production Per Day';
+  type MK_PROD_BY_POSTCODE_CHART_NAME = 'Production By Post Code' | 'Production By Age';
+
+  type MarketingEndpoints =
+    | 'mkNumPatientsByReferral'
+    | 'mkRevByReferral'
+    | 'mkNumNewPatients'
+    | 'mkNewPatientAcq'
+    | 'mkTotalVisits'
+    | 'mkNumPatientsByReferralTrend'
+    | 'mkRevByReferralTrend'
+    | 'mkTotalVisitsTrend'
+    | 'mkNumNewPatientsTrend'
+    | 'mkNewPatientAcqTrend'
+    | 'mkActivePatients'
+    | 'mkActivePatientsTrend'
+    | 'mkGetXeroAcct'
+    | 'mkGetMyobAcct'
+    | 'mkSaveAcctMyob'
+    | 'mkSaveAcctXero'
+    | 'mkProdByPostCode'
+    | 'mkProdByPostCodeTrend'
+    | 'mkProdByAge'
+    | 'mkProdByAgeTrend';
 
   interface FnProduction {
     clinicId: number | string;

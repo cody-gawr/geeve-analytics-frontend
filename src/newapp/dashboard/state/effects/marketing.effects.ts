@@ -1,13 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, of, withLatestFrom, filter } from 'rxjs';
+import { catchError, map, switchMap, of, groupBy, mergeMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
   MarketingState,
 } from '../reducers/marketing.reducer';
 import { MarketingApiActions, MarketingPageActions } from '../actions';
 import { MarketingService } from '../../services/marketing.service';
+import { ChartDescParams } from '@/newapp/models/dashboard/marketing';
 
 @Injectable()
 export class MarketingEffects {
@@ -438,6 +439,40 @@ export class MarketingEffects {
           )
         );
       })
+    );
+  });
+
+  public readonly loadMkChartDescription$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(MarketingPageActions.loadMkChartDescription),
+      groupBy((action) => action.chartDescription), // Group actions by `chart description`
+      mergeMap((grouped$) =>
+        grouped$.pipe(
+          switchMap((params: ChartDescParams) => {
+            return this.marketingService
+              .mkChartDescriptionCall<any>(
+                params
+              )
+              .pipe(
+                map(data =>
+                  MarketingApiActions.mkChartDescriptionSuccess({
+                    chartDesc: params.chartDescription,
+                    mkChartDescData: data,
+                  })
+                ),
+                catchError((error: HttpErrorResponse) =>
+                  of(
+                    MarketingApiActions.mkChartDescriptionFailure({
+                      chartDesc: params.chartDescription,
+                      error: error.error ?? error,
+                    })
+                  )
+                )
+              );
+            }
+          )
+        )
+      )
     );
   });
 }

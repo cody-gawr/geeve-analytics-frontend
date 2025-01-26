@@ -15,6 +15,7 @@ import moment from 'moment';
 import { MarketingFacade } from '../../facades/marketing.facade';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import _ from 'lodash';
+import { ChartDescParams } from '@/newapp/models/dashboard/marketing';
 
 @Component({
   selector: 'dashboard-marketing',
@@ -69,7 +70,6 @@ export class MarketingComponent implements OnInit, OnDestroy {
       this.clinicFacade.connectedWith$,
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
-      // this.authUserId$,
       this.clinicFacade.connectedClinicId$,
       this.clinicFacade.isMultiClinicsSelected$,
     ])
@@ -84,7 +84,6 @@ export class MarketingComponent implements OnInit, OnDestroy {
           connectedWith,
           route,
           trend,
-          // userId,
           connectedClinicId,
           isMultiClinics,
         ] = params;
@@ -104,7 +103,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
         this.marketingFacade.setErrors([]);
         switch (trend) {
           case 'off':
-            const params = {
+            const params: ChartDescParams = {
               clinicId: clinicId,
               startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
               endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
@@ -112,18 +111,22 @@ export class MarketingComponent implements OnInit, OnDestroy {
               queryWhEnabled,
               connectedWith: connectedWith,
             };
-            this.marketingFacade.loadRevByReferral(params);
-            this.marketingFacade.loadMkNewPatientsByReferral(params);
+            this.marketingFacade.loadRevByReferral(<any>params);
+            this.marketingFacade.loadMkNewPatientsByReferral(<any>params);
+            ['mkProdByPostCode', 'mkProdByAge'].forEach(chartName => {
+              this.marketingFacade.loadChartDescription(
+                <MarketingEndpoints>chartName, params);
+            });
             if (['xero', 'myob'].includes(connectedWith) || isMultiClinics) {
               this.marketingFacade.loadNewPatientsAcq({
-                ...params,
+                ...<any>params,
                 connectedWith,
               });
             }
-            this.marketingFacade.loadNewNumPatients(params);
-            this.marketingFacade.loadActivePatients(params);
+            this.marketingFacade.loadNewNumPatients(<any>params);
+            this.marketingFacade.loadActivePatients(<any>params);
 
-            this.marketingFacade.loadTotalVisits(params);
+            this.marketingFacade.loadTotalVisits(<any>params);
             break;
           case 'current':
           case 'historic':
@@ -136,6 +139,13 @@ export class MarketingComponent implements OnInit, OnDestroy {
               clinicId,
               mode: trend === 'current' ? 'c' : 'h',
               queryWhEnabled,
+            });
+            ['mkProdByPostCodeTrend', 'mkProdByAgeTrend'].forEach(chartName => {
+              this.marketingFacade.loadChartDescription(<MarketingEndpoints>chartName, {
+                clinicId,
+                mode: trend === 'current' ? 'c' : 'h',
+                queryWhEnabled,
+              });
             });
             if (['xero', 'myob'].includes(connectedWith) || isMultiClinics) {
               this.marketingFacade.loadNewPatientsAcqTrend({
@@ -163,12 +173,6 @@ export class MarketingComponent implements OnInit, OnDestroy {
             });
             break;
         }
-
-        // if (connectedWith == 'myob') {
-        //   this.marketingFacade.loadMkGetMyobAccounts({ clinicId, userId });
-        // } else if (connectedWith == 'xero') {
-        //   this.marketingFacade.loadMkGetXeroAccounts({ clinicId, userId });
-        // }
       });
   }
 

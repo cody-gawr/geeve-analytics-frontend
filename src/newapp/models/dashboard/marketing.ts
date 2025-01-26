@@ -1,3 +1,38 @@
+export interface BaseSpResult {
+  clinic_id?: number | string;
+  month: number | string;
+  year: number | string;
+  year_month: string;
+}
+
+export interface MkChartDescResponse<K> {
+  app: string;
+  data: K;
+  sqls?: string[];
+}
+
+export interface ProdByPostCode extends BaseSpResult {
+  clinic_name: string;
+  day: string | number;
+  postcode: string;
+  production: string | number;
+}
+
+export interface ProdByAge extends BaseSpResult {
+  clinic_name: string;
+  day: string | number;
+  provider_id: string;
+  provider_name: string;
+  provider_type: string;
+  prod_child: string | number;
+  prod_young: string | number;
+  prod_adult: string | number;
+  prod_senior: string | number;
+  prod_elderly: string | number;
+  prod_unspecified: string | number;
+  prod_multiage: string | number;
+}
+
 export interface MkXeroOrMyobAccountsApiResponse {
   app: string;
   data: XeroOrAccountData;
@@ -266,4 +301,15 @@ export interface RevenueRefType {
   clinicId: string | number;
   invoiceAmount: number;
   reftypeName: string;
+}
+
+export interface ChartDescParams {
+  chartDescription?: MarketingEndpoints;
+  clinicId: number | string;
+  mode?: string;
+  startDate?: string;
+  endDate?: string;
+  duration?: string;
+  queryWhEnabled: number;
+  connectedWith?: CONNECT_WITH_PLATFORM;
 }

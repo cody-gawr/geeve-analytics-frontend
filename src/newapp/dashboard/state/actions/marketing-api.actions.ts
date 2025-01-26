@@ -207,3 +207,15 @@ export const mkSaveAcctXeroFailure = createAction(
     error: JeeveError;
   }>()
 );
+
+export const mkChartDescriptionSuccess = createAction(
+  '[Marketing API] Load Market Chart Description Success',
+  props<{ chartDesc: MarketingEndpoints, mkChartDescData: any }>()
+);
+
+export const mkChartDescriptionFailure = createAction(
+  '[Marketing API] Load Market Chart Description Failure',
+  props<{
+    chartDesc: MarketingEndpoints, error: JeeveError;
+  }>()
+);

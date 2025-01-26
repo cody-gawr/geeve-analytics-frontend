@@ -19,6 +19,10 @@ import {
   selectIsLoadingMkNewPatientsByReferralTrend,
   selectIsLoadingMkNumNewPatients,
   selectIsLoadingMkNumNewPatientsTrend,
+  selectIsLoadingMkProdByAge,
+  selectIsLoadingMkProdByAgeTrend,
+  selectIsLoadingMkProdByPostCode,
+  selectIsLoadingMkProdByPostCodeTrend,
   selectIsLoadingMkRevByReferral,
   selectIsLoadingMkRevByReferralTrend,
   selectIsLoadingMkSaveAcctMyob,
@@ -26,6 +30,8 @@ import {
   selectIsLoadingMkTotalVisits,
   selectIsLoadingMkTotalVisitsTrend,
   selectIsLoadingMkXeroAccounts,
+  selectMkProdByAgeChartData,
+  selectMkProdByPostCodeChartData,
   selectMyobAccounts,
   selectNewPatientAcqChartData,
   selectNewPatientAcqTrendChartData,
@@ -34,6 +40,9 @@ import {
   selectNewPatientsByReferralTrendChartData,
   selectNumNewPatientsChartData,
   selectNumNewPatientsTrendChartData,
+  selectProdByAgeTrendChartData,
+  selectProdByPostCodeChartName,
+  selectProdByPostCodeTrendChartData,
   selectRevByReferralChartData,
   selectRevByReferralTrendChartData,
   selectRevenueByReferralData,
@@ -41,6 +50,7 @@ import {
   selectTotalVisitsTrendChartData,
   selectXeroAccounts,
 } from '../state/reducers/marketing.reducer';
+import { ChartDescParams } from '@/newapp/models/dashboard/marketing';
 
 @Injectable()
 export class MarketingFacade {
@@ -108,6 +118,26 @@ export class MarketingFacade {
 
   public readonly totalVisitsTrendChartData$ = this.store.pipe(
     select(selectTotalVisitsTrendChartData)
+  );
+
+  public readonly prodByPostCodeChartName$ = this.store.pipe(
+    select(selectProdByPostCodeChartName)
+  );
+
+  public readonly prodByPostCodeChartData$ = this.store.pipe(
+    select(selectMkProdByPostCodeChartData)
+  );
+
+  public readonly prodByPostCodeTrendChartData$ = this.store.pipe(
+    select(selectProdByPostCodeTrendChartData)
+  );
+
+  public readonly prodByAgeChartData$ = this.store.pipe(
+    select(selectMkProdByAgeChartData)
+  );
+
+  public readonly prodByAgeTrendChartData$ = this.store.pipe(
+    select(selectProdByAgeTrendChartData)
   );
 
   public readonly isLoadingNewPatientsByReferral$ = this.store.pipe(
@@ -186,8 +216,40 @@ export class MarketingFacade {
     select(selectIsLoadingAllTrendData)
   );
 
+  public readonly isLoadingMkProdByPostCode$ = this.store.pipe(
+    select(selectIsLoadingMkProdByPostCode)
+  );
+
+  public readonly isLoadingMkProdByPostCodeTrend$ = this.store.pipe(
+    select(selectIsLoadingMkProdByPostCodeTrend)
+  );
+
+  public readonly isLoadingMkProdByAge$ = this.store.pipe(
+    select(selectIsLoadingMkProdByAge)
+  );
+
+  public readonly isLoadingMkProdByAgeTrend$ = this.store.pipe(
+    select(selectIsLoadingMkProdByAgeTrend)
+  );
+
+  public setProdByPostCodeChartName(chartName: MK_PROD_BY_POSTCODE_CHART_NAME) {
+    this.store.dispatch(MarketingPageActions.setProdByPostCodeChartName({ chartName }));
+  }
+
   public setActivePatients(isActive: boolean) {
     this.store.dispatch(MarketingPageActions.setIsActivePatients({ isActive }));
+  }
+
+  loadChartDescription(
+    chartDescription: MarketingEndpoints, 
+    params: ChartDescParams
+  ) {
+    this.store.dispatch(
+      MarketingPageActions.loadMkChartDescription({
+        chartDescription,
+        ...params
+      })
+    );
   }
 
   public loadMkNewPatientsByReferral({

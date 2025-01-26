@@ -19,6 +19,11 @@ import { COLORS } from '../constants';
 import { Clinic } from '../models/clinic';
 import { DecimalPipe } from '@angular/common';
 
+export function convertEndpointToDataKey(endpoint: string) {
+  let key = endpoint.slice(2)
+  return key.charAt(0).toLowerCase() + key.slice(1) + 'Data';
+}
+
 export function splitName(label: string) {
   const regex = /\w+\s\w+(?=\s)|\w+/g;
   return label.toString().trim().match(regex);

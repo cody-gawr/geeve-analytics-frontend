@@ -5,10 +5,13 @@
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
   <new-patient-by-referral-chart
     [toolTip]="getChartTip(23) | async"
-    class="marketing-chart"></new-patient-by-referral-chart>
+    class="marketing-chart-1"></new-patient-by-referral-chart>
   <revenue-by-referral-chart
     [toolTip]="getChartTip(24) | async"
-    class="marketing-chart"></revenue-by-referral-chart>
+    class="marketing-chart-1"></revenue-by-referral-chart>
+  <mk-prod-by-postcode-chart
+    class="marketing-chart-1"
+  ></mk-prod-by-postcode-chart>
   <num-new-patients-chart
     [toolTip]="getNumNewPatientsTip$ | async"
     class="marketing-chart-1"></num-new-patients-chart>
