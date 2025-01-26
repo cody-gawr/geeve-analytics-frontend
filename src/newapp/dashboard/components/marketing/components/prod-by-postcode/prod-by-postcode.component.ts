@@ -67,7 +67,7 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
   }
 
   get hasData() {
-    return this.labels.length > 0;
+    return this.labels.length > 0 && this.datasets?.length > 0 && _.sum(this.datasets[0].data) > 0;
   }
 
   get legend$() {
@@ -104,6 +104,7 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
           this.datasets = chartName === 'Production By Post Code'? postCodeData.datasets: ageData.datasets;
           this.labels = chartName === 'Production By Post Code'? postCodeData.labels: ageData.labels;
         }
+        console.log(this.datasets);
       });
   }
 
