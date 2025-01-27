@@ -1,18 +1,3 @@
-@import '../../../../assets/layout/styles/layout/mixin';
-
-.cp-chart {
-  display: flex;
-  flex-direction: column;
-  width: calc(50% - 7.5px);
-  // @include respond-from('big-desktop') {
-  //   width: calc(50% - 7.5px); 
-  // }
-
-  @include respond-from('tablet-portrait') {
-    width: 100%;
-  }
-}
-
 .cp-chart-1 {
   display: flex;
   flex-direction: column;

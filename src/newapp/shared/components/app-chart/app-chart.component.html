@@ -1,0 +1,122 @@
+<div class="chart-container">
+    <mat-icon
+      *ngIf="!!toolTip"
+      [tooltip]="toolTip"
+      matTooltipPosition="below"
+      color="primary"
+      class="help-tip"
+      fontIcon="help"></mat-icon>
+    <mat-icon
+      *ngIf="enablePaTableView"
+      [ngClass]="showPaTableView ? 'active' : ''"
+      (click)="toggleShowOfPaTableView()"
+      class="table-info-icon"
+      fontIcon="table_rows_narrow" />
+    <div class="chart-title">
+      <mat-icon
+        *ngIf="!!trendTipIcon"
+        [color]="trendTipIconColor || 'primary'"
+        [fontIcon]="trendTipIcon"
+        [matTooltip]="trendTipText"></mat-icon>
+  
+      <span>{{chartTitle}}</span>
+    </div>
+    <div class="chart-content">
+      <div class="canvas-wrapper chart-box gap-15px height-450">
+        <div class="chart-header">
+          <button
+            *ngFor="let tab of chartTabs"
+            (click)="switchActiveTab && switchActiveTab(tab)"
+            [ngClass]="{ active: tab === activeTab }">
+            {{ activeTab }}
+          </button>
+        </div>
+
+        <div class="chart-elements" *ngIf="datePicker">
+            <span>Original Appointment In</span>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <input matInput [matDatepicker]="dp" [formControl]="datePicker">
+                <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                <mat-datepicker #dp startView="year"></mat-datepicker>
+            </mat-form-field>
+        </div>
+  
+        <div
+          class="pa-table"
+          *ngIf="showPaTableView && enablePaTableView; else graphElem">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>
+                  activeTab
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let protbl of paTableData">
+                <td>{{ protbl.label }}</td>
+                <td>{{ protbl.value | number: '1.0-0' }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #graphElem>
+          <div class="chart-gauge graph-box">
+            <spin-loader *ngIf="isLoading; else chartElem"></spin-loader>
+            <ng-template #chartElem>
+              <spin-loader
+                class="empty-placeholder"
+                *ngIf="!readyToDrawChart; else drawChartElem"
+                [disableSpin]="true">
+                {{ noDataAlertMessage }}
+              </spin-loader>
+              <ng-template #drawChartElem>
+                <ngx-gauge
+                  *ngIf="chartType === 'arch'; else canvasElem"
+                  [type]="chartType"
+                  [value]="gaugeValue"
+                  [label]="gaugeLabel"
+                  [thick]="20"
+                  backgroundColor="#f4f0fa"
+                  foregroundColor="#4ccfae"
+                  [max]="100"
+                  cap="round"
+                  [duration]="2500"
+                  append="%"
+                  [size]="300">
+                </ngx-gauge>
+                <ng-template #canvasElem>
+                  <canvas
+                    baseChart
+                    [datasets]="datasets"
+                    [labels]="labels"
+                    [legend]="enableLegend"
+                    [type]="chartType"
+                    [options]="chartOptions">
+                  </canvas>
+                </ng-template>
+              </ng-template>
+            </ng-template>
+          </div>
+        </ng-template>
+  
+        <div class="chart-foot" *ngIf="durationCurrLabel || durationPrevLabel || enableGoal">
+          <div *ngIf="!!durationCurrLabel">
+            <h3>{{ curr }}%</h3>
+            <span>{{ durationCurrLabel }}</span>
+          </div>
+          <div *ngIf="duration !== 'custom' && !!durationPrevLabel">
+            <h3>{{ prev }}%</h3>
+            <span>{{ durationPrevLabel }}</span>
+          </div>
+          <div
+            *ngIf="goal >= 0 && enableGoal && goalCount">
+            <h3>{{ goal * goalCount }}%</h3>
+            <span>Goal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -219,7 +219,22 @@ const MENU_DATA: MenuNode[] = [
       // );
     },
   },
-  // (hasPrimeClinics == 'yes' && user_type == 2) || (hasPrimeClinics == 'yes' && permisions.indexOf('kpireport') >= 0) || user_type == 7
+  {
+    title: 'Practice Insights',
+    path: '/newapp/practice-insights',
+    icon: faFile,
+    validatorFn: ({
+      permissions,
+      userType,
+      hasPrimeClinics,
+    }: MenuValidatorParams) => {
+      return (
+        (userType == 2 && hasPrimeClinics == 'yes') ||
+        (permissions?.indexOf('practiceinsights') >= 0 && hasPrimeClinics == 'yes') ||
+        userType == 7
+      ) && environment.apiUrl.includes('test');
+    },
+  },
   {
     title: 'Prime KPI Report',
     path: 'kpi-report',

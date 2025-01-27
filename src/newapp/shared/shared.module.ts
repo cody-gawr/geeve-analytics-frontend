@@ -22,6 +22,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { CustomTooltipComponent, CustomTooltipDirective } from './directives/custom-tooltip.directive';
 import { SelectMultiSelectComponent } from './components/search-multi-select/search-multi-select.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { AppChartComponent } from './components/app-chart/app-chart.component';
 
 const modules = [
   AngularMaterialModule,
@@ -47,7 +48,8 @@ const components = [
   TimeMaskDirective,
   TooltipDirective,
   TooltipContainerDirective,
-  SelectMultiSelectComponent
+  SelectMultiSelectComponent,
+  AppChartComponent,
 ];
 
 @NgModule({

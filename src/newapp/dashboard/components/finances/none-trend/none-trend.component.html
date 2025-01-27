@@ -27,23 +27,6 @@
       [isFullMonths]="isFullMonthsDateRange$ | async"
       [isConnectedWith]="isConnectedWith$ | async">
     </stats-card>
-    <!-- <ng-template #collectionStatsCard>
-      <stats-card
-        class="stats-card-finance"
-        label="Production Per Visit"
-        [value]="'$' + (productionPerVisit$ | async | number: '1.0-0')"
-        [toolTip]="getChartTip(32) | async"
-        iconColor="#737eef"
-        [isLoading]="isLoadingProductionPerVisit$ | async">
-      </stats-card>
-      <stats-card
-        class="stats-card-finance"
-        label="Collection"
-        [value]="'$' + (collectionVal$ | async | number: '1.0-0')"
-        [toolTip]="getChartTip(33) | async"
-        [isLoading]="isLoadingCollectionVal$ | async">
-      </stats-card>
-    </ng-template> -->
   </div>
   <div class="chart-list">
     <finance-expense-chart
@@ -52,14 +35,14 @@
       [isFullMonths]="isFullMonthsDateRange$ | async">
     </finance-expense-chart>
     <prod-per-clinic-chart
-      class="prod-per-clinic-chart"
+      class="chart-33"
       [toolTip]="toolTipFnProductionPerVisit$ | async"></prod-per-clinic-chart>
     <prod-per-visit-chart
-      class="prod-per-visit-chart"
+      class="chart-50"
       [toolTip]="getChartTip(32) | async"></prod-per-visit-chart>
     <total-discount-chart
       [toolTip]="getChartTip(34) | async"
-      class="total-discount-chart"></total-discount-chart>
+      class="chart-50"></total-discount-chart>
     <prod-collection-chart
       [toolTip]="getChartTip(33) | async"
       class="prod-collection-chart"></prod-collection-chart>

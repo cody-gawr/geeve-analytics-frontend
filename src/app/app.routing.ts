@@ -180,6 +180,14 @@ export const AppRoutes: Routes = [
             m => m.CampaignsModule
           ),
         canActivate: [AuthGuard],
+      },
+      {
+        path: 'practice-insights',
+        loadChildren: () =>
+          import('../newapp/practice-insights/practice-insights.module').then(
+            m => m.PracticeInsightModule
+          ),
+        canActivate: [AuthGuard],
       }
     ],
   },

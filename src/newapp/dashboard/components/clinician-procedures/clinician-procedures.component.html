@@ -7,20 +7,20 @@
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
   <cp-procedure-analysis-chart
     [toolTip]="cpPredictorAnalysisTip$ | async"
-    class="cp-chart"></cp-procedure-analysis-chart>
+    class="chart-50"></cp-procedure-analysis-chart>
   <cp-rev-per-procedure-chart
     *ngIf="!(isDentistMode$ | async) || !(isTrend$ | async)"
     [toolTip]="getChartTip(13) | async"
-    class="cp-chart"></cp-rev-per-procedure-chart>
+    class="chart-50"></cp-rev-per-procedure-chart>
   <cp-predictor-ratio-chart
     [toolTip]="cpPredictorRatioTip$ | async"
-    class="cp-chart"></cp-predictor-ratio-chart>
+    class="chart-50"></cp-predictor-ratio-chart>
   <cp-clinician-referrals-chart
     [toolTip]="getChartTip(14) | async"
     [ngClass]="
       !(isDentistMode$ | async) || !(isTrend$ | async)
-        ? 'cp-chart'
+        ? 'chart-50'
         : 'cp-chart-1'
     "
-    class="cp-chart"></cp-clinician-referrals-chart>
+    class="chart-50"></cp-clinician-referrals-chart>
 </div>

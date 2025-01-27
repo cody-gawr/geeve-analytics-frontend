@@ -58,7 +58,7 @@
       user_type == 7) &&
     (apiUrl.includes('test') || userId === 1)
   ">
-  <a class="" appAccordionToggle [routerLink]="['/newapp/campaigns']">
+  <a appAccordionToggle [routerLink]="['/newapp/campaigns']">
     <i class="fas fa-bullhorn"></i>
     <span>Campaigns</span>    
     <span class="badge badge-new badge-pill">
@@ -229,7 +229,21 @@
       <span fxFlex></span>
     </a>
   </mat-list-item>
-
+  <mat-list-item
+    appAccordionLink
+    routerLinkActive="selected"
+    group="string"
+    *ngIf="
+      ((hasPrimeClinics == 'yes' && user_type == 2) ||
+      (hasPrimeClinics == 'yes' && permisions.indexOf('practiceinsights') >= 0) ||
+      user_type == 7) && apiUrl.includes('test')
+    ">
+    <a appAccordionToggle [routerLink]="['/newapp/practice-insights']">
+      <i class="fas fa-file"></i>
+      <span>Practice Insights</span>
+      <span fxFlex></span>
+    </a>
+  </mat-list-item>
   <mat-list-item
     appAccordionLink
     routerLinkActive="selected"
