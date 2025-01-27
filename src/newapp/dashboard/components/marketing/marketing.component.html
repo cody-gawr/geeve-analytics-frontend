@@ -10,6 +10,7 @@
     [toolTip]="getChartTip(24) | async"
     class="marketing-chart-1"></revenue-by-referral-chart>
   <mk-prod-by-postcode-chart
+    [toolTip]="postCodeChartTip$ | async"
     class="marketing-chart-1"
   ></mk-prod-by-postcode-chart>
   <num-new-patients-chart

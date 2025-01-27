@@ -104,7 +104,6 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
           this.datasets = chartName === 'Production By Post Code'? postCodeData.datasets: ageData.datasets;
           this.labels = chartName === 'Production By Post Code'? postCodeData.labels: ageData.labels;
         }
-        console.log(this.datasets);
       });
   }
 

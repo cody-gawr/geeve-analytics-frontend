@@ -206,4 +206,19 @@ export class MarketingComponent implements OnInit, OnDestroy {
       })
     );
   }
+
+  postCodeChartTip$ = combineLatest([
+    this.dashbordFacade.chartTips$,
+    this.marketingFacade.prodByPostCodeChartName$,
+  ]).pipe(
+    takeUntil(this.destroy$),
+    map(([tips, chartName]) => {
+      if (chartName === 'Production By Post Code') {
+        return tips && tips[100];
+      }else if (chartName === 'Production By Age') {
+        return tips && tips[101];
+      }
+      return '';
+    })
+  );
 }
