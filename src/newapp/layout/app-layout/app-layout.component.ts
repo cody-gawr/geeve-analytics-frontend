@@ -33,7 +33,10 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
       .subscribe(event => {
         const { url } = <NavigationEnd>event;
         this.activatedUrl = url.split('?')[0];
-        if(this.activatedUrl.includes('campaigns') || this.activatedUrl.includes('unsubscribed')) {
+        if(
+          this.activatedUrl.includes('campaigns') || 
+          this.activatedUrl.includes('unsubscribed') || 
+          this.activatedUrl.includes('practice-insights')) {
           layoutFacade.setHideDatePicker(true);
         }else{
           layoutFacade.setHideDatePicker(false);
