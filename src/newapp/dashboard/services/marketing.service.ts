@@ -35,7 +35,7 @@ export class MarketingService {
           clinic_id: params.clinicId,
           ...(params.mode ? {mode: params.mode}: {}),
           ...(params.startDate ? {start_date: params.startDate}: {}),
-          ...(params.endDate ? {start_date: params.endDate}: {}),
+          ...(params.endDate ? {end_date: params.endDate}: {}),
           ...(params.duration ? {duration: params.duration}: {}),
           wh: params.queryWhEnabled,
         },
