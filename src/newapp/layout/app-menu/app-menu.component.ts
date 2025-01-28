@@ -229,8 +229,8 @@ const MENU_DATA: MenuNode[] = [
       hasPrimeClinics,
     }: MenuValidatorParams) => {
       return (
-        (userType == 2 && hasPrimeClinics == 'yes') ||
-        (permissions?.indexOf('practiceinsights') >= 0 && hasPrimeClinics == 'yes') ||
+        (userType == 2) ||
+        (permissions?.indexOf('practiceinsights') >= 0) ||
         userType == 7
       ) && !environment.apiUrl.includes('//api.jeeve.com.au');
     },

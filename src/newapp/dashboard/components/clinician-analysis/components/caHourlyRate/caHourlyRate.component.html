@@ -59,12 +59,16 @@
           <thead>
             <tr>
               <th>Name</th>
+              <th>{{chartName$ | async}}</th>
+              <th>Hours</th>
               <th>Hourly Rate</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let protbl of tableData">
               <td>{{ protbl.label }}</td>
+              <td>${{ formatNumber(protbl.v1) }}</td>
+              <td>{{ formatNumber(protbl.v2) }}</td>
               <td>{{ protbl.value | currency: 'USD' : 'symbol' : '1.0-0' }}</td>
             </tr>
           </tbody>

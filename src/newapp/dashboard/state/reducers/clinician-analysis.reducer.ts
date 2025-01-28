@@ -1027,21 +1027,18 @@ export const selectCaHourlyRateChartData = createSelector(
         data = data.slice(0, 20);
       }
       const tableData = [];
-      data.forEach((item: CaHourlyRateItem | CaCollectionHourlyRateItem, i) => {
+      data.forEach((item: any, i) => {
         chartData.push(Math.round(<number>item.hourlyRate));
 
         const pName =
           (item.providerName ?? '') +
           (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
         chartLabels.push(pName);
-        // if (item.providerName != null && item.providerName != 'Anonymous') {
-        // } else {
-        //   chartLabels.push(pName);
-        // }
-
         tableData.push({
           label: pName,
           value: chartData[i],
+          v1: prodChartName === 'Production'? item.production: (prodChartName === 'Collection'?item.collection:item.collectionMinusExp),
+          v2: item.hours
         });
       });
 

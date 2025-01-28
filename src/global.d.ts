@@ -229,6 +229,7 @@ declare global {
     clinicName: string;
     day: unknown;
     month: unknown;
+    hours: string | number;
     production: string | number;
     providerId: string | number;
     providerName: string;
