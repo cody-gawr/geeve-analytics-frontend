@@ -8,6 +8,8 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 export class PracticeInsightOverduesComponent implements OnInit, OnDestroy {
     toolTip = 'Customer Lifetime Value';
     chartTitle = 'Customer Lifetime Value';
+    durationCurrLabel = 'Current';
+    noDataAlertMessage = 'Coming Soon';
     ngOnInit(): void {
         
     }

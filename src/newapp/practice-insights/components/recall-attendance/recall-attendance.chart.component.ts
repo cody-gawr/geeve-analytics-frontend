@@ -13,7 +13,7 @@ export class PracticeInsightRecallAttendanceComponent implements OnInit, OnDestr
     activeTab = '6 Months';
     chartType = 'arch';
     toolTip = 'Recall Attendance';
-    noDataAlertMessage = 'You have no data for Recall Attendance!';
+    noDataAlertMessage = 'Coming Soon';
     durationCurrLabel = 'Current';
     date = new FormControl(moment());
 
