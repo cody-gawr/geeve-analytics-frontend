@@ -28,7 +28,7 @@
             *ngFor="let tab of chartTabs"
             (click)="switchActiveTab && switchActiveTab(tab)"
             [ngClass]="{ active: tab === activeTab }">
-            {{ activeTab }}
+            {{ tab }}
           </button>
         </div>
 
