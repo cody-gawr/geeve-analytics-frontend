@@ -7,6 +7,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 })
 export class PracticeInsightAttritionRateComponent implements OnInit, OnDestroy {
     chartTitle = 'Attrition Rate';
+    toolTip = 'Attrition Rate';
     durationCurrLabel = 'Current';
     noDataAlertMessage = 'Coming Soon';
     ngOnInit(): void {
