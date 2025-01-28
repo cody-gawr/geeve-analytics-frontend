@@ -236,7 +236,7 @@
     *ngIf="
       ((hasPrimeClinics == 'yes' && user_type == 2) ||
       (hasPrimeClinics == 'yes' && permisions.indexOf('practiceinsights') >= 0) ||
-      user_type == 7) && apiUrl.includes('test')
+      user_type == 7) && !apiUrl.includes('//api.jeeve.com.au')
     ">
     <a appAccordionToggle [routerLink]="['/newapp/practice-insights']">
       <i class="fas fa-file"></i>

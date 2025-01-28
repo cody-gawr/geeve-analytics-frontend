@@ -232,7 +232,7 @@ const MENU_DATA: MenuNode[] = [
         (userType == 2 && hasPrimeClinics == 'yes') ||
         (permissions?.indexOf('practiceinsights') >= 0 && hasPrimeClinics == 'yes') ||
         userType == 7
-      ) && environment.apiUrl.includes('test');
+      ) && !environment.apiUrl.includes('//api.jeeve.com.au');
     },
   },
   {
