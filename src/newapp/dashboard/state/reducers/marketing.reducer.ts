@@ -1816,7 +1816,6 @@ export const selectProdByPostCodeTrendChartData = createSelector(
     const chartLabels = d.map(({ key }) => key);
 
     const datasets =  _(d).map(({values, key}) => {
-        chartLabels.push(key);
         const valuesInDur = uniquePostCodes.map((r) => ({
           postcode: r,
           productions: _.round(
