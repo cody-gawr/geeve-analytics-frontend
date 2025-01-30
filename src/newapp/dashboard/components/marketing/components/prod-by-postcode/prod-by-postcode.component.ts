@@ -283,14 +283,14 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
         callbacks: {
           label: function (tooltipItems) {
             if (tooltipItems.parsed.y > 0) {
-              return `${tooltipItems.dataset.label}: ${tooltipItems.formattedValue}`;
+              return `${tooltipItems.dataset.label}: $${tooltipItems.formattedValue}`;
             } else {
               return '';
             }
           },
           title: tooltipItems => {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
-            return `${tooltipItems[0].label}: ${this.numPipe.transform(
+            return `${tooltipItems[0].label}: $${this.numPipe.transform(
               sumV
             )}`;
           },

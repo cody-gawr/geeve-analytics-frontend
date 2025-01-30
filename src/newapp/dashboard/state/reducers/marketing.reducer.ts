@@ -1863,41 +1863,23 @@ export const selectMkProdByAgeChartData = createSelector(
       'Unspecified',
       'Multi-Age',
     ];
-    const chartData = [], chartLabels = [];
     
-    uniqueAges.forEach(age => {
-      chartData.push(_.sumBy(data.data, (item: ProdByAge) => Number(item[`${age}`] || 0)));
-      chartLabels.push(age);
-    });
+    // Calculate sums and create an array of objects with age and sum
+    const ageSums = _.map(uniqueAges, age => ({
+      age,
+      sum: _.sumBy(data.data, (item: ProdByAge) => Number(item[`${age}`] || 0)),
+    }));
+    
+    // Sort the array by sum in descending order
+    const sortedAgeSums = _.orderBy(ageSums, 'sum', 'desc');
+    
+    // Extract chartData and chartLabels from the sorted array
+    const chartData = _.map(sortedAgeSums, 'sum');
+    const chartLabels = _.map(sortedAgeSums, 'age');
   
     const chartDatasets = [
       {
         data: [],
-        // label: 'Total Production By Age',
-        // shadowOffsetX: 3,
-        // shadowOffsetY: 3,
-        // shadowBlur: 5,
-        // shadowColor: 'rgba(0, 0, 0, 0.5)',
-        // backgroundColor: [
-        //   '#119682',
-        //   '#eeeef8',
-        //   '#119682',
-        //   '#eeeef8',
-        //   '#119682',
-        //   '#eeeef8',
-        //   '#119682',
-        //   '#eeeef8',
-        //   '#119682',
-        //   '#eeeef8',
-        // ],
-        // pointBevelWidth: 2,
-        // pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-        // pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-        // pointShadowOffsetX: 3,
-        // pointShadowOffsetY: 3,
-        // pointShadowBlur: 10,
-        // pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-        // backgroundOverlayMode: 'multiply',
       },
     ];
     chartDatasets[0]['data'] = chartData;
