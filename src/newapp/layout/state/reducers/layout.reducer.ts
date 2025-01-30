@@ -1,7 +1,7 @@
 import moment, { Moment, isMoment } from 'moment';
 import { createFeature, createReducer, on, createSelector } from '@ngrx/store';
 import { layoutPageActions } from '../actions';
-import { getTodayMoment } from '@/newapp/shared/utils';
+import { getTodayMoment, getUnitsInDurationRange } from '@/newapp/shared/utils';
 import { DateRangeMenus } from '@/newapp/shared/components/date-range-menu/date-range-menu.component';
 import { selectIsClinicianUser } from '@/newapp/auth/state/reducers/auth.reducer';
 
@@ -125,6 +125,14 @@ export const {
   selectHideClinicSelectionDropdown,
   selectPaths
 } = layoutFeature;
+
+export const selectComputedDurationUnits = createSelector(
+  selectTrend,
+  selectDateRange,
+  (trend, {start, end}) => {
+    return getUnitsInDurationRange(trend, start, end);
+  }
+);
 
 export const selectCompareEnabled = createSelector(
   selectCompare,

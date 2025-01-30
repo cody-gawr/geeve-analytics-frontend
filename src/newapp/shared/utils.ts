@@ -6,7 +6,7 @@ import {
   TooltipItem,
   TooltipModel,
 } from 'chart.js';
-import moment from 'moment-timezone';
+import moment, { Moment } from 'moment-timezone';
 import {
   LineHoverOptions,
   LineOptions,
@@ -18,6 +18,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { COLORS } from '../constants';
 import { Clinic } from '../models/clinic';
 import { DecimalPipe } from '@angular/common';
+import { DEFAULT_TIMEZONE } from './constants';
+import _ from 'lodash';
 
 export function convertEndpointToDataKey(endpoint: string) {
   let key = endpoint.slice(2)
@@ -691,4 +693,54 @@ export class CsvUtil {
       document.body.removeChild(link);
     }
   }
+}
+
+export function getUnitsInDurationRange(trend: TREND_MODE, startDate?: Moment, endDate?: Moment) {
+  return trend === 'current' ? ((!startDate || !endDate)?getAllMonthsInYear():getMonthsBetweenDates(startDate, endDate)) : get10Years();
+}
+
+export function getAllMonthsInYear(clinicTimezone?: string): string[] {
+  return _.range(12, 0, -1).map((m) =>
+    getTimezoneToday(clinicTimezone)
+      .subtract(m - 1, 'month')
+      .format('YYYY-MM')
+  );
+}
+
+export function get10Years(clinicTimezone?: string): string[] {
+  return _.range(10, 0, -1).map((y) =>
+    getTimezoneToday(clinicTimezone)
+      .subtract(y - 1, 'year')
+      .format('YYYY')
+  );
+}
+
+export function getMonthsBetweenDates(startDate: moment.Moment | string, endDate: moment.Moment | string): string[] {
+  if(!moment.isMoment(startDate)) startDate = moment(startDate);
+  if(!moment.isMoment(endDate)) endDate = moment(endDate);
+
+  const months = [];
+  let currentDate = startDate.clone();
+
+  while (currentDate.isBefore(endDate) || currentDate.isSame(endDate)) {
+    months.push(currentDate.format('YYYY-MM'));
+    currentDate.add(1, 'month');
+  }
+
+  return months;
+}
+
+export function getTimezoneToday(
+  tz: string = DEFAULT_TIMEZONE,
+  dt: string = null,
+  format: string = null
+) {
+  if (dt) {
+    if (format) {
+      return moment.tz(dt, tz);
+    } else {
+      return moment.tz(dt, format, tz);
+    }
+  }
+  return moment().tz(tz);
 }

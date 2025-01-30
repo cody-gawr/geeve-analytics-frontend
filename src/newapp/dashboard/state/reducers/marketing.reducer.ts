@@ -1,4 +1,4 @@
-import { createFeature, createReducer, createSelector, on, select } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import _ from 'lodash';
 import { JeeveError } from '@/newapp/models';
 import { MarketingApiActions, MarketingPageActions } from '../actions';
@@ -30,9 +30,9 @@ import {
   selectIsMultiClinicsSelected,
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
-import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
+import { selectComputedDurationUnits, selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import moment from 'moment';
-import { ChartDataset, Colors } from 'chart.js';
+import { ChartDataset } from 'chart.js';
 import { COLORS } from '@/newapp/constants';
 import { convertEndpointToDataKey, getSubValForGoal } from '@/newapp/shared/utils';
 
@@ -1780,9 +1780,11 @@ export const selectMkProdByPostCodeChartData = createSelector(
 export const selectProdByPostCodeTrendChartData = createSelector(
   selectProdByPostCodeTrendData,
   selectTrend,
+  selectComputedDurationUnits,
   (
     trendChartData,
-    trendMode
+    trendMode,
+    yearsOrMonths
   ): { datasets: ChartDataset[]; labels: string[] } => {
     if (trendChartData == null) {
       return {
@@ -1791,18 +1793,29 @@ export const selectProdByPostCodeTrendChartData = createSelector(
       };
     }
     let i = 0;
-    const chartLabels = [];
     const uniquePostCodes = _.uniqBy(
       trendChartData.data,
       'postcode'
     ).map((c) => c.postcode);
-    const datasets = _.chain(trendChartData.data)
+    const c = _.chain(trendChartData.data)
       .groupBy((item) => {
         const date = moment();
         date.set({ year: Number(item.year), month: Number(item.month) });
         return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
-      })
-      .map((values: ProdByPostCode[], key: string) => {
+      }).map((values: ProdByPostCode[], key: string) => ({values, key}))
+      .orderBy('key', 'desc').take(10).reverse();
+
+    const d = yearsOrMonths.map(
+        (ym) =>
+          c.value().find((i) => i.key == ym) || {
+            key: ym,
+            values: []
+          }
+    );
+
+    const chartLabels = d.map(({ key }) => key);
+
+    const datasets =  _(d).map(({values, key}) => {
         chartLabels.push(key);
         const valuesInDur = uniquePostCodes.map((r) => ({
           postcode: r,
@@ -1893,9 +1906,11 @@ export const selectMkProdByAgeChartData = createSelector(
 export const selectProdByAgeTrendChartData = createSelector(
   selectProdByAgeTrendData,
   selectTrend,
+  selectComputedDurationUnits,
   (
     trendChartData,
-    trendMode
+    trendMode,
+    yearsOrMonths
   ): { datasets: ChartDataset[]; labels: string[] } => {
     if (trendChartData == null) {
       return {
@@ -1904,7 +1919,6 @@ export const selectProdByAgeTrendChartData = createSelector(
       };
     }
     let i = 0;
-    const chartLabels = [];
     const uniqueAges = [
       'Adolescents',
       'Adults',
@@ -1914,18 +1928,25 @@ export const selectProdByAgeTrendChartData = createSelector(
       'Seniors',
       'Unspecified'
     ];
-    const datasets = _.chain(trendChartData.data)
+    const c = _.chain(trendChartData.data)
       .groupBy((item) => {
         const date = moment();
         date.set({ year: Number(item.year), month: Number(item.month) });
         return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
-      })
-      .map((values: ProdByAge[], key: string) => {
-        chartLabels.push(
-          trendMode === 'current'
-            ? moment(key).format('MMM YYYY')
-            : key
-        );
+      }).map((values: ProdByAge[], key: string) => ({values, key}))
+      .orderBy('key', 'desc').take(10).reverse();
+
+    const d = yearsOrMonths.map(
+        (ym) =>
+          c.value().find((i) => i.key == ym) || {
+            key: ym,
+            values: []
+          }
+    );
+
+    const chartLabels =  d.map(({ key }) => key);
+
+    const datasets = _(d).map(({values, key}) => {
         const valuesInDur = uniqueAges.map((r) => ({
           age: r,
           productions: _.round(

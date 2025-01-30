@@ -80,3 +80,5 @@ export const CAMPAIGN_FILTERS = {
   overdues: 'overdues',
   appointment: 'appointment'
 }
+
+export const DEFAULT_TIMEZONE = 'Australia/Brisbane';
