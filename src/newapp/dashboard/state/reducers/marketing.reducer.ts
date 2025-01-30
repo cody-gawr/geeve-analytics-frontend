@@ -1945,7 +1945,7 @@ export const selectProdByAgeTrendChartData = createSelector(
           productions: _.round(
             _.sumBy(
               values,
-              (item: ProdByAge) => Number(item[`prod_${r}`] || 0)
+              (item: ProdByAge) => Number(item[`${r}`] || 0)
             ),
             0
           ),
