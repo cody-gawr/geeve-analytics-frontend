@@ -1797,13 +1797,13 @@ export const selectProdByPostCodeTrendChartData = createSelector(
       'postcode'
     ).map((c) => c.postcode);
     const datasets = _.chain(trendChartData.data)
-      .groupBy(trendMode === 'current' ? 'year_month' : 'year')
+      .groupBy((item) => {
+        const date = moment();
+        date.set({ year: Number(item.year), month: Number(item.month) });
+        return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
+      })
       .map((values: ProdByPostCode[], key: string) => {
-        chartLabels.push(
-          trendMode === 'current'
-            ? moment(key).format('MMM YYYY')
-            : key
-        );
+        chartLabels.push(key);
         const valuesInDur = uniquePostCodes.map((r) => ({
           postcode: r,
           productions: _.round(

@@ -15,7 +15,6 @@ import { Moment } from 'moment';
 export class ClinicService {
   private apiUrl = environment.apiUrl;
   private commonUrl = environment.commonApiUrl;
-  private apiNodeURL = environment.apiNodeUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -150,7 +149,7 @@ export class ClinicService {
 
   public getCampaigns(clinicId: number): Observable<JeeveResponse<{ campaigns: ICampaign[] }>> {
     return this.http
-      .get<JeeveResponse<any>>(`${this.apiNodeURL}/clinics/campaigns`, {
+      .get<JeeveResponse<any>>(`${this.apiUrl}/clinics/campaigns`, {
         params: {clinic_id: clinicId},
         withCredentials: true,
       }).pipe(map(res => res));
@@ -158,7 +157,7 @@ export class ClinicService {
 
   public getCampaingDetails(clinicId: number, campaignId: number, start: Moment, end: Moment): Observable<JeeveResponse<any>> {
     return this.http
-      .get<JeeveResponse<any>>(`${this.apiNodeURL}/clinics/campaigns/data`, {
+      .get<JeeveResponse<any>>(`${this.apiUrl}/clinics/campaigns/data`, {
         withCredentials: true,
         params: {
           clinic_id: clinicId,
