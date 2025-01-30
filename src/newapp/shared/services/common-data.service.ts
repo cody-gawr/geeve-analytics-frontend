@@ -33,7 +33,7 @@ export class CommonDataService {
     }
 
     public getCampaignHealthFunds(clinicId: number) {
-        return this.http.get<JeeveResponse<string[]>>(`${environment.apiNodeUrl}/clinics/getHealthFund`, {
+        return this.http.get<JeeveResponse<string[]>>(`${environment.apiUrl}/clinics/getHealthFund`, {
             params: {clinic_id: clinicId},
             withCredentials: true,
         }).pipe(body => body);
