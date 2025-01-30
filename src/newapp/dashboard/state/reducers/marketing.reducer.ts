@@ -1924,16 +1924,20 @@ export const selectProdByAgeTrendChartData = createSelector(
     let i = 0;
     const chartLabels = [];
     const uniqueAges = [
-      'adult',
-      'child',
-      'elderly',
-      'multiage',
-      'senior',
-      'unspecified',
-      'young',
+      'Adolescents',
+      'Adults',
+      'Children',
+      'Middle-Aged',
+      'Multi-Age',
+      'Seniors',
+      'Unspecified'
     ];
     const datasets = _.chain(trendChartData.data)
-      .groupBy(trendMode === 'current' ? 'year_month' : 'year')
+      .groupBy((item) => {
+        const date = moment();
+        date.set({ year: Number(item.year), month: Number(item.month) });
+        return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
+      })
       .map((values: ProdByAge[], key: string) => {
         chartLabels.push(
           trendMode === 'current'
