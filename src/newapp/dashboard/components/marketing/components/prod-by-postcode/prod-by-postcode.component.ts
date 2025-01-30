@@ -269,7 +269,6 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      // colors: { enabled: true },
       legend: {
         display: true,
       },
@@ -313,11 +312,10 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      // colors: { enabled: true },
       tooltip: {
         callbacks: {
-          label: function (tooltipItem) {
-            return `${tooltipItem.label}: ${tooltipItem.formattedValue}`;
+          label: (tooltipItem) => {
+            return `${tooltipItem.label}: $${this.numPipe.transform(Math.round(tooltipItem.parsed))}`;
           },
           title: function () {
             return '';
