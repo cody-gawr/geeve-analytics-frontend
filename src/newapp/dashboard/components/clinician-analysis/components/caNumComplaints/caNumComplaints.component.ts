@@ -5,7 +5,6 @@ import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import {
   formatXLabel,
-  generatingLegend_2,
   generatingLegend_3,
 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';

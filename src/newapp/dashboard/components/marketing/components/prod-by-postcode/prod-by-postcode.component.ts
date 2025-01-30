@@ -56,6 +56,14 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
     }));
   }
 
+  get enableIcon$() {
+    return combineLatest([
+      this.chartName$,
+      this.isTrend$
+    ]).pipe(map(([chartN, isT]) => {
+      return chartN === 'Production By Post Code' && !isT
+    }));
+  }
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       map(v => typeof v == 'string')
@@ -254,17 +262,8 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
       y: {
         stacked: true,
         ticks: {
-          callback: function (label: number, index, labels) {
-            // when the floored value is the same as the value we have a whole number
-            if (Math.floor(label) === label) {
-              let currency =
-                label < 0
-                  ? label.toString().split('-').join('')
-                  : label.toString();
-              currency = currency.split(/(?=(?:...)*$)/).join(',');
-              return label; // `${label < 0 ? '- $' : '$'}${currency}`;
-            }
-            return '';
+          callback: (label: number, index, labels) => {
+            return '$' + this.numPipe.transform(label, '');
           },
         },
       },

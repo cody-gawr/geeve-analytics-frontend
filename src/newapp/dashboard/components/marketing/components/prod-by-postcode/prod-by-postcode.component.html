@@ -5,21 +5,13 @@
     color="primary"
     class="help-tip"
     fontIcon="help"></mat-icon>
-  <ng-template [ngIf]="showTopValues" [ngIfElse]="disabledIconBtn">
-    <mat-icon
-      matTooltipPosition="below"
-      color="primary"
-      class="table-info-icon"
-      (click)="toggleShowTopValues()"
-      fontIcon="troubleshoot"></mat-icon>
-  </ng-template>
-  <ng-template #disabledIconBtn>
-    <mat-icon
-      matTooltipPosition="below"
-      class="table-info-icon"
-      (click)="toggleShowTopValues()"
-      fontIcon="troubleshoot"></mat-icon>
-  </ng-template>
+  <mat-icon
+    *ngIf="enableIcon$ | async"
+    matTooltipPosition="below"
+    color="primary"
+    [ngClass]="'table-info-icon' + (showTopValues?' active': '')"
+    (click)="toggleShowTopValues()"
+    fontIcon="troubleshoot"></mat-icon>
   <div class="chart-title">
     <span> {{chartName$ | async}}  </span>
   </div>
