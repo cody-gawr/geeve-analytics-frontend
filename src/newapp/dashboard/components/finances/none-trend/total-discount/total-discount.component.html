@@ -15,6 +15,7 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
+      <div></div>
       <div class="chart-gauge total-discount-gauge">
         <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
         <ng-template #chartElem>
