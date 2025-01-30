@@ -1855,18 +1855,18 @@ export const selectMkProdByAgeChartData = createSelector(
       };
     }
     const uniqueAges = [
-      'adult',
-      'child',
-      'elderly',
-      'multiage',
-      'senior',
-      'unspecified',
-      'young',
+      'Children',
+      'Adolescents',
+      'Adults',
+      'Middle-Aged',
+      'Seniors',
+      'Unspecified',
+      'Multi-Age',
     ];
     const chartData = [], chartLabels = [];
     
     uniqueAges.forEach(age => {
-      chartData.push(_.sumBy(data.data, (item: ProdByAge) => Number(item[`prod_${age}`] || 0)));
+      chartData.push(_.sumBy(data.data, (item: ProdByAge) => Number(item[`${age}`] || 0)));
       chartLabels.push(age);
     });
   

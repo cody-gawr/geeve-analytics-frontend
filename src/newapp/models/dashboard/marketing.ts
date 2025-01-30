@@ -24,13 +24,13 @@ export interface ProdByAge extends BaseSpResult {
   provider_id: string;
   provider_name: string;
   provider_type: string;
-  prod_child: string | number;
-  prod_young: string | number;
-  prod_adult: string | number;
-  prod_senior: string | number;
-  prod_elderly: string | number;
-  prod_unspecified: string | number;
-  prod_multiage: string | number;
+  Children: string | number;
+  Adolescents: string | number;
+  Adults: string | number;
+  "Middle-Aged": string | number;
+  Seniors: string | number;
+  Unspecified: string | number;
+  "Multi-Age": string | number;
 }
 
 export interface MkXeroOrMyobAccountsApiResponse {
