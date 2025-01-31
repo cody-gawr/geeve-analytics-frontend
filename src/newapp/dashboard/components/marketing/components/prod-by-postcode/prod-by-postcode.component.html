@@ -12,9 +12,9 @@
     [ngClass]="'table-info-icon' + (showTopValues?' active': '')"
     (click)="toggleShowTopValues()"
     fontIcon="troubleshoot"></mat-icon>
-  <div class="chart-title">
+  <div class="chart-title" style="padding: 10px 30px">
     <span> {{chartName$ | async}} </span>
-    <img width="25px" height="25px" src="assets/jeeve/images/new-release.png" />
+    <img width="35px" height="35px" src="assets/jeeve/images/new-release.png" />
     <!-- <mat-icon fontIcon="fiber_new" style="color:#ffaf33"></mat-icon> -->
   </div>
   <div class="chart-content">
