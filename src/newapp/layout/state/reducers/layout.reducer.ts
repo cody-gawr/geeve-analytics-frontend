@@ -130,7 +130,7 @@ export const selectComputedDurationUnits = createSelector(
   selectTrend,
   selectDateRange,
   (trend, {start, end}) => {
-    return getUnitsInDurationRange(trend, start, end, trend==='current'?'MMM YYYY': 'YYYY');
+    return getUnitsInDurationRange(trend, start, end);
   }
 );
 

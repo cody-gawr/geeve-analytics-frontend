@@ -695,8 +695,15 @@ export class CsvUtil {
   }
 }
 
-export function getUnitsInDurationRange(trend: TREND_MODE, startDate?: Moment, endDate?: Moment, format?: string) {
-  return trend === 'current' ? ((!startDate || !endDate)?getAllMonthsInYear(format):getMonthsBetweenDates(startDate, endDate, format)) : get10Years(format);
+export function getUnitsInDurationRange(trend: TREND_MODE, startDate?: Moment, endDate?: Moment) {
+  if(trend === 'off' && startDate && endDate){
+    return  getMonthsBetweenDates(startDate, endDate, 'YYYY-MM-DD');
+  }
+  if(trend === 'current'){
+    return getAllMonthsInYear('MMM YYYY');
+  }else{
+    return get10Years('YYYY');
+  }
 }
 
 export function getAllMonthsInYear(format?: string, clinicTimezone?: string): string[] {
