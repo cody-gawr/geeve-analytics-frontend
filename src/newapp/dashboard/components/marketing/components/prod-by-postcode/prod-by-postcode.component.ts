@@ -8,6 +8,7 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { externalTooltipHandler, formatXTooltipLabel } from '@/newapp/shared/utils';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
+import { PROD_AGE_LIST } from '@/newapp/shared/constants';
 
 @Component({
   selector: 'mk-prod-by-postcode-chart',
@@ -303,6 +304,7 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
     labels: {
       usePointStyle: true,
       padding: 20,
+      sort: (a, b) => Object.values(PROD_AGE_LIST).indexOf(a.text) - Object.values(PROD_AGE_LIST).indexOf(b.text)
     },
     onClick: function (e) {
       e.native.stopPropagation();

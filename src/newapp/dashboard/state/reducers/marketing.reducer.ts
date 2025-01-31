@@ -29,7 +29,7 @@ import {
   selectCurrentClinicId,
   selectIsMultiClinicsSelected,
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
-import { DoughnutChartColors } from '@/newapp/shared/constants';
+import { DoughnutChartColors, PROD_AGE_LIST } from '@/newapp/shared/constants';
 import { selectComputedDurationUnits, selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import moment from 'moment';
 import { ChartDataset } from 'chart.js';
@@ -1864,21 +1864,11 @@ export const selectMkProdByAgeChartData = createSelector(
         labels: [],
       };
     }
-    const uniqueAges = {
-      'Children': 'Children (0-12)',
-      'Adolescents': 'Teens & Young Adults (13-24)',
-      'Adults': 'Adults (25-44)',
-      'Middle-Aged': 'Middle-Aged (45-64)',
-      'Seniors': 'Seniors (65+)',
-      'Unspecified': 'Unspecified',
-      'Multi-Age': 'Multi-Age',
-    };
-    
     // Calculate sums and create an array of objects with age and sum
-    const ageSums = _.map(Object.keys(uniqueAges), age => ({
-      age: uniqueAges[age],
+    const ageSums = _.map(Object.keys(PROD_AGE_LIST), age => ({
+      age: PROD_AGE_LIST[age],
       sum: _.sumBy(data.data, (item: ProdByAge) => Number(item[`${age}`] || 0)),
-    }));
+    })).filter(it => it.sum > 0);
     
     // Sort the array by sum in descending order
     const sortedAgeSums = _.orderBy(ageSums, 'sum', 'desc');
@@ -1916,15 +1906,6 @@ export const selectProdByAgeTrendChartData = createSelector(
       };
     }
     let i = 0;
-    const uniqueAges = {
-      'Children': 'Children (0-12)',
-      'Adolescents': 'Teens & Young Adults (13-24)',
-      'Adults': 'Adults (25-44)',
-      'Middle-Aged': 'Middle-Aged (45-64)',
-      'Seniors': 'Seniors (65+)',
-      'Unspecified': 'Unspecified',
-      'Multi-Age': 'Multi-Age',
-    };
     
     const temp = _.chain(trendChartData.data)
       .groupBy((item) => {
@@ -1944,8 +1925,8 @@ export const selectProdByAgeTrendChartData = createSelector(
     const chartLabels =  d.map(({ key }) => key);
 
     const datasets = _(d).map(({values, key}) => {
-        const valuesInDur = Object.keys(uniqueAges).map((r) => ({
-          age: uniqueAges[r],
+        const valuesInDur = Object.keys(PROD_AGE_LIST).map((r) => ({
+          age: PROD_AGE_LIST[r],
           productions: _.round(
             _.sumBy(
               values,
