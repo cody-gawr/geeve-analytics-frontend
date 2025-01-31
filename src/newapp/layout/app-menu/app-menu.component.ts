@@ -180,6 +180,8 @@ const MENU_DATA: MenuNode[] = [
       {
         title: 'Marketing',
         path: '/newapp/dashboard/marketing',
+        badgeText: 'Updated',
+        badgeStyle: 'yellow-bg',
         validatorFn: ({
           permissions,
           userType,
@@ -196,6 +198,8 @@ const MENU_DATA: MenuNode[] = [
       {
         title: 'Finances',
         path: '/newapp/dashboard/finances',
+        badgeText: 'Updated',
+        badgeStyle: 'yellow-bg',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
           return (
             permissions?.indexOf('dashboard5') >= 0 ||

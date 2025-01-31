@@ -695,27 +695,27 @@ export class CsvUtil {
   }
 }
 
-export function getUnitsInDurationRange(trend: TREND_MODE, startDate?: Moment, endDate?: Moment) {
-  return trend === 'current' ? ((!startDate || !endDate)?getAllMonthsInYear():getMonthsBetweenDates(startDate, endDate)) : get10Years();
+export function getUnitsInDurationRange(trend: TREND_MODE, startDate?: Moment, endDate?: Moment, format?: string) {
+  return trend === 'current' ? ((!startDate || !endDate)?getAllMonthsInYear(format):getMonthsBetweenDates(startDate, endDate, format)) : get10Years(format);
 }
 
-export function getAllMonthsInYear(clinicTimezone?: string): string[] {
+export function getAllMonthsInYear(format?: string, clinicTimezone?: string): string[] {
   return _.range(12, 0, -1).map((m) =>
     getTimezoneToday(clinicTimezone)
       .subtract(m - 1, 'month')
-      .format('YYYY-MM')
+      .format(format || 'YYYY-MM')
   );
 }
 
-export function get10Years(clinicTimezone?: string): string[] {
+export function get10Years(format?: string, clinicTimezone?: string): string[] {
   return _.range(10, 0, -1).map((y) =>
     getTimezoneToday(clinicTimezone)
       .subtract(y - 1, 'year')
-      .format('YYYY')
+      .format(format || 'YYYY')
   );
 }
 
-export function getMonthsBetweenDates(startDate: moment.Moment | string, endDate: moment.Moment | string): string[] {
+export function getMonthsBetweenDates(startDate: moment.Moment | string, endDate: moment.Moment | string, format?: string): string[] {
   if(!moment.isMoment(startDate)) startDate = moment(startDate);
   if(!moment.isMoment(endDate)) endDate = moment(endDate);
 
@@ -723,7 +723,7 @@ export function getMonthsBetweenDates(startDate: moment.Moment | string, endDate
   let currentDate = startDate.clone();
 
   while (currentDate.isBefore(endDate) || currentDate.isSame(endDate)) {
-    months.push(currentDate.format('YYYY-MM'));
+    months.push(currentDate.format(format || 'YYYY-MM'));
     currentDate.add(1, 'month');
   }
 

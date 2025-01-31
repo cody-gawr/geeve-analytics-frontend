@@ -75,7 +75,7 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
   }
 
   get hasData() {
-    return this.labels.length > 0 && this.datasets?.length > 0 && _.sum(this.datasets[0].data) > 0;
+    return this.labels.length > 0 && this.datasets?.length > 0;
   }
 
   get legend$() {

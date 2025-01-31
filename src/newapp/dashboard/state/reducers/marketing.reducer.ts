@@ -1797,17 +1797,16 @@ export const selectProdByPostCodeTrendChartData = createSelector(
       trendChartData.data,
       'postcode'
     ).map((c) => c.postcode);
-    const c = _.chain(trendChartData.data)
+    const temp = _.chain(trendChartData.data)
       .groupBy((item) => {
         const date = moment();
         date.set({ year: Number(item.year), month: Number(item.month) });
         return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
-      }).map((values: ProdByPostCode[], key: string) => ({values, key}))
-      .orderBy('key', 'desc').take(10).reverse();
+      }).map((values: ProdByPostCode[], key: string) => ({values, key})).value();
 
     const d = yearsOrMonths.map(
         (ym) =>
-          c.value().find((i) => i.key == ym) || {
+          temp.find((i) => i.key == ym) || {
             key: ym,
             values: []
           }
@@ -1846,7 +1845,6 @@ export const selectProdByPostCodeTrendChartData = createSelector(
         };
       })
       .value();
-
     return {
       datasets,
       labels: chartLabels,
@@ -1866,19 +1864,19 @@ export const selectMkProdByAgeChartData = createSelector(
         labels: [],
       };
     }
-    const uniqueAges = [
-      'Children',
-      'Adolescents',
-      'Adults',
-      'Middle-Aged',
-      'Seniors',
-      'Unspecified',
-      'Multi-Age',
-    ];
+    const uniqueAges = {
+      'Children': 'Children (0-12)',
+      'Adolescents': 'Teens & Young Adults (13-24)',
+      'Adults': 'Adults (25-44)',
+      'Middle-Aged': 'Middle-Aged (45-64)',
+      'Seniors': 'Seniors (65+)',
+      'Unspecified': 'Unspecified',
+      'Multi-Age': 'Multi-Age',
+    };
     
     // Calculate sums and create an array of objects with age and sum
-    const ageSums = _.map(uniqueAges, age => ({
-      age,
+    const ageSums = _.map(Object.keys(uniqueAges), age => ({
+      age: uniqueAges[age],
       sum: _.sumBy(data.data, (item: ProdByAge) => Number(item[`${age}`] || 0)),
     }));
     
@@ -1918,26 +1916,26 @@ export const selectProdByAgeTrendChartData = createSelector(
       };
     }
     let i = 0;
-    const uniqueAges = [
-      'Adolescents',
-      'Adults',
-      'Children',
-      'Middle-Aged',
-      'Multi-Age',
-      'Seniors',
-      'Unspecified'
-    ];
-    const c = _.chain(trendChartData.data)
+    const uniqueAges = {
+      'Children': 'Children (0-12)',
+      'Adolescents': 'Teens & Young Adults (13-24)',
+      'Adults': 'Adults (25-44)',
+      'Middle-Aged': 'Middle-Aged (45-64)',
+      'Seniors': 'Seniors (65+)',
+      'Unspecified': 'Unspecified',
+      'Multi-Age': 'Multi-Age',
+    };
+    
+    const temp = _.chain(trendChartData.data)
       .groupBy((item) => {
         const date = moment();
         date.set({ year: Number(item.year), month: Number(item.month) });
         return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
-      }).map((values: ProdByAge[], key: string) => ({values, key}))
-      .orderBy('key', 'desc').take(10).reverse();
+      }).map((values: ProdByAge[], key: string) => ({values, key})).value();
 
     const d = yearsOrMonths.map(
         (ym) =>
-          c.value().find((i) => i.key == ym) || {
+          temp.find((i) => i.key == ym) || {
             key: ym,
             values: []
           }
@@ -1946,8 +1944,8 @@ export const selectProdByAgeTrendChartData = createSelector(
     const chartLabels =  d.map(({ key }) => key);
 
     const datasets = _(d).map(({values, key}) => {
-        const valuesInDur = uniqueAges.map((r) => ({
-          age: r,
+        const valuesInDur = Object.keys(uniqueAges).map((r) => ({
+          age: uniqueAges[r],
           productions: _.round(
             _.sumBy(
               values,
