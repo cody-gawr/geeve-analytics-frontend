@@ -25,6 +25,7 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
     'Production Per Visit',
     'Production Per Day',
   ];
+  chartName: FN_PROD_PER_VISIT_CHART_NAME = 'Production Per Visit';
 
   get chartName$() {
     return this.financeFacade.prodPerVisitChartName$;
@@ -118,7 +119,7 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
             );
 
             labelItems.push(
-              `Num Visits : ${new Intl.NumberFormat('en-US', {
+              `${this.chartName === 'Production Per Visit'?'Num Visits':'Num Days'} : ${new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
               }).format(extraData.numTotal)}`
@@ -158,6 +159,9 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
           this.labels.push(values.label);
         });
       });
+
+      this.chartName$
+      .pipe(takeUntil(this.destroy$)).subscribe(v => this.chartName = v);
   }
 
   ngOnDestroy(): void {

@@ -28,6 +28,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
     'Production Per Visit',
     'Production Per Day',
   ];
+  chartName: FN_PROD_PER_VISIT_CHART_NAME = 'Production Per Visit';
 
   get trendingIcon() {
     if (this.productionVisitVal >= this.productionVisitTrendVal) {
@@ -121,6 +122,9 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
         this.productionVisitVal = data.productionVisitVal;
         this.productionVisitTrendVal = data.productionVisitTrendVal;
       });
+
+      this.chartName$
+      .pipe(takeUntil(this.destroy$)).subscribe(v => this.chartName = v);
   }
 
   ngOnDestroy(): void {
@@ -128,17 +132,13 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   }
 
   public barChartOptions: ChartOptions<'bar'> = {
-    // scaleShowVerticalLines: false,
-    // cornerRadius: 60,
     hover: { mode: null },
-    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine',
     },
     responsive: true,
     maintainAspectRatio: false,
-    // scaleStartValue: 0,
     scales: {
       x: {
         grid: {
@@ -167,7 +167,6 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
       },
     },
     plugins: {
-      // colors: { enabled: true },
       tooltip: {
         mode: 'x',
         displayColors(ctx, options) {
@@ -182,7 +181,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
             const extraData = this.chartData[tooltipItem.dataIndex];
             const labelItems = [];
             labelItems.push(
-              `Prod Per Visit : ${new Intl.NumberFormat('en-US', {
+              `Prod Per ${this.chartName === 'Production Per Visit'?'Visit':'Day'} : ${new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'USD',
                 minimumFractionDigits: 0,
@@ -200,7 +199,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
             );
 
             labelItems.push(
-              `Num Visits : ${new Intl.NumberFormat('en-US', {
+              `${this.chartName === 'Production Per Visit'?'Num Visits':'Num Days'} : ${new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
               }).format(parseFloat(<string>extraData.numTotal))}`
