@@ -5,13 +5,14 @@
     color="primary"
     class="help-tip"
     fontIcon="help"></mat-icon>
-  <div class="chart-title">
+  <div class="chart-title" style="padding: 10px 30px">
     <mat-icon
       *ngIf="(duration$ | async) != 'custom'"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"
       [matTooltip]="getTrendTip$ | async"></mat-icon>
     <span> {{chartName$ | async}} </span>
+    <img width="35px" height="35px" src="assets/jeeve/images/new-release.png" />
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">

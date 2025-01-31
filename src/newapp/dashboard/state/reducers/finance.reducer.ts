@@ -1439,7 +1439,7 @@ export const selectProdPerVisitChartData = createSelector(
   (val, trendVal, visitData, dayVal, dayTrendVal, dayData, chartName) => {
     let _val: number, _trendVal: number, chartData: any;
     const isPerDay = chartName === 'Production Per Day';
-    if(chartName === 'Production Per Day'){
+    if(isPerDay){
       _val = dayVal;
       _trendVal = dayTrendVal;
       chartData = dayData;

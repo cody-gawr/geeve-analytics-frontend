@@ -5,7 +5,10 @@
     color="primary"
     class="help-tip"
     fontIcon="help"></mat-icon>
-  <div class="chart-title">{{chartName$ | async}}</div>
+  <div class="chart-title" style="padding: 10px 30px">
+    <span>{{chartName$ | async}}</span>
+    <img width="35px" height="35px" src="assets/jeeve/images/new-release.png" />
+  </div>
   <div class="chart-content">
     <div class="chart-box prod-per-visit-trend-chart">
       <div class="chart-header">
