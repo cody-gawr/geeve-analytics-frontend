@@ -54,11 +54,11 @@
             [value]="colExpSelectShow$ | async"
             (selectionChange)="onChangeColExpSelectTab($event)"
             *ngIf="(chartName$ | async) === 'Collection-Exp'">
-            <mat-option value="collection_exp_all">Collection - All</mat-option>
+            <mat-option value="collection_exp_all">Collection-Exp - All</mat-option>
             <mat-option value="collection_exp_dentists"
-              >Collection - Dentists</mat-option
+              >Collection-Exp - Dentists</mat-option
             >
-            <mat-option value="collection_exp_oht">Collection - OHT</mat-option>
+            <mat-option value="collection_exp_oht">Collection-Exp - OHT</mat-option>
           </mat-select>
         </ng-template>
       </div>
