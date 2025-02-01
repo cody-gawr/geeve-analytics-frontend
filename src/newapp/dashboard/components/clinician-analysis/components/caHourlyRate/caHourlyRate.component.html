@@ -67,7 +67,7 @@
           <tbody>
             <tr *ngFor="let protbl of tableData">
               <td>{{ protbl.label }}</td>
-              <td>${{ formatNumber(protbl.v1) }}</td>
+              <td>${{ protbl.v1 | number: '1.0-0' }}</td>
               <td>{{ formatNumber(protbl.v2) }}</td>
               <td>{{ protbl.value | currency: 'USD' : 'symbol' : '1.0-0' }}</td>
             </tr>
