@@ -124,6 +124,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   public isTableViewEnabled = new BehaviorSubject<boolean>(false);
   public isTableViewEnabled$ = this.isTableViewEnabled.asObservable();
   public tableData = [];
+  public tabSelectionType = 'all';
 
   get isLegendVisible$() {
     return combineLatest([
@@ -386,16 +387,16 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     this.destroy.next();
   }
 
-  switchChartName(chartName) {
+  switchChartName(chartName, prevChartName) {
     switch (chartName) {
       case 'Production':
-        this.caFacade.setProdSelectTab('production_all');
+        this.caFacade.setProdSelectTab(<any>`production_${this.tabSelectionType}`);
         break;
       case 'Collection':
-        this.caFacade.setColSelectTab('collection_all');
+        this.caFacade.setColSelectTab(<any>`collection_${this.tabSelectionType}`);
         break;
       case 'Collection-Exp':
-        this.caFacade.setColExpSelectTab('collection_exp_all');
+        this.caFacade.setColExpSelectTab(<any>`collection_exp_${this.tabSelectionType}`);
         break;
     }
     this.caFacade.setProdChartName(chartName);
@@ -444,14 +445,20 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   onChangeProdSelectTab(event: MatSelectChange) {
+    const t = event.value.split('_');
+    this.tabSelectionType = t[t.length -1];
     this.caFacade.setProdSelectTab(event.value);
   }
 
   onChangeColSelectTab(event: MatSelectChange) {
+    const t = event.value.split('_');
+    this.tabSelectionType = t[t.length -1];
     this.caFacade.setColSelectTab(event.value);
   }
 
   onChangeColExpSelectTab(event: MatSelectChange) {
+    const t = event.value.split('_');
+    this.tabSelectionType = t[t.length -1];
     this.caFacade.setColExpSelectTab(event.value);
   }
 
