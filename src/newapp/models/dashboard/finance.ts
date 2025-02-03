@@ -286,15 +286,3 @@ export interface FnTotalCollectionItem {
   year: unknown | null;
   yearMonth: unknown | null;
 }
-
-export interface FnHourlyRateData {
-  data: CaHourlyRateItem[]
-  trend: number;
-  trendTa: number;
-}
-
-export interface FnHourlyRateTrendData {
-  data: CaHourlyRateItem[]
-  trend: number;
-  trendTa: number;
-}

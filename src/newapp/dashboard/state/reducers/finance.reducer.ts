@@ -14,8 +14,6 @@ import {
   FnProdByClinicianTrendItem,
   FnExpensesApiResponse,
   FnProductionPerDayItem,
-  FnHourlyRateData,
-  FnHourlyRateTrendData,
 } from '@/newapp/models/dashboard/finance';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import moment from 'moment';
@@ -23,10 +21,8 @@ import {
   selectCurrentClinicId,
   selectCurrentClinics,
   selectIsMultiClinicsSelected,
-  selectIsMultiSelection,
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
-import { convertEndpointToDataKey } from '@/newapp/shared/utils';
 import camelcaseKeys from 'camelcase-keys';
 
 export interface FinanceState {
@@ -1701,7 +1697,7 @@ export const selectHourlyRateChartData = createSelector(
     const chartLabels = [];
 
     if(trend === 'off'){
-      const datasets = [
+      const datasets: any = [
         {
           data: [],
           label: '',
@@ -1711,12 +1707,18 @@ export const selectHourlyRateChartData = createSelector(
       ];
   
       if(isMultiClinics){
-        data?.data.forEach((item: CaHourlyRateItem) => {
-          const v = <string>item.hourlyRate;
+        _(data?.data).groupBy('clinicName')
+        .map((values, name) => {
+          return {
+            values: values.map(v => Number(v.hourlyRate)),
+            label: name
+          }
+        }).value().
+        forEach(({values, label}, i) => {
+          chartLabels.push(label);
           datasets[0].data.push(
-            Math.round(parseFloat(v ?? '0'))
+            Math.round(_.sumBy(values))
           );
-          chartLabels.push(item.clinicName);
         });
       }
   
