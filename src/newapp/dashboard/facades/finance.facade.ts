@@ -56,16 +56,41 @@ import {
   selectProdPerVisitChartData,
   selectIsLoadingFnProdPerVisitOrDay,
   selectIsLoadingFnProdPerVisitOrDayTrend,
+  selectIsLoadingChartDesc,
+  selectHourlyRateChartData,
 } from '../state/reducers/finance.reducer';
-import { FnNetProfitParams } from '@/newapp/models/dashboard/finance';
+import { FnFinanceSpParams } from '@/newapp/models/dashboard/finance';
 import { FinancePageActions } from '../state/actions';
+import { ChartDescParams } from '@/newapp/models/dashboard';
 
 @Injectable()
 export class FinanceFacade {
   constructor(private store: Store<FinanceState>) {}
 
+  isLoadingChartDesc$ = (chartDesc: FinanceEndpoints) => {
+    return this.store.pipe(
+      select(selectIsLoadingChartDesc(chartDesc))
+    );
+  };
+
+  loadChartDescription(
+    chartDescription: FinanceEndpoints, 
+    params: ChartDescParams<FinanceEndpoints>
+  ) {
+    this.store.dispatch(
+      FinancePageActions.loadFnChartDescription({
+        chartDescription,
+        ...params
+      })
+    );
+  };
+
   public readonly errors$: Observable<JeeveError[]> = this.store.pipe(
     select(selectErrors)
+  );
+
+  public readonly hourlyRateChartData$ = this.store.pipe(
+    select(selectHourlyRateChartData)
   );
 
   public readonly productionVal$ = this.store.pipe(
@@ -265,7 +290,7 @@ export class FinanceFacade {
     this.store.dispatch(FinancePageActions.setErrors({ errors }));
   }
 
-  public loadFnTotalProduction(params: FnNetProfitParams) {
+  public loadFnTotalProduction(params: FnFinanceSpParams) {
     this.store.dispatch(FinancePageActions.loadFnTotalProduction(params));
   }
 
@@ -283,7 +308,7 @@ export class FinanceFacade {
     );
   }
 
-  public loadFnTotalCollection(params: FnNetProfitParams) {
+  public loadFnTotalCollection(params: FnFinanceSpParams) {
     this.store.dispatch(FinancePageActions.loadFnTotalCollection(params));
   }
 
@@ -301,7 +326,7 @@ export class FinanceFacade {
     );
   }
 
-  public loadFnNetProfit(params: FnNetProfitParams) {
+  public loadFnNetProfit(params: FnFinanceSpParams) {
     this.store.dispatch(FinancePageActions.loadFnNetProfit(params));
   }
 
@@ -321,7 +346,7 @@ export class FinanceFacade {
     );
   }
 
-  public loadFnNetProfitPercentage(params: FnNetProfitParams) {
+  public loadFnNetProfitPercentage(params: FnFinanceSpParams) {
     this.store.dispatch(FinancePageActions.loadFnNetProfitPercentage(params));
   }
 
@@ -341,7 +366,7 @@ export class FinanceFacade {
     );
   }
 
-  public loadFnExpenses(params: FnNetProfitParams) {
+  public loadFnExpenses(params: FnFinanceSpParams) {
     this.store.dispatch(FinancePageActions.loadFnExpenses(params));
   }
 
@@ -361,7 +386,7 @@ export class FinanceFacade {
     );
   }
 
-  public loadFnProductionByClinician(params: FnNetProfitParams) {
+  public loadFnProductionByClinician(params: FnFinanceSpParams) {
     this.store.dispatch(FinancePageActions.loadFnProductionByClinician(params));
   }
 
@@ -379,11 +404,11 @@ export class FinanceFacade {
     );
   }
 
-  public loadFnProductionPerVisit(params: FnNetProfitParams) {
+  public loadFnProductionPerVisit(params: FnFinanceSpParams) {
     this.store.dispatch(FinancePageActions.loadFnProductionPerVisit(params));
   }
 
-  public loadFnProductionPerDay(params: FnNetProfitParams) {
+  public loadFnProductionPerDay(params: FnFinanceSpParams) {
     this.store.dispatch(FinancePageActions.loadFnProductionPerDay(params));
   }
 
@@ -421,7 +446,7 @@ export class FinanceFacade {
     );
   }
 
-  public loadFnTotalDiscounts(params: FnNetProfitParams) {
+  public loadFnTotalDiscounts(params: FnFinanceSpParams) {
     this.store.dispatch(FinancePageActions.loadFnTotalDiscounts(params));
   }
 

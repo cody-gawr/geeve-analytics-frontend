@@ -1,5 +1,12 @@
 import { JeeveError } from '@/newapp/models';
+import { ChartDescParams } from '@/newapp/models/dashboard';
 import { createAction, props } from '@ngrx/store';
+
+export const loadFnChartDescription = createAction(
+  '[Fanance Page] Load Finance Chart Description',
+  props<ChartDescParams<FinanceEndpoints>>()
+);
+
 
 export const loadFnTotalProduction = createAction(
   '[Fanance Page] Load fnTotalProduction',

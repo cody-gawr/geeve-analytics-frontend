@@ -41,11 +41,11 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
   maxValue = 0;
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$;
+    return this.layoutFacade.durationCurrLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$;
+    return this.layoutFacade.durationPrevLabel$;
   }
 
   get isLoading$() {

@@ -12,7 +12,7 @@ import {
 import { FinanceFacade } from '../../facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
-import { FnNetProfitParams } from '@/newapp/models/dashboard/finance';
+import { FnFinanceSpParams } from '@/newapp/models/dashboard/finance';
 import moment from 'moment';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import _ from 'lodash';
@@ -97,7 +97,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
         this.financeFacade.setErrors([]);
         switch (trend) {
           case 'off':
-            const params: FnNetProfitParams = {
+            const params: FnFinanceSpParams = {
               clinicId: clinicId,
               startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
               endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
@@ -118,9 +118,21 @@ export class FinancesComponent implements OnInit, OnDestroy {
             this.financeFacade.loadFnProductionPerDay(params);
             this.financeFacade.loadFnTotalDiscounts(params);
             this.financeFacade.loadFnTotalCollection(params);
+            for(const endpoint of ['fnHourlyRate']){
+              this.financeFacade.loadChartDescription(<FinanceEndpoints>endpoint, <any>params);
+            }
             break;
           case 'current':
           case 'historic':
+            for(const endpoint of ['fnHourlyRateTrend']){
+              this.financeFacade.loadChartDescription(<FinanceEndpoints>endpoint, <any>{
+                chartDescription: endpoint,
+                clinicId,
+                mode: trend === 'current' ? 'c' : 'h',
+                connectedWith,
+                queryWhEnabled
+              });
+            }
             if (connectedWith && connectedWith != 'none') {
               this.financeFacade.loadFnExpensesTrend(
                 clinicId,

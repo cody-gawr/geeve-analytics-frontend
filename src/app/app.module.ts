@@ -68,9 +68,9 @@ import { SortDirective } from './directive/sort.directive';
 import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GraphsComponent } from './graphs/graphs.component';
-import { NgxGaugeModule } from 'ngx-gauge';
-import { NgChartsModule as ChartsModule } from 'ng2-charts';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+// import { NgxGaugeModule } from 'ngx-gauge';
+// import { NgChartsModule as ChartsModule } from 'ng2-charts';
+// import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from '@/newapp/state';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -153,9 +153,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       //tapToDismiss:false
     }),
     DragDropModule,
-    NgxGaugeModule,
-    ChartsModule,
-    NgxChartsModule,
+    // NgxGaugeModule,
+    // ChartsModule,
+    // NgxChartsModule,
     StoreModule.forRoot({ ...reducers }, { metaReducers }),
     StoreModule.forFeature(clinicFeature),
     StoreModule.forFeature(layoutFeature),

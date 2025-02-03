@@ -72,11 +72,11 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$;
+    return this.layoutFacade.durationCurrLabel$;
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$;
+    return this.layoutFacade.durationPrevLabel$;
   }
 
   get isFullMonthDate$() {

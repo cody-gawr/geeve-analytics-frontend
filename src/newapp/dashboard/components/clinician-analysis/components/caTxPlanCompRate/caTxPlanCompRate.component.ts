@@ -62,7 +62,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$;
+    return this.layoutFacade.durationCurrLabel$;
   }
 
   get showGoals$() {
@@ -77,7 +77,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$;
+    return this.layoutFacade.durationPrevLabel$;
   }
 
   get getTrendTip$() {

@@ -14,38 +14,27 @@ import {
   FnProdByClinicianTrendItem,
   FnExpensesApiResponse,
   FnProductionPerDayItem,
+  FnHourlyRateData,
+  FnHourlyRateTrendData,
 } from '@/newapp/models/dashboard/finance';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import moment from 'moment';
 import {
   selectCurrentClinicId,
   selectCurrentClinics,
+  selectIsMultiClinicsSelected,
+  selectIsMultiSelection,
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
-
-type FInanceEndpoints =
-  | 'fnTotalProduction'
-  | 'fnNetProfit'
-  | 'fnNetProfitPercentage'
-  | 'fnExpenses'
-  | 'fnProductionByClinician'
-  | 'fnProductionPerVisit'
-  | 'fnProductionPerDay'
-  | 'fnTotalDiscounts'
-  | 'fnTotalCollection'
-  | 'fnTotalProductionTrend'
-  | 'fnTotalCollectionTrend'
-  | 'fnNetProfitTrend'
-  | 'fnNetProfitPercentageTrend'
-  | 'fnProductionPerVisitTrend'
-  | 'fnProductionPerDayTrend'
-  | 'fnExpensesTrend'
-  | 'fnProductionByClinicianTrend'
-  | 'fnTotalDiscountsTrend';
+import { convertEndpointToDataKey } from '@/newapp/shared/utils';
+import camelcaseKeys from 'camelcase-keys';
 
 export interface FinanceState {
-  isLoadingData: Array<FInanceEndpoints>;
+  isLoadingData: Array<FinanceEndpoints>;
   errors: Array<JeeveError>;
+
+  resBodyList: Record<FinanceEndpoints, unknown>;
+
   // FnTotalProduction
   netProfitProductionVal: number;
   prodData: FnTotalProductionItem[];
@@ -98,25 +87,10 @@ export interface FinanceState {
 }
 
 const initialState: FinanceState = {
-  isLoadingData: [
-    // "fnTotalProduction",
-    // "fnNetProfit",
-    // "fnNetProfitPercentage",
-    // "fnExpenses",
-    // "fnProductionByClinician",
-    // "fnProductionPerVisit",
-    // "fnTotalDiscounts",
-    // "fnTotalCollection",
-    // "fnTotalProductionTrend",
-    // "fnTotalCollectionTrend",
-    // "fnNetProfitTrend",
-    // "fnNetProfitPercentageTrend",
-    // "fnProductionPerVisitTrend",
-    // "fnExpensesTrend",
-    // "fnProductionByClinicianTrend",
-    // "fnTotalDiscountsTrend",
-  ],
+  isLoadingData: [],
   errors: [],
+
+  resBodyList: null,
 
   netProfitProductionVal: 0,
   netProfitTrendData: [],
@@ -168,6 +142,40 @@ export const financeFeature = createFeature({
   name: 'finance',
   reducer: createReducer(
     initialState,
+    // fnHourlyRate, fnHourlyRateTrend
+    on(FinancePageActions.loadFnChartDescription, (state, { chartDescription }): FinanceState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        resBodyList: { ...state.resBodyList, [chartDescription]: null },
+        errors: _.filter(errors, n => n.api != chartDescription),
+        isLoadingData: _.union(isLoadingData, [chartDescription]),
+      };
+    }),
+    on(
+      FinanceApiActions.fnChartDescriptionSuccess,
+      (state, { chartDesc, chartDescData }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, n => n.api != chartDesc),
+          resBodyList: { ...state.resBodyList, [chartDesc]: chartDescData },
+          isLoadingData: _.filter(isLoadingData, n => n != chartDesc),
+        };
+      }
+    ),
+    on(
+      FinanceApiActions.fnChartDescriptionFailure,
+      (state, { chartDesc, error }): FinanceState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          resBodyList: { ...state.resBodyList, [chartDesc]: null },
+          isLoadingData: _.filter(isLoadingData, n => n != chartDesc),
+          errors: [...errors, { ...error, api: chartDesc }],
+        };
+      }
+    ),
     on(FinancePageActions.loadFnTotalProduction, (state): FinanceState => {
       const { isLoadingData, errors } = state;
       return {
@@ -934,6 +942,7 @@ export const financeFeature = createFeature({
 
 export const {
   selectErrors,
+  selectResBodyList,
   selectIsLoadingData,
   selectNetProfitProductionVal,
   selectProductionTrendVal,
@@ -970,7 +979,15 @@ export const {
   selectTotalDiscountTotal,
   selectTotalDiscountTrendTotal,
   selectTrendProfitChartName,
+  
 } = financeFeature;
+
+export const selectIsLoadingChartDesc = (chartDesc: FinanceEndpoints) => {
+  return createSelector(
+    selectIsLoadingData,
+    loadingData => _.findIndex(loadingData, l => l == chartDesc) >= 0
+  );
+}
 
 export const selectFnTotalProductionError = createSelector(
   selectErrors,
@@ -1476,6 +1493,7 @@ export const selectProdPerVisitChartData = createSelector(
     }
   }
 );
+
 export const selectExpensesTrendChartData = createSelector(
   selectCurrentClinics,
   selectExpensesTrendData,
@@ -1664,5 +1682,81 @@ export const selectIsLoadingAllTrendData = createSelector(
   selectIsLoadingCollectionTrend,
   (s1, s2, s3, s4, s5, s6, s7, s8) => {
     return s1 || s2 || s3 || s4 || s5 || s6 || s7 || s8;
+  }
+);
+
+export const selectHourlyRateChartData = createSelector(
+  selectResBodyList,
+  selectTrend,
+  selectIsMultiClinicsSelected,
+  (body, trend, isMultiClinics) => {
+    if(!body) {
+      return null;
+    }
+    const data: CaHourlyRateApiResponse = <any>camelcaseKeys(
+      body[trend === 'off'?'fnHourlyRate':'fnHourlyRateTrend'], {deep: true});
+    if(!data){
+      return null;
+    }
+    const chartLabels = [];
+
+    if(trend === 'off'){
+      const datasets = [
+        {
+          data: [],
+          label: '',
+          shadowOffsetX: 3,
+          backgroundColor: 'rgba(0, 0, 255, 0.2)',
+        },
+      ];
+  
+      if(isMultiClinics){
+        data?.data.forEach((item: CaHourlyRateItem) => {
+          const v = <string>item.hourlyRate;
+          datasets[0].data.push(
+            Math.round(parseFloat(v ?? '0'))
+          );
+          chartLabels.push(item.clinicName);
+        });
+      }
+  
+      return {
+        curr: Math.round(data.total),
+        prev: Math.round(data.totalTa),
+        chartLabels,
+        datasets
+      }
+    }else{
+      const datasets = [
+        {
+          data: [],
+          label: '',
+        },
+      ];
+      _.chain(data.data)
+      .sortBy('yearMonth')
+      .groupBy(trend === 'current' ? 'yearMonth' : 'year')
+      .map((values, duration) => {
+        const sumHourlyRate = _.sumBy(values, v =>
+          _.round(parseFloat(<string>v.hourlyRate ?? '0'))
+        );
+
+        return {
+          label:
+            trend == 'current'
+              ? moment(duration).format('MMM YYYY')
+              : duration,
+          value: sumHourlyRate,
+        };
+      })
+      .value().forEach(v => {
+        chartLabels.push(v.label);
+        datasets[0].data.push(v.value);
+      });
+      return {
+        datasets,
+        chartLabels
+      }   
+    }
   }
 );

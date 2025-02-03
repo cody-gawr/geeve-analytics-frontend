@@ -7,7 +7,7 @@ import {
   FnExpensesApiResponse,
   FnExpensesTrendApiResponse,
   FnNetProfitApiResponse,
-  FnNetProfitParams,
+  FnFinanceSpParams,
   FnNetProfitPercentTrendApiResponse,
   FnNetProfitTrendApiResponse,
   FnProdByClinicianTrendApiResponse,
@@ -34,7 +34,7 @@ export class FinanceService {
   constructor(private http: HttpClient) {}
 
   fnTotalProduction = (
-    params: FnNetProfitParams
+    params: FnFinanceSpParams
   ): Observable<FnTotalProductionApiResponse> => {
     const {
       clinicId,
@@ -99,7 +99,7 @@ export class FinanceService {
   };
 
   fnTotalCollection = (
-    params: FnNetProfitParams
+    params: FnFinanceSpParams
   ): Observable<FnTotalCollectionApiResponse> => {
     const {
       clinicId,
@@ -164,7 +164,7 @@ export class FinanceService {
   };
 
   fnNetProfit = (
-    params: FnNetProfitParams
+    params: FnFinanceSpParams
   ): Observable<FnNetProfitApiResponse> => {
     const {
       clinicId,
@@ -225,7 +225,7 @@ export class FinanceService {
   };
 
   fnNetProfitPercentage = (
-    params: FnNetProfitParams
+    params: FnFinanceSpParams
   ): Observable<FnNetProfitApiResponse> => {
     const {
       clinicId,
@@ -289,7 +289,7 @@ export class FinanceService {
   };
 
   fnExpenses = (
-    params: FnNetProfitParams
+    params: FnFinanceSpParams
   ): Observable<FnExpensesApiResponse> => {
     const {
       clinicId,
@@ -350,7 +350,7 @@ export class FinanceService {
   };
 
   fnProductionByClinician(
-    params: FnNetProfitParams
+    params: FnFinanceSpParams
   ): Observable<FnProductionByClinicianApiResponse> {
     const {
       clinicId,
@@ -410,7 +410,7 @@ export class FinanceService {
       );
   }
 
-  fnProductionPerVisit(params: FnNetProfitParams) {
+  fnProductionPerVisit(params: FnFinanceSpParams) {
     const {
       clinicId,
       startDate = '',
@@ -465,7 +465,7 @@ export class FinanceService {
       );
   }
 
-  fnProductionPerDay(params: FnNetProfitParams) {
+  fnProductionPerDay(params: FnFinanceSpParams) {
     const {
       clinicId,
       startDate = '',
@@ -520,7 +520,7 @@ export class FinanceService {
       );
   }
 
-  fnTotalDiscounts(params: FnNetProfitParams) {
+  fnTotalDiscounts(params: FnFinanceSpParams) {
     const {
       clinicId,
       startDate = '',

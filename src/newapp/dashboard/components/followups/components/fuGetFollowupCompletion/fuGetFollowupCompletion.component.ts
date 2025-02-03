@@ -60,11 +60,11 @@ export class FuGetFollowupCompletionComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(map(v => v + ' Avg'));
+    return this.layoutFacade.durationCurrLabel$.pipe(map(v => v + ' Avg'));
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(map(v => v + ' Avg'));
+    return this.layoutFacade.durationPrevLabel$.pipe(map(v => v + ' Avg'));
   }
 
   get hasData() {

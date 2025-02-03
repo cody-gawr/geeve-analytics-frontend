@@ -50,11 +50,23 @@ import {
   selectTotalVisitsTrendChartData,
   selectXeroAccounts,
 } from '../state/reducers/marketing.reducer';
-import { ChartDescParams } from '@/newapp/models/dashboard/marketing';
+import { ChartDescParams } from '@/newapp/models/dashboard';
 
 @Injectable()
 export class MarketingFacade {
   constructor(private store: Store<MarketingState>) {}
+
+  loadChartDescription(
+    chartDescription: MarketingEndpoints, 
+    params: ChartDescParams<MarketingEndpoints>
+  ) {
+    this.store.dispatch(
+      MarketingPageActions.loadMkChartDescription({
+        chartDescription,
+        ...params
+      })
+    );
+  }
 
   public readonly errors$: Observable<JeeveError[]> = this.store.pipe(
     select(selectErrors)
@@ -232,24 +244,14 @@ export class MarketingFacade {
     select(selectIsLoadingMkProdByAgeTrend)
   );
 
+
+
   public setProdByPostCodeChartName(chartName: MK_PROD_BY_POSTCODE_CHART_NAME) {
     this.store.dispatch(MarketingPageActions.setProdByPostCodeChartName({ chartName }));
   }
 
   public setActivePatients(isActive: boolean) {
     this.store.dispatch(MarketingPageActions.setIsActivePatients({ isActive }));
-  }
-
-  loadChartDescription(
-    chartDescription: MarketingEndpoints, 
-    params: ChartDescParams
-  ) {
-    this.store.dispatch(
-      MarketingPageActions.loadMkChartDescription({
-        chartDescription,
-        ...params
-      })
-    );
   }
 
   public loadMkNewPatientsByReferral({

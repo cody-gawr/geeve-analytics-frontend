@@ -37,12 +37,16 @@
     <prod-per-clinic-chart
       class="prod-per-clinic-chart"
       [toolTip]="toolTipFnProductionPerVisit$ | async"></prod-per-clinic-chart>
+    <fn-hourly-rate-chart
+      [toolTip]="getChartTip(98) | async"
+      class="chart-33"
+    ></fn-hourly-rate-chart>
     <prod-per-visit-chart
-      class="chart-50"
+      class="chart-33"
       [toolTip]="getChartTip(32) | async"></prod-per-visit-chart>
     <total-discount-chart
       [toolTip]="getChartTip(34) | async"
-      class="chart-50"></total-discount-chart>
+      class="chart-33"></total-discount-chart>
     <prod-collection-chart
       [toolTip]="getChartTip(33) | async"
       class="prod-collection-chart"></prod-collection-chart>

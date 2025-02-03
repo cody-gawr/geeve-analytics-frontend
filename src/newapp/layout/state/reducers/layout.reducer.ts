@@ -167,7 +167,7 @@ export const selectIsFullSingleMonthDateRange = createSelector(
   }
 );
 
-export const selectDurationLabel = createSelector(
+export const selectDurationCurrLabel = createSelector(
   selectDateRange,
   ({ duration }) => {
     const menu = DateRangeMenus.find(m => m.range == duration);
@@ -176,8 +176,8 @@ export const selectDurationLabel = createSelector(
   }
 );
 
-export const selectDurationTrendLabel = createSelector(
-  selectDurationLabel,
+export const selectDurationPrevLabel = createSelector(
+  selectDurationCurrLabel,
   l => {
     if (l.includes('Last') || l.includes('This')) {
       return l.replace(/^Last/g, 'Previous').replace(/^This/g, 'Last');

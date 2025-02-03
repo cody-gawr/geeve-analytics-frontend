@@ -86,7 +86,7 @@ export interface FnNetProfitPercentTrendItem {
   yearMonth: string;
 }
 
-export interface FnNetProfitParams {
+export interface FnFinanceSpParams {
   clinicId: string | number;
   startDate: string;
   endDate: string;
@@ -285,4 +285,16 @@ export interface FnTotalCollectionItem {
   weekStart: unknown | null;
   year: unknown | null;
   yearMonth: unknown | null;
+}
+
+export interface FnHourlyRateData {
+  data: CaHourlyRateItem[]
+  trend: number;
+  trendTa: number;
+}
+
+export interface FnHourlyRateTrendData {
+  data: CaHourlyRateItem[]
+  trend: number;
+  trendTa: number;
 }

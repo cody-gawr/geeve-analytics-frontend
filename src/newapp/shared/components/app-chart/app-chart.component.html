@@ -56,7 +56,7 @@
             <tbody>
               <tr *ngFor="let protbl of paTableData">
                 <td>{{ protbl.label }}</td>
-                <td>{{ protbl.value | number: '1.0-0' }}%</td>
+                <td>{{ formatValue(protbl.value | number: '1.0-0') }}</td>
               </tr>
             </tbody>
           </table>
@@ -73,18 +73,21 @@
               </spin-loader>
               <ng-template #drawChartElem>
                 <ngx-gauge
-                  *ngIf="chartType === 'arch'; else canvasElem"
+                  *ngIf="chartType === 'arch' && gaugeValue; else canvasElem"
                   [type]="chartType"
                   [value]="gaugeValue"
-                  [label]="gaugeLabel"
+                  
                   [thick]="20"
                   backgroundColor="#f4f0fa"
                   foregroundColor="#4ccfae"
-                  [max]="100"
                   cap="round"
-                  [duration]="2500"
-                  append="%"
-                  [size]="300">
+
+                  [label]="gaugeLabel"
+                  [duration]="gaugeDur"
+                  [max]="gaugeMax"
+                  [append]="appendCurrency?currency:''"
+                  [prepend]="!appendCurrency?currency:''"
+                  [size]="gaugeSize">
                 </ngx-gauge>
                 <ng-template #canvasElem>
                   <canvas
@@ -101,21 +104,24 @@
           </div>
         </ng-template>
   
-        <div class="chart-foot" *ngIf="durationCurrLabel || durationPrevLabel || enableGoal">
+        <div class="chart-foot" *ngIf="durationCurrLabel || durationPrevLabel || enableGoal; else emptyEle">
           <div *ngIf="!!durationCurrLabel">
-            <h3>{{ curr }}%</h3>
+            <h3>{{formatValue(curr)}}</h3>
             <span>{{ durationCurrLabel }}</span>
           </div>
           <div *ngIf="duration !== 'custom' && !!durationPrevLabel">
-            <h3>{{ prev }}%</h3>
+            <h3>{{ formatValue(prev) }}</h3>
             <span>{{ durationPrevLabel }}</span>
           </div>
           <div
             *ngIf="goal >= 0 && enableGoal && goalCount">
-            <h3>{{ goal * goalCount }}%</h3>
+            <h3>{{ formatValue(goal * goalCount) }}</h3>
             <span>Goal</span>
           </div>
         </div>
+        <ng-template #emptyEle>
+          <div></div>
+        </ng-template>
       </div>
     </div>
   </div>

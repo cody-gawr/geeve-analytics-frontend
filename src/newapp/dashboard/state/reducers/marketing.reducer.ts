@@ -92,6 +92,40 @@ export const marketingFeature = createFeature({
   name: 'marketing',
   reducer: createReducer(
     initialState,
+    // mkProdByCode/mkProdByCodeTrend/mkProdByAge/mkProdByAgeTrend
+    on(MarketingPageActions.loadMkChartDescription, (state, { chartDescription }): MarketingState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        [convertEndpointToDataKey(chartDescription)]: null,
+        errors: _.filter(errors, n => n.api != chartDescription),
+        isLoadingData: _.union(isLoadingData, [chartDescription]),
+      };
+    }),
+    on(
+      MarketingApiActions.mkChartDescriptionSuccess,
+      (state, { chartDesc, mkChartDescData }): MarketingState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          errors: _.filter(errors, n => n.api != chartDesc),
+          [convertEndpointToDataKey(chartDesc)]: mkChartDescData,
+          isLoadingData: _.filter(isLoadingData, n => n != chartDesc),
+        };
+      }
+    ),
+    on(
+      MarketingApiActions.mkChartDescriptionFailure,
+      (state, { chartDesc, error }): MarketingState => {
+        const { isLoadingData, errors } = state;
+        return {
+          ...state,
+          [convertEndpointToDataKey(chartDesc)]: null,
+          isLoadingData: _.filter(isLoadingData, n => n != chartDesc),
+          errors: [...errors, { ...error, api: chartDesc }],
+        };
+      }
+    ),
     on(
       MarketingApiActions.mkNewPatientsByReferralFailure,
       (state, { error }): MarketingState => {
@@ -727,41 +761,6 @@ export const marketingFeature = createFeature({
         return {
           ...state,
           prodByPostCodeChartName: chartName,
-        };
-      }
-    ),
-
-    // mkProdByCode/mkProdByCodeTrend/mkProdByAge/mkProdByAgeTrend
-    on(MarketingPageActions.loadMkChartDescription, (state, { chartDescription }): MarketingState => {
-      const { isLoadingData, errors } = state;
-      return {
-        ...state,
-        activePatientsData: null,
-        errors: _.filter(errors, n => n.api != chartDescription),
-        isLoadingData: _.union(isLoadingData, [chartDescription]),
-      };
-    }),
-    on(
-      MarketingApiActions.mkChartDescriptionSuccess,
-      (state, { chartDesc, mkChartDescData }): MarketingState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != chartDesc),
-          [convertEndpointToDataKey(chartDesc)]: mkChartDescData,
-          isLoadingData: _.filter(isLoadingData, n => n != chartDesc),
-        };
-      }
-    ),
-    on(
-      MarketingApiActions.mkChartDescriptionFailure,
-      (state, { chartDesc, error }): MarketingState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          [convertEndpointToDataKey(chartDesc)]: null,
-          isLoadingData: _.filter(isLoadingData, n => n != chartDesc),
-          errors: [...errors, { ...error, api: chartDesc }],
         };
       }
     ),

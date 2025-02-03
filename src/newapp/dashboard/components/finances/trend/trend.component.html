@@ -1,10 +1,14 @@
 <div class="trend-finances">
   <finance-prod-trend-chart
     [toolTip]="profitTrendTip$ | async"
-    class="chart-50"></finance-prod-trend-chart>
+    class="chart-33"></finance-prod-trend-chart>
+  <fn-hourly-rate-chart
+    [toolTip]="getChartTip(98) | async"
+    class="chart-33"
+  ></fn-hourly-rate-chart>
   <finance-prod-per-visit-trend-chart
     [toolTip]="getChartTip(32) | async"
-    class="chart-50"></finance-prod-per-visit-trend-chart>
+    class="chart-33"></finance-prod-per-visit-trend-chart>
   <finance-expense-trend-chart
     [toolTip]="getChartTip(28) | async"
     class="chart-50"></finance-expense-trend-chart>

@@ -60,11 +60,11 @@ export class FuGetPerUserComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$.pipe(map(v => v + ' Total'));
+    return this.layoutFacade.durationCurrLabel$.pipe(map(v => v + ' Total'));
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$.pipe(map(v => v + ' Total'));
+    return this.layoutFacade.durationPrevLabel$.pipe(map(v => v + ' Total'));
   }
 
   get hasData() {

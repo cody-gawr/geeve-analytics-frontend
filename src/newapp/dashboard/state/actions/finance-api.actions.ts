@@ -14,6 +14,18 @@ import {
 } from '@/newapp/models/dashboard/finance';
 import { createAction, props } from '@ngrx/store';
 
+export const fnChartDescriptionSuccess = createAction(
+  '[Finance API] Load Finance Chart Description Success',
+  props<{ chartDesc: FinanceEndpoints, chartDescData: any }>()
+);
+
+export const fnChartDescriptionFailure = createAction(
+  '[Finance API] Load Finance Chart Description Failure',
+  props<{
+    chartDesc: FinanceEndpoints, error: JeeveError;
+  }>()
+);
+
 export const fnTotalProductionSuccess = createAction(
   '[Finance API] Load fnTotalProduction Success',
   props<{

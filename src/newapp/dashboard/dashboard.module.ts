@@ -15,10 +15,9 @@ import { FinanceFacade } from './facades/finance.facade';
 import { FinanceEffects } from './state/effects/finance.effects';
 import { financeFeature } from './state/reducers/finance.reducer';
 import { FinanceExpensesComponent } from './components/finances/none-trend/expenses/expenses.component';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { NgChartsModule as ChartsModule } from 'ng2-charts';
+// import { NgxChartsModule } from '@swimlane/ngx-charts';
+// import { NgChartsModule as ChartsModule } from 'ng2-charts';
 import { FinanceProdPerClinicComponent } from './components/finances/none-trend/prod-per-clinic/prod-per-clinic.component';
-import { NgxGaugeModule } from 'ngx-gauge';
 import { FinanceProdPerVisitComponent } from './components/finances/none-trend/prod-per-visit/prod-per-visit.component';
 import { FinanceTotalDiscountComponent } from './components/finances/none-trend/total-discount/total-discount.component';
 import { FinanceProdColComponent } from './components/finances/none-trend/prod-collection/prod-collection.component';
@@ -84,6 +83,7 @@ import { FuGetPerUserComponent } from './components/followups/components/fuGetPe
 import { FollowupsComponent } from './components/followups/followups.component';
 import { UnsubscribedPageComponent } from './components/unsubscribed-page/unsubscribed-page.component';
 import { MkProdByPostCodeComponent } from './components/marketing/components/prod-by-postcode/prod-by-postcode.component';
+import { FnHourlyRateChartComponent } from './components/finances/components/hourly-rate-chart/hourly-rate.chart.component';
 
 @NgModule({
   imports: [
@@ -107,9 +107,8 @@ import { MkProdByPostCodeComponent } from './components/marketing/components/pro
       FollowupsEffects,
     ]),
     AppLayoutModule,
-    NgxChartsModule,
-    ChartsModule,
-    NgxGaugeModule,
+    // NgxChartsModule,
+    // ChartsModule,
   ],
   declarations: [
     FinancesComponent,
@@ -145,6 +144,7 @@ import { MkProdByPostCodeComponent } from './components/marketing/components/pro
     FrontDeskNumberTicksComponent,
     FrontDeskFtaRatioComponent,
     FrontDeskUtaRatioComponent,
+    FnHourlyRateChartComponent,
 
     ClinicianProcedureComponent,
     CpAnalysisComponent,

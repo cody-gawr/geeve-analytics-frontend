@@ -1,4 +1,4 @@
-import { ChartDescParams } from '@/newapp/models/dashboard/marketing';
+import { ChartDescParams } from '@/newapp/models/dashboard';
 import { createAction, props } from '@ngrx/store';
 
 export const loadMkNewPatientsByReferral = createAction(
@@ -125,7 +125,7 @@ export const loadMkTotalVisitsTrend = createAction(
 
 export const loadMkChartDescription = createAction(
   '[Marketing Page] Load Market Chart Description',
-  props<ChartDescParams>()
+  props<ChartDescParams<MarketingEndpoints>>()
 );
 
 export const setIsActivePatients = createAction(

@@ -6,8 +6,8 @@ import {
   selectActivatedRouteTitle,
   selectAverage,
   selectDateRange,
-  selectDurationLabel,
-  selectDurationTrendLabel,
+  selectDurationCurrLabel,
+  selectDurationPrevLabel,
   selectIsFullMonthsDateRange,
   selectTrend,
   selectCompareEnabled,
@@ -87,10 +87,10 @@ export class LayoutFacade {
     this.store.dispatch(layoutPageActions.setActivatedRouteTitle({ title }));
   }
 
-  public readonly durationLabel$ = this.store.pipe(select(selectDurationLabel));
+  public readonly durationCurrLabel$ = this.store.pipe(select(selectDurationCurrLabel));
 
-  public readonly durationTrendLabel$ = this.store.pipe(
-    select(selectDurationTrendLabel)
+  public readonly durationPrevLabel$ = this.store.pipe(
+    select(selectDurationPrevLabel)
   );
 
   public readonly hideDatePicker$ = this.store.pipe(select(selectHideDatePicker));

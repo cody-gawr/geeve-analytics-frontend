@@ -154,6 +154,34 @@ declare global {
     | 'mkProdByAge'
     | 'mkProdByAgeTrend';
 
+  type DASHBOARD_NAME = 'Marketing' | 'Finance';
+
+  type FinanceEndpoints = FN_API_ENDPOINTS | FN_API_ENDPOINTS_TREND;
+
+  type FN_API_ENDPOINTS = 
+    'fnTotalProduction'
+  | 'fnNetProfit'
+  | 'fnNetProfitPercentage'
+  | 'fnExpenses'
+  | 'fnProductionByClinician'
+  | 'fnProductionPerVisit'
+  | 'fnProductionPerDay'
+  | 'fnTotalDiscounts'
+  | 'fnTotalCollection';
+
+  type FN_API_ENDPOINTS_TREND = 
+      'fnTotalProductionTrend'
+    | 'fnTotalCollectionTrend'
+    | 'fnNetProfitTrend'
+    | 'fnNetProfitPercentageTrend'
+    | 'fnProductionPerVisitTrend'
+    | 'fnProductionPerDayTrend'
+    | 'fnExpensesTrend'
+    | 'fnProductionByClinicianTrend'
+    | 'fnTotalDiscountsTrend' 
+    | 'fnHourlyRate' 
+    | 'fnHourlyRateTrend';
+  
   interface FnProduction {
     clinicId: number | string;
     clinicName: string;

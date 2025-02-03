@@ -15,7 +15,7 @@ import moment from 'moment';
 import { MarketingFacade } from '../../facades/marketing.facade';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import _ from 'lodash';
-import { ChartDescParams } from '@/newapp/models/dashboard/marketing';
+import { ChartDescParams } from '@/newapp/models/dashboard';
 
 @Component({
   selector: 'dashboard-marketing',
@@ -103,7 +103,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
         this.marketingFacade.setErrors([]);
         switch (trend) {
           case 'off':
-            const params: ChartDescParams = {
+            const params: ChartDescParams<MarketingEndpoints> = {
               clinicId: clinicId,
               startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
               endDate: endDate && moment(endDate).format('DD-MM-YYYY'),

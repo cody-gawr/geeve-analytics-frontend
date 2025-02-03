@@ -49,7 +49,10 @@ export class AppChartComponent implements OnInit, OnDestroy {
   // Gauge Type
   @Input() gaugeValue = 0;
   @Input() gaugeLabel = '';
+  @Input() gaugeSize = 300;;
   @Input() isLoading: boolean = false;
+  @Input() gaugeMax = 100;
+  @Input() gaugeDur = 2500;
 
   @Input() trendTipIcon: string = '';
   @Input() trendTipIconColor: string = 'primary';
@@ -73,6 +76,8 @@ export class AppChartComponent implements OnInit, OnDestroy {
   @Input() enablePaTableView: boolean = false;
   @Input() paTableData: PaTableData[]  = [];
   @Input() datePicker: FormControl<Moment>;
+  @Input() currency = '%';
+  @Input() appendCurrency = true;
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -87,6 +92,7 @@ export class AppChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    
   }
 
   ngOnDestroy(): void {
@@ -95,5 +101,13 @@ export class AppChartComponent implements OnInit, OnDestroy {
 
   toggleShowOfPaTableView() {
     this.showPaTableView = !this.showPaTableView;
+  }
+
+  formatValue(value: any) {
+    if(this.appendCurrency){
+      return `${ value }${this.currency}`;
+    }else{
+      return `${this.currency}${value}`;
+    }
   }
 }

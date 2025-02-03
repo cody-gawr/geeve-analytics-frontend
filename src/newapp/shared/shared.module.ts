@@ -23,6 +23,11 @@ import { CustomTooltipComponent, CustomTooltipDirective } from './directives/cus
 import { SelectMultiSelectComponent } from './components/search-multi-select/search-multi-select.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AppChartComponent } from './components/app-chart/app-chart.component';
+// app.module.ts
+import { NgxGaugeModule } from 'ngx-gauge';
+import { NgChartsModule } from 'ng2-charts';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 
 const modules = [
   AngularMaterialModule,
@@ -31,7 +36,10 @@ const modules = [
   RouterModule,
   MatTableResponsiveModule,
   FontAwesomeModule,
-  NgxMatSelectSearchModule
+  NgxMatSelectSearchModule,
+  NgxGaugeModule,
+  NgChartsModule,
+  NgxChartsModule,
 ];
 
 const components = [

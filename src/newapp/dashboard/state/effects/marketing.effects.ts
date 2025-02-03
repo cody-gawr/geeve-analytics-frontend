@@ -8,15 +8,52 @@ import {
 } from '../reducers/marketing.reducer';
 import { MarketingApiActions, MarketingPageActions } from '../actions';
 import { MarketingService } from '../../services/marketing.service';
-import { ChartDescParams } from '@/newapp/models/dashboard/marketing';
+import { ChartDescParams } from '@/newapp/models/dashboard';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Injectable()
 export class MarketingEffects {
   constructor(
     private actions$: Actions,
     private marketingService: MarketingService,
+    private dashboardService: DashboardService,
     private store: Store<MarketingState>
   ) {}
+
+  public readonly loadMkChartDescription$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(MarketingPageActions.loadMkChartDescription),
+      groupBy((action) => action.chartDescription), // Group actions by `chart description`
+      mergeMap((grouped$) =>
+        grouped$.pipe(
+          switchMap((params: ChartDescParams<MarketingEndpoints>) => {
+            return this.dashboardService
+              .spChartDescriptionCall<any, MarketingEndpoints>(
+                'Marketing',
+                params
+              )
+              .pipe(
+                map(data =>
+                  MarketingApiActions.mkChartDescriptionSuccess({
+                    chartDesc: params.chartDescription,
+                    mkChartDescData: data,
+                  })
+                ),
+                catchError((error: HttpErrorResponse) =>
+                  of(
+                    MarketingApiActions.mkChartDescriptionFailure({
+                      chartDesc: params.chartDescription,
+                      error: error.error ?? error,
+                    })
+                  )
+                )
+              );
+            }
+          )
+        )
+      )
+    );
+  });
 
   public readonly loadMkNewPatientsByReferral$ = createEffect(() => {
     return this.actions$.pipe(
@@ -439,40 +476,6 @@ export class MarketingEffects {
           )
         );
       })
-    );
-  });
-
-  public readonly loadMkChartDescription$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(MarketingPageActions.loadMkChartDescription),
-      groupBy((action) => action.chartDescription), // Group actions by `chart description`
-      mergeMap((grouped$) =>
-        grouped$.pipe(
-          switchMap((params: ChartDescParams) => {
-            return this.marketingService
-              .mkChartDescriptionCall<any>(
-                params
-              )
-              .pipe(
-                map(data =>
-                  MarketingApiActions.mkChartDescriptionSuccess({
-                    chartDesc: params.chartDescription,
-                    mkChartDescData: data,
-                  })
-                ),
-                catchError((error: HttpErrorResponse) =>
-                  of(
-                    MarketingApiActions.mkChartDescriptionFailure({
-                      chartDesc: params.chartDescription,
-                      error: error.error ?? error,
-                    })
-                  )
-                )
-              );
-            }
-          )
-        )
-      )
     );
   });
 }

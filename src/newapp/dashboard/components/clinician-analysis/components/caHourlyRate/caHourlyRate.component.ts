@@ -74,7 +74,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get durationLabel$() {
-    return this.layoutFacade.durationLabel$;
+    return this.layoutFacade.durationCurrLabel$;
   }
 
   get showGoals$() {
@@ -89,7 +89,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get durationTrendLabel$() {
-    return this.layoutFacade.durationTrendLabel$;
+    return this.layoutFacade.durationPrevLabel$;
   }
 
   get getTrendTip$() {
@@ -285,7 +285,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         this.goal = data.goal;
 
         this.tableData = data.tableData ?? [];
-
+        
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;

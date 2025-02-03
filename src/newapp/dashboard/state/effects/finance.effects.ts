@@ -10,6 +10,8 @@ import {
   mergeMap,
   Subject,
   takeUntil,
+  groupBy,
+  switchMap,
 } from 'rxjs';
 import { FinanceService } from '../../services/finance.service';
 import { FinanceApiActions, FinancePageActions } from '../actions';
@@ -18,17 +20,55 @@ import {
   FinanceState,
   selectIsLoadingNetProfit,
 } from '../reducers/finance.reducer';
+import { ChartDescParams } from '@/newapp/models/dashboard';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Injectable()
 export class FinanceEffects {
   constructor(
     private actions$: Actions,
     private financeService: FinanceService,
+    private dashboardService: DashboardService,
     private store: Store<FinanceState>
   ) {}
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
+
+  public readonly loadFnChartDescription$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FinancePageActions.loadFnChartDescription),
+      groupBy((action) => action.chartDescription), // Group actions by `chart description`
+      mergeMap((grouped$) =>
+        grouped$.pipe(
+          switchMap((params: ChartDescParams<FinanceEndpoints>) => {
+            return this.dashboardService
+              .spChartDescriptionCall<any, FinanceEndpoints>(
+                'Finance',
+                params
+              )
+              .pipe(
+                map(data =>
+                  FinanceApiActions.fnChartDescriptionSuccess({
+                    chartDesc: params.chartDescription,
+                    chartDescData: data,
+                  })
+                ),
+                catchError((error: HttpErrorResponse) =>
+                  of(
+                    FinanceApiActions.fnChartDescriptionFailure({
+                      chartDesc: params.chartDescription,
+                      error: error.error ?? error,
+                    })
+                  )
+                )
+              );
+            }
+          )
+        )
+      )
+    );
+  });
 
   public readonly loadFnTotalProduction$ = createEffect(() => {
     return this.actions$.pipe(
