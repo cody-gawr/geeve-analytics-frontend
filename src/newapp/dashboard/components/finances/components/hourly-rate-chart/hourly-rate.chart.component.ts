@@ -24,7 +24,7 @@ export class FnHourlyRateChartComponent implements OnInit, OnDestroy {
 
     labels = [];
     datasets: ChartDataset<any>;
-
+    chartData: {production: number, hours: number}[] = [];
     constructor(
         private layoutFacade: LayoutFacade,
         private financeFacade: FinanceFacade,
@@ -39,6 +39,7 @@ export class FnHourlyRateChartComponent implements OnInit, OnDestroy {
         ).subscribe(
             chartData => {
                 if(chartData){
+                    this.chartData = chartData.chartData;
                     this.datasets = chartData.datasets;
                     this.labels = chartData.chartLabels;
                     this.curr = chartData.curr;
@@ -165,12 +166,34 @@ export class FnHourlyRateChartComponent implements OnInit, OnDestroy {
                 external: externalTooltipHandlerHiddenColorBoxes,
                 callbacks: {
                     label: (tooltipItem: TooltipItem<any>) => {
-                        return `${tooltipItem.label} : ${new Intl.NumberFormat('en-US', {
+                        const extraData = this.chartData[tooltipItem.dataIndex];
+                        const labelItems = [];
+                        labelItems.push(
+                            `${tooltipItem.label} : ${new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                            }).format(Number(tooltipItem.parsed.y))}`
+                        );
+
+                        labelItems.push(
+                        `Production : ${new Intl.NumberFormat('en-US', {
                             style: 'currency',
                             currency: 'USD',
                             minimumFractionDigits: 0,
                             maximumFractionDigits: 0,
-                        }).format(Number(tooltipItem.parsed.y))}`;
+                        }).format(extraData.production)}`
+                        );
+
+                        labelItems.push(
+                        `Hours : ${new Intl.NumberFormat('en-US', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                        }).format(extraData.hours)}`
+                        );
+
+                        return labelItems;
                     },
                     title: () => '',
                 },

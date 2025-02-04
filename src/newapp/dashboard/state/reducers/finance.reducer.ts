@@ -1695,7 +1695,7 @@ export const selectHourlyRateChartData = createSelector(
       return null;
     }
     const chartLabels = [];
-
+    const chartData: {production: number, hours: number}[] = [];
     if(trend === 'off'){
       const datasets: any = [
         {
@@ -1711,11 +1711,17 @@ export const selectHourlyRateChartData = createSelector(
         .map((values, name) => {
           return {
             values: values.map(v => Number(v.hourlyRate)),
-            label: name
+            label: name,
+            production: values.map(v => Number(v.production)),
+            hours: values.map(v => Number(v.hours)),
           }
         }).value().
-        forEach(({values, label}, i) => {
+        forEach(({values, label, production, hours}, i) => {
           chartLabels.push(label);
+          chartData.push({
+            production: _.sumBy(production),
+            hours: _.sumBy(hours)
+          })
           datasets[0].data.push(
             Math.round(_.sumBy(values))
           );
@@ -1726,7 +1732,8 @@ export const selectHourlyRateChartData = createSelector(
         curr: Math.round(data.total),
         prev: Math.round(data.totalTa),
         chartLabels,
-        datasets
+        datasets,
+        chartData
       }
     }else{
       const datasets = [
@@ -1743,21 +1750,35 @@ export const selectHourlyRateChartData = createSelector(
           _.round(parseFloat(<string>v.hourlyRate ?? '0'))
         );
 
+        const sumProd = _.sumBy(values, v =>
+          _.round(parseFloat(<string>v.production ?? '0'))
+        );
+
+        const sumHours = _.sumBy(values, v =>
+          _.round(parseFloat(<string>v.hours ?? '0'))
+        );
+
         return {
           label:
             trend == 'current'
               ? moment(duration).format('MMM YYYY')
               : duration,
           value: sumHourlyRate,
+          production: sumProd,
+          hours: sumHours
         };
       })
       .value().forEach(v => {
+        chartData.push(
+          {production: v.production, hours: v.hours}
+        )
         chartLabels.push(v.label);
         datasets[0].data.push(v.value);
       });
       return {
         datasets,
-        chartLabels
+        chartLabels,
+        chartData
       }   
     }
   }
