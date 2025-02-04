@@ -12,7 +12,7 @@
       (click)="toggleShowOfPaTableView()"
       class="table-info-icon"
       fontIcon="table_rows_narrow" />
-    <div class="chart-title">
+    <div class="chart-title" [ngStyle]="newLogo?{padding: '10px 30px'}:{}">
       <mat-icon
         *ngIf="!!trendTipIcon"
         [color]="trendTipIconColor || 'primary'"
@@ -20,9 +20,10 @@
         [matTooltip]="trendTipText"></mat-icon>
   
       <span>{{chartTitle}}</span>
+      <img *ngIf="newLogo" width="35px" height="35px" src="assets/jeeve/images/new-release.png" />
     </div>
     <div class="chart-content">
-      <div class="canvas-wrapper chart-box gap-15px height-450">
+      <div class="canvas-wrapper chart-box gap-15px" [ngStyle]="{height: chartBoxHeight}">
         <div class="chart-header">
           <button
             *ngFor="let tab of chartTabs"

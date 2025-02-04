@@ -64,6 +64,26 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
     );
   }
 
+  get prodPerVisitTip$() {
+    return combineLatest([
+      this.financeFacade.prodPerVisitChartName$,
+      this.dashbordFacade.chartTips$,
+    ]).pipe(
+      filter(params => !!params[1]),
+      map(([chartName, tips]) => {
+        if (tips) {
+          switch (chartName) {
+            case 'Production Per Visit':
+              return tips[32] ?? '';
+            case 'Production Per Day':
+              return tips[99] ?? '';
+          }
+        }
+        return '';
+      })
+    );
+  }
+
   getChartTip(index: number) {
     return this.dashbordFacade.chartTips$.pipe(
       map(c => {

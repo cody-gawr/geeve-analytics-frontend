@@ -107,4 +107,22 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
       })
     );
   }
+  get prodPerVisitTip$() {
+    return combineLatest([
+      this.financeFacade.prodPerVisitChartName$,
+      this.dashboardFacade.chartTips$,
+    ]).pipe(
+      map(([chartName, tips]) => {
+        if (tips) {
+          switch (chartName) {
+            case 'Production Per Visit':
+              return tips[32] ?? '';
+            case 'Production Per Day':
+              return tips[99] ?? '';
+          }
+        }
+        return '';
+      })
+    );
+  }
 }

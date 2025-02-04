@@ -7,7 +7,7 @@
     class="chart-33"
   ></fn-hourly-rate-chart>
   <finance-prod-per-visit-trend-chart
-    [toolTip]="getChartTip(32) | async"
+    [toolTip]="prodPerVisitTip$ | async"
     class="chart-33"></finance-prod-per-visit-trend-chart>
   <finance-expense-trend-chart
     [toolTip]="getChartTip(28) | async"

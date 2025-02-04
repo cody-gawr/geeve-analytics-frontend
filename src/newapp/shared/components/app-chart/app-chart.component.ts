@@ -46,6 +46,7 @@ export class AppChartComponent implements OnInit, OnDestroy {
   @Input() labels: string[] = [];
   @Input() hasData: boolean = false;
   @Input() noDataAlertMessage: string = 'No data found!';
+  @Input() newLogo = false;
   // Gauge Type
   @Input() gaugeValue = 0;
   @Input() gaugeLabel = '';
@@ -78,6 +79,7 @@ export class AppChartComponent implements OnInit, OnDestroy {
   @Input() datePicker: FormControl<Moment>;
   @Input() currency = '%';
   @Input() appendCurrency = true;
+  @Input() chartBoxHeight = "450px";
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
