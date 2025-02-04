@@ -9,6 +9,7 @@ import {
   Subject,
 } from 'rxjs';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { DecimalPipe } from '@angular/common';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -91,6 +92,7 @@ export class AppChartComponent implements OnInit, OnDestroy {
   }
 
   constructor(
+    private decimalPipe: DecimalPipe
   ) {}
 
   ngOnInit(): void {
@@ -106,8 +108,9 @@ export class AppChartComponent implements OnInit, OnDestroy {
   }
 
   formatValue(value: any) {
+    value = this.decimalPipe.transform(value);
     if(this.appendCurrency){
-      return `${ value }${this.currency}`;
+      return `${value}${this.currency}`;
     }else{
       return `${this.currency}${value}`;
     }
