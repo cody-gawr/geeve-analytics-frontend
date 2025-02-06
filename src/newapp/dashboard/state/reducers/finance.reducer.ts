@@ -1750,6 +1750,18 @@ export const selectHourlyRateChartData = createSelector(
           _.round(parseFloat(<string>v.hourlyRate ?? '0'))
         );
 
+        const total =
+        _.sumBy(
+          values,
+          (item) => Number(item.production) || 0
+        ) /
+        _.sumBy(
+          values,
+          (item) => Number(item.hours) || 0
+        );
+
+        
+
         const sumProd = _.sumBy(values, v =>
           _.round(parseFloat(<string>v.production ?? '0'))
         );
@@ -1763,7 +1775,7 @@ export const selectHourlyRateChartData = createSelector(
             trend == 'current'
               ? moment(duration).format('MMM YYYY')
               : duration,
-          value: sumHourlyRate,
+          value: Math.round(total),
           production: sumProd,
           hours: sumHours
         };
