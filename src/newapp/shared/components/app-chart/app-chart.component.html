@@ -23,7 +23,7 @@
       <img *ngIf="newLogo" width="35px" height="35px" src="assets/jeeve/images/new-release.png" />
     </div>
     <div class="chart-content">
-      <div class="canvas-wrapper chart-box gap-15px" [ngStyle]="{height: chartBoxHeight}">
+      <div class="canvas-wrapper chart-box gap-15px" [ngStyle]="{maxheight: chartBoxHeight}">
         <div class="chart-header">
           <button
             *ngFor="let tab of chartTabs"

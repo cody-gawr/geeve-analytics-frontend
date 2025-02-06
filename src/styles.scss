@@ -131,6 +131,12 @@ html {
     align-items: center;
   }
 
+  .app-chart {
+    display: flex;
+    flex-grow: 1;
+    flex-direction:column;
+  }
+
   .chart-container {
     display: flex;
     flex-direction: column;

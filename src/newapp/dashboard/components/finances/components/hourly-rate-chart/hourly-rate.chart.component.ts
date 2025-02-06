@@ -94,6 +94,10 @@ export class FnHourlyRateChartComponent implements OnInit, OnDestroy {
         );
     }
 
+    get duration$() {
+        return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
+    }
+
     get durationCurrLabel$() {
         return combineLatest([
             this.layoutFacade.trend$,

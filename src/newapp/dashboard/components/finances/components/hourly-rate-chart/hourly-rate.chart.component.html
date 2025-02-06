@@ -4,6 +4,7 @@
     [toolTip]="toolTip"
     [durationCurrLabel]="durationCurrLabel$ | async"
     [durationPrevLabel]="durationPrevLabel$ | async"
+    [duration]="duration$ | async"
     [curr]="curr"
     [prev]="prev"
     [isLoading]="isLoading$ | async"
@@ -18,6 +19,5 @@
     [gaugeMax]="curr"
     [newLogo]="true"
     [appendCurrency]="false"
-    chartBoxHeight="400px"
-    class="flex-grow"
+    class="app-chart"
 ></app-chart>
