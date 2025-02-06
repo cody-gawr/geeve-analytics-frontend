@@ -1746,28 +1746,15 @@ export const selectHourlyRateChartData = createSelector(
       .sortBy('yearMonth')
       .groupBy(trend === 'current' ? 'yearMonth' : 'year')
       .map((values, duration) => {
-        const sumHourlyRate = _.sumBy(values, v =>
-          _.round(parseFloat(<string>v.hourlyRate ?? '0'))
-        );
 
-        const total =
-        _.sumBy(
+        const sumProd = _.sumBy(
           values,
           (item) => Number(item.production) || 0
-        ) /
-        _.sumBy(
+        );
+
+        const sumHours = _.sumBy(
           values,
           (item) => Number(item.hours) || 0
-        );
-
-        
-
-        const sumProd = _.sumBy(values, v =>
-          _.round(parseFloat(<string>v.production ?? '0'))
-        );
-
-        const sumHours = _.sumBy(values, v =>
-          _.round(parseFloat(<string>v.hours ?? '0'))
         );
 
         return {
@@ -1775,7 +1762,7 @@ export const selectHourlyRateChartData = createSelector(
             trend == 'current'
               ? moment(duration).format('MMM YYYY')
               : duration,
-          value: Math.round(total),
+          value: sumProd/sumHours,
           production: sumProd,
           hours: sumHours
         };
