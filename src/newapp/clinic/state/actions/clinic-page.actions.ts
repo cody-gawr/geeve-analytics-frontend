@@ -32,7 +32,7 @@ export const loadPraktikaSyncStatus = createAction(
 
 export const loadClinicAccountingPlatform = createAction(
   '[Clinic Page] Load Clinic Accounting Platform',
-  props<{ clinicId: number }>()
+  props<{ clinicId: number, pms: string }>()
 );
 
 export const setConnectedClinicId = createAction(

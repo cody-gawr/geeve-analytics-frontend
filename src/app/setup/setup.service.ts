@@ -47,7 +47,7 @@ export class SetupService {
     return this.http
       .get(
         environment.commonApiUrl +
-          `/xero/auth-url/?clinics=[${clinic_id}]`,
+          `/connect/xero/auth-url/?clinics=[${clinic_id}]`,
         header
       )
       .pipe(
@@ -97,30 +97,29 @@ export class SetupService {
     );
   }
 
-  checkXeroStatus(clinic_id): Observable<any> {
+  checkXeroStatus(clinic_id): Observable<HttpResponse<
+  {
+    success: boolean,
+    data: {
+      tenantId: string | null,
+      tenantName: string | null,
+      error: string | undefined // Present if there was an error
+    }
+  }>> {
     var header = this.getHeaders();
-    // return this.http
-    //   .get(
-    //     this.apiUrl + '/Xeros2/xeroGetStatus?getxero=1&clinic_id=' + clinic_id,
-    //     header
-    //   )
-    //   .pipe(
-    //     map((response: HttpResponse<Object>) => {
-    //       return response;
-    //     })
-    //   );
     return this.http
       .get(
-        this.apiUrl +
-          `/clinics/clinicGetAccountingPlatform?clinic_id=${clinic_id}&platform=xero`,
+        environment.commonApiUrl +
+          `/connect/xero/status?clinics=[${clinic_id}]`,
         header
       )
       .pipe(
-        map((response: HttpResponse<Object>) => {
+        map((response: HttpResponse<any>) => {
           return response;
         })
       );
   }
+
   getMyobLink(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http

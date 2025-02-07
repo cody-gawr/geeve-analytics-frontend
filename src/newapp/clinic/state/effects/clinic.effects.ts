@@ -131,7 +131,24 @@ export class ClinicEffects {
   public readonly getClinicAccountingPlatform$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ClinicPageActions.loadClinicAccountingPlatform),
-      switchMap(({ clinicId }) => {
+      switchMap(({ clinicId, pms }) => {
+        if(pms.toLowerCase() === 'xero' || true){
+          return this.clinicService.checkXeroStatus(clinicId).pipe(
+            map(res => 
+                ClinicApiActions.clinicAccountingPlatformSuccess({
+                  connectWith: res.success && res.data.tenantId? 'xero': null,
+                  clinicId,
+                })
+              ),
+            catchError((error: HttpErrorResponse) =>
+              of(
+                ClinicApiActions.clinicAccountingPlatformFailure({
+                  error: error.error ?? error,
+                })
+              )
+            )
+          );
+        }
         return this.clinicService.getClinicAccountingPlatform(clinicId).pipe(
           map(res =>
             ClinicApiActions.clinicAccountingPlatformSuccess({

@@ -181,4 +181,21 @@ export class ClinicService {
       )
       .pipe(map(res => <any>camelcaseKeys(res, { deep: true })));
   };
+
+  checkXeroStatus(clinic_id): Observable<JeeveResponse<
+  {
+    
+    tenantId: string | null,
+    tenantName: string | null,
+    error: string | undefined // Present if there was an error
+    
+  }>> {
+    return this.http
+      .get(
+        environment.commonApiUrl +
+          `/connect/xero/status?clinics=[${clinic_id}]`,
+          { withCredentials: true }
+      )
+      .pipe(map((res) => <any>res));
+  }
 }

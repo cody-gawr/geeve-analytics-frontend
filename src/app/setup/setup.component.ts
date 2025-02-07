@@ -464,28 +464,31 @@ export class SetupComponent implements AfterViewInit {
   }
   public checkXeroStatus(close) {
     this.setupService.checkXeroStatus(this.clinic_id).subscribe(
-      res => {
-        if (res.body.message != 'error') {
-          if (res.body.data.connectedWith == 'xero') {
-            this.xeroConnect = true;
-            this.xeroOrganization = res.body.data.name;
-            if (close) {
-              this.saveStripe();
+      {
+        next: res => {
+          if (res.body.success) {
+            if (!res.body.data.error && res.body.data.tenantId) {
+              this.xeroConnect = true;
+              this.xeroOrganization = res.body.data.tenantName;
+              if (close) {
+                this.saveStripe();
+              }
+            } else {
+              this.xeroConnect = false;
+              this.xeroOrganization = '';
+              this.disconnectXero();
             }
           } else {
             this.xeroConnect = false;
             this.xeroOrganization = '';
             this.disconnectXero();
           }
-        } else {
-          this.xeroConnect = false;
-          this.xeroOrganization = '';
-          this.disconnectXero();
+        },
+        error: error => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-      },
-      error => {
-        this.warningMessage = 'Please Provide Valid Inputs!';
       }
+
     );
   }
 

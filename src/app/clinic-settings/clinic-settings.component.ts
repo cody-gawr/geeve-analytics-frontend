@@ -543,28 +543,31 @@ export class ClinicSettingsComponent implements OnInit {
   //check status of xero connection
   public checkXeroStatus() {
     this.clinicSettingsService.checkXeroStatus(this.id).subscribe(
-      res => {
-        if (res.body.message != 'error') {
-          if (res.body.data.connectedWith == 'xero') {
-            this.xeroConnect = true;
-            this.xeroOrganization = res.body.data.name;
+      {
+        next: res => {
+          if (res.body.success) {
+            if (!res.body.data.error && res.body.data.tenantId) {
+              this.xeroConnect = true;
+              this.xeroOrganization = res.body.data.tenantName;
+            } else {
+              this.xeroConnect = false;
+              this.xeroOrganization = '';
+              this.getXeroLink();
+              //this.disconnectXero();
+            }
           } else {
             this.xeroConnect = false;
             this.xeroOrganization = '';
             this.getXeroLink();
             //this.disconnectXero();
           }
-        } else {
-          this.xeroConnect = false;
-          this.xeroOrganization = '';
+        },
+        error: error => {
           this.getXeroLink();
-          //this.disconnectXero();
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-      },
-      error => {
-        this.getXeroLink();
-        this.warningMessage = 'Please Provide Valid Inputs!';
       }
+
     );
   }
   //check status of myob connection

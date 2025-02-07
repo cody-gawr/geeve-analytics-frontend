@@ -302,14 +302,12 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     this.clinicFacade.currentClinics$
       .pipe(
         takeUntil(this.destroy$),
-        map(currentClinics => currentClinics.map(c => c.id)),
-        distinctUntilChanged((prev, curr) => _.min(prev) == _.min(curr))
+        distinctUntilChanged((prev, curr) => _.min(prev.map(p => p.id)) == _.min(curr.map(c => c.id)))
       ) 
       .subscribe(currentClinicIDs => {
         if (currentClinicIDs.length > 0) {
-          this.clinicFacade.loadClinicAccountingPlatform(
-            _.min(currentClinicIDs)
-          );
+          const clinic =  currentClinicIDs.find(cu => cu.id === _.min(currentClinicIDs.map(c => c.id)));
+          this.clinicFacade.loadClinicAccountingPlatform(clinic.id, clinic.pms);
         }
       });
 

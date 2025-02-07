@@ -280,8 +280,8 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
             this.setupService.checkXeroStatus(row.id).subscribe(
               {
                 next: res => {
-                  if (res.body.message != 'error') {
-                    if (res.body.data.connectedWith == 'xero') {
+                  if (res.body.success) {
+                    if (!res.body.data.error && res.body.data.tenantId) {
                       row.connected = true;
                     } else {
                       row.connected = false;
@@ -945,20 +945,23 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
           if(_result == 'success'){
             clinic.connected = undefined;
             this.setupService.checkXeroStatus(clinic.id).subscribe(
-              res => {
-                if (res.body.message != 'error') {
-                  if (res.body.data.connectedWith == 'xero') {
-                    clinic.connected = true;
+              {
+                next: res => {
+                  if (res.body.success) {
+                    if (!res.body.data.error && res.body.data.tenantId) {
+                      clinic.connected = true;
+                    } else {
+                      clinic.connected = false;
+                    }
                   } else {
                     clinic.connected = false;
                   }
-                } else {
+                },
+                error: error => {
                   clinic.connected = false;
                 }
-              },
-              error => {
-                clinic.connected = false;
               }
+
             );
           }
         });

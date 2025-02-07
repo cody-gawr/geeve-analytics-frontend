@@ -4104,20 +4104,23 @@ export class FinancesComponent implements AfterViewInit {
 
   public checkXeroStatus() {
     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe(
-      res => {
-        if (res.body.message != 'error') {
-          if (res.body.data.connectedWith == 'xero') {
-            this.xeroConnect = true;
+      {
+        next: res => {
+          if (res.body.success) {
+            if (!res.body.data.error && res.body.data.tenantId) {
+              this.xeroConnect = true;
+            } else {
+              this.xeroConnect = false;
+            }
           } else {
             this.xeroConnect = false;
           }
-        } else {
-          this.xeroConnect = false;
+        },
+        error: (err) => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-      },
-      error => {
-        this.warningMessage = 'Please Provide Valid Inputs!';
       }
+      
     );
   }
 

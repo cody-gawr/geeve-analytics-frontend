@@ -5,11 +5,7 @@ import { DashboardPageActions } from '../state/actions';
 import {
   DashboardState,
   selectChartTips,
-  // selectConnectedClinicId,
-  // selectConnectedWith,
   selectErrors,
-  // selectIsConnectedWith,
-  // selectIsLoadingClinicAccountingPlatform,
 } from '../state/reducers/dashboard.reducer';
 import { JeeveError } from '@/newapp/models';
 
@@ -22,34 +18,9 @@ export class DashboardFacade {
   );
 
   public readonly chartTips$ = this.store.pipe(select(selectChartTips));
-
-  // public readonly connectedWith$ = this.store.pipe(select(selectConnectedWith));
-  // public readonly isConnectedWith$ = this.store.pipe(
-  //   select(selectIsConnectedWith)
-  // );
-  // public readonly isLoadingClinicAccounting$ = this.store.pipe(
-  //   select(selectIsLoadingClinicAccountingPlatform)
-  // );
-
-  // public readonly connectedClinicId$ = this.store.pipe(
-  //   select(selectConnectedClinicId)
-  // );
-
   public loadChartTips(dashboardId: number, clinicId: string | number) {
     this.store.dispatch(
       DashboardPageActions.loadChartTips({ dashboardId, clinicId })
     );
   }
-
-  // public loadClinicAccountingPlatform(clinicId: number) {
-  //   this.store.dispatch(
-  //     DashboardPageActions.loadClinicAccountingPlatform({ clinicId })
-  //   );
-  // }
-
-  // public setConnectedClinicId(clinicId: number) {
-  //   this.store.dispatch(
-  //     DashboardPageActions.setConnectedClinicId({ clinicId })
-  //   );
-  // }
 }
