@@ -600,18 +600,21 @@ export class ClinicSettingsComponent implements OnInit {
   //disconnect xero connection
   public disconnectXero() {
     this.clinicSettingsService.clearSession(this.id).subscribe(
-      res => {
-        if (res.status == 200) {
-          this.xeroConnect = false;
-          this.xeroOrganization = '';
-          this.getXeroLink();
-        } else {
-          this.xeroConnect = true;
+      {
+        next: res => {
+          if (res.status == 200) {
+            this.xeroConnect = false;
+            this.xeroOrganization = '';
+            this.getXeroLink();
+          } else {
+            this.xeroConnect = true;
+          }
+        },
+        error: error => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
         }
-      },
-      error => {
-        this.warningMessage = 'Please Provide Valid Inputs!';
       }
+
     );
   }
   //disconnect myob connection

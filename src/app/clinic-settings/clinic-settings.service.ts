@@ -269,14 +269,19 @@ export class ClinicSettingsService {
       );
   }
 
-  clearSession(clinic_id): Observable<any> {
+  clearSession(clinic_id): Observable<HttpResponse<
+  {
+    success: boolean,
+    data: {}
+  }
+  >> {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
     return this.http
-      .post(this.apiUrl + '/Xeros2/disconnectXero/', formData, header)
+      .post(this.apiUrl + `/connect/xero/disconnect?clinics=[${clinic_id}]`, header)
       .pipe(
-        map((response: HttpResponse<Object>) => {
+        map((response: HttpResponse<any>) => {
           return response;
         })
       );

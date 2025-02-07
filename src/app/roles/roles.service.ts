@@ -78,15 +78,19 @@ export class RolesService {
       );
   }
 
-  clearSession(clinic_id): Observable<any> {
+  clearSession(clinic_id): Observable<HttpResponse<
+  {
+    success: boolean,
+    data: {}
+  }
+  >> {
     var header = this.getHeaders();
+    const formData = new FormData();
+    formData.append('clinic_id', clinic_id);
     return this.http
-      .get(
-        this.apiUrl + '/Xeros/clearSession/?getxero=1?clinic_id=' + clinic_id,
-        header
-      )
+      .post(this.apiUrl + `/connect/xero/disconnect?clinics=[${clinic_id}]`, header)
       .pipe(
-        map((response: HttpResponse<Object>) => {
+        map((response: HttpResponse<any>) => {
           return response;
         })
       );
