@@ -188,7 +188,7 @@ export class ClinicSettingsService {
     return this.http
       .get(
         environment.commonApiUrl +
-          `/connect/xero/auth-url?clinics=[${clinic_id}]`,
+          `/connect/xero/oauth-url?clinics=[${clinic_id}]`,
         header
       )
       .pipe(
@@ -279,7 +279,7 @@ export class ClinicSettingsService {
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
     return this.http
-      .post(environment.commonApiUrl + `/connect/xero/disconnect?clinics=[${clinic_id}]`, header)
+      .delete(environment.commonApiUrl + `/connect/xero/disconnect?clinics=[${clinic_id}]`, header)
       .pipe(
         map((response: HttpResponse<any>) => {
           return response;
