@@ -480,8 +480,8 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService.getXeroLink(this.id).subscribe(
       res => {
         if (res.status == 200) {
-          this.xero_link = res.body.data;
-        } else if (res.status == '401') {
+          this.xero_link = res.body.data?.url;
+        } else if (res.status == 401) {
           this._cookieService.put('username', '');
           this._cookieService.put('email', '');
           this._cookieService.put('userid', '');

@@ -37,17 +37,21 @@ export class SetupService {
   }
 
   // Get ClinicSettings
-  getXeroLink(clinic_id): Observable<any> {
+  getXeroLink(clinic_id): Observable<HttpResponse<{
+    success: boolean,
+    data: {
+      url:string
+    }
+  }>> {
     var header = this.getHeaders();
     return this.http
       .get(
-        this.apiUrl +
-          '/Xeros2/getAuthorizeUrl/?getxero=1&clinic_id=' +
-          clinic_id,
+        environment.commonApiUrl +
+          `/xero/auth-url/?clinics=[${clinic_id}]`,
         header
       )
       .pipe(
-        map((response: HttpResponse<Object>) => {
+        map((response: HttpResponse<any>) => {
           return response;
         })
       );

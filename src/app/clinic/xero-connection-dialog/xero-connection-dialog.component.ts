@@ -30,7 +30,7 @@ export class XeroConnectionDialogComponent {
                 console.log(
                   `gtt: in getxerolink, res.body: ${JSON.stringify(response.body)}`
                 );
-                const responseURL = response.body.data;
+                const responseURL = response.body.data?.url;
             if (responseURL) {
               var win = window.open(responseURL, 'MsgWindow', 'width=1000,height=800');
               var timer = setInterval(() => {

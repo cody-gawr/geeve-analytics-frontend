@@ -39,7 +39,7 @@ export class SetupComponent implements AfterViewInit {
   private warningMessage: string;
   public disabled = false;
   public imageURL: any = '';
-  public xero_link;
+  public xero_link: string;
   public xeroConnect = false;
   public xeroOrganization = '';
   public myob_link;
@@ -364,10 +364,10 @@ export class SetupComponent implements AfterViewInit {
     this.selectedIndex = selectedIndex;
   }
   getXeroLink() {
-    this.setupService.getXeroLink(this.clinic_id).subscribe(
-      res => {
+    this.setupService.getXeroLink(this.clinic_id).subscribe({
+      next: res => {
         if (res.status == 200) {
-          this.xero_link = res.body.data;
+          this.xero_link = res.body.data?.url;
         } else if (res.status == 401) {
           this._cookieService.put('username', '');
           this._cookieService.put('email', '');
@@ -375,10 +375,10 @@ export class SetupComponent implements AfterViewInit {
           this.router.navigateByUrl('/login');
         }
       },
-      error => {
+      error: () => {
         this.warningMessage = 'Please Provide Valid Inputs!';
       }
-    );
+    });
   }
 
   getConnectCoreLink() {

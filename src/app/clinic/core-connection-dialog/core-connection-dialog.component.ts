@@ -38,7 +38,7 @@ export class CoreConnectionDialogComponent {
         next: (response) => {
           if (response.status == 200 && response.body.success) {
                 console.log(
-                    `gtt: in getxerolink, res.body: ${JSON.stringify(response.body)}`
+                    `gtt: in CoreLink, res.body: ${JSON.stringify(response.body)}`
                 );
                 const responseURL = response.body.data;
                 if (responseURL) {
