@@ -37,7 +37,7 @@ import { MarketingRevByReferralComponent } from './components/marketing/componen
 import { MarketingNumNewPatientsComponent } from './components/marketing/components/num-new-patients/num-new-patients.component';
 import { MarketingNewPatientsAcqComponent } from './components/marketing/components/new-patients-acq/new-patients-acq.component';
 import { MarketingTotalVisitsComponent } from './components/marketing/components/total-visits/total-visits.component';
-import { MarketingService } from '@/app/dashboards/marketing/marketing.service';
+// import { MarketingService } from '@/app/dashboards/marketing/marketing.service';
 import { MarketingFacade } from './facades/marketing.facade';
 import { MkSelectAccountsModalComponent } from './components/marketing/components/select-accounts-modal/select-accounts-modal.component';
 import { FrontDeskUtilRateComponent } from './components/front-desk/components/utilisation-rate/utilisation-rate.component';
@@ -84,6 +84,7 @@ import { FollowupsComponent } from './components/followups/followups.component';
 import { UnsubscribedPageComponent } from './components/unsubscribed-page/unsubscribed-page.component';
 import { MkProdByPostCodeComponent } from './components/marketing/components/prod-by-postcode/prod-by-postcode.component';
 import { FnHourlyRateChartComponent } from './components/finances/components/hourly-rate-chart/hourly-rate.chart.component';
+import { MarketingService } from './services/marketing.service';
 
 @NgModule({
   imports: [
@@ -175,6 +176,7 @@ import { FnHourlyRateChartComponent } from './components/finances/components/hou
     DashboardFacade,
     FinanceService,
     FinanceFacade,
+    // MarketingService,
     MarketingService,
     MarketingFacade,
     FrontDeskFacade,

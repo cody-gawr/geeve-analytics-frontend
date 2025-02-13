@@ -23,7 +23,7 @@ import {
   MatLegacyDialog as MatDialog,
 } from '@angular/material/legacy-dialog';
 import { ClinicSettingsService } from '../clinic-settings.service';
-import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
+//import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
 import Swal from 'sweetalert2';
 import { MatSort } from '@angular/material/sort';
 @Component({
@@ -309,7 +309,7 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     private toastr: ToastrService,
     public dialog: MatDialog,
     private clinicSettingsService: ClinicSettingsService,
-    private clinicianAnalysisService: ClinicianAnalysisService
+    // private clinicianAnalysisService: ClinicianAnalysisService
   ) {
     super();
   }
