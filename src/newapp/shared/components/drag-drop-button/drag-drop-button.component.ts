@@ -1,6 +1,6 @@
 import { CampaignService } from '@/newapp/campaigns/services/campaign.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, takeUntil} from 'rxjs';
+import { Subject} from 'rxjs';
 
 @Component({
   selector: 'drag-drop-button',
@@ -14,7 +14,6 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
   @Input() iconUrlWhite: string;
   @Input() filterName: string;
   @Input() title: string;
-  // @Input() selectedFilterName$: Observable<string>;
   @Input() closeEvent:Subject<string>;
   @Input() isOpen = false;
   @Input() isDone = false;

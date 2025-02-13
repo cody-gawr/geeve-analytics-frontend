@@ -9,7 +9,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
-// import { StepperHeaderComponent } from './layouts/stepper/header/header.component';
 import {
   AppSidebarComponent,
   ReferFriendComponent,
@@ -49,11 +48,10 @@ import {
   StatusDialogComponent,
   ExportDataDialogComponent,
 } from './followups/followups.component';
-import {
-  CampaignsComponent,
-  CampaignsStatusDialogComponent,
-  CampaignsDialogComponent,
-} from './campaigns/campaigns.component';
+// import {
+//   CampaignsStatusDialogComponent,
+//   CampaignsDialogComponent,
+// } from './campaigns/campaigns.component';
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
 import { SharedMatModule } from './shared-mat.module';
@@ -68,9 +66,6 @@ import { SortDirective } from './directive/sort.directive';
 import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GraphsComponent } from './graphs/graphs.component';
-// import { NgxGaugeModule } from 'ngx-gauge';
-// import { NgChartsModule as ChartsModule } from 'ng2-charts';
-// import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from '@/newapp/state';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -111,12 +106,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MorningHuddleComponent,
     SignupComponent,
     FollowupsComponent,
-    CampaignsComponent,
     FollowupsDialogComponent,
     ExportDataDialogComponent,
     StatusDialogComponent,
-    CampaignsStatusDialogComponent,
-    CampaignsDialogComponent,
+    // CampaignsStatusDialogComponent,
+    // CampaignsDialogComponent,
     StatusDialogMHComponent,
     DialogOverviewExampleDialogComponent,
     StepperComponent,

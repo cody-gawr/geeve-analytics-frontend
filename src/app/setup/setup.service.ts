@@ -49,7 +49,7 @@ export class SetupService {
         environment.commonApiUrl +
           `/connect/xero/oauth-url/?clinics=[${clinic_id}]`,
         header
-      )
+      ) 
       .pipe(
         map((response: HttpResponse<any>) => {
           return response;
@@ -132,13 +132,6 @@ export class SetupService {
   }
   checkMyobStatus(clinic_id): Observable<any> {
     var header = this.getHeaders();
-    // return this.http
-    //   .get(this.apiUrl + '/Myob/myobGetStatus?clinic_id=' + clinic_id, header)
-    //   .pipe(
-    //     map((response: HttpResponse<Object>) => {
-    //       return response;
-    //     })
-    //   );
     return this.http
       .get(
         this.apiUrl +
@@ -234,14 +227,7 @@ export class SetupService {
     formData.append('displayName', displayName);
     formData.append('pms', pms);
     formData.append('days', days);
-    // formData.append('coreURL', coreURL);
     formData.append('product', 'jeeve_analytics');
-    /*formData.append('contactName', contact_name);*/
-    /*formData.append('facebook', facebook);
-    formData.append('twitter', twitter);
-    formData.append('linkedin', linkedin);
-    formData.append('logo', clinic_logo);
-    formData.append('instagram', instagram);*/
     var header = this.getHeaders();
 
     return this.http

@@ -6,7 +6,6 @@ import {
   ViewChild,
   ViewEncapsulation,
   ElementRef,
-  OnInit,
 } from '@angular/core';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
@@ -23,7 +22,6 @@ import {
   MatLegacyDialog as MatDialog,
 } from '@angular/material/legacy-dialog';
 import { ClinicSettingsService } from '../clinic-settings.service';
-//import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
 import Swal from 'sweetalert2';
 import { MatSort } from '@angular/material/sort';
 @Component({
@@ -205,7 +203,6 @@ export class DialogOverviewTasklistDialogComponent {
   }
 
   // add task with the input  field
-
   addTaskIn(data) {
     let task_name = this.task.nativeElement.value;
     if (task_name) {
@@ -229,27 +226,6 @@ export class DialogOverviewTasklistDialogComponent {
 
   additemNew(data) {
     this.dialogRef.componentInstance.data.currPage = 1;
-
-    /*this.showAddItem = !this.showAddItem
-
-    
-      this.taskService.addTasksItem(data.list_id, 'New task created', data.clinic_id).subscribe((res) => {
-        if (res.status == 200) {
-          let oldData = this.dialogRef.componentInstance.data.tasksListItems;
-        let newData = res.body.data;
-        if (oldData.length) {
-          newData.readOnly = true
-          oldData.push(newData);
-        } else {
-          oldData = newData
-        }
-        } else if (res.status == 401) {
-          this.handleUnAuthorization();
-        }
-      }, error => {
-        console.log('error', error)
-      });
-    */
 
     this.taskService
       .updateTasksItem('', data.list_id, 'New Task', data.clinic_id)
@@ -309,7 +285,6 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     private toastr: ToastrService,
     public dialog: MatDialog,
     private clinicSettingsService: ClinicSettingsService,
-    // private clinicianAnalysisService: ClinicianAnalysisService
   ) {
     super();
   }
@@ -319,7 +294,6 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     this.tasksList.paginator = this.paginator;
     this.clinic_id$.pipe(takeUntil(this.destroyed$)).subscribe(id => {
       if (id) {
-        // this.getClinic(id);
         this.getClinic();
         this.getTasks(id);
       }
@@ -360,13 +334,6 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
     this.setPaginationButtons(pageNum);
   };
 
-  // getClinic(id) {
-  //   this.clinicianAnalysisService.getClinics(id, 'DailyTaskEnable').subscribe((data: any) => {
-  //     if (data.body.data) {
-  //       this.dailyTaskEnable = (data.body.data.daily_task_enable == 1) ? true : false;
-  //     }
-  //   }, error => { });
-  // }
   getClinic() {
     this.clinicSettingsService.getClinicData.subscribe(
       (data: any) => {

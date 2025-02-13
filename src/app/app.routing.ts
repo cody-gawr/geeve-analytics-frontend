@@ -8,7 +8,7 @@ import { KpiReportComponent } from './kpi-report/kpi-report.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { MorningHuddleComponent } from './dashboards/morning-huddle/morning-huddle.component';
 import { FollowupsComponent } from './followups/followups.component';
-import { CampaignsComponent } from './campaigns/campaigns.component';
+// import { CampaignsComponent } from './campaigns/campaigns.component';
 import { AuthGuard } from './auth/authguard.service';
 import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
 import { NewAppBlankComponent } from './layouts/blank/new-blank.component';
@@ -117,11 +117,11 @@ export const AppRoutes: Routes = [
         component: FollowupsComponent,
         canActivate: [AuthGuard],
       },
-      {
-        path: 'campaigns',
-        component: CampaignsComponent,
-        canActivate: [AuthGuard],
-      },
+      // {
+      //   path: 'campaigns',
+      //   component: CampaignsComponent,
+      //   canActivate: [AuthGuard],
+      // },
       {
         path: 'clinic-settings/:id',
         loadChildren: () =>
