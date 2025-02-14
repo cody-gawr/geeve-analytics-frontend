@@ -62,11 +62,11 @@
             <ng-template #chartElem1>
               <spin-loader
                 class="empty-placeholder"
-                *ngIf="(isExact$ | async) || (isCore$ | async); else chartElem2"
+                *ngIf="(isExact$ | async) || (isCore$ | async); else enabledChart"
                 [disableSpin]="true">
                 Coming Soon...
               </spin-loader>
-              <ng-template #chartElem2>
+              <ng-template #enabledChart>
                 <canvas
                   #fdUtilRateChart
                   *ngIf="hasData$ | async; else chartElem03"

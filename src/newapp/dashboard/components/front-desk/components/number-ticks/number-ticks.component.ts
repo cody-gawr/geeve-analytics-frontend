@@ -21,6 +21,10 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
+  get isComingSoon() {
+    return this.toolTip?.toLowerCase() === 'coming-soon';
+  }
+
   get trendingIcon() {
     if (this.fdNumOfTicksVal >= this.fdNumOfTicksPrev) {
       return 'trending_up';

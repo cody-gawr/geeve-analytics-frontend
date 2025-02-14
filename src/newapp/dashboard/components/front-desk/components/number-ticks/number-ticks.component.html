@@ -20,42 +20,50 @@
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
       <div class="chart-gauge number-ticks-gauge">
-        <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
-        <ng-template #mainElem>
-          <ngx-gauge
-            *ngIf="
-              !(isMultipleClinic$ | async) &&
-              (hasData$ | async) &&
-              !(isTrend$ | async)
-            "
-            type="arch"
-            [value]="fdNumOfTicksVal"
-            [thick]="20"
-            foregroundColor="#4ccfae"
-            backgroundColor="#f4f0fa"
-            cap="round"
-            size="250">
-          </ngx-gauge>
-          <canvas
-            #fdNumOfTicksChart
-            *ngIf="
-              ((isTrend$ | async) || (isMultipleClinic$ | async)) &&
-              (hasData$ | async)
-            "
-            baseChart
-            [datasets]="datasets"
-            [labels]="labels"
-            [legend]="false"
-            type="bar"
-            [options]="chartOptions$ | async">
-          </canvas>
-
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="!(hasData$ | async)"
-            [disableSpin]="true">
-            You have no TICKs in the selected period
-          </spin-loader>
+        <spin-loader
+          class="empty-placeholder"
+          *ngIf="isComingSoon; else enabledChart"
+          [disableSpin]="true">
+          Coming Soon...
+        </spin-loader>
+        <ng-template #enabledChart>
+          <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
+          <ng-template #mainElem>
+            <ngx-gauge
+              *ngIf="
+                !(isMultipleClinic$ | async) &&
+                (hasData$ | async) &&
+                !(isTrend$ | async)
+              "
+              type="arch"
+              [value]="fdNumOfTicksVal"
+              [thick]="20"
+              foregroundColor="#4ccfae"
+              backgroundColor="#f4f0fa"
+              cap="round"
+              size="250">
+            </ngx-gauge>
+            <canvas
+              #fdNumOfTicksChart
+              *ngIf="
+                ((isTrend$ | async) || (isMultipleClinic$ | async)) &&
+                (hasData$ | async)
+              "
+              baseChart
+              [datasets]="datasets"
+              [labels]="labels"
+              [legend]="false"
+              type="bar"
+              [options]="chartOptions$ | async">
+            </canvas>
+  
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!(hasData$ | async)"
+              [disableSpin]="true">
+              You have no TICKs in the selected period
+            </spin-loader>
+          </ng-template>
         </ng-template>
       </div>
       <div class="chart-foot" *ngIf="!(isTrend$ | async)">

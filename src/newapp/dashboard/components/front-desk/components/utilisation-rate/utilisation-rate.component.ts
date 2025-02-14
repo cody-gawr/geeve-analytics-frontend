@@ -22,6 +22,10 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   @Input() toolTip = '';
 
+  get isComingSoon() {
+    return this.toolTip?.toLowerCase() === 'coming-soon';
+  }
+
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

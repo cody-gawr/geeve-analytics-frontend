@@ -12,7 +12,6 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
-import moment from 'moment';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 
 @Component({
@@ -22,6 +21,10 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 })
 export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
   @Input() toolTip = '';
+
+  get isComingSoon() {
+    return this.toolTip?.toLowerCase() === 'coming-soon';
+  }
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
