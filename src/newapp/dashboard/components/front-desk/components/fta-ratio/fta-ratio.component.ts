@@ -2,6 +2,7 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { FrontDeskFacade } from '@/newapp/dashboard/facades/front-desk.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 import {
   JeeveLineFillOptions,
   generatingLegend_4,
@@ -20,10 +21,10 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
   styleUrls: ['./fta-ratio.component.scss'],
 })
 export class FrontDeskFtaRatioComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
+  @Input() toolTip: ChartTip;
 
   get isComingSoon() {
-    return this.toolTip?.toLowerCase() === 'coming-soon';
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
   }
 
   destroy = new Subject<void>();
