@@ -3,23 +3,29 @@
   <trend-mode-toggle></trend-mode-toggle>
 </div>
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
-  <fd-utilisation-rate-chart
-    [toolTip]="getChartTip(15) | async"
-    class="chart-33"></fd-utilisation-rate-chart>
-  <fd-recall-rate-chart
-    [toolTip]="getChartTip(16) | async"
-    class="chart-33"></fd-recall-rate-chart>
-  <fd-reappoint-rate-chart
-    [toolTip]="getChartTip(17) | async"
-    class="chart-33"></fd-reappoint-rate-chart>
-  <fd-number-ticks-chart
-    [toolTip]="getChartTip(20) | async"
-    class="chart-33"></fd-number-ticks-chart>
-  <fd-fta-ratio-chart
-    [toolTip]="getChartTip(18) | async"
-    class="chart-33"></fd-fta-ratio-chart>
-  <fd-uta-ratio-chart
-    *ngIf="!((isPraktika$ | async) || (isCore$ | async))"
-    [toolTip]="getChartTip(19) | async"
-    class="chart-33"></fd-uta-ratio-chart>
+    <fd-utilisation-rate-chart
+      *ngIf="chartWidths[FrontDeskChartIDs.utilisation]"
+      [toolTip]="chartTips[FrontDeskChartIDs.utilisation]"
+      [class]="chartWidths[FrontDeskChartIDs.utilisation]"></fd-utilisation-rate-chart>
+    <fd-recall-rate-chart
+    *ngIf="chartWidths[FrontDeskChartIDs.recallRate]"
+      [toolTip]="chartTips[FrontDeskChartIDs.recallRate]"
+      [class]="chartWidths[FrontDeskChartIDs.recallRate]"></fd-recall-rate-chart>
+    <fd-reappoint-rate-chart
+      *ngIf="chartWidths[FrontDeskChartIDs.reappointRate]"
+      [toolTip]="chartTips[FrontDeskChartIDs.reappointRate]"
+      [class]="chartWidths[FrontDeskChartIDs.reappointRate]"></fd-reappoint-rate-chart>
+
+    <fd-number-ticks-chart
+      *ngIf="chartWidths[FrontDeskChartIDs.numberTicks]"
+      [toolTip]="chartTips[FrontDeskChartIDs.numberTicks]"
+      [class]="chartWidths[FrontDeskChartIDs.numberTicks]"></fd-number-ticks-chart>
+    <fd-fta-ratio-chart
+      *ngIf="chartWidths[FrontDeskChartIDs.ftaRatio]"
+      [toolTip]="chartTips[FrontDeskChartIDs.ftaRatio]"
+      [class]="chartWidths[FrontDeskChartIDs.ftaRatio]"></fd-fta-ratio-chart>
+    <fd-uta-ratio-chart
+      *ngIf="chartWidths[FrontDeskChartIDs.utaRatio]"
+      [toolTip]="chartTips[FrontDeskChartIDs.utaRatio]"
+      [class]="chartWidths[FrontDeskChartIDs.utaRatio]"></fd-uta-ratio-chart>
 </div>

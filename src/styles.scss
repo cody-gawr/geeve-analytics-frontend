@@ -340,6 +340,12 @@ html {
     }
   }
 
+  .chart-100 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
   .w-100 {
     width: 100% !important;
   }

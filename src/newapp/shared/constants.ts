@@ -92,3 +92,9 @@ export const PROD_AGE_LIST = {
   'Multi-Age': 'Multi-Age',
   'Unspecified': 'Unspecified',
 };
+
+export const CHART_WIDTH_CLASS = {
+  1: 'chart-100',
+  2: 'chart-50',
+  3: 'chart-33'
+}

@@ -15,6 +15,8 @@ import moment from 'moment';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { FrontDeskFacade } from '../../facades/front-desk.facade';
 import _ from 'lodash';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
+import { CHART_WIDTH_CLASS } from '@/newapp/shared/constants';
 
 @Component({
   selector: 'dashboard-front-desk',
@@ -22,8 +24,24 @@ import _ from 'lodash';
   styleUrls: ['./front-desk.component.scss'],
 })
 export class FrontDeskComponent implements OnInit, OnDestroy {
+  FrontDeskChartIDs = {
+    utilisation: 15,
+    recallRate: 16,
+    reappointRate: 17,
+    numberTicks: 20,
+    ftaRatio: 18,
+    utaRatio: 19
+  }
+  
+  FrontDeskChartLayouts = [
+    [this.FrontDeskChartIDs.utilisation, this.FrontDeskChartIDs.recallRate, this.FrontDeskChartIDs.reappointRate],
+    [this.FrontDeskChartIDs.numberTicks, this.FrontDeskChartIDs.ftaRatio, this.FrontDeskChartIDs.utaRatio]
+  ];
+
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
+  chartTips: {[key: number]: ChartTip} = {};
+  chartWidths: {[key: number]: string} = {};
 
   get isPraktika$() {
     return this.clinicFacade.isEachClinicPraktika$;
@@ -78,6 +96,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
       this.clinicFacade.connectedClinicId$,
+      this.dashbordFacade.chartTips$
     ])
       .pipe(
         takeUntil(this.destroy$),
@@ -91,7 +110,11 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
           route,
           trend,
           connectedClinicId,
+          _chartTips
         ] = params;
+
+        if(!_chartTips) return;
+        this.chartTips = _chartTips;
 
         const clinicId =
           clinics.length > 0
@@ -99,12 +122,12 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
               ? clinics.map(c => c.id).join(',')
               : clinics[0].id
             : null;
-        const isEachClinicPmsCoreOrExact =
-          clinics.every(c => c.pms == 'core') ||
-          clinics.every(c => c.pms == 'exact');
-        const isEachClinicPmsCoreOrPraktika = clinics.every(
-          c => c.pms == 'praktika' || c.pms == 'core'
-        );
+        // const isEachClinicPmsCoreOrExact =
+        //   clinics.every(c => c.pms == 'core') ||
+        //   clinics.every(c => c.pms == 'exact');
+        // const isEachClinicPmsCoreOrPraktika = clinics.every(
+        //   c => c.pms == 'praktika' || c.pms == 'core'
+        // );
         if (clinicId == null) return;
 
         const newConnectedId =
@@ -121,6 +144,32 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
 
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
         this.frontDeskFacade.setErrors([]);
+
+        const spCallApis = {
+          [this.FrontDeskChartIDs.ftaRatio]: [(a) => this.frontDeskFacade.loadFdFtaRatio(a)],
+          [this.FrontDeskChartIDs.numberTicks]: [(a) => this.frontDeskFacade.loadFdNumTicks(a)],
+          [this.FrontDeskChartIDs.reappointRate]: [(a) => this.frontDeskFacade.loadFdReappointRate(a)],
+          [this.FrontDeskChartIDs.recallRate]: [(a) => this.frontDeskFacade.loadFdRecallRate(a)],
+          [this.FrontDeskChartIDs.utaRatio]: [(a) => this.frontDeskFacade.loadFdUtaRatio(a)],
+          [this.FrontDeskChartIDs.utilisation]: [
+            (a) => this.frontDeskFacade.loadFdUtilisationRate(a),
+            (a) => this.frontDeskFacade.loadFdUtilisationRateByDay(a)
+          ],
+        }
+
+        const spCallApisTrend = {
+          [this.FrontDeskChartIDs.ftaRatio]: [
+            (a, b, c) => this.frontDeskFacade.loadFdFtaRatioTrend(a, b, c)
+          ],
+          [this.FrontDeskChartIDs.numberTicks]: [(a, b, c) => this.frontDeskFacade.loadFdNumTicksTrend(a, b, c)],
+          [this.FrontDeskChartIDs.reappointRate]: [(a, b, c) => this.frontDeskFacade.loadFdReappointRateTrend(a, b, c)],
+          [this.FrontDeskChartIDs.recallRate]: [(a, b, c) => this.frontDeskFacade.loadFdRecallRateTrend(a, b, c)],
+          [this.FrontDeskChartIDs.utaRatio]: [(a, b, c) => this.frontDeskFacade.loadFdUtaRatioTrend(a, b, c)],
+          [this.FrontDeskChartIDs.utilisation]: [(a, b, c) => this.frontDeskFacade.loadFdUtilisationRateTrend(a, b, c)]
+        }
+
+
+        const availableChartIds: number[] = [];
         switch (trend) {
           case 'off':
             const params = {
@@ -131,72 +180,97 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
               queryWhEnabled,
               connectedWith: connectedWith,
             };
-            if (!isEachClinicPmsCoreOrExact) {
-              this.frontDeskFacade.loadFdUtilisationRate(params);
-              this.frontDeskFacade.loadFdUtilisationRateByDay(params);
-            }
-            this.frontDeskFacade.loadFdRecallRate(params);
-            this.frontDeskFacade.loadFdReappointRate(params);
-            this.frontDeskFacade.loadFdNumTicks(params);
-            this.frontDeskFacade.loadFdFtaRatio(params);
-            if (!isEachClinicPmsCoreOrPraktika) {
-              this.frontDeskFacade.loadFdUtaRatio(params);
-            }
+            // if (!isEachClinicPmsCoreOrExact) {
+            //   this.frontDeskFacade.loadFdUtilisationRate(params);
+            //   this.frontDeskFacade.loadFdUtilisationRateByDay(params);
+            // }
+            // this.frontDeskFacade.loadFdRecallRate(params);
+            // this.frontDeskFacade.loadFdReappointRate(params);
+            // this.frontDeskFacade.loadFdNumTicks(params);
+            // this.frontDeskFacade.loadFdFtaRatio(params);
+            // if (!isEachClinicPmsCoreOrPraktika) {
+            //   this.frontDeskFacade.loadFdUtaRatio(params);
+            // }
+            Object.keys(spCallApis).map(key => {
+                const intkey = parseInt(key);
+                const info = this.chartTips[intkey]?.info;
+                if(info?.toLowerCase() === 'disabled'){
+
+                }else{
+                  availableChartIds.push(intkey);
+                  spCallApis[intkey].map(spCallFn => {
+                    spCallFn(params);
+                  });
+                }
+            });
             break;
           case 'current':
           case 'historic':
-            if (!isEachClinicPmsCoreOrExact) {
-              this.frontDeskFacade.loadFdUtilisationRateTrend(
-                clinicId,
-                trend === 'current' ? 'c' : 'h',
-                queryWhEnabled
-              );
-            }
-            this.frontDeskFacade.loadFdRecallRateTrend(
-              clinicId,
-              trend === 'current' ? 'c' : 'h',
-              queryWhEnabled
-            );
-            this.frontDeskFacade.loadFdReappointRateTrend(
-              clinicId,
-              trend === 'current' ? 'c' : 'h',
-              queryWhEnabled
-            );
-            this.frontDeskFacade.loadFdNumTicksTrend(
-              clinicId,
-              trend === 'current' ? 'c' : 'h',
-              queryWhEnabled
-            );
-            this.frontDeskFacade.loadFdFtaRatioTrend(
-              clinicId,
-              trend === 'current' ? 'c' : 'h',
-              queryWhEnabled
-            );
-            if (!isEachClinicPmsCoreOrPraktika) {
-              this.frontDeskFacade.loadFdUtaRatioTrend(
-                clinicId,
-                trend === 'current' ? 'c' : 'h',
-                queryWhEnabled
-              );
-            }
+            // if (!isEachClinicPmsCoreOrExact) {
+            //   this.frontDeskFacade.loadFdUtilisationRateTrend(
+            //     clinicId,
+            //     trend === 'current' ? 'c' : 'h',
+            //     queryWhEnabled
+            //   );
+            // }
+            // this.frontDeskFacade.loadFdRecallRateTrend(
+            //   clinicId,
+            //   trend === 'current' ? 'c' : 'h',
+            //   queryWhEnabled
+            // );
+            // this.frontDeskFacade.loadFdReappointRateTrend(
+            //   clinicId,
+            //   trend === 'current' ? 'c' : 'h',
+            //   queryWhEnabled
+            // );
+            // this.frontDeskFacade.loadFdNumTicksTrend(
+            //   clinicId,
+            //   trend === 'current' ? 'c' : 'h',
+            //   queryWhEnabled
+            // );
+            // this.frontDeskFacade.loadFdFtaRatioTrend(
+            //   clinicId,
+            //   trend === 'current' ? 'c' : 'h',
+            //   queryWhEnabled
+            // );
+            // if (!isEachClinicPmsCoreOrPraktika) {
+            //   this.frontDeskFacade.loadFdUtaRatioTrend(
+            //     clinicId,
+            //     trend === 'current' ? 'c' : 'h',
+            //     queryWhEnabled
+            //   );
+            // }
+            Object.keys(spCallApisTrend).map(key => {
+              const intkey = parseInt(key);
+              const info = this.chartTips[key]?.info;
+              if(info?.toLowerCase() === 'disabled'){
 
+              }else{
+                availableChartIds.push(intkey);
+                spCallApisTrend[key].map(spCallFn => {
+                  spCallFn(
+                    clinicId,
+                    trend === 'current' ? 'c' : 'h',
+                    queryWhEnabled
+                  );
+                })
+              }
+          });
             break;
         }
+        this.chartWidths = {};
+        const availableChartLayouts = this.FrontDeskChartLayouts.map(l => l.filter(v => availableChartIds.includes(v)));
+        availableChartIds.forEach(chartId => {
+          const rowIdx = availableChartLayouts.findIndex(row => row.includes(chartId));
+          if(rowIdx > -1){
+            const len = availableChartLayouts[rowIdx].length;
+            this.chartWidths[chartId] = CHART_WIDTH_CLASS[len];
+          }
+        })
       });
   }
 
   ngOnDestroy(): void {
     this.destroy.next();
-  }
-
-  getChartTip(index: number) {
-    return this.dashbordFacade.chartTips$.pipe(
-      map(c => {
-        if (c && c[index]) {
-          return c[index];
-        }
-        return '';
-      })
-    );
   }
 }
