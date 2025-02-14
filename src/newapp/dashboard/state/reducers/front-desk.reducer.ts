@@ -12,6 +12,7 @@ import {
   FdUtaRatioTrendApiResponse,
   FdUtilisationRateApiResponse,
   FdUtilisationRateByDayApiResponse,
+  FdUtilisationRateItem,
   FdUtilisationRateTrendApiResponse,
 } from '@/newapp/models/dashboard/front-desk';
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
@@ -24,7 +25,7 @@ import {
   selectIsMultiClinicsSelected,
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
-import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
+import { selectComputedDurationUnits, selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 
 type FrontDeskEndpoints =
   | 'fdUtilisationRate'
@@ -899,7 +900,8 @@ export const selectFdUtilRateTrendChartData = createSelector(
   selectFdUtilisationRateTrendData,
   selectCurrentClinicId,
   selectTrend,
-  (resBody, clinicId, trendMode) => {
+  selectComputedDurationUnits,
+  (resBody, clinicId, trendMode, yearsOrMonths) => {
     if (resBody == null || !resBody.data) {
       return {
         datasets: [],
@@ -938,22 +940,41 @@ export const selectFdUtilRateTrendChartData = createSelector(
     } else {
       const chartData = [],
         targetData = [];
-      resBody.data.forEach(item => {
-        chartData.push(Math.round(parseFloat(<string>item.utilRate) * 100));
-        if (item.goals == -1 || item.goals == '' || item.goals == null) {
+      const temp = _.chain(resBody.data)
+        .groupBy((item) => {
+          const date = moment();
+          date.set({ year: Number(item.year), month: Number(item.month) - 1 });
+          return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
+        }).map((values: FdUtilisationRateItem[], key: string) => ({values, key})).value();
+
+    const d = yearsOrMonths.map(
+        (ym) =>
+          temp.find((i) => i.key == ym) || {
+            key: ym,
+            values: []
+          }
+    );
+
+
+      d.forEach(({values, key}) => {
+        
+        chartData.push(Math.round(_.sumBy(values, v => Number(v.utilRate)) / values.length) * 100);
+        if (values.every(item => item.goals == -1 || item.goals == '' || item.goals == null)) {
           targetData.push([0, 0]);
         } else {
+          const goals = _.sumBy(values, v => parseFloat(<string>v.goals) || 0) / values.length;
           targetData.push([
-            parseFloat(<string>item.goals) - GOAL_THICKNESS,
-            parseFloat(<string>item.goals) + GOAL_THICKNESS,
+            goals - GOAL_THICKNESS,
+            goals + GOAL_THICKNESS,
           ]);
         }
         chartLabels.push(
           `${
-            trendMode == 'current'
-              ? moment(item.yearMonth).format('MMM YYYY')
-              : item.year
-          }--${item.workedHour}--${item.plannedHour}`
+            key
+            // trendMode == 'current'
+            //   ? moment(item.yearMonth).format('MMM YYYY')
+            //   : item.year
+          }--${_.sumBy(values, v => Number(v.workedHour))/ values.length}--${_.sumBy(values, v => Number(v.plannedHour))/values.length}`
         );
       });
       chartDatasets = [
@@ -1379,22 +1400,10 @@ export const selectFdReappointRateTrendChartData = createSelector(
             '#EEEEF8',
             '#119682',
           ],
-          // shadowOffsetY: 2,
-          // shadowBlur: 3,
-          // shadowColor: 'rgba(0, 0, 0, 0.3)',
-          // pointBevelWidth: 2,
-          // pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-          // pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-          // pointShadowOffsetX: 3,
-          // pointShadowOffsetY: 3,
-          // pointShadowBlur: 10,
-          // pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-          // backgroundOverlayMode: 'multiply',
         },
         {
           data: [],
           label: '',
-          // shadowOffsetX: 3,
           backgroundColor: 'rgba(255, 0, 128, 1)',
           order: 1,
         },
