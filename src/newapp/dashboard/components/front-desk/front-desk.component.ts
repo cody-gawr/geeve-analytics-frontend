@@ -180,22 +180,13 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
               queryWhEnabled,
               connectedWith: connectedWith,
             };
-            // if (!isEachClinicPmsCoreOrExact) {
-            //   this.frontDeskFacade.loadFdUtilisationRate(params);
-            //   this.frontDeskFacade.loadFdUtilisationRateByDay(params);
-            // }
-            // this.frontDeskFacade.loadFdRecallRate(params);
-            // this.frontDeskFacade.loadFdReappointRate(params);
-            // this.frontDeskFacade.loadFdNumTicks(params);
-            // this.frontDeskFacade.loadFdFtaRatio(params);
-            // if (!isEachClinicPmsCoreOrPraktika) {
-            //   this.frontDeskFacade.loadFdUtaRatio(params);
-            // }
             Object.keys(spCallApis).map(key => {
                 const intkey = parseInt(key);
                 const info = this.chartTips[intkey]?.info;
                 if(info?.toLowerCase() === 'disabled'){
 
+                }else if(info?.toLowerCase() === 'coming-soon'){
+                  availableChartIds.push(intkey);
                 }else{
                   availableChartIds.push(intkey);
                   spCallApis[intkey].map(spCallFn => {
@@ -206,46 +197,15 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
             break;
           case 'current':
           case 'historic':
-            // if (!isEachClinicPmsCoreOrExact) {
-            //   this.frontDeskFacade.loadFdUtilisationRateTrend(
-            //     clinicId,
-            //     trend === 'current' ? 'c' : 'h',
-            //     queryWhEnabled
-            //   );
-            // }
-            // this.frontDeskFacade.loadFdRecallRateTrend(
-            //   clinicId,
-            //   trend === 'current' ? 'c' : 'h',
-            //   queryWhEnabled
-            // );
-            // this.frontDeskFacade.loadFdReappointRateTrend(
-            //   clinicId,
-            //   trend === 'current' ? 'c' : 'h',
-            //   queryWhEnabled
-            // );
-            // this.frontDeskFacade.loadFdNumTicksTrend(
-            //   clinicId,
-            //   trend === 'current' ? 'c' : 'h',
-            //   queryWhEnabled
-            // );
-            // this.frontDeskFacade.loadFdFtaRatioTrend(
-            //   clinicId,
-            //   trend === 'current' ? 'c' : 'h',
-            //   queryWhEnabled
-            // );
-            // if (!isEachClinicPmsCoreOrPraktika) {
-            //   this.frontDeskFacade.loadFdUtaRatioTrend(
-            //     clinicId,
-            //     trend === 'current' ? 'c' : 'h',
-            //     queryWhEnabled
-            //   );
-            // }
             Object.keys(spCallApisTrend).map(key => {
               const intkey = parseInt(key);
               const info = this.chartTips[key]?.info;
               if(info?.toLowerCase() === 'disabled'){
 
-              }else{
+              }else if(info?.toLowerCase() === 'coming-soon'){
+                availableChartIds.push(intkey);
+              }
+              else{
                 availableChartIds.push(intkey);
                 spCallApisTrend[key].map(spCallFn => {
                   spCallFn(
