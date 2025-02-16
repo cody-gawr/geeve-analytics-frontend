@@ -403,6 +403,7 @@
           fxLayoutGap.sm="0"
           fxLayoutGap.xs="0">
           <div
+            *ngIf="charTips['38']?.info?.toLowerCase() !== 'disabled'"
             fxFlex="calc(39% - 10px)"
             fxFlex.lg="calc(39% - 10px)"
             fxFlex.md="100"
@@ -421,73 +422,81 @@
                       class="info-icon" />
                   </div>
                 </mat-card-title>
-                <div class="card-body">
-                  <div
-                    class="user_rate_listing"
-                    *ngIf="hourlyRateChartData.length > 0 && hoursrateleaders">
-                    <ul>
-                      <div>
-                        <li
-                          *ngFor="
-                            let hourlyRateChartD of hourlyRateChartData;
-                            let i = index
-                          ">
-                          <div class="hourly-rate-li-hover">
-                            <div class="ur_users">
-                              <div class="ur_rank">{{ i + 1 }}</div>
-                            </div>
-                            <div class="ur_users_main">
-                              <div class="ur_user_name">
-                                <span
-                                  class="user-icon"
-                                  [ngStyle]="{
-                                    'background-color': mockupColors[i]
-                                  }">
-                                  {{
-                                    getShortNameLeader(
-                                      hourlyRateChartD.provider_name
-                                    )
-                                  }}
-                                </span>
-                                <span class="client-name">{{
-                                  hourlyRateChartD.provider_name
-                                }}</span>
-                                <p class="ur_clinic" *ngIf="isAllClinic">
-                                  ({{ hourlyRateChartD.clinic_name }})
-                                </p>
-                              </div>
-                              <div class="ur_users_number">
-                                ${{
-                                  hourlyRateChartD.hourly_rate | number: '1.0-0'
-                                }}
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      </div>
-                    </ul>
-                  </div>
-                  <div
-                    *ngIf="!hoursrateleaders"
-                    class="loader_container loader_container_middle">
-                    <img class="loader_ico" src="../assets/images/720.gif" />
-                    <div class="loader-text">Calculating...</div>
-                  </div>
-
-                  <div
-                    *ngIf="hoursrateleaders && hourlyRateChartData.length == 0"
-                    class="no-data-placeholder">
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      No hourly rates have been calculated yet this month
-                    </p>
-                  </div>
+                <div
+                  *ngIf="charTips['38']?.info?.toLowerCase() === 'coming-soon' ; else nonComingsoon01">
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">Coming Soon...</p>
                 </div>
+                <ng-template #nonComingsoon01>
+                  <div class="card-body">
+                    <div
+                      class="user_rate_listing"
+                      *ngIf="hourlyRateChartData.length > 0 && hoursrateleaders">
+                      <ul>
+                        <div>
+                          <li
+                            *ngFor="
+                              let hourlyRateChartD of hourlyRateChartData;
+                              let i = index
+                            ">
+                            <div class="hourly-rate-li-hover">
+                              <div class="ur_users">
+                                <div class="ur_rank">{{ i + 1 }}</div>
+                              </div>
+                              <div class="ur_users_main">
+                                <div class="ur_user_name">
+                                  <span
+                                    class="user-icon"
+                                    [ngStyle]="{
+                                      'background-color': mockupColors[i]
+                                    }">
+                                    {{
+                                      getShortNameLeader(
+                                        hourlyRateChartD.provider_name
+                                      )
+                                    }}
+                                  </span>
+                                  <span class="client-name">{{
+                                    hourlyRateChartD.provider_name
+                                  }}</span>
+                                  <p class="ur_clinic" *ngIf="isAllClinic">
+                                    ({{ hourlyRateChartD.clinic_name }})
+                                  </p>
+                                </div>
+                                <div class="ur_users_number">
+                                  ${{
+                                    hourlyRateChartD.hourly_rate | number: '1.0-0'
+                                  }}
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        </div>
+                      </ul>
+                    </div>
+                    <div
+                      *ngIf="!hoursrateleaders"
+                      class="loader_container loader_container_middle">
+                      <img class="loader_ico" src="../assets/images/720.gif" />
+                      <div class="loader-text">Calculating...</div>
+                    </div>
+  
+                    <div
+                      *ngIf="hoursrateleaders && hourlyRateChartData.length == 0"
+                      class="no-data-placeholder">
+                      <div class="sa_nodata_div"></div>
+                      <p class="chart-placeholder-text">
+                        No hourly rates have been calculated yet this month
+                      </p>
+                    </div>
+                  </div>
+                </ng-template>
               </mat-card-content>
             </mat-card>
           </div>
           <!-- Column-->
           <div
+            *ngIf="charTips['39']?.info?.toLowerCase() !== 'disabled'"
             fxFlex="calc(39% - 10px)"
             fxFlex.lg="calc(39% - 10px)"
             fxFlex.md="100"
@@ -506,68 +515,75 @@
                       class="info-icon" />
                   </div>
                 </mat-card-title>
-                <div class="card-body">
-                  <div
-                    class="user_rate_listing"
-                    *ngIf="newPatientsTimeData.length > 0 && refreralleaders">
-                    <ul>
-                      <div>
-                        <li
-                          *ngFor="
-                            let newPatientsTimeD of newPatientsTimeData;
-                            let i = index
-                          ">
-                          <div class="hourly-rate-li-hover">
-                            <div class="ur_users">
-                              <div class="ur_rank">{{ i + 1 }}</div>
-                            </div>
-                            <div class="ur_users_main">
-                              <div class="ur_user_name">
-                                <span
-                                  class="user-icon"
-                                  [ngStyle]="{
-                                    'background-color': mockupColors[i]
-                                  }">
-                                  {{
-                                    getShortName(newPatientsTimeD.referral_name)
-                                  }}
-                                </span>
-                                <span class="client-name">
-                                  {{
-                                    newPatientsTimeD.referral_name.length > 35
-                                      ? (newPatientsTimeD.referral_name
-                                          | slice: 0 : 35) + ' ...'
-                                      : newPatientsTimeD.referral_name
-                                  }}</span
-                                >
-                                <p class="ur_clinic" *ngIf="isAllClinic">
-                                  ({{ newPatientsTimeD.clinic_name }})
-                                </p>
-                              </div>
-                              <div class="ur_users_number">
-                                {{ newPatientsTimeD.patient_num }}
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      </div>
-                    </ul>
-                  </div>
-                  <div
-                    *ngIf="!refreralleaders"
-                    class="loader_container loader_container_middle">
-                    <img class="loader_ico" src="../assets/images/720.gif" />
-                    <div class="loader-text">Calculating...</div>
-                  </div>
-                  <div
-                    *ngIf="refreralleaders && newPatientsTimeData.length == 0"
-                    class="no-data-placeholder">
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      You have no referrals this month
-                    </p>
-                  </div>
+                <div
+                  *ngIf="charTips['39']?.info?.toLowerCase() === 'coming-soon' ; else nonComingsoon02">
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">Coming Soon...</p>
                 </div>
+                <ng-template #nonComingsoon02>
+                  <div class="card-body">
+                    <div
+                      class="user_rate_listing"
+                      *ngIf="newPatientsTimeData.length > 0 && refreralleaders">
+                      <ul>
+                        <div>
+                          <li
+                            *ngFor="
+                              let newPatientsTimeD of newPatientsTimeData;
+                              let i = index
+                            ">
+                            <div class="hourly-rate-li-hover">
+                              <div class="ur_users">
+                                <div class="ur_rank">{{ i + 1 }}</div>
+                              </div>
+                              <div class="ur_users_main">
+                                <div class="ur_user_name">
+                                  <span
+                                    class="user-icon"
+                                    [ngStyle]="{
+                                      'background-color': mockupColors[i]
+                                    }">
+                                    {{
+                                      getShortName(newPatientsTimeD.referral_name)
+                                    }}
+                                  </span>
+                                  <span class="client-name">
+                                    {{
+                                      newPatientsTimeD.referral_name.length > 35
+                                        ? (newPatientsTimeD.referral_name
+                                            | slice: 0 : 35) + ' ...'
+                                        : newPatientsTimeD.referral_name
+                                    }}</span
+                                  >
+                                  <p class="ur_clinic" *ngIf="isAllClinic">
+                                    ({{ newPatientsTimeD.clinic_name }})
+                                  </p>
+                                </div>
+                                <div class="ur_users_number">
+                                  {{ newPatientsTimeD.patient_num }}
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        </div>
+                      </ul>
+                    </div>
+                    <div
+                      *ngIf="!refreralleaders"
+                      class="loader_container loader_container_middle">
+                      <img class="loader_ico" src="../assets/images/720.gif" />
+                      <div class="loader-text">Calculating...</div>
+                    </div>
+                    <div
+                      *ngIf="refreralleaders && newPatientsTimeData.length == 0"
+                      class="no-data-placeholder">
+                      <div class="sa_nodata_div"></div>
+                      <p class="chart-placeholder-text">
+                        You have no referrals this month
+                      </p>
+                    </div>
+                  </div>
+                </ng-template>
               </mat-card-content>
             </mat-card>
           </div>
@@ -584,6 +600,7 @@
         >
       </div>
       <div
+        
         fxLayout="row wrap"
         fxLayoutGap="20px"
         fxLayoutGap.lg="20px"
@@ -591,6 +608,7 @@
         fxLayoutGap.sm="0"
         fxLayoutGap.xs="0">
         <div
+          *ngIf="charTips['40']?.info?.toLowerCase() !== 'disabled'"
           fxFlex="calc(33% - 10px)"
           fxFlex.lg="calc(33% - 10px)"
           fxFlex.md="calc(32% - 10px)"
@@ -609,35 +627,43 @@
                     class="info-icon" />
                 </div>
               </mat-card-title>
-              <div class="chart card-body no-data-placeholder">
-                <ngx-gauge
-                  class="green_guagechart"
-                  *ngIf="visits_f > 0 && prebookedvisitchart"
-                  [type]="gaugeType"
-                  [value]="visits_f"
-                  [thick]="canvasWidth"
-                  [foregroundColor]="foregroundColor"
-                  [backgroundColor]="backgroundColor"
-                  [size]="size">
-                </ngx-gauge>
-                <div
-                  *ngIf="!prebookedvisitchart"
-                  class="loader_container loader_container_middle">
-                  <img class="loader_ico" src="../assets/images/720.gif" />
-                  <div class="loader-text">Calculating...</div>
-                </div>
-                <div *ngIf="prebookedvisitchart && visits_f <= 0">
+              <div
+                  *ngIf="charTips['40']?.info?.toLowerCase() === 'coming-soon' ; else nonComingsoon03">
                   <div class="sa_nodata_div"></div>
-                  <p class="chart-placeholder-text">
-                    You have no pre-booked visits in the next 7 days
-                  </p>
-                </div>
+                  <p class="chart-placeholder-text">Coming Soon...</p>
               </div>
+              <ng-template #nonComingsoon03>
+                <div class="chart card-body no-data-placeholder">
+                  <ngx-gauge
+                    class="green_guagechart"
+                    *ngIf="visits_f > 0 && prebookedvisitchart"
+                    [type]="gaugeType"
+                    [value]="visits_f"
+                    [thick]="canvasWidth"
+                    [foregroundColor]="foregroundColor"
+                    [backgroundColor]="backgroundColor"
+                    [size]="size">
+                  </ngx-gauge>
+                  <div
+                    *ngIf="!prebookedvisitchart"
+                    class="loader_container loader_container_middle">
+                    <img class="loader_ico" src="../assets/images/720.gif" />
+                    <div class="loader-text">Calculating...</div>
+                  </div>
+                  <div *ngIf="prebookedvisitchart && visits_f <= 0">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">
+                      You have no pre-booked visits in the next 7 days
+                    </p>
+                  </div>
+                </div>
+              </ng-template>
             </mat-card-content>
           </mat-card>
         </div>
         <!-- Column-->
         <div
+          *ngIf="charTips['41']?.info?.toLowerCase() !== 'disabled'"
           fxFlex="calc(33% - 10px)"
           fxFlex.lg="calc(33% - 10px)"
           fxFlex.md="calc(32% - 10px)"
@@ -657,11 +683,11 @@
                 </div>
               </mat-card-title>
               <div
-                *ngIf="isExact || isCore ; else nonExactTemplate">
-                <div class="sa_nodata_div"></div>
-                <p class="chart-placeholder-text">Coming Soon...</p>
+                  *ngIf="charTips['41']?.info?.toLowerCase() === 'coming-soon' ; else nonComingsoon04">
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">Coming Soon...</p>
               </div>
-              <ng-template #nonExactTemplate>
+              <ng-template #nonComingsoon04>
                 <div class="chart card-body no-data-placeholder">
                   <ngx-gauge
                     class="yellow_guagechart"
@@ -693,6 +719,7 @@
         </div>
         <!-- Column-->
         <div
+          *ngIf="charTips['42']?.info?.toLowerCase() !== 'disabled'"
           fxFlex="calc(33% - 10px)"
           fxFlex.lg="calc(33% - 10px)"
           fxFlex.md="calc(32% - 10px)"
@@ -711,42 +738,44 @@
                     class="info-icon" />
                 </div>
               </mat-card-title>
-              <!-- <div *ngIf="isPraktika; else nonExactTemplate001">
-                <div class="sa_nodata_div"></div>
-                <p class="chart-placeholder-text">Coming Soon...</p>
-              </div>
-              <ng-template #nonExactTemplate001> -->
-                <div class="chart card-body no-data-placeholder">
-                  <ngx-gauge
-                    class="yellow_guagechart"
-                    *ngIf="
-                      unscheduled_production_f > 0 && unscheduledproduction
-                    "
-                    [type]="gaugeType"
-                    [value]="unscheduled_production_f"
-                    [thick]="canvasWidth"
-                    [foregroundColor]="foregroundColor2"
-                    [backgroundColor]="backgroundColor"
-                    [append]="unscheduled_production_unit"
-                    [prepend]="'$'"
-                    [size]="size">
-                  </ngx-gauge>
-                  <div
-                    *ngIf="!unscheduledproduction"
-                    class="loader_container loader_container_middle">
-                    <img class="loader_ico" src="../assets/images/720.gif" />
-                    <div class="loader-text">Calculating...</div>
-                  </div>
-                  <div
-                    *ngIf="
-                      unscheduledproduction && unscheduled_production_f <= 0
-                    ">
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">
-                      You have no unscheduled production in the next 7 days
-                    </p>
-                  </div>
+                <div
+                  *ngIf="charTips['42']?.info?.toLowerCase() === 'coming-soon' ; else nonComingsoon05">
+                  <div class="sa_nodata_div"></div>
+                  <p class="chart-placeholder-text">Coming Soon...</p>
                 </div>
+                <ng-template #nonComingsoon05>
+                  <div class="chart card-body no-data-placeholder">
+                    <ngx-gauge
+                      class="yellow_guagechart"
+                      *ngIf="
+                        unscheduled_production_f > 0 && unscheduledproduction
+                      "
+                      [type]="gaugeType"
+                      [value]="unscheduled_production_f"
+                      [thick]="canvasWidth"
+                      [foregroundColor]="foregroundColor2"
+                      [backgroundColor]="backgroundColor"
+                      [append]="unscheduled_production_unit"
+                      [prepend]="'$'"
+                      [size]="size">
+                    </ngx-gauge>
+                    <div
+                      *ngIf="!unscheduledproduction"
+                      class="loader_container loader_container_middle">
+                      <img class="loader_ico" src="../assets/images/720.gif" />
+                      <div class="loader-text">Calculating...</div>
+                    </div>
+                    <div
+                      *ngIf="
+                        unscheduledproduction && unscheduled_production_f <= 0
+                      ">
+                      <div class="sa_nodata_div"></div>
+                      <p class="chart-placeholder-text">
+                        You have no unscheduled production in the next 7 days
+                      </p>
+                    </div>
+                  </div>
+                </ng-template>
               <!-- </ng-template> -->
             </mat-card-content>
           </mat-card>
