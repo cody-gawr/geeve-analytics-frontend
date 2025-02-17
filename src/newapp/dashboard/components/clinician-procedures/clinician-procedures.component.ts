@@ -39,16 +39,14 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
     ]).pipe(
       filter(params => !!params[1]),
       map(([tips, visibility]) => {
+        let tip;
         if (visibility === 'general') {
-          if (tips && tips[9]) {
-            return tips[9];
-          }
+            tip = tips[9];
         } else {
-          if (tips && tips[50]) {
-            return tips[50];
-          }
+            tip = tips[50];
         }
-        return '';
+        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        return tip;
       })
     );
   }
@@ -60,20 +58,16 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
     ]).pipe(
       filter(params => !!params[1]),
       map(([tips, visibility]) => {
+        let tip;
         if (visibility === 'indirect to large direct fillings') {
-          if (tips && tips[10]) {
-            return tips[10];
-          }
+            tip = tips[10];
         } else if (visibility === 'rct to extraction') {
-          if (tips && tips[11]) {
-            return tips[11];
-          }
+            tip = tips[11];
         } else {
-          if (tips && tips[12]) {
-            return tips[12];
-          }
+            tip = tips[12];
         }
-        return '';
+        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        return tip;
       })
     );
   }
@@ -179,13 +173,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
   }
 
   getChartTip(index: number) {
-    return this.dashbordFacade.chartTips$.pipe(
-      map(c => {
-        if (c && c[index]) {
-          return c[index];
-        }
-        return '';
-      })
-    );
+    return this.dashbordFacade.getChartTip$(index)
   }
 }

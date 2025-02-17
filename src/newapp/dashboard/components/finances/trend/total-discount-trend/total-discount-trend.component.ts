@@ -1,6 +1,7 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 import {
   JeeveLineFillOptions,
   externalTooltipHandler,
@@ -23,8 +24,10 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
   styleUrls: ['./total-discount-trend.component.scss'],
 })
 export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

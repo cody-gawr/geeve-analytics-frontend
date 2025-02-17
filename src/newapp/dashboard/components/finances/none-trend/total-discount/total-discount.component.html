@@ -15,37 +15,45 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
-      <div></div>
-      <div class="chart-gauge total-discount-gauge">
-        <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-        <ng-template #chartElem>
-          <canvas
-            *ngIf="hasData; else chartElem01"
-            baseChart
-            [datasets]="datasets"
-            [labels]="totalDiscountChartLabels"
-            type="doughnut"
-            [legend]="false"
-            [options]="pieChartOptions"
-            [plugins]="plugins$ | async">
-          </canvas>
-          <ng-template #chartElem01>
-            <spin-loader class="empty-placeholder" [disableSpin]="true">
-              You have offered no discounts in the selected period
-            </spin-loader>
+      <spin-loader
+        class="empty-placeholder"
+        *ngIf="isComingSoon; else enabledChart"
+        [disableSpin]="true">
+        Coming Soon...
+      </spin-loader>
+      <ng-template #enabledChart>
+        <div></div>
+        <div class="chart-gauge total-discount-gauge">
+          <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+          <ng-template #chartElem>
+            <canvas
+              *ngIf="hasData; else chartElem01"
+              baseChart
+              [datasets]="datasets"
+              [labels]="totalDiscountChartLabels"
+              type="doughnut"
+              [legend]="false"
+              [options]="pieChartOptions"
+              [plugins]="plugins$ | async">
+            </canvas>
+            <ng-template #chartElem01>
+              <spin-loader class="empty-placeholder" [disableSpin]="true">
+                You have offered no discounts in the selected period
+              </spin-loader>
+            </ng-template>
           </ng-template>
-        </ng-template>
-      </div>
-      <div class="chart-foot">
-        <div>
-          <h3>${{ totalDiscountChartTotal | number: '1.0-0' }}</h3>
-          <span>{{ durationLabel$ | async }}</span>
         </div>
-        <div *ngIf="(duration$ | async) != 'custom'">
-          <h3>${{ totalDiscountChartTrendTotal | number: '1.0-0' }}</h3>
-          <span>{{ durationTrendLabel$ | async }}</span>
+        <div class="chart-foot">
+          <div>
+            <h3>${{ totalDiscountChartTotal | number: '1.0-0' }}</h3>
+            <span>{{ durationLabel$ | async }}</span>
+          </div>
+          <div *ngIf="(duration$ | async) != 'custom'">
+            <h3>${{ totalDiscountChartTrendTotal | number: '1.0-0' }}</h3>
+            <span>{{ durationTrendLabel$ | async }}</span>
+          </div>
         </div>
-      </div>
+      </ng-template>
     </div>
   </div>
 </div>

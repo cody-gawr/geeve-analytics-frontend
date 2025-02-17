@@ -1,4 +1,5 @@
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 import {
   JeeveLineFillOptions,
   externalTooltipHandlerHiddenColorBoxes,
@@ -14,8 +15,10 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
   styleUrls: ['./prod-per-visit-trend.component.scss'],
 })
 export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

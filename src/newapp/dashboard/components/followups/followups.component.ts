@@ -81,14 +81,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
   getChartTip(index: number) {
-    return this.dashbordFacade.chartTips$.pipe(
-      takeUntil(this.destroy$),
-      map(c => {
-        if (c && c[index]) {
-          return c[index];
-        }
-        return '';
-      })
-    );
+    return this.dashbordFacade.getChartTip$(index)
   }
 }

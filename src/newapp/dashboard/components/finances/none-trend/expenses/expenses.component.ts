@@ -12,6 +12,7 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { MkSelectExpensesModalComponent } from '../select-expenses-modal/select-expenses-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
   
 @Component({
   selector: 'finance-expense-chart',
@@ -19,7 +20,10 @@ import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
   styleUrls: ['./expenses.component.scss'],
 })
 export class FinanceExpensesComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }  
   @Input() isFullMonths = false;
   get isLoading$() {
     return this.financeFacade.isLoadingFnExpenses$;

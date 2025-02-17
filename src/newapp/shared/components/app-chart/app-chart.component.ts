@@ -10,6 +10,7 @@ import {
 } from 'rxjs';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { DecimalPipe } from '@angular/common';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -37,8 +38,10 @@ export interface PaTableData {
   ],
 })
 export class AppChartComponent implements OnInit, OnDestroy {
-  @Input() toolTip: string = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   @Input() chartTitle: string = '';
   @Input() chartType: ChartType | 'arch' = 'bar';
   @Input() chartOptions: ChartOptions = null;

@@ -1,6 +1,7 @@
 <div class="none-trend-finances">
   <div class="stats-card-list">
     <stats-card
+      *ngIf="getChartTip(31) | async"
       class="stats-card-finance"
       label="Production"
       [value]="'$' + (netProfitProductionVal$ | async | number: '1.0-0')"
@@ -9,6 +10,7 @@
       [isLoading]="isLoadingNetProfitProduction$ | async">
     </stats-card>
     <stats-card
+      *ngIf="getChartTip(26) | async"
       class="stats-card-finance"
       label="Net Profit"
       [value]="'$' + (netProfitVal$ | async | number: '1.0-0')"
@@ -19,6 +21,7 @@
       [isConnectedWith]="isConnectedWith$ | async">
     </stats-card>
     <stats-card
+      *ngIf="getChartTip(27) | async"
       class="stats-card-finance"
       label="Net Profit %"
       [value]="(netProfitPercentageVal$ | async | number: '1.0-0') + '%'"
@@ -29,26 +32,38 @@
     </stats-card>
   </div>
   <div class="chart-list">
-    <finance-expense-chart
-      class="expenses-chart"
-      [toolTip]="getChartTip(29) | async"
-      [isFullMonths]="isFullMonthsDateRange$ | async">
-    </finance-expense-chart>
-    <prod-per-clinic-chart
-      class="prod-per-clinic-chart"
-      [toolTip]="toolTipFnProductionPerVisit$ | async"></prod-per-clinic-chart>
-    <fn-hourly-rate-chart
-      [toolTip]="getChartTip(98) | async"
-      class="chart-33"
-    ></fn-hourly-rate-chart>
-    <prod-per-visit-chart
-      class="chart-33"
-      [toolTip]="prodPerVisitTip$ | async"></prod-per-visit-chart>
-    <total-discount-chart
-      [toolTip]="getChartTip(34) | async"
-      class="chart-33"></total-discount-chart>
-    <prod-collection-chart
-      [toolTip]="getChartTip(33) | async"
-      class="prod-collection-chart"></prod-collection-chart>
+    <div class="chart-row">
+      <finance-expense-chart
+        *ngIf="getChartTip(29) | async"
+        class="expenses-chart"
+        [toolTip]="getChartTip(29) | async"
+        [isFullMonths]="isFullMonthsDateRange$ | async">
+      </finance-expense-chart>
+      <prod-per-clinic-chart
+        *ngIf="toolTipFnProductionPerVisit$ | async"
+        class="prod-per-clinic-chart"
+        [toolTip]="toolTipFnProductionPerVisit$ | async"></prod-per-clinic-chart>
+    </div>
+    <div class="chart-row">
+      <fn-hourly-rate-chart
+        *ngIf="getChartTip(98) | async"
+        [toolTip]="getChartTip(98) | async"
+        class="chart33"
+      ></fn-hourly-rate-chart>
+      <prod-per-visit-chart
+        *ngIf="prodPerVisitTip$ | async"
+        class="chart33"
+        [toolTip]="prodPerVisitTip$ | async"></prod-per-visit-chart>
+      <total-discount-chart
+        *ngIf="getChartTip(34) | async"
+        [toolTip]="getChartTip(34) | async"
+        class="chart33"></total-discount-chart>
+    </div>
+    <div class="chart-row">
+        <prod-collection-chart
+        *ngIf="getChartTip(33) | async"
+        [toolTip]="getChartTip(33) | async"
+        class="prod-collection-chart"></prod-collection-chart>
+    </div>
   </div>
 </div>

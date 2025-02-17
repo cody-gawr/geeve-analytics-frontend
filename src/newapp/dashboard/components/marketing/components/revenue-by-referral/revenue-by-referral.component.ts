@@ -12,6 +12,7 @@ import { Chart, ChartOptions } from 'chart.js';
 import _ from 'lodash';
 import camelCase from 'camelcase';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({
   selector: 'revenue-by-referral-chart',
@@ -19,8 +20,10 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
   styleUrls: ['./revenue-by-referral.component.scss'],
 })
 export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

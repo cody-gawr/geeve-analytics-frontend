@@ -12,20 +12,34 @@
     ></ng-template>
   </div>
 </div>
-<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
-  <caProduction-chart [toolTip]="prodChartTip$ | async" class="chart-33" />
-  <caHourlyRate-chart [toolTip]="getChartTip(7) | async" class="chart-33" />
-  <caNumNewPatients-chart [toolTip]="getChartTip(8) | async" class="chart-33" />
-  <caTxPlanAvgFees-chart
-    [toolTip]="txPlanAvgTooltip$ | async"
-    class="chart-50" />
-  <caTxPlanCompRate-chart
-    [toolTip]="getChartTip(2) | async"
-    class="chart-50" />
-  <caRecallRate-chart
-    [toolTip]="recallRateTooltip$ | async"
-    class="chart-50" />
-  <caNumComplaints-chart
-    [toolTip]="getChartTip(6) | async"
-    class="chart-50" />
+<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content">
+  <div class="dashboard-row">
+    <caProduction-chart *ngIf="(prodChartTip$ | async) !== null" [toolTip]="prodChartTip$ | async" class="chart-33" />
+    <caHourlyRate-chart 
+      *ngIf="getChartTip$(CaChartIDs.hourlyRate) | async" 
+      [toolTip]="getChartTip$(CaChartIDs.hourlyRate) | async" class="chart-33" />
+    <caNumNewPatients-chart
+      *ngIf="getChartTip$(CaChartIDs.newPatients) | async"
+      [toolTip]="getChartTip$(CaChartIDs.newPatients) | async" class="chart-33" />
+  </div>
+  <div class="dashboard-row">
+    <caTxPlanAvgFees-chart
+      *ngIf="(txPlanAvgTooltip$ | async) !== null"
+      [toolTip]="txPlanAvgTooltip$ | async"
+      class="dashboard-chart50" />
+    <caTxPlanCompRate-chart
+      *ngIf="getChartTip$(CaChartIDs.txPlanCompleteRate) | async"
+      [toolTip]="getChartTip$(CaChartIDs.txPlanCompleteRate) | async"
+      class="dashboard-chart50" />
+  </div>
+  <div class="dashboard-row">
+    <caRecallRate-chart
+      *ngIf="(recallRateTooltip$ | async) !== null"
+      [toolTip]="recallRateTooltip$ | async"
+      class="dashboard-chart50" />
+    <caNumComplaints-chart
+      *ngIf="getChartTip$(CaChartIDs.numComplaints) | async"
+      [toolTip]="getChartTip$(CaChartIDs.numComplaints) | async"
+      class="dashboard-chart50" />
+  </div>
 </div>

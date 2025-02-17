@@ -67,3 +67,22 @@ export interface CaCollectionTrendApiResponse {}
 export interface CaCollectionDentistsTrendApiResponse {}
 
 export interface CaCollectionOhtTrendApiResponse {}
+
+export enum CA_CHART_ID {
+  production = 1,
+  collection = 49,
+  collectionExp = 64,
+
+  hourlyRate = 7,
+  newPatients = 8,
+
+  txPlanAvgCompleteFees = 53,
+  txPlanAvgProposedFees = 3,
+
+  txPlanCompleteRate = 2,
+
+  recallPrebookRate = 4,
+  recallReappointmentRate = 5,
+
+  numComplaints= 6
+}

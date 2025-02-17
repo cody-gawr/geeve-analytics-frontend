@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import { Subject, combineLatest, map } from 'rxjs';
+import { Subject, combineLatest, map, filter } from 'rxjs';
 import { FinanceFacade } from '../../../facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 
@@ -75,11 +75,11 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
       this.dashboardFacade.chartTips$,
       this.isMultipleClinic$,
     ]).pipe(
+      filter(params => !!params[0]),
       map(([c, v]) => {
-        if (c && c[v ? 95 : 30]) {
-          return c[v ? 95 : 30];
-        }
-        return null;
+        let tip = c[v ? 95 : 30];
+        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        return tip;
       })
     );
   }
@@ -98,30 +98,25 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
   }
 
   getChartTip(index: number) {
-    return this.dashboardFacade.chartTips$.pipe(
-      map(c => {
-        if (c && c[index]) {
-          return c[index];
-        }
-        return null;
-      })
-    );
+    return this.dashboardFacade.getChartTip$(index)
   }
   get prodPerVisitTip$() {
     return combineLatest([
       this.financeFacade.prodPerVisitChartName$,
       this.dashboardFacade.chartTips$,
     ]).pipe(
+      filter(params => !!params[1]),
       map(([chartName, tips]) => {
-        if (tips) {
-          switch (chartName) {
-            case 'Production Per Visit':
-              return tips[32] ?? '';
-            case 'Production Per Day':
-              return tips[99] ?? '';
-          }
+        let tip;
+        switch (chartName) {
+          case 'Production Per Visit':
+            tip = tips[32];
+            break;
+          case 'Production Per Day':
+            tip = tips[99];
         }
-        return '';
+        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        return tip;
       })
     );
   }

@@ -16,6 +16,8 @@ import moment from 'moment';
 import { ClinicianAnalysisFacade } from '../../facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
+import { CA_CHART_ID } from '@/newapp/models/dashboard/clinician-analysis';
 
 interface QueryParams {
   clinicId: string;
@@ -33,6 +35,8 @@ interface QueryParams {
   styleUrls: ['./clinician-analysis.component.scss'],
 })
 export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
+  CaChartIDs = CA_CHART_ID;
+
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
@@ -64,15 +68,22 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     ]).pipe(
       filter(params => !!params[1]),
       map(([chartName, tips]) => {
+        let tip: ChartTip = null;
         switch (chartName) {
           case 'Production':
-            return tips[1] ?? '';
+            tip = tips[this.CaChartIDs.production];
+            break;
           case 'Collection':
-            return tips[49] ?? '';
+            tip = tips[this.CaChartIDs.collection];
+            break;
           case 'Collection-Exp':
-            return tips[62] ?? '';
+            tip = tips[this.CaChartIDs.collectionExp];
         }
-        return '';
+        if(tip && tip?.info?.toLowerCase() === 'disabled'){
+          return null;
+        }
+
+        return tip;
       })
     );
   }
@@ -103,18 +114,19 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       this.router.routerState.root.queryParams,
       this.dentistFacade.currentDentistId$,
       this.layoutFacade.trend$,
+      this.dashbordFacade.chartTips$
     ]).pipe(
       takeUntil(this.destroy$),
-      filter(params => params[0]?.length > 0),
+      filter(params => params[0]?.length > 0 && !!params[6]),
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-      map(([clinics, dateRange, compare, route, dentistId, trend]) => {
+      map(([clinics, dateRange, compare, route, dentistId, trend, tips]) => {
         const providerId =
           dentistId !== 'all' && clinics.length == 1 ? dentistId : undefined;
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
         const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
-        const isEachClinicPraktika = clinics.every(c => c.pms === 'praktika');
+        // const isEachClinicPraktika = clinics.every(c => c.pms === 'praktika');
 
         let queryParams: QueryParams = {
           clinicId: clinics.map(v => v.id).join(','),
@@ -133,7 +145,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               dentistId: providerId,
             };
 
-        return { queryParams, trend, queryWhEnabled, isEachClinicPraktika };
+        return { queryParams, trend, queryWhEnabled, tips };
       })
     );
   }
@@ -155,7 +167,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(
-        ({ queryParams, trend, queryWhEnabled, isEachClinicPraktika }) => {
+        ({ queryParams, trend, queryWhEnabled }) => {
           const { dentistId: providerId } = queryParams;
           const isTrend = trend !== 'off' && providerId;
 
@@ -211,11 +223,8 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
           colSelectShow,
           colExpSelectShow,
         ]) => {
-          const { dentistId: providerId } = queryParams;
-          const isTrend = trend !== 'off' && providerId;
           const caEndpoints = [],
             caTrendEndpoints = [];
-
           switch (visibility) {
             case 'Production':
               if (!queryParams.dentistId) {
@@ -270,14 +279,14 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               }
           }
 
-          //if (!isTrend) {
+
           for (const api of caEndpoints) {
             this.caFacade.loadNoneTrendApiRequest({
               ...queryParams,
               api,
             });
           }
-          //} else {
+
           caTrendEndpoints.forEach(api => {
             const params = {
               clinicId: queryParams.clinicId,
@@ -291,7 +300,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               api: api,
             });
           });
-          //}
         }
       );
 
@@ -401,7 +409,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         ([
-          { queryParams, trend, queryWhEnabled, isEachClinicPraktika },
+          { queryParams, trend, queryWhEnabled },
           visibility,
         ]) => {
           const caEndpoints = [],
@@ -498,12 +506,6 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     this.destroy.next();
   }
 
-  getChartTip(index: number) {
-    return this.dashbordFacade.chartTips$.pipe(
-      map(c => (c && c[index] ? c[index] : ''))
-    );
-  }
-
   get txPlanAvgTooltip$() {
     return combineLatest([
       this.caFacade.txPlanAvgFeeChartName$,
@@ -511,11 +513,16 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([chartName, tipData]) => {
         tipData = tipData ?? [];
+        let tip: ChartTip;
         if (chartName == 'Avg. Completed Fees') {
-          return tipData[53] ?? '';
+          tip = tipData[this.CaChartIDs.txPlanAvgCompleteFees];
         } else {
-          return tipData[3] ?? '';
+          tip = tipData[this.CaChartIDs.txPlanAvgProposedFees];
         }
+        if(tip && tip?.info?.toLowerCase() === 'disabled'){
+          return null;
+        }
+        return tip;
       })
     );
   }
@@ -527,12 +534,21 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([chartName, tipData]) => {
         tipData = tipData ?? [];
+        let tip: ChartTip;
         if (chartName == 'Recall Prebook Rate') {
-          return tipData[4] ?? '';
+          tip = tipData[4];
         } else {
-          return tipData[5] ?? '';
+          tip = tipData[5];
         }
+        if(tip && tip?.info?.toLowerCase() === 'disabled'){
+          return null;
+        }
+        return tip;
       })
     );
+  }
+
+  getChartTip$(tipNum: number) {
+    return this.dashbordFacade.getChartTip$(tipNum);
   }
 }

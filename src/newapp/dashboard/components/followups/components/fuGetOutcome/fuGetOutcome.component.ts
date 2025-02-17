@@ -1,4 +1,5 @@
 import { FollowupsFacade } from '@/newapp/dashboard/facades/followups.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
@@ -10,8 +11,10 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
   styleUrls: ['./fuGetOutcome.component.scss'],
 })
 export class FuGetOutcomeComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
   chartNames: FU_OUTCOME_CHART_NAME[] = ['Ticks', 'Recalls', 'FTAs', 'UTAs'];

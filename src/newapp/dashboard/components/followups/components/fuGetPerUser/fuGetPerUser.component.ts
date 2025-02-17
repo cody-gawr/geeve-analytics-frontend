@@ -3,6 +3,7 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { FollowupsFacade } from '@/newapp/dashboard/facades/followups.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, ChartDataset } from 'chart.js';
@@ -17,8 +18,10 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
   styleUrls: ['./fuGetPerUser.component.scss'],
 })
 export class FuGetPerUserComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

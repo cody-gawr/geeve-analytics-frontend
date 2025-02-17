@@ -1,20 +1,29 @@
 <div class="dashboard-header-box">
   <date-range-menu class="date-range-container"></date-range-menu>
 </div>
-<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
-  <fuGetConversion
+<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content">
+  <div class="dashboard-row">
+    <fuGetConversion
+    *ngIf="getChartTip(57) | async"
     [toolTip]="getChartTip(57) | async"
-    class="chart-33"></fuGetConversion>
-  <fuGetFollowupCompletion
-    [toolTip]="getChartTip(59) | async"
-    class="chart-33"></fuGetFollowupCompletion>
-  <fuGetOutcome
-    [toolTip]="getChartTip(56) | async"
-    class="chart-33"></fuGetOutcome>
-  <fuGetConversionPerUser
-    [toolTip]="getChartTip(58) | async"
-    class="chart-50"></fuGetConversionPerUser>
-  <fuGetPerUser
-    [toolTip]="getChartTip(55) | async"
-    class="chart-50"></fuGetPerUser>
+    class="dashboard-chart33"></fuGetConversion>
+    <fuGetFollowupCompletion
+    *ngIf="getChartTip(59) | async"
+      [toolTip]="getChartTip(59) | async"
+      class="dashboard-chart33"></fuGetFollowupCompletion>
+    <fuGetOutcome
+    *ngIf="getChartTip(56) | async"
+      [toolTip]="getChartTip(56) | async"
+      class="dashboard-chart33"></fuGetOutcome>
+  </div>
+  <div class="dashboard-row">
+    <fuGetConversionPerUser
+    *ngIf="getChartTip(58) | async"
+     [toolTip]="getChartTip(58) | async"
+     class="dashboard-chart50"></fuGetConversionPerUser>
+   <fuGetPerUser
+     *ngIf="getChartTip(55) | async"
+     [toolTip]="getChartTip(55) | async"
+     class="dashboard-chart50"></fuGetPerUser>
+  </div>
 </div>

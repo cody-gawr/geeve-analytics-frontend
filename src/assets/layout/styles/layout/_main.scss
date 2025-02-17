@@ -69,6 +69,53 @@ a {
   }
 }
 
+.dashboard-content {
+  background-color: #fafafa;
+  padding: 15px;
+  gap: 15px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 142px);
+  overflow-y: auto;
+
+  .dashboard-row {
+    flex-flow: wrap;
+    box-sizing: border-box;
+    display: flex;
+    gap: 15px;
+
+    .dashboard-chart33 {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 calc(33.3% - 10px);
+      min-width: calc(33.3% - 10px);
+    }
+  
+    .dashboard-chart50 {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 calc(50% - 7.5px);
+      min-width: calc(50% - 7.5px);
+    }
+  }
+
+  @include respond-from('desktop') {
+    height: calc(100vh - 160px);
+  }
+
+  @include respond-from('tablet-landscape') {
+    height: calc(100vh - 220px);
+  }
+
+  @include respond-from('tablet-portrait') {
+    height: calc(100vh - 210px);
+  }
+
+  @include respond-from('phone') {
+    height: calc(100vh - 245px);
+  }
+}
+
 .dashboard-content-box {
   background-color: #fafafa;
   padding: 15px;

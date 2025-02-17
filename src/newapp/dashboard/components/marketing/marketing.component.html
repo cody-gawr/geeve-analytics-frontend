@@ -2,24 +2,34 @@
   <date-range-menu class="date-range-container"></date-range-menu>
   <trend-mode-toggle></trend-mode-toggle>
 </div>
-<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
-  <new-patient-by-referral-chart
-    [toolTip]="getChartTip(23) | async"
-    class="chart-33"></new-patient-by-referral-chart>
-  <revenue-by-referral-chart
-    [toolTip]="getChartTip(24) | async"
-    class="chart-33"></revenue-by-referral-chart>
-  <mk-prod-by-postcode-chart
-    [toolTip]="postCodeChartTip$ | async"
-    class="chart-33"
-  ></mk-prod-by-postcode-chart>
-  <num-new-patients-chart
-    [toolTip]="getNumNewPatientsTip$ | async"
-    class="chart-33"></num-new-patients-chart>
-  <new-patients-acq-chart
-    [toolTip]="getChartTip(37) | async"
-    class="chart-33"></new-patients-acq-chart>
-  <mk-total-visits-chart
-    [toolTip]="getChartTip(25) | async"
-    class="chart-33"></mk-total-visits-chart>
+<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content">
+  <div class="dashboard-row">
+    <new-patient-by-referral-chart
+      *ngIf="getChartTip(23) | async"
+      [toolTip]="getChartTip(23) | async"
+      class="dashboard-chart33"></new-patient-by-referral-chart>
+    <revenue-by-referral-chart
+      *ngIf="getChartTip(24) | async"
+      [toolTip]="getChartTip(24) | async"
+      class="dashboard-chart33"></revenue-by-referral-chart>
+    <mk-prod-by-postcode-chart
+      *ngIf="postCodeChartTip$ | async"
+      [toolTip]="postCodeChartTip$ | async"
+      class="dashboard-chart33"
+    ></mk-prod-by-postcode-chart>
+  </div>
+  <div class="dashboard-row">
+    <num-new-patients-chart
+      *ngIf="getNumNewPatientsTip$ | async"
+      [toolTip]="getNumNewPatientsTip$ | async"
+      class="dashboard-chart33"></num-new-patients-chart>
+    <new-patients-acq-chart
+      *ngIf="getChartTip(37) | async"
+      [toolTip]="getChartTip(37) | async"
+      class="dashboard-chart33"></new-patients-acq-chart>
+    <mk-total-visits-chart
+      *ngIf="getChartTip(25) | async"
+      [toolTip]="getChartTip(25) | async"
+      class="dashboard-chart33"></mk-total-visits-chart>
+  </div>
 </div>

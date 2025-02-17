@@ -9,6 +9,7 @@ import { DecimalPipe } from '@angular/common';
 import { externalTooltipHandler, formatXTooltipLabel } from '@/newapp/shared/utils';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { PROD_AGE_LIST } from '@/newapp/shared/constants';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({
   selector: 'mk-prod-by-postcode-chart',
@@ -18,8 +19,10 @@ import { PROD_AGE_LIST } from '@/newapp/shared/constants';
   ],
 })
 export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

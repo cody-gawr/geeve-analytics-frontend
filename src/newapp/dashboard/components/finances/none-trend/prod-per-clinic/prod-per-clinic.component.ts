@@ -1,5 +1,6 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 import { externalTooltipHandler } from '@/newapp/shared/utils';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions } from 'chart.js';
@@ -12,8 +13,10 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
   styleUrls: ['./prod-per-clinic.component.scss'],
 })
 export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

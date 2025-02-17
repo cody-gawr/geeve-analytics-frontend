@@ -3,6 +3,7 @@ import { COLORS } from '@/newapp/constants';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 import {
   formatXLabel,
   generatingLegend_3,
@@ -28,7 +29,11 @@ import {
   styleUrls: ['./caNumComplaints.component.scss'],
 })
 export class CaNumComplaintsComponent implements OnInit, OnDestroy {
-  @Input() toolTip: string = '';
+  @Input() toolTip: ChartTip;
+
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -41,7 +46,8 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isDentistMode, isCompare, hasData]) =>
-          (!isDentistMode || isCompare) && this.tableData.length > 0 && hasData
+          (!isDentistMode || isCompare) && this.tableData.length > 0 && hasData &&
+          !this.isComingSoon
       )
     );
   }

@@ -5,6 +5,7 @@ import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-an
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Clinic } from '@/newapp/models/clinic';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 import {
   formatXLabel,
   formatXTooltipLabel,
@@ -34,7 +35,11 @@ import {
   styleUrls: ['./caHourlyRate.component.scss'],
 })
 export class CaHourlyRateComponent implements OnInit, OnDestroy {
-  @Input() toolTip: string = '';
+  @Input() toolTip: ChartTip;
+
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -242,7 +247,9 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
-          (!(isDentistMode && isTrend) || isCompare) && this.tableData.length > 0 && hasData
+          (!(isDentistMode && isTrend) || isCompare) && 
+          this.tableData.length > 0 && hasData &&
+          !this.isComingSoon
       )
     );
   }

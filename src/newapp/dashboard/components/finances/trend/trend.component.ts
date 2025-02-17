@@ -21,11 +21,11 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
       this.dashbordFacade.chartTips$,
       this.isMultipleClinic$,
     ]).pipe(
+      filter(params => !!params[0]),
       map(([c, v]) => {
-        if (c && c[v ? 95 : 30]) {
-          return c[v ? 95 : 30];
-        }
-        return null;
+        let tip = c[v ? 95 : 30];
+        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        return tip;
       })
     );
   }
@@ -47,19 +47,22 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
     ]).pipe(
       filter(params => !!params[1]),
       map(([chartName, tips]) => {
-        if (tips) {
-          switch (chartName) {
-            case 'Production':
-              return tips[31] ?? '';
-            case 'Collection':
-              return tips[33] ?? '';
-            case 'Net Profit':
-              return tips[26] ?? '';
-            case 'Net Profit %':
-              return tips[27] ?? '';
-          }
+        let tip;
+        switch (chartName) {
+          case 'Production':
+            tip = tips[31];
+            break;
+          case 'Collection':
+            tip = tips[33];
+            break;
+          case 'Net Profit':
+            tip = tips[26];
+            break;
+          case 'Net Profit %':
+            tip = tips[27];
         }
-        return '';
+        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        return tip;
       })
     );
   }
@@ -71,27 +74,21 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
     ]).pipe(
       filter(params => !!params[1]),
       map(([chartName, tips]) => {
-        if (tips) {
-          switch (chartName) {
-            case 'Production Per Visit':
-              return tips[32] ?? '';
-            case 'Production Per Day':
-              return tips[99] ?? '';
-          }
+        let tip;
+        switch (chartName) {
+          case 'Production Per Visit':
+            tip = tips[32];
+            break;
+          case 'Production Per Day':
+            tip = tips[99];
         }
-        return '';
+        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        return tip;
       })
     );
   }
 
   getChartTip(index: number) {
-    return this.dashbordFacade.chartTips$.pipe(
-      map(c => {
-        if (c && c[index]) {
-          return c[index];
-        }
-        return '';
-      })
-    );
+    return this.dashbordFacade.getChartTip$(index)
   }
 }

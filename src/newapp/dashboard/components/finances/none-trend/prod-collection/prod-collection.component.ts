@@ -12,6 +12,7 @@ import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({
   selector: 'prod-collection-chart',
@@ -19,7 +20,10 @@ import { DoughnutChartColors } from '@/newapp/shared/constants';
   styleUrls: ['./prod-collection.component.scss'],
 })
 export class FinanceProdColComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }  
   get isLoading$() {
     return combineLatest([
       this.financeFacade.isLoadingTotalProduction$,

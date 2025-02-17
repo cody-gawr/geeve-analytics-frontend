@@ -1,24 +1,37 @@
 <div class="trend-finances">
-  <finance-prod-trend-chart
-    [toolTip]="profitTrendTip$ | async"
-    class="chart-33"></finance-prod-trend-chart>
-  <fn-hourly-rate-chart
-    [toolTip]="getChartTip(98) | async"
-    class="chart-33"
-  ></fn-hourly-rate-chart>
-  <finance-prod-per-visit-trend-chart
-    [toolTip]="prodPerVisitTip$ | async"
-    class="chart-33"></finance-prod-per-visit-trend-chart>
-  <finance-expense-trend-chart
-    [toolTip]="getChartTip(28) | async"
-    class="chart-50"></finance-expense-trend-chart>
-  <finance-total-discount-trend-chart
-    [toolTip]="getChartTip(34) | async"
-    class="chart-50"></finance-total-discount-trend-chart>
-  <finance-prod-col-trend-chart
-    [toolTip]="getChartTip(33) | async"
-    class="chart-50"></finance-prod-col-trend-chart>
-  <finance-prod-per-clinic-trend-chart
-    [toolTip]="toolTipFnProductionPerVisit$ | async"
-    class="chart-50"></finance-prod-per-clinic-trend-chart>
+  <div class="chart-row">
+    <finance-prod-trend-chart
+      *ngIf="profitTrendTip$ | async"
+      [toolTip]="profitTrendTip$ | async"
+      class="chart33"></finance-prod-trend-chart>
+    <fn-hourly-rate-chart
+      *ngIf="getChartTip(98) | async"
+      [toolTip]="getChartTip(98) | async"
+      class="chart33"
+    ></fn-hourly-rate-chart>
+    <finance-prod-per-visit-trend-chart
+      *ngIf="prodPerVisitTip$ | async"
+      [toolTip]="prodPerVisitTip$ | async"
+      class="chart33"></finance-prod-per-visit-trend-chart>
+  </div>
+  <div class="chart-row">
+    <finance-expense-trend-chart
+      *ngIf="getChartTip(28) | async"
+      [toolTip]="getChartTip(28) | async"
+      class="chart50"></finance-expense-trend-chart>
+    <finance-total-discount-trend-chart
+      *ngIf="getChartTip(34) | async"
+      [toolTip]="getChartTip(34) | async"
+      class="chart50"></finance-total-discount-trend-chart>
+  </div>
+  <div class="chart-row">
+    <finance-prod-col-trend-chart
+      *ngIf="getChartTip(33) | async"
+      [toolTip]="getChartTip(33) | async"
+      class="chart50"></finance-prod-col-trend-chart>
+    <finance-prod-per-clinic-trend-chart
+      *ngIf="toolTipFnProductionPerVisit$ | async"
+      [toolTip]="toolTipFnProductionPerVisit$ | async"
+      class="chart50"></finance-prod-per-clinic-trend-chart>
+  </div>
 </div>

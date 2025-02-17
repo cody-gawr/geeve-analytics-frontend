@@ -10,47 +10,55 @@
   </div>
   <div class="chart-content">
     <div class="profit-prod-trend-chart">
-      <div class="profit-switch">
-        <button
-          *ngFor="let chartName of profitChartNames"
-          (click)="switchChartName(chartName)"
-          [ngClass]="{ active: chartName == (chartName$ | async) }">
-          {{ chartName }}
-        </button>
-      </div>
-      <div class="profit-graph">
-        <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-        <ng-template #chartElem>
-          <canvas
-            *ngIf="
-              datasets.length > 0 &&
-              datasets[0].data.length > 0 &&
-              !(isDisconnectedPlatform$ | async)
-            "
-            baseChart
-            [datasets]="datasets"
-            [labels]="labels"
-            [options]="chartOptions$ | async"
-            [legend]="legend$ | async"
-            [type]="chartType$ | async">
-          </canvas>
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="isDisconnectedPlatform$ | async"
-            [disableSpin]="true">
-            Please connect to Xero/MYOB to display this chart
-          </spin-loader>
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="
-              !(datasets.length > 0 && datasets[0].data.length > 0) &&
-              !(isLoading$ | async)
-            "
-            [disableSpin]="true">
-            You have no data in the selected period
-          </spin-loader>
-        </ng-template>
-      </div>
+      <spin-loader
+        class="empty-placeholder"
+        *ngIf="isComingSoon; else enabledChart"
+        [disableSpin]="true">
+        Coming Soon...
+      </spin-loader>
+      <ng-template #enabledChart>
+        <div class="profit-switch">
+          <button
+            *ngFor="let chartName of profitChartNames"
+            (click)="switchChartName(chartName)"
+            [ngClass]="{ active: chartName == (chartName$ | async) }">
+            {{ chartName }}
+          </button>
+        </div>
+        <div class="profit-graph">
+          <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+          <ng-template #chartElem>
+            <canvas
+              *ngIf="
+                datasets.length > 0 &&
+                datasets[0].data.length > 0 &&
+                !(isDisconnectedPlatform$ | async)
+              "
+              baseChart
+              [datasets]="datasets"
+              [labels]="labels"
+              [options]="chartOptions$ | async"
+              [legend]="legend$ | async"
+              [type]="chartType$ | async">
+            </canvas>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="isDisconnectedPlatform$ | async"
+              [disableSpin]="true">
+              Please connect to Xero/MYOB to display this chart
+            </spin-loader>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="
+                !(datasets.length > 0 && datasets[0].data.length > 0) &&
+                !(isLoading$ | async)
+              "
+              [disableSpin]="true">
+              You have no data in the selected period
+            </spin-loader>
+          </ng-template>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

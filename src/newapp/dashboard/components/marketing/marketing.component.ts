@@ -185,40 +185,38 @@ export class MarketingComponent implements OnInit, OnDestroy {
       this.dashbordFacade.chartTips$,
       this.marketingFacade.isActivePatients$,
     ]).pipe(
-      map(([tip, v]) => {
+      filter(params => !!params[0]),
+      map(([chartTips, v]) => {
+        let tip;
         if (v) {
-          return tip && tip[61] && tip[61];
+          tip = chartTips[61];
         } else {
-          return tip && tip[36] && tip[36];
+          tip = chartTips[36];
         }
+        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        return tip;
       })
     );
   }
 
   getChartTip(index: number) {
-    return this.dashbordFacade.chartTips$.pipe(
-      takeUntil(this.destroy$),
-      map(c => {
-        if (c && c[index]) {
-          return c[index];
-        }
-        return '';
-      })
-    );
+    return this.dashbordFacade.getChartTip$(index);
   }
 
   postCodeChartTip$ = combineLatest([
     this.dashbordFacade.chartTips$,
     this.marketingFacade.prodByPostCodeChartName$,
   ]).pipe(
-    takeUntil(this.destroy$),
+    filter(params => !!params[0]),
     map(([tips, chartName]) => {
+      let tip;
       if (chartName === 'Production By Post Code') {
-        return tips && tips[100];
+        tip = tips[100];
       }else if (chartName === 'Production By Age') {
-        return tips && tips[101];
+        tip = tips[101];
       }
-      return '';
+      if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+      return tip;
     })
   );
 }

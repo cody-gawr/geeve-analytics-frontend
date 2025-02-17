@@ -1,3 +1,11 @@
+export enum FD_CHART_ID {
+  utilisation = 15,
+  recallRate = 16,
+  reappointRate = 17,
+  numberTicks = 20,
+  ftaRatio = 18,
+  utaRatio = 19
+}
 export interface FdUtaRatioApiResponse {
   app: string;
   data: FdUtaRatioItem[];

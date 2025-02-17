@@ -43,103 +43,113 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box ca-hourly-chart">
-      <div class="ca-hourly-switch">
-        <button
-          *ngFor="let chartName of hourlyRateChartNames$ | async"
-          (click)="switchChartName(chartName)"
-          [ngClass]="{ active: chartName == (chartName$ | async) }">
-          {{ chartName }}
-        </button>
-      </div>
-
-      <div
-        class="pa-table"
-        *ngIf="showTableInfo && (isTableIconVisible$ | async); else graphElem">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>{{chartName$ | async}}</th>
-              <th>Hours</th>
-              <th>Hourly Rate</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let protbl of tableData">
-              <td>{{ protbl.label }}</td>
-              <td>${{ protbl.v1 | number: '1.0-0' }}</td>
-              <td>{{ formatNumber(protbl.v2) }}</td>
-              <td>{{ protbl.value | currency: 'USD' : 'symbol' : '1.0-0' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <ng-template #graphElem>
-        <div class="chart-gauge ca-hourly-graph">
-          <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-          <ng-template #chartElem>
-            <ngx-gauge
-              *ngIf="
-                (isDentistMode$ | async) &&
-                !(isCompare$ | async) &&
-                !(isTrend$ | async) &&
-                (hasData$ | async)
-              "
-              type="arch"
-              [value]="gaugeValue"
-              [label]="gaugeLabel"
-              [thick]="20"
-              backgroundColor="#f4f0fa"
-              foregroundColor="#4ccfae"
-              [max]="maxGoal"
-              cap="round"
-              [duration]="2500"
-              prepend="$"
-              [size]="300">
-            </ngx-gauge>
-            <canvas
-              baseChart
-              *ngIf="
-                (!(isDentistMode$ | async) ||
-                  (isCompare$ | async) ||
-                  (isTrend$ | async)) &&
-                (hasData$ | async)
-              "
-              [datasets]="datasets"
-              [labels]="labels"
-              [legend]="legend$ | async"
-              type="bar"
-              [options]="chartOptions$ | async">
-            </canvas>
-
-            <spin-loader
-              class="empty-placeholder"
-              *ngIf="!(hasData$ | async)"
-              [disableSpin]="true">
-              {{ noDataAlertMessage$ | async }}
-            </spin-loader>
-          </ng-template>
+      <spin-loader
+            class="empty-placeholder"
+            *ngIf="isComingSoon; else enabledChart"
+            [disableSpin]="true">
+            Coming Soon...
+          </spin-loader>
+      <ng-template #enabledChart>
+        <div class="ca-hourly-switch">
+          <button
+            *ngFor="let chartName of hourlyRateChartNames$ | async"
+            (click)="switchChartName(chartName)"
+            [ngClass]="{ active: chartName == (chartName$ | async) }">
+            {{ chartName }}
+          </button>
+        </div>
+  
+        <div
+          class="pa-table"
+          *ngIf="showTableInfo && (isTableIconVisible$ | async); else graphElem">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>{{chartName$ | async}}</th>
+                <th>Hours</th>
+                <th>Hourly Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let protbl of tableData">
+                <td>{{ protbl.label }}</td>
+                <td>${{ protbl.v1 | number: '1.0-0' }}</td>
+                <td>{{ formatNumber(protbl.v2) }}</td>
+                <td>{{ protbl.value | currency: 'USD' : 'symbol' : '1.0-0' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #graphElem>
+          <div class="chart-gauge ca-hourly-graph">
+            
+            <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+            <ng-template #chartElem>
+              <ngx-gauge
+                *ngIf="
+                  (isDentistMode$ | async) &&
+                  !(isCompare$ | async) &&
+                  !(isTrend$ | async) &&
+                  (hasData$ | async)
+                "
+                type="arch"
+                [value]="gaugeValue"
+                [label]="gaugeLabel"
+                [thick]="20"
+                backgroundColor="#f4f0fa"
+                foregroundColor="#4ccfae"
+                [max]="maxGoal"
+                cap="round"
+                [duration]="2500"
+                prepend="$"
+                [size]="300">
+              </ngx-gauge>
+              <canvas
+                baseChart
+                *ngIf="
+                  (!(isDentistMode$ | async) ||
+                    (isCompare$ | async) ||
+                    (isTrend$ | async)) &&
+                  (hasData$ | async)
+                "
+                [datasets]="datasets"
+                [labels]="labels"
+                [legend]="legend$ | async"
+                type="bar"
+                [options]="chartOptions$ | async">
+              </canvas>
+  
+              <spin-loader
+                class="empty-placeholder"
+                *ngIf="!(hasData$ | async)"
+                [disableSpin]="true">
+                {{ noDataAlertMessage$ | async }}
+              </spin-loader>
+            </ng-template>
+          </div>
+        </ng-template>
+  
+        <div class="chart-foot" *ngIf="isEnableFooter$ | async">
+          <div>
+            <h3>{{ total | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
+            <span>{{ durationLabel$ | async }}</span>
+          </div>
+  
+          <div *ngIf="(duration$ | async) !== 'custom'">
+            <h3>{{ prev | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
+            <span>{{ durationTrendLabel$ | async }}</span>
+          </div>
+          <div
+            *ngIf="
+              goal >= 0 && (showGoals$ | async) == true && (goalCount$ | async)
+            ">
+            <h3>${{ goal * (goalCount$ | async) }}</h3>
+            <span>Goal</span>
+          </div>
         </div>
       </ng-template>
 
-      <div class="chart-foot" *ngIf="isEnableFooter$ | async">
-        <div>
-          <h3>{{ total | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
-          <span>{{ durationLabel$ | async }}</span>
-        </div>
-
-        <div *ngIf="(duration$ | async) !== 'custom'">
-          <h3>{{ prev | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
-          <span>{{ durationTrendLabel$ | async }}</span>
-        </div>
-        <div
-          *ngIf="
-            goal >= 0 && (showGoals$ | async) == true && (goalCount$ | async)
-          ">
-          <h3>${{ goal * (goalCount$ | async) }}</h3>
-          <span>Goal</span>
-        </div>
-      </div>
     </div>
   </div>
 </div>

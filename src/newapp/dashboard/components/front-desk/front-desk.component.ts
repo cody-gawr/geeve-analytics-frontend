@@ -17,6 +17,7 @@ import { FrontDeskFacade } from '../../facades/front-desk.facade';
 import _ from 'lodash';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 import { CHART_WIDTH_CLASS } from '@/newapp/shared/constants';
+import { FD_CHART_ID } from '@/newapp/models/dashboard/front-desk';
 
 @Component({
   selector: 'dashboard-front-desk',
@@ -24,14 +25,7 @@ import { CHART_WIDTH_CLASS } from '@/newapp/shared/constants';
   styleUrls: ['./front-desk.component.scss'],
 })
 export class FrontDeskComponent implements OnInit, OnDestroy {
-  FrontDeskChartIDs = {
-    utilisation: 15,
-    recallRate: 16,
-    reappointRate: 17,
-    numberTicks: 20,
-    ftaRatio: 18,
-    utaRatio: 19
-  }
+  FrontDeskChartIDs = FD_CHART_ID;
   
   FrontDeskChartLayouts = [
     [this.FrontDeskChartIDs.utilisation, this.FrontDeskChartIDs.recallRate, this.FrontDeskChartIDs.reappointRate],

@@ -16,6 +16,7 @@ import {
 } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({
   selector: 'cp-clinician-referrals-chart',
@@ -23,8 +24,10 @@ import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
   styleUrls: ['./clinician-referrals.component.scss'],
 })
 export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

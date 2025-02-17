@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { formatXTooltipLabel } from '@/newapp/shared/utils';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({
   selector: 'cp-rev-per-procedure-chart',
@@ -15,8 +16,10 @@ import { formatXTooltipLabel } from '@/newapp/shared/utils';
   styleUrls: ['./rev-per-procedure.component.scss'],
 })
 export class CpRevPerProcedureComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

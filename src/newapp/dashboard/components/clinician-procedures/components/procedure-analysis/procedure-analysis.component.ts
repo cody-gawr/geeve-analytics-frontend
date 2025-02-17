@@ -14,6 +14,7 @@ import {
   distinctUntilChanged,
 } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({
   selector: 'cp-procedure-analysis-chart',
@@ -21,8 +22,10 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./procedure-analysis.component.scss'],
 })
 export class CpAnalysisComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

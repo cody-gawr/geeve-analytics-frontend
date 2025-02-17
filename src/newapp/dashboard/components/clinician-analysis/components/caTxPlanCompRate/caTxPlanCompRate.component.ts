@@ -3,6 +3,7 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 import {
   formatXLabel,
   generatingLegend,
@@ -10,7 +11,7 @@ import {
 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ChartOptions, LegendOptions } from 'chart.js';
+import { ChartOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
@@ -29,8 +30,10 @@ import {
   styleUrls: ['./caTxPlanCompRate.component.scss'],
 })
 export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
-  @Input() toolTip: string = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
@@ -42,7 +45,8 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isDentistMode, isCompare, hasData]) =>
-          (!isDentistMode || isCompare) && this.tableData.length > 0 && hasData
+          (!isDentistMode || isCompare) && this.tableData.length > 0 && hasData &&
+          !this.isComingSoon
       )
     );
   }

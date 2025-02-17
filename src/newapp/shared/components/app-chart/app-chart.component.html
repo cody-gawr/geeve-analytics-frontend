@@ -24,104 +24,112 @@
     </div>
     <div class="chart-content">
       <div class="canvas-wrapper chart-box gap-15px" [ngStyle]="{maxheight: chartBoxHeight}">
-        <div class="chart-header">
-          <button
-            *ngFor="let tab of chartTabs"
-            (click)="switchActiveTab && switchActiveTab(tab)"
-            [ngClass]="{ active: tab === activeTab }">
-            {{ tab }}
-          </button>
-        </div>
-
-        <div class="chart-elements" *ngIf="datePicker">
-            <span>Original Appointment In</span>
-            <mat-form-field appearance="outline" subscriptSizing="dynamic">
-                <input matInput [matDatepicker]="dp" [formControl]="datePicker">
-                <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-                <mat-datepicker #dp startView="year"></mat-datepicker>
-            </mat-form-field>
-        </div>
+        <spin-loader
+          class="empty-placeholder"
+          *ngIf="isComingSoon; else enabledChart"
+          [disableSpin]="true">
+          Coming Soon...
+        </spin-loader>
+        <ng-template #enabledChart>
+          <div class="chart-header">
+            <button
+              *ngFor="let tab of chartTabs"
+              (click)="switchActiveTab && switchActiveTab(tab)"
+              [ngClass]="{ active: tab === activeTab }">
+              {{ tab }}
+            </button>
+          </div>
   
-        <div
-          class="pa-table"
-          *ngIf="showPaTableView && enablePaTableView; else graphElem">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>
-                  activeTab
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let protbl of paTableData">
-                <td>{{ protbl.label }}</td>
-                <td>{{ formatValue(protbl.value | number: '1.0-0') }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <ng-template #graphElem>
-          <div class="chart-gauge graph-box">
-            <spin-loader *ngIf="isLoading; else chartElem"></spin-loader>
-            <ng-template #chartElem>
-              <spin-loader
-                class="empty-placeholder"
-                *ngIf="!readyToDrawChart; else drawChartElem"
-                [disableSpin]="true">
-                {{ noDataAlertMessage }}
-              </spin-loader>
-              <ng-template #drawChartElem>
-                <ngx-gauge
-                  *ngIf="chartType === 'arch' && gaugeValue; else canvasElem"
-                  [type]="chartType"
-                  [value]="gaugeValue"
-                  
-                  [thick]="20"
-                  backgroundColor="#f4f0fa"
-                  foregroundColor="#4ccfae"
-                  cap="round"
-
-                  [label]="gaugeLabel"
-                  [duration]="gaugeDur"
-                  [max]="gaugeMax"
-                  [append]="appendCurrency?currency:''"
-                  [prepend]="!appendCurrency?currency:''"
-                  [size]="gaugeSize">
-                </ngx-gauge>
-                <ng-template #canvasElem>
-                  <canvas
-                    baseChart
-                    [datasets]="datasets"
-                    [labels]="labels"
-                    [legend]="enableLegend"
+          <div class="chart-elements" *ngIf="datePicker">
+              <span>Original Appointment In</span>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                  <input matInput [matDatepicker]="dp" [formControl]="datePicker">
+                  <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                  <mat-datepicker #dp startView="year"></mat-datepicker>
+              </mat-form-field>
+          </div>
+    
+          <div
+            class="pa-table"
+            *ngIf="showPaTableView && enablePaTableView; else graphElem">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>
+                    activeTab
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let protbl of paTableData">
+                  <td>{{ protbl.label }}</td>
+                  <td>{{ formatValue(protbl.value | number: '1.0-0') }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ng-template #graphElem>
+            <div class="chart-gauge graph-box">
+              <spin-loader *ngIf="isLoading; else chartElem"></spin-loader>
+              <ng-template #chartElem>
+                <spin-loader
+                  class="empty-placeholder"
+                  *ngIf="!readyToDrawChart; else drawChartElem"
+                  [disableSpin]="true">
+                  {{ noDataAlertMessage }}
+                </spin-loader>
+                <ng-template #drawChartElem>
+                  <ngx-gauge
+                    *ngIf="chartType === 'arch' && gaugeValue; else canvasElem"
                     [type]="chartType"
-                    [options]="chartOptions">
-                  </canvas>
+                    [value]="gaugeValue"
+                    
+                    [thick]="20"
+                    backgroundColor="#f4f0fa"
+                    foregroundColor="#4ccfae"
+                    cap="round"
+  
+                    [label]="gaugeLabel"
+                    [duration]="gaugeDur"
+                    [max]="gaugeMax"
+                    [append]="appendCurrency?currency:''"
+                    [prepend]="!appendCurrency?currency:''"
+                    [size]="gaugeSize">
+                  </ngx-gauge>
+                  <ng-template #canvasElem>
+                    <canvas
+                      baseChart
+                      [datasets]="datasets"
+                      [labels]="labels"
+                      [legend]="enableLegend"
+                      [type]="chartType"
+                      [options]="chartOptions">
+                    </canvas>
+                  </ng-template>
                 </ng-template>
               </ng-template>
-            </ng-template>
+            </div>
+          </ng-template>
+    
+          <div class="chart-foot" *ngIf="durationCurrLabel || durationPrevLabel || enableGoal; else emptyEle">
+            <div *ngIf="!!durationCurrLabel">
+              <h3>{{formatValue(curr)}}</h3>
+              <span>{{ durationCurrLabel }}</span>
+            </div>
+            <div *ngIf="duration !== 'custom' && !!durationPrevLabel">
+              <h3>{{ formatValue(prev) }}</h3>
+              <span>{{ durationPrevLabel }}</span>
+            </div>
+            <div
+              *ngIf="goal >= 0 && enableGoal && goalCount">
+              <h3>{{ formatValue(goal * goalCount) }}</h3>
+              <span>Goal</span>
+            </div>
           </div>
-        </ng-template>
-  
-        <div class="chart-foot" *ngIf="durationCurrLabel || durationPrevLabel || enableGoal; else emptyEle">
-          <div *ngIf="!!durationCurrLabel">
-            <h3>{{formatValue(curr)}}</h3>
-            <span>{{ durationCurrLabel }}</span>
-          </div>
-          <div *ngIf="duration !== 'custom' && !!durationPrevLabel">
-            <h3>{{ formatValue(prev) }}</h3>
-            <span>{{ durationPrevLabel }}</span>
-          </div>
-          <div
-            *ngIf="goal >= 0 && enableGoal && goalCount">
-            <h3>{{ formatValue(goal * goalCount) }}</h3>
-            <span>Goal</span>
-          </div>
-        </div>
-        <ng-template #emptyEle>
-          <div></div>
+          <ng-template #emptyEle>
+            <div></div>
+          </ng-template>
         </ng-template>
       </div>
     </div>

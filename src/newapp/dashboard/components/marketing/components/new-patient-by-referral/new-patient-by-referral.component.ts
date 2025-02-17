@@ -9,6 +9,7 @@ import _ from 'lodash';
 import camelCase from 'camelcase';
 import { Subject, takeUntil, combineLatest, map, take } from 'rxjs';
 import { externalTooltipHandler } from '@/newapp/shared/utils';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({
   selector: 'new-patient-by-referral-chart',
@@ -18,8 +19,10 @@ import { externalTooltipHandler } from '@/newapp/shared/utils';
 export class MarketingNewPatientByReferralComponent
   implements OnInit, OnDestroy
 {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

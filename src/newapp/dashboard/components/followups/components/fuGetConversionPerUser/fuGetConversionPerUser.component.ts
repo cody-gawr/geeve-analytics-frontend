@@ -1,6 +1,7 @@
 import { splitName } from '@/app/util';
 import { FollowupsFacade } from '@/newapp/dashboard/facades/followups.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions } from 'chart.js';
@@ -14,8 +15,10 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
   styleUrls: ['./fuGetConversionPerUser.component.scss'],
 })
 export class FuGetConversionPerUserComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
   chartNames: FU_OUTCOME_CHART_NAME[] = ['Ticks', 'Recalls', 'FTAs', 'UTAs'];

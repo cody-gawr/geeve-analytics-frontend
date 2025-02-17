@@ -10,89 +10,98 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
-      <div class="active-toggle">
-        <button
-          mat-flat-button
-          *ngIf="(visibility$ | async) === 'combined'; else elem1"
-          (click)="setVisibility('combined')"
-          color="primary">
-          All
-        </button>
-        <ng-template #elem1>
-          <button mat-stroked-button (click)="setVisibility('combined')">
+      <spin-loader
+        class="empty-placeholder"
+        *ngIf="isComingSoon; else enabledChart"
+        [disableSpin]="true">
+        Coming Soon...
+      </spin-loader>
+      <ng-template #enabledChart>
+        <div class="active-toggle">
+          <button
+            mat-flat-button
+            *ngIf="(visibility$ | async) === 'combined'; else elem1"
+            (click)="setVisibility('combined')"
+            color="primary">
             All
           </button>
-        </ng-template>
-
-        <button
-          (click)="setVisibility('internal')"
-          *ngIf="(visibility$ | async) === 'internal'; else elem2"
-          color="primary"
-          mat-flat-button>
-          Internal
-        </button>
-        <ng-template #elem2>
-          <button (click)="setVisibility('internal')" mat-stroked-button>
+          <ng-template #elem1>
+            <button mat-stroked-button (click)="setVisibility('combined')">
+              All
+            </button>
+          </ng-template>
+  
+          <button
+            (click)="setVisibility('internal')"
+            *ngIf="(visibility$ | async) === 'internal'; else elem2"
+            color="primary"
+            mat-flat-button>
             Internal
           </button>
-        </ng-template>
-
-        <button
-          (click)="setVisibility('external')"
-          *ngIf="(visibility$ | async) === 'external'; else elem3"
-          color="primary"
-          mat-flat-button>
-          External
-        </button>
-        <ng-template #elem3>
-          <button (click)="setVisibility('external')" mat-stroked-button>
+          <ng-template #elem2>
+            <button (click)="setVisibility('internal')" mat-stroked-button>
+              Internal
+            </button>
+          </ng-template>
+  
+          <button
+            (click)="setVisibility('external')"
+            *ngIf="(visibility$ | async) === 'external'; else elem3"
+            color="primary"
+            mat-flat-button>
             External
           </button>
-        </ng-template>
-      </div>
-      <div
-        [ngClass]="
-          (chartType$ | async) == 'doughnut'
-            ? ['chart-gauge', 'predictor-ratio-gauge']
-            : ['chart-gauge', 'predictor-ratio-gauge-1']
-        ">
-        <spin-loader
-          *ngIf="isLoading$ | async; else chartElem"
-          [disableSpin]="false"></spin-loader>
-        <ng-template #chartElem>
-          <canvas
-            *ngIf="!(isLoading$ | async) && (hasData$ | async)"
-            baseChart
-            [datasets]="datasets"
-            [labels]="labels"
-            [legend]="legend$ | async"
-            [type]="chartType$ | async"
-            [options]="chartOptions$ | async">
-          </canvas>
+          <ng-template #elem3>
+            <button (click)="setVisibility('external')" mat-stroked-button>
+              External
+            </button>
+          </ng-template>
+        </div>
+        <div
+          [ngClass]="
+            (chartType$ | async) == 'doughnut'
+              ? ['chart-gauge', 'predictor-ratio-gauge']
+              : ['chart-gauge', 'predictor-ratio-gauge-1']
+          ">
           <spin-loader
-            class="empty-placeholder"
-            *ngIf="!(hasData$ | async)"
-            [disableSpin]="true">
-            {{ noDataAlertMessage$ | async }}
-          </spin-loader>
-        </ng-template>
-      </div>
-      <div
-        class="chart-foot"
-        *ngIf="!((isTrend$ | async) && (isDentistMode$ | async))">
-        <div>
-          <h3>{{ referralsVal }}</h3>
-          <span>Total</span>
+            *ngIf="isLoading$ | async; else chartElem"
+            [disableSpin]="false"></spin-loader>
+          <ng-template #chartElem>
+            <canvas
+              *ngIf="!(isLoading$ | async) && (hasData$ | async)"
+              baseChart
+              [datasets]="datasets"
+              [labels]="labels"
+              [legend]="legend$ | async"
+              [type]="chartType$ | async"
+              [options]="chartOptions$ | async">
+            </canvas>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!(hasData$ | async)"
+              [disableSpin]="true">
+              {{ noDataAlertMessage$ | async }}
+            </spin-loader>
+          </ng-template>
         </div>
-        <div>
-          <h3>{{ referralsVal2 }}</h3>
-          <span>Internal</span>
+        <div
+          class="chart-foot"
+          *ngIf="!((isTrend$ | async) && (isDentistMode$ | async))">
+          <div>
+            <h3>{{ referralsVal }}</h3>
+            <span>Total</span>
+          </div>
+          <div>
+            <h3>{{ referralsVal2 }}</h3>
+            <span>Internal</span>
+          </div>
+          <div>
+            <h3>{{ referralsVal3 }}</h3>
+            <span>External</span>
+          </div>
         </div>
-        <div>
-          <h3>{{ referralsVal3 }}</h3>
-          <span>External</span>
-        </div>
-      </div>
+      </ng-template>
+
     </div>
   </div>
 </div>

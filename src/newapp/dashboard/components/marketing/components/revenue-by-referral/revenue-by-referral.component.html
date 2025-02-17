@@ -7,67 +7,75 @@
     fontIcon="help"></mat-icon>
   <div class="chart-title">New Patient Revenue by Referral</div>
   <div class="chart-content">
-    <div
-      [ngClass]="
-        (chartType$ | async) == 'doughnut'
-          ? [
-              'canvas-wrapper',
-              'chart-box',
-              'j-justify-center',
-              'j-items-center'
-            ]
-          : ['canvas-wrapper', 'chart-box']
-      ">
+    <spin-loader
+      class="empty-placeholder"
+      *ngIf="isComingSoon; else enabledChart"
+      [disableSpin]="true">
+      Coming Soon...
+    </spin-loader>
+    <ng-template #enabledChart>
       <div
-        class="chart-gauge rev-by-referral-chart"
-        [ngClass]="(chartType$ | async) == 'doughnut' ? ['j-padding-20'] : []">
-        <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
-        <ng-template #mainElem>
-          <button
-            *ngIf="isChartClicked"
-            (click)="loadData()"
-            mat-flat-button
-            color="primary">
-            Back
-          </button>
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="!hasData; else chartElem3"
-            [disableSpin]="true">
-            You have no revenue from referral sources in the selected period
-          </spin-loader>
-          <ng-template #chartElem3>
-            <canvas
-              *ngIf="isExactOrCore$ | async; else cE02"
-              #mkRevByReferral
-              baseChart
-              [datasets]="datasets"
-              [labels]="labels"
-              [type]="chartType$ | async"
-              [legend]="legend$ | async"
-              [options]="chartOptions$ | async"></canvas>
-            <ng-template #cE02>
+        [ngClass]="
+          (chartType$ | async) == 'doughnut'
+            ? [
+                'canvas-wrapper',
+                'chart-box',
+                'j-justify-center',
+                'j-items-center'
+              ]
+            : ['canvas-wrapper', 'chart-box']
+        ">
+        <div
+          class="chart-gauge rev-by-referral-chart"
+          [ngClass]="(chartType$ | async) == 'doughnut' ? ['j-padding-20'] : []">
+          <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
+          <ng-template #mainElem>
+            <button
+              *ngIf="isChartClicked"
+              (click)="loadData()"
+              mat-flat-button
+              color="primary">
+              Back
+            </button>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!hasData; else chartElem3"
+              [disableSpin]="true">
+              You have no revenue from referral sources in the selected period
+            </spin-loader>
+            <ng-template #chartElem3>
               <canvas
+                *ngIf="isExactOrCore$ | async; else cE02"
                 #mkRevByReferral
                 baseChart
                 [datasets]="datasets"
                 [labels]="labels"
                 [type]="chartType$ | async"
                 [legend]="legend$ | async"
-                [options]="chartOptions$ | async"
-                (chartClick)="chartClicked($event)"></canvas>
+                [options]="chartOptions$ | async"></canvas>
+              <ng-template #cE02>
+                <canvas
+                  #mkRevByReferral
+                  baseChart
+                  [datasets]="datasets"
+                  [labels]="labels"
+                  [type]="chartType$ | async"
+                  [legend]="legend$ | async"
+                  [options]="chartOptions$ | async"
+                  (chartClick)="chartClicked($event)"></canvas>
+              </ng-template>
             </ng-template>
           </ng-template>
-        </ng-template>
-      </div>
-      <div
-        class="chart-foot"
-        *ngIf="!(isTrend$ | async) && isMultipleClinic$ | async">
-        <div class="w-100">
-          <h3>${{ revByReferralVal | number: '1.0-0' }}</h3>
-          <span>Total</span>
+        </div>
+        <div
+          class="chart-foot"
+          *ngIf="!(isTrend$ | async) && isMultipleClinic$ | async">
+          <div class="w-100">
+            <h3>${{ revByReferralVal | number: '1.0-0' }}</h3>
+            <span>Total</span>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-template>    
   </div>
 </div>

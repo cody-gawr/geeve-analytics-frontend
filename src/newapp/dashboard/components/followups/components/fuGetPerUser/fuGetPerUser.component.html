@@ -17,38 +17,46 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
-      <div class="chart-gauge fuGetPerUser">
-        <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
-        <ng-template #mainElem>
-          <canvas
-            #fdFtaRatioChart
-            *ngIf="hasData"
-            baseChart
-            [datasets]="datasets"
-            [labels]="labels"
-            [legend]="true"
-            type="bar"
-            [options]="chartOptions">
-          </canvas>
-
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="!hasData"
-            [disableSpin]="true">
-            No followups were completed in this period
-          </spin-loader>
-        </ng-template>
-      </div>
-      <div class="chart-foot">
-        <div>
-          <h3>{{ total | number: '1.0-0' }}</h3>
-          <span>{{ durationLabel$ | async }}</span>
+      <spin-loader
+        class="empty-placeholder"
+        *ngIf="isComingSoon; else enabledChart"
+        [disableSpin]="true">
+        Coming Soon...
+      </spin-loader>
+      <ng-template #enabledChart>
+        <div class="chart-gauge fuGetPerUser">
+          <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
+          <ng-template #mainElem>
+            <canvas
+              #fdFtaRatioChart
+              *ngIf="hasData"
+              baseChart
+              [datasets]="datasets"
+              [labels]="labels"
+              [legend]="true"
+              type="bar"
+              [options]="chartOptions">
+            </canvas>
+  
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!hasData"
+              [disableSpin]="true">
+              No followups were completed in this period
+            </spin-loader>
+          </ng-template>
         </div>
-        <div *ngIf="!(isCustomDateRange$ | async)">
-          <h3>{{ prev | number: '1.0-0' }}</h3>
-          <span>{{ durationTrendLabel$ | async }}</span>
+        <div class="chart-foot">
+          <div>
+            <h3>{{ total | number: '1.0-0' }}</h3>
+            <span>{{ durationLabel$ | async }}</span>
+          </div>
+          <div *ngIf="!(isCustomDateRange$ | async)">
+            <h3>{{ prev | number: '1.0-0' }}</h3>
+            <span>{{ durationTrendLabel$ | async }}</span>
+          </div>
         </div>
-      </div>
+      </ng-template>
     </div>
   </div>
 </div>

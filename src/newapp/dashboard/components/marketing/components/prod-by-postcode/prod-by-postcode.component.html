@@ -19,35 +19,43 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
-      <div class="chart-header">
-        <button
-            *ngFor="let chartName of chartNames"
-            (click)="switchChartName(chartName)"
-            [ngClass]="{ active: chartName == (chartName$ | async) }">
-            {{ chartName }}
-          </button>
-      </div>
-      <div class="chart-gauge prod-by-postcode">
-        <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-        <ng-template #chartElem>
-          <canvas
-            *ngIf="!(isLoading$ | async) && hasData"
-            baseChart
-            [datasets]="datasets"
-            [labels]="labels"
-            [legend]="legend$ | async"
-            [type]="chartType$ | async"
-            [options]="chartOptions$ | async">
-          </canvas>
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="!hasData"
-            [disableSpin]="true">
-            You have no data in the selected period
-          </spin-loader>
-        </ng-template>
-      </div>
-      <div></div>
+      <spin-loader
+        class="empty-placeholder"
+        *ngIf="isComingSoon; else enabledChart"
+        [disableSpin]="true">
+        Coming Soon...
+      </spin-loader>
+      <ng-template #enabledChart>
+        <div class="chart-header">
+          <button
+              *ngFor="let chartName of chartNames"
+              (click)="switchChartName(chartName)"
+              [ngClass]="{ active: chartName == (chartName$ | async) }">
+              {{ chartName }}
+            </button>
+        </div>
+        <div class="chart-gauge prod-by-postcode">
+          <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+          <ng-template #chartElem>
+            <canvas
+              *ngIf="!(isLoading$ | async) && hasData"
+              baseChart
+              [datasets]="datasets"
+              [labels]="labels"
+              [legend]="legend$ | async"
+              [type]="chartType$ | async"
+              [options]="chartOptions$ | async">
+            </canvas>
+            <spin-loader
+              class="empty-placeholder"
+              *ngIf="!hasData"
+              [disableSpin]="true">
+              You have no data in the selected period
+            </spin-loader>
+          </ng-template>
+        </div>
+        <div></div>
+      </ng-template>      
     </div>
   </div>
 </div>

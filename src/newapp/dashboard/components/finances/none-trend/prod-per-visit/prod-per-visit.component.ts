@@ -1,7 +1,7 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { FnProductionPerDayItem, FnProductionPerVisitItem } from '@/newapp/models/dashboard/finance';
+import { ChartTip, FnProductionPerDayItem, FnProductionPerVisitItem } from '@/newapp/models/dashboard/finance';
 import {
   externalTooltipHandler,
   generatingLegend_3,
@@ -19,8 +19,10 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
   styleUrls: ['./prod-per-visit.component.scss'],
 })
 export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 

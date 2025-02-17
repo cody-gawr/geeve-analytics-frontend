@@ -3,6 +3,7 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-analysis.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 import {
   formatXLabel,
   formatXTooltipLabel,
@@ -35,7 +36,11 @@ import {
   styleUrls: ['./caProduction.component.scss'],
 })
 export class CaProductionComponent implements OnInit, OnDestroy {
-  @Input() toolTip: string = '';
+  @Input() toolTip: ChartTip;
+
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -220,13 +225,14 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.isCompare$,
       this.hasData$,
       this.isTrend$,
-      this.isEachClinicD4w$,
+      // this.isEachClinicD4w$,
     ]).pipe(
-      map(([isDentistMode, isCompare, hasData, isTrend, isEachClinicD4w]) => {
+      map(([isDentistMode, isCompare, hasData, isTrend]) => {
         return (
           (!(isDentistMode && isTrend) || isCompare) &&
           (this.tableData.length > 0 || hasData) &&
-          isEachClinicD4w
+          // isEachClinicD4w &&
+          !this.isComingSoon
         );
       })
     );

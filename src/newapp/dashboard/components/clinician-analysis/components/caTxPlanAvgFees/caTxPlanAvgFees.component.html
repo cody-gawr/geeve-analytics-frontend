@@ -22,13 +22,13 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box ca-tx-plan-avg-fees-chart">
-      <!-- <spin-loader
+      <spin-loader
         class="empty-placeholder"
-        *ngIf="isPraktika$ | async; else mainElem1"
+        *ngIf="isComingSoon; else enabledChart"
         [disableSpin]="true">
         Coming Soon...
-      </spin-loader> -->
-      <!-- <ng-template #mainElem1> -->
+      </spin-loader>
+      <ng-template #enabledChart>
         <div class="chart-header">
           <button
             *ngFor="let chartName of chartNames"
@@ -124,7 +124,7 @@
             </h3>
           </div>
         </div>
-      <!-- </ng-template> -->
+      </ng-template>
     </div>
   </div>
 </div>

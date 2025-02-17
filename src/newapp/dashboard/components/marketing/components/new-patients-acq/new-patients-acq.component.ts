@@ -14,6 +14,7 @@ import {
   externalTooltipHandler,
   generatingLegend_4,
 } from '@/newapp/shared/utils';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({
   selector: 'new-patients-acq-chart',
@@ -21,8 +22,10 @@ import {
   styleUrls: ['./new-patients-acq.component.scss'],
 })
 export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
-  @Input() toolTip = '';
-
+  @Input() toolTip: ChartTip;
+  get isComingSoon() {
+    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+  }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
