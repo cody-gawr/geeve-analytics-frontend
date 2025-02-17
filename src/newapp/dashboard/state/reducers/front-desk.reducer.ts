@@ -943,7 +943,11 @@ export const selectFdUtilRateTrendChartData = createSelector(
       const temp = _.chain(resBody.data)
         .groupBy((item) => {
           const date = moment();
-          date.set({ year: Number(item.year), month: Number(item.month) - 1 });
+          if(trendMode === 'current'){
+            date.set({ year: Number(item.year), month: Number(item.month) - 1 });
+          }else{
+            date.set({ year: Number(item.year)});          
+          }
           return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
         }).map((values: FdUtilisationRateItem[], key: string) => ({values, key})).value();
 

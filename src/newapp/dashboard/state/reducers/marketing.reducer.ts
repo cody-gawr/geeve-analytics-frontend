@@ -1799,7 +1799,11 @@ export const selectProdByPostCodeTrendChartData = createSelector(
     const temp = _.chain(trendChartData.data)
       .groupBy((item) => {
         const date = moment();
-        date.set({ year: Number(item.year), month: Number(item.month) - 1 });
+        if(trendMode === 'current'){
+          date.set({ year: Number(item.year), month: Number(item.month) - 1 });
+        }else{
+          date.set({ year: Number(item.year)});          
+        }
         return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
       }).map((values: ProdByPostCode[], key: string) => ({values, key})).value();
 
@@ -1909,7 +1913,11 @@ export const selectProdByAgeTrendChartData = createSelector(
     const temp = _.chain(trendChartData.data)
       .groupBy((item) => {
         const date = moment();
-        date.set({ year: Number(item.year), month: Number(item.month) - 1 });
+        if(trendMode === 'current'){
+          date.set({ year: Number(item.year), month: Number(item.month) - 1 });
+        }else{
+          date.set({ year: Number(item.year)});          
+        }
         return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
       }).map((values: ProdByAge[], key: string) => ({values, key})).value();
 
