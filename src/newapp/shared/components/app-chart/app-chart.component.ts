@@ -83,7 +83,7 @@ export class AppChartComponent implements OnInit, OnDestroy {
   @Input() datePicker: FormControl<Moment>;
   @Input() currency = '%';
   @Input() appendCurrency = true;
-  @Input() chartBoxHeight = "450px";
+  @Input() chartBoxHeight = "350px";
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
