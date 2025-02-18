@@ -48,7 +48,7 @@ export class AddJeeveNameComponent {
     this.dialogRef.close();
   }
   updatevalue(event, index) {
-    this.data.jeeveNames[index] = $.trim(event.target.value);
+    this.data.jeeveNames[START_JEEVE_ID + index] = $.trim(event.target.value);
   }
 
   save(data) {
@@ -266,11 +266,11 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     this.dentistService.getJeeveNames(id).subscribe(
       res => {
         if (res.status == 200) {
-          for (var i = START_JEEVE_ID + 1; i <= START_JEEVE_ID + 9; i++) {
+          for (var i = 1; i <= 9; i++) {
             if (typeof res.body.data[i] != 'undefined') {
-              this.jeeveNames[i] = res.body.data[i];
+              this.jeeveNames[START_JEEVE_ID + i] = res.body.data[i];
             } else {
-              this.jeeveNames[i] = 'undefined';
+              this.jeeveNames[START_JEEVE_ID + i] = 'undefined';
             }
           }
         } else if (res.status == 401) {
