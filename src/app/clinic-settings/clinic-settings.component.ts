@@ -148,7 +148,6 @@ export class ClinicSettingsComponent implements OnInit {
         contactName: [null],
         address: [null],
         timezone: [null],
-        // practice_size: [null, Validators.compose([Validators.required])],
         post_op_calls: [null],
         subtracted_accounts: [null],
         fta_uta: [null],
@@ -156,24 +155,13 @@ export class ClinicSettingsComponent implements OnInit {
         recall_weeks: [null, Validators.compose([Validators.required])],
         tick_days: [null, Validators.compose([Validators.required])],
         fta_followup_days: [null, Validators.compose([Validators.required])],
-        // uta_followup_days: this.isExactOrPraktikaOrCore
-        //   ? null
-        //   : [null, Validators.compose([Validators.required])],
         uta_followup_days: [null],
         fta_followup_days_later: [
           null,
           Validators.compose([Validators.required]),
         ],
-        // uta_followup_days_later: this.isExactOrPraktikaOrCore
-        //   ? null
-        //   : [null, Validators.compose([Validators.required])],
         uta_followup_days_later: [null],
         referral_weeks: [null, Validators.compose([Validators.required])],
-        // unscheduled_patients_days: [null, Validators.compose([Validators.required])],
-        // facebook: [null],
-        // twitter: [null],
-        // linkedin: [null],
-        // instagram: [null],
       });
     } else {
       this.form = this.fb.group({
@@ -269,28 +257,11 @@ export class ClinicSettingsComponent implements OnInit {
         this.dailyTasks = v.data[0].daily_task_enable == 1 ? true : false;
         this.compareMode = v.data[0].compare_mode == 1 ? true : false;
 
-        // this.postOpCallsMh = res.body.data[0].post_op_days;
-        // this.post_op_calls = res.body.data[0].post_op_calls;
-        // this.tickDays = res.body.data[0].tick_days;
-        // this.recallWeeks = res.body.data[0].recall_weeks;
-        // this.ftaFollowupDays = res.body.data[0].fta_followup_days;
-        // this.postOpEnable = res.body.data[0].post_op_enable == 1 ? true : false;
-        // this.tickEnable = res.body.data[0].tick_enable == 1 ? true : false;
-        // this.recallEnable = res.body.data[0].recall_enable == 1 ? true : false;
-        // this.ftaEnable = res.body.data[0].fta_enable == 1 ? true : false;
-        // this.utaEnable = res.body.data[0].uta_enable == 1 ? true : false;
-
         if (this.ftaUta == '') this.ftaUta = 'status';
 
         if (v.data[0].days != null && v.data[0].days != 0) {
           this.workingDays = JSON.parse(v.data[0].days);
         }
-        // } else if (res.status == "401") {
-        //   this._cookieService.put("username", "");
-        //   this._cookieService.put("email", "");
-        //   this._cookieService.put("userid", "");
-        //   this.router.navigateByUrl("/login");
-        // }
       },
       error: error => {
         if (error.status == 401) {
