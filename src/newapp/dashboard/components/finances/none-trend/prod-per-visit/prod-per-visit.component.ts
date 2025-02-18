@@ -21,7 +21,7 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   @Input() toolTip: ChartTip;
   get isComingSoon() {
-    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+    return this.toolTip?.info?.toLowerCase() === 'coming-soon';
   }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();

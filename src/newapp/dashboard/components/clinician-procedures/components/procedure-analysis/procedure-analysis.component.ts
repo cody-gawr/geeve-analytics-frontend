@@ -24,7 +24,7 @@ import { ChartTip } from '@/newapp/models/dashboard/finance';
 export class CpAnalysisComponent implements OnInit, OnDestroy {
   @Input() toolTip: ChartTip;
   get isComingSoon() {
-    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+    return this.toolTip?.info?.toLowerCase() === 'coming-soon';
   }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();

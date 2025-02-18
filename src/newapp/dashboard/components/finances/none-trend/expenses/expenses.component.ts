@@ -22,7 +22,7 @@ import { ChartTip } from '@/newapp/models/dashboard/finance';
 export class FinanceExpensesComponent implements OnInit, OnDestroy {
   @Input() toolTip: ChartTip;
   get isComingSoon() {
-    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+    return this.toolTip?.info?.toLowerCase() === 'coming-soon';
   }  
   @Input() isFullMonths = false;
   get isLoading$() {

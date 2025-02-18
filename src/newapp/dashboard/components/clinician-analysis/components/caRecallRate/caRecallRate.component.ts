@@ -33,7 +33,7 @@ import {
 export class CaRecallRateComponent implements OnInit, OnDestroy {
   @Input() toolTip: ChartTip;
   get isComingSoon() {
-    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+    return this.toolTip?.info?.toLowerCase() === 'coming-soon';
   }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();

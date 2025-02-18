@@ -22,7 +22,7 @@ import { ChartTip } from '@/newapp/models/dashboard/finance';
 export class FinanceProdColComponent implements OnInit, OnDestroy {
   @Input() toolTip: ChartTip;
   get isComingSoon() {
-    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+    return this.toolTip?.info?.toLowerCase() === 'coming-soon';
   }  
   get isLoading$() {
     return combineLatest([

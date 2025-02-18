@@ -28,7 +28,7 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get isComingSoon() {
-    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+    return this.toolTip?.info?.toLowerCase() === 'coming-soon';
   }
 
   get trendingIcon() {

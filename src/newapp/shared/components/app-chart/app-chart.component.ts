@@ -38,9 +38,9 @@ export interface PaTableData {
   ],
 })
 export class AppChartComponent implements OnInit, OnDestroy {
-  @Input() toolTip: ChartTip;
+  @Input() toolTip: ChartTip = null;
   get isComingSoon() {
-    return this.toolTip?.info.toLowerCase() === 'coming-soon';
+    return this.toolTip?.info?.toLowerCase() === 'coming-soon';
   }
   @Input() chartTitle: string = '';
   @Input() chartType: ChartType | 'arch' = 'bar';
