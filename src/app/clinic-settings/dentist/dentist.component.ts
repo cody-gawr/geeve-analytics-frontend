@@ -11,7 +11,6 @@ import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-pag
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject, map } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DentistService } from '../../dentist/dentist.service';
 import { BaseComponent } from '../base/base.component';
@@ -21,7 +20,6 @@ import {
   MatLegacyDialogRef as MatDialogRef,
   MatLegacyDialog as MatDialog,
 } from '@angular/material/legacy-dialog';
-//import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { environment } from '../../../environments/environment';
 import { AppConstants } from '../../app.constants';
 import { LocalStorageService } from '../../shared/local-storage.service';
@@ -237,7 +235,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
             this.getAppBook(id, res.body.data);
           }
           this.jeeveProviderIds = [];
-          for (let i = 1; i <= 9; i++) {
+          for (let i = 10001; i <= 10009; i++) {
             this.jeeveProviderIds.push({ id: i, name: 'Jeeve Provider ' + i });
           }
           let activeData = [];
