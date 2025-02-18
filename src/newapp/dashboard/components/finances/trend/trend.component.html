@@ -4,15 +4,15 @@
       *ngIf="profitTrendTip$ | async"
       [toolTip]="profitTrendTip$ | async"
       class="chart33"></finance-prod-trend-chart>
+    <finance-prod-per-visit-trend-chart
+      *ngIf="prodPerVisitTip$ | async"
+      [toolTip]="prodPerVisitTip$ | async"
+      class="chart33"></finance-prod-per-visit-trend-chart>
     <fn-hourly-rate-chart
       *ngIf="getChartTip(98) | async"
       [toolTip]="getChartTip(98) | async"
       class="chart33"
     ></fn-hourly-rate-chart>
-    <finance-prod-per-visit-trend-chart
-      *ngIf="prodPerVisitTip$ | async"
-      [toolTip]="prodPerVisitTip$ | async"
-      class="chart33"></finance-prod-per-visit-trend-chart>
   </div>
   <div class="chart-row">
     <finance-expense-trend-chart

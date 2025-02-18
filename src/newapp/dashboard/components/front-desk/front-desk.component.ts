@@ -15,8 +15,6 @@ import moment from 'moment';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { FrontDeskFacade } from '../../facades/front-desk.facade';
 import _ from 'lodash';
-import { ChartTip } from '@/newapp/models/dashboard/finance';
-import { CHART_WIDTH_CLASS } from '@/newapp/shared/constants';
 import { FD_CHART_ID } from '@/newapp/models/dashboard/front-desk';
 
 @Component({
@@ -27,15 +25,8 @@ import { FD_CHART_ID } from '@/newapp/models/dashboard/front-desk';
 export class FrontDeskComponent implements OnInit, OnDestroy {
   FrontDeskChartIDs = FD_CHART_ID;
   
-  FrontDeskChartLayouts = [
-    [this.FrontDeskChartIDs.utilisation, this.FrontDeskChartIDs.recallRate, this.FrontDeskChartIDs.reappointRate],
-    [this.FrontDeskChartIDs.numberTicks, this.FrontDeskChartIDs.ftaRatio, this.FrontDeskChartIDs.utaRatio]
-  ];
-
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-  chartTips: {[key: number]: ChartTip} = {};
-  chartWidths: {[key: number]: string} = {};
 
   get isPraktika$() {
     return this.clinicFacade.isEachClinicPraktika$;
@@ -59,6 +50,10 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
 
   get clinicId$() {
     return this.clinicFacade.currentClinicId$;
+  }
+
+  getChartTip(index: number) {
+    return this.dashbordFacade.getChartTip$(index)
   }
 
   constructor(
@@ -104,11 +99,10 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
           route,
           trend,
           connectedClinicId,
-          _chartTips
+          chartTips
         ] = params;
 
-        if(!_chartTips) return;
-        this.chartTips = _chartTips;
+        if(!chartTips) return;
 
         const clinicId =
           clinics.length > 0
@@ -162,8 +156,6 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
           [this.FrontDeskChartIDs.utilisation]: [(a, b, c) => this.frontDeskFacade.loadFdUtilisationRateTrend(a, b, c)]
         }
 
-
-        const availableChartIds: number[] = [];
         switch (trend) {
           case 'off':
             const params = {
@@ -176,13 +168,10 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
             };
             Object.keys(spCallApis).map(key => {
                 const intkey = parseInt(key);
-                const info = this.chartTips[intkey]?.info;
+                const info = chartTips[intkey]?.info;
                 if(info?.toLowerCase() === 'disabled'){
 
-                }else if(info?.toLowerCase() === 'coming-soon'){
-                  availableChartIds.push(intkey);
                 }else{
-                  availableChartIds.push(intkey);
                   spCallApis[intkey].map(spCallFn => {
                     spCallFn(params);
                   });
@@ -193,14 +182,11 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
           case 'historic':
             Object.keys(spCallApisTrend).map(key => {
               const intkey = parseInt(key);
-              const info = this.chartTips[key]?.info;
+              const info = chartTips[key]?.info;
               if(info?.toLowerCase() === 'disabled'){
 
-              }else if(info?.toLowerCase() === 'coming-soon'){
-                availableChartIds.push(intkey);
               }
               else{
-                availableChartIds.push(intkey);
                 spCallApisTrend[key].map(spCallFn => {
                   spCallFn(
                     clinicId,
@@ -212,15 +198,6 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
           });
             break;
         }
-        this.chartWidths = {};
-        const availableChartLayouts = this.FrontDeskChartLayouts.map(l => l.filter(v => availableChartIds.includes(v)));
-        availableChartIds.forEach(chartId => {
-          const rowIdx = availableChartLayouts.findIndex(row => row.includes(chartId));
-          if(rowIdx > -1){
-            const len = availableChartLayouts[rowIdx].length;
-            this.chartWidths[chartId] = CHART_WIDTH_CLASS[len];
-          }
-        })
       });
   }
 

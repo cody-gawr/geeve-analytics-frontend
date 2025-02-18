@@ -2,30 +2,33 @@
   <date-range-menu class="date-range-container"></date-range-menu>
   <trend-mode-toggle></trend-mode-toggle>
 </div>
-<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
+<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content">
+  <div class="dashboard-row">
     <fd-utilisation-rate-chart
-      *ngIf="chartWidths[FrontDeskChartIDs.utilisation]"
-      [toolTip]="chartTips[FrontDeskChartIDs.utilisation]"
-      [class]="chartWidths[FrontDeskChartIDs.utilisation]"></fd-utilisation-rate-chart>
+      *ngIf="getChartTip(FrontDeskChartIDs.utilisation) | async"
+      [toolTip]="getChartTip(FrontDeskChartIDs.utilisation) | async"
+      class="dashboard-chart33"></fd-utilisation-rate-chart>
     <fd-recall-rate-chart
-    *ngIf="chartWidths[FrontDeskChartIDs.recallRate]"
-      [toolTip]="chartTips[FrontDeskChartIDs.recallRate]"
-      [class]="chartWidths[FrontDeskChartIDs.recallRate]"></fd-recall-rate-chart>
+    *ngIf="getChartTip(FrontDeskChartIDs.recallRate) | async"
+      [toolTip]="getChartTip(FrontDeskChartIDs.recallRate) | async"
+      class="dashboard-chart33"></fd-recall-rate-chart>
     <fd-reappoint-rate-chart
-      *ngIf="chartWidths[FrontDeskChartIDs.reappointRate]"
-      [toolTip]="chartTips[FrontDeskChartIDs.reappointRate]"
-      [class]="chartWidths[FrontDeskChartIDs.reappointRate]"></fd-reappoint-rate-chart>
-
+      *ngIf="getChartTip(FrontDeskChartIDs.reappointRate) | async"
+      [toolTip]="getChartTip(FrontDeskChartIDs.reappointRate) | async"
+      class="dashboard-chart33"></fd-reappoint-rate-chart>
+  </div>
+  <div class="dashboard-row">
     <fd-number-ticks-chart
-      *ngIf="chartWidths[FrontDeskChartIDs.numberTicks]"
-      [toolTip]="chartTips[FrontDeskChartIDs.numberTicks]"
-      [class]="chartWidths[FrontDeskChartIDs.numberTicks]"></fd-number-ticks-chart>
+      *ngIf="getChartTip(FrontDeskChartIDs.numberTicks) | async"
+      [toolTip]="getChartTip(FrontDeskChartIDs.numberTicks) | async"
+      class="dashboard-chart33"></fd-number-ticks-chart>
     <fd-fta-ratio-chart
-      *ngIf="chartWidths[FrontDeskChartIDs.ftaRatio]"
-      [toolTip]="chartTips[FrontDeskChartIDs.ftaRatio]"
-      [class]="chartWidths[FrontDeskChartIDs.ftaRatio]"></fd-fta-ratio-chart>
+      *ngIf="getChartTip(FrontDeskChartIDs.ftaRatio) | async"
+      [toolTip]="getChartTip(FrontDeskChartIDs.ftaRatio) | async"
+      class="dashboard-chart33"></fd-fta-ratio-chart>
     <fd-uta-ratio-chart
-      *ngIf="chartWidths[FrontDeskChartIDs.utaRatio]"
-      [toolTip]="chartTips[FrontDeskChartIDs.utaRatio]"
-      [class]="chartWidths[FrontDeskChartIDs.utaRatio]"></fd-uta-ratio-chart>
+      *ngIf="getChartTip(FrontDeskChartIDs.utaRatio) | async"
+      [toolTip]="getChartTip(FrontDeskChartIDs.utaRatio) | async"
+      class="dashboard-chart33"></fd-uta-ratio-chart>
+  </div>
 </div>

@@ -45,15 +45,15 @@
         [toolTip]="toolTipFnProductionPerVisit$ | async"></prod-per-clinic-chart>
     </div>
     <div class="chart-row">
+      <prod-per-visit-chart
+        *ngIf="prodPerVisitTip$ | async"
+        class="chart33"
+        [toolTip]="prodPerVisitTip$ | async"></prod-per-visit-chart>
       <fn-hourly-rate-chart
         *ngIf="getChartTip(98) | async"
         [toolTip]="getChartTip(98) | async"
         class="chart33"
       ></fn-hourly-rate-chart>
-      <prod-per-visit-chart
-        *ngIf="prodPerVisitTip$ | async"
-        class="chart33"
-        [toolTip]="prodPerVisitTip$ | async"></prod-per-visit-chart>
       <total-discount-chart
         *ngIf="getChartTip(34) | async"
         [toolTip]="getChartTip(34) | async"

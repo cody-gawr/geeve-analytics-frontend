@@ -3,8 +3,8 @@
 .trend-finances {
   gap: 15px;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
+  // flex-wrap: wrap;
   flex: 1;
   .chart-row {
     flex-flow: wrap;
