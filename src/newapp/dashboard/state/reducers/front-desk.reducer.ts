@@ -951,18 +951,22 @@ export const selectFdUtilRateTrendChartData = createSelector(
           return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
         }).map((values: FdUtilisationRateItem[], key: string) => ({values, key})).value();
 
-    const d = yearsOrMonths.map(
-        (ym) =>
-          temp.find((i) => i.key == ym) || {
-            key: ym,
-            values: []
-          }
-    );
-
-
+        const d = yearsOrMonths.map(
+            (ym) =>
+              temp.find((i) => i.key == ym) || {
+                key: ym,
+                values: []
+              }
+        );
       d.forEach(({values, key}) => {
-        
-        chartData.push(Math.round(_.sumBy(values, v => Number(v.utilRate)) / values.length) * 100);
+        const plannedHour = _.chain(values)
+            .sumBy(item => Number(item.plannedHour))
+            .value();
+          const workedHour = _.chain(values)
+            .sumBy(item => Number(item.workedHour))
+            .value();
+            console.log(_.round((workedHour / plannedHour) * 100, 0))
+        chartData.push(Math.round(_.sumBy(values, v => (workedHour / plannedHour) * 100) / values.length));
         if (values.every(item => item.goals == -1 || item.goals == '' || item.goals == null)) {
           targetData.push([0, 0]);
         } else {
@@ -975,9 +979,6 @@ export const selectFdUtilRateTrendChartData = createSelector(
         chartLabels.push(
           `${
             key
-            // trendMode == 'current'
-            //   ? moment(item.yearMonth).format('MMM YYYY')
-            //   : item.year
           }--${_.sumBy(values, v => Number(v.workedHour))/ values.length}--${_.sumBy(values, v => Number(v.plannedHour))/values.length}`
         );
       });
