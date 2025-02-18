@@ -24,6 +24,7 @@ import { environment } from '../../../environments/environment';
 import { AppConstants } from '../../app.constants';
 import { LocalStorageService } from '../../shared/local-storage.service';
 
+const START_JEEVE_ID = 10000;
 /************* Add Jeeve Names ***********/
 
 @Component({
@@ -235,7 +236,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
             this.getAppBook(id, res.body.data);
           }
           this.jeeveProviderIds = [];
-          for (let i = 10001; i <= 10009; i++) {
+          for (let i = START_JEEVE_ID + 1; i <= START_JEEVE_ID + 9; i++) {
             this.jeeveProviderIds.push({ id: i, name: 'Jeeve Provider ' + i });
           }
           let activeData = [];
@@ -265,7 +266,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     this.dentistService.getJeeveNames(id).subscribe(
       res => {
         if (res.status == 200) {
-          for (var i = 1; i <= 9; i++) {
+          for (var i = START_JEEVE_ID + 1; i <= START_JEEVE_ID + 9; i++) {
             if (typeof res.body.data[i] != 'undefined') {
               this.jeeveNames[i] = res.body.data[i];
             } else {
