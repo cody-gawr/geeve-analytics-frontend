@@ -22,7 +22,7 @@ import { HealthScreenService } from './healthscreen/healthscreen.service';
 // import { MarketingComponent } from './marketing/marketing.component';
 // import { MarketingService } from './marketing/marketing.service';
 import { DentistService } from '../dentist/dentist.service';
-// import { NgxGaugeModule } from 'ngx-gauge';
+import { NgxGaugeModule } from 'ngx-gauge';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
@@ -46,7 +46,7 @@ import { TermsConditionsDialog } from './morning-huddle/terms-conditions-dialog/
     CdkTableModule,
     ChartsModule,
     // NgxChartsModule,
-    // NgxGaugeModule,
+    NgxGaugeModule,
     NgxDaterangepickerMd.forRoot(),
     MatButtonToggleModule,
     MatIconModule,

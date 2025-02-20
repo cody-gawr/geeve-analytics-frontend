@@ -696,18 +696,20 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     this.healthscreenService
       .commonCall(this.clinic_id, startDate, endDate, 'chUtilisationRate')
       .subscribe(
-        res => {
-          if (res.status == 200) {
-            this.chairutilrate = true;
-            this.utilisation_rate_f = Math.round(res.body.data);
-          }
-        },
-        error => {
-          $('.ajax-loader').hide();
-          if (this.user_type != '7') {
-            this.toastr.error(
-              'There was an error retrieving your report data, please contact our support team.'
-            );
+        {
+          next: res => {
+            if (res.status == 200) {
+              this.chairutilrate = true;
+              this.utilisation_rate_f = Math.round(res.body.data);
+            }
+          },
+          error: error => {
+            $('.ajax-loader').hide();
+            if (this.user_type != '7') {
+              this.toastr.error(
+                'There was an error retrieving your report data, please contact our support team.'
+              );
+            }
           }
         }
       );
