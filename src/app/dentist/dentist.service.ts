@@ -132,7 +132,7 @@ export class DentistService {
     }
     var header = this.getHeaders();
     return this.http
-      .post(this.apiUrl + '/Dentists/dentUpdate', formData, header)
+      .post(environment.apiNodeUrl + '/Dentists/dentUpdate', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
