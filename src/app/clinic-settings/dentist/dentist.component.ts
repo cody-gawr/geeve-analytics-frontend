@@ -336,7 +336,8 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         isActive,
         jeeveId,
         updatedColumn,
-        appBookId
+        appBookId,
+        this.jeeveNames[jeeveId]
       )
       .pipe(takeUntil(this.destroyed$))
       .subscribe(

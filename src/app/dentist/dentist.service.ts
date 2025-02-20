@@ -102,7 +102,8 @@ export class DentistService {
     isActive = null,
     jeeveId = '',
     updatedColumn = '',
-    appBookId = ''
+    appBookId = '',
+    jeeve_name = ''
   ): Observable<any> {
     const formData = new FormData();
 
@@ -122,6 +123,9 @@ export class DentistService {
     }
     if (typeof value != 'undefined' && value != '' && updatedColumn == '') {
       formData.append('name', value);
+    }
+    if (typeof jeeve_name != 'undefined' && jeeve_name != '') {
+      formData.append('jeeve_name', jeeve_name);
     }
     if (isActive != null) {
       formData.append('is_active', isActive);
