@@ -1,6 +1,4 @@
 import { splitName } from '@/app/util';
-import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { FollowupsFacade } from '@/newapp/dashboard/facades/followups.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
