@@ -5,8 +5,8 @@
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content">
   <div class="dashboard-row">
     <fd-utilisation-rate-chart
-      *ngIf="getChartTip(FrontDeskChartIDs.utilisation) | async"
-      [toolTip]="getChartTip(FrontDeskChartIDs.utilisation) | async"
+      *ngIf="utilisationRateChartTip$ | async"
+      [toolTip]="utilisationRateChartTip$ | async"
       class="dashboard-chart33"></fd-utilisation-rate-chart>
     <fd-recall-rate-chart
     *ngIf="getChartTip(FrontDeskChartIDs.recallRate) | async"

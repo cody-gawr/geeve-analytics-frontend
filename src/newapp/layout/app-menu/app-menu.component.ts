@@ -351,7 +351,6 @@ interface MenuFlatNode {
   styleUrls: ['./app-menu.component.scss'],
 })
 export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
-  // @ViewChild('tree') tree: Tree;
   faCaretRight = faCaretRight;
   faCaretDown = faCaretDown;
   private _transformer = (node: MenuNode, level: number) => {
@@ -386,12 +385,6 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  // defaultMenu = '/dashboard/finances';
-
-  // get rolesIndividual$() {
-  //   return this.authFacade.rolesIndividualAndClinics$;
-  // }
-
   get isLoadingRolesIndividual$() {
     return this.authFacade.isLoadingRolesIndividual$.pipe(
       takeUntil(this.destroy$)
@@ -401,7 +394,6 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private router: Router,
-    // private menuService: MenuService,
     private authFacade: AuthFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade
@@ -425,8 +417,6 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
         const menuData: MenuNode[] = [];
 
         MENU_DATA.forEach(item => {
-          //return item.validatorFn ? item.validatorFn(params) : true;
-          //if (item.validatorFn) {
           const mainMenuValid = item.validatorFn
             ? item.validatorFn(params)
             : null;
@@ -439,9 +429,6 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
           } else if (mainMenuValid) {
             menuData.push({ ...item });
           }
-          // } else {
-          //   menuData.push({ ...item });
-          // }
         });
 
         this.dataSource.data = menuData;
@@ -459,13 +446,9 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe(event => {
         const { url } = <NavigationEnd>event;
-        // const path = this.router.parseUrl(url).root.children['primary']
-        //   ? this.router.parseUrl(url).root.children['primary'].segments[0].path
-        //   : this.defaultMenu;
         this.activedUrl = url.split('?')[0];
 
         const node = this.findNodeByPath(this.activedUrl, MENU_DATA);
-
         if (node) {
           this.updateActivateState(node.title);
         }
@@ -477,10 +460,6 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get activedTitle$(): Observable<string> {
-    // return this.menuService.menuSource$.pipe(
-    //   takeUntil(this.destroy$),
-    //   map((v) => v.key)
-    // );
     return this.layoutFacade.activatedRouteTitle$;
   }
 
@@ -499,10 +478,6 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   updateActivateState(title: string) {
     this.layoutFacade.setActivatedRouteTitle(title);
-    // this.menuService.onMenuStateChange({
-    //   key: title,
-    //   routeEvent: true
-    // });
   }
 
   findNodeByPath(path: string, menuNodes: MenuNode[]): MenuNode | undefined {

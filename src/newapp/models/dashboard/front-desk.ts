@@ -1,5 +1,6 @@
 export enum FD_CHART_ID {
   utilisation = 15,
+  utilisationByDay = 69,
   recallRate = 16,
   reappointRate = 17,
   numberTicks = 20,

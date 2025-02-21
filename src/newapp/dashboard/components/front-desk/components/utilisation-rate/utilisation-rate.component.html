@@ -50,51 +50,51 @@
           </ng-template>
         </div>
         <div class="chart-gauge utilisation-rate-gauge">
-          <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-          <ng-template #chartElem>
-            <spin-loader
-              class="empty-placeholder"
-              *ngIf="isDateRageInvalid$ | async; else chartElem1"
-              [disableSpin]="true">
-              Utilisation Rate shows currently Active appointment books only.
-              Historic data beyond 12 months is not available
-            </spin-loader>
-            <ng-template #chartElem1>
-              <spin-loader
+          <spin-loader
                 class="empty-placeholder"
-                *ngIf="(isExact$ | async) || (isCore$ | async); else enabledChart"
+                *ngIf="(isExact$ | async) || (isCore$ | async) || isComingSoon; else enabledChart"
                 [disableSpin]="true">
                 Coming Soon...
+          </spin-loader>
+          <ng-template #enabledChart>
+            <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+            <ng-template #chartElem>
+              <spin-loader
+                class="empty-placeholder"
+                *ngIf="isDateRageInvalid$ | async; else chartElem1"
+                [disableSpin]="true">
+                Utilisation Rate shows currently Active appointment books only.
+                Historic data beyond 12 months is not available
               </spin-loader>
-              <ng-template #enabledChart>
-                <canvas
-                  #fdUtilRateChart
-                  *ngIf="hasData$ | async; else chartElem03"
-                  baseChart
-                  [datasets]="datasets"
-                  [labels]="labels"
-                  [legend]="
-                    (isMultipleClinic$ | async) &&
-                    !(isByDayData$ | async) &&
-                    !(isTrend$ | async)
-                  "
-                  type="bar"
-                  [options]="chartOptions$ | async"
-                  [plugins]="chatPlugins"
-                  >
-                </canvas>
-                <ng-template #chartElem03>
-                  <spin-loader class="empty-placeholder" [disableSpin]="true">
-                    You have no appointments in the selected period
-                  </spin-loader>
-                </ng-template>
+              <ng-template #chartElem1>
+                  <canvas
+                    #fdUtilRateChart
+                    *ngIf="hasData$ | async; else chartElem03"
+                    baseChart
+                    [datasets]="datasets"
+                    [labels]="labels"
+                    [legend]="
+                      (isMultipleClinic$ | async) &&
+                      !(isByDayData$ | async) &&
+                      !(isTrend$ | async)
+                    "
+                    type="bar"
+                    [options]="chartOptions$ | async"
+                    [plugins]="chatPlugins"
+                    >
+                  </canvas>
+                  <ng-template #chartElem03>
+                    <spin-loader class="empty-placeholder" [disableSpin]="true">
+                      You have no appointments in the selected period
+                    </spin-loader>
+                  </ng-template>
               </ng-template>
             </ng-template>
           </ng-template>
         </div>
         <div
           class="chart-foot"
-          *ngIf="!(isTrend$ | async) && !(isExact$ | async);else emptyElem">
+          *ngIf="!(isTrend$ | async) && !(isExact$ | async) && !isComingSoon;else emptyElem">
           <div>
             <h3>
               {{
@@ -123,7 +123,7 @@
           </div>
         </div>
         <ng-template #emptyElem>
-          <div></div>
+          <div style="min-height: 62px"></div>
         </ng-template>
       <!-- </ng-template> -->
     </div>

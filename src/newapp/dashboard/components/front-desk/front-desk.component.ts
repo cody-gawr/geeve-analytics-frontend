@@ -56,6 +56,24 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
     return this.dashbordFacade.getChartTip$(index)
   }
 
+  get utilisationRateChartTip$() {
+    return combineLatest([
+      this.dashbordFacade.chartTips$,
+      this.frontDeskFacade.isByDayData$,
+    ]).pipe(
+      filter(params => !!params[0]),
+      map(([chartTips, v]) => {
+        let tip;
+        if (v) {
+          tip = chartTips[this.FrontDeskChartIDs.utilisationByDay];
+        } else {
+          tip = chartTips[this.FrontDeskChartIDs.utilisation];
+        }
+        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        return tip;
+      })
+    );
+  }
   constructor(
     private dashbordFacade: DashboardFacade,
     private clinicFacade: ClinicFacade,
@@ -141,8 +159,10 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
           [this.FrontDeskChartIDs.utaRatio]: [(a) => this.frontDeskFacade.loadFdUtaRatio(a)],
           [this.FrontDeskChartIDs.utilisation]: [
             (a) => this.frontDeskFacade.loadFdUtilisationRate(a),
-            (a) => this.frontDeskFacade.loadFdUtilisationRateByDay(a)
           ],
+          [this.FrontDeskChartIDs.utilisationByDay]: [
+            (a) => this.frontDeskFacade.loadFdUtilisationRateByDay(a)
+          ]
         }
 
         const spCallApisTrend = {
