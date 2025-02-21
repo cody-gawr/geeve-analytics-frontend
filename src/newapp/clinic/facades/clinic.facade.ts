@@ -183,9 +183,9 @@ export class ClinicFacade {
     select(selectConnectedClinicId)
   );
 
-  public loadClinicAccountingPlatform(clinicId: number, pms: string) {
+  public loadClinicAccountingPlatform(clinicId: number, connectedWith: string) {
     this.store.dispatch(
-      ClinicPageActions.loadClinicAccountingPlatform({ clinicId, pms })
+      ClinicPageActions.loadClinicAccountingPlatform({ clinicId, connectedWith })
     );
   }
 
