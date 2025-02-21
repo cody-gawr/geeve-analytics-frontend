@@ -307,7 +307,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(currentClinicIDs => {
         if (currentClinicIDs.length > 0) {
           const clinic =  currentClinicIDs.find(cu => cu.id === _.min(currentClinicIDs.map(c => c.id)));
-          this.clinicFacade.loadClinicAccountingPlatform(clinic.id, clinic.pms);
+          this.clinicFacade.loadClinicAccountingPlatform(clinic.id, clinic.connectedwith);
         }
       });
 
