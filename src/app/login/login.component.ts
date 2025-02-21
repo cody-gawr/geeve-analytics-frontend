@@ -289,7 +289,7 @@ export class LoginComponent implements OnInit {
     var permision = res.data;
     if (permision != '' && user_type != '2' && user_type != '7') {
       if (permision.indexOf('healthscreen') >= 0) {
-        return this.goTo('/newapp/dashboard/healthscreen');
+        return this.goTo('/dashboards/healthscreen');
       } else if (permision.indexOf('dashboard1') >= 0) {
         return this.goTo('/newapp/dashboard/cliniciananalysis');
       } else if (permision.indexOf('dashboard2') >= 0) {
@@ -308,7 +308,7 @@ export class LoginComponent implements OnInit {
         return this.goTo('/profile-settings');
       }
   } else if (user_type == '2' || user_type == '7') {
-      return this.goTo('/newapp/dashboard/healthscreen');
+      return this.goTo('/dashboards/healthscreen');
     } else {
       return this.goTo('/profile-settings');
     }
@@ -338,14 +338,10 @@ export class LoginComponent implements OnInit {
               permision = dt['permisions'];
             }
           });
-
-          // if (res.body.plan == 'lite') {
-          //   this.goTo('/dashboards/healthscreen');
-          // } else 
           
           if (permision?.length > 0 && this.userType != '7') {
             if (permision.indexOf('healthscreen') >= 0) {
-              this.goTo('/newapp/dashboard/healthscreen');
+              this.goTo('/dashboards/healthscreen');
             } else if (permision.indexOf('dashboard1') >= 0) {
               this.goTo('/newapp/dashboard/cliniciananalysis');
             } else if (permision.indexOf('dashboard2') >= 0) {
@@ -364,7 +360,7 @@ export class LoginComponent implements OnInit {
               this.goTo('/profile-settings');
             }
           } else if (this.userType == '7') {
-            this.goTo('/newapp/dashboard/healthscreen');
+            this.goTo('/dashboards/healthscreen');
           } else {
             this.goTo('/profile-settings');
           }
