@@ -132,7 +132,7 @@ export class ClinicEffects {
     return this.actions$.pipe(
       ofType(ClinicPageActions.loadClinicAccountingPlatform),
       switchMap(({ clinicId, pms }) => {
-        if(pms.toLowerCase() === 'xero' || true){
+        if(pms.toLowerCase() === 'xero'){
           return this.clinicService.checkXeroStatus(clinicId).pipe(
             map(res => 
                 ClinicApiActions.clinicAccountingPlatformSuccess({
