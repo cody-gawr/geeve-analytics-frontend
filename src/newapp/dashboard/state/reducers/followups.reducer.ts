@@ -314,31 +314,36 @@ export const selectFuGetOutcomeChartData = createSelector(
       fta = [],
       uta = [];
     resBody.data?.ticks?.forEach(item => {
-      tick.push({
-        name: item.status,
-        value: item.statusPercent,
-      });
+      if(item.status)
+        tick.push({
+          name: item.status,
+          value: item.statusPercent,
+        });
     });
 
     resBody.data?.recalls?.forEach(item => {
-      recall.push({
-        name: item.status,
-        value: item.statusPercent,
-      });
+      if(item.status)
+        recall.push({
+          name: item.status,
+          value: item.statusPercent,
+        });
     });
 
     resBody.data?.utas?.forEach(item => {
-      uta.push({
-        name: item.status,
-        value: item.statusPercent,
-      });
+      if(item.status)
+        uta.push({
+          name: item.status,
+          value: item.statusPercent,
+        });
     });
 
     resBody.data?.ftas?.forEach(item => {
-      fta.push({
-        name: item.status,
-        value: item.statusPercent,
-      });
+      if(item.status){
+        fta.push({
+          name: item.status,
+          value: item.statusPercent,
+        });
+      }
     });
 
     return {

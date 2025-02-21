@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import moment from 'moment';
 import { ClinicianProcedureFacade } from '../../facades/clinician-procedures.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
+import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({
   selector: 'clinician-procedures',
@@ -37,9 +38,9 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       this.dashbordFacade.chartTips$,
       this.clinicianProcedureFacade.cpPredictorAnalysisVisibility$,
     ]).pipe(
-      filter(params => !!params[1]),
+      filter(params => !!params[0]),
       map(([tips, visibility]) => {
-        let tip;
+        let tip: ChartTip;
         if (visibility === 'general') {
             tip = tips[9];
         } else {
@@ -56,9 +57,9 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       this.dashbordFacade.chartTips$,
       this.clinicianProcedureFacade.cpPredictorRatioVisibility$,
     ]).pipe(
-      filter(params => !!params[1]),
+      filter(params => !!params[0]),
       map(([tips, visibility]) => {
-        let tip;
+        let tip: ChartTip;
         if (visibility === 'indirect to large direct fillings') {
             tip = tips[10];
         } else if (visibility === 'rct to extraction') {
