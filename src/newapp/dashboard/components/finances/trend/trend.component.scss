@@ -16,6 +16,9 @@
       flex-direction: column;
       flex: 1 1 calc(33.3% - 10px);
       min-width: calc(33.3% - 10px);
+      @include respond-from('tablet-portrait') {
+        min-width: 100%;
+      }
     }
 
     .chart50 {
@@ -23,6 +26,9 @@
       flex-direction: column;
       flex: 1 1 calc(50% - 7.5px);
       min-width: calc(50% - 7.5px);
+      @include respond-from('tablet-portrait') {
+        min-width: 100%;
+      }
     }
   }
 }

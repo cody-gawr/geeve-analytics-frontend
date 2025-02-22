@@ -14,13 +14,13 @@
 </div>
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content">
   <div class="dashboard-row">
-    <caProduction-chart *ngIf="(prodChartTip$ | async) !== null" [toolTip]="prodChartTip$ | async" class="chart-33" />
+    <caProduction-chart *ngIf="(prodChartTip$ | async) !== null" [toolTip]="prodChartTip$ | async" class="dashboard-chart33" />
     <caHourlyRate-chart 
       *ngIf="getChartTip$(CaChartIDs.hourlyRate) | async" 
-      [toolTip]="getChartTip$(CaChartIDs.hourlyRate) | async" class="chart-33" />
+      [toolTip]="getChartTip$(CaChartIDs.hourlyRate) | async" class="dashboard-chart33" />
     <caNumNewPatients-chart
       *ngIf="getChartTip$(CaChartIDs.newPatients) | async"
-      [toolTip]="getChartTip$(CaChartIDs.newPatients) | async" class="chart-33" />
+      [toolTip]="getChartTip$(CaChartIDs.newPatients) | async" class="dashboard-chart33" />
   </div>
   <div class="dashboard-row">
     <caTxPlanAvgFees-chart
