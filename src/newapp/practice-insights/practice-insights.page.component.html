@@ -1,9 +1,12 @@
 
-<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content-box">
-    <pi-recall-attendance-chart class="chart-50" />
-    <pi-attrition-rate-chart class="chart-50" />
-    
-    <pi-lifetime-value-chart class="chart-50" />
-    <pi-overdues-chart class="chart-50" />
+<div *ngIf="(clinicId$ | async) !== null" class="dashboard-content">
+    <div class="dashboard-row">
+        <pi-recall-attendance-chart class="dashboard-chart50" />
+        <pi-attrition-rate-chart class="dashboard-chart50" />
+    </div>
+    <div class="dashboard-row">
+        <pi-lifetime-value-chart class="dashboard-chart50" />
+        <pi-overdues-chart class="dashboard-chart50" />
+    </div>
 </div>
   

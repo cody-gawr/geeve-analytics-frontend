@@ -179,13 +179,19 @@ export const clinicFeature = createFeature({
       ClinicApiActions.checkCoreSyncSuccess,
       (state, { clinicId, hasCoreSync, numberOfSuccess }): ClinicState => {
         const { userClinics } = state;
-        const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'core');
-        if(clinic) {
-          clinic.connected = hasCoreSync;
-          clinic.numberOfSuccess = numberOfSuccess;
-        }
+        // const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'core');
+        // if(clinic) {
+        //   clinic.connected = hasCoreSync;
+        //   clinic.numberOfSuccess = numberOfSuccess;
+        // }
+        const updatedUserClinics = userClinics.map(clinic => 
+          clinic.id === clinicId && clinic.pms.toLowerCase() === 'core'
+            ? { ...clinic, connected: hasCoreSync, numberOfSuccess } // Update the clinic
+            : clinic // Keep other clinics unchanged
+        );
         return {
           ...state,
+          userClinics: updatedUserClinics,
           errors: _.filter(state.errors, n => n.api != `coreSync${clinicId}`),
           isLoadingFlags: _.filter(
             state.isLoadingFlags,
@@ -198,12 +204,19 @@ export const clinicFeature = createFeature({
       ClinicApiActions.checkCoreSyncFailure,
       (state, { clinicId, error }): ClinicState => {
         const { userClinics } = state;
-        const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'core');
-        if(clinic) {
-          clinic.connected = false;
-        }
+        // const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'core');
+        // if(clinic) {
+        //   clinic.connected = false;
+        // }
+        // Create a new array with the updated clinic
+        const updatedUserClinics = userClinics.map(clinic => 
+          clinic.id === clinicId && clinic.pms.toLowerCase() === 'core'
+            ? { ...clinic, connected: false } // Update the clinic
+            : clinic // Keep other clinics unchanged
+        );
         return {
           ...state,
+          userClinics: updatedUserClinics,
           errors: [...state.errors, { ...error, api: `coreSync${clinicId}` }],
           isLoadingFlags: _.filter(
             state.isLoadingFlags,
@@ -227,13 +240,19 @@ export const clinicFeature = createFeature({
       ClinicApiActions.checkDentallySyncSuccess,
       (state, { clinicId, hasDentallySync, numberOfSuccess }): ClinicState => {
         const { userClinics } = state;
-        const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'dentally');
-        if(clinic) {
-          clinic.connected = hasDentallySync;
-          clinic.numberOfSuccess = numberOfSuccess;
-        }
+        // const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'dentally');
+        // if(clinic) {
+        //   clinic.connected = hasDentallySync;
+        //   clinic.numberOfSuccess = numberOfSuccess;
+        // }
+        const updatedUserClinics = userClinics.map(clinic => 
+          clinic.id === clinicId && clinic.pms.toLowerCase() === 'dentally'
+            ? { ...clinic, connected: hasDentallySync, numberOfSuccess } // Update the clinic
+            : clinic // Keep other clinics unchanged
+        );
         return {
           ...state,
+          userClinics: updatedUserClinics,
           errors: _.filter(state.errors, n => n.api != `dentallySync${clinicId}`),
           isLoadingFlags: _.filter(
             state.isLoadingFlags,
@@ -246,10 +265,16 @@ export const clinicFeature = createFeature({
       ClinicApiActions.checkDentallySyncFailure,
       (state, { clinicId, error }): ClinicState => {
         const { userClinics } = state;
-        const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'dentally');
-        if(clinic) clinic.connected = false;
+        // const clinic = userClinics.find(clinic => clinic.id === clinicId && clinic.pms.toLowerCase() === 'dentally');
+        // if(clinic) clinic.connected = false;
+        const updatedUserClinics = userClinics.map(clinic => 
+          clinic.id === clinicId && clinic.pms.toLowerCase() === 'dentally'
+            ? { ...clinic, connected: false } // Update the clinic
+            : clinic // Keep other clinics unchanged
+        );
         return {
           ...state,
+          userClinics: updatedUserClinics,
           errors: [...state.errors, { ...error, api: `dentallySync${clinicId}` }],
           isLoadingFlags: _.filter(
             state.isLoadingFlags,
@@ -273,13 +298,19 @@ export const clinicFeature = createFeature({
       ClinicApiActions.checkPraktikaSyncSuccess,
       (state, { clinicId, hasPraktikaSync, numberOfSuccess }): ClinicState => {
         const { userClinics } = state;
-        const clinic = userClinics.find(clinic => clinic.id === clinicId  && clinic.pms.toLowerCase() === 'praktika');
-        if(clinic) {
-          clinic.connected = hasPraktikaSync;
-          clinic.numberOfSuccess = numberOfSuccess;
-        }
+        // const clinic = userClinics.find(clinic => clinic.id === clinicId  && clinic.pms.toLowerCase() === 'praktika');
+        // if(clinic) {
+        //   clinic.connected = hasPraktikaSync;
+        //   clinic.numberOfSuccess = numberOfSuccess;
+        // }
+        const updatedUserClinics = userClinics.map(clinic => 
+          clinic.id === clinicId && clinic.pms.toLowerCase() === 'praktika'
+            ? { ...clinic, connected: hasPraktikaSync, numberOfSuccess } // Update the clinic
+            : clinic // Keep other clinics unchanged
+        );
         return {
           ...state,
+          userClinics: updatedUserClinics,
           errors: _.filter(state.errors, n => n.api != `praktikaSync${clinicId}`),
           isLoadingFlags: _.filter(
             state.isLoadingFlags,
@@ -292,10 +323,16 @@ export const clinicFeature = createFeature({
       ClinicApiActions.checkPraktikaSyncFailure,
       (state, { clinicId, error }): ClinicState => {
         const { userClinics } = state;
-        const clinic = userClinics.find(clinic => clinic.id === clinicId  && clinic.pms.toLowerCase() === 'praktika');
-        if(clinic) clinic.connected = false;
+        // const clinic = userClinics.find(clinic => clinic.id === clinicId  && clinic.pms.toLowerCase() === 'praktika');
+        // if(clinic) clinic.connected = false;
+        const updatedUserClinics = userClinics.map(clinic => 
+          clinic.id === clinicId && clinic.pms.toLowerCase() === 'praktika'
+            ? { ...clinic, connected: false } // Update the clinic
+            : clinic // Keep other clinics unchanged
+        );
         return {
           ...state,
+          userClinics: updatedUserClinics,
           errors: [...state.errors, { ...error, api: `praktikaSync${clinicId}` }],
           isLoadingFlags: _.filter(
             state.isLoadingFlags,

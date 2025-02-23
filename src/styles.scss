@@ -319,33 +319,6 @@ html {
     }
   }
 
-  .chart-33 {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    width: calc(33.3% - 10px);
-  
-    @include respond-from('tablet-portrait') {
-      width: 100%;
-    }
-  }
-
-  .chart-50 {
-    display: flex;
-    flex-direction: column;
-    width: calc(50% - 7.5px);
-  
-    @include respond-from('tablet-portrait') {
-      width: 100%;
-    }
-  }
-
-  .chart-100 {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-
   .w-100 {
     width: 100% !important;
   }

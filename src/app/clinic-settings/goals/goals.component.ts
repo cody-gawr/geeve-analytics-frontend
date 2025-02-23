@@ -251,12 +251,12 @@ export class GoalsComponent
       this.tabs.push(temp);
     });
     const syncCharts = (cId1, cId2, tab1, tab2) => {
-      const kPINoNowPatientsChart = this.tabs[tab1]['charts'].find(
+      const kPINoNowPatientsChart = this.tabs[tab1]?this.tabs[tab1]['charts'].find(
         c => c.c_id == cId1
-      );
-      const marketingNoNewPatientsChart = this.tabs[tab2]['charts'].find(
+      ):[];
+      const marketingNoNewPatientsChart = this.tabs[tab2]?this.tabs[tab2]['charts'].find(
         c => c.c_id == cId2
-      );
+      ):[];
       if (marketingNoNewPatientsChart) {
         marketingNoNewPatientsChart.goals = kPINoNowPatientsChart?.goals;
         marketingNoNewPatientsChart.c_id = cId1;
@@ -268,10 +268,10 @@ export class GoalsComponent
     syncCharts(5, 17, 0, 1);
 
     var order = [63, 64, 1, 49, 15, 66, 65, 8];
-    this.tabs[4].charts.sort(function (a, b) {
+    this.tabs[4]?.charts.sort(function (a, b) {
       return order.indexOf(a.c_id) - order.indexOf(b.c_id);
     });
-    this.tabs[4].d_name = 'Prime KPI Report';
+    if(this.tabs[4]) this.tabs[4].d_name = 'Prime KPI Report';
 
     // this.swap(this.tabs[4].charts,0,2);
 
