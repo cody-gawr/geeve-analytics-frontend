@@ -94,7 +94,7 @@
         </div>
         <div
           class="chart-foot"
-          *ngIf="!(isTrend$ | async) && !(isExact$ | async) && !isComingSoon;else emptyElem">
+          *ngIf="!(isTrend$ | async) && !(isExact$ | async) && !isComingSoon;">
           <div>
             <h3>
               {{
@@ -122,9 +122,6 @@
             <span>Goal</span>
           </div>
         </div>
-        <ng-template #emptyElem>
-          <div style="min-height: 62px"></div>
-        </ng-template>
       <!-- </ng-template> -->
     </div>
   </div>
