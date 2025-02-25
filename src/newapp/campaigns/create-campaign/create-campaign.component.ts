@@ -194,7 +194,11 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       ).subscribe(() => {
         if(this.campaignId && this.campaignFilters){
           this.loadFilterSettings(this.campaignFilters);
-          if(this.done?.length > 0) this.eventInput.next();
+          if(this.done?.length > 0) 
+            this.eventInput.next();
+          else{
+            this.loadingData = false;
+          }
         }else if(!this.loadingData){
           this.todo = [...this.filterElements];
         }
