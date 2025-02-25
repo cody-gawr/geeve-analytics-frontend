@@ -66,28 +66,11 @@
                             </mat-form-field>
                         </div>
 
-
-  
                         <div class="filter-form" *ngIf="isSelected('treatment')">
-                            <mat-form-field class="filter-box" appearance="outline" subscriptSizing="dynamic">
-                                <!-- <mat-label>Enter a date range</mat-label> -->
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate (focus)="picker.open()" formControlName="treatmentStart"
-                                        placeholder="Start date">
-                                    <input matEndDate (focus)="picker.open()" formControlName="treatmentEnd"
-                                        placeholder="End date">
-                                </mat-date-range-input>
-                                <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker startView="year"></mat-date-range-picker>
-    
-                                <mat-error
-                                    *ngIf="filterFormGroup.controls.treatmentStart.hasError('matStartDateInvalid')">Invalid
-                                    start date</mat-error>
-                                <mat-error
-                                    *ngIf="filterFormGroup.controls.treatmentEnd.hasError('matEndDateInvalid')">Invalid end
-                                    date</mat-error>
-                            </mat-form-field>
+                            <app-daterange-preset 
+                                class="filter-box"
+                                [filterFormControlStart]="filterFormGroup.controls.treatmentStart"
+                                [filterFormControlEnd]="filterFormGroup.controls.treatmentEnd" ></app-daterange-preset>
     
                             <div class="multi-selection-form" >
                                 <mat-checkbox [formControl]="itemCodesAllCheckBox" (change)="toggleAllSelectedItemCodes($event)">All Item Codes</mat-checkbox>
@@ -100,67 +83,23 @@
                             </div>
                         </div>
 
-                        <mat-form-field *ngIf="isSelected('incomplete_tx_plan')" class="filter-box"
-                            appearance="outline">
-                            <!-- <mat-label>Enter a date range</mat-label> -->
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate (focus)="picker.open()" formControlName="incomplete_tx_planStart"
-                                    placeholder="Start date">
-                                <input matEndDate (focus)="picker.open()" formControlName="incomplete_tx_planEnd"
-                                    placeholder="End date">
-                            </mat-date-range-input>
-                            <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker startView="year"></mat-date-range-picker>
+                        <app-daterange-preset 
+                        *ngIf="isSelected('incomplete_tx_plan')"
+                        class="filter-box"
+                        [filterFormControlStart]="filterFormGroup.controls.incomplete_tx_planStart"
+                        [filterFormControlEnd]="filterFormGroup.controls.incomplete_tx_planEnd" ></app-daterange-preset>
 
-                            <mat-error
-                                *ngIf="filterFormGroup.controls.incomplete_tx_planStart.hasError('matStartDateInvalid')">Invalid
-                                start date</mat-error>
-                            <mat-error
-                                *ngIf="filterFormGroup.controls.incomplete_tx_planEnd.hasError('matEndDateInvalid')">Invalid
-                                end date</mat-error>
-                        </mat-form-field>
+                        <app-daterange-preset 
+                        *ngIf="isSelected('no_appointment')"
+                        class="filter-box"
+                        [filterFormControlStart]="filterFormGroup.controls.no_appointmentStart"
+                        [filterFormControlEnd]="filterFormGroup.controls.no_appointmentEnd" ></app-daterange-preset>
 
-                        <mat-form-field *ngIf="isSelected('no_appointment')" class="filter-box" appearance="outline">
-                            <!-- <mat-label>Enter a date range</mat-label> -->
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate (focus)="picker.open()" formControlName="no_appointmentStart"
-                                    placeholder="Start date">
-                                <input matEndDate (focus)="picker.open()" formControlName="no_appointmentEnd"
-                                    placeholder="End date">
-                            </mat-date-range-input>
-                            <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker startView="year"></mat-date-range-picker>
-
-                            <mat-error
-                                *ngIf="filterFormGroup.controls.no_appointmentStart.hasError('matStartDateInvalid')">Invalid
-                                start date</mat-error>
-                            <mat-error
-                                *ngIf="filterFormGroup.controls.no_appointmentEnd.hasError('matEndDateInvalid')">Invalid
-                                end date</mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field *ngIf="isSelected('appointment')" class="filter-box" appearance="outline">
-                            <!-- <mat-label>Enter a date range</mat-label> -->
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate (focus)="picker.open()" formControlName="appointmentStart"
-                                    placeholder="Start date">
-                                <input matEndDate (focus)="picker.open()" formControlName="appointmentEnd"
-                                    placeholder="End date">
-                            </mat-date-range-input>
-                            <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker startView="year"></mat-date-range-picker>
-
-                            <mat-error
-                                *ngIf="filterFormGroup.controls.appointmentStart.hasError('matStartDateInvalid')">Invalid
-                                start date</mat-error>
-                            <mat-error
-                                *ngIf="filterFormGroup.controls.appointmentEnd.hasError('matEndDateInvalid')">Invalid
-                                end date</mat-error>
-                        </mat-form-field>
-
+                        <app-daterange-preset 
+                        *ngIf="isSelected('appointment')"
+                        class="filter-box"
+                        [filterFormControlStart]="filterFormGroup.controls.appointmentStart"
+                        [filterFormControlEnd]="filterFormGroup.controls.appointmentEnd" ></app-daterange-preset>
 
                         <div class="filter-form" *ngIf="isSelected('health_insurance')">
                             <mat-checkbox [formControl]="healthFundIncludeNoneCheckBox" class="health-fund-checkbox">Patients Without Health Insurance</mat-checkbox>
@@ -175,7 +114,7 @@
                                 </mat-chip-set>
                             </div>
                         </div>
-
+                        <br/>
                         <button *ngIf="!isDoneFilter() && !!this.selectedFilterName"
                             [disabled]="!isValidForm(selectedFilterName)" mat-flat-button color="primary"
                             (click)="applyFilter(selectedFilterName)">Apply Filter</button>

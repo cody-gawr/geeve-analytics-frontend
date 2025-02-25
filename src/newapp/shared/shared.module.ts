@@ -27,6 +27,7 @@ import { AppChartComponent } from './components/app-chart/app-chart.component';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { NgChartsModule } from 'ng2-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { DateRangePresetComponent } from './components/daterange-preset/daterange-preset.component';
 
 
 const modules = [
@@ -58,6 +59,7 @@ const components = [
   TooltipContainerDirective,
   SelectMultiSelectComponent,
   AppChartComponent,
+  DateRangePresetComponent
 ];
 
 @NgModule({
