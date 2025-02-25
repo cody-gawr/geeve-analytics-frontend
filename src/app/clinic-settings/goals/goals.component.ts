@@ -104,25 +104,6 @@ export class GoalsComponent
         console.log('error', error);
       }
     );
-    // this.dentistService.getClinicSettings(this.clinic_id$.value).subscribe((res) => {
-    //   if (res.status == 200) {
-    //     this.Cconsultant = res.body.data[0]['consultant'];
-    //       this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory,selectedYear).subscribe((res) => {
-    //         if (res.status == 200) {
-    //           this.getGoalsForTabsClinic(res.body.data);
-    //         } else if (res.status == 401) {
-    //           this.handleUnAuthorization();
-    //         }
-    //     }, error => {
-    //       console.log('error', error)
-    //     });
-    //   }
-    //   else if (res.status == 401) {
-    //     this.handleUnAuthorization();
-    //   }
-    // }, error => {
-    //   console.log('error', error)
-    // });
   }
 
   getDentists(clinicID) {
@@ -273,13 +254,6 @@ export class GoalsComponent
     });
     if(this.tabs[4]) this.tabs[4].d_name = 'Prime KPI Report';
 
-    // this.swap(this.tabs[4].charts,0,2);
-
-    // if(this.Cconsultant != 'prime'){
-    //   this.selectedTab = this.tabs[0].d_id;
-    // }else{
-    //   this.selectedTab = 10; // Kpi report
-    // }
     if (this.Cconsultant == 'prime' && !this.tabChanged) {
       this.selectedTab = 10;
     }

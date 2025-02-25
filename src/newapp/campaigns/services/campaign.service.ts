@@ -6,39 +6,42 @@ import { FormControl, FormGroup } from "@angular/forms";
 import moment, { Moment } from "moment";
 import { Observable, Subject, map } from 'rxjs';
 
-export const DefaultFilterElements = [
+export interface IFilterElement {
+    iconName: string;
+    iconUrl: string;
+    title: string;
+    filterName: string;
+    description?: string;
+}
+
+export const DefaultFilterElements: IFilterElement[] = [
   {
       iconName: 'medical_services',
       iconUrl: '/assets/jeeve/images/treatment_1.png',
-      //iconUrlWhite: '/assets/jeeve/images/treatment_1_white.png',
       title: 'Treatment',
-      filterName: 'treatment'
+      filterName: 'treatment',
   },
   {
       iconName: 'list_alt',
       iconUrl: '/assets/jeeve/images/tx_plans_1.png',
-      //iconUrlWhite: '/assets/jeeve/images/tx_plans_1_white.png',
       title: 'Incomplete TX Plans',
       filterName: 'incomplete_tx_plan'
   },
   {
       iconName: 'health_and_safety',
       iconUrl: '/assets/jeeve/images/health_insurance_1.png',
-      //iconUrlWhite: '/assets/jeeve/images/health_insurance_1_white.png',
       title: 'Health Insurance',
       filterName: 'health_insurance'
   },
   {
       iconName: 'schedule',
       iconUrl: '/assets/jeeve/images/overdue_1.png',
-      //iconUrlWhite: '/assets/jeeve/images/overdue_1_white.png',
       title: 'Overdues',
       filterName: 'overdues'
   },
   {
       iconName: 'personal_injury',
       iconUrl: '/assets/jeeve/images/patient_age_1.png',
-      //conUrlWhite: '/assets/jeeve/images/patient_age_1_white.png',
       title: 'Patient Age',
       filterName: 'patient_age'
   },
@@ -47,7 +50,7 @@ export const DefaultFilterElements = [
     iconUrl: '/assets/jeeve/images/patient-status.png',
     title: 'Patient Status',
     filterName: 'patient_status'
-},
+  },
   {
       iconName: 'no_appointment',
       iconUrl: '/assets/jeeve/images/no-appt-icon.png',
@@ -104,6 +107,18 @@ export interface ICampaignSettings {
     pending_campaign: ICampaignPending[];
     started: string | null;
     status: 'draft' | 'started';
+}
+
+export interface ICampaignFilterConfig {
+    id: number;
+    name: string;
+    description: string;
+    d4w: boolean;
+    exact: boolean;
+    praktika: boolean;
+    core: boolean;
+    dentally: boolean;
+    carestack: boolean;
 }
 
 export interface ICampaign {
@@ -261,6 +276,13 @@ export class CampaignService {
             campaign_id: campaignId,
             messages
         },
+        {
+            withCredentials: true,
+        });
+    }
+
+    public getFilterElements(){
+        return this.http.get<JeeveResponse<ICampaignFilterConfig[]>>(`${this.commonUrl}/campaign/filter-config`,
         {
             withCredentials: true,
         });

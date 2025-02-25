@@ -3,23 +3,22 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { combineLatest, debounceTime, forkJoin, Subject, switchMap, takeUntil } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, filter, forkJoin, Subject, switchMap, takeUntil } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CampaignService, DefaultFilterElements, ICampaign, ICampaignFilter, IGetPatientsFilterJson } from '../services/campaign.service';
+import { CampaignService, DefaultFilterElements, ICampaign, ICampaignFilter, IFilterElement, IGetPatientsFilterJson } from '../services/campaign.service';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { SelectionModel } from '@angular/cdk/collections';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatDialog } from '@angular/material/dialog';
 import { StartCampaignDialog } from '../start-campaign-dialog/start-campaign-dialog.component';
 import { NotificationService } from '@/newapp/shared/services/notification.service';
-import { CommonDataService, ItemCode } from '@/newapp/shared/services/common-data.service';
+import { CommonDataService } from '@/newapp/shared/services/common-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { CsvUtil } from '@/newapp/shared/utils';
 import { CAMPAIGN_FILTERS } from '@/newapp/shared/constants';
 import { CsvColumnSelectDialog } from './csv-column-select-dialog/csv-column-select-dialog.component';
 import { OptionDataType } from '@/newapp/shared/components/search-multi-select/search-multi-select.component';
-import { ConfirmDialogComponent } from '@/newapp/shared/components/confirm-dialog/confirm-dialog.component';
 
 export interface CampaignElement {
   clinic_id: number;
@@ -73,7 +72,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     healthFunds: OptionDataType[] = [];
     selectedItemCodes = new FormControl<string[]>([]);
     selectedHealthInsurances = new FormControl<string[]>([]);
-    campaigns: ICampaign[] = []
+    campaigns: ICampaign[] = [];
+    filterElements: IFilterElement[] = [];
 
     eventInput = new Subject<void>();
     eventInput$ = this.eventInput.asObservable();
@@ -97,15 +97,40 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       private route: ActivatedRoute,
       private router: Router,
     ){
-
       this.clinicFacade.currentClinics$.pipe(
         takeUntil(this.destroy$),
+        filter(clinics => clinics.length > 0),
+        distinctUntilChanged((prev, curr) => prev[0]?.id === curr[0]?.id)
       ).subscribe(
         clinics => {
           if(clinics.length> 0) {
             this.clinicId = clinics[0].id;
-            forkJoin([this.commonDataservice.getCampaignHealthFunds(this.clinicId), this.commonDataservice.getCampaignItemCodes(this.clinicId)]).subscribe(
-              ([result1, result2]) => {
+            const pms = clinics[0].pms;
+            forkJoin([
+              this.campaignService.getFilterElements(),
+              this.commonDataservice.getCampaignHealthFunds(this.clinicId), 
+              this.commonDataservice.getCampaignItemCodes(this.clinicId),
+            ]).subscribe(
+              ([filterElems, result1, result2]) => {
+                if(!filterElems.success) {
+                  this.nofifyService.showError('Failed to load filter elements');
+                  return;
+                };
+                this.filterElements = filterElems.data.filter(fe => {
+                  if(fe && fe[pms]){
+                    return true;
+                  }
+                  return false;
+                }).map(fe => {
+                  const icon = DefaultFilterElements.find(d => d.filterName === fe.name);
+                  return {
+                    iconName: icon?.iconName,
+                    iconUrl: icon?.iconUrl,
+                    title: icon?.title,
+                    filterName: fe.name,
+                    description: fe.description
+                  }
+                });
                 this.healthFunds = result1.data.map(v => ({value: v}));
                 this.itemCodes = result2.data.map(d => ({
                   label: d.item_display_name,
@@ -119,14 +144,6 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       );
 
       this.dataSource = new MatTableDataSource([]);
-      // this.healthFundIncludeCheckBox.valueChanges.pipe(
-      //   takeUntil(this.destroy$)
-      // ).subscribe((v) => {
-      //     if(v) {
-      //       this.selectedHealthInsurances.setValue([]);
-      //     }
-      //     // this.renderId++;
-      // })
 
       this.healthFundIncludeNoneCheckBox.valueChanges.pipe(
         takeUntil(this.destroy$)
@@ -140,16 +157,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.health_insurance) > -1){
             this.eventInput.next();
           }
-          // this.renderId++;
       });
 
-      // this.allItemCodesSelected.valueChanges.pipe(
-      //   takeUntil(this.destroy$)
-      // ).subscribe((v) => {
-      //     if(v) {
-      //       this.selectedItemCodes.setValue([]);
-      //     }
-      // });
       combineLatest([this.route.queryParams, this.clinicFacade.currentClinics$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([params, clinics]) => {
@@ -187,7 +196,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           this.loadFilterSettings(this.campaignFilters);
           if(this.done?.length > 0) this.eventInput.next();
         }else if(!this.loadingData){
-          this.todo = [...DefaultFilterElements];
+          this.todo = [...this.filterElements];
         }
       });
 
@@ -522,7 +531,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         }
       }
       this.done = [], this.todo = [];
-      for(const filter of DefaultFilterElements){
+      for(const filter of this.filterElements){
         if(doneFilters.indexOf(filter.filterName) > -1){
           this.done.push({...filter});
         }else {
@@ -731,32 +740,33 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     }
 
     getHelperTip(){
-        switch(this.selectedFilterName){
-            case CAMPAIGN_FILTERS.treatment:
-              return 'Selects patients who have had the specified item codes performed within the specified date range.'
-              break;
-            case CAMPAIGN_FILTERS.incomplete_tx_plan:
-              return 'Selects patients who have incomplete treatment plans created within the specified date range';
-              break;
-            case CAMPAIGN_FILTERS.overdues:
-              return 'Selects patients with overdue amounts';
-              break;
-            case CAMPAIGN_FILTERS.health_insurance:
-              return 'Selects patients with the specified health insurance provider/s'
-              break;
-            case CAMPAIGN_FILTERS.patient_age:
-              return 'Selects patients within the selected age range';
-            case CAMPAIGN_FILTERS.patient_status:
-              return 'Selects patients within the selected status';
-              break;
-            case CAMPAIGN_FILTERS.no_appointment:
-              return 'Selects patients with no appointments scheduled within the specified date range';
-              break;
-            case CAMPAIGN_FILTERS.appointment:
-              return 'Selects patients with appointments scheduled within the specified date range';
-            default:
-              return '';
-        }
+        return this.filterElements?.find(f => f.filterName === this.selectedFilterName)?.description || '';
+        // switch(this.selectedFilterName){
+        //     case CAMPAIGN_FILTERS.treatment:
+        //       return 'Selects patients who have had the specified item codes performed within the specified date range.'
+        //       break;
+        //     case CAMPAIGN_FILTERS.incomplete_tx_plan:
+        //       return 'Selects patients who have incomplete treatment plans created within the specified date range';
+        //       break;
+        //     case CAMPAIGN_FILTERS.overdues:
+        //       return 'Selects patients with overdue amounts';
+        //       break;
+        //     case CAMPAIGN_FILTERS.health_insurance:
+        //       return 'Selects patients with the specified health insurance provider/s'
+        //       break;
+        //     case CAMPAIGN_FILTERS.patient_age:
+        //       return 'Selects patients within the selected age range';
+        //     case CAMPAIGN_FILTERS.patient_status:
+        //       return 'Selects patients within the selected status';
+        //       break;
+        //     case CAMPAIGN_FILTERS.no_appointment:
+        //       return 'Selects patients with no appointments scheduled within the specified date range';
+        //       break;
+        //     case CAMPAIGN_FILTERS.appointment:
+        //       return 'Selects patients with appointments scheduled within the specified date range';
+        //     default:
+        //       return '';
+        // }
     }
 
     toggleAllSelectedItemCodes(event: any){
