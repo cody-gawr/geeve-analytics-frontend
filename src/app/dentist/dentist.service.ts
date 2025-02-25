@@ -115,8 +115,7 @@ export class DentistService {
       formData.append('jeeve_id', jeeveId);
     }
     if (appBookId != '') {
-      appBookId = appBookId == 'null' ? '' : appBookId;
-      formData.append('app_book_id', appBookId);
+      formData.append('app_book_id', appBookId == 'null'? null:appBookId);
     }
     if (updatedColumn != '') {
       formData.append(updatedColumn, value);
