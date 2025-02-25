@@ -237,8 +237,8 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
             this.getAppBook(id, res.body.data);
           }
           this.jeeveProviderIds = [];
-          for (let i = START_JEEVE_ID + 1; i <= START_JEEVE_ID + 9; i++) {
-            this.jeeveProviderIds.push({ id: i, name: 'Jeeve Provider ' + i });
+          for (let i = 1; i <= 9; i++) {
+            this.jeeveProviderIds.push({ id: START_JEEVE_ID + i, name: 'Jeeve Provider ' + i });
           }
           let activeData = [];
           let inactiveData = [];
