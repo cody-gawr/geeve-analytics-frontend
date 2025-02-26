@@ -16,16 +16,16 @@ import { FormControl } from "@angular/forms";
         }
         button {
             flex: 25%;
-            font-size: 12px;
+            font-size: 11.5px;
         }
         `
     ],
     template: `
         <div class="date-range-preset">
-            <button mat-raised-button (click)="setDateRange('thisYear')">This Year</button>
-            <button mat-raised-button (click)="setDateRange('lastYear')">Last Year</button>
-            <button mat-raised-button (click)="setDateRange('last2Years')">Last 2 Years</button>
-            <button mat-raised-button (click)="setDateRange('last3Years')">Last 3 Years</button>
+            <button mat-stroked-button (click)="setDateRange('thisYear')">This Year</button>
+            <button mat-stroked-button (click)="setDateRange('lastYear')">Last Year</button>
+            <button mat-stroked-button (click)="setDateRange('last2Years')">Last 2 Years</button>
+            <button mat-stroked-button (click)="setDateRange('last3Years')">Last 3 Years</button>
         </div>
          <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-date-range-input [rangePicker]="picker">
