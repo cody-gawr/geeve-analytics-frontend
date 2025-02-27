@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, OnDestroy } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { combineLatest, Subject, takeUntil } from "rxjs";
-import * as dayjs from "dayjs";
+import * as moment from "moment";
 
 @Component({
     selector: 'app-daterange-preset',
@@ -60,7 +60,7 @@ import * as dayjs from "dayjs";
         </mat-form-field>
     `
 })
-export class DateRangePresetComponent implements OnInit {
+export class DateRangePresetComponent implements OnInit, OnDestroy {
     @Input() filterFormControlStart: FormControl<string | Date | null>;
     @Input() filterFormControlEnd: FormControl<string | Date | null>;
 
@@ -72,20 +72,23 @@ export class DateRangePresetComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.filterFormControlStart && this.filterFormControlEnd) {
-            combineLatest([this.filterFormControlStart.valueChanges, this.filterFormControlEnd.valueChanges])
+            combineLatest([
+                this.filterFormControlStart.valueChanges, 
+                this.filterFormControlEnd.valueChanges
+            ])
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(([_start, _end]) => {
-                    const start = dayjs(_start);
-                    const end = dayjs(_end);
-                    const today = dayjs();
-                    const startOfYear = today.startOf('year'); // Start of the year
-                    const endOfYear = today.endOf('year'); // End of the year
-                    const startOfLastYear = today.subtract(1, 'year').startOf('year'); // Start of last year
-                    const endOfLastYear = today.subtract(1, 'year').endOf('year'); // End of last year
-                    const startOf2YearsAgo = today.subtract(2, 'year').startOf('year'); // Start of 2 years ago
-                    const endOf2YearsAgo = today.endOf('year'); // End of this year
-                    const startOf3YearsAgo = today.subtract(3, 'year').startOf('year'); // Start of 3 years ago
-                    const endOf3YearsAgo = today.endOf('year'); // End of this year
+                    const start = moment(_start);
+                    const end = moment(_end);
+                    const today = moment();
+                    const startOfYear = today.clone().startOf('year'); // Start of the year
+                    const endOfYear = today.clone().endOf('year'); // End of the year
+                    const startOfLastYear = today.clone().subtract(1, 'year').startOf('year'); // Start of last year
+                    const endOfLastYear = today.clone().subtract(1, 'year').endOf('year'); // End of last year
+                    const startOf2YearsAgo = today.clone().subtract(2, 'year').startOf('year'); // Start of 2 years ago
+                    const endOf2YearsAgo = today.clone().endOf('year'); // End of this year
+                    const startOf3YearsAgo = today.clone().subtract(3, 'year').startOf('year'); // Start of 3 years ago
+                    const endOf3YearsAgo = today.clone().endOf('year'); // End of this year
 
                     if (start && start.isSame(startOfYear, 'day') && end && end.isSame(endOfYear, 'day')) {
                         this.activeRange = 'thisYear';
@@ -103,26 +106,26 @@ export class DateRangePresetComponent implements OnInit {
     }
 
     setDateRange(range: 'thisYear' | 'lastYear' | 'last2Years' | 'last3Years') {
-        const today = dayjs();
-        let startDate: dayjs.Dayjs;
-        let endDate: dayjs.Dayjs;
+        const today = moment();
+        let startDate: moment.Moment;
+        let endDate: moment.Moment;
 
         switch (range) {
             case 'thisYear':
-                startDate = today.startOf('year'); // Start of the year
-                endDate = today.endOf('year'); // End of the year
+                startDate = today.clone().startOf('year'); // Start of the year
+                endDate = today.clone().endOf('year'); // End of the year
                 break;
             case 'lastYear':
-                startDate = today.subtract(1, 'year').startOf('year'); // Start of last year
-                endDate = today.subtract(1, 'year').endOf('year'); // End of last year
+                startDate = today.clone().subtract(1, 'year').startOf('year'); // Start of last year
+                endDate = today.clone().subtract(1, 'year').endOf('year'); // End of last year
                 break;
             case 'last2Years':
-                startDate = today.subtract(2, 'year').startOf('year'); // Start of 2 years ago
-                endDate = today.endOf('year'); // End of this year
+                startDate = today.clone().subtract(2, 'year').startOf('year'); // Start of 2 years ago
+                endDate = today.clone().endOf('year'); // End of this year
                 break;
             case 'last3Years':
-                startDate = today.subtract(3, 'year').startOf('year'); // Start of 3 years ago
-                endDate = today.endOf('year'); // End of this year
+                startDate = today.clone().subtract(3, 'year').startOf('year'); // Start of 3 years ago
+                endDate = today.clone().endOf('year'); // End of this year
                 break;
         }
 
