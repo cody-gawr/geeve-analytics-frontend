@@ -1,8 +1,9 @@
 <div>
   <div style="display: flex;padding: 15px;gap: 15px;">
-    <drag-drop-button *ngFor="let item of done" cdkDrag 
+    <drag-drop-button *ngFor="let item of done" 
                     [iconName]="item.iconName" 
-                    [iconUrlWhite]="item.iconUrlWhite" [iconUrl]="item.iconUrl" [isDone]="false" 
+                    [iconUrlWhite]="item.iconUrlWhite" 
+                    [iconUrl]="item.iconUrl" [isDone]="false" 
                     [filterName]="item.filterName" 
                     [title]="item.title" 
                     [isOpen]="false"

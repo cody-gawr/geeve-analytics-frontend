@@ -8,6 +8,7 @@ import {
 import _ from 'lodash';
 import { CampaignElement } from '../create-campaign/create-campaign.component';
 import { CampaignService, ICampaignMessage } from '../services/campaign.service';
+import { Subject, takeUntil } from 'rxjs';
 type TPatient = Pick<CampaignElement, 'patient_name' | 'mobile'>;
 export interface DialogData {
   resend?: boolean;
@@ -36,6 +37,8 @@ export class StartCampaignDialog {
   remainCredits = 0;
   usedCredits = 0;
   costPerSMS = 0;
+  destroy = new Subject<void>();
+  destroy$ = this.destroy.asObservable();
 
   constructor(
     public dialogRef: MatDialogRef<StartCampaignDialog>,
@@ -48,6 +51,16 @@ export class StartCampaignDialog {
     }else{
       this.phoneNumber.setValue('');
     }
+
+    this.sms_text.valueChanges.pipe(
+      takeUntil(this.destroy$),
+    ).subscribe(value => {
+      this.numTotalMessage = this.data.patients.map(
+        p => Math.ceil(this.composeText(value, p)?.length / 160)).reduce((acc, curr) => acc + curr, 0);
+      this.numMessage = Math.ceil(value?.length / 160);
+      this.composedTextForFirstPatient = this.composeText(value, data.patients[0]);
+    });
+
     this.clinicSettingService.getReviewMsgTemplateList(this.data.clinicId).subscribe((v2) => {
 
       if (v2.data) {
@@ -67,12 +80,7 @@ export class StartCampaignDialog {
       this.costPerSMS = result.data.cost_per_sms;
 
       this.availableMsgLength = this.remainCredits < 5 ? this.remainCredits * 160 : 800;
-      this.sms_text.valueChanges.subscribe(value => {
-        this.numTotalMessage = this.data.patients.map(
-          p => Math.ceil(this.composeText(value, p)?.length / 160)).reduce((acc, curr) => acc + curr, 0);
-        this.numMessage = Math.ceil(value?.length / 160);
-        this.composedTextForFirstPatient = this.composeText(value, data.patients[0]);
-      });
+      
   
       if(data.sms_text) this.sms_text.setValue(data.sms_text);
     });

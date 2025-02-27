@@ -1,4 +1,8 @@
-<div (click)="selectFilter()" *ngIf="!(settings?.length >0)" [classList]="isOpen?['container border-c']:['container']" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin" [appTooltip]="iconUrlWhite?'<img src=' + iconUrlWhite  + ' /><span>' + title + '</span>':''">
+<div (click)="selectFilter()" 
+    *ngIf="!(settings?.length >0)" 
+    [classList]="isOpen?['container border-c']:['container']" 
+    type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin" 
+    [appTooltip]="iconUrlWhite?'<img src=' + iconUrlWhite  + ' /><span>' + title + '</span>':''">
     <mat-icon *ngIf="isDone" (click)="onClose()" class="close">cancel</mat-icon>
     <div class="box">
         <!-- <mat-icon>{{iconName}}</mat-icon> -->
@@ -6,7 +10,7 @@
         <span>{{title}}</span>
     </div>
 </div>
-<div class="view-box" *ngIf="settings && settings?.length >= 2">
+<div class="view-box" *ngIf="settings && settings?.length > 0">
     <span>{{title}}</span>
     <div class="box-c" *ngIf="startDate && endDate">
         <span>{{startDate}}</span>
