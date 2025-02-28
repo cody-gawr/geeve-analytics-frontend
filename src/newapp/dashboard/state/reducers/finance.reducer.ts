@@ -1710,20 +1710,21 @@ export const selectHourlyRateChartData = createSelector(
         _(data?.data).groupBy('clinicName')
         .map((values, name) => {
           return {
-            values: values.map(v => Number(v.hourlyRate)),
             label: name,
             production: values.map(v => Number(v.production)),
             hours: values.map(v => Number(v.hours)),
           }
         }).value().
-        forEach(({values, label, production, hours}, i) => {
+        forEach(({label, production, hours}, i) => {
           chartLabels.push(label);
+          const sumProd = _.sum(production);
+          const sumHours = _.sum(hours);
           chartData.push({
-            production: _.sumBy(production),
-            hours: _.sumBy(hours)
+            production: sumProd,
+            hours: sumHours
           })
           datasets[0].data.push(
-            Math.round(_.sumBy(values))
+            Math.round(sumProd / sumHours)
           );
         });
       }
