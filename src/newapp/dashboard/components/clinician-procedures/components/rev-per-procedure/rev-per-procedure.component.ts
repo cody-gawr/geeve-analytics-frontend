@@ -7,7 +7,7 @@ import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
-import { formatXTooltipLabel } from '@/newapp/shared/utils';
+import { formatXTooltipLabel, shortString } from '@/newapp/shared/utils';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({
@@ -102,11 +102,7 @@ export class CpRevPerProcedureComponent implements OnInit, OnDestroy {
         ticks: {
           callback: function (tickValue: string | number, index) {
             const yLabel = this.getLabelForValue(index);
-            if (yLabel.length > 20) {
-              return yLabel.slice(0, 20) + '....';
-            } else {
-              return yLabel;
-            }
+            return shortString(yLabel);
           },
         },
       },

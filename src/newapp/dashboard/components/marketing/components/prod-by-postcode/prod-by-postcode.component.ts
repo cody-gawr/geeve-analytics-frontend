@@ -6,7 +6,7 @@ import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
-import { externalTooltipHandler, formatXTooltipLabel } from '@/newapp/shared/utils';
+import { externalTooltipHandler, formatXTooltipLabel, shortString } from '@/newapp/shared/utils';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { PROD_AGE_LIST } from '@/newapp/shared/constants';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
@@ -171,11 +171,7 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
         ticks: {
           callback: function (tickValue: string | number, index) {
             const yLabel = this.getLabelForValue(index);
-            if (yLabel.length > 20) {
-              return yLabel.slice(0, 20) + '....';
-            } else {
-              return yLabel;
-            }
+            return shortString(yLabel);
           },
         },
       },

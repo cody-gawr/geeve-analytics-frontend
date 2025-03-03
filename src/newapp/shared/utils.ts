@@ -97,7 +97,7 @@ export function formatXName(tickValue: string, index: number) {
     let lbl = value.toString().split('--');
     value = lbl[0];
   }
-  return value;
+  return shortString(value);
 }
 
 export function formatXNameWithInitialChar(tickValue: string, index: number) {
@@ -122,10 +122,18 @@ export function formatXLabel(label: string | number) {
         return `${names[0][0]} ${names[1]}`;
       }
     } else {
-      return `${names[0]}`;
+      return `${shortString(names[0])}`;
     }
   }
-  return label;
+  return shortString(label.toString());
+}
+
+export function shortString(txt: string, limit = 20) {
+  if (txt?.length > limit) {
+    return txt.slice(0, limit) + '....';
+  } else {
+    return txt;
+  }
 }
 
 export function formatXTooltipLabel(tooltipItem: TooltipItem<any>) {

@@ -349,7 +349,8 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
 
             if ((<string>tooltipItems.label).indexOf('--') >= 0) {
               let lbl = (<string>tooltipItems.label).split('--');
-              if (typeof lbl[3] === 'undefined') {
+              if (typeof lbl[3] === 'undefined' ||
+                lbl[0]?.toLowerCase().trim() == lbl[3]?.toLowerCase().trim()) {
                 label = lbl[0];
               } else {
                 label = lbl[0] + ' - ' + lbl[3];
