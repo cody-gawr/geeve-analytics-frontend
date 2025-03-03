@@ -1,6 +1,7 @@
 import { CampaignService } from '@/newapp/campaigns/services/campaign.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject} from 'rxjs';
+import { CAMPAIGN_FILTERS } from '../../constants';
 
 @Component({
   selector: 'drag-drop-button',
@@ -24,6 +25,7 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
   minAge: number | null = null;
   maxAge: number | null = null;
   itemCodes: string[] = [];
+  all = '';
 
 
   constructor(private campaignSerivce: CampaignService) {
@@ -32,7 +34,12 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if(this.settings && this.settings?.length > 0){
-      if(['treatment', 'incomplete_tx_plan', 'no_appointment'].indexOf(this.filterName) > -1){
+      if([
+        CAMPAIGN_FILTERS.treatment, 
+        CAMPAIGN_FILTERS.incomplete_tx_plan, 
+        CAMPAIGN_FILTERS.no_appointment, 
+        CAMPAIGN_FILTERS.appointment].indexOf(this.filterName) > -1
+      ){
         if(this.settings?.length >= 2){
           this.startDate = this.settings[0];
           this.endDate = this.settings[1];
@@ -40,11 +47,13 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
             this.itemCodes = this.settings.slice(2);
           }
         }
-      }else if(this.filterName === 'patient_age'){
+      }else if(this.filterName === CAMPAIGN_FILTERS.patient_age){
         if(this.settings?.length >= 2){
           this.minAge = parseInt(this.settings[0]);
           this.maxAge = parseInt(this.settings[1]);
         }
+      }else{
+        this.all = 'ALL';
       }
     }
   }
