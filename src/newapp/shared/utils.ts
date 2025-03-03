@@ -618,14 +618,11 @@ export function renderTooltipLabel(
   sign = '',
   decimalPipe: DecimalPipe = null
 ) {
-  // if (tooltipItem.label.includes('WE ')) {
-  //   return tooltipItem.label + `: ${sign}` + tooltipItem.formattedValue;
-  // }
 
   var Targetlable = '';
   const v = tooltipItem.parsed.y;
   let Tlable = tooltipItem.dataset.label;
-  if (Tlable != '') {
+  if (Tlable) {
     Tlable = Tlable + ': ';
     Targetlable = Tlable;
   }
@@ -649,11 +646,11 @@ export function renderTooltipLabel(
   } else {
     const yV = decimalPipe ? decimalPipe.transform(<number>ylable) : ylable;
     if (sign === '%') {
-      return `${Tlable}${splitName(tooltipItem.label).join(' ')} : ${yV}${sign}`;
+      return `${Tlable??''}${splitName(tooltipItem.label).join(' ')} : ${yV}${sign}`;
     } else if (sign === '$') {
-      return `${Tlable}${splitName(tooltipItem.label).join(' ')} : ${sign}${yV}`;
+      return `${Tlable??''}${splitName(tooltipItem.label).join(' ')} : ${sign}${yV}`;
     } else {
-      return `${Tlable}${splitName(tooltipItem.label).join(' ')} : ${yV}`;
+      return `${Tlable??''}${splitName(tooltipItem.label).join(' ')} : ${yV}`;
     }
   }
 }
