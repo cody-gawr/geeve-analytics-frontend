@@ -174,6 +174,9 @@ export const selectIsFullSingleMonthOrYearOrCurrentMonthDateRange = createSelect
     const _endDate = isMoment(end) ? end : moment(end);
 
     return _startDate.isSame(moment().startOf('month'), 'day') || (
+      _startDate.isSame(moment().startOf('year'), 'day') &&
+      _endDate.isSame(moment(), 'day')
+    ) || (
       _startDate.date() == 1 &&
       _endDate.isSame(_startDate.clone().endOf('month'), 'day')
     ) || (
