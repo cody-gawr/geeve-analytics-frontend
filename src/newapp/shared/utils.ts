@@ -105,6 +105,10 @@ export function formatXNameWithInitialChar(tickValue: string, index: number) {
   if (value && value.toString().includes('--')) {
     let lbl = value.toString().split('--');
     value = lbl[0];
+    if (typeof lbl[3] === 'undefined' ||
+      lbl[0]?.toLowerCase().trim() == lbl[3]?.toLowerCase().trim()) {
+      return shortString(value);
+    }
   }
   return formatXLabel(value);
 }
