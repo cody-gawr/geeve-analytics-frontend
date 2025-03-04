@@ -169,20 +169,26 @@ export const selectIsFullSingleMonthDateRange = createSelector(
 
 export const selectIsFullSingleMonthOrYearOrCurrentMonthDateRange = createSelector(
   selectDateRange,
-  ({ start, end }) => {
-    const _startDate = isMoment(start) ? start : moment(start);
-    const _endDate = isMoment(end) ? end : moment(end);
+  ({ start, end, duration }) => {
+    if(['m', 'lm', 'cytd', 'lcytd'].includes(duration)){
+      return true;
+    } else if(duration === 'custom'){
+      const _startDate = isMoment(start) ? start : moment(start);
+      const _endDate = isMoment(end) ? end : moment(end);
 
-    return _startDate.isSame(moment().startOf('month'), 'day') || (
-      _startDate.isSame(moment().startOf('year'), 'day') &&
-      _endDate.isSame(moment(), 'day')
-    ) || (
-      _startDate.date() == 1 &&
-      _endDate.isSame(_startDate.clone().endOf('month'), 'day')
-    ) || (
-      _startDate.isSame(_startDate.clone().startOf('year'), 'day') &&
-      _endDate.isSame(_startDate.clone().endOf('year'), 'day')
-    );
+      return _startDate.isSame(moment().startOf('month'), 'day') || (
+        _startDate.isSame(moment().startOf('year'), 'day') &&
+        _endDate.isSame(moment(), 'day')
+      ) || (
+        _startDate.date() == 1 &&
+        _endDate.isSame(_startDate.clone().endOf('month'), 'day')
+      ) || (
+        _startDate.isSame(_startDate.clone().startOf('year'), 'day') &&
+        _endDate.isSame(_startDate.clone().endOf('year'), 'day')
+      );
+    }else{
+      return false;
+    }
   }
 );
 
