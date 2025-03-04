@@ -172,12 +172,13 @@ export const selectIsFullSingleMonthOrYearOrCurrentMonthDateRange = createSelect
   ({ start, end }) => {
     const _startDate = isMoment(start) ? start : moment(start);
     const _endDate = isMoment(end) ? end : moment(end);
-    return _startDate.isSame(moment().startOf('month')) || (
+
+    return _startDate.isSame(moment().startOf('month'), 'day') || (
       _startDate.date() == 1 &&
-      _endDate.isSame(_startDate.clone().endOf('month'))
+      _endDate.isSame(_startDate.clone().endOf('month'), 'day')
     ) || (
-      _startDate.isSame(_startDate.clone().startOf('year')) &&
-      _endDate.isSame(_startDate.clone().endOf('year'))
+      _startDate.isSame(_startDate.clone().startOf('year'), 'day') &&
+      _endDate.isSame(_startDate.clone().endOf('year'), 'day')
     );
   }
 );
