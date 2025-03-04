@@ -15,6 +15,7 @@ import {
   selectHideDatePicker,
   selectPaths,
   selectHideClinicSelectionDropdown,
+  selectIsFullSingleMonthOrYearOrCurrentMonthDateRange,
 } from '../state/reducers/layout.reducer';
 import { Moment } from 'moment';
 import { layoutPageActions } from '../state/actions';
@@ -45,6 +46,10 @@ export class LayoutFacade {
 
   public readonly isFullSingleMonthDateRange$ = this.store.pipe(
     select(selectIsFullSingleMonthDateRange)
+  );
+
+  public readonly selectIsFullSingleMonthOrYearOrCurrentMonthDateRange$ = this.store.pipe(
+    select(selectIsFullSingleMonthOrYearOrCurrentMonthDateRange)
   );
 
   public readonly paths$ = this.store.pipe(

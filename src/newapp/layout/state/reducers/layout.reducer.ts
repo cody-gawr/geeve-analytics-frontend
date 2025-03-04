@@ -167,6 +167,21 @@ export const selectIsFullSingleMonthDateRange = createSelector(
   }
 );
 
+export const selectIsFullSingleMonthOrYearOrCurrentMonthDateRange = createSelector(
+  selectDateRange,
+  ({ start, end }) => {
+    const _startDate = isMoment(start) ? start : moment(start);
+    const _endDate = isMoment(end) ? end : moment(end);
+    return _startDate.isSame(moment().startOf('month')) || (
+      _startDate.date() == 1 &&
+      _endDate.isSame(_startDate.clone().endOf('month'))
+    ) || (
+      _startDate.isSame(_startDate.clone().startOf('year')) &&
+      _endDate.isSame(_startDate.clone().endOf('year'))
+    );
+  }
+);
+
 export const selectDurationCurrLabel = createSelector(
   selectDateRange,
   ({ duration }) => {

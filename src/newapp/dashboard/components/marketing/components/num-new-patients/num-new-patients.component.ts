@@ -59,7 +59,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
   }
 
   get isFullMonthsDateRange$() {
-    return this.layoutFacade.isFullMonthsDateRange$;
+    return this.layoutFacade.selectIsFullSingleMonthOrYearOrCurrentMonthDateRange$;
   }
 
   get showGoal$() {
