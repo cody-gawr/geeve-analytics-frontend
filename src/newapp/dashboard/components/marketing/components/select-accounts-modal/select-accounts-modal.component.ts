@@ -62,7 +62,7 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
   get authUserId$() {
     return this.authFacade.authUserData$.pipe(
       map(
-        authUserData => (authUserData ?? this.authFacade.getAuthUserData()).id
+        authUserData => authUserData?.id
       )
     );
   }

@@ -1,5 +1,5 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Observable, Subject, distinctUntilChanged } from 'rxjs';
+import { Observable, Subject, combineLatest, distinctUntilChanged } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import {
@@ -402,10 +402,12 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.authFacade.getRolesIndividual();
     this.clinicFacade.loadClinics();
 
-    this.authFacade.rolesIndividualAndClinics$
+    combineLatest([
+      this.authFacade.authUserData$,
+      this.authFacade.rolesIndividualAndClinics$
+    ])
       .pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe(result => {
-        const user = this.authFacade.getAuthUserData();
+      .subscribe(([user, result]) => {
         const params: MenuValidatorParams = {
           permissions: result.data,
           userType: result.type,

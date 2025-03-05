@@ -34,8 +34,7 @@ export class AppSidebarComponent implements OnInit, OnDestroy {
   get authUserName$() {
     return this.authFacade.authUserData$.pipe(
       map(
-        authUserData =>
-          (authUserData ?? this.authFacade.getAuthUserData())?.displayName
+        authUserData => authUserData?.displayName
       )
     );
   }

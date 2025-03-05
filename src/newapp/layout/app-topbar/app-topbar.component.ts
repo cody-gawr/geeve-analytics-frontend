@@ -176,17 +176,15 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
             rolesIndividual !== null && clinics?.length > 0
         ),
         map(data => {
-
           const [authUserData, rolesIndividual, clinics, activatedRoute] = data;
-          
-          const result = authUserData ?? this.authFacade.getAuthUserData();
+
           return {
             multiClinicEnabled: {
-              dash1Multi: result?.dash1Multi,
-              dash2Multi: result?.dash2Multi,
-              dash3Multi: result?.dash3Multi,
-              dash4Multi: result?.dash4Multi,
-              dash5Multi: result?.dash5Multi,
+              dash1Multi: authUserData?.dash1Multi,
+              dash2Multi: authUserData?.dash2Multi,
+              dash3Multi: authUserData?.dash3Multi,
+              dash4Multi: authUserData?.dash4Multi,
+              dash5Multi: authUserData?.dash5Multi,
             },
             userType: rolesIndividual ? rolesIndividual.type : 0,
             totalClinicsLength: clinics?.length,

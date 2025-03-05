@@ -683,7 +683,6 @@ export const selectFdUtilRateChartData = createSelector(
   selectCurrentClinics,
   selectAuthUserData,
   (resBody, clinics, authUserData) => {
-    console.log('auth', authUserData)
     if (resBody == null) {
       return {
         fdUtiData: [],
