@@ -3,7 +3,6 @@ import { FrontDeskFacade } from '@/newapp/dashboard/facades/front-desk.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 import {
-  formatXLabel,
   formatXName,
   formatXNameWithInitialChar,
   generatingLegend_4,
@@ -22,6 +21,7 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 })
 export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   @Input() toolTip: ChartTip;
+  @Input() queryWhEnabled: number = 0;
   get isComingSoon() {
     return this.toolTip?.info?.toLowerCase() === 'coming-soon';
   }
@@ -89,6 +89,18 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
 
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(map(t => t !== 'off'));
+  }
+
+  get isLegend$() {
+    return combineLatest([
+      this.isMultipleClinic$,
+      this.isByDayData$,
+      this.isTrend$
+    ]).pipe(map(([
+      v1, v2, v3
+    ]) => {
+      return v1 && !v2 && v3;
+    }))
   }
 
   get isExact$() {

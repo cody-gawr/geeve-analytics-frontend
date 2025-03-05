@@ -6,6 +6,7 @@
   <div class="dashboard-row">
     <fd-utilisation-rate-chart
       *ngIf="utilisationRateChartTip$ | async"
+      [queryWhEnabled]="queryWhEnabled"
       [toolTip]="utilisationRateChartTip$ | async"
       class="dashboard-chart33"></fd-utilisation-rate-chart>
     <fd-recall-rate-chart

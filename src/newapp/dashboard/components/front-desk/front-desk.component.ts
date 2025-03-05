@@ -28,6 +28,8 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
+  queryWhEnabled: number = 0;
+
   get isPraktika$() {
     return this.clinicFacade.isEachClinicPraktika$;
   }
@@ -128,12 +130,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
               ? clinics.map(c => c.id).join(',')
               : clinics[0].id
             : null;
-        // const isEachClinicPmsCoreOrExact =
-        //   clinics.every(c => c.pms == 'core') ||
-        //   clinics.every(c => c.pms == 'exact');
-        // const isEachClinicPmsCoreOrPraktika = clinics.every(
-        //   c => c.pms == 'praktika' || c.pms == 'core'
-        // );
+
         if (clinicId == null) return;
 
         const newConnectedId =
@@ -148,7 +145,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
         const endDate = dateRange.end;
         const duration = dateRange.duration;
 
-        const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
+        this.queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
         this.frontDeskFacade.setErrors([]);
 
         const spCallApis = {
@@ -183,7 +180,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
               startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
               endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
               duration: duration,
-              queryWhEnabled,
+              queryWhEnabled: this.queryWhEnabled,
               connectedWith: connectedWith,
             };
             Object.keys(spCallApis).map(key => {
@@ -211,7 +208,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
                   spCallFn(
                     clinicId,
                     trend === 'current' ? 'c' : 'h',
-                    queryWhEnabled
+                    this.queryWhEnabled
                   );
                 })
               }
