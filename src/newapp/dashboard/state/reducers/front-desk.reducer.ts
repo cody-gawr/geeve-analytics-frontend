@@ -26,6 +26,7 @@ import {
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
 import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { selectComputedDurationUnits, selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
+import { selectAuthUserData } from '@/newapp/auth/state/reducers/auth.reducer';
 
 type FrontDeskEndpoints =
   | 'fdUtilisationRate'
@@ -680,7 +681,9 @@ export const selectIsLoadingFdUtaRatioTrendData = createSelector(
 export const selectFdUtilRateChartData = createSelector(
   selectFdUtilisationRateData,
   selectCurrentClinics,
-  (resBody, clinics) => {
+  selectAuthUserData,
+  (resBody, clinics, authUserData) => {
+    console.log('auth', authUserData)
     if (resBody == null) {
       return {
         fdUtiData: [],
@@ -691,24 +694,27 @@ export const selectFdUtilRateChartData = createSelector(
         fdUtilRateGoal: 0,
       };
     }
-    const fdUtiData = [],
-      chartData = [],
+    const targetData = [], chartData = [],
       chartLabels = [];
-    resBody.data.forEach(val => {
-      fdUtiData.push({
-        name: val.appBookName,
-        scheduledHours: Math.round(<number>val.plannedHour),
-        clinicanHours: Math.round(<number>val.workedHour),
-        utilRate: Math.round(parseFloat(<string>val.utilRate) * 100),
-      });
+
+    resBody.data.forEach((val, i) => {
+      const value = Math.round(parseFloat(<string>val.utilRate) * 100);
+      const label =  `${val.appBookName}--${val.workedHour}--${val.plannedHour}--${val.clinicName}`;
+      if(i < authUserData.maxChartBars){
+        chartData.push(value);
+        chartLabels.push(label);
+      }
+      targetData.push(
+        {
+          value,
+          appBookName: val.appBookName,
+          workedHour: val.workedHour,
+          plannedHour: val.plannedHour,
+          clinicName: val.clinicName
+        }
+      )
     });
 
-    resBody.data.slice(0, 20).forEach(val => {
-      chartData.push(Math.round(parseFloat(<string>val.utilRate) * 100));
-      chartLabels.push(
-        `${val.appBookName}--${val.workedHour}--${val.plannedHour}--${val.clinicName}`
-      );
-    });
     const chartDatasets = [
       {
         data: [],
@@ -775,7 +781,7 @@ export const selectFdUtilRateChartData = createSelector(
     }
 
     return {
-      fdUtiData,
+      targetData,
       datasets: chartDatasets,
       labels: chartLabels,
       fdUtilRateVal: Math.round(resBody.total),

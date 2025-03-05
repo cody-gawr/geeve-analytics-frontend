@@ -58,28 +58,12 @@ export class AuthGuard implements CanActivate {
                       localStorage.setItem('unsubscribed_clinic', JSON.stringify(clinic));
                       window.location.href = '/newapp/dashboard/unsubscribed';
                     }
-                    // this.getRolesIndividual();
                   },
                   error: err => {
 
                   },
               });
             }
-
-            // this.headerService.getClinic.subscribe(
-            //   {
-            //     next: res => {
-            //       console.log(res)
-            //         if(res.body.data?.findIndex(c => c.id === clinic_id) === -1){
-
-            //         }
-                  
-            //     },
-            //     error: () => {
-            //       // this.warningMessage = "Please Provide Valid Inputs!";
-            //     } 
-            //   }
-            // );
           }
       return true;
     }

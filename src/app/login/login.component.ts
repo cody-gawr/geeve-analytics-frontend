@@ -13,6 +13,7 @@ import { RolesUsersService } from '../roles-users/roles-users.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import camelcaseKeys from 'camelcase-keys';
 import { ClinicService } from '../clinic/clinic.service';
+import { updateUserData } from '../util';
 
 @Component({
   selector: 'app-login',
@@ -130,10 +131,7 @@ export class LoginComponent implements OnInit {
             }
 
             var datares = [];
-            localStorage.setItem(
-              'authUserData',
-              JSON.stringify(camelcaseKeys(res.body.data.data, { deep: true }))
-            );
+            updateUserData(res.body.data.data);
             datares['username'] = res.body.data.data.username;
             datares['email'] = res.body.data.data.email;
             datares['token'] = res.body.data.data.token;
@@ -150,6 +148,7 @@ export class LoginComponent implements OnInit {
             datares['features_dismissed'] =
               res.body.data.data.features_dismissed;
             datares['health_screen_mtd'] = res.body.data.data.health_screen_mtd;
+            datares['max_chart_bars'] = res.body.data.data.max_chart_bars;
             let opts = this.constants.cookieOpt as CookieOptions;
 
             var nextStep = (
@@ -216,6 +215,12 @@ export class LoginComponent implements OnInit {
             this._cookieService.put(
               'health_screen_mtd',
               datares['health_screen_mtd'],
+              opts
+            );
+
+            this._cookieService.put(
+              'max_chart_bars',
+              datares['max_chart_bars'],
               opts
             );
 

@@ -79,14 +79,18 @@ export class ProfileSettingsService {
       );
   }
   // Get updateprofileSettingsHealthScreen
-  updateprofileSettingsHealthScreen(health_screen_mtd): Observable<any> {
+  updateprofileSettingsHealthScreen(
+    health_screen_mtd,
+    max_chart_bars
+  ): Observable<any> {
     const formData = new FormData();
     formData.append('health_screen_mtd', health_screen_mtd);
-
+    formData.append('max_chart_bars', max_chart_bars);
     var header = this.getHeaders();
 
     return this.http
-      .post(this.apiUrl + '/Users/userUpdateProfile', formData, header)
+      .post((this.apiUrl?.includes('test')?environment.apiNodeUrl:this.apiUrl) + '/Users/userUpdateProfile', 
+        formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;

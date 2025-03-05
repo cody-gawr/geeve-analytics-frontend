@@ -15,9 +15,9 @@ export function localStorageSyncReducer(
       {
         dentist: ['currentDentistId'],
       },
-      // {
-      //   auth: ['authUserData'],
-      // },
+      {
+        auth: ['authUserData'],
+      },
       { layout: ['dateRange', 'trend', 'average', 'compare'] },
     ],
     rehydrate: true,

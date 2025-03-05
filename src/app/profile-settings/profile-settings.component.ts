@@ -16,6 +16,7 @@ import { RolesUsersService } from '../roles-users/roles-users.service';
 import { NotificationService } from '@/newapp/shared/services/notification.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { OtpConfirmDialog } from './otp-confirm-dialog/otp-confirm-dialog.component';
+import { updateUserData } from '../util';
 
 const passwordValidation = new UntypedFormControl('', [
   Validators.required,
@@ -147,6 +148,7 @@ export class ProfileSettingsComponent implements OnInit {
   public clinicName: any = 0;
   public contactName = 0;
   public health_screen_mtd: any = 0;
+  public max_chart_bars: number = 0;
   // public chartData: any[] = [];
   public address: any = {};
   public practice_size: any = {};
@@ -175,6 +177,7 @@ export class ProfileSettingsComponent implements OnInit {
     this.userType = this._cookieService.get('user_type');
     this.mfaEnabled = this._cookieService.get('mfa_enabled') === 'true';
     this.health_screen_mtd = this._cookieService.get('health_screen_mtd');
+    this.max_chart_bars = parseInt(this._cookieService.get('max_chart_bars') || '0');
     this.form = this.fb.group({
       currentPassword: [null, Validators.compose([Validators.required])],
       newPassword: passwordValidation,
@@ -192,6 +195,7 @@ export class ProfileSettingsComponent implements OnInit {
     });
     this.healthSettings = new UntypedFormGroup({
       health_screen_mtd: new UntypedFormControl(),
+      max_chart_bars: new UntypedFormControl(),
     });
   }
 
@@ -555,8 +559,9 @@ export class ProfileSettingsComponent implements OnInit {
 
   onSubmitHealthScreen() {
     this.health_screen_mtd = this.healthSettings.value.health_screen_mtd;
+    this.max_chart_bars = this.healthSettings.value.max_chart_bars;
     this.profileSettingsService
-      .updateprofileSettingsHealthScreen(this.health_screen_mtd)
+      .updateprofileSettingsHealthScreen(this.health_screen_mtd, this.max_chart_bars)
       .subscribe({
         next: res => {
           if (res.status == 200) {
@@ -564,6 +569,16 @@ export class ProfileSettingsComponent implements OnInit {
               'health_screen_mtd',
               this.health_screen_mtd
             );
+            
+            this._cookieService.put(
+              'max_chart_bars',
+              this.max_chart_bars.toString()
+            );
+
+            updateUserData({
+              healthScreenMtd: this.health_screen_mtd,
+              maxChartBars: this.max_chart_bars
+            });
             this.toastr.success('Profile Settings Updated .');
           }
         },

@@ -470,9 +470,9 @@
                   (ngSubmit)="onSubmitHealthScreen()">
                   <div fxLayout="row wrap" fxLayoutGap="10%">
                     <div
-                      fxFlex="calc(49% - 10px)"
-                      fxFlex.md="calc(49% - 10px)"
-                      fxFlex.sm="calc(49% - 10px)"
+                      fxFlex="calc(45% - 10px)"
+                      fxFlex.md="calc(45% - 10px)"
+                      fxFlex.sm="calc(45% - 10px)"
                       fxFlex.xs="100">
                       <div class="sa-form-group sa-group">
                         <label
@@ -498,6 +498,41 @@
                           <option value="1">Month to Date</option>
                         </select>
                       </div>
+                    </div>
+                    <div
+                      fxFlex="calc(45% - 10px)"
+                      fxFlex.md="calc(45% - 10px)"
+                      fxFlex.sm="calc(45% - 10px)"
+                      fxFlex.xs="100">
+                        <div class="sa-form-group sa-group">
+                          <label
+                            >Max Chart Bars
+                            <div class="info-button">
+                              <div class="info-icon-container">
+                                <img
+                                  [tooltip]="this.constants.tipMaxChartBar"
+                                  src="../assets/images/info-icon.png"
+                                  alt="info-icon"
+                                  class="info-icon" />
+                              </div>
+                            </div>
+                          </label>
+          
+                          <select
+                            [formControl]="healthSettings.controls['max_chart_bars']"
+                            [(ngModel)]="max_chart_bars">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            <option value="30">30</option>
+                            <option value="35">35</option>
+                            <option value="40">40</option>
+                            <option value="45">45</option>
+                            <option value="50">50</option>
+                          </select>
+                        </div>
                     </div>
                   </div>
                   <mat-card-actions class="text-right">

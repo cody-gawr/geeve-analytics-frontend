@@ -4,8 +4,8 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import { environment } from '../../environments/environment';
-import camelcaseKeys from 'camelcase-keys';
 import { AppConstants } from '../app.constants';
+import { updateUserData } from '../util';
 
 @Injectable()
 export class LoginService {
@@ -199,10 +199,7 @@ export class LoginService {
 
   updateUserInfo(data) {
       var datares = [];
-      localStorage.setItem(
-        'authUserData',
-        JSON.stringify(camelcaseKeys(data, { deep: true }))
-      );
+      updateUserData(data);
       datares['username'] = data.username;
       datares['email'] = data.email;
       datares['token'] = data.token;

@@ -19,6 +19,7 @@ import {
 } from '@/newapp/dentist/state/reducers/dentist.reducer';
 import { COLORS } from '@/newapp/constants';
 import {
+  selectAuthUserData,
   selectIsClinicianUser,
   selectRolesIndividual,
 } from '@/newapp/auth/state/reducers/auth.reducer';
@@ -450,6 +451,7 @@ export const selectCaProductionChartData = createSelector(
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
+  selectAuthUserData,
   (
     bodyList,
     selectedClinics,
@@ -460,7 +462,8 @@ export const selectCaProductionChartData = createSelector(
     colExpTab,
     isDentistMode,
     rolesInd,
-    compare
+    compare,
+    authData
   ) => {
     const isTrend = trendMode && trendMode !== 'off';
     let resBody: CaDentistProductionApiResponse | CaCollectionApiResponse =
@@ -552,32 +555,31 @@ export const selectCaProductionChartData = createSelector(
           .value();
       }
 
-      if (data.length > 20) {
-        data = data.slice(0, 20);
-      }
+      // if (data.length > 20) {
+      //   data = data.slice(0, 20);
+      // }
       const tableData = [];
       let dentistKey = 0;
+
       data.forEach((item, i) => {
-        if (chartName === 'Production') {
-          chartData.push(
-            Math.round(<number>(<CaDentistProductionItem>item).production)
-          );
-        } else {
-          chartData.push(
-            Math.round(<number>(<CaCollectionItem>item).collection)
-          );
+        const value = Math.round(
+          chartName === 'Production'? 
+          <number>(<CaDentistProductionItem>item).production:
+          <number>(<CaCollectionItem>item).collection
+        )
+        const label =
+            (item.providerName ?? '') +
+            (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
+
+        if(i < authData.maxChartBars){
+          chartData.push(value);
+          chartLabels.push(label);
+          dentistKey = i;
         }
 
-        const pName =
-          (item.providerName ?? '') +
-          (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
-
-        chartLabels.push(pName);
-        dentistKey = i;
-
         tableData.push({
-          label: pName,
-          value: chartData[i],
+          label: label,
+          value: value,
         });
       });
       
@@ -930,13 +932,15 @@ export const selectCaHourlyRateChartData = createSelector(
   selectHourlyRateChartName,
   selectHourlyRateProdSelectTab,
   selectIsDentistMode,
+  selectAuthUserData,
   (
     bodyList,
     selectedClinics,
     compare,
     prodChartName,
     prodTab,
-    isDentistMode
+    isDentistMode,
+    authUserData
   ) => {
     let resBody: CaHourlyRateApiResponse | CaCollectionHourlyRateApiResponse =
       null;
@@ -1023,21 +1027,24 @@ export const selectCaHourlyRateChartData = createSelector(
           .value();
       }
 
-      if (data.length > 20) {
-        data = data.slice(0, 20);
-      }
+      // if (data.length > 20) {
+      //   data = data.slice(0, 20);
+      // }
       const tableData = [];
       data.forEach((item: any, i) => {
-        chartData.push(Math.round(<number>item.hourlyRate));
-
-        const pName =
-          (item.providerName ?? '') +
-          (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
-        chartLabels.push(pName);
+        const value = Math.round(<number>item.hourlyRate);
+        const label = (item.providerName ?? '') + (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
+  
+        if(i < authUserData.maxChartBars){
+          chartData.push(value);
+          chartLabels.push(label);
+        }
+        
         tableData.push({
-          label: pName,
-          value: chartData[i],
-          v1: prodChartName === 'Production'? item.production: (prodChartName === 'Collection'?item.collection:item.collectionMinusExp),
+          label: label,
+          value: value,
+          v1: prodChartName === 'Production'? item.production: 
+              (prodChartName === 'Collection'?item.collection:item.collectionMinusExp),
           v2: item.hours
         });
       });
@@ -1231,7 +1238,8 @@ export const selectCaNumNewPatientsChartData = createSelector(
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
-  (bodyList, selectedClinics, isDentistMode, rolesInd, compare) => {
+  selectAuthUserData,
+  (bodyList, selectedClinics, isDentistMode, rolesInd, compare, authUserData) => {
     let resBody: CaNumNewPatientsApiResponse = bodyList['caNumNewPatients'];
     if (!resBody?.data) {
       return {
@@ -1262,22 +1270,26 @@ export const selectCaNumNewPatientsChartData = createSelector(
         chartLabels = [];
       let chartColors = [];
 
-      if (data.length > 20) {
-        data = data.slice(0, 20);
-      }
+      // if (data.length > 20) {
+      //   data = data.slice(0, 20);
+      // }
       let newpKey = 0;
       const tableData = [];
       data.forEach((item: CaNumNewPatientsItem, i) => {
-        chartData.push(Math.round(<number>item.newPatients));
-
-        const pName =
+        const value = Math.round(<number>item.newPatients);
+        const label =
           (item.providerName ?? '') +
           (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
-        chartLabels.push(pName);
-        if (item.providerName != 'Anonymous') newpKey = i;
+
+        if(i < authUserData.maxChartBars){
+          chartData.push(value);
+          chartLabels.push(label);
+          if (item.providerName != 'Anonymous') newpKey = i;
+        }
+
         tableData.push({
-          label: pName,
-          value: chartData[i],
+          label: label,
+          value: value,
         });
       });
 
@@ -1502,7 +1514,11 @@ export const selectTxPlanAvgFeesChartData = createSelector(
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
-  (bodyList, selectedClinics, chartName, isDentistMode, rolesInd, compare) => {
+  selectAuthUserData,
+  (
+    bodyList, selectedClinics, chartName, 
+    isDentistMode, rolesInd, compare, authUserData
+  ) => {
     let resBody: CaTxPlanAvgFeeApiResponse = null;
 
     if (chartName === 'Avg. Completed Fees') {
@@ -1537,24 +1553,24 @@ export const selectTxPlanAvgFeesChartData = createSelector(
           .value();
       }
 
-      if (data.length > 20) {
-        data = data.slice(0, 20);
-      }
+      // if (data.length > 20) {
+      //   data = data.slice(0, 20);
+      // }
       const tableData = [];
       let dentistKey = 0;
       data.forEach((item: CaTxPlanAvgFeeItem, i) => {
-        chartData.push(Math.round(<number>item.averageFees));
-
-        const pName =
+        const value = Math.round(<number>item.averageFees);
+        const label =
           (item.providerName ?? '') +
           (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
-
-        chartLabels.push(pName);
-        dentistKey = i;
-
+        if(i < authUserData.maxChartBars){
+          chartData.push(value);
+          chartLabels.push(label);
+          dentistKey = i;
+        }
         tableData.push({
-          label: pName,
-          value: chartData[i],
+          label: label,
+          value: value,
         });
       });
 
@@ -1741,7 +1757,8 @@ export const selectTxPlanCompRateChartData = createSelector(
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
-  (bodyList, selectedClinics, isDentistMode, rolesInd, compare) => {
+  selectAuthUserData,
+  (bodyList, selectedClinics, isDentistMode, rolesInd, compare, authUserData) => {
     let resBody: CaTxPlanCompRateApiResponse = bodyList['caTxPlanCompRate'];
 
     if (!isDentistMode || compare) {
@@ -1771,24 +1788,26 @@ export const selectTxPlanCompRateChartData = createSelector(
           .value();
       }
 
-      if (data.length > 20) {
-        data = data.slice(0, 20);
-      }
+      // if (data.length > 20) {
+      //   data = data.slice(0, 20);
+      // }
       const tableData = [];
       let dentistKey = 0;
       data.forEach((item: CaTxPlanCompRateItem, i) => {
-        chartData.push(Math.round(<number>item.treatmentPerPlanPercentage));
-
-        const pName =
+        const value = Math.round(<number>item.treatmentPerPlanPercentage);
+        const label =
           (item.providerName ?? '') +
           (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
 
-        chartLabels.push(pName);
-        dentistKey = i;
+        if(i < authUserData.maxChartBars){
+          chartData.push(value);
+          chartLabels.push(label);
+          dentistKey = i;
+        }
 
         tableData.push({
-          label: pName,
-          value: chartData[i],
+          label: label,
+          value: value,
         });
       });
 
@@ -2018,7 +2037,8 @@ export const selectRecallRateChartData = createSelector(
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
-  (bodyList, selectedClinics, chartName, isDentistMode, rolesInd, compare) => {
+  selectAuthUserData,
+  (bodyList, selectedClinics, chartName, isDentistMode, rolesInd, compare, authUserData) => {
     let resBody: CaRecallRateApiResponse | CaReappRateApiResponse = null;
     if (chartName === 'Recall Prebook Rate') {
       resBody = bodyList['caRecallRate'];
@@ -2043,28 +2063,28 @@ export const selectRecallRateChartData = createSelector(
       }
       let data: (CaRecallRateItem | CaReappRateItem)[] = resBody.data.slice();
 
-      if (data.length > 20) {
-        data = data.slice(0, 20);
-      }
+      // if (data.length > 20) {
+      //   data = data.slice(0, 20);
+      // }
       const tableData = [];
       let dentistKey = 0;
       data.forEach((item: CaRecallRateItem | CaReappRateItem, i) => {
-        chartData.push(
-          chartName === 'Recall Prebook Rate'
-            ? Math.round(<number>(<CaRecallRateItem>item).recallPercent)
-            : Math.round(<number>(<CaReappRateItem>item).reappointRate)
-        );
-
-        const pName =
+        const value = chartName === 'Recall Prebook Rate'
+        ? Math.round(<number>(<CaRecallRateItem>item).recallPercent)
+        : Math.round(<number>(<CaReappRateItem>item).reappointRate);
+        const label =
           (item.providerName ?? '') +
           (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
 
-        chartLabels.push(pName);
-        dentistKey = i;
+        if(i < authUserData.maxChartBars){
+          chartData.push(value);
+          chartLabels.push(label);
+          dentistKey = i;
+        }
 
         tableData.push({
-          label: pName,
-          value: chartData[i],
+          label: label,
+          value: value,
         });
       });
 
@@ -2274,6 +2294,7 @@ export const selectCaNumComplaintsChartData = createSelector(
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
+  selectAuthUserData,
   (
     bodyList,
     selectedClinics,
@@ -2281,7 +2302,8 @@ export const selectCaNumComplaintsChartData = createSelector(
     average,
     isDentistMode,
     rolesInd,
-    compare
+    compare,
+    authUserData
   ) => {
     let resBody: CaNumComplaintsApiResponse = bodyList['caNumComplaints'];
     if (!resBody?.data) {
@@ -2312,22 +2334,26 @@ export const selectCaNumComplaintsChartData = createSelector(
         chartLabels = [];
       let chartColors = [];
 
-      if (data.length > 20) {
-        data = data.slice(0, 20);
-      }
+      // if (data.length > 20) {
+      //   data = data.slice(0, 20);
+      // }
       let newpKey = 0;
       const tableData = [];
       data.forEach((item: CaNumComplaintsItem, i) => {
-        chartData.push(Math.round(<number>item.numComplaints));
-
-        const pName =
+        const value = Math.round(<number>item.numComplaints);
+        const label =
           (item.providerName ?? '') +
           (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
-        chartLabels.push(pName);
-        if (item.providerName != 'Anonymous') newpKey = i;
+
+        if(i < authUserData.maxChartBars){
+          chartData.push(value);
+          chartLabels.push(label);
+          if (item.providerName != 'Anonymous') newpKey = i;
+        }
+
         tableData.push({
-          label: pName,
-          value: chartData[i],
+          label: label,
+          value: value,
         });
       });
 

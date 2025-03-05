@@ -1,3 +1,4 @@
+import camelcaseKeys from 'camelcase-keys';
 import { TooltipItem } from 'chart.js';
 
 export function splitName(label: string) {
@@ -28,4 +29,15 @@ export function formatXTooltipLabel(tooltipItem: TooltipItem<any>) {
   return tooltipItem.parsed.y < 0
     ? '- $'
     : `${tooltipItem.label}: $${tooltipItem.formattedValue}`;
+}
+
+export function updateUserData(newUserData: any) {
+  const rawAuthData = localStorage.getItem('auth');
+  const userData = rawAuthData?JSON.parse(rawAuthData): {authUserData: {}};
+  localStorage.setItem(
+    'auth',
+    JSON.stringify(
+      camelcaseKeys({ authUserData: {...userData.authUserData, ...newUserData}}, { deep: true })
+    )
+  );
 }

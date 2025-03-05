@@ -18,12 +18,12 @@ export interface LoginUser {
   dentistId: string;
   featuresDismissed: string;
   healthScreenMtd: string;
-  // multiClinicEnabled: number;
   dash1Multi: number; //(clinician analysis)
   dash2Multi: number; //(clinician procedures & referrals)
   dash3Multi: number; //(front desk)
   dash4Multi: number; //(marketing)
   dash5Multi: number; //(finance)
+  maxChartBars: number;
 }
 
 export interface UserRole {
