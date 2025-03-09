@@ -99,7 +99,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
         const endDate = dateRange.end;
         const duration = dateRange.duration;
 
-        const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
+        const queryWhEnabled = route && parseInt(route.wh ?? '-1');
         this.marketingFacade.setErrors([]);
         switch (trend) {
           case 'off':

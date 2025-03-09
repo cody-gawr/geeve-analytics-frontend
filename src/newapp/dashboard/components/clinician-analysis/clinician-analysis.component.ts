@@ -24,7 +24,7 @@ interface QueryParams {
   startDate: string;
   endDate: string;
   duration: DATE_RANGE_DURATION;
-  queryWhEnabled?: 0 | 1;
+  queryWhEnabled?: number;
   dentistId?: number;
   clinician?: number;
 }
@@ -125,7 +125,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
-        const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
+        const queryWhEnabled = route && parseInt(route.wh ?? '-1');
         // const isEachClinicPraktika = clinics.every(c => c.pms === 'praktika');
 
         let queryParams: QueryParams = {

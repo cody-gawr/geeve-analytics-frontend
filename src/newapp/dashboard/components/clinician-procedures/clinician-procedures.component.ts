@@ -121,7 +121,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
         const endDate = dateRange.end;
         const duration = dateRange.duration;
 
-        const queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
+        const queryWhEnabled = route && parseInt(route.wh ?? '-1');
 
         const _params = {
           clinicId: clinicId,

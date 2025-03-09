@@ -145,7 +145,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
         const endDate = dateRange.end;
         const duration = dateRange.duration;
 
-        this.queryWhEnabled = route && parseInt(route.wh ?? '0') == 1 ? 1 : 0;
+        this.queryWhEnabled = route && parseInt(route.wh ?? '-1');
         this.frontDeskFacade.setErrors([]);
 
         const spCallApis = {

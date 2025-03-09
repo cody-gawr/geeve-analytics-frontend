@@ -93,7 +93,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
         const duration = dateRange.duration;
 
         const queryWhEnabled =
-          route && route.wh !== undefined ? parseInt(route.wh) : undefined;
+          route && route.wh !== undefined ? parseInt(route.wh ?? '-1') : undefined;
         this.financeFacade.setErrors([]);
         switch (trend) {
           case 'off':
