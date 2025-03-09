@@ -780,7 +780,7 @@ export const selectFdUtilRateChartData = createSelector(
     }
 
     return {
-      targetData: tableData,
+      tableData: tableData,
       datasets: chartDatasets,
       labels: chartLabels,
       fdUtilRateVal: Math.round(resBody.total),
