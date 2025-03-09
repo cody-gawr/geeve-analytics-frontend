@@ -147,11 +147,16 @@ html {
     padding: 0;
     flex: 1;
     .help-tip,
-    .table-info-icon {
+    .table-info-icon, .warn-icon {
       position: absolute;
       right: 8px;
       top: 8px;
       font-size: 16px;
+    }
+
+    .warn-icon {
+      right: 55px !important;
+      color: #f9e601;
     }
 
     .table-info-icon {

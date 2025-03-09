@@ -685,7 +685,7 @@ export const selectFdUtilRateChartData = createSelector(
   (resBody, clinics, authUserData) => {
     if (resBody == null) {
       return {
-        fdUtiData: [],
+        tableData: [],
         datasets: [],
         labels: [],
         fdUtilRateVal: 0,
@@ -693,7 +693,7 @@ export const selectFdUtilRateChartData = createSelector(
         fdUtilRateGoal: 0,
       };
     }
-    const targetData = [], chartData = [],
+    const tableData = [], chartData = [],
       chartLabels = [];
 
     resBody.data.forEach((val, i) => {
@@ -703,7 +703,7 @@ export const selectFdUtilRateChartData = createSelector(
         chartData.push(value);
         chartLabels.push(label);
       }
-      targetData.push(
+      tableData.push(
         {
           value,
           appBookName: val.appBookName,
@@ -780,7 +780,7 @@ export const selectFdUtilRateChartData = createSelector(
     }
 
     return {
-      targetData,
+      targetData: tableData,
       datasets: chartDatasets,
       labels: chartLabels,
       fdUtilRateVal: Math.round(resBody.total),
@@ -795,7 +795,7 @@ export const selectFdUtilRateByDayChartData = createSelector(
   resBody => {
     if (resBody == null) {
       return {
-        fdUtiByDayData: [],
+        tableData: [],
         datasets: [],
         labels: [],
         fdUtilRateByDayVal: 0,
@@ -804,7 +804,7 @@ export const selectFdUtilRateByDayChartData = createSelector(
     }
     const chartData = [],
       chartLabels = [],
-      fdUtiByDayData = [];
+      tableData = [];
     const days = [
       'Monday',
       'Tuesday',
@@ -815,7 +815,7 @@ export const selectFdUtilRateByDayChartData = createSelector(
       'Sunday',
     ];
     days.forEach(d => {
-      fdUtiByDayData.push({
+      tableData.push({
         day: d,
         scheduledHours: 0,
         clinicanHours: 0,
@@ -844,7 +844,7 @@ export const selectFdUtilRateByDayChartData = createSelector(
         const idx = days.findIndex(d => d === item.day);
         if (idx >= 0) {
           const utilRate = _.round((item.workedHour / item.plannedHour) * 100);
-          fdUtiByDayData[idx] = {
+          tableData[idx] = {
             day: item.day,
             scheduledHours: item.plannedHour,
             clinicanHours: item.workedHour,
@@ -892,7 +892,7 @@ export const selectFdUtilRateByDayChartData = createSelector(
     ];
     chartDatasets[0]['data'] = chartData;
     return {
-      fdUtiByDayData,
+      tableData: tableData,
       datasets: chartDatasets,
       labels: chartLabels,
       fdUtilRateByDayVal: Math.round(resBody.total),

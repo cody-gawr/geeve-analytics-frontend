@@ -26,6 +26,7 @@ import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import { ChartData } from 'chart.js';
 import moment from 'moment';
+import { selectAuthUserData } from '@/newapp/auth/state/reducers/auth.reducer';
 
 export interface ClinicianProcedureState {
   isLoadingData: Array<CP_API_ENDPOINTS | CP_API_TREND_ENDPOINTS>;
@@ -490,7 +491,8 @@ export const selectCpPredictorAnalysisChartData = createSelector(
   selectCpPredictorAnalysisData,
   selectCurrentClinics,
   selectCurrentDentistId,
-  (resData, clinics, dentistId) => {
+  selectAuthUserData,
+  (resData, clinics, dentistId, authUserData) => {
     if (!resData || !resData.data || resData.data.length == 0) {
       return {
         datasets: [],
@@ -634,8 +636,9 @@ export const selectCpPredictorAnalysisChartData = createSelector(
         paTableData = [];
 
       resData.data.forEach((item, index) => {
-        let ipKey = null;
-        if (item.providerName != null) {
+        // let ipKey = null;
+
+        if (index < authUserData.maxChartBars && item.providerName != null) {
           if (
             Math.round(parseFloat(<string>item.crowns)) +
               Math.round(parseFloat(<string>item.splints)) +
@@ -657,9 +660,9 @@ export const selectCpPredictorAnalysisChartData = createSelector(
             stackedChartData8.push(item.impCrowns);
             stackedChartData9.push(item.whitening);
             chartLabels.push(item.providerName);
-            if (item.providerName != 'Anonymous') {
-              ipKey = index;
-            }
+            // if (item.providerName != 'Anonymous') {
+            //   ipKey = index;
+            // }
           }
         }
 
@@ -723,7 +726,8 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
   selectCpPredictorSpecialistAnalysisData,
   selectCurrentClinics,
   selectCurrentDentistId,
-  (resData, clinics, dentistId) => {
+  selectAuthUserData,
+  (resData, clinics, dentistId, authUserData) => {
     if (!resData || !resData.data || resData.data.length == 0) {
       return {
         datasets: [],
@@ -838,8 +842,8 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
         paSpecialTableData = [];
 
       resData.data.forEach((item, index) => {
-        let ipKey = null;
-        if (item.providerName != null) {
+        // let ipKey = null;
+        if (index < authUserData.maxChartBars && item.providerName != null) {
           if (
             Math.round(parseFloat(<string>item.impSurg)) +
               Math.round(parseFloat(<string>item.orthoFix)) +
@@ -857,9 +861,9 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
             stackedChartData6.push(item.endoRetreat);
             stackedChartData7.push(item.veneersInd);
             chartLabels.push(item.providerName);
-            if (item.providerName != 'Anonymous') {
-              ipKey = index;
-            }
+            // if (item.providerName != 'Anonymous') {
+            //   ipKey = index;
+            // }
           }
         }
 

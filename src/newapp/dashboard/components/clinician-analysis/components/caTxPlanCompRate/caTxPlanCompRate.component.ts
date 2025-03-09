@@ -36,7 +36,9 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-
+  get showMaxBarsAlert() {
+    return this.tableData?.length > this.labels?.length;
+  }
   get isTableIconVisible$() {
     return combineLatest([
       this.isDentistMode$,

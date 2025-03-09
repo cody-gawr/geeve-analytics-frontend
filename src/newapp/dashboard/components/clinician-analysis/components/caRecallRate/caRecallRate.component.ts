@@ -41,7 +41,9 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     'Recall Prebook Rate',
     'Reappointment Rate',
   ];
-
+  get showMaxBarsAlert() {
+    return this.tableData?.length > this.labels?.length;
+  }
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }

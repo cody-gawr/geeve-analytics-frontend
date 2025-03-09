@@ -186,6 +186,10 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     this.cpFacade.setCpPredictorAnalysisVisibility(val);
   }
 
+  get showMaxBarsAlert() {
+    return this.paTableData?.length > this.labels?.length;
+  }
+
   get chartOptions$() {
     return combineLatest([
       this.clinicFacade.currentClinics$,

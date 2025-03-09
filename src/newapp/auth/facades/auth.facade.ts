@@ -102,9 +102,4 @@ export class AuthFacade {
   public getRolesIndividual() {
     this.store.dispatch(RolesPageActions.getRolesIndividual({}));
   }
-
-  public getAuthUserData(): LoginUser {
-    const data = localStorage.getItem('authUserData');
-    return data ? JSON.parse(data) : null;
-  }
 }

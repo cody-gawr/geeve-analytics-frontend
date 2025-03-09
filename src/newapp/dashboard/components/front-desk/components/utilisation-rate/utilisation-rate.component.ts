@@ -35,7 +35,9 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
     }
     return 'trending_down';
   }
-
+  get showMaxBarsAlert() {
+    return this.tableData?.length > this.labels?.length;
+  }
   get isByDayData$() {
     return this.frontDeskFacade.isByDayData$;
   }
@@ -51,7 +53,7 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   fdUtilRateVal = 0;
   fdUtilRatePrev = 0;
   fdUtilRateGoal = 0;
-
+  tableData: any = [];
   datasets: ChartDataset[] = [];
   labels = [];
 
@@ -178,6 +180,7 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
               this.fdUtilRateVal = byDayChartData.fdUtilRateByDayVal;
               this.fdUtilRatePrev = byDayChartData.fdUtilRateByDayPrev;
             } else {
+              this.tableData = chartData.tableData;
               this.datasets = chartData.datasets;
               this.labels = chartData.labels;
               this.fdUtilRateVal = chartData.fdUtilRateVal;

@@ -1238,8 +1238,10 @@ export const selectCaNumNewPatientsChartData = createSelector(
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
-  selectAuthUserData,
-  (bodyList, selectedClinics, isDentistMode, rolesInd, compare, authUserData) => {
+  // selectAuthUserData,
+  (bodyList, selectedClinics, isDentistMode, rolesInd, compare, 
+    // authUserData
+  ) => {
     let resBody: CaNumNewPatientsApiResponse = bodyList['caNumNewPatients'];
     if (!resBody?.data) {
       return {
@@ -1281,11 +1283,11 @@ export const selectCaNumNewPatientsChartData = createSelector(
           (item.providerName ?? '') +
           (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
 
-        if(i < authUserData.maxChartBars){
+        // if(i < authUserData.maxChartBars){
           chartData.push(value);
           chartLabels.push(label);
           if (item.providerName != 'Anonymous') newpKey = i;
-        }
+        //}
 
         tableData.push({
           label: label,
@@ -2294,7 +2296,7 @@ export const selectCaNumComplaintsChartData = createSelector(
   selectIsDentistMode,
   selectRolesIndividual,
   selectCompareEnabled,
-  selectAuthUserData,
+  // selectAuthUserData,
   (
     bodyList,
     selectedClinics,
@@ -2303,7 +2305,7 @@ export const selectCaNumComplaintsChartData = createSelector(
     isDentistMode,
     rolesInd,
     compare,
-    authUserData
+    // authUserData
   ) => {
     let resBody: CaNumComplaintsApiResponse = bodyList['caNumComplaints'];
     if (!resBody?.data) {
@@ -2345,11 +2347,11 @@ export const selectCaNumComplaintsChartData = createSelector(
           (item.providerName ?? '') +
           (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
 
-        if(i < authUserData.maxChartBars){
+        // if(i < authUserData.maxChartBars){
           chartData.push(value);
           chartLabels.push(label);
           if (item.providerName != 'Anonymous') newpKey = i;
-        }
+        //}
 
         tableData.push({
           label: label,

@@ -49,6 +49,10 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     'Collection',
     'Collection-Exp',
   ];
+  
+  get showMaxBarsAlert() {
+    return this.tableData?.length > this.labels?.length;
+  }
 
   get prodChartNames$() {
     return this.isEachClinicD4w$.pipe(
