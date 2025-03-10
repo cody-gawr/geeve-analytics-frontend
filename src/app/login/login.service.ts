@@ -216,6 +216,7 @@ export class LoginService {
       datares['features_dismissed'] =
         data.features_dismissed;
       datares['health_screen_mtd'] = data.health_screen_mtd;
+      datares['max_chart_bars'] = data.max_chart_bars;
       let opts = this.constants.cookieOpt as CookieOptions;
 
       var nextStep = (
@@ -282,6 +283,12 @@ export class LoginService {
       this._cookieService.put(
         'health_screen_mtd',
         datares['health_screen_mtd'],
+        opts
+      );
+
+      this._cookieService.put(
+        'max_chart_bars',
+        datares['max_chart_bars'],
         opts
       );
 

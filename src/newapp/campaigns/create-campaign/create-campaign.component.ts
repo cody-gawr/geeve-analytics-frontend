@@ -73,6 +73,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     itemCodes: OptionDataType[] = [];
     healthFunds: OptionDataType[] = [];
     selectedItemCodes = new FormControl<string[]>([]);
+    selectedItemCodesForNoTreatment = new FormControl<string[]>([]);
     selectedHealthInsurances = new FormControl<string[]>([]);
     campaigns: ICampaign[] = [];
     filterElements: IFilterElement[] = [];
@@ -86,8 +87,11 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     campaignFilters: ICampaignFilter[]= [];
     isSendingSms = false;
     itemCodesAllCheckBox = new FormControl<boolean>(false);
+    itemCodesAllCheckBoxForNoTreatment = new FormControl<boolean>(false);
     healthFundIncludeNoneCheckBox = new FormControl<boolean>(false);
     healthFundIncludeCheckBox = new FormControl<boolean>(false);
+    treatmentItemCodesMode = new FormControl<'anyof' | 'anyall'>('anyof');
+    noTreatmentItemCodesMode = new FormControl<'anyof' | 'anyall'>('anyof');
 
     patientStatusList = ['all', 'active', 'inactive'];
     constructor(
@@ -185,6 +189,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
             }else{
               this.healthFundIncludeCheckBox.setValue(true);
               this.itemCodesAllCheckBox.setValue(true);
+              this.itemCodesAllCheckBoxForNoTreatment.setValue(true);
+              this.treatmentItemCodesMode.setValue('anyof');
               this.loadingData = false;
               this.metadataEvent.next();
             }
@@ -277,6 +283,42 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
             this.itemCodesAllCheckBox.setValue(true);
           }
           if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.treatment) > -1){
+            this.eventInput.next();
+          }
+        }
+      );
+
+      this.selectedItemCodesForNoTreatment.valueChanges.pipe(
+        takeUntil(this.destroy$),
+      ).subscribe(
+        value => {
+          if(value?.length > 0 && value?.length !== this.itemCodes?.length){
+            this.itemCodesAllCheckBoxForNoTreatment.setValue(false);
+          }
+          else{
+            this.itemCodesAllCheckBoxForNoTreatment.setValue(true);
+          }
+          if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.no_treatment) > -1){
+            this.eventInput.next();
+          }
+        }
+      );
+
+      this.treatmentItemCodesMode.valueChanges.pipe(
+        takeUntil(this.destroy$),
+      ).subscribe(
+        value => {
+          if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.treatment) > -1){
+            this.eventInput.next();
+          }
+        }
+      );
+
+      this.noTreatmentItemCodesMode.valueChanges.pipe(
+        takeUntil(this.destroy$),
+      ).subscribe(
+        value => {
+          if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.no_treatment) > -1){
             this.eventInput.next();
           }
         }
@@ -467,8 +509,14 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           } else if(d.filterName === CAMPAIGN_FILTERS.patient_status){
             filterSettings.push(this.patientStatus.value);
           } else if(d.filterName === CAMPAIGN_FILTERS.treatment){
+            filterSettings.push(this.treatmentItemCodesMode.value);
             if(this.selectedItemCodes.value?.length > 0 && (this.selectedItemCodes.value?.length < this.itemCodes?.length)){
               filterSettings.push(...this.selectedItemCodes.value.map(v => parseInt(v)));
+            }
+          } else if(d.filterName === CAMPAIGN_FILTERS.no_treatment){
+            filterSettings.push(this.noTreatmentItemCodesMode.value);
+            if(this.selectedItemCodesForNoTreatment.value?.length > 0 && (this.selectedItemCodesForNoTreatment.value?.length < this.itemCodes?.length)){
+              filterSettings.push(...this.selectedItemCodesForNoTreatment.value.map(v => parseInt(v)));
             }
           } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
             filterSettings.push(this.healthFundIncludeNoneCheckBox.value? 1: 0);
@@ -497,7 +545,13 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
             const filterValues = setting.filter_settings?.split(',');
             this.filterFormGroup.controls['treatmentStart'].setValue(new Date(filterValues[0]));
             this.filterFormGroup.controls['treatmentEnd'].setValue(new Date(filterValues[1]));
-            this.selectedItemCodes.setValue(filterValues.slice(2));
+            const value = <any>filterValues[2]?.toLowerCase();
+            if(['anyof', 'allof'].indexOf(value) > -1){
+              this.treatmentItemCodesMode.setValue(value);
+              this.selectedItemCodes.setValue(filterValues.slice(3) || []);
+            }else{
+              this.selectedItemCodes.setValue(filterValues.slice(2) || []);
+            }
             doneFilters.push(setting.filter_name);
           }
         }else if(setting.filter_name === CAMPAIGN_FILTERS.no_treatment){
@@ -505,6 +559,13 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
             const filterValues = setting.filter_settings?.split(',');
             this.filterFormGroup.controls['no_treatmentStart'].setValue(new Date(filterValues[0]));
             this.filterFormGroup.controls['no_treatmentEnd'].setValue(new Date(filterValues[1]));
+            const value = <any>filterValues[2]?.toLowerCase();
+            if(['anyof', 'allof'].indexOf(value) > -1){
+              this.noTreatmentItemCodesMode.setValue(value);
+              this.selectedItemCodesForNoTreatment.setValue(filterValues.slice(3) || []);
+            }else{
+              this.selectedItemCodesForNoTreatment.setValue(filterValues.slice(2) || []);
+            }
             doneFilters.push(setting.filter_name);
           }
         }else if(setting.filter_name === CAMPAIGN_FILTERS.health_insurance){
@@ -780,6 +841,13 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       if(event.checked){
         this.selectedItemCodes.setValue([]);
       }else if(!this.selectedItemCodes.value?.length){
+      }
+    }
+
+    toggleAllSelectedItemCodesForNoTreatment(event: any){
+      if(event.checked){
+        this.selectedItemCodesForNoTreatment.setValue([]);
+      }else if(!this.selectedItemCodesForNoTreatment.value?.length){
       }
     }
 

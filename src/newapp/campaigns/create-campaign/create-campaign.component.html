@@ -76,10 +76,16 @@
                                 <mat-checkbox [formControl]="itemCodesAllCheckBox" (change)="toggleAllSelectedItemCodes($event)">All Item Codes</mat-checkbox>
                                 <search-multi-select [label]="'All Item Codes'" [controlData]="selectedItemCodes"
                                     [items]="itemCodes"></search-multi-select>
-                                
-                                <mat-chip-set class="selected-chipsets" aria-label="Selected Treatments">
-                                    <mat-chip *ngFor="let item of selectedItemCodes.value">{{item}}</mat-chip>
-                                </mat-chip-set>
+                                <div class="selected-chipsets">
+                                    <app-custom-select 
+                                    *ngIf="selectedItemCodes.value.length > 0"
+                                    [formControl]="treatmentItemCodesMode" 
+                                    [options]="[{label: 'Any Of', value: 'anyof'}, {label: 'Any All', value: 'anyall'}]"
+                                    ></app-custom-select>
+                                    <mat-chip-set  aria-label="Selected Treatments">
+                                        <mat-chip *ngFor="let item of selectedItemCodes.value">{{item}}</mat-chip>
+                                    </mat-chip-set>
+                                </div>
                             </div>
                         </div>
 
@@ -88,6 +94,21 @@
                                 class="filter-box"
                                 [filterFormControlStart]="filterFormGroup.controls.no_treatmentStart"
                                 [filterFormControlEnd]="filterFormGroup.controls.no_treatmentEnd" ></app-daterange-preset>
+                            <div class="multi-selection-form" >
+                                <mat-checkbox [formControl]="itemCodesAllCheckBoxForNoTreatment" (change)="toggleAllSelectedItemCodesForNoTreatment($event)">All Item Codes</mat-checkbox>
+                                <search-multi-select [label]="'All Item Codes'" [controlData]="selectedItemCodesForNoTreatment"
+                                    [items]="itemCodes"></search-multi-select>
+                                <div class="selected-chipsets">
+                                    <app-custom-select 
+                                    *ngIf="selectedItemCodesForNoTreatment.value.length > 0"
+                                    [formControl]="noTreatmentItemCodesMode" 
+                                    [options]="[{label: 'Any Of', value: 'anyof'}, {label: 'Any All', value: 'anyall'}]"
+                                    ></app-custom-select>
+                                    <mat-chip-set  aria-label="Selected Treatments">
+                                        <mat-chip *ngFor="let item of selectedItemCodesForNoTreatment.value">{{item}}</mat-chip>
+                                    </mat-chip-set>
+                                </div>
+                            </div>
                         </div>
 
                         <app-daterange-preset 

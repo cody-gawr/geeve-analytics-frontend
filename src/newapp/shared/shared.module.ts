@@ -28,6 +28,7 @@ import { NgxGaugeModule } from 'ngx-gauge';
 import { NgChartsModule } from 'ng2-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DateRangePresetComponent } from './components/daterange-preset/daterange-preset.component';
+import { AppCustomSelect } from './components/custom-select/custom-select.component';
 
 
 const modules = [
@@ -59,7 +60,8 @@ const components = [
   TooltipContainerDirective,
   SelectMultiSelectComponent,
   AppChartComponent,
-  DateRangePresetComponent
+  DateRangePresetComponent,
+  AppCustomSelect,
 ];
 
 @NgModule({

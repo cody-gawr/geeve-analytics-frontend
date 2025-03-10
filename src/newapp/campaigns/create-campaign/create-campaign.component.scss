@@ -121,7 +121,8 @@
                             gap: 5px;
                             .selected-chipsets {
                                 display: flex;
-                                flex-direction: column;
+                                // flex-direction: column;
+                                gap: 10px;
                                 width: 400px;
                                 margin-bottom: 15px;
                             }
