@@ -1,7 +1,7 @@
 import { Login } from '../../models/auth';
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { filter, Observable } from 'rxjs';
+import { filter, Observable, map } from 'rxjs';
 import {
   AuthApiActions,
   AuthPageActions,
@@ -54,6 +54,11 @@ export class AuthFacade {
 
   public readonly authUserData$: Observable<LoginUser> = this.store.pipe(
     select(selectAuthUserData)
+  );
+
+  public readonly chartLimitDesc$: Observable<string> = this.store.pipe(
+    select(selectAuthUserData),
+    map(v => `Results plotted on the graph are limited to ${v.maxChartBars} due to your settings. This can be updated via Settings -> My Account -> Customisations -> Max Chart Bars. Totals beneath the chart still reflect the full amount.`)
   );
 
   public readonly isLoadingRolesIndividual$ = this.store.pipe(

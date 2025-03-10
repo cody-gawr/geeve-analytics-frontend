@@ -3,7 +3,7 @@
     *ngIf="showMaxBarsAlert$ | async"
     class="warn-icon"
     fontIcon="warning"
-    appTooltip="<p>Results are limited to <max_chart_items> based on your settings. Totals beneath the chart still reflect the full amounts.</p>"
+    [appTooltip]="showMaxBarsAlertMsg$ | async"
   ></mat-icon>
   <mat-icon
     [tooltip]="toolTip"

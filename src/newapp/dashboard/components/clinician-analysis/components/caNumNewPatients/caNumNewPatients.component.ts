@@ -52,7 +52,9 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
       })
     ) 
   }
-
+  get showMaxBarsAlertMsg$() {
+    return this.authFacade.chartLimitDesc$;
+  }
   get isTableIconVisible$() {
     return combineLatest([
       this.isDentistMode$,

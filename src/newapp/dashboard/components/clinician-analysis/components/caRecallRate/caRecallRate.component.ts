@@ -54,6 +54,10 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
       })
     ) 
   }
+  get showMaxBarsAlertMsg$() {
+    return this.authFacade.chartLimitDesc$;
+  }
+
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(map(v => v.duration));
   }

@@ -315,6 +315,10 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     ) 
   }
 
+  get showMaxBarsAlertMsg$() {
+    return this.authFacade.chartLimitDesc$;
+  }
+
   formatNumber(value: number): string {
     if (value % 1 === 0) {
       return this.decimalPipe.transform(value, '1.0-0') // No decimals for whole numbers

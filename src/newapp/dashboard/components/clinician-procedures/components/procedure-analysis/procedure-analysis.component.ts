@@ -15,6 +15,7 @@ import {
 } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 
 @Component({
   selector: 'cp-procedure-analysis-chart',
@@ -125,7 +126,8 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private dentistFacade: DentistFacade,
     private cpFacade: ClinicianProcedureFacade,
-    private sanitized: DomSanitizer
+    private sanitized: DomSanitizer,
+    private authFacade: AuthFacade
   ) {}
 
   ngOnInit(): void {
@@ -193,7 +195,9 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       })
     ) 
   }
-
+  get showMaxBarsAlertMsg$() {
+    return this.authFacade.chartLimitDesc$;
+  }
   get chartOptions$() {
     return combineLatest([
       this.clinicFacade.currentClinics$,

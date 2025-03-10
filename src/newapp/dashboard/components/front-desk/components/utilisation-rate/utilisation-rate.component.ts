@@ -1,3 +1,4 @@
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FrontDeskFacade } from '@/newapp/dashboard/facades/front-desk.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
@@ -63,6 +64,9 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
         return !v && (this.tableData?.length > this.labels?.length);
       })
     ) 
+  }
+  get showMaxBarsAlertMsg$() {
+    return this.authFacade.chartLimitDesc$;
   }
   get isByDayData$() {
     return this.frontDeskFacade.isByDayData$;
@@ -182,7 +186,8 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   constructor(
     private frontDeskFacade: FrontDeskFacade,
     private clinicFacade: ClinicFacade,
-    private layoutFacade: LayoutFacade
+    private layoutFacade: LayoutFacade,
+    private authFacade: AuthFacade
   ) {}
 
   ngOnInit(): void {

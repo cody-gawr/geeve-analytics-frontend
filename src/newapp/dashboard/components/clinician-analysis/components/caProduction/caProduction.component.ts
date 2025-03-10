@@ -66,7 +66,9 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       })
     ) 
   }
-
+  get showMaxBarsAlertMsg$() {
+    return this.authFacade.chartLimitDesc$;
+  }
   get prodChartNames$() {
     return this.isEachClinicD4w$.pipe(
       map(v => {

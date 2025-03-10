@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormControl, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { ProfileSettingsService } from './profile-settings.service';
 import { ActivatedRoute } from '@angular/router';
@@ -177,7 +177,7 @@ export class ProfileSettingsComponent implements OnInit {
     this.userType = this._cookieService.get('user_type');
     this.mfaEnabled = this._cookieService.get('mfa_enabled') === 'true';
     this.health_screen_mtd = this._cookieService.get('health_screen_mtd');
-    this.max_chart_bars = parseInt(this._cookieService.get('max_chart_bars') || '0');
+    this.max_chart_bars = parseInt(this._cookieService.get('max_chart_bars') || '20');
     this.form = this.fb.group({
       currentPassword: [null, Validators.compose([Validators.required])],
       newPassword: passwordValidation,
@@ -195,7 +195,7 @@ export class ProfileSettingsComponent implements OnInit {
     });
     this.healthSettings = new UntypedFormGroup({
       health_screen_mtd: new UntypedFormControl(),
-      max_chart_bars: new UntypedFormControl(),
+      max_chart_bars: new FormControl(this.max_chart_bars),
     });
   }
 
