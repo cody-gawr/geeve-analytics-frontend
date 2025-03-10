@@ -39,8 +39,18 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
-  get showMaxBarsAlert() {
-    return this.tableData?.length > this.labels?.length;
+  get showTableView$() {
+    return this.isTableIconVisible$.pipe(map(
+      v => this.showTableInfo && v
+    ))
+  }
+
+  get showMaxBarsAlert$() {
+    return this.showTableView$.pipe(
+      map(v => {
+        return !v && (this.tableData?.length > this.labels?.length);
+      })
+    ) 
   }
 
   get isTableIconVisible$() {

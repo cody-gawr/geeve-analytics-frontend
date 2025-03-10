@@ -1,6 +1,6 @@
 <div class="chart-container">
   <mat-icon
-    *ngIf="showMaxBarsAlert"
+    *ngIf="showMaxBarsAlert$ | async"
     class="warn-icon"
     fontIcon="warning"
     appTooltip="<p>Results are limited to <max_chart_items> based on your settings. Totals beneath the chart still reflect the full amounts.</p>"
@@ -37,7 +37,7 @@
       <ng-template #enabledChart>
         <div
           class="pa-table"
-          *ngIf="showTableInfo && (isTableIconVisible$ | async); else graphElem">
+          *ngIf="showTableView$ | async; else graphElem">
           <table>
             <thead>
               <tr>

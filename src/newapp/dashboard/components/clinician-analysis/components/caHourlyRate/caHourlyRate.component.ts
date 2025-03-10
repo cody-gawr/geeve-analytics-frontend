@@ -258,6 +258,8 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     return this.caFacade.isTrendIconVisible$;
   }
 
+  
+
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,
@@ -299,8 +301,18 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
       });
   }
 
-  get showMaxBarsAlert() {
-    return this.tableData?.length > this.labels?.length;
+  get showTableView$() {
+    return this.isTableIconVisible$.pipe(map(
+      v => this.showTableInfo && v
+    ))
+  }
+
+  get showMaxBarsAlert$() {
+    return this.showTableView$.pipe(
+      map(v => {
+        return !v && (this.tableData?.length > this.labels?.length);
+      })
+    ) 
   }
 
   formatNumber(value: number): string {

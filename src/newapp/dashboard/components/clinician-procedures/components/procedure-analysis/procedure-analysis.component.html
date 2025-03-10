@@ -1,6 +1,6 @@
 <div class="chart-container">
   <mat-icon
-    *ngIf="showMaxBarsAlert"
+    *ngIf="showMaxBarsAlert$ | async"
     class="warn-icon"
     fontIcon="warning"
     appTooltip="<p>Results are limited to <max_chart_items> based on your settings. Totals beneath the chart still reflect the full amounts.</p>"
@@ -60,7 +60,7 @@
         </div>
         <div
           class="chart-gauge procedure-analysis-gauge"
-          *ngIf="!(enablePaTable$ | async)">
+          *ngIf="!(showTableView$ | async)">
           <spin-loader
             *ngIf="isLoading$ | async; else chartElem"
             [disableSpin]="false"></spin-loader>
@@ -81,7 +81,7 @@
             </ng-template>
           </ng-template>
         </div>
-        <div class="pa-table" *ngIf="enablePaTable$ | async">
+        <div class="pa-table" *ngIf="showTableView$ | async">
           <table *ngIf="isGeneral$ | async; else specialTableElem">
             <thead>
               <tr>

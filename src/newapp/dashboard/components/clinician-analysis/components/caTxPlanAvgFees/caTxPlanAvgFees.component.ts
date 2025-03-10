@@ -41,8 +41,18 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     'Avg. Proposed Fees',
     'Avg. Completed Fees',
   ];
-  get showMaxBarsAlert() {
-    return this.tableData?.length > this.labels?.length;
+  get showTableView$() {
+    return this.isTableIconVisible$.pipe(map(
+      v => this.showTableInfo && v
+    ))
+  }
+
+  get showMaxBarsAlert$() {
+    return this.showTableView$.pipe(
+      map(v => {
+        return !v && (this.tableData?.length > this.labels?.length);
+      })
+    ) 
   }
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(map(v => v.duration));

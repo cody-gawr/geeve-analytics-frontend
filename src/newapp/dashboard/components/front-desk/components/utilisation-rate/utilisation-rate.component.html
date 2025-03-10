@@ -1,6 +1,6 @@
 <div class="chart-container">
   <mat-icon
-    *ngIf="showMaxBarsAlert"
+    *ngIf="showMaxBarsAlert$ | async"
     class="warn-icon"
     fontIcon="warning"
     appTooltip="<p>Results are limited to <max_chart_items> based on your settings. Totals beneath the chart still reflect the full amounts.</p>"
@@ -11,6 +11,12 @@
     color="primary"
     class="help-tip"
     fontIcon="help"></mat-icon>
+  <mat-icon
+    *ngIf="isTableIconVisible$ | async"
+    [ngClass]="showTableInfo ? 'active' : ''"
+    (click)="toggleTableInfo()"
+    class="table-info-icon"
+    fontIcon="table_rows_narrow" />
   <div class="chart-title">
     <mat-icon
       *ngIf="!(isTrend$ | async)"
@@ -26,6 +32,27 @@
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box">
+      <div class="pa-table" *ngIf="showTableView$ | async; else graphEle">
+        <table>
+          <thead>
+            <tr>
+              <th>AppBook Name</th>
+              <th>Worked Hour</th>
+              <th>Planned Hour</th>
+              <th>Utilisation Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let paInfo of tableData">
+              <td>{{ paInfo.appBookName }}</td>
+              <td>{{ paInfo.workedHour }}</td>
+              <td>{{ paInfo.plannedHour }}</td>
+              <td>{{ paInfo.value }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #graphEle>
         <div class="active-toggle" *ngIf="!(isTrend$ | async)">
           <button
             *ngIf="isByDayData$ | async; else elem1"
@@ -126,6 +153,7 @@
             <span>Goal</span>
           </div>
         </div>
+      </ng-template>
       <!-- </ng-template> -->
     </div>
   </div>

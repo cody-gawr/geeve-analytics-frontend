@@ -41,7 +41,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     );
   }
 
-  get enablePaTable$() {
+  get showTableView$() {
     return combineLatest([this.isTrend$, this.isDentistMode$]).pipe(
       map(([isTrend, isDentistMode]) => {
         return (
@@ -186,8 +186,12 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     this.cpFacade.setCpPredictorAnalysisVisibility(val);
   }
 
-  get showMaxBarsAlert() {
-    return this.paTableData?.length > this.labels?.length;
+  get showMaxBarsAlert$() {
+    return this.showTableView$.pipe(
+      map(v => {
+        return !v && (this.paTableData?.length > this.labels?.length);
+      })
+    ) 
   }
 
   get chartOptions$() {

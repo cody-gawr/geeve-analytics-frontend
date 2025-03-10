@@ -50,8 +50,21 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     'Collection-Exp',
   ];
   
-  get showMaxBarsAlert() {
-    return this.tableData?.length > this.labels?.length;
+  get showTableView$() {
+    return combineLatest([
+      this.isTableViewEnabled$,
+      this.isTableIconVisible$
+    ]) .pipe(map(
+      ([v1, v2]) => v1 && v2
+    ))
+  }
+
+  get showMaxBarsAlert$() {
+    return this.showTableView$.pipe(
+      map(v => {
+        return !v && (this.tableData?.length > this.labels?.length);
+      })
+    ) 
   }
 
   get prodChartNames$() {

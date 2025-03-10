@@ -28,6 +28,10 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
+  showTableInfo = false;
+  toggleTableInfo() {
+    this.showTableInfo = !this.showTableInfo;
+  }
 
   get trendingIcon() {
     if (this.fdUtilRateVal >= this.fdUtilRatePrev) {
@@ -35,8 +39,30 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
     }
     return 'trending_down';
   }
-  get showMaxBarsAlert() {
-    return this.tableData?.length > this.labels?.length;
+
+  get isTableIconVisible$() {
+    return combineLatest([
+      this.hasData$,
+    ]).pipe(
+      map(
+        ([hasData]) =>
+          this.tableData.length > 0 && hasData && !this.isComingSoon
+      )
+    );
+  }
+
+  get showTableView$() {
+    return this.isTableIconVisible$.pipe(map(
+      v => this.showTableInfo && v
+    ))
+  }
+
+  get showMaxBarsAlert$() {
+    return this.showTableView$.pipe(
+      map(v => {
+        return !v && (this.tableData?.length > this.labels?.length);
+      })
+    ) 
   }
   get isByDayData$() {
     return this.frontDeskFacade.isByDayData$;
