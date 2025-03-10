@@ -22,6 +22,12 @@ export const DefaultFilterElements: IFilterElement[] = [
       filterName: 'treatment',
   },
   {
+        iconName: 'medical_services',
+        iconUrl: '/assets/jeeve/images/treatment_1.png',
+        title: 'No Treatment',
+        filterName: 'no_treatment',
+    },
+  {
       iconName: 'list_alt',
       iconUrl: '/assets/jeeve/images/tx_plans_1.png',
       title: 'Incomplete TX Plans',

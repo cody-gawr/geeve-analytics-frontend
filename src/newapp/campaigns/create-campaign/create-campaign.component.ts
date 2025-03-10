@@ -60,6 +60,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         appointmentEnd: new FormControl<Date | null>(null),
         treatmentStart: new FormControl<Date | null>(null),
         treatmentEnd: new FormControl<Date | null>(null),
+        no_treatmentStart: new FormControl<Date | null>(null),
+        no_treatmentEnd: new FormControl<Date | null>(null),
     });
     overdueDays = new FormControl<number>(30);
     patientStatus = new FormControl<string>('all');
@@ -333,6 +335,15 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           this.eventInput.next();
         }
       });
+
+      this.filterFormGroup.controls.no_treatmentEnd.valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(300),
+      ).subscribe((value) => {
+        if(this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.no_treatment) > -1){
+          this.eventInput.next();
+        }
+      });
       
       this.filterFormGroup.controls.incomplete_tx_planEnd.valueChanges.pipe(
         takeUntil(this.destroy$),
@@ -436,7 +447,14 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       
       return this.done.map(
         d => {
-          const isDateRange = [CAMPAIGN_FILTERS.treatment, CAMPAIGN_FILTERS.incomplete_tx_plan, CAMPAIGN_FILTERS.no_appointment, CAMPAIGN_FILTERS.appointment].indexOf(d.filterName) > -1;
+          const isDateRange = [
+            CAMPAIGN_FILTERS.treatment,
+            CAMPAIGN_FILTERS.no_treatment, 
+            CAMPAIGN_FILTERS.incomplete_tx_plan, 
+            CAMPAIGN_FILTERS.no_appointment, 
+            CAMPAIGN_FILTERS.appointment
+          ].indexOf(d.filterName) > -1;
+
           let filterSettings: any[] | undefined = [];
           if(isDateRange){
             const start = this.filterFormGroup.controls[d.filterName + 'Start'].value;
@@ -474,12 +492,19 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       const doneFilters = [];
       for(const setting of settings){
         
-        if(setting.filter_name === 'treatment'){
+        if(setting.filter_name === CAMPAIGN_FILTERS.treatment){
           if(setting.filter_settings){
             const filterValues = setting.filter_settings?.split(',');
             this.filterFormGroup.controls['treatmentStart'].setValue(new Date(filterValues[0]));
             this.filterFormGroup.controls['treatmentEnd'].setValue(new Date(filterValues[1]));
             this.selectedItemCodes.setValue(filterValues.slice(2));
+            doneFilters.push(setting.filter_name);
+          }
+        }else if(setting.filter_name === CAMPAIGN_FILTERS.no_treatment){
+          if(setting.filter_settings){
+            const filterValues = setting.filter_settings?.split(',');
+            this.filterFormGroup.controls['no_treatmentStart'].setValue(new Date(filterValues[0]));
+            this.filterFormGroup.controls['no_treatmentEnd'].setValue(new Date(filterValues[1]));
             doneFilters.push(setting.filter_name);
           }
         }else if(setting.filter_name === CAMPAIGN_FILTERS.health_insurance){
@@ -501,7 +526,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
             }
             doneFilters.push(setting.filter_name);
           }
-        }else if(setting.filter_name === 'patient_age'){
+        }else if(setting.filter_name === CAMPAIGN_FILTERS.patient_age){
           const ages = setting.filter_settings?.split('-');
           if(ages && ages.length === 2){
             this.filterFormGroup.controls.patientAgeMin.setValue(parseInt(ages[0]));
@@ -698,25 +723,29 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     }
 
     isValidForm(filterName: string){
-      if(filterName === 'patient_age'){
+      if(filterName === CAMPAIGN_FILTERS.patient_age){
         if(this.filterFormGroup.controls.patientAgeMin.value > 0) {
           return true;
         }
-      }else if(filterName === 'patient_status'){
+      }else if(filterName === CAMPAIGN_FILTERS.patient_status){
         if(this.patientStatus.value) {
           return true;
         }
-      }else if(filterName === 'treatment'){
+      }else if(filterName === CAMPAIGN_FILTERS.treatment){
         if( (this.filterFormGroup.controls.treatmentStart.value && this.filterFormGroup.controls.treatmentEnd.value) || this.selectedItemCodes.value?.length > 0){
+          return true;
+        }
+      }else if(filterName === CAMPAIGN_FILTERS.no_treatment){
+        if( (this.filterFormGroup.controls.no_treatmentStart.value && this.filterFormGroup.controls.no_treatmentEnd.value)){
           return true;
         }
       } if(filterName === CAMPAIGN_FILTERS.health_insurance) {
         return true;
-      }else if(filterName === 'incomplete_tx_plan'){
+      }else if(filterName === CAMPAIGN_FILTERS.incomplete_tx_plan){
         if(this.filterFormGroup.controls.incomplete_tx_planStart.value && this.filterFormGroup.controls.incomplete_tx_planEnd.value){
           return true;
         }
-      }else if(filterName === 'overdues') {
+      }else if(filterName === CAMPAIGN_FILTERS.overdues) {
         if(this.overdueDays.value){
           return true;
         }
@@ -745,47 +774,12 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
 
     getHelperTip(){
         return this.filterElements?.find(f => f.filterName === this.selectedFilterName)?.description || '';
-        // switch(this.selectedFilterName){
-        //     case CAMPAIGN_FILTERS.treatment:
-        //       return 'Selects patients who have had the specified item codes performed within the specified date range.'
-        //       break;
-        //     case CAMPAIGN_FILTERS.incomplete_tx_plan:
-        //       return 'Selects patients who have incomplete treatment plans created within the specified date range';
-        //       break;
-        //     case CAMPAIGN_FILTERS.overdues:
-        //       return 'Selects patients with overdue amounts';
-        //       break;
-        //     case CAMPAIGN_FILTERS.health_insurance:
-        //       return 'Selects patients with the specified health insurance provider/s'
-        //       break;
-        //     case CAMPAIGN_FILTERS.patient_age:
-        //       return 'Selects patients within the selected age range';
-        //     case CAMPAIGN_FILTERS.patient_status:
-        //       return 'Selects patients within the selected status';
-        //       break;
-        //     case CAMPAIGN_FILTERS.no_appointment:
-        //       return 'Selects patients with no appointments scheduled within the specified date range';
-        //       break;
-        //     case CAMPAIGN_FILTERS.appointment:
-        //       return 'Selects patients with appointments scheduled within the specified date range';
-        //     default:
-        //       return '';
-        // }
     }
 
     toggleAllSelectedItemCodes(event: any){
       if(event.checked){
         this.selectedItemCodes.setValue([]);
       }else if(!this.selectedItemCodes.value?.length){
-        // this.itemCodesAllCheckBox.setValue(true);
-        // this.dialog.open(ConfirmDialogComponent, {
-        //   data: {
-        //     title: 'Alert',
-        //     message: 'You have to select specific items in the below dropdown!',
-        //     hideNoBtn: true,
-        //     okLabel: 'Ok'
-        //   }
-        // });
       }
     }
 
@@ -795,15 +789,6 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         this.healthFundIncludeNoneCheckBox.setValue(false);
       }else if(!this.selectedHealthInsurances.value?.length){
         this.healthFundIncludeNoneCheckBox.setValue(true);
-        // this.healthFundIncludeCheckBox.setValue(true);
-        // this.dialog.open(ConfirmDialogComponent, {
-        //   data: {
-        //     title: 'Alert',
-        //     message: 'You have to select specific items in the below dropdown!',
-        //     hideNoBtn: true,
-        //     okLabel: 'Ok'
-        //   }
-        // });
       }
     }
 }

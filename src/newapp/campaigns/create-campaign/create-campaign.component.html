@@ -83,6 +83,13 @@
                             </div>
                         </div>
 
+                        <div class="filter-form" *ngIf="isSelected('no_treatment')">
+                            <app-daterange-preset 
+                                class="filter-box"
+                                [filterFormControlStart]="filterFormGroup.controls.no_treatmentStart"
+                                [filterFormControlEnd]="filterFormGroup.controls.no_treatmentEnd" ></app-daterange-preset>
+                        </div>
+
                         <app-daterange-preset 
                         *ngIf="isSelected('incomplete_tx_plan')"
                         class="filter-box"
