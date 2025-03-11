@@ -49,7 +49,7 @@ export class FinanceService {
       end_date: endDate,
       duration: duration,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -77,7 +77,7 @@ export class FinanceService {
       clinic_id: clinicId,
       mode,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -114,7 +114,7 @@ export class FinanceService {
       end_date: endDate,
       duration: duration,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -142,7 +142,7 @@ export class FinanceService {
       clinic_id: clinicId,
       mode,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -180,7 +180,7 @@ export class FinanceService {
       end_date: endDate,
       duration: duration,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -206,7 +206,7 @@ export class FinanceService {
       clinic_id: clinicId,
       mode,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -241,7 +241,7 @@ export class FinanceService {
       end_date: endDate,
       duration: duration,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -267,7 +267,7 @@ export class FinanceService {
       clinic_id: clinicId,
       mode,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -305,7 +305,7 @@ export class FinanceService {
       end_date: endDate,
       duration: duration,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -331,7 +331,7 @@ export class FinanceService {
       clinic_id: clinicId,
       mode,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -365,7 +365,7 @@ export class FinanceService {
       end_date: endDate,
       duration: duration,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -392,7 +392,7 @@ export class FinanceService {
       clinic_id: clinicId,
       mode,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -424,7 +424,7 @@ export class FinanceService {
       end_date: endDate,
       duration: duration,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -449,7 +449,7 @@ export class FinanceService {
       clinic_id: clinicId,
       mode,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -479,7 +479,7 @@ export class FinanceService {
       end_date: endDate,
       duration: duration,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -504,7 +504,7 @@ export class FinanceService {
       clinic_id: clinicId,
       mode,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -534,7 +534,7 @@ export class FinanceService {
       end_date: endDate,
       duration: duration,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http
@@ -558,7 +558,7 @@ export class FinanceService {
       clinic_id: clinicId,
       mode,
     };
-    if (queryWhEnabled !== undefined) {
+    if ([0,1].indexOf(queryWhEnabled)>-1) {
       queryParams['wh'] = queryWhEnabled;
     }
     return this.http

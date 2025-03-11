@@ -26,7 +26,7 @@ export class DashboardService {
             ...(params.startDate ? {start_date: params.startDate}: {}),
             ...(params.endDate ? {end_date: params.endDate}: {}),
             ...(params.duration ? {duration: params.duration}: {}),
-            ...(params.queryWhEnabled !== undefined ? {wh: params.queryWhEnabled}: {}),
+            ...([0, 1].indexOf(params.queryWhEnabled) > -1? {wh: params.queryWhEnabled}: {})
           },
           withCredentials: true,
         })

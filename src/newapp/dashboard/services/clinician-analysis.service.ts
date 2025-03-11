@@ -33,8 +33,11 @@ export class ClinicianAnalysisService {
         ? queryParams.endDate.format('YYYY-MM-DD')
         : queryParams.endDate,
       duration: queryParams.duration,
-      wh: queryParams.queryWhEnabled ?? 0,
     };
+
+    if(queryParams.queryWhEnabled === 0 || queryParams.queryWhEnabled === 1){
+      params['wh'] = queryParams.queryWhEnabled;
+    }
 
     if (queryParams.clinician) {
       params['clinician'] = queryParams.clinician;
@@ -72,7 +75,7 @@ export class ClinicianAnalysisService {
           clinic_id: queryParams.clinicId,
           mode: queryParams.mode,
           provider_id: queryParams.dentistId,
-          wh: queryParams.queryWhEnabled ?? 0,
+          ...([0, 1].indexOf(queryParams.queryWhEnabled) > -1? {wh: queryParams.queryWhEnabled}: {}),
         },
         withCredentials: true,
       })

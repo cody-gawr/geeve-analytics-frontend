@@ -34,7 +34,7 @@ export class ClinicianProcedureService {
           clinic_id: clinicId,
           start_date: startDate,
           end_date: endDate,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
           ...(dentistId === undefined ? {} : { provider_id: dentistId }),
         },
         withCredentials: true,
@@ -60,7 +60,7 @@ export class ClinicianProcedureService {
         params: {
           clinic_id: clinicId,
           mode,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
           ...(dentistId === undefined ? {} : { provider_id: dentistId }),
         },
         withCredentials: true,
@@ -88,7 +88,7 @@ export class ClinicianProcedureService {
           clinic_id: clinicId,
           start_date: startDate,
           end_date: endDate,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
           ...(dentistId === undefined ? {} : { provider_id: dentistId }),
         },
         withCredentials: true,
@@ -118,7 +118,7 @@ export class ClinicianProcedureService {
             clinic_id: clinicId,
             start_date: startDate,
             end_date: endDate,
-            wh: queryWhEnabled,
+            ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
             ...(dentistId === undefined ? {} : { provider_id: dentistId }),
           },
           withCredentials: true,
@@ -147,7 +147,7 @@ export class ClinicianProcedureService {
           clinic_id: clinicId,
           start_date: startDate,
           end_date: endDate,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
           ...(dentistId === undefined ? {} : { provider_id: dentistId }),
         },
         withCredentials: true,
@@ -175,7 +175,7 @@ export class ClinicianProcedureService {
           start_date: startDate,
           end_date: endDate,
           duration,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
           ...(dentistId === undefined ? {} : { provider_id: dentistId }),
         },
         withCredentials: true,
@@ -199,7 +199,7 @@ export class ClinicianProcedureService {
         params: {
           clinic_id: clinicId,
           mode,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
           ...(dentistId === undefined ? {} : { provider_id: dentistId }),
         },
         withCredentials: true,
@@ -229,7 +229,7 @@ export class ClinicianProcedureService {
           start_date: startDate,
           end_date: endDate,
           duration,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
           ...(dentistId === undefined ? {} : { provider_id: dentistId }),
         },
         withCredentials: true,
@@ -253,7 +253,7 @@ export class ClinicianProcedureService {
         params: {
           clinic_id: clinicId,
           mode,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
           ...(dentistId === undefined ? {} : { provider_id: dentistId }),
         },
         withCredentials: true,
@@ -279,7 +279,7 @@ export class ClinicianProcedureService {
         ? queryParams.endDate.format('YYYY-MM-DD')
         : queryParams.endDate,
       duration: queryParams.duration,
-      wh: queryParams.queryWhEnabled ?? 0,
+      ...([0, 1].indexOf(queryParams.queryWhEnabled) > -1? {wh: queryParams.queryWhEnabled}: {})
     };
 
     if (queryParams.clinician) {
@@ -307,7 +307,7 @@ export class ClinicianProcedureService {
           clinic_id: queryParams.clinicId,
           mode: queryParams.mode,
           provider_id: queryParams.dentistId,
-          wh: queryParams.queryWhEnabled ?? 0,
+          ...([0, 1].indexOf(queryParams.queryWhEnabled) > -1? {wh: queryParams.queryWhEnabled}: {})
         },
         withCredentials: true,
       })

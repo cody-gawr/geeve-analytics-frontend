@@ -40,7 +40,8 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
         },
         withCredentials: true,
       })
@@ -64,7 +65,8 @@ export class MarketingService {
         params: {
           clinic_id: clinicId,
           mode,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
         },
         withCredentials: true,
       })
@@ -92,7 +94,8 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
         },
         withCredentials: true,
       })
@@ -116,7 +119,8 @@ export class MarketingService {
         params: {
           clinic_id: clinicId,
           mode,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
         },
         withCredentials: true,
       })
@@ -144,7 +148,8 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
           dashboard_id: 4,
         },
         withCredentials: true,
@@ -167,7 +172,8 @@ export class MarketingService {
         params: {
           clinic_id: clinicId,
           mode,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
           dashboard_id: 4,
         },
         withCredentials: true,
@@ -197,7 +203,8 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
         },
         withCredentials: true,
       })
@@ -220,7 +227,8 @@ export class MarketingService {
         params: {
           clinic_id: clinicId,
           mode: mode,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
         },
         withCredentials: true,
       })
@@ -246,7 +254,8 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
         },
         withCredentials: true,
       })
@@ -268,7 +277,8 @@ export class MarketingService {
         params: {
           clinic_id: clinicId,
           mode,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
         },
         withCredentials: true,
       })
@@ -296,7 +306,8 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
         },
         withCredentials: true,
       })
@@ -318,7 +329,8 @@ export class MarketingService {
         params: {
           clinic_id: clinicId,
           mode,
-          wh: queryWhEnabled,
+          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+,
         },
         withCredentials: true,
       })
