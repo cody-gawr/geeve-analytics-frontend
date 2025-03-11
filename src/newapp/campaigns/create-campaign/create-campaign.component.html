@@ -80,7 +80,7 @@
                                     <app-custom-select 
                                     *ngIf="selectedItemCodes.value.length > 0"
                                     [formControl]="treatmentItemCodesMode" 
-                                    [options]="[{label: 'Any Of', value: 'anyof'}, {label: 'Any All', value: 'anyall'}]"
+                                    [options]="[{label: 'Any Of', value: 'anyof'}, {label: 'All Of', value: 'allof'}]"
                                     ></app-custom-select>
                                     <mat-chip-set  aria-label="Selected Treatments">
                                         <mat-chip *ngFor="let item of selectedItemCodes.value">{{item}}</mat-chip>
@@ -102,7 +102,7 @@
                                     <app-custom-select 
                                     *ngIf="selectedItemCodesForNoTreatment.value.length > 0"
                                     [formControl]="noTreatmentItemCodesMode" 
-                                    [options]="[{label: 'Any Of', value: 'anyof'}, {label: 'Any All', value: 'anyall'}]"
+                                    [options]="[{label: 'Any Of', value: 'anyof'}, {label: 'All Of', value: 'allof'}]"
                                     ></app-custom-select>
                                     <mat-chip-set  aria-label="Selected Treatments">
                                         <mat-chip *ngFor="let item of selectedItemCodesForNoTreatment.value">{{item}}</mat-chip>

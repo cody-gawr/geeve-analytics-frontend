@@ -90,8 +90,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     itemCodesAllCheckBoxForNoTreatment = new FormControl<boolean>(false);
     healthFundIncludeNoneCheckBox = new FormControl<boolean>(false);
     healthFundIncludeCheckBox = new FormControl<boolean>(false);
-    treatmentItemCodesMode = new FormControl<'anyof' | 'anyall'>('anyof');
-    noTreatmentItemCodesMode = new FormControl<'anyof' | 'anyall'>('anyof');
+    treatmentItemCodesMode = new FormControl<'anyof' | 'allof'>('anyof');
+    noTreatmentItemCodesMode = new FormControl<'anyof' | 'allof'>('anyof');
 
     patientStatusList = ['all', 'active', 'inactive'];
     constructor(
