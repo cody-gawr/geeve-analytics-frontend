@@ -49,19 +49,25 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     disableHealthFundSelection = false;
 
     healthInsurance: string[] = [];
+
     filterFormGroup = new FormGroup({
         patientAgeMin: new FormControl(25),
         patientAgeMax: new FormControl(75),
-        incomplete_tx_planStart: new FormControl<Date | null>(null),
-        incomplete_tx_planEnd: new FormControl<Date | null>(null),
-        no_appointmentStart: new FormControl<Date | null>(null),
-        no_appointmentEnd: new FormControl<Date | null>(null),
-        appointmentStart: new FormControl<Date | null>(null),
-        appointmentEnd: new FormControl<Date | null>(null),
-        treatmentStart: new FormControl<Date | null>(null),
-        treatmentEnd: new FormControl<Date | null>(null),
-        no_treatmentStart: new FormControl<Date | null>(null),
-        no_treatmentEnd: new FormControl<Date | null>(null),
+
+        incomplete_tx_planStart: new FormControl<Date | null>(moment().startOf('year').toDate()),
+        incomplete_tx_planEnd: new FormControl<Date | null>(moment().toDate()),
+
+        no_appointmentStart: new FormControl<Date | null>(moment().startOf('year').toDate()),
+        no_appointmentEnd: new FormControl<Date | null>(moment().toDate()),
+
+        appointmentStart: new FormControl<Date | null>(moment().startOf('year').toDate()),
+        appointmentEnd: new FormControl<Date | null>(moment().toDate()),
+
+        treatmentStart: new FormControl<Date | null>(moment().startOf('year').toDate()),
+        treatmentEnd: new FormControl<Date | null>(moment().toDate()),
+
+        no_treatmentStart: new FormControl<Date | null>(moment().startOf('year').toDate()),
+        no_treatmentEnd: new FormControl<Date | null>(moment().toDate()),
     });
     overdueDays = new FormControl<number>(30);
     patientStatus = new FormControl<string>('all');

@@ -68,40 +68,46 @@ export class DateRangePresetComponent implements OnInit, OnDestroy {
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
 
-    constructor() {}
+    constructor() {
+    }
 
     ngOnInit(): void {
         if (this.filterFormControlStart && this.filterFormControlEnd) {
+            this.onDateChanges(this.filterFormControlStart.value, this.filterFormControlEnd.value);
             combineLatest([
                 this.filterFormControlStart.valueChanges, 
                 this.filterFormControlEnd.valueChanges
             ])
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(([_start, _end]) => {
-                    const start = moment(_start);
-                    const end = moment(_end);
-                    const today = moment();
-                    const startOfYear = today.clone().startOf('year'); // Start of the year
-                    const endOfYear = today.clone().endOf('day'); // End of the year
-                    const startOfLastYear = today.clone().subtract(1, 'year').startOf('day'); // Start of last year
-                    const endOfLastYear = today.clone().endOf('day'); // End of last year
-                    const startOf2YearsAgo = today.clone().subtract(2, 'year').startOf('day'); // Start of 2 years ago
-                    const endOf2YearsAgo = today.clone().endOf('day'); // End of this year
-                    const startOf3YearsAgo = today.clone().subtract(3, 'year').startOf('day'); // Start of 3 years ago
-                    const endOf3YearsAgo = today.clone().endOf('day'); // End of this year
-
-                    if (start && start.isSame(startOfYear, 'day') && end && end.isSame(endOfYear, 'day')) {
-                        this.activeRange = 'thisYear';
-                    } else if (start && start.isSame(startOfLastYear, 'day') && end && end.isSame(endOfLastYear, 'day')) {
-                        this.activeRange = 'lastYear';
-                    } else if (start && start.isSame(startOf2YearsAgo, 'day') && end && end.isSame(endOf2YearsAgo, 'day')) {
-                        this.activeRange = 'last2Years';
-                    } else if (start && start.isSame(startOf3YearsAgo, 'day') && end && end.isSame(endOf3YearsAgo, 'day')) {
-                        this.activeRange = 'last3Years';
-                    } else {
-                        this.activeRange = null;
-                    }
+                    this.onDateChanges(_start, _end);
                 });
+        }
+    }
+
+    onDateChanges(_start: string| Date, _end: string | Date) {
+        const start = moment(_start);
+        const end = moment(_end);
+        const today = moment();
+        const startOfYear = today.clone().startOf('year'); // Start of the year
+        const endOfYear = today.clone().endOf('day'); // End of the year
+        const startOfLastYear = today.clone().subtract(1, 'year').startOf('day'); // Start of last year
+        const endOfLastYear = today.clone().endOf('day'); // End of last year
+        const startOf2YearsAgo = today.clone().subtract(2, 'year').startOf('day'); // Start of 2 years ago
+        const endOf2YearsAgo = today.clone().endOf('day'); // End of this year
+        const startOf3YearsAgo = today.clone().subtract(3, 'year').startOf('day'); // Start of 3 years ago
+        const endOf3YearsAgo = today.clone().endOf('day'); // End of this year
+
+        if (start && start.isSame(startOfYear, 'day') && end && end.isSame(endOfYear, 'day')) {
+            this.activeRange = 'thisYear';
+        } else if (start && start.isSame(startOfLastYear, 'day') && end && end.isSame(endOfLastYear, 'day')) {
+            this.activeRange = 'lastYear';
+        } else if (start && start.isSame(startOf2YearsAgo, 'day') && end && end.isSame(endOf2YearsAgo, 'day')) {
+            this.activeRange = 'last2Years';
+        } else if (start && start.isSame(startOf3YearsAgo, 'day') && end && end.isSame(endOf3YearsAgo, 'day')) {
+            this.activeRange = 'last3Years';
+        } else {
+            this.activeRange = null;
         }
     }
 
