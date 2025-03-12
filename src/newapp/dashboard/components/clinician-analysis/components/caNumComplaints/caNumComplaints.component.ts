@@ -59,11 +59,12 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
       this.isDentistMode$,
       this.isCompare$,
       this.hasData$,
+      this.isTrend$
     ]).pipe(
       map(
-        ([isDentistMode, isCompare, hasData]) =>
+        ([isDentistMode, isCompare, hasData, isTrend]) =>
           (!isDentistMode || isCompare) && this.tableData.length > 0 && hasData &&
-          !this.isComingSoon
+          !this.isComingSoon && !isTrend
       )
     );
   }

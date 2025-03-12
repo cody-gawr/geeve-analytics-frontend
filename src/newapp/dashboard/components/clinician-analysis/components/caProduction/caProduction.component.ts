@@ -244,13 +244,11 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.isCompare$,
       this.hasData$,
       this.isTrend$,
-      // this.isEachClinicD4w$,
     ]).pipe(
       map(([isDentistMode, isCompare, hasData, isTrend]) => {
         return (
           (!(isDentistMode && isTrend) || isCompare) &&
           (this.tableData.length > 0 || hasData) &&
-          // isEachClinicD4w &&
           !this.isComingSoon
         );
       })
