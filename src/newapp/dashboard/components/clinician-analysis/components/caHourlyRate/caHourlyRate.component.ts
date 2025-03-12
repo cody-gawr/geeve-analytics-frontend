@@ -247,9 +247,9 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
-          (!(isDentistMode && isTrend) || isCompare) && 
+          (!isDentistMode || isCompare) && 
           this.tableData.length > 0 && hasData &&
-          !this.isComingSoon
+          !this.isComingSoon && !isTrend
       )
     );
   }

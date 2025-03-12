@@ -247,9 +247,9 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([isDentistMode, isCompare, hasData, isTrend]) => {
         return (
-          (!(isDentistMode && isTrend) || isCompare) &&
-          (this.tableData.length > 0 || hasData) &&
-          !this.isComingSoon
+          (!isDentistMode || isCompare) &&
+          this.tableData.length > 0 && hasData &&
+          !this.isComingSoon && !isTrend
         );
       })
     );
