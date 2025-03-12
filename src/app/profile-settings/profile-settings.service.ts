@@ -64,7 +64,7 @@ export class ProfileSettingsService {
   // Get updateprofileSettings
   updateprofileSettings(displayName, email): Observable<any> {
     const formData = new FormData();
-    formData.append('displayName', displayName);
+    formData.append('display_name', displayName);
     // formData.append('email', email);
     //formData.append('user_image', imageURL);
 
