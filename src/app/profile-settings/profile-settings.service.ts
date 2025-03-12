@@ -89,7 +89,7 @@ export class ProfileSettingsService {
     var header = this.getHeaders();
 
     return this.http
-      .post((this.apiUrl?.includes('test')?environment.apiNodeUrl:this.apiUrl) + '/Users/userUpdateProfile', 
+      .post(this.apiUrl + '/Users/userUpdateProfile', 
         formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
