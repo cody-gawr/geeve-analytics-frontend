@@ -515,8 +515,7 @@
                           </label>
 
                           <span>{{healthSettings.controls['max_chart_bars'].value}}</span>
-                          <mat-slider style="width: 350px;" showTickMarks discrete [formControl]="healthSettings.controls['max_chart_bars']" min="0" max="50" step="1" [displayWith]="formatLabel">
-                            <input matSliderThumb>
+                          <mat-slider thumbLabel class="custom-slider" [formControl]="healthSettings.controls['max_chart_bars']" style="width: 100%;"  min="0" max="50" step="1">
                           </mat-slider>
                           <!-- <select
                             [formControl]="healthSettings.controls['max_chart_bars']"

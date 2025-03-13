@@ -199,8 +199,6 @@ export class ProfileSettingsComponent implements OnInit {
     });
   }
 
-  formatLabel = (value: any) => `${value}`;
-
   ngOnInit() {
     // this.route.params.subscribe((params) => {
     this.id = this.route.snapshot.paramMap.get('id');

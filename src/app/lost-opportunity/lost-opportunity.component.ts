@@ -4,10 +4,10 @@ import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { HeaderService } from './../layouts/full/header/header.service';
-import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../app.constants';
 import { ChartstipsService } from '../shared/chartstips.service';
 import { LocalStorageService } from '../shared/local-storage.service';
+
 @Component({
   selector: 'app-lost-opportunity',
   templateUrl: './lost-opportunity.component.html',

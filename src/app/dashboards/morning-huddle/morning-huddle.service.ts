@@ -48,7 +48,7 @@ export class MorningHuddleService {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = parseInt(urlParams.get('wh') ?? '0');
+    const isWhEnabled = urlParams.get('wh')?parseInt(urlParams.get('wh')): -1;
     if (clinician == '') {
       return this.http
         .get(
@@ -57,7 +57,7 @@ export class MorningHuddleService {
             clinic_id +
             '&date=' +
             previousDays +
-            (isWhEnabled ? '&wh=1' : ''),
+            (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
           header
         )
         .pipe(
@@ -75,7 +75,7 @@ export class MorningHuddleService {
           previousDays +
           '&clinician=' +
           clinician +
-          (isWhEnabled ? '&wh=1' : ''),
+          (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
         header
       )
       .pipe(
@@ -95,7 +95,7 @@ export class MorningHuddleService {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = parseInt(urlParams.get('wh') ?? '0');
+    const isWhEnabled = urlParams.get('wh')?parseInt(urlParams.get('wh')): -1;;
     if (clinician == '') {
       return this.http
         .get(
@@ -104,7 +104,7 @@ export class MorningHuddleService {
             clinic_id +
             '&date=' +
             previousDays +
-            (isWhEnabled ? '&wh=1' : ''),
+            (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
           header
         )
         .pipe(
@@ -122,7 +122,7 @@ export class MorningHuddleService {
           previousDays +
           '&clinician=' +
           clinician +
-          (isWhEnabled ? '&wh=1' : ''),
+          (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
         header
       )
       .pipe(
@@ -141,7 +141,7 @@ export class MorningHuddleService {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = parseInt(urlParams.get('wh') ?? '0');
+    const isWhEnabled = urlParams.get('wh')?parseInt(urlParams.get('wh')): -1;;
     if (clinician == '') {
       return this.http
         .get(
@@ -150,7 +150,7 @@ export class MorningHuddleService {
             clinic_id +
             '&date=' +
             previousDays +
-            (isWhEnabled ? '&wh=1' : ''),
+            (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
           header
         )
         .pipe(
@@ -168,7 +168,7 @@ export class MorningHuddleService {
           previousDays +
           '&clinician=' +
           clinician +
-          (isWhEnabled ? '&wh=1' : ''),
+          (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
         header
       )
       .pipe(
@@ -187,7 +187,7 @@ export class MorningHuddleService {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = parseInt(urlParams.get('wh') ?? '0');
+    const isWhEnabled = urlParams.get('wh')?parseInt(urlParams.get('wh')): -1;;
     if (clinician == '') {
       return this.http
         .get(
@@ -196,7 +196,7 @@ export class MorningHuddleService {
             clinic_id +
             '&date=' +
             previousDays +
-            (isWhEnabled ? '&wh=1' : ''),
+            (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
           header
         )
         .pipe(
@@ -214,7 +214,7 @@ export class MorningHuddleService {
           previousDays +
           '&clinician=' +
           clinician +
-          (isWhEnabled ? '&wh=1' : ''),
+          (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
         header
       )
       .pipe(
@@ -421,7 +421,7 @@ export class MorningHuddleService {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = parseInt(urlParams.get('wh') ?? '0');
+    const isWhEnabled = urlParams.get('wh')?parseInt(urlParams.get('wh')): -1;;
     return this.http
       .get(
         this.apiUrl +
@@ -531,7 +531,7 @@ export class MorningHuddleService {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = parseInt(urlParams.get('wh') ?? '0');
+    const isWhEnabled = urlParams.get('wh')?parseInt(urlParams.get('wh')): -1;;
     if (clinician == '') {
       return this.http
         .get(
@@ -741,7 +741,7 @@ export class MorningHuddleService {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     // const urlParams = new URLSearchParams(window.location.search);
-    // const isWhEnabled = parseInt(urlParams.get('wh') ?? '0');
+    // const isWhEnabled = urlParams.get('wh')?parseInt(urlParams.get('wh')): -1;;
     if (!!clinician) {
       return this.http
       .get(

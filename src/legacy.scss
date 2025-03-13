@@ -4549,6 +4549,13 @@ img {
   background-color: #18a689;
 }
 
+
+.custom-slider .mat-slider-track-fill,
+.custom-slider .mat-slider-thumb,
+.custom-slider .mat-slider-thumb-label {
+  background-color: #18a689 !important;
+}
+
 .lo-slider .mat-slider-horizontal .mat-slider-track-wrapper,
 .lo-slider .mat-slider-horizontal .mat-slider-track-fill,
 .lo-slider .mat-slider-horizontal .mat-slider-ticks-container,
