@@ -44,11 +44,12 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   get isTableIconVisible$() {
     return combineLatest([
       this.hasData$,
-      this.isTrend$
+      this.isTrend$,
+      this.isByDayData$
     ]).pipe(
       map(
-        ([hasData, isTrend]) =>
-          this.tableData.length > 0 && hasData && !this.isComingSoon && !isTrend
+        ([hasData, isTrend, isByDay]) =>
+          this.tableData.length > 0 && hasData && !this.isComingSoon && !isTrend && !isByDay
       )
     );
   }
