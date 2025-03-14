@@ -46,12 +46,16 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   }
 
   get showMaxBarsAlert$() {
-    return this.showTableView$.pipe(
-      map(v => {
-        return !v && (this.tableData?.length > this.labels?.length);
+    return combineLatest([
+      this.showTableView$,
+      this.isTableIconVisible$
+    ]) .pipe(
+      map(([v, v1]) => {
+        return !v && (this.tableData?.length > this.labels?.length) && v1;
       })
     ) 
   }
+
   get showMaxBarsAlertMsg$() {
     return this.authFacade.chartLimitDesc$;
   }
@@ -64,7 +68,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
-          (!isDentistMode || isCompare) && this.tableData.length > 0 && hasData &&
+          (!(isDentistMode && isTrend) || isCompare) && this.tableData.length > 0 && hasData &&
           !this.isComingSoon && !isTrend
       )
     );

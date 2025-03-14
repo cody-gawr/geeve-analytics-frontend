@@ -109,7 +109,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
-          (!isDentistMode || isCompare) && this.tableData.length > 0 && hasData &&
+          (!(isDentistMode && isTrend) || isCompare) && this.tableData.length > 0 && hasData &&
           !this.isComingSoon && !isTrend
       )
     );
