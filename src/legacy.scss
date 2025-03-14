@@ -4556,11 +4556,23 @@ img {
   background-color: #18a689 !important;
 }
 
+
+.custom-slider  .mat-slider-track-wrapper,
+.custom-slider  .mat-slider-track-fill,
+.custom-slider  .mat-slider-ticks-container,
+.custom-slider  .mat-slider-track-background,
+.custom-slider  .mat-slider-horizontal .mat-slider-wrapper {
+  height: 6px !important;
+}
+.custom-slider .mat-slider-thumb {
+  bottom: -12px !important;
+}
+
 .lo-slider .mat-slider-horizontal .mat-slider-track-wrapper,
 .lo-slider .mat-slider-horizontal .mat-slider-track-fill,
 .lo-slider .mat-slider-horizontal .mat-slider-ticks-container,
 .lo-slider .mat-slider-horizontal .mat-slider-track-background,
-.mat-slider-horizontal .mat-slider-wrapper {
+.lo-slider .mat-slider-horizontal .mat-slider-wrapper {
   height: 15px !important;
 }
 
