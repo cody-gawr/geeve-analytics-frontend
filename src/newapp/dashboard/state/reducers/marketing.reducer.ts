@@ -1181,31 +1181,18 @@ export const selectNumNewPatientsChartData = createSelector(
     }
 
     const chartData = [],
-      chartLabels = [];
-    newNumPatientsData.data.forEach(v => {
+      chartLabels = [], backgroundColor = [];
+    newNumPatientsData.data.forEach((v, index) => {
       chartData.push(Math.round(parseFloat(<string>v.newPatients)));
       chartLabels.push(v.clinicName);
+      backgroundColor.push(index % 2 == 0 ? COLORS.even : COLORS.odd);
     });
     const chartDatasets = [
       {
         data: [],
         label: '',
         shadowOffsetX: 3,
-        backgroundColor: [
-          '#119682',
-          '#EEEEF8',
-          '#119682',
-          '#EEEEF8',
-          '#119682',
-          '#EEEEF8',
-          '#119682',
-          '#EEEEF8',
-          '#119682',
-          '#EEEEF8',
-          '#119682',
-          '#EEEEF8',
-          '#119682',
-        ],
+        backgroundColor: backgroundColor,
         shadowOffsetY: 2,
         shadowBlur: 3,
         // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -1338,7 +1325,7 @@ export const selectActivePatientsChartData = createSelector(
       };
     }
     const chartData = [],
-      chartLabels = [];
+      chartLabels = [], backgroundColor = [];
     let data = _.sortBy(
       activePatientsData.data,
       a => -parseFloat(<string>a.activePatients)
@@ -1346,27 +1333,14 @@ export const selectActivePatientsChartData = createSelector(
     data.forEach((v, index) => {
       chartData.push(Math.round(parseFloat(<string>v.activePatients)));
       chartLabels.push(v.clinicName);
+      backgroundColor.push(index % 2 == 0 ? COLORS.even : COLORS.odd);
     });
     const datasets: ChartDataset<any>[] = [
       {
         data: chartData,
         label: '',
         shadowOffsetX: 3,
-        backgroundColor: [
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-        ],
+        backgroundColor: backgroundColor,
         shadowOffsetY: 2,
         shadowBlur: 3,
         // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -1481,6 +1455,13 @@ export const selectNewPatientAcqChartData = createSelector(
           )
           .value()
     );
+
+    const chartData = [], backgroundColor = [];
+    newPatientAcqData.data.forEach((v, index) => 
+      {
+        chartData.push(_.round(v.costPerPatient));
+        backgroundColor.push(index % 2 == 0 ? COLORS.even : COLORS.odd);
+      });
     return {
       newPatientAcqVal: newPatientAcqVal,
       newPatientAcqPrev: Math.round(newPatientAcqData.dataTa),
@@ -1488,22 +1469,8 @@ export const selectNewPatientAcqChartData = createSelector(
       labels: newPatientAcqData.data.map(v => v.clinicName),
       datasets: [
         {
-          data: newPatientAcqData.data.map(v => _.round(v.costPerPatient)),
-          backgroundColor: [
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-          ],
+          data: chartData,
+          backgroundColor: backgroundColor,
         },
       ],
     };
@@ -1578,13 +1545,15 @@ export const selectTotalVisitsChartData = createSelector(
     }
     const chartData = [],
       chartLabels = [];
+    const backgroundColor = [];
     let data = _.sortBy(
       totalVisitsData.data,
       a => -parseFloat(<string>a.numVisits)
     );
-    data.forEach(v => {
+    data.forEach((v, index) => {
       chartData.push(Math.round(<number>v.numVisits));
       chartLabels.push(v.clinicName);
+      backgroundColor.push(index % 2 == 0 ? COLORS.even : COLORS.odd);
     });
 
     const datasets: ChartDataset<any>[] = [
@@ -1592,21 +1561,7 @@ export const selectTotalVisitsChartData = createSelector(
         data: chartData,
         label: '',
         shadowOffsetX: 3,
-        backgroundColor: [
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-        ],
+        backgroundColor: backgroundColor,
         shadowOffsetY: 2,
         shadowBlur: 3,
         shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -1733,10 +1688,12 @@ export const selectMkProdByPostCodeChartData = createSelector(
         labels: [],
       };
     }
-    const chartData = [], chartLabels = [];
-    data.data.forEach(item => {
+    const chartData = [], chartLabels = [], backgroundColor = [];
+    data.data.forEach((item, index) => {
       chartData.push(Math.round(<number>item.production));
       chartLabels.push(item.postcode);
+      backgroundColor.push(index % 2 == 0 ? COLORS.even : COLORS.odd);
+      
     });
     const chartDatasets = [
       {
@@ -1746,18 +1703,7 @@ export const selectMkProdByPostCodeChartData = createSelector(
         shadowOffsetY: 3,
         shadowBlur: 5,
         shadowColor: 'rgba(0, 0, 0, 0.5)',
-        backgroundColor: [
-          '#119682',
-          '#eeeef8',
-          '#119682',
-          '#eeeef8',
-          '#119682',
-          '#eeeef8',
-          '#119682',
-          '#eeeef8',
-          '#119682',
-          '#eeeef8',
-        ],
+        backgroundColor: backgroundColor,
         pointBevelWidth: 2,
         pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
         pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',

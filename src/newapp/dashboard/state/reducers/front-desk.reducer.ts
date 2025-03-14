@@ -27,6 +27,7 @@ import {
 import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { selectComputedDurationUnits, selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import { selectAuthUserData } from '@/newapp/auth/state/reducers/auth.reducer';
+import { BACKGROUND_COLORS, COLORS, HOVER_BACKGROUND_COLORS, LEGEND_BG_COLORS } from '@/newapp/constants';
 
 type FrontDeskEndpoints =
   | 'fdUtilisationRate'
@@ -752,21 +753,7 @@ export const selectFdUtilRateChartData = createSelector(
     chartDatasets[0]['data'] = chartData;
     if (clinics.length > 1) {
       let dynamicColors = [],
-        legendBackgroundColor = [
-          '#6edbbb',
-          '#b0fffa',
-          '#abb3ff',
-          '#ffb4b5',
-          '#fffcac',
-          '#FFE4E4',
-          '#FFD578',
-          '#54D2FF',
-          '#E58DD7',
-          '#A9AABC',
-          '#F2ECFF',
-          '#5689C9',
-          '#F9F871',
-        ];
+        legendBackgroundColor = LEGEND_BG_COLORS.slice();
 
       resBody.data.forEach(res => {
         clinics.forEach((item, index) => {
@@ -1086,34 +1073,8 @@ export const selectFdRecallRateChartData = createSelector(
         {
           data: [],
           label: '',
-          backgroundColor: [
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-          ],
-          hoverBackgroundColor: [
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-          ],
+          backgroundColor: BACKGROUND_COLORS,
+          hoverBackgroundColor: HOVER_BACKGROUND_COLORS,
         },
       ];
       chartDatasets[0]['data'] = chartData;
@@ -1172,11 +1133,12 @@ export const selectFdRecallRateTrendChartData = createSelector(
       ];
     } else {
       const chartData = [],
-        targetData = [];
-      resBody.data.forEach(item => {
+        targetData = [], backgroundColor = [];
+      resBody.data.forEach((item, index) => {
         const recallPercent = Math.round(<number>item.recallPercent);
         if (recallPercent >= 0) {
           chartData.push(recallPercent);
+          backgroundColor.push(index % 2 == 0 ? COLORS.even : COLORS.odd);
           if (item.goals == -1 || item.goals == null || item.goals == '') {
             targetData.push([0, 0]);
           } else {
@@ -1198,27 +1160,7 @@ export const selectFdRecallRateTrendChartData = createSelector(
           label: '',
           shadowOffsetX: 3,
           order: 2,
-          backgroundColor: [
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-          ],
+          backgroundColor: backgroundColor,
           shadowOffsetY: 2,
           shadowBlur: 3,
           shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -1282,34 +1224,8 @@ export const selectFdReappointRateChartData = createSelector(
       {
         data: [],
         label: '',
-        backgroundColor: [
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-        ],
-        hoverBackgroundColor: [
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-        ],
+        backgroundColor: BACKGROUND_COLORS,
+        hoverBackgroundColor: HOVER_BACKGROUND_COLORS,
       },
     ];
     chartDatasets[0]['data'] = chartData;
@@ -1366,9 +1282,10 @@ export const selectFdReappointRateTrendChartData = createSelector(
       ];
     } else {
       const chartData = [],
-        targetData = [];
-      resBody.data.forEach(item => {
+        targetData = [], backgroundColor = [];
+      resBody.data.forEach((item, index) => {
         chartData.push(Math.round(<number>item.reappointRate));
+        backgroundColor.push(index % 2 == 0 ? COLORS.even : COLORS.odd);
         if (item.goals == -1 || item.goals == null || item.goals == '') {
           targetData.push([0, 0]);
         } else {
@@ -1389,27 +1306,7 @@ export const selectFdReappointRateTrendChartData = createSelector(
           label: '',
           // shadowOffsetX: 3,
           order: 2,
-          backgroundColor: [
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-          ],
+          backgroundColor: backgroundColor,
         },
         {
           data: [],
@@ -1462,34 +1359,8 @@ export const selectFdNumTicksChartData = createSelector(
         {
           data: [],
           label: '',
-          backgroundColor: [
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-          ],
-          hoverBackgroundColor: [
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-            '#119582',
-            '#ffb4b5',
-          ],
+          backgroundColor: BACKGROUND_COLORS,
+          hoverBackgroundColor: HOVER_BACKGROUND_COLORS,
         },
       ];
       chartDatasets[0]['data'] = chartData;
@@ -1542,9 +1413,10 @@ export const selectFdNumTicksTrendChartData = createSelector(
         })
         .value();
     } else {
-      const chartData = [];
-      resBody.data.forEach(item => {
+      const chartData = [], backgroundColor = [];
+      resBody.data.forEach((item, index) => {
         chartData.push(Math.round(<number>item.numTicks));
+        backgroundColor.push(index % 2 == 0 ? COLORS.even : COLORS.odd);
         chartLabels.push(
           trendMode === 'current'
             ? moment(item.yearMonth).format('MMM YYYY')
@@ -1556,27 +1428,7 @@ export const selectFdNumTicksTrendChartData = createSelector(
           data: [],
           label: '',
           shadowOffsetX: 3,
-          backgroundColor: [
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-            '#EEEEF8',
-            '#119682',
-          ],
+          backgroundColor: backgroundColor,
           shadowOffsetY: 2,
           shadowBlur: 3,
           shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -1624,34 +1476,8 @@ export const selectFdFtaRatioChartData = createSelector(
       {
         data: [],
         label: '',
-        backgroundColor: [
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-        ],
-        hoverBackgroundColor: [
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-        ],
+        backgroundColor: BACKGROUND_COLORS,
+        hoverBackgroundColor: HOVER_BACKGROUND_COLORS,
       },
     ];
 
@@ -1779,34 +1605,8 @@ export const selectFdUtaRatioChartData = createSelector(
       {
         data: [],
         label: '',
-        backgroundColor: [
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-        ],
-        hoverBackgroundColor: [
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-          '#119582',
-          '#ffb4b5',
-        ],
+        backgroundColor: BACKGROUND_COLORS,
+        hoverBackgroundColor: HOVER_BACKGROUND_COLORS,
       },
     ];
 

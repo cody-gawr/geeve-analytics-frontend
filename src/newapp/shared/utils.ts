@@ -15,7 +15,7 @@ import {
 } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { HttpErrorResponse } from '@angular/common/http';
-import { COLORS } from '../constants';
+import { COLORS, LEGEND_BG_COLORS } from '../constants';
 import { Clinic } from '../models/clinic';
 import { DecimalPipe } from '@angular/common';
 import { DEFAULT_TIMEZONE } from './constants';
@@ -452,21 +452,6 @@ export const externalTooltipHandlerHiddenColorBoxes = <T extends ChartType>(
     tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
 };
 
-const legendBackgroundColor = [
-  '#6edbbb',
-  '#b0fffa',
-  '#abb3ff',
-  '#ffb4b5',
-  '#fffcac',
-  '#FFE4E4',
-  '#FFD578',
-  '#54D2FF',
-  '#E58DD7',
-  '#A9AABC',
-  '#F2ECFF',
-  '#5689C9',
-  '#F9F871',
-];
 
 export function dynamicBarBackgroundColor(
   data: any[],
@@ -481,7 +466,7 @@ export function dynamicBarBackgroundColor(
     data.forEach(res => {
       selectedClinics.forEach((item, index) => {
         if (res.clinicId == item.id) {
-          dynamicColors.push(legendBackgroundColor[index]);
+          dynamicColors.push(LEGEND_BG_COLORS[index]);
         }
       });
     });

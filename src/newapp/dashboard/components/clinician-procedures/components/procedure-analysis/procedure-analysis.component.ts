@@ -57,7 +57,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
   labels = [];
   maxVal = 0;
   bgColors = [];
-  paTableData = [];
+  tableData = [];
 
   get isLoading$() {
     return combineLatest([
@@ -164,7 +164,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
               this.maxVal = chartData.maxData;
               this.bgColors = chartData.bgColors;
               if (!isMultiClinics && !isTrend) {
-                this.paTableData = chartData.paTableData;
+                this.tableData = chartData.paTableData;
               }
             } else {
               this.datasets = specialChartData.datasets;
@@ -172,7 +172,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
               this.maxVal = specialChartData.maxData;
               this.bgColors = specialChartData.bgColors;
               if (!isMultiClinics && !isTrend) {
-                this.paTableData = specialChartData.paSpecialTableData;
+                this.tableData = specialChartData.paSpecialTableData;
               }
             }
           }
@@ -188,13 +188,24 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     this.cpFacade.setCpPredictorAnalysisVisibility(val);
   }
 
+  get isTableIconVisible$() {
+    return combineLatest([
+      this.isDentistMode$,
+      this.isTrend$
+    ]).pipe(map(([v, v1]) => !v && !v1));
+  }
+
   get showMaxBarsAlert$() {
-    return this.showTableView$.pipe(
-      map(v => {
-        return !v && (this.paTableData?.length > this.labels?.length);
+    return combineLatest([
+      this.showTableView$,
+      this.isTableIconVisible$,
+    ]).pipe(
+      map(([v, v1]) => {
+        return !v && (this.tableData?.length > this.labels?.length) && v1;
       })
     ) 
   }
+
   get showMaxBarsAlertMsg$() {
     return this.authFacade.chartLimitDesc$;
   }

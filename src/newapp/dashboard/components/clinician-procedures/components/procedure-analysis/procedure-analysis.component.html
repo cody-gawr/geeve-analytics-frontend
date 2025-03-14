@@ -12,7 +12,7 @@
     class="help-tip"
     fontIcon="help"></mat-icon>
   <mat-icon
-    *ngIf="!(isDentistMode$ | async)"
+    *ngIf="isTableIconVisible$ | async"
     matTooltipPosition="below"
     [ngClass]="showPaTable ? 'active' : ''"
     class="table-info-icon"

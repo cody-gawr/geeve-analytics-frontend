@@ -1683,36 +1683,26 @@ export const selectTxPlanAvgFeesTrendChartData = createSelector(
         labels: [],
       };
     }
-    resBody.data.forEach(res => {
+    const backgroundColor = [];
+    resBody.data.forEach((res, index) => {
       const avgFee = Math.round(<number>res.averageFees);
       if (avgFee >= 0) {
         chartData.push(avgFee);
+        chartLabels.push(
+          trendMode === 'current'
+            ? moment(res.yearMonth).format('MMM YYYY')
+            : res.year
+        );
+        backgroundColor.push(index % 2 === 0 ? COLORS.odd : COLORS.even);
       }
-      chartLabels.push(
-        trendMode === 'current'
-          ? moment(res.yearMonth).format('MMM YYYY')
-          : res.year
-      );
+      
     });
     const datasets: ChartDataset<any>[] = [
       {
         data: [],
         label: '',
         shadowOffsetX: 3,
-        backgroundColor: [
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-          COLORS.odd,
-          COLORS.even,
-        ],
+        backgroundColor: backgroundColor,
         shadowOffsetY: 2,
         shadowBlur: 3,
         shadowColor: 'rgba(0, 0, 0, 0.3)',

@@ -40,3 +40,50 @@ export const COLORS = {
     '#E58DD7',
   ],
 };
+
+export const LEGEND_BG_COLORS = [
+  '#6edbbb',
+  '#b0fffa',
+  '#abb3ff',
+  '#ffb4b5',
+  '#fffcac',
+  '#FFE4E4',
+  '#FFD578',
+  '#54D2FF',
+  '#E58DD7',
+  '#A9AABC',
+  '#F2ECFF',
+  '#5689C9',
+  '#F9F871',
+];
+
+export const BACKGROUND_COLORS = [
+  '#119582',
+  '#ffb4b5',
+  '#119582',
+  '#ffb4b5',
+  '#119582',
+  '#ffb4b5',
+  '#119582',
+  '#ffb4b5',
+  '#119582',
+  '#ffb4b5',
+  '#119582',
+  '#ffb4b5',
+];
+
+export const HOVER_BACKGROUND_COLORS = [
+  '#119582',
+  '#ffb4b5',
+  '#119582',
+  '#ffb4b5',
+  '#119582',
+  '#ffb4b5',
+  '#119582',
+  '#ffb4b5',
+  '#119582',
+  '#ffb4b5',
+  '#119582',
+  '#ffb4b5',
+];
+

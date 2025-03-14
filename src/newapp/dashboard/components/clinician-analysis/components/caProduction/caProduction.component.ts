@@ -60,12 +60,16 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get showMaxBarsAlert$() {
-    return this.showTableView$.pipe(
-      map(v => {
-        return !v && (this.tableData?.length > this.labels?.length);
+    return combineLatest([
+      this.showTableView$,
+      this.isTableIconVisible$,
+    ]).pipe(
+      map(([v, v1]) => {
+        return !v && (this.tableData?.length > this.labels?.length) && v1;
       })
     ) 
   }
+
   get showMaxBarsAlertMsg$() {
     return this.authFacade.chartLimitDesc$;
   }
@@ -244,12 +248,13 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.isCompare$,
       this.hasData$,
       this.isTrend$,
+      this.isGaugeChartVisible$,
     ]).pipe(
-      map(([isDentistMode, isCompare, hasData, isTrend]) => {
+      map(([isDentistMode, isCompare, hasData, isTrend, isGaugeChart]) => {
         return (
           (!isDentistMode || isCompare) &&
           this.tableData.length > 0 && hasData &&
-          !this.isComingSoon && !isTrend
+          !this.isComingSoon && !isTrend && !isGaugeChart
         );
       })
     );

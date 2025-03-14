@@ -308,9 +308,12 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get showMaxBarsAlert$() {
-    return this.showTableView$.pipe(
-      map(v => {
-        return !v && (this.tableData?.length > this.labels?.length);
+    return combineLatest([
+      this.showTableView$,
+      this.isTableIconVisible$,
+    ]).pipe(
+      map(([v, v1]) => {
+        return !v && (this.tableData?.length > this.labels?.length) && v1;
       })
     ) 
   }
