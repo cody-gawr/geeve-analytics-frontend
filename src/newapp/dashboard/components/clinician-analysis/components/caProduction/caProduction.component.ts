@@ -254,7 +254,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         return (
           (!(isDentistMode && isTrend) || isCompare) &&
           this.tableData.length > 0 && hasData &&
-          !this.isComingSoon && !isTrend && !isGaugeChart
+          !this.isComingSoon && !isGaugeChart
         );
       })
     );

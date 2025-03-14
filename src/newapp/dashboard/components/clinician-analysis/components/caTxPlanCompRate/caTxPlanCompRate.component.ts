@@ -66,7 +66,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
           (!(isDentistMode && isTrend) || isCompare) && this.tableData.length > 0 && hasData &&
-          !this.isComingSoon && !isTrend
+          !this.isComingSoon
       )
     );
   }
