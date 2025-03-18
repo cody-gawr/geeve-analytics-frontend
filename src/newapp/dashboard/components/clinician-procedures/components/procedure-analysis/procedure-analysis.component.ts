@@ -192,7 +192,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     return combineLatest([
       this.isDentistMode$,
       this.isTrend$
-    ]).pipe(map(([v, v1]) => !v && !v1));
+    ]).pipe(map(([v, v1]) => !v && !v1 && this.tableData?.length > 0));
   }
 
   get showMaxBarsAlert$() {
@@ -201,7 +201,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       this.isTableIconVisible$,
     ]).pipe(
       map(([v, v1]) => {
-        return !v && (this.tableData?.length > this.labels?.length) && v1;
+        return !v && v1 && (this.tableData?.length > this.labels?.length);
       })
     ) 
   }
