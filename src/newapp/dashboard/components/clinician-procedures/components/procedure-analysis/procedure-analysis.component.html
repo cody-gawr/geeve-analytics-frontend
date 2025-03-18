@@ -98,7 +98,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let paInfo of paTableData">
+              <tr *ngFor="let paInfo of tableData">
                 <td>{{ paInfo.name }}</td>
                 <td>{{ paInfo.Crowns_Onlays }}</td>
                 <td>{{ paInfo.Splints }}</td>
@@ -112,7 +112,7 @@
               </tr>
               <tr
                 class="patable-total"
-                [innerHTML]="generatePaGeneralTotal(paTableData)"></tr>
+                [innerHTML]="generatePaGeneralTotal(tableData)"></tr>
             </tbody>
           </table>
           <ng-template #specialTableElem>
@@ -130,7 +130,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let paInfo of paTableData">
+                <tr *ngFor="let paInfo of tableData">
                   <td>{{ paInfo.name }}</td>
                   <td>{{ paInfo.Implant_Surg }}</td>
                   <td>{{ paInfo.Braces }}</td>
@@ -142,7 +142,7 @@
                 </tr>
                 <tr
                   class="patable-total"
-                  [innerHTML]="generatePaSpecialTotal(paTableData)"></tr>
+                  [innerHTML]="generatePaSpecialTotal(tableData)"></tr>
               </tbody>
             </table>
           </ng-template>
