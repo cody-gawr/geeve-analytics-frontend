@@ -638,7 +638,7 @@ export const selectCpPredictorAnalysisChartData = createSelector(
       resData.data.forEach((item, index) => {
         // let ipKey = null;
 
-        if (index < authUserData.maxChartBars && item.providerName != null) {
+        
           if (
             Math.round(parseFloat(<string>item.crowns)) +
               Math.round(parseFloat(<string>item.splints)) +
@@ -648,38 +648,40 @@ export const selectCpPredictorAnalysisChartData = createSelector(
               Math.round(parseFloat(<string>item.ssCrowns)) +
               Math.round(parseFloat(<string>item.compVeneers)) +
               Math.round(parseFloat(<string>item.impCrowns)) >
-            0
+            0 && !item.providerId
           ) {
-            stackedChartData1.push(item.crowns);
-            stackedChartData2.push(item.splints);
-            stackedChartData3.push(item.rct);
-            stackedChartData4.push(item.perio);
-            stackedChartData5.push(item.extract);
-            stackedChartData6.push(item.ssCrowns);
-            stackedChartData7.push(item.compVeneers);
-            stackedChartData8.push(item.impCrowns);
-            stackedChartData9.push(item.whitening);
-            chartLabels.push(item.providerName);
+            if (index < authUserData.maxChartBars) {
+              stackedChartData1.push(item.crowns);
+              stackedChartData2.push(item.splints);
+              stackedChartData3.push(item.rct);
+              stackedChartData4.push(item.perio);
+              stackedChartData5.push(item.extract);
+              stackedChartData6.push(item.ssCrowns);
+              stackedChartData7.push(item.compVeneers);
+              stackedChartData8.push(item.impCrowns);
+              stackedChartData9.push(item.whitening);
+              chartLabels.push(item.providerName);
+              console.log(item.providerName)
+            }
+
+            let temp = {
+              name: item.providerName,
+              Crowns_Onlays: Math.round(parseFloat(<string>item.crowns)),
+              Splints: Math.round(parseFloat(<string>item.splints)),
+              RCT: Math.round(parseFloat(<string>item.rct)),
+              Perio: Math.round(parseFloat(<string>item.perio)),
+              Surg_Ext: Math.round(parseFloat(<string>item.extract)),
+              Imp_Crowns: Math.round(parseFloat(<string>item.impCrowns)),
+              SS_Crowns: Math.round(parseFloat(<string>item.ssCrowns)),
+              Comp_Veneers: Math.round(parseFloat(<string>item.compVeneers)),
+              Whitening: Math.round(parseFloat(<string>item.whitening)),
+            };
+            console.log(temp)
+            paTableData.push(temp);
             // if (item.providerName != 'Anonymous') {
             //   ipKey = index;
             // }
           }
-        }
-
-        let temp = {
-          name: item.providerName,
-          Crowns_Onlays: Math.round(parseFloat(<string>item.crowns)),
-          Splints: Math.round(parseFloat(<string>item.splints)),
-          RCT: Math.round(parseFloat(<string>item.rct)),
-          Perio: Math.round(parseFloat(<string>item.perio)),
-          Surg_Ext: Math.round(parseFloat(<string>item.extract)),
-          Imp_Crowns: Math.round(parseFloat(<string>item.impCrowns)),
-          SS_Crowns: Math.round(parseFloat(<string>item.ssCrowns)),
-          Comp_Veneers: Math.round(parseFloat(<string>item.compVeneers)),
-          Whitening: Math.round(parseFloat(<string>item.whitening)),
-        };
-
-        paTableData.push(temp);
       });
 
       chartDatasets[0]['data'] = stackedChartData1;
@@ -843,16 +845,16 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
 
       resData.data.forEach((item, index) => {
         // let ipKey = null;
-        if (index < authUserData.maxChartBars && item.providerName != null) {
-          if (
-            Math.round(parseFloat(<string>item.impSurg)) +
-              Math.round(parseFloat(<string>item.orthoFix)) +
-              Math.round(parseFloat(<string>item.sleep)) +
-              Math.round(parseFloat(<string>item.orthoAlign)) +
-              Math.round(parseFloat(<string>item.perioSurg)) +
-              Math.round(parseFloat(<string>item.veneersInd)) >
-            0
-          ) {
+        if (
+          Math.round(parseFloat(<string>item.impSurg)) +
+            Math.round(parseFloat(<string>item.orthoFix)) +
+            Math.round(parseFloat(<string>item.sleep)) +
+            Math.round(parseFloat(<string>item.orthoAlign)) +
+            Math.round(parseFloat(<string>item.perioSurg)) +
+            Math.round(parseFloat(<string>item.veneersInd)) >
+          0 && !item.providerId
+        ) {
+          if (index < authUserData.maxChartBars) {
             stackedChartData1.push(item.impSurg);
             stackedChartData2.push(item.orthoFix);
             stackedChartData3.push(item.orthoAlign);
@@ -865,20 +867,20 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
             //   ipKey = index;
             // }
           }
+
+          let temp = {
+            name: item.providerName,
+            Implant_Surg: Math.round(parseFloat(<string>item.impSurg)),
+            Braces: Math.round(parseFloat(<string>item.orthoFix)),
+            Aligners: Math.round(parseFloat(<string>item.orthoAlign)),
+            MAS: Math.round(parseFloat(<string>item.sleep)),
+            Perio_Surg: Math.round(parseFloat(<string>item.perioSurg)),
+            Endo_Re_treat: Math.round(parseFloat(<string>item.endoRetreat)),
+            Veneers_ind: Math.round(parseFloat(<string>item.veneersInd)),
+          };
+  
+          paSpecialTableData.push(temp);
         }
-
-        let temp = {
-          name: item.providerName,
-          Implant_Surg: Math.round(parseFloat(<string>item.impSurg)),
-          Braces: Math.round(parseFloat(<string>item.orthoFix)),
-          Aligners: Math.round(parseFloat(<string>item.orthoAlign)),
-          MAS: Math.round(parseFloat(<string>item.sleep)),
-          Perio_Surg: Math.round(parseFloat(<string>item.perioSurg)),
-          Endo_Re_treat: Math.round(parseFloat(<string>item.endoRetreat)),
-          Veneers_ind: Math.round(parseFloat(<string>item.veneersInd)),
-        };
-
-        paSpecialTableData.push(temp);
       });
       chartDatasets[0]['data'] = stackedChartData1;
       chartDatasets[1]['data'] = stackedChartData2;
