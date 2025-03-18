@@ -59,6 +59,18 @@ export class AppComponent implements OnInit{
     private cookieService: CookieService) {
       Chart.defaults.font.family = 'Gilroy-Regular';
       Chart.register(annotationPlugin);
+      Chart.register({
+        beforeUpdate: function(chart) {
+          //if(['bar', 'line'].indexOf(chart.config.type) > -1){
+            const legendItems = chart.legend.legendItems.length;
+            if (legendItems > 12) {
+                chart.options.plugins.legend.display = false;
+            } else {
+                chart.options.plugins.legend.display = true;
+            }
+          //}
+        }
+      });
       // Chart.register(Colors);
   }
 
