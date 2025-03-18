@@ -1,4 +1,5 @@
 import { formatXTooltipLabel } from '@/app/util';
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
@@ -29,6 +30,9 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
   totalDiscountChartTotal = 0;
   totalDiscountChartTrendTotal = 0;
 
+  public showTableInfo: boolean = false;
+  public tableData = [];
+
   get isLoading$() {
     return this.financeFacade.isLoadingFnTotalDiscount$;
   }
@@ -40,6 +44,22 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
         it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v))
       )
     );
+  }
+
+  get showMaxBarsAlert() {
+    return !this.showTableView && this.hasData && (this.tableData?.length > this.totalDiscountChartLabels?.length);
+  }
+
+  get showTableView() {
+    return this.showTableInfo && this.tableData.length > 0 && this.hasData;
+  }
+
+  get showMaxBarsAlertMsg$() {
+    return this.authFacade.chartLimitDesc$;
+  }
+
+  get paTableColumnA$() {
+    return this.clinicFacade.isMultiClinicsSelected$.pipe(map(i => i? 'Clinic Name':'Dentist Name'));
   }
 
   get trendingIcon() {
@@ -91,7 +111,8 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
+    private authFacade: AuthFacade
   ) {}
 
   public pieChartOptions: ChartOptions<'doughnut'> = {
@@ -128,6 +149,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
       this.financeFacade.totalDiscountTotal$,
       this.financeFacade.totalDiscountTrendTotal$,
       this.financeFacade.totalDiscountData$,
+      this.authFacade.authUserData$
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(
@@ -136,9 +158,10 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
           totalDiscountTotal,
           totalDiscountTrendTotal,
           totalDiscountData,
+          authUserData
         ]) => {
           const chartData = [],
-            chartLabels = [];
+            chartLabels = [], tableData = [];
           if (typeof clinicId == 'string') {
             const data = _.chain(totalDiscountData)
               .sortBy(t => t.discounts)
@@ -151,9 +174,15 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
               })
               .value();
             data.sort((a, b) => b.discounts - a.discounts);
-            data.forEach(v => {
-              chartData.push(v.discounts);
-              chartLabels.push(v.clinicName);
+            data.forEach((v, index) => {
+              if(index < authUserData.maxChartBars){
+                chartData.push(v.discounts);
+                chartLabels.push(v.clinicName);
+              }
+              tableData.push({
+                label: v.clinicName,
+                value: v.discounts
+              });
             });
           } else {
             const data = [...totalDiscountData];
@@ -165,8 +194,16 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
             data.forEach((val, index) => {
               const discounts = _.round(<number>val.discounts);
               if (discounts > 0) {
-                chartData.push(discounts);
-                chartLabels.push(val.providerName ?? '');
+                const providerName = val.providerName ?? '';
+                if(index < authUserData.maxChartBars){
+                  chartData.push(discounts);
+                  chartLabels.push(providerName);
+                }
+
+                tableData.push({
+                  label: providerName,
+                  value: val.discounts
+                });
               }
             });
           }
@@ -180,6 +217,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
           this.datasets = [
             { data: chartData?.every(val => val != 0) ? chartData : [] },
           ];
+          this.tableData = tableData;
         }
       );
   }
@@ -196,5 +234,9 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
+
+  toggleTableInfo() {
+    this.showTableInfo = !this.showTableInfo;
   }
 }

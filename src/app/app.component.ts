@@ -66,8 +66,6 @@ export class AppComponent implements OnInit{
             const legendItems = chart.legend.legendItems?.length;
             if (legendItems > 12) {
                 chart.options.plugins.legend.display = false;
-            } else {
-                chart.options.plugins.legend.display = true;
             }
           //}
         }

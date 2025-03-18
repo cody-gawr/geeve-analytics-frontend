@@ -1,10 +1,22 @@
 <div class="chart-container">
   <mat-icon
+    *ngIf="showMaxBarsAlert"
+    class="warn-icon"
+    fontIcon="warning"
+    [appTooltip]="showMaxBarsAlertMsg$ | async"
+  ></mat-icon>
+  <mat-icon
     [tooltip]="toolTip"
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
     fontIcon="help"></mat-icon>
+    <mat-icon
+    *ngIf="hasData"
+    [ngClass]="showTableInfo ? 'active' : ''"
+    (click)="toggleTableInfo()"
+    class="table-info-icon"
+    fontIcon="table_rows_narrow" />
   <div class="chart-title">
     <mat-icon
       *ngIf="(duration$ | async) != 'custom'"
@@ -23,26 +35,46 @@
       </spin-loader>
       <ng-template #enabledChart>
         <div></div>
-        <div class="chart-gauge total-discount-gauge">
-          <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-          <ng-template #chartElem>
-            <canvas
-              *ngIf="hasData; else chartElem01"
-              baseChart
-              [datasets]="datasets"
-              [labels]="totalDiscountChartLabels"
-              type="doughnut"
-              [legend]="false"
-              [options]="pieChartOptions"
-              [plugins]="plugins$ | async">
-            </canvas>
-            <ng-template #chartElem01>
-              <spin-loader class="empty-placeholder" [disableSpin]="true">
-                You have offered no discounts in the selected period
-              </spin-loader>
-            </ng-template>
-          </ng-template>
+        <div
+          class="pa-table"
+          *ngIf="showTableView; else graphElem">
+          <table>
+            <thead>
+              <tr>
+                <th>{{paTableColumnA$ | async}}</th>
+                <th>Discounts</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let protbl of tableData">
+                <td>{{ protbl.label }}</td>
+                <td>{{ protbl.value | currency: 'USD' : 'symbol' : '1.0-0' }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <ng-template #graphElem>
+          <div class="chart-gauge total-discount-gauge">
+            <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+            <ng-template #chartElem>
+              <canvas
+                *ngIf="hasData; else chartElem01"
+                baseChart
+                [datasets]="datasets"
+                [labels]="totalDiscountChartLabels"
+                type="doughnut"
+                [legend]="false"
+                [options]="pieChartOptions"
+                [plugins]="plugins$ | async">
+              </canvas>
+              <ng-template #chartElem01>
+                <spin-loader class="empty-placeholder" [disableSpin]="true">
+                  You have offered no discounts in the selected period
+                </spin-loader>
+              </ng-template>
+            </ng-template>
+          </div>
+        </ng-template>
         <div class="chart-foot">
           <div>
             <h3>${{ totalDiscountChartTotal | number: '1.0-0' }}</h3>
