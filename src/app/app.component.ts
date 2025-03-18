@@ -60,6 +60,7 @@ export class AppComponent implements OnInit{
       Chart.defaults.font.family = 'Gilroy-Regular';
       Chart.register(annotationPlugin);
       Chart.register({
+        id: 'check-legend-items',
         beforeUpdate: function(chart) {
           //if(['bar', 'line'].indexOf(chart.config.type) > -1){
             const legendItems = chart.legend.legendItems.length;
