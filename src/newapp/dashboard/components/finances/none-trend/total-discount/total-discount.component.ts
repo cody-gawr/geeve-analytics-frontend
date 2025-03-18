@@ -215,7 +215,7 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
           this.totalDiscountChartTotal = Math.round(totalDiscountTotal);
           this.totalDiscountChartLabels = chartLabels;
           this.datasets = [
-            { data: chartData?.every(val => val != 0) ? chartData : [] },
+            { data: chartData?.every(val => val == 0) ? chartData : [] },
           ];
           this.tableData = tableData;
         }
