@@ -648,7 +648,7 @@ export const selectCpPredictorAnalysisChartData = createSelector(
               Math.round(parseFloat(<string>item.ssCrowns)) +
               Math.round(parseFloat(<string>item.compVeneers)) +
               Math.round(parseFloat(<string>item.impCrowns)) >
-            0 && !item.providerId
+            0 && item.providerId
           ) {
             if (index < authUserData.maxChartBars) {
               stackedChartData1.push(item.crowns);
@@ -852,7 +852,7 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
             Math.round(parseFloat(<string>item.orthoAlign)) +
             Math.round(parseFloat(<string>item.perioSurg)) +
             Math.round(parseFloat(<string>item.veneersInd)) >
-          0 && !item.providerId
+          0 && item.providerId
         ) {
           if (index < authUserData.maxChartBars) {
             stackedChartData1.push(item.impSurg);
