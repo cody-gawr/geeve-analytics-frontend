@@ -5,6 +5,7 @@ import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 import {
   JeeveLineFillOptions,
+  formatXName,
   generatingLegend,
   generatingLegend_4,
 } from '@/newapp/shared/utils';
@@ -319,14 +320,7 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
       x: {
         ticks: {
           autoSkip: false,
-          callback: function (tickValue: string, index: number) {
-            let value = this.getLabelForValue(index);
-            if (value && value.toString().includes('--')) {
-              let lbl = value.split('--');
-              value = lbl[0];
-            }
-            return value;
-          },
+          callback: formatXName,
         },
         stacked: true,
       },

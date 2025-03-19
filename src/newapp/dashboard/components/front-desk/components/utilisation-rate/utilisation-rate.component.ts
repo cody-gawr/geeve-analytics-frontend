@@ -367,14 +367,6 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
       x: {
         ticks: {
           autoSkip: false,
-          // callback: function (tickValue: string, index: number) {
-          //   let value = this.getLabelForValue(index);
-          //   if (value && value.toString().includes('--')) {
-          //     let lbl = value.toString().split('--');
-          //     value = lbl[0];
-          //   }
-          //   return formatXLabel(value);
-          // },
         },
         stacked: true,
         
