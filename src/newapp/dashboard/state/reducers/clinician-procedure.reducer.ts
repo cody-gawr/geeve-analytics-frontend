@@ -759,8 +759,8 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
           chartDatasets.push({
             data,
             label: description,
-            backgroundColor: COLORS.presetColors[index],
-            hoverBackgroundColor: COLORS.presetColors[index],
+            backgroundColor: COLORS.presetColors[index % COLORS.presetColors.length],
+            hoverBackgroundColor: COLORS.presetColors[index % COLORS.presetColors.length],
           });
         }
       );

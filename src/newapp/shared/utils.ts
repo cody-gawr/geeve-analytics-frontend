@@ -18,7 +18,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { COLORS } from '../constants';
 import { Clinic } from '../models/clinic';
 import { DecimalPipe } from '@angular/common';
-import { DEFAULT_TIMEZONE } from './constants';
+import { DEFAULT_TIMEZONE } from '@/newapp/constants';
 import _ from 'lodash';
 
 export function convertEndpointToDataKey(endpoint: string) {
@@ -466,7 +466,7 @@ export function dynamicBarBackgroundColor(
     data.forEach(res => {
       selectedClinics.forEach((item, index) => {
         if (res.clinicId == item.id) {
-          dynamicColors.push(COLORS.presetColors[index]);
+          dynamicColors.push(COLORS.presetColors[index % COLORS.presetColors.length]);
         }
       });
     });

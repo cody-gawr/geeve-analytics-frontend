@@ -115,7 +115,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
             })
             .value()
             .forEach(finalRow => {
-              const bgColor = COLORS.presetColors[i];
+              const bgColor = COLORS.presetColors[i % COLORS.presetColors.length];
               i++;
               this.datasets.push({
                 data: finalRow.accItems.map(item => {

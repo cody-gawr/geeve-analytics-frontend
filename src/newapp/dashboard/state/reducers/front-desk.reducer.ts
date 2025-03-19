@@ -756,7 +756,7 @@ export const selectFdUtilRateChartData = createSelector(
       resBody.data.forEach(res => {
         clinics.forEach((item, index) => {
           if (res.clinicId == item.id) {
-            dynamicColors.push(COLORS.presetColors[index]);
+            dynamicColors.push(COLORS.presetColors[index % COLORS.presetColors.length]);
           }
         });
       });
@@ -1400,7 +1400,7 @@ export const selectFdNumTicksTrendChartData = createSelector(
         .groupBy('clinicId')
         .map(items => {
           const clinicName = items[0].clinicName;
-          const bgColor = COLORS.presetColors[i];
+          const bgColor = COLORS.presetColors[i % COLORS.presetColors.length];
           i++;
           return {
             label: clinicName,

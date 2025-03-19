@@ -99,8 +99,8 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
             pChartData.push({
               data: [Math.round(parseFloat(<string>item.production))],
               label: item.clinicName,
-              backgroundColor: COLORS.presetColors[index],
-              hoverBackgroundColor: COLORS.presetColors[index],
+              backgroundColor: COLORS.presetColors[index % COLORS.presetColors.length],
+              hoverBackgroundColor: COLORS.presetColors[index % COLORS.presetColors.length],
             });
           });
           chartData = pChartData

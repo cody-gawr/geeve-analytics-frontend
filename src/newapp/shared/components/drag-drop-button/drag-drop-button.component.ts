@@ -1,7 +1,7 @@
 import { CampaignService } from '@/newapp/campaigns/services/campaign.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject} from 'rxjs';
-import { CAMPAIGN_FILTERS } from '../../constants';
+import { CAMPAIGN_FILTERS } from '@/newapp/constants';
 
 @Component({
   selector: 'drag-drop-button',

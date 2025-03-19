@@ -1024,7 +1024,7 @@ export const selectNewPatientsByReferralTrendChartData = createSelector(
       .flatten()
       .groupBy('itemName')
       .map((v, itemName) => {
-        const bgColor = COLORS.presetColors[i];
+        const bgColor = COLORS.presetColors[i % COLORS.presetColors.length];
         i++;
         return {
           data: v.map(v1 => v1.numReferrals),
@@ -1141,7 +1141,7 @@ export const selectRevByReferralTrendChartData = createSelector(
       .flatten()
       .groupBy('itemName')
       .map((v, itemName) => {
-        const bgColor = COLORS.presetColors[i];
+        const bgColor = COLORS.presetColors[i % COLORS.presetColors.length];
         i++;
         return {
           data: v.map(v1 => v1.invoiceAmount),
@@ -1247,7 +1247,7 @@ export const selectNumNewPatientsTrendChartData = createSelector(
       const chartDatasets = _.chain(newNumPatientsTrendData.data)
         .groupBy('clinicId')
         .map(items => {
-          const bgColor = COLORS.presetColors[i];
+          const bgColor = COLORS.presetColors[i % COLORS.presetColors.length];
           i++;
           return {
             data: items.map(item => _.round(<number>item.newPatients)),
@@ -1390,7 +1390,7 @@ export const selectActivePatientsTrendChartData = createSelector(
       const chartDatasets = _.chain(activePatientsTrendData.data)
         .groupBy('clinicId')
         .map(items => {
-          const bgColor = COLORS.presetColors[i];
+          const bgColor = COLORS.presetColors[i % COLORS.presetColors.length];
           i++;
           return {
             data: items.map(item => _.round(<number>item.activePatients)),
@@ -1611,7 +1611,7 @@ export const selectTotalVisitsTrendChartData = createSelector(
       const chartDatasets = _.chain(totalVisitsTrendData.data)
         .groupBy('clinicId')
         .map(items => {
-          const bgColor = COLORS.presetColors[i];
+          const bgColor = COLORS.presetColors[i % COLORS.presetColors.length];
           i++;
           return {
             data: items.map(item => _.round(<number>item.numVisits)),
@@ -1784,7 +1784,7 @@ export const selectProdByPostCodeTrendChartData = createSelector(
       .flatten()
       .groupBy('postcode')
       .map((v, postcode) => {
-        const bgColor = COLORS.presetColors[i];
+        const bgColor = COLORS.presetColors[i % COLORS.presetColors.length];
         i++;
         return {
           data: v.map(v1 => v1.productions),
@@ -1898,7 +1898,7 @@ export const selectProdByAgeTrendChartData = createSelector(
       .flatten()
       .groupBy('age')
       .map((v, age) => {
-        const bgColor = COLORS.presetColors[i];
+        const bgColor = COLORS.presetColors[i % COLORS.presetColors.length];
         i++;
         return {
           data: v.map(v1 => v1.productions),

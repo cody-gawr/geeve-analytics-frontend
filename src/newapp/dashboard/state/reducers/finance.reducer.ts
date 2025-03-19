@@ -1150,8 +1150,8 @@ export const selectProdTrendChartData = createSelector(
             data: values.map(v =>
               Math.round(parseFloat(<string>v.production ?? '0'))
             ),
-            backgroundColor: COLORS.presetColors[i],
-            hoverBackgroundColor: COLORS.presetColors[i],
+            backgroundColor: COLORS.presetColors[i % COLORS.presetColors.length],
+            hoverBackgroundColor: COLORS.presetColors[i % COLORS.presetColors.length],
           };
           i++;
           return item;
@@ -1205,8 +1205,8 @@ export const selectCollectionTrendChartData = createSelector(
             data: values.map(v =>
               Math.round(parseFloat(<string>v.collection ?? '0'))
             ),
-            backgroundColor: COLORS.presetColors[i],
-            hoverBackgroundColor: COLORS.presetColors[i],
+            backgroundColor: COLORS.presetColors[i % COLORS.presetColors.length],
+            hoverBackgroundColor: COLORS.presetColors[i % COLORS.presetColors.length],
           };
           i++;
           return item;
@@ -1542,8 +1542,8 @@ export const selectTotalDiscountTrendChartData = createSelector(
           chartDataset.push({
             data: _.sum(chartData) > 0 ? chartData : [],
             label: values[0].clinicName,
-            backgroundColor: COLORS.presetColors[i],
-            hoverBackgroundColor: COLORS.presetColors[i],
+            backgroundColor: COLORS.presetColors[i % COLORS.presetColors.length],
+            hoverBackgroundColor: COLORS.presetColors[i % COLORS.presetColors.length],
           });
 
           if (i == 0) {
@@ -1614,7 +1614,7 @@ export const selectProdByClinicianTrendChartData = createSelector(
           newVal = value.val;
         }
 
-        newVal.forEach((result, key) => {
+        newVal.forEach((result, index) => {
           let production = 0,
             total = 0;
           if (clinics.length > 1) {
@@ -1626,19 +1626,19 @@ export const selectProdByClinicianTrendChartData = createSelector(
             total = production;
           }
 
-          if (chartDataset[key] === undefined) {
-            chartDataset[key] = { data: [], label: '' };
+          if (chartDataset[index] === undefined) {
+            chartDataset[index] = { data: [], label: '' };
           }
 
           if (clinics.length > 1) {
-            chartDataset[key].data.push((total / sumProd) * 100);
-            chartDataset[key].label = result.clinicName;
+            chartDataset[index].data.push((total / sumProd) * 100);
+            chartDataset[index].label = result.clinicName;
           } else {
-            chartDataset[key].data.push(total);
-            chartDataset[key].label = result.providerName;
+            chartDataset[index].data.push(total);
+            chartDataset[index].label = result.providerName;
           }
-          chartDataset[key].backgroundColor = COLORS.presetColors[key];
-          chartDataset[key].hoverBackgroundColor = COLORS.presetColors[key];
+          chartDataset[index].backgroundColor = COLORS.presetColors[index % COLORS.presetColors.length];
+          chartDataset[index].hoverBackgroundColor = COLORS.presetColors[index % COLORS.presetColors.length];
         });
         labels.push(
           trendMode == 'current'
