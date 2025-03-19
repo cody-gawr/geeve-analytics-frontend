@@ -157,34 +157,34 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       })
     );
   }
-
-  public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let labels = [];
-        let bgColor = {};
-        chart.data.datasets.forEach(item => {
-          item.data.forEach((val: number) => {
-            if (val > 0) {
-              labels.push(item.label);
-              bgColor[item.label] = item.backgroundColor;
-            }
-          });
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map(item => ({
-          text: item,
-          strokeStyle: bgColor[item],
-          fillStyle: bgColor[item],
-        }));
-      },
-    },
-  };
+  // = generatingLegend_4
+  // public stackLegendGenerator: _DeepPartialObject<LegendOptions<any>> = {
+  //   display: true,
+  //   position: 'bottom',
+  //   labels: {
+  //     boxWidth: 8,
+  //     usePointStyle: true,
+  //     generateLabels: chart => {
+  //       let labels = [];
+  //       let bgColor = {};
+  //       chart.data.datasets.forEach(item => {
+  //         item.data.forEach((val: number) => {
+  //           if (val > 0) {
+  //             labels.push(item.label);
+  //             bgColor[item.label] = item.backgroundColor;
+  //           }
+  //         });
+  //       });
+  //       labels = [...new Set(labels)];
+  //       labels = labels.splice(0, 10);
+  //       return labels.map(item => ({
+  //         text: item,
+  //         strokeStyle: bgColor[item],
+  //         fillStyle: bgColor[item],
+  //       }));
+  //     },
+  //   },
+  // };
 
   public stackedChartOptions: ChartOptions<'bar'> = {
     elements: {
@@ -265,7 +265,12 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     plugins: {
       // colors: { enabled: true },
       legend: {
-        display: false,
+        display: true,
+        position: 'bottom',
+        labels: {
+          boxWidth: 8,
+          usePointStyle: true,
+        }
       },
       tooltip: {
         mode: 'x',

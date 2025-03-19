@@ -5,6 +5,7 @@ import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 import {
   JeeveLineFillOptions,
+  generatingLegend,
   generatingLegend_4,
   renderTooltipLabel,
 } from '@/newapp/shared/utils';
@@ -151,30 +152,30 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
     );
   }
 
-  public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-    display: true,
-    position: 'bottom',
-    labels: {
-      boxWidth: 8,
-      usePointStyle: true,
-      generateLabels: chart => {
-        let bgColor = {};
-        let labels = chart.data.labels.map((value: string, i) => {
-          bgColor[value.split('--')[3]] =
-            chart.data.datasets[0].backgroundColor[i];
-          return value.split('--')[3];
-        });
-        labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
-        return labels.map((label, index) => ({
-          text: label,
-          strokeStyle: bgColor[label],
-          fillStyle: bgColor[label],
-        }));
-      },
-    },
-    onClick: () => {},
-  };
+  // public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
+  //   display: true,
+  //   position: 'bottom',
+  //   labels: {
+  //     boxWidth: 8,
+  //     usePointStyle: true,
+  //     generateLabels: chart => {
+  //       let bgColor = {};
+  //       let labels = chart.data.labels.map((value: string, i) => {
+  //         bgColor[value.split('--')[3]] =
+  //           chart.data.datasets[0].backgroundColor[i];
+  //         return value.split('--')[3];
+  //       });
+  //       labels = [...new Set(labels)];
+  //       labels = labels.splice(0, 10);
+  //       return labels.map((label, index) => ({
+  //         text: label,
+  //         strokeStyle: bgColor[label],
+  //         fillStyle: bgColor[label],
+  //       }));
+  //     },
+  //   },
+  //   onClick: () => {},
+  // };
 
   public stackedChartOptions: ChartOptions = {
     elements: {
@@ -345,7 +346,7 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
           },
         },
       },
-      legend: this.legendGenerator,
+      legend: generatingLegend(3),
     },
   };
 }

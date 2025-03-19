@@ -63,7 +63,7 @@ export class AppComponent implements OnInit{
         id: 'check-legend-items',
         beforeUpdate: function(chart) {
           //if(['bar', 'line'].indexOf(chart.config.type) > -1){
-            const legendItems = chart.legend.legendItems?.length;
+            const legendItems = chart.legend?.legendItems?.length;
             if (legendItems > 12) {
                 chart.options.plugins.legend.display = false;
             }

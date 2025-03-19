@@ -483,7 +483,7 @@ export function dynamicBarBackgroundColor(
   return dynamicColors;
 }
 
-export function generatingLegend(): _DeepPartialObject<LegendOptions<any>> {
+export function generatingLegend(splitCnt = 1): _DeepPartialObject<LegendOptions<any>> {
   return {
     display: true,
     position: 'bottom',
@@ -493,12 +493,12 @@ export function generatingLegend(): _DeepPartialObject<LegendOptions<any>> {
       generateLabels: chart => {
         let bgColor = {};
         let labels = chart.data.labels.map((value: string, i) => {
-          bgColor[value.split(' - ')[1]] =
+          bgColor[value.split(' - ')[splitCnt]] =
             chart.data.datasets[0].backgroundColor[i];
-          return value.split(' - ')[1];
+          return value.split(' - ')[splitCnt];
         });
         labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
+        // labels = labels.splice(0, 10);
         return labels.map((label, index) => ({
           text: label,
           strokeStyle: bgColor[label],
@@ -506,9 +506,9 @@ export function generatingLegend(): _DeepPartialObject<LegendOptions<any>> {
         }));
       },
     },
-    onClick: (event, legendItem, legend) => {
-      return;
-    },
+    // onClick: (event, legendItem, legend) => {
+    //   return;
+    // },
     // align : 'start',
   };
 }
@@ -578,7 +578,7 @@ export function generatingLegend_4(): _DeepPartialObject<LegendOptions<any>> {
           });
         });
         labels = [...new Set(labels)];
-        labels = labels.splice(0, 10);
+        // labels = labels.splice(0, 10);
         return labels.map(item => ({
           text: item,
           strokeStyle: bg_color[item],
