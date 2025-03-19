@@ -7,7 +7,7 @@ export const CONSULTANT = 7;
 export const COLORS = {
   odd: '#119682',
   even: '#EEEEF8',
-  doughnutChartColors: [
+  presetColors: [
     '#6cd8ba',
     '#b0fffa',
     '#abb3ff',
@@ -39,51 +39,108 @@ export const COLORS = {
     '#54D2FF',
     '#E58DD7',
   ],
+  alterColors: [
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+    '#119582',
+    '#ffb4b5',
+  ]
 };
 
-export const LEGEND_BG_COLORS = [
-  '#6edbbb',
-  '#b0fffa',
-  '#abb3ff',
-  '#ffb4b5',
-  '#fffcac',
-  '#FFE4E4',
-  '#FFD578',
-  '#54D2FF',
-  '#E58DD7',
-  '#A9AABC',
-  '#F2ECFF',
-  '#5689C9',
-  '#F9F871',
-];
+export const CAMPAIGN_FILTERS = {
+  treatment: 'treatment',
+  no_treatment: 'no_treatment',
+  patient_age: 'patient_age',
+  patient_status: 'patient_status',
+  incomplete_tx_plan: 'incomplete_tx_plan',
+  no_appointment: 'no_appointment',
+  health_insurance: 'health_insurance',
+  overdues: 'overdues',
+  appointment: 'appointment'
+}
 
-export const BACKGROUND_COLORS = [
-  '#119582',
-  '#ffb4b5',
-  '#119582',
-  '#ffb4b5',
-  '#119582',
-  '#ffb4b5',
-  '#119582',
-  '#ffb4b5',
-  '#119582',
-  '#ffb4b5',
-  '#119582',
-  '#ffb4b5',
-];
+export const DEFAULT_TIMEZONE = 'Australia/Brisbane';
 
-export const HOVER_BACKGROUND_COLORS = [
-  '#119582',
-  '#ffb4b5',
-  '#119582',
-  '#ffb4b5',
-  '#119582',
-  '#ffb4b5',
-  '#119582',
-  '#ffb4b5',
-  '#119582',
-  '#ffb4b5',
-  '#119582',
-  '#ffb4b5',
-];
+export const PROD_AGE_LIST = {
+  'Children': 'Children (0-12)',
+  'Adolescents': 'Teens & Young Adults (13-24)',
+  'Adults': 'Adults (25-44)',
+  'Middle-Aged': 'Middle-Aged (45-64)',
+  'Seniors': 'Seniors (65+)',
+  'Multi-Age': 'Multi-Age',
+  'Unspecified': 'Unspecified',
+};
+
+// export const LEGEND_BG_COLORS = COLORS.presetColors;
+// export const LEGEND_BG_COLORS = [
+//   '#6edbbb',
+//   '#b0fffa',
+//   '#abb3ff',
+//   '#ffb4b5',
+//   '#fffcac',
+//   '#FFE4E4',
+//   '#FFD578',
+//   '#54D2FF',
+//   '#E58DD7',
+//   '#A9AABC',
+//   '#F2ECFF',
+//   '#5689C9',
+//   '#F9F871',
+// ];
+
+// export const BACKGROUND_COLORS = [
+//   '#119582',
+//   '#ffb4b5',
+//   '#119582',
+//   '#ffb4b5',
+//   '#119582',
+//   '#ffb4b5',
+//   '#119582',
+//   '#ffb4b5',
+//   '#119582',
+//   '#ffb4b5',
+//   '#119582',
+//   '#ffb4b5',
+// ];
+
+// export const HOVER_BACKGROUND_COLORS = [
+//   '#119582',
+//   '#ffb4b5',
+//   '#119582',
+//   '#ffb4b5',
+//   '#119582',
+//   '#ffb4b5',
+//   '#119582',
+//   '#ffb4b5',
+//   '#119582',
+//   '#ffb4b5',
+//   '#119582',
+//   '#ffb4b5',
+// ];
 

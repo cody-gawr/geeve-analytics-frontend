@@ -24,10 +24,9 @@ import {
   selectCurrentClinics,
   selectIsMultiClinicsSelected,
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
-import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { selectComputedDurationUnits, selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import { selectAuthUserData } from '@/newapp/auth/state/reducers/auth.reducer';
-import { BACKGROUND_COLORS, COLORS, HOVER_BACKGROUND_COLORS, LEGEND_BG_COLORS } from '@/newapp/constants';
+import { COLORS } from '@/newapp/constants';
 
 type FrontDeskEndpoints =
   | 'fdUtilisationRate'
@@ -752,13 +751,12 @@ export const selectFdUtilRateChartData = createSelector(
 
     chartDatasets[0]['data'] = chartData;
     if (clinics.length > 1) {
-      let dynamicColors = [],
-        legendBackgroundColor = LEGEND_BG_COLORS.slice();
+      let dynamicColors = [];
 
       resBody.data.forEach(res => {
         clinics.forEach((item, index) => {
           if (res.clinicId == item.id) {
-            dynamicColors.push(legendBackgroundColor[index]);
+            dynamicColors.push(COLORS.presetColors[index]);
           }
         });
       });
@@ -926,7 +924,7 @@ export const selectFdUtilRateTrendChartData = createSelector(
       chartDatasets = [
         {
           data: chartData,
-          backgroundColor: DoughnutChartColors[0],
+          backgroundColor: COLORS.presetColors[0],
         },
       ];
     } else {
@@ -1073,8 +1071,8 @@ export const selectFdRecallRateChartData = createSelector(
         {
           data: [],
           label: '',
-          backgroundColor: BACKGROUND_COLORS,
-          hoverBackgroundColor: HOVER_BACKGROUND_COLORS,
+          backgroundColor: COLORS.alterColors,
+          hoverBackgroundColor: COLORS.alterColors,
         },
       ];
       chartDatasets[0]['data'] = chartData;
@@ -1129,7 +1127,7 @@ export const selectFdRecallRateTrendChartData = createSelector(
           );
         });
       chartDatasets = [
-        { data: chartData, backgroundColor: DoughnutChartColors[0], label: '' },
+        { data: chartData, backgroundColor: COLORS.presetColors[0], label: '' },
       ];
     } else {
       const chartData = [],
@@ -1224,8 +1222,8 @@ export const selectFdReappointRateChartData = createSelector(
       {
         data: [],
         label: '',
-        backgroundColor: BACKGROUND_COLORS,
-        hoverBackgroundColor: HOVER_BACKGROUND_COLORS,
+        backgroundColor: COLORS.alterColors,
+        hoverBackgroundColor: COLORS.alterColors,
       },
     ];
     chartDatasets[0]['data'] = chartData;
@@ -1278,7 +1276,7 @@ export const selectFdReappointRateTrendChartData = createSelector(
           );
         });
       chartDatasets = [
-        { data: chartData, label: '', backgroundColor: DoughnutChartColors[0] },
+        { data: chartData, label: '', backgroundColor: COLORS.presetColors[0] },
       ];
     } else {
       const chartData = [],
@@ -1359,8 +1357,8 @@ export const selectFdNumTicksChartData = createSelector(
         {
           data: [],
           label: '',
-          backgroundColor: BACKGROUND_COLORS,
-          hoverBackgroundColor: HOVER_BACKGROUND_COLORS,
+          backgroundColor: COLORS.alterColors,
+          hoverBackgroundColor: COLORS.alterColors,
         },
       ];
       chartDatasets[0]['data'] = chartData;
@@ -1402,7 +1400,7 @@ export const selectFdNumTicksTrendChartData = createSelector(
         .groupBy('clinicId')
         .map(items => {
           const clinicName = items[0].clinicName;
-          const bgColor = DoughnutChartColors[i];
+          const bgColor = COLORS.presetColors[i];
           i++;
           return {
             label: clinicName,
@@ -1476,8 +1474,8 @@ export const selectFdFtaRatioChartData = createSelector(
       {
         data: [],
         label: '',
-        backgroundColor: BACKGROUND_COLORS,
-        hoverBackgroundColor: HOVER_BACKGROUND_COLORS,
+        backgroundColor: COLORS.alterColors,
+        hoverBackgroundColor: COLORS.alterColors,
       },
     ];
 
@@ -1532,7 +1530,7 @@ export const selectFdFtaRatioTrendChartData = createSelector(
           chartLabels.push(item.duration);
         });
       chartDatasets = [
-        { data: chartData, label: '', backgroundColor: DoughnutChartColors[0] },
+        { data: chartData, label: '', backgroundColor: COLORS.presetColors[0] },
       ];
     } else {
       resBody.data.forEach(item => {
@@ -1605,8 +1603,8 @@ export const selectFdUtaRatioChartData = createSelector(
       {
         data: [],
         label: '',
-        backgroundColor: BACKGROUND_COLORS,
-        hoverBackgroundColor: HOVER_BACKGROUND_COLORS,
+        backgroundColor: COLORS.alterColors,
+        hoverBackgroundColor: COLORS.alterColors,
       },
     ];
 
@@ -1661,7 +1659,7 @@ export const selectFdUtaRatioTrendChartData = createSelector(
           chartLabels.push(item.duration);
         });
       chartDatasets = [
-        { data: chartData, label: '', backgroundColor: DoughnutChartColors[0] },
+        { data: chartData, label: '', backgroundColor: COLORS.presetColors[0] },
       ];
     } else {
       resBody.data.forEach(item => {

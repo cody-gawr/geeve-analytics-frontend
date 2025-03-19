@@ -1,6 +1,5 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
-import { DoughnutChartColors } from '@/newapp/shared/constants';
 import {
   JeeveLineFillOptions,
   externalTooltipHandler,
@@ -13,6 +12,7 @@ import { MkSelectExpensesModalComponent } from '../select-expenses-modal/select-
 import { MatDialog } from '@angular/material/dialog';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
+import { COLORS } from '@/newapp/constants';
   
 @Component({
   selector: 'finance-expense-chart',
@@ -115,7 +115,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
             })
             .value()
             .forEach(finalRow => {
-              const bgColor = DoughnutChartColors[i];
+              const bgColor = COLORS.presetColors[i];
               i++;
               this.datasets.push({
                 data: finalRow.accItems.map(item => {

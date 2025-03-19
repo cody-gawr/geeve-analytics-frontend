@@ -21,12 +21,12 @@ import {
   selectCurrentClinics,
   selectIsMultiClinicsSelected,
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
-import { DoughnutChartColors1 } from '@/newapp/shared/constants';
 import { selectCurrentDentistId } from '@/newapp/dentist/state/reducers/dentist.reducer';
 import { selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
 import { ChartData } from 'chart.js';
 import moment from 'moment';
 import { selectAuthUserData } from '@/newapp/auth/state/reducers/auth.reducer';
+import { COLORS } from '@/newapp/constants';
 
 export interface ClinicianProcedureState {
   isLoadingData: Array<CP_API_ENDPOINTS | CP_API_TREND_ENDPOINTS>;
@@ -759,8 +759,8 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
           chartDatasets.push({
             data,
             label: description,
-            backgroundColor: DoughnutChartColors1[index],
-            hoverBackgroundColor: DoughnutChartColors1[index],
+            backgroundColor: COLORS.presetColors[index],
+            hoverBackgroundColor: COLORS.presetColors[index],
           });
         }
       );

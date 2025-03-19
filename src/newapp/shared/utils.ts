@@ -15,7 +15,7 @@ import {
 } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { HttpErrorResponse } from '@angular/common/http';
-import { COLORS, LEGEND_BG_COLORS } from '../constants';
+import { COLORS } from '../constants';
 import { Clinic } from '../models/clinic';
 import { DecimalPipe } from '@angular/common';
 import { DEFAULT_TIMEZONE } from './constants';
@@ -466,7 +466,7 @@ export function dynamicBarBackgroundColor(
     data.forEach(res => {
       selectedClinics.forEach((item, index) => {
         if (res.clinicId == item.id) {
-          dynamicColors.push(LEGEND_BG_COLORS[index]);
+          dynamicColors.push(COLORS.presetColors[index]);
         }
       });
     });

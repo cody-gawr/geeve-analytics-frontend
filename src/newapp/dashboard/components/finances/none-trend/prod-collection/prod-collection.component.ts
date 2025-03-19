@@ -11,8 +11,8 @@ import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
-import { DoughnutChartColors } from '@/newapp/shared/constants';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
+import { COLORS } from '@/newapp/constants';
 
 @Component({
   selector: 'prod-collection-chart',
@@ -99,8 +99,8 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
             pChartData.push({
               data: [Math.round(parseFloat(<string>item.production))],
               label: item.clinicName,
-              backgroundColor: DoughnutChartColors[index],
-              hoverBackgroundColor: DoughnutChartColors[index],
+              backgroundColor: COLORS.presetColors[index],
+              hoverBackgroundColor: COLORS.presetColors[index],
             });
           });
           chartData = pChartData

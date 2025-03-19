@@ -22,8 +22,8 @@ import {
   selectCurrentClinics,
   selectIsMultiClinicsSelected,
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
-import { DoughnutChartColors } from '@/newapp/shared/constants';
 import camelcaseKeys from 'camelcase-keys';
+import { COLORS } from '@/newapp/constants';
 
 export interface FinanceState {
   isLoadingData: Array<FinanceEndpoints>;
@@ -1150,8 +1150,8 @@ export const selectProdTrendChartData = createSelector(
             data: values.map(v =>
               Math.round(parseFloat(<string>v.production ?? '0'))
             ),
-            backgroundColor: DoughnutChartColors[i],
-            hoverBackgroundColor: DoughnutChartColors[i],
+            backgroundColor: COLORS.presetColors[i],
+            hoverBackgroundColor: COLORS.presetColors[i],
           };
           i++;
           return item;
@@ -1205,8 +1205,8 @@ export const selectCollectionTrendChartData = createSelector(
             data: values.map(v =>
               Math.round(parseFloat(<string>v.collection ?? '0'))
             ),
-            backgroundColor: DoughnutChartColors[i],
-            hoverBackgroundColor: DoughnutChartColors[i],
+            backgroundColor: COLORS.presetColors[i],
+            hoverBackgroundColor: COLORS.presetColors[i],
           };
           i++;
           return item;
@@ -1542,8 +1542,8 @@ export const selectTotalDiscountTrendChartData = createSelector(
           chartDataset.push({
             data: _.sum(chartData) > 0 ? chartData : [],
             label: values[0].clinicName,
-            backgroundColor: DoughnutChartColors[i],
-            hoverBackgroundColor: DoughnutChartColors[i],
+            backgroundColor: COLORS.presetColors[i],
+            hoverBackgroundColor: COLORS.presetColors[i],
           });
 
           if (i == 0) {
@@ -1637,8 +1637,8 @@ export const selectProdByClinicianTrendChartData = createSelector(
             chartDataset[key].data.push(total);
             chartDataset[key].label = result.providerName;
           }
-          chartDataset[key].backgroundColor = DoughnutChartColors[key];
-          chartDataset[key].hoverBackgroundColor = DoughnutChartColors[key];
+          chartDataset[key].backgroundColor = COLORS.presetColors[key];
+          chartDataset[key].hoverBackgroundColor = COLORS.presetColors[key];
         });
         labels.push(
           trendMode == 'current'

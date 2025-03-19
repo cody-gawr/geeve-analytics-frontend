@@ -8,7 +8,7 @@ import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { externalTooltipHandler, formatXTooltipLabel, shortString } from '@/newapp/shared/utils';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
-import { PROD_AGE_LIST } from '@/newapp/shared/constants';
+import { PROD_AGE_LIST } from '@/newapp/constants';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({

@@ -16,7 +16,7 @@ import { CommonDataService } from '@/newapp/shared/services/common-data.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { CsvUtil } from '@/newapp/shared/utils';
-import { CAMPAIGN_FILTERS } from '@/newapp/shared/constants';
+import { CAMPAIGN_FILTERS } from '@/newapp/constants';
 import { CsvColumnSelectDialog } from './csv-column-select-dialog/csv-column-select-dialog.component';
 import { OptionDataType } from '@/newapp/shared/components/search-multi-select/search-multi-select.component';
 

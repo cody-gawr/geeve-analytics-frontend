@@ -1311,7 +1311,7 @@ export const selectCaNumNewPatientsChartData = createSelector(
         if (rolesInd?.type == 4) {
           chartColors = [{ backgroundColor: [] }];
           chartColors[0].backgroundColor[newpKey] = '#1CA49F';
-        } else chartColors = [{ backgroundColor: COLORS.doughnutChartColors }];
+        } else chartColors = [{ backgroundColor: COLORS.presetColors }];
       }
 
       let datasets = [
@@ -2365,7 +2365,7 @@ export const selectCaNumComplaintsChartData = createSelector(
         if (rolesInd?.type == 4) {
           chartColors = [{ backgroundColor: [] }];
           chartColors[0].backgroundColor[newpKey] = '#1CA49F';
-        } else chartColors = [{ backgroundColor: COLORS.doughnutChartColors }];
+        } else chartColors = [{ backgroundColor: COLORS.presetColors }];
       }
 
       let datasets = [

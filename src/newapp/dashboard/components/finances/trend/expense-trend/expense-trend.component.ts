@@ -62,8 +62,8 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
           this.datasets.push({
             data: v.values,
             label: v.label,
-            backgroundColor: COLORS.doughnutChartColors[index],
-            hoverBackgroundColor: COLORS.doughnutChartColors[index],
+            backgroundColor: COLORS.presetColors[index],
+            hoverBackgroundColor: COLORS.presetColors[index],
           });
         });
         this.labels =
