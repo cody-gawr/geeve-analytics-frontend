@@ -6,7 +6,7 @@
   align-items: center;
   padding: 15px;
   @include respond-from('big-desktop') {
-    max-height: 280px;
+    max-height: 320px;
   }
 
   @include respond-to('big-desktop') {
