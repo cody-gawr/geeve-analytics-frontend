@@ -13,6 +13,7 @@ import _ from 'lodash';
 import camelCase from 'camelcase';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 
 @Component({
   selector: 'revenue-by-referral-chart',
@@ -29,9 +30,15 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
 
   datasets = [{ data: [] }];
   labels = [];
+  tableData = [];
   revByReferralVal = 0;
 
   isChartClicked = false;
+
+  showTableInfo = false;
+  toggleTableInfo() {
+    this.showTableInfo = !this.showTableInfo;
+  }
 
   get isExactOrCore$() {
     return combineLatest([
@@ -111,11 +118,44 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isTableIconVisible$() {
+    return combineLatest([
+      this.isTrend$,
+      this.isMultipleClinic$
+    ]).pipe(
+      map(
+      ([isTrend, isMultiClinicsMode]) => 
+        !isTrend && !isMultiClinicsMode && this.hasData && (this.tableData?.length > 0)
+    ));
+  }
+
+  get showMaxBarsAlert$() {
+    return combineLatest([
+      this.showTableView$,
+      this.isTableIconVisible$,
+    ]).pipe(
+      map(([v, v1]) => {
+        return !v && (this.tableData?.length > this.labels?.length) && v1;
+      })
+    ) 
+}
+
+  get showMaxBarsAlertMsg$() {
+    return this.authFacade.chartLimitDesc$;
+  }
+
+  get showTableView$() {
+    return this.isTableIconVisible$.pipe(map(
+      v => this.showTableInfo && v
+    ))
+}
+
   constructor(
     private marketingFacade: MarketingFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
+    private authFacade: AuthFacade
   ) {
     this.loadData();
   }
@@ -138,6 +178,7 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
           this.datasets = chartData.datasets;
           this.labels = chartData.labels;
           this.revByReferralVal = chartData.revByReferralVal;
+          this.tableData = chartData.tableData
         }
       });
   }

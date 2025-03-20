@@ -10,7 +10,7 @@ import {
   generatingLegend_4,
 } from '@/newapp/shared/utils';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
+import { ChartOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import moment from 'moment';
@@ -278,31 +278,6 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
       },
     }
   ]
-
-  // public legendGenerator: _DeepPartialObject<LegendOptions<any>> = {
-  //   display: true,
-  //   position: 'bottom',
-  //   labels: {
-  //     boxWidth: 8,
-  //     usePointStyle: true,
-  //     generateLabels: chart => {
-  //       let bgColor = {};
-  //       let labels = chart.data.labels.map((value: string, i) => {
-  //         bgColor[value.split('--')[3]] =
-  //           chart.data.datasets[0].backgroundColor[i];
-  //         return value.split('--')[3];
-  //       });
-  //       labels = [...new Set(labels)];
-  //       labels = labels.splice(0, 10);
-  //       return labels.map((label, index) => ({
-  //         text: label,
-  //         strokeStyle: bgColor[label],
-  //         fillStyle: bgColor[label],
-  //       }));
-  //     },
-  //   },
-  //   onClick: () => {},
-  // };
 
   public stackedChartOptionsTC: ChartOptions = {
     elements: {

@@ -35,6 +35,7 @@ import moment from 'moment';
 import { ChartDataset } from 'chart.js';
 import { COLORS } from '@/newapp/constants';
 import { convertEndpointToDataKey, getSubValForGoal } from '@/newapp/shared/utils';
+import { selectAuthUserData } from '@/newapp/auth/state/reducers/auth.reducer';
 
 export interface MarketingState {
   isLoadingData: Array<MarketingEndpoints>;
@@ -927,19 +928,23 @@ export const selectIsLoadingAllTrendData = createSelector(
 export const selectNewPatientsByReferralChartData = createSelector(
   selectNewPatientsByReferralData,
   selectIsMultiClinicsSelected,
+  selectAuthUserData,
   (
     newPatientsByReferralData,
-    isMultiClinics
+    isMultiClinics,
+    authUserData
   ): {
     newPatientsByReferralVal: number;
     labels: string[];
     datasets: ChartDataset[];
+    tableData?: {patientName: string, count: number}[]
   } => {
     if (newPatientsByReferralData == null) {
       return {
         newPatientsByReferralVal: 0,
         labels: [],
         datasets: [],
+        tableData: []
       };
     }
     if (
@@ -976,17 +981,24 @@ export const selectNewPatientsByReferralChartData = createSelector(
     } else {
       const data = <MkNewPatientsByReferral>newPatientsByReferralData.data;
       const chartData = [],
-        chartLabels = [];
+        chartLabels = [], tableData = [];
       if (data.patientsReftype) {
-        data.patientsReftype.slice(0, 15).forEach(v => {
-          chartData.push(v.patientsVisits);
-          chartLabels.push(v.reftypeName);
+        data.patientsReftype.forEach((v, index) => {
+          if(index < authUserData.maxChartBars){
+            chartData.push(v.patientsVisits);
+            chartLabels.push(v.reftypeName);
+          }
+          tableData.push({
+            patientName: v.reftypeName,
+            count: v.patientsVisits
+          })
         });
       }
       return {
         newPatientsByReferralVal: Math.round(newPatientsByReferralData.total),
         datasets: [{ data: chartData }],
         labels: chartLabels,
+        tableData
       };
     }
   }
@@ -1045,19 +1057,23 @@ export const selectNewPatientsByReferralTrendChartData = createSelector(
 export const selectRevByReferralChartData = createSelector(
   selectRevenueByReferralData,
   selectIsMultiClinicsSelected,
+  selectAuthUserData,
   (
     revByReferralData,
-    isMultiClinics
+    isMultiClinics,
+    authUserData
   ): {
     revByReferralVal: number;
     labels: string[];
     datasets: ChartDataset[];
+    tableData?: {patientName: string, count: number}[]
   } => {
     if (revByReferralData == null) {
       return {
         revByReferralVal: 0,
         labels: [],
         datasets: [],
+        tableData: []
       };
     }
 
@@ -1090,12 +1106,18 @@ export const selectRevByReferralChartData = createSelector(
     } else {
       const data = <MkRevByReferral>revByReferralData.data;
       const chartData = [],
-        chartLabels = [];
+        chartLabels = [], tableData = [];
       if (data.patientsReftype) {
-        data.patientsReftype.slice(0, 15).forEach((v, idx) => {
+        data.patientsReftype.forEach((v, idx) => {
           if (v.invoiceAmount > 0) {
-            chartData.push(Math.round(v.invoiceAmount));
-            chartLabels.push(v.reftypeName);
+            if(idx < authUserData.maxChartBars){
+              chartData.push(Math.round(v.invoiceAmount));
+              chartLabels.push(v.reftypeName);
+            }
+            tableData.push({
+              patientName: v.reftypeName,
+              count: v.invoiceAmount
+            });
           }
         });
       }
@@ -1104,6 +1126,7 @@ export const selectRevByReferralChartData = createSelector(
         revByReferralVal: Math.round(revByReferralData.total ?? 0),
         datasets: [{ data: chartData }],
         labels: chartLabels,
+        tableData
       };
     }
   }

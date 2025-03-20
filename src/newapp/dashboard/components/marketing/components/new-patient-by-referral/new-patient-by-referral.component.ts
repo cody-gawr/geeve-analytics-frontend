@@ -10,6 +10,7 @@ import camelCase from 'camelcase';
 import { Subject, takeUntil, combineLatest, map, take } from 'rxjs';
 import { externalTooltipHandler } from '@/newapp/shared/utils';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 
 @Component({
   selector: 'new-patient-by-referral-chart',
@@ -28,10 +29,43 @@ export class MarketingNewPatientByReferralComponent
 
   datasets = [];
   labels = [];
+  tableData = [];
   newPatientsByReferralVal = 0;
   isChartClicked = 0;
   firstActiveLabel = '';
   newPatientsListData = [];
+  showTableInfo = false;
+  toggleTableInfo() {
+    this.showTableInfo = !this.showTableInfo;
+  }
+
+  get isTableIconVisible$() {
+    return combineLatest([
+      this.isTrend$,
+      this.isMultipleClinic$
+    ]).pipe(
+      map(
+      ([isTrend, isMultiClinicsMode]) => 
+        !isTrend && !isMultiClinicsMode && this.hasData && (this.tableData?.length > 0)
+    ));
+  }
+
+  get showMaxBarsAlert$() {
+      return combineLatest([
+        this.showTableView$,
+        this.isTableIconVisible$,
+      ]).pipe(
+        map(([v, v1]) => {
+          return !v && (this.tableData?.length > this.labels?.length) && v1;
+        })
+      ) 
+  }
+
+  get showTableView$() {
+      return this.isTableIconVisible$.pipe(map(
+        v => this.showTableInfo && v
+      ))
+  }
 
   get isLoading$() {
     return combineLatest([
@@ -101,15 +135,20 @@ export class MarketingNewPatientByReferralComponent
 
   get legend$() {
     return combineLatest([this.isMultipleClinic$, this.isTrend$]).pipe(
-      map(([isMultiClinics, isTrend]) => !isMultiClinics && !isTrend)
+      map(([isMultiClinics, isTrend]) => !isMultiClinics && !isTrend && this.labels.length <= 12)
     );
+  }
+
+  get showMaxBarsAlertMsg$() {
+    return this.authFacade.chartLimitDesc$;
   }
 
   constructor(
     private marketingFacade: MarketingFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
+    private authFacade: AuthFacade
   ) {}
 
   loadData() {
@@ -125,8 +164,10 @@ export class MarketingNewPatientByReferralComponent
           this.datasets = trendChartData.datasets;
           this.labels = trendChartData.labels;
         } else {
+          console.log('chartData', chartData)
           this.datasets = chartData.datasets;
           this.labels = chartData.labels;
+          this.tableData = chartData.tableData;
           this.newPatientsByReferralVal = chartData.newPatientsByReferralVal;
         }
       });
