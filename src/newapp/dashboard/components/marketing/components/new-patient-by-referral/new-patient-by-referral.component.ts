@@ -29,12 +29,21 @@ export class MarketingNewPatientByReferralComponent
 
   datasets = [];
   labels = [];
-  tableData = [];
   newPatientsByReferralVal = 0;
   isChartClicked = 0;
   firstActiveLabel = '';
   newPatientsListData = [];
   showTableInfo = false;
+
+  get tableData() {
+    return this.datasets && this.datasets[0].data?.map((item, index) => {
+      return {
+        patientName: this.labels[index],
+        count: item
+      }
+    })
+  }
+
   toggleTableInfo() {
     this.showTableInfo = !this.showTableInfo;
   }
@@ -46,19 +55,8 @@ export class MarketingNewPatientByReferralComponent
     ]).pipe(
       map(
       ([isTrend, isMultiClinicsMode]) => 
-        !isTrend && !isMultiClinicsMode && this.hasData && (this.tableData?.length > 0)
+        !isTrend && !isMultiClinicsMode && this.hasData && (this.tableData?.length > 0) && this.isChartClicked != 2
     ));
-  }
-
-  get showMaxBarsAlert$() {
-      return combineLatest([
-        this.showTableView$,
-        this.isTableIconVisible$,
-      ]).pipe(
-        map(([v, v1]) => {
-          return !v && (this.tableData?.length > this.labels?.length) && v1;
-        })
-      ) 
   }
 
   get showTableView$() {
@@ -139,10 +137,6 @@ export class MarketingNewPatientByReferralComponent
     );
   }
 
-  get showMaxBarsAlertMsg$() {
-    return this.authFacade.chartLimitDesc$;
-  }
-
   constructor(
     private marketingFacade: MarketingFacade,
     private clinicFacade: ClinicFacade,
@@ -164,10 +158,8 @@ export class MarketingNewPatientByReferralComponent
           this.datasets = trendChartData.datasets;
           this.labels = trendChartData.labels;
         } else {
-          console.log('chartData', chartData)
           this.datasets = chartData.datasets;
           this.labels = chartData.labels;
-          this.tableData = chartData.tableData;
           this.newPatientsByReferralVal = chartData.newPatientsByReferralVal;
         }
       });

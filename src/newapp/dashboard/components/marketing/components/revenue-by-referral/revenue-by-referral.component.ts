@@ -30,7 +30,6 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
 
   datasets = [{ data: [] }];
   labels = [];
-  tableData = [];
   revByReferralVal = 0;
 
   isChartClicked = false;
@@ -38,6 +37,15 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
   showTableInfo = false;
   toggleTableInfo() {
     this.showTableInfo = !this.showTableInfo;
+  }
+
+  get tableData() {
+    return this.datasets && this.datasets[0].data?.map((item, index) => {
+      return {
+        patientName: this.labels[index],
+        count: item
+      }
+    })
   }
 
   get isExactOrCore$() {
@@ -129,21 +137,6 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
     ));
   }
 
-  get showMaxBarsAlert$() {
-    return combineLatest([
-      this.showTableView$,
-      this.isTableIconVisible$,
-    ]).pipe(
-      map(([v, v1]) => {
-        return !v && (this.tableData?.length > this.labels?.length) && v1;
-      })
-    ) 
-}
-
-  get showMaxBarsAlertMsg$() {
-    return this.authFacade.chartLimitDesc$;
-  }
-
   get showTableView$() {
     return this.isTableIconVisible$.pipe(map(
       v => this.showTableInfo && v
@@ -178,7 +171,6 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
           this.datasets = chartData.datasets;
           this.labels = chartData.labels;
           this.revByReferralVal = chartData.revByReferralVal;
-          this.tableData = chartData.tableData
         }
       });
   }
