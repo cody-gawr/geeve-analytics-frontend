@@ -11,7 +11,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Chart, ChartOptions } from 'chart.js';
 import _ from 'lodash';
 import camelCase from 'camelcase';
-import { Subject, takeUntil, combineLatest, map } from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, take, filter } from 'rxjs';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 
@@ -191,8 +191,9 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
       combineLatest([
         this.isMultipleClinic$,
         this.marketingFacade.revByReferralData$,
+        this.chartType$
       ])
-        .pipe(takeUntil(this.destroy$))
+        .pipe(take(1), filter(params => params[2] === 'doughnut'))
         .subscribe(([isMulti, result]) => {
           if (result != null && !isMulti) {
             const apiResData = <MkRevByReferral>result.data;

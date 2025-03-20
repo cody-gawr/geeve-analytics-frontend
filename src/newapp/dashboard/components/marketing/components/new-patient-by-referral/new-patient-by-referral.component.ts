@@ -7,7 +7,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, Chart } from 'chart.js';
 import _ from 'lodash';
 import camelCase from 'camelcase';
-import { Subject, takeUntil, combineLatest, map, take } from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, take, filter } from 'rxjs';
 import { externalTooltipHandler } from '@/newapp/shared/utils';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
@@ -180,62 +180,66 @@ export class MarketingNewPatientByReferralComponent
   
 
   public chartClicked(event: any) {
-    if (this.isChartClicked < 2 && event.active.length > 0) {
-      // pms != exact or core
-      const clickedElementIndex = event.active[0].index;
-      const activeLabel = camelCase(
-        <string>(<Chart>event.event.chart).data.labels[clickedElementIndex]
-      );
-      this.newPatientsListData = [];
-      combineLatest([
-        this.isMultipleClinic$,
-        this.marketingFacade.newPatientsByReferralData$,
-        this.pmsName$,
-      ])
-        .pipe(take(1))
-        .subscribe(([isMulti, result, pmsName]) => {
-          const apiResData = <MkNewPatientsByReferral>result.data;
-          if (result != null && !isMulti) {
-            if(pmsName === 'praktika' || this.isChartClicked == 1){
-              this.isChartClicked = 2;
-              if(pmsName !== 'praktika'){
-                _.chain(apiResData.patientsRefname[this.firstActiveLabel])
-                .filter(item => camelCase(item.referralName) === activeLabel)
-                .value()
-                .forEach(item => {
-                  this.newPatientsListData.push(item.patientName);
-                });
-              }else{
-                _.chain(apiResData.patientsRefname[activeLabel])
-                .value()
-                .forEach(item => {
-                  this.newPatientsListData.push(item.patientName);
-                });
-              }
-
-            }else{
-              let chartData = [],
-              chartLabels = [];
-              this.isChartClicked = 1;
-              if (apiResData.patientsRefname[activeLabel].length > 0) {
-                this.firstActiveLabel = activeLabel;
-                _.chain(apiResData.patientsRefname[activeLabel])
-                  .groupBy('referralName')
-                  .map((items, referralName) => {
-                    return [referralName, items?.length || 0];
-                  }).sortBy(a => -a[1]).value().forEach(item => {
-                    chartLabels.push(item[0]);
-                    chartData.push(item[1]);
+      if (this.isChartClicked < 2 && event.active.length > 0) {
+        // pms != exact or core
+        const clickedElementIndex = event.active[0].index;
+        const activeLabel = camelCase(
+          <string>(<Chart>event.event.chart).data.labels[clickedElementIndex]
+        );
+        this.newPatientsListData = [];
+        combineLatest([
+          this.isMultipleClinic$,
+          this.marketingFacade.newPatientsByReferralData$,
+          this.pmsName$,
+          this.chartType$
+        ])
+          .pipe(
+            take(1),
+            filter(params => params[3] === 'doughnut')
+          )
+          .subscribe(([isMulti, result, pmsName]) => {
+            const apiResData = <MkNewPatientsByReferral>result.data;
+            if (result != null && !isMulti) {
+              if(pmsName === 'praktika' || this.isChartClicked == 1){
+                this.isChartClicked = 2;
+                if(pmsName !== 'praktika'){
+                  _.chain(apiResData.patientsRefname[this.firstActiveLabel])
+                  .filter(item => camelCase(item.referralName) === activeLabel)
+                  .value()
+                  .forEach(item => {
+                    this.newPatientsListData.push(item.patientName);
                   });
+                }else{
+                  _.chain(apiResData.patientsRefname[activeLabel])
+                  .value()
+                  .forEach(item => {
+                    this.newPatientsListData.push(item.patientName);
+                  });
+                }
+  
+              }else{
+                let chartData = [],
+                chartLabels = [];
+                this.isChartClicked = 1;
+                if (apiResData.patientsRefname[activeLabel].length > 0) {
+                  this.firstActiveLabel = activeLabel;
+                  _.chain(apiResData.patientsRefname[activeLabel])
+                    .groupBy('referralName')
+                    .map((items, referralName) => {
+                      return [referralName, items?.length || 0];
+                    }).sortBy(a => -a[1]).value().forEach(item => {
+                      chartLabels.push(item[0]);
+                      chartData.push(item[1]);
+                    });
+                }
+                
+                this.datasets = [{ data: chartData }];
+                this.labels = chartLabels;
               }
               
-              this.datasets = [{ data: chartData }];
-              this.labels = chartLabels;
             }
-            
-          }
-        });
-    }
+          });
+      }
   }
 
   public noNewPatientsByReferralChartOptions: ChartOptions<'doughnut'> = {

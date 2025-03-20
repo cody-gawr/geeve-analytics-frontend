@@ -45,7 +45,7 @@
               <tbody>
                 <tr *ngFor="let paInfo of tableData">
                   <td>{{ paInfo.patientName }}</td>
-                  <td>{{ paInfo.count | number: '1.0-0' }}</td>
+                  <td>{{ paInfo.count | currency:'USD':'symbol': '1.0-0' }}</td>
                 </tr>
               </tbody>
             </table>
