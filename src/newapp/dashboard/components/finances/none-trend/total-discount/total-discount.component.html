@@ -1,11 +1,5 @@
 <div class="chart-container">
   <mat-icon
-    *ngIf="showMaxBarsAlert"
-    class="warn-icon"
-    fontIcon="warning"
-    [appTooltip]="showMaxBarsAlertMsg$ | async"
-  ></mat-icon>
-  <mat-icon
     [tooltip]="toolTip"
     matTooltipPosition="below"
     color="primary"

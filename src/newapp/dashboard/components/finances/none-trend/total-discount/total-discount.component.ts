@@ -46,16 +46,8 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
     );
   }
 
-  get showMaxBarsAlert() {
-    return !this.showTableView && this.hasData && (this.tableData?.length > this.totalDiscountChartLabels?.length);
-  }
-
   get showTableView() {
     return this.showTableInfo && this.tableData.length > 0 && this.hasData;
-  }
-
-  get showMaxBarsAlertMsg$() {
-    return this.authFacade.chartLimitDesc$;
   }
 
   get paTableColumnA$() {
@@ -112,7 +104,6 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private decimalPipe: DecimalPipe,
-    private authFacade: AuthFacade
   ) {}
 
   public pieChartOptions: ChartOptions<'doughnut'> = {
@@ -149,7 +140,6 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
       this.financeFacade.totalDiscountTotal$,
       this.financeFacade.totalDiscountTrendTotal$,
       this.financeFacade.totalDiscountData$,
-      this.authFacade.authUserData$
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(
@@ -158,7 +148,6 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
           totalDiscountTotal,
           totalDiscountTrendTotal,
           totalDiscountData,
-          authUserData
         ]) => {
           const chartData = [],
             chartLabels = [], tableData = [];
@@ -174,11 +163,9 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
               })
               .value();
             data.sort((a, b) => b.discounts - a.discounts);
-            data.forEach((v, index) => {
-              if(index < authUserData.maxChartBars){
-                chartData.push(v.discounts);
-                chartLabels.push(v.clinicName);
-              }
+            data.forEach((v) => {
+              chartData.push(v.discounts);
+              chartLabels.push(v.clinicName);
               tableData.push({
                 label: v.clinicName,
                 value: v.discounts
@@ -191,14 +178,12 @@ export class FinanceTotalDiscountComponent implements OnInit, OnDestroy {
                 parseFloat(<string>b.discounts) -
                 parseFloat(<string>a.discounts)
             );
-            data.forEach((val, index) => {
+            data.forEach((val) => {
               const discounts = _.round(<number>val.discounts);
               if (discounts > 0) {
                 const providerName = val.providerName ?? '';
-                if(index < authUserData.maxChartBars){
-                  chartData.push(discounts);
-                  chartLabels.push(providerName);
-                }
+                chartData.push(discounts);
+                chartLabels.push(providerName);
 
                 tableData.push({
                   label: providerName,
