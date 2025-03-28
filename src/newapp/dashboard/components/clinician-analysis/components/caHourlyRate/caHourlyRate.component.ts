@@ -417,7 +417,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     },
     plugins: {
       // colors: { enabled: true },
-      legend: generatingLegend(),
+      legend: generatingLegend(1, ' -- '),
       tooltip: {
         mode: 'x',
         bodyFont: {

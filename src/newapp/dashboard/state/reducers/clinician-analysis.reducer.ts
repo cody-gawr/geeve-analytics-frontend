@@ -1027,13 +1027,10 @@ export const selectCaHourlyRateChartData = createSelector(
           .value();
       }
 
-      // if (data.length > 20) {
-      //   data = data.slice(0, 20);
-      // }
       const tableData = [];
       data.forEach((item: any, i) => {
         const value = Math.round(<number>item.hourlyRate);
-        const label = (item.providerName ?? '') + (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
+        const label = (item.providerName ?? '') + (selectedClinics.length > 1 ? ` -- ${item.clinicName}` : '');
   
         if(i < authUserData.maxChartBars){
           chartData.push(value);
@@ -1043,6 +1040,7 @@ export const selectCaHourlyRateChartData = createSelector(
         tableData.push({
           label: label,
           value: value,
+          clinicName: item.clinicName,
           v1: prodChartName === 'Production'? item.production: 
               (prodChartName === 'Collection'?item.collection:item.collectionMinusExp),
           v2: item.hours
