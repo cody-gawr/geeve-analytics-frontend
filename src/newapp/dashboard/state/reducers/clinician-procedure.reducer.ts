@@ -735,6 +735,7 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
     if (clinics.length > 1) {
       chartLabels = _.chain(resData.data)
         .uniqBy(item => item.clinicId)
+        .sortBy(item => item.clinicId)
         .map(item => item.clinicName)
         .value();
       const descriptionMap: Record<string, string> = {
@@ -750,6 +751,7 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
         ([property, description], index) => {
           const data: number[] = _.chain(resData.data)
             .groupBy('clinicId')
+            .sortBy((items, clinicId) => clinicId)
             .map((items, clinicId) => {
               return _.chain(items)
                 .sumBy(item => Number(item[property]) || 0)
