@@ -62,7 +62,6 @@ import { ClinicianProcedureFacade } from './facades/clinician-procedures.facade'
 import { MkSelectExpensesModalComponent } from './components/finances/none-trend/select-expenses-modal/select-expenses-modal.component';
 import { clinicianAnalysisFeature } from './state/reducers/clinician-analysis.reducer';
 import { ClinicianAnalysisEffects } from './state/effects/clinician-analysis.effects';
-import { ClinicianAnalysisService } from './services/clinician-analysis.service';
 import { ClinicianAnalysisFacade } from './facades/clinician-analysis.facade';
 import { ClinicianAnalysisComponent } from './components/clinician-analysis/clinician-analysis.component';
 import { CaProductionComponent } from './components/clinician-analysis/components/caProduction/caProduction.component';
@@ -182,7 +181,6 @@ import { MarketingService } from './services/marketing.service';
     FrontDeskFacade,
     ClinicianProcedureService,
     ClinicianProcedureFacade,
-    ClinicianAnalysisService,
     ClinicianAnalysisFacade,
     FollowupsFacade,
   ],

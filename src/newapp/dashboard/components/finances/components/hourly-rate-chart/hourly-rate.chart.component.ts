@@ -9,8 +9,30 @@ import { combineLatest, map, Subject, takeUntil } from "rxjs";
 
 @Component({
     selector: 'fn-hourly-rate-chart',
-    templateUrl: './hourly-rate.chart.component.html',
-    styleUrls: ['./hourly-rate.chart.component.scss'],
+    template: `
+        <app-chart
+            [chartTitle]="chartTitle"
+            [chartType]="chartType$ | async"
+            [toolTip]="toolTip"
+            [durationCurrLabel]="durationCurrLabel$ | async"
+            [durationPrevLabel]="durationPrevLabel$ | async"
+            [duration]="duration$ | async"
+            [curr]="curr"
+            [prev]="prev"
+            [isLoading]="isLoading$ | async"
+            [datasets]="datasets"
+            [labels]="labels"
+            [hasData]="hasData$ | async"
+            [chartOptions]="chartOptions$ | async"
+            currency="$"
+            noDataAlertMessage="You have no hourly rate in the selected period"
+            [gaugeValue]="curr"
+            [gaugeSize]="250"
+            [gaugeMax]="curr"
+            [newLogo]="true"
+            [appendCurrency]="false"
+        ></app-chart>    
+    `
 })
 export class FnHourlyRateChartComponent implements OnInit, OnDestroy {
     @Input() toolTip = '';

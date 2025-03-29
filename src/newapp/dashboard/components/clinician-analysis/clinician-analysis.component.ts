@@ -18,16 +18,7 @@ import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 import { CA_CHART_ID } from '@/newapp/models/dashboard/clinician-analysis';
-
-interface QueryParams {
-  clinicId: string;
-  startDate: string;
-  endDate: string;
-  duration: DATE_RANGE_DURATION;
-  queryWhEnabled?: number;
-  dentistId?: number;
-  clinician?: number;
-}
+import { ChartDescParams } from '@/newapp/models/dashboard';
 
 @Component({
   selector: 'clinician-analysis',
@@ -128,7 +119,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         const queryWhEnabled = route && parseInt(route.wh ?? '-1');
         // const isEachClinicPraktika = clinics.every(c => c.pms === 'praktika');
 
-        let queryParams: QueryParams = {
+        let queryParams: ChartDescParams<CA_API_ALL_ENDPOINTS> = {
           clinicId: clinics.map(v => v.id).join(','),
           startDate: startDate && moment(startDate).format('DD-MM-YYYY'),
           endDate: endDate && moment(endDate).format('DD-MM-YYYY'),
@@ -172,19 +163,19 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
           const isTrend = trend !== 'off' && providerId;
 
           if (!isTrend) {
-            const caEndpoints = ['caNumNewPatients', 'caNumComplaints'];
+            const caEndpoints = ['caNumNewPatients', 'caNumComplaints', 'caTotalDiscounts'];
 
             caEndpoints.push('caTxPlanCompRate');
 
             for (const api of caEndpoints) {
-              this.caFacade.loadNoneTrendApiRequest({
-                api: <CA_API_ENDPOINTS>api,
-                ...queryParams,
-              });
+              this.caFacade.loadChartDescription(
+                <CA_API_ENDPOINTS>api,
+                queryParams,
+              );
             }
           } else {
             const endpoints = [];
-            endpoints.push('caNumNewPatientsTrend', 'caNumComplaintsTrend');
+            endpoints.push('caNumNewPatientsTrend', 'caNumComplaintsTrend', 'caTotalDiscountsTrend');
 
             endpoints.push('caTxPlanCompRateTrend');
             endpoints.forEach(api => {
@@ -195,10 +186,9 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
                 queryWhEnabled,
                 dentistId: queryParams.dentistId,
               };
-              this.caFacade.loadTrendApiRequest({
-                ...params,
-                api: api,
-              });
+              this.caFacade.loadChartDescription(
+                api,
+                params);
             });
           }
         }
@@ -281,10 +271,10 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
 
           for (const api of caEndpoints) {
-            this.caFacade.loadNoneTrendApiRequest({
-              ...queryParams,
+            this.caFacade.loadChartDescription(
               api,
-            });
+              queryParams
+            );
           }
 
           caTrendEndpoints.forEach(api => {
@@ -295,10 +285,9 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               queryWhEnabled,
               dentistId: queryParams.dentistId,
             };
-            this.caFacade.loadTrendApiRequest({
-              ...params,
-              api: api,
-            });
+            this.caFacade.loadChartDescription(
+              api,
+              params);
           });
         }
       );
@@ -379,10 +368,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
           if (!isTrend) {
             for (const api of caEndpoints) {
-              this.caFacade.loadNoneTrendApiRequest({
-                ...queryParams,
-                api,
-              });
+              this.caFacade.loadChartDescription(api, queryParams);
             }
           } else {
             caTrendEndpoints.forEach(api => {
@@ -393,10 +379,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
                 queryWhEnabled,
                 dentistId: queryParams.dentistId,
               };
-              this.caFacade.loadTrendApiRequest({
-                ...params,
-                api: api,
-              });
+              this.caFacade.loadChartDescription(api, params);
             });
           }
         }
@@ -432,10 +415,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
           if (!isTrend) {
             for (const api of caEndpoints) {
-              this.caFacade.loadNoneTrendApiRequest({
-                ...queryParams,
-                api,
-              });
+              this.caFacade.loadChartDescription(api, queryParams);
             }
           } else {
             caTrendEndpoints.forEach(api => {
@@ -446,10 +426,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
                 queryWhEnabled,
                 dentistId: queryParams.dentistId,
               };
-              this.caFacade.loadTrendApiRequest({
-                ...params,
-                api: api,
-              });
+              this.caFacade.loadChartDescription(api, params);
             });
           }
         }
@@ -479,10 +456,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
         if (!isTrend) {
           for (const api of caEndpoints) {
-            this.caFacade.loadNoneTrendApiRequest({
-              ...queryParams,
-              api,
-            });
+            this.caFacade.loadChartDescription(api, queryParams);
           }
         } else {
           caTrendEndpoints.forEach(api => {
@@ -493,10 +467,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
               queryWhEnabled,
               dentistId: queryParams.dentistId,
             };
-            this.caFacade.loadTrendApiRequest({
-              ...params,
-              api: api,
-            });
+            this.caFacade.loadChartDescription(api, params);
           });
         }
       });

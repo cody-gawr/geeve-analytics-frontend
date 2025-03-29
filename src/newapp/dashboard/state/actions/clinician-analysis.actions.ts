@@ -1,46 +1,64 @@
+import { ChartDescParams } from '@/newapp/models/dashboard';
 import { createAction, props } from '@ngrx/store';
 
-export const loadNoneTrendApiRequest = createAction(
-  '[Clinician Analysis API] load None Trend Api Request',
+export const loadCaChartDescription = createAction(
+  '[Clinician Analysis Page] Load Clinician Analysis Chart Description',
+  props<ChartDescParams<CA_API_ALL_ENDPOINTS>>()
+);
+
+export const caChartDescriptionSuccess = createAction(
+  '[Clinician Analysis API] Load Clinician Analysis Chart Description Success',
+  props<{ chartDesc: CA_API_ALL_ENDPOINTS, chartDescData: any }>()
+);
+
+export const caChartDescriptionFailure = createAction(
+  '[Clinician Analysis API] Load Clinician Analysis Chart Description Failure',
   props<{
-    api: CA_API_ENDPOINTS;
-    params: CaNoneTrendQueryParams;
+    chartDesc: CA_API_ALL_ENDPOINTS, error: JeeveError;
   }>()
 );
 
-export const loadTrendApiRequest = createAction(
-  '[Clinician Analysis API] load Trend Api Request',
-  props<{
-    api: CA_API_ENDPOINTS_TREND;
-    params: CaTrendQueryParams;
-  }>()
-);
+// export const loadNoneTrendApiRequest = createAction(
+//   '[Clinician Analysis API] load None Trend Api Request',
+//   props<{
+//     api: CA_API_ENDPOINTS;
+//     params: CaNoneTrendQueryParams;
+//   }>()
+// );
 
-export const loadCaNoneTrendApiRequestSuccess = createAction(
-  '[Clinician Analysis API] Load None Trend Api Success',
-  props<{ api: CA_API_ENDPOINTS; resBody: any }>()
-);
+// export const loadTrendApiRequest = createAction(
+//   '[Clinician Analysis API] load Trend Api Request',
+//   props<{
+//     api: CA_API_ENDPOINTS_TREND;
+//     params: CaTrendQueryParams;
+//   }>()
+// );
 
-export const loadCaNoneTrendApiRequestFailure = createAction(
-  '[Clinician Analysis API] Load None Trend Api Failure',
-  props<{
-    api: CA_API_ENDPOINTS;
-    error: JeeveError;
-  }>()
-);
+// export const loadCaNoneTrendApiRequestSuccess = createAction(
+//   '[Clinician Analysis API] Load None Trend Api Success',
+//   props<{ api: CA_API_ENDPOINTS; resBody: any }>()
+// );
 
-export const loadCaTrendApiRequestSuccess = createAction(
-  '[Clinician Analysis API] Load Trend Api Success',
-  props<{ api: CA_API_ENDPOINTS_TREND; resBody: any }>()
-);
+// export const loadCaNoneTrendApiRequestFailure = createAction(
+//   '[Clinician Analysis API] Load None Trend Api Failure',
+//   props<{
+//     api: CA_API_ENDPOINTS;
+//     error: JeeveError;
+//   }>()
+// );
 
-export const loadCaTrendApiRequestFailure = createAction(
-  '[Clinician Analysis API] Load Trend Api Failure',
-  props<{
-    api: CA_API_ENDPOINTS_TREND;
-    error: JeeveError;
-  }>()
-);
+// export const loadCaTrendApiRequestSuccess = createAction(
+//   '[Clinician Analysis API] Load Trend Api Success',
+//   props<{ api: CA_API_ENDPOINTS_TREND; resBody: any }>()
+// );
+
+// export const loadCaTrendApiRequestFailure = createAction(
+//   '[Clinician Analysis API] Load Trend Api Failure',
+//   props<{
+//     api: CA_API_ENDPOINTS_TREND;
+//     error: JeeveError;
+//   }>()
+// );
 
 export const setProdChartName = createAction(
   '[Clinician Analysis API] Set Prod Chart Name',

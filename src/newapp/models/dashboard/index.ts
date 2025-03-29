@@ -5,6 +5,8 @@ export interface ChartDescParams<T> {
     startDate?: string;
     endDate?: string;
     duration?: string;
-    queryWhEnabled: number;
+    queryWhEnabled?: number;
     connectedWith?: CONNECT_WITH_PLATFORM;
+    clinician?: string | number;
+    dentistId?: string | number;
   }

@@ -39,11 +39,32 @@ import {
   selectIsLoadingCaNumComplaintsTrend,
   selectIsHideFooterSection,
   selectIsTrendIconVisible,
+  selectIsLoadingChartDesc,
 } from '../state/reducers/clinician-analysis.reducer';
+import { ChartDescParams } from '@/newapp/models/dashboard';
 
 @Injectable()
 export class ClinicianAnalysisFacade {
   constructor(private store: Store<ClinicianAnalysisState>) {}
+
+    isLoadingChartDesc$ = (chartDesc: CA_API_ALL_ENDPOINTS) => {
+      return this.store.pipe(
+        select(selectIsLoadingChartDesc(chartDesc))
+      );
+    };
+  
+    loadChartDescription(
+      chartDescription: CA_API_ALL_ENDPOINTS, 
+      params: ChartDescParams<CA_API_ALL_ENDPOINTS>
+    ) {
+      this.store.dispatch(
+        ClinicianAnalysisActions.loadCaChartDescription({
+          chartDescription,
+          ...params
+        })
+      );
+    };
+  
   public readonly prodChartName$ = this.store.pipe(
     select(selectProductionChartName)
   );
@@ -213,14 +234,6 @@ export class ClinicianAnalysisFacade {
     select(selectHourlyRateProdSelectTab)
   );
 
-  // public readonly hourlyRateColSelectTab$ = this.store.pipe(
-  //   select(selectHourlyRateColSelectTab)
-  // );
-
-  // public readonly hourlyRateColExpSelectTab$ = this.store.pipe(
-  //   select(selectHourlyRateColExpSelectTab)
-  // );
-
   public setHourlyRateProdSelectTab(tabName: CA_HOURLY_RATE_SELECT_TAB) {
     this.store.dispatch(
       ClinicianAnalysisActions.setHourlyRateProdSelectTab({ tabName })
@@ -239,49 +252,49 @@ export class ClinicianAnalysisFacade {
     );
   }
 
-  public loadNoneTrendApiRequest({
-    api,
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-    dentistId,
-    clinician,
-  }: CaNoneTrendQueryParams & { api: CA_API_ENDPOINTS }) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.loadNoneTrendApiRequest({
-        api: api,
-        params: {
-          clinicId,
-          startDate,
-          endDate,
-          duration,
-          queryWhEnabled,
-          dentistId,
-          clinician,
-        },
-      })
-    );
-  }
+  // public loadNoneTrendApiRequest({
+  //   api,
+  //   clinicId,
+  //   startDate,
+  //   endDate,
+  //   duration,
+  //   queryWhEnabled,
+  //   dentistId,
+  //   clinician,
+  // }: CaNoneTrendQueryParams & { api: CA_API_ENDPOINTS }) {
+  //   this.store.dispatch(
+  //     ClinicianAnalysisActions.loadNoneTrendApiRequest({
+  //       api: api,
+  //       params: {
+  //         clinicId,
+  //         startDate,
+  //         endDate,
+  //         duration,
+  //         queryWhEnabled,
+  //         dentistId,
+  //         clinician,
+  //       },
+  //     })
+  //   );
+  // }
 
-  public loadTrendApiRequest({
-    api,
-    clinicId,
-    mode,
-    queryWhEnabled,
-    dentistId = undefined,
-  }) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.loadTrendApiRequest({
-        api: api,
-        params: {
-          clinicId: clinicId,
-          dentistId: dentistId,
-          mode,
-          queryWhEnabled,
-        },
-      })
-    );
-  }
+  // public loadTrendApiRequest({
+  //   api,
+  //   clinicId,
+  //   mode,
+  //   queryWhEnabled,
+  //   dentistId = undefined,
+  // }) {
+  //   this.store.dispatch(
+  //     ClinicianAnalysisActions.loadTrendApiRequest({
+  //       api: api,
+  //       params: {
+  //         clinicId: clinicId,
+  //         dentistId: dentistId,
+  //         mode,
+  //         queryWhEnabled,
+  //       },
+  //     })
+  //   );
+  // }
 }

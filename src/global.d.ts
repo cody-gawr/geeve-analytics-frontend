@@ -49,6 +49,8 @@ declare global {
     mode: API_TREND_MODE;
     queryWhEnabled?: number;
   }
+
+  type CA_API_ALL_ENDPOINTS = CA_API_ENDPOINTS | CA_API_ENDPOINTS_TREND;
   type CA_API_ENDPOINTS =
     | 'caDentistProduction' // 1
     | 'caDentistProductionDentist'
@@ -74,7 +76,8 @@ declare global {
     | 'caCollectionHourlyRateOht'
     | 'caCollectionExpHourlyRate'
     | 'caCollectionExpHourlyRateDentist'
-    | 'caCollectionExpHourlyRateOht';
+    | 'caCollectionExpHourlyRateOht'
+    | 'caTotalDiscounts';
 
   type CA_API_ENDPOINTS_TREND =
     | 'caDentistProductionTrend'
@@ -89,7 +92,8 @@ declare global {
     | 'caCollectionExpHourlyRateTrend'
     | 'caNumNewPatientsTrend'
     | 'caTxPlanCompRateTrend'
-    | 'caRecallRateTrend';
+    | 'caRecallRateTrend'
+    | 'caTotalDiscountsTrend';
 
   type CA_PROD_CHART_NAME = 'Production' | 'Collection' | 'Collection-Exp';
   type CA_TX_PLAN_AVG_FEE_CHART_NAME =
@@ -154,7 +158,7 @@ declare global {
     | 'mkProdByAge'
     | 'mkProdByAgeTrend';
 
-  type DASHBOARD_NAME = 'Marketing' | 'Finance';
+  type DASHBOARD_NAME = 'Marketing' | 'Finance' | 'ClinicianAnalysis';
 
   type FinanceEndpoints = FN_API_ENDPOINTS | FN_API_ENDPOINTS_TREND;
 

@@ -128,24 +128,6 @@ export const clinicianAnalysisFeature = createFeature({
         };
       }
     ),
-    // on(
-    //   ClinicianAnalysisActions.setHourlyRateColSelectTab,
-    //   (state, { tabName }): ClinicianAnalysisState => {
-    //     return {
-    //       ...state,
-    //       hourlyRateColSelectTab: tabName,
-    //     };
-    //   }
-    // ),
-    // on(
-    //   ClinicianAnalysisActions.setHourlyRateColExpSelectTab,
-    //   (state, { tabName }): ClinicianAnalysisState => {
-    //     return {
-    //       ...state,
-    //       hourlyRateColExpSelectTab: tabName,
-    //     };
-    //   }
-    // ),
     on(
       ClinicianAnalysisActions.setTxTplanAvgFeeChartName,
       (state, { chartName }): ClinicianAnalysisState => {
@@ -165,76 +147,129 @@ export const clinicianAnalysisFeature = createFeature({
       }
     ),
     on(
-      ClinicianAnalysisActions.loadNoneTrendApiRequest,
-      (state, { api }): ClinicianAnalysisState => {
+      ClinicianAnalysisActions.loadCaChartDescription,
+      (state, { chartDescription }): ClinicianAnalysisState => {
+        let data: any;
+        if(chartDescription.includes('Trend')){
+          data = {resBodyListTrend: { ...state.resBodyListTrend, [chartDescription]: {} }};
+        }else{
+          data = {resBodyList: { ...state.resBodyList, [chartDescription]: {} }};
+        }
         return {
           ...state,
-          errors: _.filter(state.errors, n => n.api != api),
-          isLoadingData: _.union(state.isLoadingData, [api]),
-          resBodyList: { ...state.resBodyList, [api]: {} },
+          errors: _.filter(state.errors, n => n.api != chartDescription),
+          isLoadingData: _.union(state.isLoadingData, [chartDescription]),
+          ...data,
         };
       }
     ),
+    // on(
+    //   ClinicianAnalysisActions.loadNoneTrendApiRequest,
+    //   (state, { api }): ClinicianAnalysisState => {
+    //     return {
+    //       ...state,
+    //       errors: _.filter(state.errors, n => n.api != api),
+    //       isLoadingData: _.union(state.isLoadingData, [api]),
+    //       resBodyList: { ...state.resBodyList, [api]: {} },
+    //     };
+    //   }
+    // ),
+    // on(
+    //   ClinicianAnalysisActions.loadTrendApiRequest,
+    //   (state, { api }): ClinicianAnalysisState => {
+    //     return {
+    //       ...state,
+    //       errors: _.filter(state.errors, n => n.api != api),
+    //       isLoadingData: _.union(state.isLoadingData, [api]),
+    //       resBodyListTrend: { ...state.resBodyListTrend, [api]: {} },
+    //     };
+    //   }
+    // ),
     on(
-      ClinicianAnalysisActions.loadTrendApiRequest,
-      (state, { api }): ClinicianAnalysisState => {
-        return {
-          ...state,
-          errors: _.filter(state.errors, n => n.api != api),
-          isLoadingData: _.union(state.isLoadingData, [api]),
-          resBodyListTrend: { ...state.resBodyListTrend, [api]: {} },
-        };
-      }
-    ),
-    on(
-      ClinicianAnalysisActions.loadCaNoneTrendApiRequestSuccess,
-      (state, { api, resBody }): ClinicianAnalysisState => {
+      ClinicianAnalysisActions.caChartDescriptionSuccess,
+      (state, { chartDesc, chartDescData }): ClinicianAnalysisState => {
         const { isLoadingData, errors } = state;
+        let data: any;
+        if(chartDesc.includes('Trend')){
+          data = {resBodyListTrend: { ...state.resBodyListTrend, [chartDesc]: chartDescData }};
+        }else{
+          data = {resBodyList: { ...state.resBodyList, [chartDesc]: chartDescData }};
+        }
         return {
           ...state,
-          errors: _.filter(errors, n => n.api != api),
-          resBodyList: { ...state.resBodyList, [api]: resBody },
-          isLoadingData: _.filter(isLoadingData, n => n != api),
+          errors: _.filter(errors, n => n.api != chartDesc),
+          ...data,
+          isLoadingData: _.filter(isLoadingData, n => n != chartDesc),
         };
       }
     ),
     on(
-      ClinicianAnalysisActions.loadCaNoneTrendApiRequestFailure,
-      (state, { api, error }): ClinicianAnalysisState => {
+      ClinicianAnalysisActions.caChartDescriptionFailure,
+      (state, { chartDesc, error }): ClinicianAnalysisState => {
         const { isLoadingData, errors } = state;
+        let data: any;
+        if(chartDesc.includes('Trend')){
+          data = {resBodyListTrend: { ...state.resBodyListTrend, [chartDesc]: {} }};
+        }else{
+          data = {resBodyList: { ...state.resBodyList, [chartDesc]: {} }};
+        }
         return {
           ...state,
-          resBodyList: { ...state.resBodyList, [api]: {} },
-          isLoadingData: _.filter(isLoadingData, n => n != api),
-          errors: [...errors, { ...error, api: api }],
+          ...data,
+          isLoadingData: _.filter(isLoadingData, n => n != chartDesc),
+          errors: [...errors, { ...error, api: chartDesc }],
         };
       }
     ),
-    on(
-      ClinicianAnalysisActions.loadCaTrendApiRequestSuccess,
-      (state, { api, resBody }): ClinicianAnalysisState => {
-        const { isLoadingData, errors } = state;
+    // on(
+    //   ClinicianAnalysisActions.loadCaNoneTrendApiRequestSuccess,
+    //   (state, { api, resBody }): ClinicianAnalysisState => {
+    //     const { isLoadingData, errors } = state;
+    //     return {
+    //       ...state,
+    //       errors: _.filter(errors, n => n.api != api),
+    //       resBodyList: { ...state.resBodyList, [api]: resBody },
+    //       isLoadingData: _.filter(isLoadingData, n => n != api),
+    //     };
+    //   }
+    // ),
+    // on(
+    //   ClinicianAnalysisActions.loadCaNoneTrendApiRequestFailure,
+    //   (state, { api, error }): ClinicianAnalysisState => {
+    //     const { isLoadingData, errors } = state;
+    //     return {
+    //       ...state,
+    //       resBodyList: { ...state.resBodyList, [api]: {} },
+    //       isLoadingData: _.filter(isLoadingData, n => n != api),
+    //       errors: [...errors, { ...error, api: api }],
+    //     };
+    //   }
+    // ),
+    // on(
+    //   ClinicianAnalysisActions.loadCaTrendApiRequestSuccess,
+    //   (state, { api, resBody }): ClinicianAnalysisState => {
+    //     const { isLoadingData, errors } = state;
 
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != api),
-          resBodyListTrend: { ...state.resBodyListTrend, [api]: resBody },
-          isLoadingData: _.filter(isLoadingData, n => n != api),
-        };
-      }
-    ),
-    on(
-      ClinicianAnalysisActions.loadCaTrendApiRequestFailure,
-      (state, { api, error }): ClinicianAnalysisState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          resBodyListTrend: { ...state.resBodyListTrend, [api]: {} },
-          isLoadingData: _.filter(isLoadingData, n => n != api),
-          errors: [...errors, { ...error, api: api }],
-        };
-      }
-    )
+    //     return {
+    //       ...state,
+    //       errors: _.filter(errors, n => n.api != api),
+    //       resBodyListTrend: { ...state.resBodyListTrend, [api]: resBody },
+    //       isLoadingData: _.filter(isLoadingData, n => n != api),
+    //     };
+    //   }
+    // ),
+    // on(
+    //   ClinicianAnalysisActions.loadCaTrendApiRequestFailure,
+    //   (state, { api, error }): ClinicianAnalysisState => {
+    //     const { isLoadingData, errors } = state;
+    //     return {
+    //       ...state,
+    //       resBodyListTrend: { ...state.resBodyListTrend, [api]: {} },
+    //       isLoadingData: _.filter(isLoadingData, n => n != api),
+    //       errors: [...errors, { ...error, api: api }],
+    //     };
+    //   }
+    // )
   ),
 });
 
@@ -270,6 +305,13 @@ export const selectIsTrendIconVisible = createSelector(
       : duration != 'custom' && !(isDentistMode && isTrend);
   }
 );
+
+export const selectIsLoadingChartDesc = (chartDesc: CA_API_ALL_ENDPOINTS) => {
+  return createSelector(
+    selectIsLoadingData,
+    loadingData => _.findIndex(loadingData, l => l == chartDesc) >= 0
+  );
+}
 
 export const selectIsLoadingCaDentistProduction = createSelector(
   selectIsLoadingData,
@@ -2285,6 +2327,7 @@ export const selectCaNumComplaintsChartData = createSelector(
   selectRolesIndividual,
   selectCompareEnabled,
   // selectAuthUserData,
+  
   (
     bodyList,
     selectedClinics,

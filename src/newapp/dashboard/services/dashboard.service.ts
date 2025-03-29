@@ -22,10 +22,12 @@ export class DashboardService {
         .get(`${this.apiUrl}/${dashboard}/${params.chartDescription}`, {
           params: {
             clinic_id: params.clinicId,
-            ...(params.mode ? {mode: params.mode}: {}),
-            ...(params.startDate ? {start_date: params.startDate}: {}),
-            ...(params.endDate ? {end_date: params.endDate}: {}),
-            ...(params.duration ? {duration: params.duration}: {}),
+            ...(params.mode !== undefined ? {mode: params.mode}: {}),
+            ...(params.startDate !== undefined ? {start_date: params.startDate}: {}),
+            ...(params.endDate !== undefined ? {end_date: params.endDate}: {}),
+            ...(params.duration !== undefined ? {duration: params.duration}: {}),
+            ...(params.clinician !== undefined ? {clinician: params.clinician}: {}),
+            ...(params.dentistId !== undefined ? {provider_id: params.dentistId}: {}),
             ...([0, 1].indexOf(params.queryWhEnabled) > -1? {wh: params.queryWhEnabled}: {})
           },
           withCredentials: true,
