@@ -986,16 +986,7 @@ export const selectCpPredictorRatioChartData = createSelector(
       chartLabels2 = [],
       chartLabels3 = [];
 
-    const cpPredictorRatioPrev1 =
-      resData.data.find(item => item.type == 'crown-largefilling')?.totalTa ||
-      '';
 
-    const cpPredictorRatioPrev2 =
-      resData.data.find(item => item.type == 'rct-extraction')?.totalTa || '';
-
-    const cpPredictorRatioPrev3 =
-      resData.data.find(item => item.type == 'rctstarted-rctcompleted')
-        ?.totalTa || '';
 
     if (clinics.length > 1) {
       const types = [
@@ -1025,6 +1016,12 @@ export const selectCpPredictorRatioChartData = createSelector(
         multifulratio2 = '',
         multifulratio3 = '';
 
+        let cpPredictorRatioPrev1 = [0, 0];
+  
+      let cpPredictorRatioPrev2 =[0, 0];
+  
+      let cpPredictorRatioPrev3 = [0, 0];
+
       types.forEach(type => {
         resData.data
           .filter(item => item.type == type)
@@ -1038,6 +1035,8 @@ export const selectCpPredictorRatioChartData = createSelector(
                 ratio1 += Math.round(parseFloat(<string>ele.firstValue)) || 0;
                 ratio2 += Math.round(parseFloat(<string>ele.secondValue)) || 0;
                 multifulratio1 = ratio1 + ':' + ratio2;
+                cpPredictorRatioPrev1[0] += Number(ele.totalTa.split(':')[0]);
+                cpPredictorRatioPrev1[1] += Number(ele.totalTa.split(':')[1]);
                 chartLabels1.push(ele.clinicName);
                 break;
               case 'rct-extraction':
@@ -1048,6 +1047,8 @@ export const selectCpPredictorRatioChartData = createSelector(
                 ratio3 += Math.round(parseFloat(<string>ele.firstValue)) || 0;
                 ratio4 += Math.round(parseFloat(<string>ele.secondValue)) || 0;
                 multifulratio2 = ratio3 + ':' + ratio4;
+                cpPredictorRatioPrev2[0] += Number(ele.totalTa.split(':')[0]);
+                cpPredictorRatioPrev2[1] += Number(ele.totalTa.split(':')[1]);
                 chartLabels2.push(ele.clinicName);
                 break;
               case 'rctstarted-rctcompleted':
@@ -1058,6 +1059,8 @@ export const selectCpPredictorRatioChartData = createSelector(
                 ratio5 += Math.round(parseFloat(<string>ele.firstValue)) || 0;
                 ratio6 += Math.round(parseFloat(<string>ele.secondValue)) || 0;
                 multifulratio3 = ratio5 + ':' + ratio6;
+                cpPredictorRatioPrev3[0] += Number(ele.totalTa.split(':')[0]);
+                cpPredictorRatioPrev3[1] += Number(ele.totalTa.split(':')[1]);
                 chartLabels3.push(ele.clinicName);
                 break;
               default:
@@ -1069,7 +1072,7 @@ export const selectCpPredictorRatioChartData = createSelector(
         return {
           datasets: chartDatasets1,
           labels: chartLabels1,
-          cpPredictorRatioPrev: cpPredictorRatioPrev1,
+          cpPredictorRatioPrev: cpPredictorRatioPrev1.join(':'),
           ratio1: ratio1,
           ratio2: ratio2,
           multifulRatio: multifulratio1,
@@ -1078,7 +1081,7 @@ export const selectCpPredictorRatioChartData = createSelector(
         return {
           datasets: chartDatasets2,
           labels: chartLabels2,
-          cpPredictorRatioPrev: cpPredictorRatioPrev2,
+          cpPredictorRatioPrev: cpPredictorRatioPrev2.join(':'),
           ratio1: ratio3,
           ratio2: ratio4,
           multifulRatio: multifulratio2,
@@ -1087,13 +1090,23 @@ export const selectCpPredictorRatioChartData = createSelector(
         return {
           datasets: chartDatasets3,
           labels: chartLabels3,
-          cpPredictorRatioPrev: cpPredictorRatioPrev3,
+          cpPredictorRatioPrev: cpPredictorRatioPrev3.join(':'),
           ratio1: ratio5,
           ratio2: ratio6,
           multifulRatio: multifulratio3,
         };
       }
     } else {
+      const cpPredictorRatioPrev1 =
+      resData.data.find(item => item.type == 'crown-largefilling')?.totalTa ||
+      '';
+
+      const cpPredictorRatioPrev2 =
+        resData.data.find(item => item.type == 'rct-extraction')?.totalTa || '';
+
+      const cpPredictorRatioPrev3 =
+        resData.data.find(item => item.type == 'rctstarted-rctcompleted')
+        ?.totalTa || '';
       (chartDatasets1 = [
         { data: [], label: 'Indirect Restorations' },
         { data: [], label: 'Large Direct Restorations' },
