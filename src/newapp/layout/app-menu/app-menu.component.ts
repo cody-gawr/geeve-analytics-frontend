@@ -414,12 +414,12 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(([user, result]) => {
         const params: MenuValidatorParams = {
           permissions: result.data,
-          userType: result.type,
+          userType: Number(result.type),
           userPlan: result.plan,
           hasPrimeClinics: result.hasPrimeClinics,
           userId: user?.id
         };
-        this.userType = result.type;
+        this.userType = Number(result.type);
         const menuData: MenuNode[] = [];
 
         MENU_DATA.forEach(item => {
