@@ -43,9 +43,10 @@
           <mat-date-range-picker #picker></mat-date-range-picker>
         </div>
       </div>
-      <div class="clinic-selector-wrapper" *ngIf="!(hideClinicSelectionDropdown$ | async)">
+      <div class="clinic-selector-wrapper">
         <div class="clinic-selector-field">
           <mat-select
+            [disabled]="(hideClinicSelectionDropdown$ | async)"
             multiple
             class="custom-font"
             *ngIf="isMultiClinics$ | async; else singleClinicsSection"
@@ -83,6 +84,7 @@
           </mat-select>
           <ng-template #singleClinicsSection>
             <mat-select
+              [disabled]="(hideClinicSelectionDropdown$ | async)"
               class="custom-font"
               (selectionChange)="onChangeCurrentClinic($event)"
               [value]="unsubscribedClinic?.id || selectedClinic">
@@ -105,6 +107,7 @@
           *ngIf="isEnableDentistDropdown$ | async"
           class="clinic-selector-field">
           <mat-select
+            [disabled]="(hideClinicSelectionDropdown$ | async)"
             class="custom-font"
             (selectionChange)="onChangeCurrentDentist($event)"
             [value]="selectedDentist">
