@@ -1,8 +1,10 @@
 <div (click)="selectFilter()" 
     *ngIf="!(settings?.length >0)" 
-    [classList]="isOpen?['container border-c']:['container']" 
+    [classList]="getClassList()" 
     type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin" 
-    [appTooltip]="iconUrlWhite?'<img src=' + iconUrlWhite  + ' /><span>' + title + '</span>':''">
+    [appTooltip]="disabled? 'Please update D4w to the latest version then contact Jeeve support to activate this filter': ''"
+    >
+
     <mat-icon *ngIf="isDone" (click)="onClose()" class="close">cancel</mat-icon>
     <div class="box">
         <!-- <mat-icon>{{iconName}}</mat-icon> -->

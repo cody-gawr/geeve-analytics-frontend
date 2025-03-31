@@ -41,6 +41,14 @@
     border-color: $jeeve-primary;
 }
 
+.disabled {
+    background-color: #f3f3f3;
+    cursor: not-allowed;
+    .close {
+        display: none;
+    }
+}
+
 .overlay-form {
     display: flex;
     flex-direction: column;

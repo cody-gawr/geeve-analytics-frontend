@@ -19,6 +19,7 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
   @Input() isOpen = false;
   @Input() isDone = false;
   @Input() settings: string[] = [];
+  @Input() disabled = false;
 
   startDate: string = '';
   endDate: string = '';
@@ -67,13 +68,24 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
   }
 
   selectFilter(){
-    console.log(this.settings)
+    if(this.disabled) return;
     if(this.settings && this.settings?.length > 0){
 
     }else{
       this.isOpen = !this.isOpen;
       this.campaignSerivce.setSelectedIcon(this.filterName);
     }
+  }
+
+  getClassList() {
+    let classList = 'container';
+    if(this.isOpen){
+      classList += ' border-c';
+    }
+    if(this.disabled){
+      classList += ' disabled';
+    }
+    return classList;
   }
 
 }

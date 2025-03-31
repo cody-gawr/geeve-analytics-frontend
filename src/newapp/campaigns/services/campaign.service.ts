@@ -12,6 +12,7 @@ export interface IFilterElement {
     title: string;
     filterName: string;
     description?: string;
+    disabled?: boolean;
 }
 
 export const DefaultFilterElements: IFilterElement[] = [

@@ -19,6 +19,7 @@ import { CsvUtil } from '@/newapp/shared/utils';
 import { CAMPAIGN_FILTERS } from '@/newapp/constants';
 import { CsvColumnSelectDialog } from './csv-column-select-dialog/csv-column-select-dialog.component';
 import { OptionDataType } from '@/newapp/shared/components/search-multi-select/search-multi-select.component';
+import { Clinic } from '@/newapp/models/clinic';
 
 export interface CampaignElement {
   clinic_id: number;
@@ -82,6 +83,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     selectedItemCodesForNoTreatment = new FormControl<string[]>([]);
     selectedHealthInsurances = new FormControl<string[]>([]);
     campaigns: ICampaign[] = [];
+    currentClinic: Clinic = null;
     filterElements: IFilterElement[] = [];
 
     eventInput = new Subject<void>();
@@ -116,6 +118,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       ).subscribe(
         clinics => {
           if(clinics.length> 0) {
+            this.currentClinic = clinics[0];
             this.clinicId = clinics[0].id;
             const pms = clinics[0].pms;
             forkJoin([
@@ -130,11 +133,6 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
                 };
                 this.filterElements = filterElems.data.filter(fe => {
                   if(fe && fe[pms]){
-                    if(pms === 'd4w' && 
-                      [CAMPAIGN_FILTERS.health_insurance, CAMPAIGN_FILTERS.overdues, CAMPAIGN_FILTERS.patient_status].indexOf(fe.name) >= 0 
-                      && !!clinics[0].utilityVer && clinics[0].utilityVer < '1.42.0.0') {
-                      return false;
-                    }
                     return true;
                   }
                   return false;
@@ -145,7 +143,14 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
                     iconUrl: icon?.iconUrl,
                     title: icon?.title,
                     filterName: fe.name,
-                    description: fe.description
+                    description: fe.description,
+                    disabled: pms === 'd4w' && 
+                      [
+                        CAMPAIGN_FILTERS.health_insurance, 
+                        CAMPAIGN_FILTERS.overdues, 
+                        CAMPAIGN_FILTERS.patient_status
+                      ].indexOf(fe.name) >= 0 
+                      && !!clinics[0].utilityVer && clinics[0].utilityVer < '1.42.0.0'
                   }
                 });
                 this.healthFunds = result1.data.map(v => ({value: v}));
@@ -181,8 +186,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       .subscribe(([params, clinics]) => {
           this.campaignId = parseInt(params['campaign_id']) || undefined;
           if(clinics.length> 0) {
-            this.clinicId = clinics[0].id;
-            this.clinicName = clinics[0].clinicName;
+            this.clinicId = this.currentClinic.id;
+            this.clinicName = this.currentClinic.clinicName;
             this.campaignService.getCampaigns(this.clinicId).subscribe(
               body => this.campaigns = body.data
             );
@@ -794,7 +799,9 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       }
     }
 
-    isValidForm(filterName: string){
+    isValidForm(item: IFilterElement){
+      const filterName = item.filterName;
+      if(item.disabled) return false;
       if(filterName === CAMPAIGN_FILTERS.patient_age){
         if(this.filterFormGroup.controls.patientAgeMin.value > 0) {
           return true;
