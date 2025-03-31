@@ -42,7 +42,7 @@ export interface Clinic {
   timezone: CLINIC_TIMEZONE;
   trialEndDate: string;
   userId: number;
-  utility_ver: string;
+  utilityVer: string;
   whName: string;
   whServer: string;
   clinicProducts: Array<{

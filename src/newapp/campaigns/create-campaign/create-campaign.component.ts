@@ -130,6 +130,9 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
                 };
                 this.filterElements = filterElems.data.filter(fe => {
                   if(fe && fe[pms]){
+                    if(pms === 'd4w' && !!clinics[0].utilityVer && clinics[0].utilityVer < '1.42.0.0') {
+                      return false;
+                    }
                     return true;
                   }
                   return false;
