@@ -56,6 +56,10 @@ interface MenuValidatorParams {
   userId?: string | number;
 }
 
+function validatePermission(permissions: string[], per: string) {
+  return typeof permissions === 'string'? permissions === 'all': permissions?.indexOf(per) >= 0
+}
+
 const MENU_DATA: MenuNode[] = [
   {
     title: 'Health Screen',
@@ -103,7 +107,7 @@ const MENU_DATA: MenuNode[] = [
     validatorFn: ({ permissions, userType, userId }: MenuValidatorParams) => {
       return (
         (userId.toString() === '1' || environment.apiUrl.includes("test")) &&
-        (permissions?.indexOf('campaigns') >= 0 ||
+        (validatePermission(permissions, 'campaigns') ||
         [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0)
       );
     },
