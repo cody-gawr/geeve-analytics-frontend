@@ -105,8 +105,7 @@ const MENU_DATA: MenuNode[] = [
     badgeText: 'New',
     badgeStyle: 'yellow-bg',
     validatorFn: ({ permissions, userType, userId }: MenuValidatorParams) => {
-      return (
-        (userId.toString() === '1' || environment.apiUrl.includes("test")) &&
+      return (        
         (validatePermission(permissions, 'campaigns') ||
         [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0)
       );

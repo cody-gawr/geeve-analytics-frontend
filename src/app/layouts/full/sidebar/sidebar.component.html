@@ -55,8 +55,7 @@
   *ngIf="
     (user_type == 2 ||
       permisions.indexOf('campaigns') >= 0 ||
-      user_type == 7) &&
-    (apiUrl.includes('test') || userId === 1)
+      user_type == 7)
   ">
   <a appAccordionToggle [routerLink]="['/newapp/campaigns']">
     <i class="fas fa-bullhorn"></i>
