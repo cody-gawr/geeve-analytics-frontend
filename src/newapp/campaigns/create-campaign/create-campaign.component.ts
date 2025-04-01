@@ -234,6 +234,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       this.eventInput$.pipe(
         takeUntil(this.destroy$),
         debounceTime(300), // Wait for 300ms of silence
+        filter(() => this.done.length > 0),
         switchMap(() => {
           this.loadingData = true;
           return this.campaignService.getCampaignPatients(this.clinicId, this.getFilterSettings());
@@ -500,7 +501,13 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
             event.previousIndex,
             event.currentIndex,
           );
-          this.eventInput.next();
+          if(this.done.length > 0){
+            this.eventInput.next();
+          }
+          else{
+            this.selection.clear();
+            this.dataSource.data = [];
+          }
         }
     }
 
