@@ -799,9 +799,15 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       }
     }
 
-    isValidForm(item: IFilterElement){
-      const filterName = item.filterName;
-      if(item.disabled) return false;
+    isValidForm(item: string | IFilterElement){
+      let filterName = '';
+      if(typeof item === 'string'){
+        filterName = item;
+      }else{
+        filterName = item.filterName;
+        if(item.disabled) return false;
+      }
+
       if(filterName === CAMPAIGN_FILTERS.patient_age){
         if(this.filterFormGroup.controls.patientAgeMin.value > 0) {
           return true;
