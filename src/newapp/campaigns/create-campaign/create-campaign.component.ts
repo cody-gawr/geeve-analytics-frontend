@@ -225,6 +225,9 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           }
         }else if(!this.loadingData){
           this.todo = [...this.filterElements.filter(f => this.done.findIndex(d => d.filterName == f.filterName) === -1)];
+          if(this.done?.length > 0){
+            this.eventInput.next();
+          }
         }
       });
 
