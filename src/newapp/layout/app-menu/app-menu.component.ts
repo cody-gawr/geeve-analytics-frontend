@@ -105,6 +105,7 @@ const MENU_DATA: MenuNode[] = [
     badgeText: 'New',
     badgeStyle: 'yellow-bg',
     validatorFn: ({ permissions, userType, userId }: MenuValidatorParams) => {
+      console.log('DEBUG', permissions, userType, [USER_MASTER, CONSULTANT].indexOf(userType!));
       return (        
         (validatePermission(permissions, 'campaigns') ||
         [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0)
