@@ -799,6 +799,10 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       }
     }
 
+    get getTodoList() {
+      return this.todo.sort((a, b) => a.disabled - b.disabled);
+    }
+
     isValidForm(item: string | IFilterElement){
       let filterName = '';
       if(typeof item === 'string'){

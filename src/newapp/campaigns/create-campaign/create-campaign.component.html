@@ -24,7 +24,7 @@
                     <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
                         [cdkDropListConnectedTo]="[doneList]" (cdkDropListDropped)="drop($event)"
                         cdkDropListSortingDisabled cdkDropListOrientation="vertical" class="drag-container">
-                        <drag-drop-button class="drag-item" *ngFor="let item of todo" cdkDrag
+                        <drag-drop-button class="drag-item" *ngFor="let item of getTodoList" cdkDrag
                             [cdkDragDisabled]="!isValidForm(item)" [disabled]="item.disabled" [iconName]="item.iconName"
                             [iconUrlWhite]="item.iconUrlWhite" [iconUrl]="item.iconUrl" [title]="item.title"
                             [isDone]="false" [filterName]="item.filterName"
