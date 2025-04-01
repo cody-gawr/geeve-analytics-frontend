@@ -224,7 +224,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
             this.loadingData = false;
           }
         }else if(!this.loadingData){
-          this.todo = [...this.filterElements];
+          this.todo = [...this.filterElements.filter(f => this.done.findIndex(d => d.filterName == f.filterName) === -1)];
         }
       });
 
