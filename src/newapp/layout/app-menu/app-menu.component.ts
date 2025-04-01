@@ -56,8 +56,8 @@ interface MenuValidatorParams {
   userId?: string | number;
 }
 
-function validatePermission(permissions: string[], per: string) {
-  return typeof permissions === 'string'? permissions === 'all': permissions?.indexOf(per) >= 0
+function validatePermission(permissions: string[] | string, per: string) {
+  return typeof permissions === 'string'? (permissions === 'all' || permissions.includes(per)): permissions?.indexOf(per) >= 0
 }
 
 const MENU_DATA: MenuNode[] = [
@@ -105,7 +105,6 @@ const MENU_DATA: MenuNode[] = [
     badgeText: 'New',
     badgeStyle: 'yellow-bg',
     validatorFn: ({ permissions, userType, userId }: MenuValidatorParams) => {
-      console.log('DEBUG', permissions, userType, [USER_MASTER, CONSULTANT].indexOf(userType!));
       return (        
         (validatePermission(permissions, 'campaigns') ||
         [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0)
