@@ -3,9 +3,11 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { combineLatest, debounceTime, distinctUntilChanged, filter, forkJoin, Subject, switchMap, takeUntil } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, 
+  filter, forkJoin, Subject, switchMap, takeUntil } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CampaignService, DefaultFilterElements, ICampaign, ICampaignFilter, IFilterElement, IGetPatientsFilterJson } from '../services/campaign.service';
+import { CampaignService, DefaultFilterElements, ICampaign, 
+  ICampaignFilter, IFilterElement, IGetPatientsFilterJson } from '../services/campaign.service';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { SelectionModel } from '@angular/cdk/collections';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -118,6 +120,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       ).subscribe(
         clinics => {
           if(clinics.length> 0) {
+            this.todo = [];
+            this.done = [];
             this.currentClinic = clinics[0];
             this.clinicId = clinics[0].id;
             const pms = clinics[0].pms;
@@ -895,6 +899,34 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         this.healthFundIncludeNoneCheckBox.setValue(false);
       }else if(!this.selectedHealthInsurances.value?.length){
         this.healthFundIncludeNoneCheckBox.setValue(true);
+      }
+    }
+
+    getDesc(filterName: string) {
+      switch(filterName){
+        case CAMPAIGN_FILTERS.patient_age:
+          return `Patient is between the age of ${this.filterFormGroup.controls.patientAgeMin.value} and ${this.filterFormGroup.controls.patientAgeMax.value}`;
+        case CAMPAIGN_FILTERS.incomplete_tx_plan:
+          return `Patient has incomplete treatment plans created between ${moment(this.filterFormGroup.controls.incomplete_tx_planStart.value).format('DD/MM/YYYY')} and ${moment(this.filterFormGroup.controls.incomplete_tx_planEnd.value).format('DD/MM/YYYY')}`;
+        case CAMPAIGN_FILTERS.treatment:
+          return `Patient had treatment ${this.selectedItemCodes.value.join(', ')} performed between ${moment(this.filterFormGroup.controls.treatmentStart.value).format('DD/MM/YYYY')} and ${moment(this.filterFormGroup.controls.treatmentEnd.value).format('DD/MM/YYYY')}`;
+        case CAMPAIGN_FILTERS.no_treatment:
+          return `Patient did not have treatment ${this.selectedItemCodesForNoTreatment.value.join(', ')} performed between ${moment(this.filterFormGroup.controls.no_treatmentStart.value).format('DD/MM/YYYY')} and ${moment(this.filterFormGroup.controls.no_treatmentEnd.value).format('DD/MM/YYYY')}`;
+        case CAMPAIGN_FILTERS.appointment:
+          return `Patient has an appointment between ${moment(this.filterFormGroup.controls.appointmentStart.value).format('DD/MM/YYYY')} and ${moment(this.filterFormGroup.controls.appointmentEnd.value).format('DD/MM/YYYY')}`;
+        case CAMPAIGN_FILTERS.no_appointment:
+          return `Patient does not have an appointment between ${moment(this.filterFormGroup.controls.no_appointmentStart.value).format('DD/MM/YYYY')} and ${moment(this.filterFormGroup.controls.no_appointmentEnd.value).format('DD/MM/YYYY')}`;
+        case CAMPAIGN_FILTERS.patient_status:
+          return `Patient is of status ${this.patientStatus.value}`;
+        case CAMPAIGN_FILTERS.overdues:
+          return `Patient has overdue amount at least ${this.overdueDays.value} days overdue`;
+        case CAMPAIGN_FILTERS.health_insurance:
+          if(this.selectedHealthInsurances.value?.length > 0 && (this.selectedHealthInsurances.value?.length < this.healthFunds?.length)){
+            return `Patient has health insurance with ${this.selectedHealthInsurances.value.join(', ')}`;
+          }else
+          return `Patient has health insurance`;
+        default:
+          return '';
       }
     }
 }

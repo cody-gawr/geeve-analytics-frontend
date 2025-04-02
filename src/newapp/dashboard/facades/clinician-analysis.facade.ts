@@ -4,7 +4,7 @@ import { ClinicianAnalysisActions } from '../state/actions';
 import {
   ClinicianAnalysisState,
   selectCaHourlyRateChartData,
-  selectCaNumComplaintsChartData,
+  // selectCaNumComplaintsChartData,
   selectCaNumNewPatientsChartData,
   selectCaProductionChartData,
   selectColExpSelectTab,
@@ -40,6 +40,8 @@ import {
   selectIsHideFooterSection,
   selectIsTrendIconVisible,
   selectIsLoadingChartDesc,
+  selectCaDataTransformation,
+  selectCaDataTransformationTrend,
 } from '../state/reducers/clinician-analysis.reducer';
 import { ChartDescParams } from '@/newapp/models/dashboard';
 
@@ -197,11 +199,19 @@ export class ClinicianAnalysisFacade {
   );
 
   public readonly caNumComplaintsChartData$ = this.store.pipe(
-    select(selectCaNumComplaintsChartData)
+    select(selectCaDataTransformation<CaNumComplaintsItem>('caNumComplaints', 'numComplaints'))
   );
 
   public readonly caNumComplaintsTrendChartData$ = this.store.pipe(
-    select(selectCaNumComplaintsTrendChartData)
+    select(selectCaDataTransformationTrend<CaNumComplaintsItem>('caNumComplaintsTrend', 'numComplaints'))
+  );
+
+  public readonly caTotalDiscountsChartData$ = this.store.pipe(
+    select(selectCaDataTransformation<CaNumComplaintsItem>('caTotalDiscounts', 'discounts'))
+  );
+
+  public readonly caTotalDiscountsTrendChartData$ = this.store.pipe(
+    select(selectCaDataTransformationTrend<CaNumComplaintsItem>('caTotalDiscountsTrend', 'discounts'))
   );
 
   public readonly prodSelectTab$ = this.store.pipe(select(selectProdSelectTab));

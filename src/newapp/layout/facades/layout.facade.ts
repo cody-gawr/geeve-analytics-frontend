@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   LayoutState,
   selectActivatedRouteTitle,
@@ -32,6 +32,11 @@ export class LayoutFacade {
 
   public readonly trend$: Observable<TREND_MODE> = this.store.pipe(
     select(selectTrend)
+  );
+
+  public readonly isTrend$: Observable<boolean> = this.store.pipe(
+    select(selectTrend),
+    map(v => v !== 'off')
   );
 
   public readonly average$: Observable<C_AVG_MODE> = this.store.pipe(

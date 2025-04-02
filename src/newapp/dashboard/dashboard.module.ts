@@ -84,6 +84,7 @@ import { UnsubscribedPageComponent } from './components/unsubscribed-page/unsubs
 import { MkProdByPostCodeComponent } from './components/marketing/components/prod-by-postcode/prod-by-postcode.component';
 import { FnHourlyRateChartComponent } from './components/finances/components/hourly-rate-chart/hourly-rate.chart.component';
 import { MarketingService } from './services/marketing.service';
+import { CaTotalDiscountComponent } from './components/clinician-analysis/components/caDiscount/caDiscount.component';
 
 @NgModule({
   imports: [
@@ -160,6 +161,7 @@ import { MarketingService } from './services/marketing.service';
     CaTxPlanCompRateComponent,
     CaRecallRateComponent,
     CaNumComplaintsComponent,
+    CaTotalDiscountComponent,
 
     FollowupsComponent,
     FuGetConversionComponent,

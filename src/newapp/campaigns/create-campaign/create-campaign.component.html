@@ -21,6 +21,9 @@
             <div class="panel">
                 <div class="top" [style.height.%]="topPanelHeight">
                     <span class="title">Select Filters</span>
+                    <div style="min-width: 420px; min-height: 420px; display: flex; justify-content: center;align-items: center;" *ngIf="!todo?.length">
+                        <spin-loader></spin-loader>
+                    </div>
                     <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
                         [cdkDropListConnectedTo]="[doneList]" (cdkDropListDropped)="drop($event)"
                         cdkDropListSortingDisabled cdkDropListOrientation="vertical" class="drag-container">
@@ -156,7 +159,10 @@
                 <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="[todoList]"
                     (cdkDropListDropped)="drop($event, 'done')" cdkDropListSortingDisabled
                     cdkDropListOrientation="horizontal" class="drop-container">
-                    <drag-drop-button class="drag-item" *ngFor="let item of done" cdkDrag [iconName]="item.iconName"
+                    <drag-drop-button class="drag-item" 
+                        *ngFor="let item of done" 
+                        cdkDrag 
+                        [desc]="getDesc(item.filterName)" [iconName]="item.iconName"
                         [iconUrlWhite]="item.iconUrlWhite" [iconUrl]="item.iconUrl" [isDone]="true"
                         [closeEvent]="closeEvent" [filterName]="item.filterName" [title]="item.title"
                         [isOpen]="item.filterName === selectedFilterName"></drag-drop-button>

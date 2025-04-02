@@ -24,11 +24,6 @@ export const MY_DATE_FORMATS = {
   },
 };
 
-export interface PaTableData {
-    label: string;
-    value: number | string;
-}
-
 @Component({
   selector: 'app-chart',
   templateUrl: './app-chart.component.html',
@@ -79,7 +74,8 @@ export class AppChartComponent implements OnInit, OnDestroy {
   @Input() durationPrevLabel: string = '';
 
   @Input() enablePaTableView: boolean = false;
-  @Input() paTableData: PaTableData[]  = [];
+  @Input() paTableData: Record<string, any>[]  = [];
+  @Input() maxBarsAlertMsg: string = '';
   @Input() datePicker: FormControl<Moment>;
   @Input() currency = '%';
   @Input() appendCurrency = true;
@@ -117,5 +113,9 @@ export class AppChartComponent implements OnInit, OnDestroy {
     }else{
       return `${this.currency}${value}`;
     }
+  }
+
+  get showMaxBarsAlert() {
+      return !this.showPaTableView && (this.paTableData?.length > this.labels?.length) && this.enablePaTableView;
   }
 }

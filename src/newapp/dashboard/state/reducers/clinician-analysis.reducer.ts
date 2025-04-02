@@ -2318,159 +2318,159 @@ export const selectIsLoadingCaNumComplaintsTrend = createSelector(
     _.findIndex(loadingData, l => l == 'caTxPlanCompRateTrend') >= 0
 );
 
-export const selectCaNumComplaintsChartData = createSelector(
-  selectResBodyList,
-  selectCurrentClinics,
-  selectTrend,
-  selectAverage,
-  selectIsDentistMode,
-  selectRolesIndividual,
-  selectCompareEnabled,
-  // selectAuthUserData,
+// export const selectCaNumComplaintsChartData = createSelector(
+//   selectResBodyList,
+//   selectCurrentClinics,
+//   selectTrend,
+//   selectAverage,
+//   selectIsDentistMode,
+//   selectRolesIndividual,
+//   selectCompareEnabled,
+//   // selectAuthUserData,
   
-  (
-    bodyList,
-    selectedClinics,
-    trend,
-    average,
-    isDentistMode,
-    rolesInd,
-    compare,
-    // authUserData
-  ) => {
-    let resBody: CaNumComplaintsApiResponse = bodyList['caNumComplaints'];
-    if (!resBody?.data) {
-      return {
-        datasets: [],
-        labels: [],
-        total: 0,
-        average: 0,
-        prev: 0,
-        goal: 0,
-        tableData: [],
-      };
-    }
+//   (
+//     bodyList,
+//     selectedClinics,
+//     trend,
+//     average,
+//     isDentistMode,
+//     rolesInd,
+//     compare,
+//     // authUserData
+//   ) => {
+//     let resBody: CaNumComplaintsApiResponse = bodyList['caNumComplaints'];
+//     if (!resBody?.data) {
+//       return {
+//         datasets: [],
+//         labels: [],
+//         total: 0,
+//         average: 0,
+//         prev: 0,
+//         goal: 0,
+//         tableData: [],
+//       };
+//     }
 
-    if (!isDentistMode || compare) {
-      let data: CaNumComplaintsItem[] = resBody.data.slice();
-      if (selectedClinics.length > 1) {
-        data
-          .sort(
-            (a, b) =>
-              parseFloat(<string>a.numComplaints) -
-              parseFloat(<string>b.numComplaints)
-          )
-          .reverse();
-      }
+//     if (!isDentistMode || compare) {
+//       let data: CaNumComplaintsItem[] = resBody.data.slice();
+//       if (selectedClinics.length > 1) {
+//         data
+//           .sort(
+//             (a, b) =>
+//               parseFloat(<string>a.numComplaints) -
+//               parseFloat(<string>b.numComplaints)
+//           )
+//           .reverse();
+//       }
 
-      const chartData = [],
-        chartLabels = [];
-      let chartColors = [];
+//       const chartData = [],
+//         chartLabels = [];
+//       let chartColors = [];
 
-      // if (data.length > 20) {
-      //   data = data.slice(0, 20);
-      // }
-      let newpKey = 0;
-      const tableData = [];
-      data.forEach((item: CaNumComplaintsItem, i) => {
-        const value = Math.round(<number>item.numComplaints);
-        const label =
-          (item.providerName ?? '') +
-          (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
+//       // if (data.length > 20) {
+//       //   data = data.slice(0, 20);
+//       // }
+//       let newpKey = 0;
+//       const tableData = [];
+//       data.forEach((item: CaNumComplaintsItem, i) => {
+//         const value = Math.round(<number>item.numComplaints);
+//         const label =
+//           (item.providerName ?? '') +
+//           (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
 
-        // if(i < authUserData.maxChartBars){
-          chartData.push(value);
-          chartLabels.push(label);
-          if (item.providerName != 'Anonymous') newpKey = i;
-        //}
+//         // if(i < authUserData.maxChartBars){
+//           chartData.push(value);
+//           chartLabels.push(label);
+//           if (item.providerName != 'Anonymous') newpKey = i;
+//         //}
 
-        tableData.push({
-          label: label,
-          value: value,
-        });
-      });
+//         tableData.push({
+//           label: label,
+//           value: value,
+//         });
+//       });
 
-      if (compare) {
-        chartColors = [
-          {
-            backgroundColor: dynamicBarBackgroundColor(
-              data,
-              chartLabels,
-              selectedClinics.length > 1,
-              selectedClinics,
-              compare
-            ),
-          },
-        ];
-      } else {
-        if (rolesInd?.type == 4) {
-          chartColors = [{ backgroundColor: [] }];
-          chartColors[0].backgroundColor[newpKey] = '#1CA49F';
-        } else chartColors = [{ backgroundColor: COLORS.presetColors }];
-      }
+//       if (compare) {
+//         chartColors = [
+//           {
+//             backgroundColor: dynamicBarBackgroundColor(
+//               data,
+//               chartLabels,
+//               selectedClinics.length > 1,
+//               selectedClinics,
+//               compare
+//             ),
+//           },
+//         ];
+//       } else {
+//         if (rolesInd?.type == 4) {
+//           chartColors = [{ backgroundColor: [] }];
+//           chartColors[0].backgroundColor[newpKey] = '#1CA49F';
+//         } else chartColors = [{ backgroundColor: COLORS.presetColors }];
+//       }
 
-      let datasets = [
-        {
-          data: chartData,
-          backgroundColor: chartColors[0].backgroundColor,
-        },
-      ];
+//       let datasets = [
+//         {
+//           data: chartData,
+//           backgroundColor: chartColors[0].backgroundColor,
+//         },
+//       ];
 
-      return {
-        datasets,
-        labels: chartLabels,
-        total: Math.round(resBody.total),
-        average: Math.round(resBody.totalAverage),
-        prev: Math.round(resBody.totalTa),
-        goal: parseInt(<string>resBody.goals),
-        maxData: Math.max(...chartData),
-        tableData,
-        chartColors,
-      };
-    } else {
-      if (!resBody?.data) {
-        return {
-          gaugeValue: 0,
-          gaugeLabel: '',
-          maxGoal: 0,
-          total: 0,
-          average: 0,
-          prev: 0,
-          goal: 0,
-        };
-      }
+//       return {
+//         datasets,
+//         labels: chartLabels,
+//         total: Math.round(resBody.total),
+//         average: Math.round(resBody.totalAverage),
+//         prev: Math.round(resBody.totalTa),
+//         goal: parseInt(<string>resBody.goals),
+//         maxData: Math.max(...chartData),
+//         tableData,
+//         chartColors,
+//       };
+//     } else {
+//       if (!resBody?.data) {
+//         return {
+//           gaugeValue: 0,
+//           gaugeLabel: '',
+//           maxGoal: 0,
+//           total: 0,
+//           average: 0,
+//           prev: 0,
+//           goal: 0,
+//         };
+//       }
 
-      let gaugeValue = 0,
-        gaugeLabel = '',
-        maxGoal = 0;
+//       let gaugeValue = 0,
+//         gaugeLabel = '',
+//         maxGoal = 0;
 
-      resBody.data.forEach(res => {
-        gaugeValue = Math.round(<number>res.numComplaints);
+//       resBody.data.forEach(res => {
+//         gaugeValue = Math.round(<number>res.numComplaints);
 
-        let name: any = res.providerName;
-        if (name != null && name != '') {
-          name = name.split(')');
-          if (name.length > 0 && name[1] != undefined) {
-            name = name[1].split(',');
-            if (name.length > 0) name = name[1] + ' ' + name[0];
-          }
-          gaugeLabel = name;
-        } else gaugeLabel = res.providerName;
-      });
-      const goal = parseInt(<string>resBody.goals);
-      maxGoal = gaugeValue > goal ? gaugeValue : goal;
-      return {
-        gaugeValue: gaugeValue,
-        gaugeLabel: gaugeLabel,
-        total: Math.round(resBody.total),
-        average: Math.round(resBody.totalAverage),
-        prev: Math.round(resBody.totalTa),
-        goal: goal,
-        maxGoal: maxGoal,
-      };
-    }
-  }
-);
+//         let name: any = res.providerName;
+//         if (name != null && name != '') {
+//           name = name.split(')');
+//           if (name.length > 0 && name[1] != undefined) {
+//             name = name[1].split(',');
+//             if (name.length > 0) name = name[1] + ' ' + name[0];
+//           }
+//           gaugeLabel = name;
+//         } else gaugeLabel = res.providerName;
+//       });
+//       const goal = parseInt(<string>resBody.goals);
+//       maxGoal = gaugeValue > goal ? gaugeValue : goal;
+//       return {
+//         gaugeValue: gaugeValue,
+//         gaugeLabel: gaugeLabel,
+//         total: Math.round(resBody.total),
+//         average: Math.round(resBody.totalAverage),
+//         prev: Math.round(resBody.totalTa),
+//         goal: goal,
+//         maxGoal: maxGoal,
+//       };
+//     }
+//   }
+// );
 
 export const selectCaNumComplaintsTrendChartData = createSelector(
   selectResBodyListTrend,
@@ -2543,3 +2543,227 @@ export const selectCaNumComplaintsTrendChartData = createSelector(
     };
   }
 );
+
+export const selectCaDataTransformation = <K extends CaBaseDataRecord>(
+  pathName: string,
+  propertyName: string
+) => {
+  return createSelector(
+    selectResBodyList, 
+    selectCurrentClinics,
+    selectIsDentistMode,
+    selectRolesIndividual,
+    selectCompareEnabled,
+    (
+      bodyList,
+      selectedClinics,
+      isDentistMode,
+      rolesInd,
+      compare,
+    ) => {
+    let resBody: CaBaseApiResponse<K> = bodyList[pathName];
+    if (!resBody?.data) {
+      return {
+        datasets: [],
+        labels: [],
+        total: 0,
+        average: 0,
+        prev: 0,
+        goal: 0,
+        tableData: [],
+      };
+    }
+
+    if (!isDentistMode || compare) {
+      let data: K[] = resBody.data.slice();
+      if (selectedClinics.length > 1) {
+        data
+          .sort(
+            (a, b) =>
+              parseFloat(<string>a[propertyName]) -
+              parseFloat(<string>b[propertyName])
+          )
+          .reverse();
+      }
+
+      const chartData = [],
+        chartLabels = [];
+      let chartColors = [];
+
+      let newpKey = 0;
+      const tableData = [];
+      data.forEach((item: K, i) => {
+        const value = Math.round(<number>item[propertyName]);
+        const label =
+          (item.providerName ?? '') +
+          (selectedClinics.length > 1 ? ` - ${item.clinicName}` : '');
+
+        chartData.push(value);
+        chartLabels.push(label);
+        if (item.providerName != 'Anonymous') newpKey = i;
+
+
+        tableData.push({
+          label: label,
+          value: value,
+        });
+      });
+
+      if (compare) {
+        chartColors = [
+          {
+            backgroundColor: dynamicBarBackgroundColor(
+              data,
+              chartLabels,
+              selectedClinics.length > 1,
+              selectedClinics,
+              compare
+            ),
+          },
+        ];
+      } else {
+        if (rolesInd?.type == 4) {
+          chartColors = [{ backgroundColor: [] }];
+          chartColors[0].backgroundColor[newpKey] = '#1CA49F';
+        } else chartColors = [{ backgroundColor: COLORS.presetColors }];
+      }
+
+      let datasets = [
+        {
+          data: chartData,
+          backgroundColor: chartColors[0].backgroundColor,
+        },
+      ];
+
+      return {
+        datasets,
+        labels: chartLabels,
+        total: Math.round(resBody.total),
+        average: Math.round(resBody.totalAverage),
+        prev: Math.round(resBody.totalTa),
+        goal: parseInt(<string>resBody.goals),
+        maxData: Math.max(...chartData),
+        tableData,
+        chartColors,
+      };
+    } else {
+      if (!resBody?.data) {
+        return {
+          gaugeValue: 0,
+          gaugeLabel: '',
+          maxGoal: 0,
+          total: 0,
+          average: 0,
+          prev: 0,
+          goal: 0,
+        };
+      }
+
+      let gaugeValue = 0,
+        gaugeLabel = '',
+        maxGoal = 0;
+
+      resBody.data.forEach(res => {
+        gaugeValue = Math.round(<number>res[propertyName]);
+
+        let name: any = res.providerName;
+        if (name != null && name != '') {
+          name = name.split(')');
+          if (name.length > 0 && name[1] != undefined) {
+            name = name[1].split(',');
+            if (name.length > 0) name = name[1] + ' ' + name[0];
+          }
+          gaugeLabel = name;
+        } else gaugeLabel = res.providerName;
+      });
+      const goal = parseInt(<string>resBody.goals);
+      maxGoal = gaugeValue > goal ? gaugeValue : goal;
+      return {
+        gaugeValue: gaugeValue,
+        gaugeLabel: gaugeLabel,
+        total: Math.round(resBody.total),
+        average: Math.round(resBody.totalAverage),
+        prev: Math.round(resBody.totalTa),
+        goal: goal,
+        maxGoal: maxGoal,
+      };
+    }
+  });
+}
+
+export const selectCaDataTransformationTrend = <K extends CaBaseDataRecord>(
+  pathName: string,
+  propertyName: string
+) => {
+    return createSelector(
+      selectResBodyListTrend,
+      selectTrend,
+      (bodyList, trendMode) => {
+        let resBody: CaBaseApiResponse<K> = bodyList[pathName];
+        let chartData = [],
+          chartLabels = [];
+        if (!resBody?.data) {
+          return {
+            datasets: [],
+            labels: [],
+          };
+        }
+        resBody.data.forEach(res => {
+          const avgFee = Math.round(<number>res[propertyName]);
+          if (avgFee >= 0) {
+            chartData.push(avgFee);
+          }
+          chartLabels.push(
+            trendMode === 'current'
+              ? moment(res.yearMonth).format('MMM YYYY')
+              : res.year
+          );
+        });
+        const datasets: ChartDataset<any>[] = [
+          {
+            data: [],
+            label: '',
+            shadowOffsetX: 3,
+            backgroundColor: [
+              COLORS.odd,
+              COLORS.even,
+              COLORS.odd,
+              COLORS.even,
+              COLORS.odd,
+              COLORS.even,
+              COLORS.odd,
+              COLORS.even,
+              COLORS.odd,
+              COLORS.even,
+              COLORS.odd,
+              COLORS.even,
+            ],
+            shadowOffsetY: 2,
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.3)',
+            pointBevelWidth: 2,
+            pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+            pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+            pointShadowOffsetX: 3,
+            pointShadowOffsetY: 3,
+            pointShadowBlur: 10,
+            pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+            backgroundOverlayMode: 'multiply',
+          },
+        ];
+    
+        datasets[0].data = chartData;
+    
+        const dynamicColors = [];
+        chartLabels.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex % 2 === 0 ? COLORS.odd : COLORS.even);
+        }); // This is dynamic array for colors of bars
+        datasets[0].backgroundColor = dynamicColors;
+    
+        return {
+          datasets,
+          labels: chartLabels,
+        };
+      }
+    );
+}

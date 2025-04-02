@@ -444,27 +444,39 @@ declare global {
     totalTa: number;
   }
 
-  interface CaNumComplaintsItem {
+  interface CaBaseDataRecord {
     clinicId: string | number;
     clinicName: string;
     day: unknown;
     month: unknown;
-    numComplaints: string | number;
+    // numComplaints: string | number;
     providerId: string | number;
     providerName: string | null;
     year: unknown;
     yearMonth: unknown;
   }
 
-  interface CaNumComplaintsApiResponse {
+  interface CaBaseApiResponse<T> {
     app: string;
-    data: CaNumComplaintsItem[];
+    // data: CaNumComplaintsItem[];
+    data: T[]
     goals: string | number;
     message: string;
     status: string | number;
     total: number;
     totalAverage: number;
     totalTa: number;
+  }
+
+  interface CaNumComplaintsItem extends CaBaseDataRecord {
+    numComplaints: string | number;
+  }
+
+  interface CaNumComplaintsApiResponse extends CaBaseApiResponse<CaNumComplaintsItem> {
+  }
+
+  interface CaTotalDiscountsDataRecord extends CaBaseDataRecord {
+    discounts: string | number;
   }
 
   interface FuApiQueryParams {

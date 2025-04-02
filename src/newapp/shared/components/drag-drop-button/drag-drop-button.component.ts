@@ -20,6 +20,7 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
   @Input() isDone = false;
   @Input() settings: string[] = [];
   @Input() disabled = false;
+  @Input() desc = '';
 
   startDate: string = '';
   endDate: string = '';

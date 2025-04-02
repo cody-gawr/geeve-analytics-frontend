@@ -1,5 +1,11 @@
 <div class="chart-container">
     <mat-icon
+      *ngIf="showMaxBarsAlert"
+      class="warn-icon"
+      fontIcon="warning"
+      [appTooltip]="maxBarsAlertMsg"
+    ></mat-icon>
+    <mat-icon
       *ngIf="!!toolTip"
       [tooltip]="toolTip"
       matTooltipPosition="below"
@@ -7,7 +13,7 @@
       class="help-tip"
       fontIcon="help"></mat-icon>
     <mat-icon
-      *ngIf="enablePaTableView"
+      *ngIf="enablePaTableView && !isComingSoon"
       [ngClass]="showPaTableView ? 'active' : ''"
       (click)="toggleShowOfPaTableView()"
       class="table-info-icon"
@@ -55,16 +61,12 @@
             <table>
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>
-                    activeTab
-                  </th>
+                  <th *ngFor="let hkey of Object.keys(paTableData[0])">{{hkey}}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let protbl of paTableData">
-                  <td>{{ protbl.label }}</td>
-                  <td>{{ formatValue(protbl.value | number: '1.0-0') }}</td>
+                  <td *ngFor="let value of Object.values(protbl)">{{ value }}</td>
                 </tr>
               </tbody>
             </table>
