@@ -537,17 +537,17 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           } else if(d.filterName === CAMPAIGN_FILTERS.treatment){
             filterSettings.push(this.treatmentItemCodesMode.value);
             if(this.selectedItemCodes.value?.length > 0 && (this.selectedItemCodes.value?.length < this.itemCodes?.length)){
-              filterSettings.push(...this.selectedItemCodes.value.map(v => parseInt(v)));
+              filterSettings.push(...this.selectedItemCodes.value);
             }
           } else if(d.filterName === CAMPAIGN_FILTERS.no_treatment){
             filterSettings.push(this.noTreatmentItemCodesMode.value);
             if(this.selectedItemCodesForNoTreatment.value?.length > 0 && (this.selectedItemCodesForNoTreatment.value?.length < this.itemCodes?.length)){
-              filterSettings.push(...this.selectedItemCodesForNoTreatment.value.map(v => parseInt(v)));
+              filterSettings.push(...this.selectedItemCodesForNoTreatment.value);
             }
           } else if(d.filterName === CAMPAIGN_FILTERS.health_insurance){
             filterSettings.push(this.healthFundIncludeNoneCheckBox.value? 1: 0);
             if(this.selectedHealthInsurances.value?.length > 0 && (this.selectedHealthInsurances.value?.length < this.healthFunds?.length)){
-              filterSettings.push(...this.selectedHealthInsurances.value.map(v => parseInt(v)));
+              filterSettings.push(...this.selectedHealthInsurances.value);
             }
           }else if(d.filterName === CAMPAIGN_FILTERS.overdues){
             // no filter settings
