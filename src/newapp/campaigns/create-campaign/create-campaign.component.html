@@ -19,7 +19,7 @@
     <div class="body">
         <div class="side">
             <div class="panel">
-                <div class="top" [style.height.%]="topPanelHeight">
+                <div class="top">
                     <span class="title">Select Filters</span>
                     <div style="min-width: 420px; min-height: 420px; display: flex; justify-content: center;align-items: center;" *ngIf="loadingData && todo?.length === 0">
                         <spin-loader></spin-loader>
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="divider-wrapper">
-                    <div class="divider" (mousedown)="onMouseDown($event)"></div>
+                    <div class="divider"></div>
                 </div>
 
                 <div class="bottom">
