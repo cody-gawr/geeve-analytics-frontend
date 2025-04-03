@@ -21,17 +21,25 @@
             <div class="panel">
                 <div class="top" [style.height.%]="topPanelHeight">
                     <span class="title">Select Filters</span>
-                    <div style="min-width: 420px; min-height: 420px; display: flex; justify-content: center;align-items: center;" *ngIf="!todo?.length">
+                    <div style="min-width: 420px; min-height: 420px; display: flex; justify-content: center;align-items: center;" *ngIf="loadingData && todo?.length === 0">
                         <spin-loader></spin-loader>
                     </div>
                     <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
                         [cdkDropListConnectedTo]="[doneList]" (cdkDropListDropped)="drop($event)"
                         cdkDropListSortingDisabled cdkDropListOrientation="vertical" class="drag-container">
-                        <drag-drop-button class="drag-item" *ngFor="let item of getTodoList" cdkDrag
-                            [cdkDragDisabled]="!isValidForm(item)" [disabled]="item.disabled" [iconName]="item.iconName"
-                            [iconUrlWhite]="item.iconUrlWhite" [iconUrl]="item.iconUrl" [title]="item.title"
+                        <drag-drop-button 
+                            class="drag-item" 
+                            cdkDragPreviewClass="drag-preview"
+                            *ngFor="let item of getTodoList" cdkDrag
+                            [cdkDragDisabled]="!isValidForm(item)" 
+                            [disabled]="item.disabled" 
+                            [iconName]="item.iconName"
+                            [iconUrlWhite]="item.iconUrlWhite" 
+                            [iconUrl]="item.iconUrl" 
+                            [title]="item.title"
                             [isDone]="false" [filterName]="item.filterName"
-                            [isOpen]="item.filterName === selectedFilterName"></drag-drop-button>
+                            [isOpen]="item.filterName === selectedFilterName">
+                        </drag-drop-button>
                     </div>
                 </div>
                 <div class="divider-wrapper">
@@ -162,6 +170,7 @@
                     <drag-drop-button class="drag-item" 
                         *ngFor="let item of done" 
                         cdkDrag 
+                        cdkDragPreviewClass="drag-preview"
                         [desc]="getDesc(item.filterName)" [iconName]="item.iconName"
                         [iconUrlWhite]="item.iconUrlWhite" [iconUrl]="item.iconUrl" [isDone]="true"
                         [closeEvent]="closeEvent" [filterName]="item.filterName" [title]="item.title"

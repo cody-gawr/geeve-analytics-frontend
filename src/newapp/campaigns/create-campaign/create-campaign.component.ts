@@ -905,26 +905,26 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     getDesc(filterName: string) {
       switch(filterName){
         case CAMPAIGN_FILTERS.patient_age:
-          return `Patient is between the age of ${this.filterFormGroup.controls.patientAgeMin.value} and ${this.filterFormGroup.controls.patientAgeMax.value}`;
+          return `<p class="campaign-filter-desc">Patient is between the age of <span >${this.filterFormGroup.controls.patientAgeMin.value}</span> and <span >${this.filterFormGroup.controls.patientAgeMax.value}</span></p>`;
         case CAMPAIGN_FILTERS.incomplete_tx_plan:
-          return `Patient has incomplete treatment plans created between ${moment(this.filterFormGroup.controls.incomplete_tx_planStart.value).format('DD/MM/YYYY')} and ${moment(this.filterFormGroup.controls.incomplete_tx_planEnd.value).format('DD/MM/YYYY')}`;
+          return `<p class="campaign-filter-desc">Patient has incomplete treatment plans created between <span>${moment(this.filterFormGroup.controls.incomplete_tx_planStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.incomplete_tx_planEnd.value).format('DD/MM/YYYY')}</span></p>`;
         case CAMPAIGN_FILTERS.treatment:
-          return `Patient had treatment ${this.selectedItemCodes.value.join(', ')} performed between ${moment(this.filterFormGroup.controls.treatmentStart.value).format('DD/MM/YYYY')} and ${moment(this.filterFormGroup.controls.treatmentEnd.value).format('DD/MM/YYYY')}`;
+          return `<p class="campaign-filter-desc">Patient had ${this.treatmentItemCodesMode.value === 'anyof'? 'any of ':''}treatment <span >${this.selectedItemCodes.value.join(', ')}</span> performed between <span>${moment(this.filterFormGroup.controls.treatmentStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.treatmentEnd.value).format('DD/MM/YYYY')}</span></p>`;
         case CAMPAIGN_FILTERS.no_treatment:
-          return `Patient did not have treatment ${this.selectedItemCodesForNoTreatment.value.join(', ')} performed between ${moment(this.filterFormGroup.controls.no_treatmentStart.value).format('DD/MM/YYYY')} and ${moment(this.filterFormGroup.controls.no_treatmentEnd.value).format('DD/MM/YYYY')}`;
+          return `<p class="campaign-filter-desc">Patient did not have ${this.noTreatmentItemCodesMode.value === 'anyof'? 'any of ':''}treatment <span >${this.selectedItemCodesForNoTreatment.value.join(', ')}</span> performed between <span>${moment(this.filterFormGroup.controls.no_treatmentStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.no_treatmentEnd.value).format('DD/MM/YYYY')}</span></p>`;
         case CAMPAIGN_FILTERS.appointment:
-          return `Patient has an appointment between ${moment(this.filterFormGroup.controls.appointmentStart.value).format('DD/MM/YYYY')} and ${moment(this.filterFormGroup.controls.appointmentEnd.value).format('DD/MM/YYYY')}`;
+          return `<p class="campaign-filter-desc">Patient has an appointment between <span>${moment(this.filterFormGroup.controls.appointmentStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.appointmentEnd.value).format('DD/MM/YYYY')}</span></p>`;
         case CAMPAIGN_FILTERS.no_appointment:
-          return `Patient does not have an appointment between ${moment(this.filterFormGroup.controls.no_appointmentStart.value).format('DD/MM/YYYY')} and ${moment(this.filterFormGroup.controls.no_appointmentEnd.value).format('DD/MM/YYYY')}`;
+          return `<p class="campaign-filter-desc">Patient does not have an appointment between <span>${moment(this.filterFormGroup.controls.no_appointmentStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.no_appointmentEnd.value).format('DD/MM/YYYY')}</span></p>`;
         case CAMPAIGN_FILTERS.patient_status:
-          return `Patient is of status ${this.patientStatus.value}`;
+          return `<p class="campaign-filter-desc">Patient is of status <span>${this.patientStatus.value}</span></p>`;
         case CAMPAIGN_FILTERS.overdues:
-          return `Patient has overdue amount at least ${this.overdueDays.value} days overdue`;
+          return `<p class="campaign-filter-desc">Patient has overdue amount at least <span>${this.overdueDays.value}></span> days overdue</p>`;
         case CAMPAIGN_FILTERS.health_insurance:
           if(this.selectedHealthInsurances.value?.length > 0 && (this.selectedHealthInsurances.value?.length < this.healthFunds?.length)){
-            return `Patient has health insurance with ${this.selectedHealthInsurances.value.join(', ')}`;
+            return `<p class="campaign-filter-desc">Patient has health insurance with <span>${this.selectedHealthInsurances.value.join(', ')}</span></p>`;
           }else
-          return `Patient has health insurance`;
+          return this.healthFundIncludeNoneCheckBox.value? `<p class="campaign-filter-desc">Patient don' have health insurance`:`Patient has health insurance</p>`;
         default:
           return '';
       }

@@ -79,10 +79,12 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
   }
 
   getClassList() {
-    let classList = 'container';
+    let classList = 'layout';
+    if(!(this.settings && this.settings?.length > 0)) classList += ' fixed-size';
     if(this.isOpen){
       classList += ' border-c';
     }
+    if(this.isDone) classList += ' done';
     if(this.disabled){
       classList += ' disabled';
     }
