@@ -1,27 +1,9 @@
 @import '/src/assets/layout/styles/theme/jeeve/palette.scss';
 .layout {
-    display: flex;
-    .desc {
-        display: flex; justify-content: center; align-items: center;
-        p {
-            font-size: 16px;
-            font-weight: 500;
-            padding: 0 15px;
-        }
-    }
-}
-.container {
     position: relative;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     border: 2px solid #f3f3f3;
-    width: 120px;
-    height: 125px;
     border-radius: 10px;
-    padding: 5px 0;
-    cursor: grab;
     background-color: white;
     .close {
         position: absolute;
@@ -31,6 +13,34 @@
         width: auto;
         height: auto;
     }
+}
+
+.done {
+    min-width: 480px !important;
+    .desc {
+        display: flex !important; 
+        justify-content: center; 
+        align-items: center;
+        p {
+            font-size: 16px;
+            font-weight: 500;
+            padding: 0 15px;
+        }
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 120px;
+    height: 125px;    
+    padding: 5px 0;
+    cursor: grab;
+   
+    
     .box {
         flex: 1;
         display: flex;
@@ -47,9 +57,7 @@
     }
 }
 
-.done {
-    min-width: 480px !important;
-}
+
 
 .border-c {
     border-color: $jeeve-primary;
