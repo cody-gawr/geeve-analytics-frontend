@@ -54,16 +54,18 @@ export class SetupComponent implements OnInit, OnDestroy {
             
             if(clinics.length > 0 && success){
                 clinics.forEach((clinic, index) => {
-                    switch(clinic.pms?.toLowerCase()){
-                        case 'praktika':
-                            this.clinicFacade.loadPraktikaSyncStatus(clinic.id);
-                            break;
-                        case 'dentally':
-                            this.clinicFacade.loadDentallySyncStatus(clinic.id);
-                            break;
-                        case 'core':
-                            this.clinicFacade.loadCoreSyncStatus(clinic.id);
-                            break;
+                    if(clinic.connected === undefined){
+                      switch(clinic.pms?.toLowerCase()){
+                          case 'praktika':
+                              this.clinicFacade.loadPraktikaSyncStatus(clinic.id);
+                              break;
+                          case 'dentally':
+                              this.clinicFacade.loadDentallySyncStatus(clinic.id);
+                              break;
+                          case 'core':
+                              this.clinicFacade.loadCoreSyncStatus(clinic.id);
+                              break;
+                      }
                     }
                 });
                 this.dataSource = clinics;
