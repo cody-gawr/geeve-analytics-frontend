@@ -1180,4 +1180,24 @@ export class MorningHuddleService {
         })
       );
   }
+
+  initiateCall(phoneNumber: string, patientName: string, doctorName: string, procedure: string, clinicName: string) {
+    const header = this.getHeaders();
+    return this.http.post(`${environment.baseApiUrl}/v1/voice/initiate`, {
+      phoneNumber: phoneNumber,
+      callType: 'post_op',
+      patientData: {
+        name: patientName,
+        doctorName: doctorName,
+        procedure: procedure,
+        clinicName: clinicName,
+        callerName: 'Emma'
+      }
+    }, header)
+      .pipe(
+        map((res: HttpResponse<any>) => {
+          return res.body;
+        })
+      );
+  }
 }

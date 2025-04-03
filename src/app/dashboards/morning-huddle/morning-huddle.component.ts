@@ -386,7 +386,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     'code',
     'dentist',
     'date',
-    'status',
+    'aiCallAgent',
+    'status'
   ];
   displayedColumns6: string[] = ['start', 'dentist', 'name', 'card'];
   displayedColumns7: string[] = [
@@ -2219,7 +2220,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   formatHistory(history) {
     let html = '<table class="history">';
     let statusSpe = {
-      'Did not want to book': 'Didn’t want to book',
+      'Did not want to book': "Didn't want to book",
       'Cant be reached': "Can't be reached",
       'Cant be reached - left': "Can't be reached - left voicemail",
     };
@@ -2461,5 +2462,25 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     setTimeout(function () {
       newWin.close();
     }, 2000);
+  }
+
+  // Add interface for AI Call Status
+  aiCallStatus = {
+    NOT_STARTED: 'not-started',
+    IN_PROGRESS: 'in-progress',
+    COMPLETED: 'completed',
+    FAILED: 'failed'
+  };
+
+  async initiateAICall(element: any) {
+    console.log(element);
+    try {
+      this.morningHuddleService.initiateCall(element.patients.mobile, `${element.patients.firstname} ${element.patients.surname}`, element.dentists.name, element.post_op_codes, element.patients.clinic_id).subscribe(res => {
+        console.log(res);
+      });
+    } catch (error) {
+      console.error('AI Call failed:', error);
+      element.aiCallStatus = this.aiCallStatus.FAILED;
+    }
   }
 }

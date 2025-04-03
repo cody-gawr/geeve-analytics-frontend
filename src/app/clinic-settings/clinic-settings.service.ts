@@ -10,7 +10,7 @@ export class ClinicSettingsService {
   public token: string;
   private headers: HttpHeaders;
   private apiUrl = environment.apiUrl;
-  public token_id;
+  public token_id: any;
 
   constructor(
     private http: HttpClient,

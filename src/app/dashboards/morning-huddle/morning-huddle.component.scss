@@ -1,3 +1,55 @@
 .jeeve-legacy-app {
   @import './base.scss';
 }
+
+.ai-call-agent-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .ai-call-button {
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    mat-icon {
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  .ai-call-status {
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+      &.in-progress {
+        color: #ffa726;
+        animation: spin 2s linear infinite;
+      }
+
+      &.completed {
+        color: #4caf50;
+      }
+
+      &.failed {
+        color: #f44336;
+      }
+
+      &.not-started {
+        color: #9e9e9e;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
