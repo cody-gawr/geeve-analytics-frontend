@@ -55,6 +55,8 @@ import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/
 import _ from 'lodash';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { TermsConditionsDialog } from './terms-conditions-dialog/terms-conditions-dialog.component';
+import { CallStatusService } from './call-status.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'notes-add-dialog',
@@ -67,7 +69,7 @@ export class DialogOverviewExampleDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
     private router: Router,
-    private morningHuddleService: MorningHuddleService
+    private morningHuddleService: MorningHuddleService,
   ) {}
 
   onNoClick(): void {
@@ -233,6 +235,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     'Front Desk Followups',
     'Daily Tasks',
   ];
+
+  public callStatusSubscriptions: Subscription[] = [];
   public homeUrl = environment.homeUrl;
   //public apiUrl = environment.apiUrl;
   public id: any = '';
@@ -497,7 +501,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     public constants: AppConstants,
     public dialog: MatDialog,
     public chartstipsService: ChartstipsService,
-    public clinicianAnalysisService: ClinicianAnalysisService
+    public clinicianAnalysisService: ClinicianAnalysisService,
+    private callStatusService: CallStatusService  
   ) {
     // this.getChartsTips();
     this.selected = { start: moment() };
@@ -2474,9 +2479,18 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
   async initiateAICall(element: any) {
     console.log(element);
+    let callStatusSubscription: Subscription;
     try {
       this.morningHuddleService.initiateCall(element.patients.mobile, `${element.patients.firstname} ${element.patients.surname}`, element.dentists.name, element.post_op_codes, element.patients.clinic_id).subscribe(res => {
         console.log(res);
+        this.callStatusService.connect(res.callSid);
+        callStatusSubscription = this.callStatusService.status$.subscribe(status => {
+          element.aiCallStatus = status;
+          if (status === this.aiCallStatus.COMPLETED) {
+            this.callStatusService.disconnect();
+            callStatusSubscription.unsubscribe();
+          }
+        });
       });
     } catch (error) {
       console.error('AI Call failed:', error);

@@ -1286,13 +1286,13 @@
                       (click)="initiateAICall(element)" class="ai-call-button">
                       <mat-icon>phone</mat-icon>
                       {{ element.aiCallStatus === 'not-started' ? 'Start AI Call' :
+                      element.aiCallStatus === 'ringing' ? 'Ringing...' :
                       element.aiCallStatus === 'in-progress' ? 'Call in Progress' :
                       element.aiCallStatus === 'completed' ? 'Call Completed' : 'Start AI Call' }}
                     </button>
                     <div class="ai-call-status" *ngIf="element.aiCallStatus">
                       <mat-icon [ngClass]="element.aiCallStatus">
-                        {{ element.aiCallStatus === 'in-progress' ? 'pending' :
-                        element.aiCallStatus === 'completed' ? 'check_circle' :
+                        {{ element.aiCallStatus === 'completed' ? 'check_circle' :
                         element.aiCallStatus === 'failed' ? 'error' : 'phone_disabled' }}
                       </mat-icon>
                     </div>

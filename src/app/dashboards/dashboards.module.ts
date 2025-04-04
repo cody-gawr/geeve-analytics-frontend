@@ -35,7 +35,7 @@ import { SharedModule } from '../shared/shared.module';
 import { DemoMaterialModule } from '../demo-material-module';
 import { SendReviewDialog } from './morning-huddle/send-review-dialog/send-review-dialog.component';
 import { TermsConditionsDialog } from './morning-huddle/terms-conditions-dialog/terms-conditions-dialog.component';
-
+import { CallStatusService } from './morning-huddle/call-status.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -58,6 +58,7 @@ import { TermsConditionsDialog } from './morning-huddle/terms-conditions-dialog/
   providers: [
     ClinicianAnalysisService,
     MorningHuddleService,
+    CallStatusService,
     // ClinicianProceeduresService,
     // FinancesService,
     DentistService,
