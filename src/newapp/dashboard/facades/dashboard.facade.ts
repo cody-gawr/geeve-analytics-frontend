@@ -26,10 +26,7 @@ export class DashboardFacade {
             if(tips[index]?.info?.toLowerCase() === 'disabled') return null;
             return tips[index];
           }
-          return {
-            title: '',
-            info: ''
-          };
+          return null;
         })
       );
   }

@@ -36,10 +36,14 @@
     <caRecallRate-chart
       *ngIf="(recallRateTooltip$ | async) !== null"
       [toolTip]="recallRateTooltip$ | async"
-      class="dashboard-chart50" />
+      class="dashboard-chart33" />
+    <ca-total-discount
+      *ngIf="getChartTip$(CaChartIDs.discounts) | async"
+      [toolTip]="getChartTip$(CaChartIDs.discounts) | async"
+      class="dashboard-chart33" />
     <caNumComplaints-chart
       *ngIf="getChartTip$(CaChartIDs.numComplaints) | async"
       [toolTip]="getChartTip$(CaChartIDs.numComplaints) | async"
-      class="dashboard-chart50" />
+      class="dashboard-chart33" />
   </div>
 </div>
