@@ -12,8 +12,18 @@ import { combineLatest, map, Subject } from "rxjs";
 
 @Component({
     selector: 'ca-total-discount',
+    styles: [
+      `
+        .ca-discounts {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+        }
+      `
+    ],
     template: `
         <app-chart
+            class="ca-discounts"
             [chartTitle]="chartTitle"
             [chartType]="chartType$ | async"
             [toolTip]="toolTip"
