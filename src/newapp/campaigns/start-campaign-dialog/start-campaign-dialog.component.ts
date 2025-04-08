@@ -103,7 +103,7 @@ export class StartCampaignDialog {
   composeText(smsText: string, patient: TPatient){
     let renderedMsg = smsText.replaceAll(
       '[Patient Name]',
-      patient.patient_name
+      patient.patient_name?.split(' ')[0]
     );
     renderedMsg = renderedMsg.replaceAll(
       '[Clinic Name]',

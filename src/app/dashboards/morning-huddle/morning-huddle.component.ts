@@ -2375,7 +2375,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         data: {
           patient_id: element.patient_id,
           clinic_id: this.clinic_id,
-          patient_name: element.patient_name,
+          patient_name: element.patient_name?.split(' ')[0],
           mobile: element.mobile,
           appoint_id: element.appoint_id,
           total_remains: this.remainCredits,
