@@ -9,7 +9,7 @@
     >
         <div class="box">
             <!-- <mat-icon>{{iconName}}</mat-icon> -->
-            <img [src]="iconUrl"/>
+            <img [ngStyle]="isDone?{'width': '25px'}:{'width': '44px'}" [src]="iconUrl"/>
             <span>{{title}}</span>
         </div>
     </div>

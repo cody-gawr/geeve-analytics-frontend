@@ -42,12 +42,8 @@
                 opacity: 0.7;
             }
         }
-        .table
-        span.title {
-            line-height: 1.8;
-            font-weight: 800;
-            font-size: 20px;
-        }
+        
+
     }
     
     .body {
@@ -247,4 +243,12 @@ ngx-mat-select-search {
         font-weight: 600;
         font-size: 14px;
     }
+}
+
+table td, table th, table mat-chip   {
+    font-size: 12px !important;
+}
+
+table th  {
+    font-weight: 600;
 }

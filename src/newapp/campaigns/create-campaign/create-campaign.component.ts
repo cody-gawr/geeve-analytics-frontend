@@ -909,9 +909,19 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         case CAMPAIGN_FILTERS.incomplete_tx_plan:
           return `<p class="campaign-filter-desc">Patient has incomplete treatment plans created between <span>${moment(this.filterFormGroup.controls.incomplete_tx_planStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.incomplete_tx_planEnd.value).format('DD/MM/YYYY')}</span></p>`;
         case CAMPAIGN_FILTERS.treatment:
-          return `<p class="campaign-filter-desc">Patient had ${this.treatmentItemCodesMode.value === 'anyof'? 'any of':'all of'} treatment <span >${this.selectedItemCodes.value.join(', ')}</span> performed between <span>${moment(this.filterFormGroup.controls.treatmentStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.treatmentEnd.value).format('DD/MM/YYYY')}</span></p>`;
+          let txt1 = 'any';
+          if(this.selectedItemCodes.value.length > 0){
+            txt1= this.treatmentItemCodesMode.value === 'anyof'? 'any of': 'all of';
+          }
+
+          return `<p class="campaign-filter-desc">Patient had ${txt1} treatment <span >${this.selectedItemCodes.value.join(', ')}</span> performed between <span>${moment(this.filterFormGroup.controls.treatmentStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.treatmentEnd.value).format('DD/MM/YYYY')}</span></p>`;
         case CAMPAIGN_FILTERS.no_treatment:
-          return `<p class="campaign-filter-desc">Patient did not have ${this.noTreatmentItemCodesMode.value === 'anyof'? 'any of ':''}treatment <span >${this.selectedItemCodesForNoTreatment.value.join(', ')}</span> performed between <span>${moment(this.filterFormGroup.controls.no_treatmentStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.no_treatmentEnd.value).format('DD/MM/YYYY')}</span></p>`;
+          let txt2 = 'any';
+          if(this.selectedItemCodesForNoTreatment.value.length > 0){
+            txt2 = this.noTreatmentItemCodesMode.value === 'anyof'? 'any of ':'all of';
+          }
+
+          return `<p class="campaign-filter-desc">Patient did not have ${txt2} treatment <span >${this.selectedItemCodesForNoTreatment.value.join(', ')}</span> performed between <span>${moment(this.filterFormGroup.controls.no_treatmentStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.no_treatmentEnd.value).format('DD/MM/YYYY')}</span></p>`;
         case CAMPAIGN_FILTERS.appointment:
           return `<p class="campaign-filter-desc">Patient has an appointment between <span>${moment(this.filterFormGroup.controls.appointmentStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.appointmentEnd.value).format('DD/MM/YYYY')}</span></p>`;
         case CAMPAIGN_FILTERS.no_appointment:

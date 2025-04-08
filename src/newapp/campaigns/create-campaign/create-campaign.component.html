@@ -219,7 +219,7 @@
                                         *ngFor="let campaign of element.prev_campaigns_desc?.slice(0,1)">{{campaign}}</mat-chip>
                                     <mat-chip class="chip-style" [matMenuTriggerFor]="menu"
                                         *ngIf="element.prev_campaigns_desc?.slice(1)?.length > 0">
-                                        <mat-icon style="margin-top:5px">more_horiz</mat-icon>
+                                        <mat-icon inline style="margin-top:5px">more_horiz</mat-icon>
                                     </mat-chip>
                                     <mat-menu #menu="matMenu">
                                         <mat-chip class="chip-style" style="margin: 5px;"
