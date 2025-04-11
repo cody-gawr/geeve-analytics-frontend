@@ -215,6 +215,8 @@ export class LoginService {
       //datares['mfa_enabled'] = data.mfa_enabled;
       datares['features_dismissed'] =
         data.features_dismissed;
+      datares['show_pay_promo'] =
+        data.show_pay_promo;
       datares['health_screen_mtd'] = data.health_screen_mtd;
       datares['max_chart_bars'] = data.max_chart_bars;
       let opts = this.constants.cookieOpt as CookieOptions;
@@ -277,6 +279,12 @@ export class LoginService {
       this._cookieService.put(
         'features_dismissed',
         datares['features_dismissed'],
+        opts
+      );
+
+      this._cookieService.put(
+        'show_pay_promo',
+        datares['show_pay_promo'],
         opts
       );
 

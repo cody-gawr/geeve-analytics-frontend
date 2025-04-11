@@ -45,6 +45,59 @@ export class FeatureDialogComponent {
 }
 
 @Component({
+  selector: 'feature-payapp-example',
+  template: `
+    <div class="features-new">
+    <div
+      mat-dialog-content
+      class="sa_forms_design new-feature-popup"
+      align="center"
+    >
+      <h4>Service Fees & Bank Flows - Automated, Audited, Accurate</h4>
+      <p>Tired of chasing numbers, checking transfers, or manually creating banking files? our new tool automates the entire process -- from service fee handling to account-level reconciliation</p>
+      <ul>
+        <li>
+          <p>Automated calculations</p>
+        </li>
+        <li>
+          <p>Bank-ready payment files</p>
+        </li>
+        <li>
+          <p>Built-in audit trails</p>
+        </li>
+        <li>
+          <p>Xero integration</p>
+        </li>
+        <li>
+          <p>Peace of mind</p>
+        </li>
+      </ul>
+      <p><i style="color:#f3d633" class="fas fa-hand-point-right"></i> Available now -- streamline your financial workflows in just a few clinics</p>
+      <div style="display: flex;justify-content: space-between;">
+        <div style="display: flex;gap: 10px;justify-content: center;align-items: center;">
+          <a class="mat-raised-button mat-dc" href="https://calendly.com/jeeve/jeeve-pay-demo">Try it now</a>
+          <button class="mat-stroked-button mat-dc" (click)="onNoClick()">Learn more</button>
+        </div>
+        <div>
+          <img width="200" alt="Pay" class="" src="assets/jeeve/images/logo-white-pay.png" />
+        </div>
+      </div>
+      <span class="new-feature-popup-close" (click)="onNoClick()">X</span>
+    </div>
+  </div>
+  `
+})
+export class FeaturePayAppDialogComponent {
+  constructor(
+    public dialogRef: MatDialogRef<FeaturePayAppDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
   selector: 'app-headerright',
   templateUrl: './headerright.component.html',
   styleUrls: [],
@@ -121,6 +174,18 @@ export class AppHeaderrightComponent
           error: error => {
             this.warningMessage = 'Please Provide Valid Inputs!';
           },
+        });
+    }
+
+    if (
+      this._cookieService.get('show_pay_promo') &&
+      this._cookieService.get('show_pay_promo') == '0'
+    ) {
+        const dialogRef = this.dialog.open(FeaturePayAppDialogComponent, {
+          width: '700px',
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this._cookieService.put('show_pay_promo', '1');
         });
     }
     if (this._cookieService.get('userid')) {

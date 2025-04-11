@@ -147,6 +147,8 @@ export class LoginComponent implements OnInit {
             datares['mfa_enabled'] = res.body.data.data.mfa_enabled;
             datares['features_dismissed'] =
               res.body.data.data.features_dismissed;
+            datares['show_pay_promo'] =
+              res.body.data.data.show_pay_promo;
             datares['health_screen_mtd'] = res.body.data.data.health_screen_mtd;
             datares['max_chart_bars'] = res.body.data.data.max_chart_bars;
             let opts = this.constants.cookieOpt as CookieOptions;
@@ -209,6 +211,12 @@ export class LoginComponent implements OnInit {
             this._cookieService.put(
               'features_dismissed',
               datares['features_dismissed'],
+              opts
+            );
+
+            this._cookieService.put(
+              'show_pay_promo',
+              datares['show_pay_promo'],
               opts
             );
 
