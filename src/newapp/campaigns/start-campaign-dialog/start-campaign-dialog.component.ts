@@ -126,4 +126,8 @@ export class StartCampaignDialog {
   disabledSubmit() {
     return (!this.isValid && this.loadingData) || !this.numTotalMessage || (this.remainCredits < this.numTotalMessage)
   }
+
+  openTopUp() {
+    this.dialogRef.close({status: false, cost: this.costPerSMS});
+  }
 }

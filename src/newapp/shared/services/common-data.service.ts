@@ -28,4 +28,25 @@ export class CommonDataService {
             withCredentials: true,
         }).pipe(body => body);
     }
+
+    public createPaymentIntent(
+        creditAmount: number,
+        clinic_id: number
+      ) {
+        return this.http
+          .post<JeeveResponse<{
+            totalAmount: number;
+            taxAmount: number;
+            clientSecret: string;
+          }>>(
+            environment.commonApiUrl + '/sms/createPaymentIntent',
+            {
+              amount: creditAmount,
+              clinic_id,
+            },
+            {
+                withCredentials: true,
+            }
+          );
+      }
 }

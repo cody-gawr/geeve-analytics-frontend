@@ -47,7 +47,7 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import {MatSliderModule} from '@angular/material/slider';
-
+import { MatStepperModule } from '@angular/material/stepper';
 export const MY_FORMATS = {
   parse: {
     dateInput: 'LL',
@@ -97,7 +97,8 @@ const materialModules = [
   MatTooltipModule,
   MatDialogModule,
   MatProgressBarModule,
-  MatSliderModule
+  MatSliderModule,
+  MatStepperModule
 ];
 
 @NgModule({

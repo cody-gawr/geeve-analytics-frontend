@@ -29,7 +29,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DateRangePresetComponent } from './components/daterange-preset/daterange-preset.component';
 import { AppCustomSelect } from './components/custom-select/custom-select.component';
-
+import { StripePaymentDialog } from './components/stripe-payment-modal/stripe-payment-modal.component';
 
 const modules = [
   AngularMaterialModule,
@@ -62,6 +62,7 @@ const components = [
   AppChartComponent,
   DateRangePresetComponent,
   AppCustomSelect,
+  StripePaymentDialog
 ];
 
 @NgModule({

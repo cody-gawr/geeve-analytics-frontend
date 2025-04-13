@@ -1,0 +1,14 @@
+.cost-summary {
+  display: flex;
+  justify-content: space-between;
+}
+
+::ng-deep .mat-horizontal-stepper-header {
+  pointer-events: none !important;
+}
+
+.payment-summary {
+  line-height: 1.85;
+  text-align: right;
+  margin-top: 25px;
+}

@@ -22,6 +22,7 @@ import { CAMPAIGN_FILTERS } from '@/newapp/constants';
 import { CsvColumnSelectDialog } from './csv-column-select-dialog/csv-column-select-dialog.component';
 import { OptionDataType } from '@/newapp/shared/components/search-multi-select/search-multi-select.component';
 import { Clinic } from '@/newapp/models/clinic';
+import { StripePaymentDialog } from '@/newapp/shared/components/stripe-payment-modal/stripe-payment-modal.component';
 
 export interface CampaignElement {
   clinic_id: number;
@@ -807,6 +808,10 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
                 console.log('Error - [createCampaign]:', err);
                 this.isSendingSms = false;
               }
+            });
+          }else if(result.cost > 0){
+            const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
+              data: { costPerSMS: result.cost, clinic_id: this.clinicId },
             });
           }
         });
