@@ -98,7 +98,8 @@ export class ReviewMsgTemplateDialog {
           .addReviewMsgTemplate(
             this.data.clinic_id,
             this.name.value,
-            this.msg_template.value
+            this.msg_template.value,
+            this.type.value
           )
           .subscribe({
             next: v => {

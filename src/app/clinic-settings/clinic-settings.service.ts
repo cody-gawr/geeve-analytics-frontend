@@ -610,7 +610,8 @@ export class ClinicSettingsService {
   addReviewMsgTemplate(
     clinic_id: number,
     name: string,
-    msgTemplate: string
+    msgTemplate: string,
+    type: string,
   ): Observable<any> {
     var header = this.getHeaders();
     return this.http
@@ -620,6 +621,7 @@ export class ClinicSettingsService {
           clinic_id,
           name: name,
           msg_template: msgTemplate,
+          type,
         },
         header
       )
