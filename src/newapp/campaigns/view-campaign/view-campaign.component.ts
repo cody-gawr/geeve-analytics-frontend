@@ -30,7 +30,7 @@ export class ViewCampaignComponent {
         private dialog: MatDialog,
         public nofifyService: NotificationService,
     ) {
-        combineLatest([this.route.queryParams, this.clinicFacade.clinics$])
+        combineLatest([this.route.queryParams, this.clinicFacade.currentClinics$])
         .pipe(takeUntil(this.destroy$))
         .subscribe(([params, clinics]) => {
             this.campaignId = parseInt(params['campaign_id']) || 0;
