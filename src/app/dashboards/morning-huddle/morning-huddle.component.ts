@@ -2484,7 +2484,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     console.log(element);
     let callStatusSubscription: Subscription;
     try {
-      this.morningHuddleService.initiateCall(element.patients.mobile, `${element.patients.firstname} ${element.patients.surname}`, element.dentists.name, element.post_op_codes, 'ABC Dental').subscribe(res => {
+      this.morningHuddleService.initiateCall(element.patients.mobile, `${element.patients.firstname} ${element.patients.surname}`, element.dentists.name, element.post_op_codes, 'ABC Dental', this.clinic_id, element.post_code_id).subscribe(res => {
         console.log(res);
         this.callStatusService.connect(res.callSid);
         callStatusSubscription = this.callStatusService.status$.subscribe(status => {
