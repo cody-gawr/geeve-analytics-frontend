@@ -114,6 +114,7 @@ export class SendReviewDialog {
         .sendReviewMsg(
           this.data.clinic_id,
           this.data.patient_id,
+          this.data.patient_name,
           this.review_msg.value,
           this.phoneNumber.value,
           this.data.appoint_id?.toString()

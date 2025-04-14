@@ -1157,6 +1157,7 @@ export class MorningHuddleService {
   sendReviewMsg(
     clinic_id: number,
     patient_id: number,
+    patient_name: string,
     review_msg: string,
     phone_number: string,
     appoint_id: string
@@ -1168,6 +1169,7 @@ export class MorningHuddleService {
         {
           clinic_id,
           patient_id,
+          patient_name,
           review_msg,
           phone_number,
           appoint_id,
