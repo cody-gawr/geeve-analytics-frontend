@@ -53,8 +53,8 @@ export class FeatureDialogComponent {
       class="sa_forms_design new-feature-popup"
       align="center"
     >
-      <h4>Service Fees & Bank Flows - Automated, Audited, Accurate</h4>
-      <p>Tired of chasing numbers, checking transfers, or manually creating banking files? our new tool automates the entire process -- from service fee handling to account-level reconciliation</p>
+      <h4>Payroll deadlines are coming - are you ready?</h4>
+      <p>Direct payments to dentists mean juggling multiple accounts, transfers, and service fees — unless it’s automated. Jeeve Pay manages the admin burden so your clinic stays on top of payroll changes.</p>
       <ul>
         <li>
           <p>Automated calculations</p>
@@ -76,7 +76,7 @@ export class FeatureDialogComponent {
       <div style="display: flex;justify-content: space-between;">
         <div style="display: flex;gap: 10px;justify-content: center;align-items: center;">
           <a class="mat-raised-button mat-dc" href="https://calendly.com/jeeve/jeeve-pay-demo">Try it now</a>
-          <button class="mat-stroked-button mat-dc" (click)="onNoClick()">Learn more</button>
+          <a href="https://www.jeeve.com.au/jeeve-pay/" target="_blank" rel="noopener" class="mat-stroked-button mat-dc" mat-button> Learn more </a>
         </div>
         <div>
           <img width="200" alt="Pay" class="" src="assets/jeeve/images/logo-white-pay.png" />
