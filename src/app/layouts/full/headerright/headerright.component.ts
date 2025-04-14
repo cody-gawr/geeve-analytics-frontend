@@ -179,13 +179,13 @@ export class AppHeaderrightComponent
 
     if (
       this._cookieService.get('show_pay_promo') &&
-      this._cookieService.get('show_pay_promo') == '0'
+      this._cookieService.get('show_pay_promo') == '1'
     ) {
         const dialogRef = this.dialog.open(FeaturePayAppDialogComponent, {
           width: '700px',
         });
         dialogRef.afterClosed().subscribe(result => {
-          this._cookieService.put('show_pay_promo', '1');
+          this._cookieService.put('show_pay_promo', '0');
         });
     }
     if (this._cookieService.get('userid')) {
