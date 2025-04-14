@@ -513,10 +513,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     q.searchParams.delete('payment_intent_client_secret');
     q.searchParams.delete('redirect_status');
     window.history.pushState({}, '', q);
-
-    if (environment.featureFlags['jeeve-voice']) {
-      this.displayedColumns.splice(this.displayedColumns.length - 1, 0, 'aiCallAgent');
-    }
   }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
@@ -552,6 +548,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.autoCall = setInterval(function () {
       self.refreshDataAuto();
     }, 1000 * 300);
+
+    if (environment.featureFlags['jeeve-voice']) {
+      this.displayedColumns5.splice(this.displayedColumns.length - 1, 0, 'aiCallAgent');
+    }
   }
 
   updateCreditStatus() {
