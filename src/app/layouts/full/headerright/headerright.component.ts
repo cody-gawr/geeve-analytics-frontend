@@ -75,7 +75,7 @@ export class FeatureDialogComponent {
       <p><i style="color:#f3d633" class="fas fa-hand-point-right"></i> Available now -- streamline your financial workflows in just a few clinics</p>
       <div style="display: flex;justify-content: space-between;">
         <div style="display: flex;gap: 10px;justify-content: center;align-items: center;">
-          <a class="mat-raised-button mat-dc" href="https://calendly.com/jeeve/jeeve-pay-demo">Book Your Demo</a>
+          <a class="mat-raised-button mat-dc" href="https://calendly.com/jeeve/jeeve-pay-demo" target="_blank">Book Your Demo</a>
           <a href="https://www.jeeve.com.au/jeeve-pay/" target="_blank" rel="noopener" class="mat-stroked-button mat-dc" mat-button> Learn more </a>
         </div>
         <div>
