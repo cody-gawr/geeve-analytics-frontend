@@ -60,7 +60,7 @@ export class FeatureDialogComponent {
           <p>Automated calculations</p>
         </li>
         <li>
-          <p>Bank-ready payment files</p>
+          <p>Multi Bank Account Support</p>
         </li>
         <li>
           <p>Built-in audit trails</p>
