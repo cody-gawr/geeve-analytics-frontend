@@ -70,7 +70,7 @@ export class DialogOverviewExampleDialogComponent {
     private _cookieService: CookieService,
     private router: Router,
     private morningHuddleService: MorningHuddleService,
-  ) {}
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -131,7 +131,7 @@ export class StatusDialogMHComponent {
     private _cookieService: CookieService,
     private router: Router,
     private morningHuddle: MorningHuddleService
-  ) {}
+  ) { }
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -390,7 +390,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     'code',
     'dentist',
     'date',
-    'aiCallAgent',
     'status'
   ];
   displayedColumns6: string[] = ['start', 'dentist', 'name', 'card'];
@@ -502,7 +501,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public chartstipsService: ChartstipsService,
     public clinicianAnalysisService: ClinicianAnalysisService,
-    private callStatusService: CallStatusService  
+    private callStatusService: CallStatusService
   ) {
     // this.getChartsTips();
     this.selected = { start: moment() };
@@ -514,6 +513,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     q.searchParams.delete('payment_intent_client_secret');
     q.searchParams.delete('redirect_status');
     window.history.pushState({}, '', q);
+
+    if (environment.featureFlags['jeeve-voice']) {
+      this.displayedColumns.splice(this.displayedColumns.length - 1, 0, 'aiCallAgent');
+    }
   }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
@@ -814,7 +817,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public remindersRecallsOverdueTemp: any = [];
 
   getReminders(refsh = '') {
-    if(this.user_type == 4) return;
+    if (this.user_type == 4) return;
     if (refsh == '') {
       this.remindersRecallsOverdueLoader = true;
       this.scheduleNewPatientsLoader = true;
@@ -823,184 +826,184 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.clinicDentistsReminders = [];
 
     this.morningHuddleService
-    .getReminders(this.clinic_id, this.previousDays, null)
-    .subscribe({
-      next: res => {
-        this.remindersRecallsOverdueLoader = false;
-        if (res.status == 200) {
-          this.apiSuccessCount += 1;
-          this.showXrayOverdue = false;
-          this.OPGOverdue = false;
-          this.OverdueRecalls = false;
-          this.LabNeeded = false;
-          this.showStatusCode = false;
-          if (res.body.status_codes_enable == 1) {
-            this.showStatusCode = true;
-          }
-          if (res.body.xray_overdue_enable == 1) {
-            this.showXrayOverdue = true;
-          }
-          if (res.body.opg_overdue_enable == 1) {
-            this.OPGOverdue = true;
-          }
-          if (res.body.recall_overdue_enable == 1) {
-            this.OverdueRecalls = true;
-          }
-          if (res.body.lab_needed_enable == 1) {
-            this.LabNeeded = true;
-          }
-          this.remindersTotal = res.body.total;
-          if (this.isSMSEnabled) {
-            const remindersData = res.body.data.map(d => {
-              return {
-                appoint_id: d.appoint_id,
-                phone_number: d.mobile,
-                patient_id: d.patient_id,
-              };
-            });
-            this.morningHuddleService
-              .getCreditStatus(
-                this.clinic_id,
-                remindersData,
-                this.previousDays.split('T')[0]
-              )
-              .subscribe(v2 => {
-                if (v2.status) {
-                  this.remainCredits = v2.data.remain_credits;
-                  this.costPerSMS = v2.data.cost_per_sms;
-                  const statusList = v2.data.sms_status_list;
+      .getReminders(this.clinic_id, this.previousDays, null)
+      .subscribe({
+        next: res => {
+          this.remindersRecallsOverdueLoader = false;
+          if (res.status == 200) {
+            this.apiSuccessCount += 1;
+            this.showXrayOverdue = false;
+            this.OPGOverdue = false;
+            this.OverdueRecalls = false;
+            this.LabNeeded = false;
+            this.showStatusCode = false;
+            if (res.body.status_codes_enable == 1) {
+              this.showStatusCode = true;
+            }
+            if (res.body.xray_overdue_enable == 1) {
+              this.showXrayOverdue = true;
+            }
+            if (res.body.opg_overdue_enable == 1) {
+              this.OPGOverdue = true;
+            }
+            if (res.body.recall_overdue_enable == 1) {
+              this.OverdueRecalls = true;
+            }
+            if (res.body.lab_needed_enable == 1) {
+              this.LabNeeded = true;
+            }
+            this.remindersTotal = res.body.total;
+            if (this.isSMSEnabled) {
+              const remindersData = res.body.data.map(d => {
+                return {
+                  appoint_id: d.appoint_id,
+                  phone_number: d.mobile,
+                  patient_id: d.patient_id,
+                };
+              });
+              this.morningHuddleService
+                .getCreditStatus(
+                  this.clinic_id,
+                  remindersData,
+                  this.previousDays.split('T')[0]
+                )
+                .subscribe(v2 => {
+                  if (v2.status) {
+                    this.remainCredits = v2.data.remain_credits;
+                    this.costPerSMS = v2.data.cost_per_sms;
+                    const statusList = v2.data.sms_status_list;
 
-                  const reminderList = _.merge(res.body.data, statusList);
-                  this.remindersRecallsOverdueTemp = reminderList;
-                  this.remindersRecallsOverdue = reminderList;
-                  this.remindersRecallsOverdueDate = this.datepipe
-                    .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
-                    .replace(/\s/, 'T');
-                  if (this.user_type == '4') {
-                    this.dentistid = this._cookieService.get('dentistid');
-                    this.refreshReminderTab(this.dentistid);
-                  } else {
-                    res.body.data.forEach(val => {
-                      var isExsist = this.clinicDentistsReminders.filter(
-                        function (person) {
-                          return person.provider_id == val.provider_id;
+                    const reminderList = _.merge(res.body.data, statusList);
+                    this.remindersRecallsOverdueTemp = reminderList;
+                    this.remindersRecallsOverdue = reminderList;
+                    this.remindersRecallsOverdueDate = this.datepipe
+                      .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
+                      .replace(/\s/, 'T');
+                    if (this.user_type == '4') {
+                      this.dentistid = this._cookieService.get('dentistid');
+                      this.refreshReminderTab(this.dentistid);
+                    } else {
+                      res.body.data.forEach(val => {
+                        var isExsist = this.clinicDentistsReminders.filter(
+                          function (person) {
+                            return person.provider_id == val.provider_id;
+                          }
+                        );
+                        if (isExsist.length <= 0) {
+                          var nm =
+                            val.jeeve_name != '' && val.jeeve_name
+                              ? val.jeeve_name
+                              : val.provider_name;
+                          var temp = {
+                            provider_id: val.provider_id,
+                            provider_name: nm,
+                          };
+                          if (temp.provider_name != null)
+                            this.clinicDentistsReminders.push(temp);
                         }
-                      );
-                      if (isExsist.length <= 0) {
-                        var nm =
-                          val.jeeve_name != '' && val.jeeve_name
-                            ? val.jeeve_name
-                            : val.provider_name;
-                        var temp = {
-                          provider_id: val.provider_id,
-                          provider_name: nm,
-                        };
-                        if (temp.provider_name != null)
-                          this.clinicDentistsReminders.push(temp);
-                      }
 
-                      if (
-                        this.isExact &&
-                        this.remindersRecallsOverdue.findIndex(
-                          (a: any) => a.hyg_id && !!a.hyg_id.trim()
-                        ) >= 0
-                      ) {
-                        const hyg_id = parseInt(val.hyg_id);
-                        if (hyg_id > 0) {
-                          var isExsist1 = this.clinicDentistsReminders.filter(
-                            function (person) {
-                              return person.hyg_id == hyg_id;
+                        if (
+                          this.isExact &&
+                          this.remindersRecallsOverdue.findIndex(
+                            (a: any) => a.hyg_id && !!a.hyg_id.trim()
+                          ) >= 0
+                        ) {
+                          const hyg_id = parseInt(val.hyg_id);
+                          if (hyg_id > 0) {
+                            var isExsist1 = this.clinicDentistsReminders.filter(
+                              function (person) {
+                                return person.hyg_id == hyg_id;
+                              }
+                            );
+                            if (isExsist1.length <= 0) {
+                              var temp1 = {
+                                hyg_id: hyg_id,
+                                provider_id: null,
+                                provider_name: val.hyg_name,
+                              };
+                              if (temp1.provider_name != null)
+                                this.clinicDentistsReminders.push(temp1);
                             }
-                          );
-                          if (isExsist1.length <= 0) {
-                            var temp1 = {
-                              hyg_id: hyg_id,
-                              provider_id: null,
-                              provider_name: val.hyg_name,
-                            };
-                            if (temp1.provider_name != null)
-                              this.clinicDentistsReminders.push(temp1);
                           }
                         }
-                      }
-                    });
-                    this.clinicDentistsReminders.sort(function (x, y) {
-                      let a = x.provider_name.toUpperCase(),
-                        b = y.provider_name.toUpperCase();
-                      return a == b ? 0 : a > b ? 1 : -1;
-                    });
+                      });
+                      this.clinicDentistsReminders.sort(function (x, y) {
+                        let a = x.provider_name.toUpperCase(),
+                          b = y.provider_name.toUpperCase();
+                        return a == b ? 0 : a > b ? 1 : -1;
+                      });
+                    }
+                    this.refreshReminderTab(this.selectDentist);
                   }
-                  this.refreshReminderTab(this.selectDentist);
-                }
-              });
-          } else {
-            this.remindersRecallsOverdueTemp = res.body.data;
-            this.remindersRecallsOverdue = res.body.data;
-            this.remindersRecallsOverdueDate = this.datepipe
-              .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
-              .replace(/\s/, 'T');
-            if (this.user_type == '4') {
-              this.dentistid = this._cookieService.get('dentistid');
-              this.refreshReminderTab(this.dentistid);
+                });
             } else {
-              res.body.data.forEach(val => {
-                var isExsist = this.clinicDentistsReminders.filter(
-                  function (person) {
-                    return person.provider_id == val.provider_id;
-                  }
-                );
-                if (isExsist.length <= 0) {
-                  var nm =
-                    val.jeeve_name != '' && val.jeeve_name
-                      ? val.jeeve_name
-                      : val.provider_name;
-                  var temp = {
-                    provider_id: val.provider_id,
-                    provider_name: nm,
-                  };
-                  if (temp.provider_name != null)
-                    this.clinicDentistsReminders.push(temp);
-                }
-                if (
-                  this.isExact &&
-                  this.remindersRecallsOverdue.findIndex(
-                    (a: any) => a.hyg_id && !!a.hyg_id.trim()
-                  ) >= 0
-                ) {
-                  const hyg_id = parseInt(val.hyg_id);
-                  var isExsist1 = this.clinicDentistsReminders.filter(
+              this.remindersRecallsOverdueTemp = res.body.data;
+              this.remindersRecallsOverdue = res.body.data;
+              this.remindersRecallsOverdueDate = this.datepipe
+                .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
+                .replace(/\s/, 'T');
+              if (this.user_type == '4') {
+                this.dentistid = this._cookieService.get('dentistid');
+                this.refreshReminderTab(this.dentistid);
+              } else {
+                res.body.data.forEach(val => {
+                  var isExsist = this.clinicDentistsReminders.filter(
                     function (person) {
-                      return person.hyg_id == hyg_id;
+                      return person.provider_id == val.provider_id;
                     }
                   );
-                  if (isExsist1.length <= 0) {
-                    var temp1 = {
-                      hyg_id: hyg_id,
-                      provider_id: null,
-                      provider_name: val.hyg_name,
+                  if (isExsist.length <= 0) {
+                    var nm =
+                      val.jeeve_name != '' && val.jeeve_name
+                        ? val.jeeve_name
+                        : val.provider_name;
+                    var temp = {
+                      provider_id: val.provider_id,
+                      provider_name: nm,
                     };
-                    if (temp1.provider_name != null)
-                      this.clinicDentistsReminders.push(temp1);
+                    if (temp.provider_name != null)
+                      this.clinicDentistsReminders.push(temp);
                   }
-                }
-              });
-              this.clinicDentistsReminders.sort(function (x, y) {
-                let a = x.provider_name.toUpperCase(),
-                  b = y.provider_name.toUpperCase();
-                return a == b ? 0 : a > b ? 1 : -1;
-              });
+                  if (
+                    this.isExact &&
+                    this.remindersRecallsOverdue.findIndex(
+                      (a: any) => a.hyg_id && !!a.hyg_id.trim()
+                    ) >= 0
+                  ) {
+                    const hyg_id = parseInt(val.hyg_id);
+                    var isExsist1 = this.clinicDentistsReminders.filter(
+                      function (person) {
+                        return person.hyg_id == hyg_id;
+                      }
+                    );
+                    if (isExsist1.length <= 0) {
+                      var temp1 = {
+                        hyg_id: hyg_id,
+                        provider_id: null,
+                        provider_name: val.hyg_name,
+                      };
+                      if (temp1.provider_name != null)
+                        this.clinicDentistsReminders.push(temp1);
+                    }
+                  }
+                });
+                this.clinicDentistsReminders.sort(function (x, y) {
+                  let a = x.provider_name.toUpperCase(),
+                    b = y.provider_name.toUpperCase();
+                  return a == b ? 0 : a > b ? 1 : -1;
+                });
+              }
+              this.refreshReminderTab(this.selectDentist);
             }
-            this.refreshReminderTab(this.selectDentist);
+          } else if (res.status == 401) {
+            this.handleUnAuthorization();
           }
-        } else if (res.status == 401) {
+        },
+        error: e => {
           this.handleUnAuthorization();
-        }
-      },
-      error: e => {
-        this.handleUnAuthorization();
-      },
-    });
-    
+        },
+      });
+
 
   }
 
@@ -1626,15 +1629,15 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         (res: any) => {
           this.clinicDentists = [];
           this.currentDentist = this._cookieService.get('dentistid');
-          if(this.currentDentist){
+          if (this.currentDentist) {
             const c_dentist = res.body.dentists?.find(d => d.providerId == this.currentDentist);
-            if(c_dentist)
-              this.currentDentistSchedule = c_dentist?.has_jeeve_id === 1? c_dentist.jeeve_id: c_dentist.providerId;
+            if (c_dentist)
+              this.currentDentistSchedule = c_dentist?.has_jeeve_id === 1 ? c_dentist.jeeve_id : c_dentist.providerId;
             else this.currentDentistSchedule = this.currentDentist;
-          }else{
+          } else {
             this.currentDentistSchedule = 0;
           }
-          
+
           this.appointmentCardsTemp = [];
           if (refsh == '') {
             this.appointmentCards = new MatTableDataSource();
@@ -1692,14 +1695,14 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               //   dentist => dentist.has_jeeve_id == 1 ? dentist.jeeve_id == val.provider_id: dentist.providerId == val.provider_id
               // );
               // if (dentist) {
-                // var nm = val.provider_name;
+              // var nm = val.provider_name;
               const dentists = this.clinicDentists.filter(
                 person => person.provider_id == val.provider_id
               );
-              if(dentists.length === 0){
+              if (dentists.length === 0) {
                 const temp = {
                   provider_id: val.provider_id,
-                  provider_name: val.has_jeeve_id? val.jeeve_name: val.provider_name,
+                  provider_name: val.has_jeeve_id ? val.jeeve_name : val.provider_name,
                   hyg_id: null,
                 };
                 if (temp.provider_name != null) this.clinicDentists.push(temp);
@@ -2218,7 +2221,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       res => {
         this.charTips = res.data;
       },
-      error => {}
+      error => { }
     );
   }
 
@@ -2389,8 +2392,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           if (this.remainCredits <= 10) {
             this.toastr.warning(
               `${this.remainCredits} review credits remaining ` +
-                '- to add more ask your account owner to top up under ' +
-                'Settings -> Clinics -> Google Reviews'
+              '- to add more ask your account owner to top up under ' +
+              'Settings -> Clinics -> Google Reviews'
             );
           }
           element.sms_status = result.status;
@@ -2437,8 +2440,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     newWin.document.open();
     newWin.document.write(
       '<html><head><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"><style>#p-bttom{opacity:0}.info-icon-container.mhRebook{display: none;}.DentistListSecRow.mh-table.patient_data-table_responsive {margin-top: 50px;} .DentistListSecRow .mat-row:nth-child(even) {background-color: #f5f5fb;}span.timeFTA {width: 55px;margin-left: 8px;font-size: 12px;text-align: center;border-radius: 1px;border: 1px solid #000000;box-shadow: 0px 1px 3px;padding: 1px 9px;display: inline-block;background: #e8b06b;color: #000000;} .icon {max-width: 80px;flex: 0 0 80px;height: 80px;text-align: center;border-radius: 100%;margin-right: 30px;} .icon span {line-height: 80px;font-size: 32px;} .icon.orange { background-color: #fff6ef;}.icon.red {background-color: #ffecec;}.icon.orange i{color: #f3a062;} .icon.red i{color: #f35d5e;}.icon i{line-height: 80px;font-size: 32px;}.fas {font-family: "Font Awesome 5 Free";font-weight: 900;} #mat-tab-content-0-1 .mh-table .mat-row:nth-child(even) .appointment {background-color: #fff !important;} #mat-tab-content-0-1 .appointment {width: -webkit-max-content;width: -moz-max-content;width: max-content;background-color: #f6f7f9;padding: 5px 10px;margin: 5px 5px;border-radius: 2px;font-size: 12px;float: left;}table.mat-table {border-spacing: 2px px;}mat-footer-cell.mat-footer-cell.cdk-footer-cell.cdk-column-isDataAvailable.mat-column-isDataAvailable.ng-star-inserted {display: none;}.mh-table th.mat-header-cell {font-weight: bold;text-align: left;}.morning-huddle-date {text-align: center;display: grid;margin-bottom: 50px;}.mh-fa-check.gray {color: #bfbfbf;}.mh-fa-check {color: green;}.fa-check {color: #18A689;font-size: 18px;margin-right: 10px;}.fa, .fas {font-weight: 900;}.mat-column-start {word-wrap: break-word !important; white-space: unset !important;flex: 0 0 175px !important;width: 160px !important;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;hyphens: auto;}.DentistListSecRow .appointment {width: -webkit-max-content;width: -moz-max-content;width: max-content;background-color: #f6f7f9; padding: 5px 10px;margin: 5px 5px;border-radius: 2px;font-size: 13px;float: left;}.fa, .fas, .far, .fal, .fab {-moz-osx-font-smoothing: grayscale;-webkit-font-smoothing: antialiased;display: inline-block;font-style: normal; font-variant: normal; text-rendering: auto;line-height: 1;}.hide {display: none;}</style></head><body >' +
-        divToPrint.innerHTML +
-        '</body></html>'
+      divToPrint.innerHTML +
+      '</body></html>'
     );
     newWin.document.close();
     setTimeout(function () {
@@ -2460,8 +2463,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     newWin.document.open();
     newWin.document.write(
       '<html></head><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"><style>#p-bttom{opacity:0}.info-icon-container.mhRebook{display: none;}.DentistListSecRow.mh-table.patient_data-table_responsive {margin-top: 50px;} .DentistListSecRow .mat-row:nth-child(even) {background-color: #f5f5fb;}span.timeFTA {width: 55px;margin-left: 8px;font-size: 12px;text-align: center;border-radius: 1px;border: 1px solid #000000;box-shadow: 0px 1px 3px;padding: 1px 9px;display: inline-block;background: #e8b06b;color: #000000;} .icon {max-width: 80px;flex: 0 0 80px;height: 80px;text-align: center;border-radius: 100%;margin-right: 30px;} .icon span {line-height: 80px;font-size: 32px;} .icon.orange { background-color: #fff6ef;}.icon.red {background-color: #ffecec;}.icon.orange i{color: #f3a062;} .icon.red i{color: #f35d5e;}.icon i{line-height: 80px;font-size: 32px;}.fas {font-family: "Font Awesome 5 Free";font-weight: 900;} #mat-tab-content-0-1 .mh-table .mat-row:nth-child(even) .appointment {background-color: #fff !important;} #mat-tab-content-0-1 .appointment {width: -webkit-max-content;width: -moz-max-content;width: max-content;background-color: #f6f7f9;padding: 5px 10px;margin: 5px 5px;border-radius: 2px;font-size: 12px;float: left;}table.mat-table {border-spacing: 2px px;}mat-footer-cell.mat-footer-cell.cdk-footer-cell.cdk-column-isDataAvailable.mat-column-isDataAvailable.ng-star-inserted {display: none;}.mh-table th.mat-header-cell {font-weight: bold;text-align: left;}.morning-huddle-date {text-align: center;display: grid;margin-bottom: 50px;}.mh-fa-check.gray {color: #bfbfbf;}.mh-fa-check {color: green;}.fa-check {color: #18A689;font-size: 18px;margin-right: 10px;}.fa, .fas {font-weight: 900;}.mat-column-start {word-wrap: break-word !important; white-space: unset !important;flex: 0 0 175px !important;width: 160px !important;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;hyphens: auto;}.DentistListSecRow .appointment {width: -webkit-max-content;width: -moz-max-content;width: max-content;background-color: #f6f7f9; padding: 5px 10px;margin: 5px 5px;border-radius: 2px;font-size: 13px;float: left;}.hide {display: none;}</style></head><body >' +
-        divToPrint.innerHTML +
-        '</body></html>'
+      divToPrint.innerHTML +
+      '</body></html>'
     );
     newWin.document.close();
     setTimeout(function () {

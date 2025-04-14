@@ -18,4 +18,7 @@ export const environment = {
   stripeKey:
     'pk_test_51IwzWzDUubFKxLHp1i9fEqN0jFQTWPYOslUFJ2k84twcLejkiE4nnyq5HgsHqNlez8pGy9ZvKPR9AjO2vZ1th9JY00Kv8FlSSy',
   payUrl: 'http://local-pay.jeeve.com.au',
+  featureFlags: {
+    'jeeve-voice': true,
+  }
 };

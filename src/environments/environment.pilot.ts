@@ -9,4 +9,7 @@ export const environment = {
   stripeKey:
     'pk_live_51IwzWzDUubFKxLHp2MqYQ5j2CjhYBJ0wjhtllafbqMot3JctJ4dD6VWA1FUsDl2AIl8ELT1za1YBtTNSIo0otf6a007W0C05yH',
   payUrl: 'https://pilot-pay.jeeve.com.au',
+  featureFlags: {
+    'jeeve-voice': false,
+  }
 };
