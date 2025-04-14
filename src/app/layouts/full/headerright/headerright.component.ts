@@ -54,7 +54,7 @@ export class FeatureDialogComponent {
       align="center"
     >
       <h4>Payroll deadlines are coming - are you ready?</h4>
-      <p>Direct payments to dentists mean juggling multiple accounts, transfers, and service fees — unless it’s automated. Jeeve Pay manages the admin burden so your clinic stays on top of payroll changes.</p>
+      <p>Direct payments to dentists means juggling multiple accounts, complex reconciliations, and risking manual errors — unless it’s automated. Jeeve Pay takes the admin off your plate, so your clinic can stay focused on patients.</p>
       <ul>
         <li>
           <p>Automated calculations</p>
@@ -75,7 +75,7 @@ export class FeatureDialogComponent {
       <p><i style="color:#f3d633" class="fas fa-hand-point-right"></i> Available now -- streamline your financial workflows in just a few clinics</p>
       <div style="display: flex;justify-content: space-between;">
         <div style="display: flex;gap: 10px;justify-content: center;align-items: center;">
-          <a class="mat-raised-button mat-dc" href="https://calendly.com/jeeve/jeeve-pay-demo">Try it now</a>
+          <a class="mat-raised-button mat-dc" href="https://calendly.com/jeeve/jeeve-pay-demo">Book Your Demo</a>
           <a href="https://www.jeeve.com.au/jeeve-pay/" target="_blank" rel="noopener" class="mat-stroked-button mat-dc" mat-button> Learn more </a>
         </div>
         <div>
