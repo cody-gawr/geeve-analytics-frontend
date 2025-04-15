@@ -114,7 +114,8 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return this.clinicFacade.isMultiSelection$;
   }
 
-  selectedClinic: 'all' | number | null = null;
+  selectedClinic: Clinic | null = null;
+  selectedClinicId: 'all' | number | null = null;
   selectedMultiClinics: Array<'all' | number> = [];
 
   selectedDentist: 'all' | number | null = 'all';
@@ -285,11 +286,12 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
           }
         } else {
           if (currentClinicIDs.length === 1) {
-            this.selectedClinic = currentClinicIDs[0];
+            this.selectedClinic = currentClinics[0];
+            this.selectedClinicId = currentClinicIDs[0];
             const val = currentClinicIDs[0].toString();
             this.setCookieVal(val);
           } else if (currentClinicIDs.length == clinics.length && isEnableAll) {
-            this.selectedClinic = 'all';
+            this.selectedClinicId = 'all';
             this.setCookieVal('all');
           } else if (currentClinicIDs.length > 1 && !isEnableAll) {
             this.clinicFacade.setCurrentSingleClinicId(currentClinicIDs[0]);

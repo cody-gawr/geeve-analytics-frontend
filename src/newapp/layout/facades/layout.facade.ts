@@ -114,7 +114,7 @@ export class LayoutFacade {
     this.store.dispatch(layoutPageActions.setHideClinicSelectionDropDown({ hide }));
   }
 
-  public savePaths(paths: {name: string, path: string}[]){
+  public savePaths(paths: {name: string, path?: string}[]){
     this.store.dispatch(layoutPageActions.setPaths({paths}));
   }
 }

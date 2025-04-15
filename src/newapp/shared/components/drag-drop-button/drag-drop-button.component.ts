@@ -1,7 +1,6 @@
 import { CampaignService } from '@/newapp/campaigns/services/campaign.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject} from 'rxjs';
-import { CAMPAIGN_FILTERS } from '@/newapp/constants';
 
 @Component({
   selector: 'drag-drop-button',
@@ -18,7 +17,7 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
   @Input() closeEvent:Subject<string>;
   @Input() isOpen = false;
   @Input() isDone = false;
-  @Input() settings: string[] = [];
+  @Input() onlyView: boolean = false;
   @Input() disabled = false;
   @Input() desc = '';
 
@@ -31,33 +30,9 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
 
 
   constructor(private campaignSerivce: CampaignService) {
-
   }
 
   ngOnInit(): void {
-    if(this.settings && this.settings?.length > 0){
-      if([
-        CAMPAIGN_FILTERS.treatment, 
-        CAMPAIGN_FILTERS.incomplete_tx_plan, 
-        CAMPAIGN_FILTERS.no_appointment, 
-        CAMPAIGN_FILTERS.appointment].indexOf(this.filterName) > -1
-      ){
-        if(this.settings?.length >= 2){
-          this.startDate = this.settings[0];
-          this.endDate = this.settings[1];
-          if(this.settings?.length > 2){
-            this.itemCodes = this.settings.slice(2);
-          }
-        }
-      }else if(this.filterName === CAMPAIGN_FILTERS.patient_age){
-        if(this.settings?.length >= 2){
-          this.minAge = parseInt(this.settings[0]);
-          this.maxAge = parseInt(this.settings[1]);
-        }
-      }else{
-        this.all = 'ALL';
-      }
-    }
   }
 
   ngOnDestroy(): void {
@@ -70,17 +45,15 @@ export class DragDropButtonComponent implements OnInit, OnDestroy {
 
   selectFilter(){
     if(this.disabled) return;
-    if(this.settings && this.settings?.length > 0){
-
-    }else{
-      this.isOpen = !this.isOpen;
-      this.campaignSerivce.setSelectedIcon(this.filterName);
-    }
+    if(this.onlyView) return;
+    this.isOpen = !this.isOpen;
+    this.campaignSerivce.setSelectedIcon(this.filterName);
   }
 
   getClassList() {
     let classList = 'layout';
-    if(!(this.settings && this.settings?.length > 0)) classList += ' fixed-size';
+    if(!this.onlyView) classList += ' fixed-size';
+    else classList += ' padding-size';
     if(this.isOpen){
       classList += ' border-c';
     }

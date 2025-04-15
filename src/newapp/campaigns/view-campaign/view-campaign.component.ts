@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { CampaignService, DefaultFilterElements, ICampaignMessage, IGetPatientsFilterJson } from "../services/campaign.service";
 import { ClinicFacade } from "@/newapp/clinic/facades/clinic.facade";
@@ -7,6 +7,8 @@ import { ActivatedRoute } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
 import { NotificationService } from "@/newapp/shared/services/notification.service";
 import { StartCampaignDialog } from "../start-campaign-dialog/start-campaign-dialog.component";
+import { MatPaginator } from "@angular/material/paginator";
+import { composeCampaignFilterDescription } from "@/newapp/shared/utils";
 
 @Component({
     selector: 'view-campaign',
@@ -22,7 +24,10 @@ export class ViewCampaignComponent {
     campaignName: string = '';
     destroy = new Subject<void>();
     destroy$ = this.destroy.asObservable();
-
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    ngAfterViewInit() {
+        this.dataSource.paginator = this.paginator;
+    }
     constructor(
         private campaignService: CampaignService,
         private clinicFacade: ClinicFacade,
@@ -53,7 +58,6 @@ export class ViewCampaignComponent {
 
     isResending = false;
     resendMessage(element: ICampaignMessage) {
-        
         const _sendMsgs = (_msg) => {
             this.isResending = true;
             this.campaignService.resendCampaignMessages(this.clinicId, this.campaignId, _msg).subscribe(
@@ -105,5 +109,9 @@ export class ViewCampaignComponent {
                 this.done.push({...filter, settings: setting.filter_settings});
             }
         }
+    }
+
+    getDesc(filterName: string, settings: string[]){
+        return composeCampaignFilterDescription(filterName, settings);
     }
 }

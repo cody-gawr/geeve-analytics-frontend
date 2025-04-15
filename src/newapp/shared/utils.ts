@@ -15,7 +15,7 @@ import {
 } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { HttpErrorResponse } from '@angular/common/http';
-import { COLORS } from '../constants';
+import { CAMPAIGN_FILTERS, COLORS } from '../constants';
 import { Clinic } from '../models/clinic';
 import { DecimalPipe } from '@angular/common';
 import { DEFAULT_TIMEZONE } from '@/newapp/constants';
@@ -740,4 +740,72 @@ export function getTimezoneToday(
     }
   }
   return moment().tz(tz);
+}
+
+export function composeCampaignFilterDescription(
+  filterName: string,
+  settings: string[]
+) {
+        switch(filterName){
+          case CAMPAIGN_FILTERS.patient_age:
+            return `<p class="campaign-filter-desc">Patient is between the age of <span >${settings[0]}</span> and <span >${settings[1]}</span></p>`;
+          case CAMPAIGN_FILTERS.incomplete_tx_plan:
+            return `<p class="campaign-filter-desc">Patient has incomplete treatment plans created between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
+          case CAMPAIGN_FILTERS.treatment:
+            let treatMode = 'any', treatmentItemCodesMode, selectedItemCodes;
+
+            if(['anyof', 'allof'].indexOf(settings[2]) > -1){
+              treatmentItemCodesMode = settings[2];
+              selectedItemCodes = settings.slice(3) || [];
+            }else{
+              selectedItemCodes = settings.slice(2) || [];
+            }
+      
+            if(selectedItemCodes.length > 0){
+              treatMode= treatmentItemCodesMode === 'anyof'? 'any of': 'all of';
+            }
+  
+            return `<p class="campaign-filter-desc">Patient had ${treatMode} treatment <span >${selectedItemCodes.join(', ')}</span> performed between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
+          case CAMPAIGN_FILTERS.no_treatment:
+            let noTreatMode = 'any', notreatmentItemCodesMode, selectedNoTreatItemCodes;
+
+            if(['anyof', 'allof'].indexOf(settings[2]) > -1){
+              notreatmentItemCodesMode = settings[2];
+              selectedNoTreatItemCodes = settings.slice(3) || [];
+            }else{
+              selectedNoTreatItemCodes = settings.slice(2) || [];
+            }
+      
+            if(selectedNoTreatItemCodes.length > 0){
+              noTreatMode= notreatmentItemCodesMode === 'anyof'? 'any of': 'all of';
+            }
+  
+            return `<p class="campaign-filter-desc">Patient did not have ${noTreatMode} treatment <span >${selectedNoTreatItemCodes.join(', ')}</span> performed between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
+          case CAMPAIGN_FILTERS.appointment:
+            return `<p class="campaign-filter-desc">Patient has an appointment between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
+          case CAMPAIGN_FILTERS.no_appointment:
+            return `<p class="campaign-filter-desc">Patient does not have an appointment between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
+          case CAMPAIGN_FILTERS.patient_status:
+            return `<p class="campaign-filter-desc">Patient is of status <span>${settings[0]}</span></p>`;
+          case CAMPAIGN_FILTERS.overdues:
+            return `<p class="campaign-filter-desc">Patient has overdue amount at least <span>${settings[0]}></span> days overdue</p>`;
+          case CAMPAIGN_FILTERS.health_insurance:
+            let healthFundIncludeNoneCheckBox;
+            let selectedHealthInsurances = [];
+            if(settings?.length > 0){
+              healthFundIncludeNoneCheckBox = !!parseInt(settings[0]);
+              const rr = settings.slice(1);
+              if(rr?.length > 0){
+                selectedHealthInsurances = rr;
+              }
+            }else{
+              healthFundIncludeNoneCheckBox = false;
+              selectedHealthInsurances = [];
+            }
+            if(selectedHealthInsurances?.length > 0){
+              return `<p class="campaign-filter-desc">Patient has health insurance with <span>${selectedHealthInsurances.join(', ')}</span></p>`;
+            }else return healthFundIncludeNoneCheckBox? `<p class="campaign-filter-desc">Patient don' have health insurance`:`Patient has health insurance</p>`;
+          default:
+            return '';
+        }
 }

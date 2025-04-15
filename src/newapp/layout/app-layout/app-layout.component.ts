@@ -22,7 +22,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private router: Router,
-    private layoutFacade: LayoutFacade
+    private layoutFacade: LayoutFacade,
   ) {
     this.router.events
       .pipe(
@@ -41,9 +41,15 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
         }else{
           layoutFacade.setHideDatePicker(false);
         }
-        if((this.activatedUrl.includes('campaigns/create') && url.includes('campaigns/create?campaign_id=')) || this.activatedUrl.includes('campaigns/view')){
-          layoutFacade.savePaths([{name: 'Back to Campaigns', path: '/newapp/campaigns'}]);
-          layoutFacade.setHideClinicSelectionDropDown(true);
+        if(this.activatedUrl.includes('campaigns/create') || this.activatedUrl.includes('campaigns/view')){
+          
+          layoutFacade.savePaths([
+            {name: 'Campaigns', path: '/newapp/campaigns'},
+            {name: '[ClinicName]'}
+          ]);
+
+          if(url.includes('campaigns/create?campaign_id=') || this.activatedUrl.includes('campaigns/view'))
+            layoutFacade.setHideClinicSelectionDropDown(true);
         }else{
           layoutFacade.savePaths([]);
           layoutFacade.setHideClinicSelectionDropDown(false);

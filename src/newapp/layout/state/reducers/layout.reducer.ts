@@ -20,7 +20,7 @@ export interface LayoutState {
   compare: boolean;
   hideDatePicker: boolean;
   hideClinicSelectionDropdown: boolean;
-  paths: { name: string, path: string }[];
+  paths: { name: string, path?: string }[];
 }
 
 const initialState: LayoutState = {

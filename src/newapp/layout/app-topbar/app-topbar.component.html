@@ -12,9 +12,13 @@
           isSidenavVisible ? 'chevron_left' : 'chevron_right'
         }}</mat-icon>
       </button>
-      <div *ngIf="(paths$ | async)?.length > 0; else matLabel">
-        <a *ngFor="let path of paths$ | async" [routerLink]="path.path">{{path.name}}</a>
-      </div>
+      <nav class="breadcrumb" *ngIf="(paths$ | async)?.length > 0; else matLabel">
+        <ng-container *ngFor="let breadcrumb of paths$ | async; let last = last">
+          <a mat-button [routerLink]="breadcrumb.path" *ngIf="!last">{{ breadcrumb.name }}</a>
+          <span *ngIf="last">{{ breadcrumb.name == "[ClinicName]"? (selectedClinic?.clinicName || ''): breadcrumb.name }}</span>
+          <mat-icon inline *ngIf="!last" class="breadcrumb-separator">chevron_right</mat-icon>
+        </ng-container>
+      </nav>
       <ng-template #matLabel>
         <mat-label>{{ title }}</mat-label>
       </ng-template>
@@ -87,7 +91,7 @@
               [disabled]="(hideClinicSelectionDropdown$ | async)"
               class="custom-font"
               (selectionChange)="onChangeCurrentClinic($event)"
-              [value]="unsubscribedClinic?.id || selectedClinic">
+              [value]="unsubscribedClinic?.id || selectedClinicId">
               <mat-option *ngIf="enableAllClinics$ | async" value="all"
                 >All Clinics</mat-option
               >

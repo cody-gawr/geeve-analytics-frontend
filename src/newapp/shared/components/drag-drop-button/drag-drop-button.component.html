@@ -1,7 +1,6 @@
 <div (click)="selectFilter()" [classList]="getClassList()" >
-    <mat-icon *ngIf="isDone" (click)="onClose()" class="close">cancel</mat-icon>
+    <mat-icon *ngIf="isDone && !onlyView" (click)="onClose()" class="close">cancel</mat-icon>
     <div 
-        *ngIf="!(settings?.length >0)" 
         class="container"
         type="button" 
         cdkOverlayOrigin #trigger="cdkOverlayOrigin" 
@@ -14,25 +13,6 @@
         </div>
     </div>
     <div class="desc" *ngIf="isDone" [innerHTML]="desc"></div>
-    <div class="view-box" *ngIf="settings && settings?.length > 0">
-        <span>{{title}}</span>
-        <div class="box-c" *ngIf="startDate && endDate">
-            <span>{{startDate}}</span>
-            <b>-</b>
-            <span>{{endDate}}</span>
-        </div>
-        <div class="box-c" *ngIf="minAge !== null && maxAge !== null">
-            <span>{{minAge}}</span>
-            <b>-</b>
-            <span>{{maxAge}}</span>
-        </div>
-        <div class="box-c" *ngIf="itemCodes && itemCodes?.length > 0">
-            <span *ngFor="let it of itemCodes">{{it}}</span>
-        </div> 
-        <div class="box-c" style="justify-content: center;" *ngIf="all">
-            <span>{{all}}</span>
-        </div> 
-    </div>
 </div>
 
 

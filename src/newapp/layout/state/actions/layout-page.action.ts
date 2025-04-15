@@ -48,7 +48,7 @@ export const setPaths = createAction(
   props<{
     paths: {
       name: string;
-      path: string
+      path?: string
     }[]
   }>()
 );

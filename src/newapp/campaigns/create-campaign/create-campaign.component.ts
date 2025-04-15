@@ -457,7 +457,6 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
 
     }
     ngOnInit(): void {
-        
     }
 
     selection = new SelectionModel<CampaignElement>(true, []);
