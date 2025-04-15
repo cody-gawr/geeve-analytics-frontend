@@ -57,7 +57,7 @@ export class FeatureDialogComponent {
       <p>Direct payments to dentists means juggling multiple accounts, complex reconciliations, and risking manual errors — unless it’s automated. Jeeve Pay takes the admin off your plate, so your clinic can stay focused on patients.</p>
       <ul>
         <li>
-          <p>Automated calculations</p>
+          <p>Automated Service Fee calculations</p>
         </li>
         <li>
           <p>Multi Bank Account Support</p>
