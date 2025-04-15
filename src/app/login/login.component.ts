@@ -213,11 +213,9 @@ export class LoginComponent implements OnInit {
               datares['features_dismissed'],
               opts
             );
-
-            this._cookieService.put(
+            sessionStorage.setItem(
               'show_pay_promo',
-              datares['show_pay_promo'],
-              opts
+              datares['show_pay_promo']
             );
 
             this._cookieService.put(
