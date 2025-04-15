@@ -550,7 +550,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }, 1000 * 300);
 
     if (environment.featureFlags['jeeve-voice']) {
-      this.displayedColumns5.splice(this.displayedColumns.length - 1, 0, 'aiCallAgent');
+      this.displayedColumns5.splice(this.displayedColumns5.length - 1, 0, 'aiCallAgent');
     }
   }
 
