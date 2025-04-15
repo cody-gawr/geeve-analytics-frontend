@@ -2,6 +2,7 @@
     <mat-icon *ngIf="isDone && !onlyView" (click)="onClose()" class="close">cancel</mat-icon>
     <div 
         class="container"
+        [ngStyle]="onlyView?{'width': '50px'}:{}"
         type="button" 
         cdkOverlayOrigin #trigger="cdkOverlayOrigin" 
         [appTooltip]="disabled? 'Please update D4w to the latest version then contact Jeeve support to activate this filter': ''"

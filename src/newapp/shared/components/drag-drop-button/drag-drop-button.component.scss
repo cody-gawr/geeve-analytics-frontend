@@ -22,14 +22,11 @@
 }
 
 .padding-size {
-    padding: 15px 0;
+    padding: 15px;
 }
 
 .done {
     min-width: 480px;
-    .container {
-        width: 120px !important;
-    }
     .desc {
         display: flex; 
         justify-content: center; 
@@ -54,7 +51,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 120px;
     padding: 5px 0;
     
    
