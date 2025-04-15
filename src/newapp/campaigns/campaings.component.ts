@@ -30,7 +30,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     destroy$ = this.destroy.asObservable();
     displayedColumns: string[] = [
         'description', 'created', 
-        'totalPatientsCount', 'sentMsgCount', 'pendingCampaignCount', 'failedMsgCount', 'status', 'actions'
+        'totalPatientsCount', 'sentMsgCount', 'completedMsgCount', 'pendingCampaignCount', 'failedMsgCount', 'status', 'actions'
     ];
     dataSource = new MatTableDataSource<ICampaign>([]);
     clinicId: number = 0;
