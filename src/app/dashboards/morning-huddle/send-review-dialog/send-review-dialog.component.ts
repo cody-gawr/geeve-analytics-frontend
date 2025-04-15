@@ -147,7 +147,7 @@ export class SendReviewDialog {
     );
     let renderedMsg = msg.msg_template.replaceAll(
       '[Patient Name]',
-      this.data.patient_name
+      this.data.patient_name?.split(' ')[0]
     );
     renderedMsg = renderedMsg.replaceAll(
       '[Clinic Name]',
