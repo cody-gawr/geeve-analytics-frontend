@@ -76,7 +76,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     choseColor(element: ICampaign) {
         if(element.status === 'draft') return 'black';
         if( parseInt(<any>element.inProgressMsgCount) === 0) return "green";
-        else return 'blue';
+        else return 'black';
         // switch(status){
         //     case 'draft':
         //         return 'black';
