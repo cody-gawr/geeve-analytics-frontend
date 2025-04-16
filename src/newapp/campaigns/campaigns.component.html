@@ -44,12 +44,7 @@
 
             <ng-container matColumnDef="sentMsgCount">
               <th mat-header-cell *matHeaderCellDef> # Messages Sent </th>
-              <td mat-cell *matCellDef="let element"> {{element.sentMsgCount}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="completedMsgCount">
-              <th mat-header-cell *matHeaderCellDef> # Messages Delivered </th>
-              <td mat-cell *matCellDef="let element"> {{element.completedMsgCount}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.sentMsgCount + element.completedMsgCount}} </td>
             </ng-container>
 
             <ng-container matColumnDef="pendingCampaignCount">
