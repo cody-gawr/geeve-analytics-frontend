@@ -75,7 +75,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
     choseColor(element: ICampaign) {
         if(element.status === 'draft') return 'black';
-        if( parseInt(<any>element.inProgressMsgCount) === 0 && parseInt(<any>element.sentMsgCount) === 0) return "green";
+        if( parseInt(<any>element.inProgressMsgCount) === 0) return "green";
         else return 'blue';
         // switch(status){
         //     case 'draft':
@@ -90,9 +90,15 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         // return 'black';
     }
 
+    choseStatusIcon(element: ICampaign) {
+        if(element.status === 'draft') return 'edit_note';
+        if( parseInt(<any>element.inProgressMsgCount) === 0) return "check_circle";
+        else return 'hourglass_top';
+    }
+
     choseStatusLabel(element: ICampaign){
         if(element.status === 'draft') return 'Draft';
-        if( parseInt(<any>element.inProgressMsgCount) === 0 && parseInt(<any>element.sentMsgCount) === 0) return "Complete";
+        if( parseInt(<any>element.inProgressMsgCount) === 0) return "Complete";
         else return 'In Progress';
     }
 

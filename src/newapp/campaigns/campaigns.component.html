@@ -61,7 +61,7 @@
               <th mat-header-cell *matHeaderCellDef> Status </th>
               <td mat-cell *matCellDef="let element">
                 <div  style="display: flex; gap:5px;" [style.color]="choseColor(element)">
-                  <mat-icon style="font-size:20px;width: 20px;height:20px;">radio_button_unchecked</mat-icon> <div style="text-transform: capitalize;font-weight: 600px;">{{choseStatusLabel(element)}}</div> 
+                  <mat-icon style="font-size:20px;width: 20px;height:20px;">{{choseStatusIcon(element)}}</mat-icon> <div style="text-transform: capitalize;font-weight: 600px;">{{choseStatusLabel(element)}}</div> 
                 </div>
                 </td>
             </ng-container>
