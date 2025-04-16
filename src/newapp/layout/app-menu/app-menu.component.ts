@@ -107,7 +107,7 @@ const MENU_DATA: MenuNode[] = [
     validatorFn: ({ permissions, userType, userId }: MenuValidatorParams) => {
       return (        
         (validatePermission(permissions, 'campaigns') ||
-        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0)
+        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) && userId == 1
       );
     },
   },
@@ -416,7 +416,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
           userType: Number(result.type),
           userPlan: result.plan,
           hasPrimeClinics: result.hasPrimeClinics,
-          userId: user?.id
+          userId: user?.id || user?.parentId
         };
         this.userType = Number(result.type);
         const menuData: MenuNode[] = [];
