@@ -282,11 +282,6 @@ export class LoginService {
         opts
       );
 
-      sessionStorage.setItem(
-        'show_pay_promo',
-        datares['show_pay_promo']
-      );
-
       this._cookieService.put(
         'health_screen_mtd',
         datares['health_screen_mtd'],
