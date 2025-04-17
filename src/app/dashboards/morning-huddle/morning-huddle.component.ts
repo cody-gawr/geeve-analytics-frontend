@@ -57,6 +57,7 @@ import { LocalStorageService } from '../../shared/local-storage.service';
 import { TermsConditionsDialog } from './terms-conditions-dialog/terms-conditions-dialog.component';
 import { CallStatusService } from './call-status.service';
 import { Subscription } from 'rxjs';
+import { CallLogPanelComponent } from './call-log-panel/call-log-panel.component';
 
 @Component({
   selector: 'notes-add-dialog',
@@ -2484,12 +2485,35 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     console.log(element);
     let callStatusSubscription: Subscription;
     try {
-      this.morningHuddleService.initiateCall(element.patients.mobile, `${element.patients.firstname} ${element.patients.surname}`, element.dentists.name, element.post_op_codes, 'ABC Dental', this.clinic_id, element.post_op_codes).subscribe(res => {
+      this.morningHuddleService.initiateCall(
+        'post-op-calls',
+        element.post_op_codes,
+        element.patients.mobile,
+        `${element.patients.firstname} ${element.patients.surname}`,
+        element.dentists.name,
+        element.post_op_codes,
+        'ABC Dental',
+        this.clinic_id,
+        element.post_op_codes,
+        element.patients.patient_id,
+        element.original_appt_date
+      ).subscribe(res => {
         console.log(res);
         this.callStatusService.connect(res.callSid);
         callStatusSubscription = this.callStatusService.status$.subscribe(status => {
           element.aiCallStatus = status;
           if (status === this.aiCallStatus.COMPLETED) {
+            // Store the call log data
+            element.callLog = {
+              callSid: res.callSid,
+              patientName: `${element.patients.firstname} ${element.patients.surname}`,
+              phoneNumber: element.patients.mobile,
+              providerName: element.dentists.name,
+              treatment: element.post_op_codes,
+              duration: 0, // This should be updated with actual duration from the call service
+              status: 'Completed',
+              conversationLog: [] // This should be populated with actual conversation data from the call service
+            };
             this.callStatusService.disconnect();
             callStatusSubscription.unsubscribe();
           }
@@ -2499,5 +2523,41 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       console.error('AI Call failed:', error);
       element.aiCallStatus = this.aiCallStatus.FAILED;
     }
+  }
+
+  openCallLog(element: any): void {
+    // Show loading state
+    this.toastr.info('Fetching call logs...');
+
+    // Fetch call logs from API
+    this.morningHuddleService.getCallLogs(
+      this.clinic_id,
+      element.patients.patient_id,
+      element.original_appt_date
+    ).subscribe({
+      next: (response: any) => {
+        const dialogRef = this.dialog.open(CallLogPanelComponent, {
+          width: '600px',
+          position: { right: '0' },
+          height: '100%',
+          panelClass: 'call-log-panel',
+          data: {
+            patientName: `${element.patients.firstname} ${element.patients.surname}`,
+            phoneNumber: element.patients.mobile,
+            providerName: element.dentists.name,
+            treatment: element.post_op_codes,
+            ...response.data // This should contain duration, status, and conversationLog from the API
+          }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('Call log panel closed');
+        });
+      },
+      error: (error) => {
+        console.error('Failed to fetch call logs:', error);
+        this.toastr.error('Failed to fetch call logs. Please try again.');
+      }
+    });
   }
 }

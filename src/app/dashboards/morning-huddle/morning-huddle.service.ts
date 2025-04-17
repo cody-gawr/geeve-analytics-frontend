@@ -1183,19 +1183,22 @@ export class MorningHuddleService {
       );
   }
 
-  initiateCall(phoneNumber: string, patientName: string, doctorName: string, procedure: string, clinicName: string, clinicId: number, treatmentId: number) {
+  initiateCall(callType: string, callId: number, phoneNumber: string, patientName: string, doctorName: string, procedure: string, clinicName: string, clinicId: number, treatmentId: number, patientId: number, originalAppointmentDate: string) {
     const header = this.getHeaders();
     return this.http.post(`${environment.baseApiUrl}/v1/voice/initiate`, {
       phoneNumber: phoneNumber,
-      callType: 'post_op',
+      callType: callType,
+      callId: callId,
       treatmentId: treatmentId,
       clinicId: clinicId,
       patientData: {
+        patientId: patientId,
         name: patientName,
         doctorName: doctorName,
         procedure: procedure,
         clinicName: clinicName,
-        callerName: 'Emma'
+        callerName: 'Emma',
+        originalAppointmentDate: originalAppointmentDate
       }
     }, header)
       .pipe(
@@ -1203,5 +1206,15 @@ export class MorningHuddleService {
           return res.body;
         })
       );
+  }
+
+  getCallLogs(clinicId: string, patientId: string, originalApptDate: string) {
+    const callId = `${clinicId}-${patientId}-${originalApptDate}`;
+    return this.http.get(`${environment.baseApiUrl}/v1/voice/call-logs`, {
+      params: {
+        callId: callId,
+        callType: 'postop'
+      }
+    });
   }
 }
