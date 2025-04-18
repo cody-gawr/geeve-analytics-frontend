@@ -2607,7 +2607,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         const statusSubscription = this.callStatusService.bulkStatus$.subscribe((status: BulkSSEMessage) => {
           console.log('Bulk status update:', status);
 
-          this.bulkCallScheduleInProgress = status.status === 'in-progress';
           const followupPostOpCallsInCompElement = this.followupPostOpCallsInComp.find(call => call.record_id === status.recordId);
 
           if (followupPostOpCallsInCompElement) {
@@ -2626,12 +2625,16 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           }
 
           // Close dialog and show success message
-          if (status.status === 'schedule_complete') {
+          if (status.status === 'schedule-done') {
+            console.log('schedule_complete');
+            this.bulkCallScheduleInProgress = false;
             // Close dialog and show success message
             this.toastr.success(`Successfully scheduled ${eligibleCalls.length} calls`);
             statusSubscription.unsubscribe();
             this.getFollowupPostOpCalls();
           } else if (status.status === 'schedule_failed') {
+            this.bulkCallScheduleInProgress = false;
+            console.log('schedule_failed');
             // Close dialog and show error message
             this.toastr.error('Failed to schedule some calls. Please try again.');
             statusSubscription.unsubscribe();

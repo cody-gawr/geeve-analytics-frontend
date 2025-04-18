@@ -13,7 +13,7 @@ export interface SSEMessage {
 
 export interface BulkSSEMessage {
   connected?: boolean;
-  status?: 'pending' | 'in-progress' | 'completed' | 'schedule_complete' | 'schedule_failed';
+  status?: 'pending' | 'in-progress' | 'completed' | 'schedule-done' | 'schedule_failed';
   callSid: string;
   recordId: number;
 }
