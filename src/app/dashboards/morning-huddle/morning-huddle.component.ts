@@ -2564,7 +2564,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   followUpAll() {
     // Get all incomplete post-op calls
     const eligibleCalls = this.followupPostOpCalls
-      .filter(call => !call.is_complete && call.patients.patient_id === 12)
+      .filter(call => !call.is_complete && call.patients.patient_id === 12 || call.patients.patient_id === 11)
       .map((call, index) => ({
         recordId: call.record_id,
         phoneNumber: call.patients.mobile,
