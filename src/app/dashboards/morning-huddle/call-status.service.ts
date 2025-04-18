@@ -10,6 +10,13 @@ export interface SSEMessage {
   status?: CallStatus;
 }
 
+export interface BulkSSEMessage {
+  connected?: boolean;
+  status?: CallStatus;
+  callSid: string;
+  recordId: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,11 +25,18 @@ export class CallStatusService {
   private statusSubject = new Subject<CallStatus>();
   private connectionStatusSubject = new BehaviorSubject<boolean>(false);
 
+  private bulkEventSource: EventSource | null = null;
+  private bulkStatusSubject = new Subject<BulkSSEMessage>();
+  private bulkConnectionStatusSubject = new BehaviorSubject<boolean>(false);
+
   // Observable streams
   public status$ = this.statusSubject.asObservable();
   public isConnected$ = this.connectionStatusSubject.asObservable();
 
-  constructor() {}
+  public bulkStatus$ = this.bulkStatusSubject.asObservable();
+  public isBulkConnected$ = this.bulkConnectionStatusSubject.asObservable();
+
+  constructor() { }
 
   connect(callSid: string): void {
     // Close any existing connection
@@ -59,6 +73,32 @@ export class CallStatusService {
       this.connectionStatusSubject.next(false);
       this.disconnect();
     };
+  }
+
+  connectBulk(scheduleId: string): void {
+    this.disconnectBulk();
+    this.bulkEventSource = new EventSource(
+      `${environment.baseApiUrl}/v1/voice/schedules/${scheduleId}/stream`
+    );
+
+    this.bulkEventSource.onmessage = (event) => {
+      const data: BulkSSEMessage = JSON.parse(event.data);
+
+      console.log('Received bulk SSE message:', data);
+
+      if (data.connected) {
+        this.bulkConnectionStatusSubject.next(true);
+      } else if (data.status) {
+        this.bulkStatusSubject.next({ callSid: data.callSid, status: data.status, recordId: data.recordId });
+      }
+    };
+  }
+
+  disconnectBulk(): void {
+    if (this.bulkEventSource) {
+      this.bulkEventSource.close();
+      this.bulkEventSource = null;
+    }
   }
 
   disconnect(): void {

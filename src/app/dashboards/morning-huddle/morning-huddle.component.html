@@ -1187,7 +1187,7 @@
 
       <mat-card class="table-card post_call_responsive_border followUps followUpsTab4 morngHuddle">
         <mat-card-title>
-          <div class="title-follow-up">
+          <div class="title-follow-up" style="display: flex; justify-content: space-between; align-items: center;">
             <div class="TitleCon">
               Post op Calls
               <div class="info-icon-container">
@@ -1195,9 +1195,18 @@
                   class="info-icon" />
               </div>
             </div>
-            <div *ngIf="followupPostOpCalls.length > 0" class="showComplete">
-              <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show
-                Complete</mat-checkbox>
+            <div *ngIf="followupPostOpCalls.length > 0"
+              style="display: flex; flex-direction: row; align-items: center; gap: 1rem;">
+              <div>
+                <button mat-raised-button color="primary" (click)="followUpAll()">
+                  <mat-icon>phone</mat-icon>
+                  Follow Up All
+                </button>
+              </div>
+              <div class="showComplete">
+                <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show
+                  Complete</mat-checkbox>
+              </div>
             </div>
           </div>
           <div class="chipSets mornHuddle" *ngIf="postOpCallsScrps.length > 0">
@@ -1284,14 +1293,15 @@
                   <div class="ai-call-agent-container">
                     <button mat-raised-button color="primary" [disabled]="element.aiCallStatus === 'in-progress'"
                       (click)="initiateAICall(element)" class="ai-call-button"
-                      *ngIf="element.aiCallStatus !== 'completed'">
+                      *ngIf="element.aiCallStatus !== 'completed' && element.is_complete == 0">
                       <mat-icon>phone</mat-icon>
                       {{ element.aiCallStatus === 'not-started' ? 'Start AI Call' :
                       element.aiCallStatus === 'ringing' ? 'Ringing...' :
                       element.aiCallStatus === 'in-progress' ? 'Call in Progress' :
                       element.aiCallStatus === 'completed' ? 'Call Completed' : 'Start AI Call' }}
                     </button>
-                    <button mat-raised-button color="accent" (click)="openCallLog(element)" class="view-log-button">
+                    <button mat-raised-button *ngIf="element.is_complete == 1 && element.completed_by == -1"
+                      color="accent" (click)="openCallLog(element)" class="view-log-button">
                       <mat-icon>article</mat-icon>
                       View Call Log
                     </button>

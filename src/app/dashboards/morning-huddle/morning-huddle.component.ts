@@ -24,7 +24,22 @@ import { ChartstipsService } from '../../shared/chartstips.service';
 import { MatSort } from '@angular/material/sort';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
-// import { forkJoin } from 'rxjs';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialog as MatDialog,
+} from '@angular/material/legacy-dialog';
+import { loadStripe } from '@stripe/stripe-js';
+import { StripePaymentDialog } from '../../shared/stripe-payment-modal/stripe-payment-modal.component';
+import { SendReviewDialog } from './send-review-dialog/send-review-dialog.component';
+import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
+import _ from 'lodash';
+import { LocalStorageService } from '../../shared/local-storage.service';
+import { TermsConditionsDialog } from './terms-conditions-dialog/terms-conditions-dialog.component';
+import { CallStatusService } from './call-status.service';
+import { Subscription } from 'rxjs';
+import { CallLogPanelComponent } from './call-log-panel/call-log-panel.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 export interface PeriodicElement {
   name: string;
@@ -42,22 +57,6 @@ export interface PeriodicElement {
   card: string;
   status: number;
 }
-
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogRef as MatDialogRef,
-  MatLegacyDialog as MatDialog,
-} from '@angular/material/legacy-dialog';
-import { loadStripe } from '@stripe/stripe-js';
-import { StripePaymentDialog } from '../../shared/stripe-payment-modal/stripe-payment-modal.component';
-import { SendReviewDialog } from './send-review-dialog/send-review-dialog.component';
-import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
-import _ from 'lodash';
-import { LocalStorageService } from '../../shared/local-storage.service';
-import { TermsConditionsDialog } from './terms-conditions-dialog/terms-conditions-dialog.component';
-import { CallStatusService } from './call-status.service';
-import { Subscription } from 'rxjs';
-import { CallLogPanelComponent } from './call-log-panel/call-log-panel.component';
 
 @Component({
   selector: 'notes-add-dialog',
@@ -2559,5 +2558,67 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         this.toastr.error('Failed to fetch call logs. Please try again.');
       }
     });
+  }
+
+  followUpAll() {
+    // Get all incomplete post-op calls
+    const eligibleCalls = this.followupPostOpCalls
+      .filter(call => !call.is_complete)
+      .map((call, index) => ({
+        recordId: index + 1,
+        phoneNumber: call.patients.mobile,
+        callType: 'post_op',
+        clinicId: parseInt(this.clinic_id),
+        treatmentId: call.post_op_codes_id,
+        followUpDate: call.original_appt_date,
+        payload: {
+          name: `${call.patients.firstname} ${call.patients.surname}`,
+          doctorName: call.dentists.name,
+          procedure: call.post_op_codes,
+          clinicName: 'Dental Clinic', // TODO: Get actual clinic name
+          callerName: 'Emma', // TODO: Get actual caller name
+          originalAppointmentDate: call.original_appt_date,
+          treatmentId: call.post_op_codes_id,
+          patientId: call.patients.patient_id
+        }
+      }));
+
+    if (eligibleCalls.length === 0) {
+      this.toastr.info('No eligible calls found for bulk scheduling');
+      return;
+    }
+
+    this.morningHuddleService.scheduleBulkCall(eligibleCalls).subscribe({
+      next: (response: any) => {
+        this.toastr.success(`Successfully scheduled ${eligibleCalls.length} calls`);
+        this.callStatusService.connectBulk(response.data.schedule_id);
+
+        this.callStatusService.bulkStatus$.subscribe(status => {
+          console.log(status);
+        });
+        // Refresh the post-op calls list
+        this.getFollowupPostOpCalls();
+      },
+      error: (error) => {
+        console.error('Failed to schedule bulk calls:', error);
+        this.toastr.error('Failed to schedule bulk calls. Please try again.');
+      }
+    });
+
+    // const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    //   width: '400px',
+    //   data: {
+    //     title: 'Confirm Bulk Call Scheduling',
+    //     message: `Are you sure you want to schedule ${eligibleCalls.length} post-op calls?`,
+    //     confirmText: 'Schedule',
+    //     cancelText: 'Cancel'
+    //   }
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+
+    //   }
+    // });
   }
 }

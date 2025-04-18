@@ -1208,6 +1208,27 @@ export class MorningHuddleService {
       );
   }
 
+  scheduleBulkCall(calls: Array<{
+    recordId: number;
+    phoneNumber: string;
+    callType: string;
+    clinicId: number;
+    treatmentId: number;
+    followUpDate: string;
+    payload: {
+      name: string;
+      doctorName: string;
+      procedure: string;
+      clinicName: string;
+      callerName: string;
+      originalAppointmentDate: string;
+      treatmentId: number;
+      patientId: number;
+    };
+  }>) {
+    return this.http.post(`${environment.baseApiUrl}/v1/voice/schedules`, { calls });
+  }
+
   getCallLogs(clinicId: string, patientId: string, originalApptDate: string) {
     const callId = `${clinicId}-${patientId}-${originalApptDate}`;
     return this.http.get(`${environment.baseApiUrl}/v1/voice/call-logs`, {
