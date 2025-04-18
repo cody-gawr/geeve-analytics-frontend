@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 export type CallStatus = 'queued' | 'ringing' | 'in-progress' | 'completed' | 'failed' | 'busy' | 'no-answer' | 'canceled';
 
@@ -12,7 +13,7 @@ export interface SSEMessage {
 
 export interface BulkSSEMessage {
   connected?: boolean;
-  status?: CallStatus;
+  status?: 'pending' | 'in-progress' | 'completed' | 'schedule_complete' | 'schedule_failed';
   callSid: string;
   recordId: number;
 }
@@ -29,6 +30,8 @@ export class CallStatusService {
   private bulkStatusSubject = new Subject<BulkSSEMessage>();
   private bulkConnectionStatusSubject = new BehaviorSubject<boolean>(false);
 
+  private currentScheduleId: string | null = null;
+
   // Observable streams
   public status$ = this.statusSubject.asObservable();
   public isConnected$ = this.connectionStatusSubject.asObservable();
@@ -36,7 +39,7 @@ export class CallStatusService {
   public bulkStatus$ = this.bulkStatusSubject.asObservable();
   public isBulkConnected$ = this.bulkConnectionStatusSubject.asObservable();
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   connect(callSid: string): void {
     // Close any existing connection
@@ -76,6 +79,7 @@ export class CallStatusService {
   }
 
   connectBulk(scheduleId: string): void {
+    this.currentScheduleId = scheduleId;
     this.disconnectBulk();
     this.bulkEventSource = new EventSource(
       `${environment.baseApiUrl}/v1/voice/schedules/${scheduleId}/stream`
@@ -107,5 +111,16 @@ export class CallStatusService {
       this.eventSource = null;
       this.connectionStatusSubject.next(false);
     }
+  }
+
+  cancelBulkSchedule(clinicId: number) {
+    if (this.currentScheduleId) {
+      // Call the API to cancel the schedule
+      return this.http.patch(`${environment.baseApiUrl}/v1/voice/schedules/${this.currentScheduleId}`, {
+        clinicId: clinicId,
+        status: 'cancelled'
+      });
+    }
+    return null;
   }
 }

@@ -1198,10 +1198,22 @@
             <div *ngIf="followupPostOpCalls.length > 0"
               style="display: flex; flex-direction: row; align-items: center; gap: 1rem;">
               <div>
-                <button mat-raised-button color="primary" (click)="followUpAll()">
+
+                <button mat-raised-button color="primary" (click)="followUpAll()" *ngIf="!bulkCallScheduleInProgress">
                   <mat-icon>phone</mat-icon>
                   Follow Up All
                 </button>
+                <div style="display: flex; flex-direction: row; align-items: center; gap: 1rem;">
+                  <div class="schedule-progress" *ngIf="bulkCallScheduleInProgress"
+                    style="display: flex; align-items: center; gap: 1rem;">
+                    <mat-spinner diameter="20"></mat-spinner>
+                    <span class="progress-text">Schedule in progress...</span>
+                  </div>
+                  <button mat-raised-button color="warn" (click)="cancelBulkSchedule()"
+                    *ngIf="bulkCallScheduleInProgress">
+                    Cancel
+                  </button>
+                </div>
               </div>
               <div class="showComplete">
                 <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show
@@ -1296,12 +1308,13 @@
                       *ngIf="element.aiCallStatus !== 'completed' && element.is_complete == 0">
                       <mat-icon>phone</mat-icon>
                       {{ element.aiCallStatus === 'not-started' ? 'Start AI Call' :
+                      element.aiCallStatus === 'pending' ? 'In Queue' :
                       element.aiCallStatus === 'ringing' ? 'Ringing...' :
                       element.aiCallStatus === 'in-progress' ? 'Call in Progress' :
                       element.aiCallStatus === 'completed' ? 'Call Completed' : 'Start AI Call' }}
                     </button>
-                    <button mat-raised-button *ngIf="element.is_complete == 1 && element.completed_by == -1"
-                      color="accent" (click)="openCallLog(element)" class="view-log-button">
+                    <button mat-raised-button *ngIf="element.is_complete == 1" color="accent"
+                      (click)="openCallLog(element)" class="view-log-button">
                       <mat-icon>article</mat-icon>
                       View Call Log
                     </button>

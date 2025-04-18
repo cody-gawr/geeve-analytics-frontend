@@ -36,7 +36,7 @@ import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/
 import _ from 'lodash';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { TermsConditionsDialog } from './terms-conditions-dialog/terms-conditions-dialog.component';
-import { CallStatusService } from './call-status.service';
+import { BulkSSEMessage, CallStatusService } from './call-status.service';
 import { Subscription } from 'rxjs';
 import { CallLogPanelComponent } from './call-log-panel/call-log-panel.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
@@ -351,6 +351,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public OverdueRecalls: boolean = false;
   public LabNeeded: boolean = false;
   public selectDentist = 0;
+  public bulkCallScheduleInProgress: boolean = false;
 
   public get isHygienist(): boolean {
     return (
@@ -1881,7 +1882,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.endTaksLoadingLoading = true;
     }
     this.morningHuddleService
-      .updateFollowUpStatus(event.checked, pid, cid, type, date, followup_date)
+      .updateFollowUpStatus(event?.checked ?? true, pid, cid, type, date, followup_date)
       .subscribe((update: any) => {
         if (type == 'post-op-calls') {
           this.getFollowupPostOpCalls();
@@ -2475,6 +2476,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   // Add interface for AI Call Status
   aiCallStatus = {
     NOT_STARTED: 'not-started',
+    PENDING: 'pending',
     IN_PROGRESS: 'in-progress',
     COMPLETED: 'completed',
     FAILED: 'failed'
@@ -2530,9 +2532,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
     // Fetch call logs from API
     this.morningHuddleService.getCallLogs(
-      this.clinic_id,
-      element.patients.patient_id,
-      element.original_appt_date
+      element.record_id,
+      this.clinic_id
     ).subscribe({
       next: (response: any) => {
         const dialogRef = this.dialog.open(CallLogPanelComponent, {
@@ -2563,13 +2564,13 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   followUpAll() {
     // Get all incomplete post-op calls
     const eligibleCalls = this.followupPostOpCalls
-      .filter(call => !call.is_complete)
+      .filter(call => !call.is_complete && call.patients.patient_id === 12)
       .map((call, index) => ({
-        recordId: index + 1,
+        recordId: call.record_id,
         phoneNumber: call.patients.mobile,
-        callType: 'post_op',
+        callType: 'postop',
         clinicId: parseInt(this.clinic_id),
-        treatmentId: call.post_op_codes_id,
+        treatmentId: call.post_op_codes,
         followUpDate: call.original_appt_date,
         payload: {
           name: `${call.patients.firstname} ${call.patients.surname}`,
@@ -2578,7 +2579,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           clinicName: 'Dental Clinic', // TODO: Get actual clinic name
           callerName: 'Emma', // TODO: Get actual caller name
           originalAppointmentDate: call.original_appt_date,
-          treatmentId: call.post_op_codes_id,
+          treatmentId: call.post_op_codes,
           patientId: call.patients.patient_id
         }
       }));
@@ -2588,37 +2589,74 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       return;
     }
 
+    eligibleCalls.forEach(call => {
+      const followupPostOpCallsInCompElement = this.followupPostOpCallsInComp.find(call => call.record_id === call.recordId);
+      if (followupPostOpCallsInCompElement) {
+        followupPostOpCallsInCompElement.aiCallStatus = this.aiCallStatus.PENDING;
+      }
+    });
+
     this.morningHuddleService.scheduleBulkCall(eligibleCalls).subscribe({
       next: (response: any) => {
-        this.toastr.success(`Successfully scheduled ${eligibleCalls.length} calls`);
-        this.callStatusService.connectBulk(response.data.schedule_id);
+        const scheduleId = response.data.schedule_id;
+        this.callStatusService.connectBulk(scheduleId);
 
-        this.callStatusService.bulkStatus$.subscribe(status => {
-          console.log(status);
+        this.bulkCallScheduleInProgress = true;
+
+        // Subscribe to bulk status updates
+        const statusSubscription = this.callStatusService.bulkStatus$.subscribe((status: BulkSSEMessage) => {
+          console.log('Bulk status update:', status);
+
+          this.bulkCallScheduleInProgress = status.status === 'in-progress';
+          const followupPostOpCallsInCompElement = this.followupPostOpCallsInComp.find(call => call.record_id === status.recordId);
+
+          if (followupPostOpCallsInCompElement) {
+            followupPostOpCallsInCompElement.aiCallStatus = status.status;
+
+            if (status.status === 'completed') {
+              this.toggleUpdate(
+                null,
+                followupPostOpCallsInCompElement.patients.patient_id,
+                followupPostOpCallsInCompElement.original_appt_date,
+                followupPostOpCallsInCompElement.followup_date,
+                followupPostOpCallsInCompElement.patients.clinic_id,
+                'post-op-calls'
+              )
+            }
+          }
+
+          // Close dialog and show success message
+          if (status.status === 'schedule_complete') {
+            // Close dialog and show success message
+            this.toastr.success(`Successfully scheduled ${eligibleCalls.length} calls`);
+            statusSubscription.unsubscribe();
+            this.getFollowupPostOpCalls();
+          } else if (status.status === 'schedule_failed') {
+            // Close dialog and show error message
+            this.toastr.error('Failed to schedule some calls. Please try again.');
+            statusSubscription.unsubscribe();
+            this.getFollowupPostOpCalls();
+          }
         });
-        // Refresh the post-op calls list
-        this.getFollowupPostOpCalls();
       },
       error: (error) => {
         console.error('Failed to schedule bulk calls:', error);
         this.toastr.error('Failed to schedule bulk calls. Please try again.');
       }
     });
+  }
 
-    // const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    //   width: '400px',
-    //   data: {
-    //     title: 'Confirm Bulk Call Scheduling',
-    //     message: `Are you sure you want to schedule ${eligibleCalls.length} post-op calls?`,
-    //     confirmText: 'Schedule',
-    //     cancelText: 'Cancel'
-    //   }
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result) {
-
-    //   }
-    // });
+  cancelBulkSchedule() {
+    this.callStatusService.cancelBulkSchedule(this.clinic_id).subscribe({
+      next: (response: any) => {
+        console.log('Bulk schedule cancelled:', response);
+        this.toastr.success('Schedule cancelled successfully');
+        this.bulkCallScheduleInProgress = false;
+      },
+      error: (error) => {
+        console.error('Failed to cancel bulk schedule:', error);
+        this.toastr.error('Failed to cancel schedule. Please try again.');
+      }
+    });
   }
 }
