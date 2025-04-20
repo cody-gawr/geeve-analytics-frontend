@@ -10,26 +10,25 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <mat-icon
     *ngIf="isTableIconVisible$ | async"
     [ngClass]="(isTableViewEnabled$ | async) ? 'active' : ''"
     (click)="toggleTableView()"
     class="table-info-icon"
-    fontIcon="table_rows_narrow" />
+    fontIcon="table_rows_narrow"
+  />
   <div class="chart-title">
     <mat-icon
       *ngIf="isTrendIconVisible$ | async"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"
-      [matTooltip]="getTrendTip$ | async"></mat-icon>
+      [matTooltip]="getTrendTip$ | async"
+    ></mat-icon>
     <div class="dropdown-title">
       <div style="min-width: 200px">
-        <span
-          *ngIf="
-            (userType$ | async) === 4 || (isDentistMode$ | async);
-            else prodSelectTitle
-          "
+        <span *ngIf="(userType$ | async) === 4 || (isDentistMode$ | async); else prodSelectTitle"
           >Dentist {{ chartName$ | async }}</span
         >
         <ng-template #prodSelectTitle>
@@ -37,33 +36,30 @@
             class="dropdown-font"
             [value]="prodSelectShow$ | async"
             (selectionChange)="onChangeProdSelectTab($event)"
-            *ngIf="(chartName$ | async) === 'Production'">
+            *ngIf="(chartName$ | async) === 'Production'"
+          >
             <mat-option value="production_all">Production - All</mat-option>
-            <mat-option value="production_dentists"
-              >Production - Dentists</mat-option
-            >
+            <mat-option value="production_dentists">Production - Dentists</mat-option>
             <mat-option value="production_oht">Production - OHT</mat-option>
           </mat-select>
           <mat-select
             class="dropdown-font"
             [value]="colSelectShow$ | async"
             (selectionChange)="onChangeColSelectTab($event)"
-            *ngIf="(chartName$ | async) === 'Collection'">
+            *ngIf="(chartName$ | async) === 'Collection'"
+          >
             <mat-option value="collection_all">Collection - All</mat-option>
-            <mat-option value="collection_dentists"
-              >Collection - Dentists</mat-option
-            >
+            <mat-option value="collection_dentists">Collection - Dentists</mat-option>
             <mat-option value="collection_oht">Collection - OHT</mat-option>
           </mat-select>
           <mat-select
             class="dropdown-font"
             [value]="colExpSelectShow$ | async"
             (selectionChange)="onChangeColExpSelectTab($event)"
-            *ngIf="(chartName$ | async) === 'Collection-Exp'">
+            *ngIf="(chartName$ | async) === 'Collection-Exp'"
+          >
             <mat-option value="collection_exp_all">Collection-Exp - All</mat-option>
-            <mat-option value="collection_exp_dentists"
-              >Collection-Exp - Dentists</mat-option
-            >
+            <mat-option value="collection_exp_dentists">Collection-Exp - Dentists</mat-option>
             <mat-option value="collection_exp_oht">Collection-Exp - OHT</mat-option>
           </mat-select>
         </ng-template>
@@ -73,43 +69,32 @@
   <div class="chart-content">
     <div class="canvas-wrapper chart-box ca-prod-chart">
       <spin-loader
-            class="empty-placeholder"
-            *ngIf="isComingSoon; else enabledChart"
-            [disableSpin]="true">
-            Coming Soon...
+        class="empty-placeholder"
+        *ngIf="isComingSoon; else enabledChart"
+        [disableSpin]="true"
+      >
+        Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
         <div class="ca-prod-switch">
           <button
             *ngFor="let chartName of prodChartNames$ | async"
             (click)="switchChartName(chartName)"
-            [ngClass]="{ active: chartName == (chartName$ | async) }">
+            [ngClass]="{ active: chartName == (chartName$ | async) }"
+          >
             {{ chartName }}
           </button>
         </div>
-  
-        <div
-          class="pa-table"
-          *ngIf="
-            showTableView$ | async;
-            else graphElem
-          ">
+
+        <div class="pa-table" *ngIf="showTableView$ | async; else graphElem">
           <table>
             <thead>
               <tr>
                 <th>
-                  {{
-                    (isDentistMode$ | async) && !(isCompare$ | async)
-                      ? 'Week Ending'
-                      : 'Name'
-                  }}
+                  {{ (isDentistMode$ | async) && !(isCompare$ | async) ? 'Week Ending' : 'Name' }}
                 </th>
                 <th>
-                  {{
-                    (chartName$ | async) === 'Production'
-                      ? 'Production'
-                      : 'Collection'
-                  }}
+                  {{ (chartName$ | async) === 'Production' ? 'Production' : 'Collection' }}
                 </th>
               </tr>
             </thead>
@@ -128,7 +113,8 @@
               <spin-loader
                 class="empty-placeholder"
                 *ngIf="!(hasData$ | async); else ch11"
-                [disableSpin]="true">
+                [disableSpin]="true"
+              >
                 {{ noDataAlertMessage$ | async }}
               </spin-loader>
               <ng-template #ch11>
@@ -144,7 +130,8 @@
                   cap="round"
                   [duration]="2500"
                   prepend="$"
-                  [size]="300">
+                  [size]="300"
+                >
                 </ngx-gauge>
                 <ng-template #ch10>
                   <canvas
@@ -153,7 +140,8 @@
                     [labels]="labels"
                     [legend]="isLegendVisible$ | async"
                     type="bar"
-                    [options]="chartOptions">
+                    [options]="chartOptions"
+                  >
                   </canvas>
                 </ng-template>
               </ng-template>
@@ -165,22 +153,19 @@
             <h3>{{ total | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
             <span>{{ durationLabel$ | async }}</span>
           </div>
-  
+
           <div *ngIf="(duration$ | async) !== 'custom'">
             <h3>{{ prev | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
             <span>{{ durationTrendLabel$ | async }}</span>
           </div>
           <div *ngIf="goal >= 0 && (showGoal$ | async)">
             <h3>
-              {{
-                goal * (goalCount$ | async) | currency: 'USD' : 'symbol' : '1.0-0'
-              }}
+              {{ goal * (goalCount$ | async) | currency: 'USD' : 'symbol' : '1.0-0' }}
             </h3>
             <span>Goal</span>
           </div>
         </div>
       </ng-template>
-
     </div>
   </div>
 </div>

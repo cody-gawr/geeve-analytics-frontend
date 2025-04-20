@@ -4,13 +4,15 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <mat-icon
     matTooltipPosition="below"
     color="primary"
-    [ngClass]="'table-info-icon' + (showTopValues?' active': '')"
+    [ngClass]="'table-info-icon' + (showTopValues ? ' active' : '')"
     (click)="toggleShowTopValues()"
-    fontIcon="troubleshoot"></mat-icon>
+    fontIcon="troubleshoot"
+  ></mat-icon>
   <div class="chart-title">
     <span> Revenue Per Procedure </span>
   </div>
@@ -19,7 +21,8 @@
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
@@ -33,12 +36,10 @@
               [labels]="labels"
               [legend]="false"
               type="bar"
-              [options]="chartOptions">
+              [options]="chartOptions"
+            >
             </canvas>
-            <spin-loader
-              class="empty-placeholder"
-              *ngIf="!hasData"
-              [disableSpin]="true">
+            <spin-loader class="empty-placeholder" *ngIf="!hasData" [disableSpin]="true">
               You have no revenue in the selected period
             </spin-loader>
           </ng-template>

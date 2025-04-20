@@ -16,7 +16,7 @@ export class TrendModeToggleComponent implements OnInit, OnDestroy {
   constructor(
     private layoutFacade: LayoutFacade,
     private financeFacade: FinanceFacade,
-    private marketingFacade: MarketingFacade
+    private marketingFacade: MarketingFacade,
   ) {}
 
   get trendMode$() {
@@ -31,7 +31,7 @@ export class TrendModeToggleComponent implements OnInit, OnDestroy {
       this.marketingFacade.isLoadingAllTrendData$,
     ]).pipe(
       takeUntil(this.destroy$),
-      map(([v1, v2, v3, v4]) => v1 || v2 || v3 || v4)
+      map(([v1, v2, v3, v4]) => v1 || v2 || v3 || v4),
     );
   }
 

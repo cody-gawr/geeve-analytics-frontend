@@ -43,33 +43,24 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$() {
-    return combineLatest([
-      this.hasData$,
-      this.isTrend$,
-      this.isByDayData$
-    ]).pipe(
+    return combineLatest([this.hasData$, this.isTrend$, this.isByDayData$]).pipe(
       map(
         ([hasData, isTrend, isByDay]) =>
-          this.tableData.length > 0 && hasData && !this.isComingSoon && !isTrend && !isByDay
-      )
+          this.tableData.length > 0 && hasData && !this.isComingSoon && !isTrend && !isByDay,
+      ),
     );
   }
 
   get showTableView$() {
-    return this.isTableIconVisible$.pipe(map(
-      v => this.showTableInfo && v
-    ))
+    return this.isTableIconVisible$.pipe(map(v => this.showTableInfo && v));
   }
 
   get showMaxBarsAlert$() {
-    return combineLatest([
-      this.showTableView$,
-      this.isTableIconVisible$,
-    ]).pipe(
+    return combineLatest([this.showTableView$, this.isTableIconVisible$]).pipe(
       map(([v, v1]) => {
-        return !v && (this.tableData?.length > this.labels?.length) && v1;
-      })
-    ) 
+        return !v && this.tableData?.length > this.labels?.length && v1;
+      }),
+    );
   }
 
   get showMaxBarsAlertMsg$() {
@@ -102,7 +93,7 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([isTrend, isLoading, isTrendLoading]) => {
         return isTrend ? isTrendLoading : isLoading;
-      })
+      }),
     );
   }
 
@@ -131,15 +122,11 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
   }
 
   get isLegend$() {
-    return combineLatest([
-      this.isMultipleClinic$,
-      this.isByDayData$,
-      this.isTrend$
-    ]).pipe(map(([
-      v1, v2, v3
-    ]) => {
-      return v1 && !v2 && !v3;
-    }))
+    return combineLatest([this.isMultipleClinic$, this.isByDayData$, this.isTrend$]).pipe(
+      map(([v1, v2, v3]) => {
+        return v1 && !v2 && !v3;
+      }),
+    );
   }
 
   get isExact$() {
@@ -156,15 +143,12 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
         } else {
           return this.fdUtilRateVal > 0;
         }
-      })
+      }),
     );
   }
 
   get isDateRageInvalid$() {
-    return combineLatest([
-      this.layoutFacade.trend$,
-      this.layoutFacade.dateRange$,
-    ]).pipe(
+    return combineLatest([this.layoutFacade.trend$, this.layoutFacade.dateRange$]).pipe(
       map(([trendMode, dateRange]) => {
         if (trendMode === 'historic') return true;
         if (!!trendMode && trendMode != 'off') {
@@ -175,7 +159,7 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
           }
         }
         return false;
-      })
+      }),
     );
   }
 
@@ -186,7 +170,7 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -194,7 +178,7 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
     private frontDeskFacade: FrontDeskFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
-    private authFacade: AuthFacade
+    private authFacade: AuthFacade,
   ) {}
 
   ngOnInit(): void {
@@ -206,28 +190,26 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
       this.frontDeskFacade.fdUtilRateByDayChartData$,
     ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        ([isTrend, isByDayData, chartData, trendChartData, byDayChartData]) => {
-          if (isTrend) {
-            this.datasets = trendChartData.datasets;
-            this.labels = trendChartData.labels;
+      .subscribe(([isTrend, isByDayData, chartData, trendChartData, byDayChartData]) => {
+        if (isTrend) {
+          this.datasets = trendChartData.datasets;
+          this.labels = trendChartData.labels;
+        } else {
+          if (isByDayData) {
+            this.datasets = byDayChartData.datasets;
+            this.labels = byDayChartData.labels;
+            this.fdUtilRateVal = byDayChartData.fdUtilRateByDayVal;
+            this.fdUtilRatePrev = byDayChartData.fdUtilRateByDayPrev;
           } else {
-            if (isByDayData) {
-              this.datasets = byDayChartData.datasets;
-              this.labels = byDayChartData.labels;
-              this.fdUtilRateVal = byDayChartData.fdUtilRateByDayVal;
-              this.fdUtilRatePrev = byDayChartData.fdUtilRateByDayPrev;
-            } else {
-              this.tableData = chartData.tableData;
-              this.datasets = chartData.datasets;
-              this.labels = chartData.labels;
-              this.fdUtilRateVal = chartData.fdUtilRateVal;
-              this.fdUtilRatePrev = chartData.fdutilRatePrev;
-              this.fdUtilRateGoal = <number>chartData.fdUtilRateGoal;
-            }
+            this.tableData = chartData.tableData;
+            this.datasets = chartData.datasets;
+            this.labels = chartData.labels;
+            this.fdUtilRateVal = chartData.fdUtilRateVal;
+            this.fdUtilRatePrev = chartData.fdutilRatePrev;
+            this.fdUtilRateGoal = <number>chartData.fdUtilRateGoal;
           }
         }
-      );
+      });
   }
 
   ngOnDestroy(): void {
@@ -247,22 +229,22 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
           o.scales.x.ticks.callback = formatXNameWithInitialChar;
         }
         return o;
-      })
+      }),
     );
   }
 
   public chatPlugins = [
     {
-      afterDraw: (chart) => {
+      afterDraw: chart => {
         const ctx = chart.ctx;
         const xAxis = chart.scales['x'];
         const yAxis = chart.scales['y'];
         const tooltip = chart.tooltip;
-        chart.canvas.addEventListener('mousemove', (event) => {
+        chart.canvas.addEventListener('mousemove', event => {
           const mouseX = event.offsetX;
           const mouseY = event.offsetY;
-          
-          if(tooltip) {
+
+          if (tooltip) {
             xAxis.ticks.forEach((tick, index) => {
               const x = xAxis.getPixelForTick(index);
               const y = yAxis.bottom;
@@ -273,11 +255,10 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
               }
             });
           }
-
         });
       },
-    }
-  ]
+    },
+  ];
 
   public stackedChartOptionsTC: ChartOptions = {
     elements: {
@@ -344,7 +325,6 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
           autoSkip: false,
         },
         stacked: true,
-        
       },
       y: {
         min: 0,
@@ -369,8 +349,10 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
 
             if ((<string>tooltipItems.label).indexOf('--') >= 0) {
               let lbl = (<string>tooltipItems.label).split('--');
-              if (typeof lbl[3] === 'undefined' ||
-                lbl[0]?.toLowerCase().trim() == lbl[3]?.toLowerCase().trim()) {
+              if (
+                typeof lbl[3] === 'undefined' ||
+                lbl[0]?.toLowerCase().trim() == lbl[3]?.toLowerCase().trim()
+              ) {
                 label = lbl[0];
               } else {
                 label = lbl[0] + ' - ' + lbl[3];
@@ -384,19 +366,13 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
               Targetlable = Tlable;
             }
             let ylable = tooltipItems.parsed._custom
-              ? +(
-                  tooltipItems.parsed._custom.max +
-                  tooltipItems.parsed._custom.min
-                ) / 2
+              ? +(tooltipItems.parsed._custom.max + tooltipItems.parsed._custom.min) / 2
               : v;
 
             var tlab = 0;
             if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval =
-                tooltipItems.chart.data.datasets[1].data[
-                  tooltipItems.dataIndex
-                ];
+              const tval = tooltipItems.chart.data.datasets[1].data[tooltipItems.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -413,10 +389,7 @@ export class FrontDeskUtilRateComponent implements OnInit, OnDestroy {
           afterLabel: function (tooltipItems) {
             let hour = 0;
             let phour = 0;
-            if (
-              tooltipItems.label.indexOf('--') >= 0 &&
-              tooltipItems.datasetIndex == 0
-            ) {
+            if (tooltipItems.label.indexOf('--') >= 0 && tooltipItems.datasetIndex == 0) {
               let lbl = tooltipItems.label.split('--');
               hour = Number(lbl[1]);
               phour = Number(lbl[2]);

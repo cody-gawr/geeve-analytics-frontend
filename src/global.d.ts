@@ -25,11 +25,7 @@ declare global {
     | 'custom';
   type TREND_MODE = 'off' | 'current' | 'historic';
   type API_TREND_MODE = 'c' | 'h';
-  type T_SP_TYPE =
-    | 'Clinic Total'
-    | 'Clinic Monthly'
-    | 'Dentist Total'
-    | 'Dentist Monthly';
+  type T_SP_TYPE = 'Clinic Total' | 'Clinic Monthly' | 'Dentist Total' | 'Dentist Monthly';
   type T_MODE = 'clinic' | 'provider';
   type C_AVG_MODE = 'off' | 'average' | 'goal';
 
@@ -96,24 +92,13 @@ declare global {
     | 'caTotalDiscountsTrend';
 
   type CA_PROD_CHART_NAME = 'Production' | 'Collection' | 'Collection-Exp';
-  type CA_TX_PLAN_AVG_FEE_CHART_NAME =
-    | 'Avg. Proposed Fees'
-    | 'Avg. Completed Fees';
+  type CA_TX_PLAN_AVG_FEE_CHART_NAME = 'Avg. Proposed Fees' | 'Avg. Completed Fees';
   type CA_RECALL_RATE_CHART_NAME = 'Recall Prebook Rate' | 'Reappointment Rate';
-  type CA_PROD_SELECT_TAB =
-    | 'production_all'
-    | 'production_dentists'
-    | 'production_oht';
+  type CA_PROD_SELECT_TAB = 'production_all' | 'production_dentists' | 'production_oht';
 
-  type CA_HOURLY_RATE_SELECT_TAB =
-    | 'hourly_rate_all'
-    | 'hourly_rate_dentists'
-    | 'hourly_rate_oht';
+  type CA_HOURLY_RATE_SELECT_TAB = 'hourly_rate_all' | 'hourly_rate_dentists' | 'hourly_rate_oht';
 
-  type CA_COL_SELECT_TAB =
-    | 'collection_all'
-    | 'collection_dentists'
-    | 'collection_oht';
+  type CA_COL_SELECT_TAB = 'collection_all' | 'collection_dentists' | 'collection_oht';
 
   type CA_COL_EXP_SELECT_TAB =
     | 'collection_exp_all'
@@ -162,19 +147,19 @@ declare global {
 
   type FinanceEndpoints = FN_API_ENDPOINTS | FN_API_ENDPOINTS_TREND;
 
-  type FN_API_ENDPOINTS = 
-    'fnTotalProduction'
-  | 'fnNetProfit'
-  | 'fnNetProfitPercentage'
-  | 'fnExpenses'
-  | 'fnProductionByClinician'
-  | 'fnProductionPerVisit'
-  | 'fnProductionPerDay'
-  | 'fnTotalDiscounts'
-  | 'fnTotalCollection';
+  type FN_API_ENDPOINTS =
+    | 'fnTotalProduction'
+    | 'fnNetProfit'
+    | 'fnNetProfitPercentage'
+    | 'fnExpenses'
+    | 'fnProductionByClinician'
+    | 'fnProductionPerVisit'
+    | 'fnProductionPerDay'
+    | 'fnTotalDiscounts'
+    | 'fnTotalCollection';
 
-  type FN_API_ENDPOINTS_TREND = 
-      'fnTotalProductionTrend'
+  type FN_API_ENDPOINTS_TREND =
+    | 'fnTotalProductionTrend'
     | 'fnTotalCollectionTrend'
     | 'fnNetProfitTrend'
     | 'fnNetProfitPercentageTrend'
@@ -182,10 +167,10 @@ declare global {
     | 'fnProductionPerDayTrend'
     | 'fnExpensesTrend'
     | 'fnProductionByClinicianTrend'
-    | 'fnTotalDiscountsTrend' 
-    | 'fnHourlyRate' 
+    | 'fnTotalDiscountsTrend'
+    | 'fnHourlyRate'
     | 'fnHourlyRateTrend';
-  
+
   interface FnProduction {
     clinicId: number | string;
     clinicName: string;
@@ -459,7 +444,7 @@ declare global {
   interface CaBaseApiResponse<T> {
     app: string;
     // data: CaNumComplaintsItem[];
-    data: T[]
+    data: T[];
     goals: string | number;
     message: string;
     status: string | number;
@@ -472,8 +457,7 @@ declare global {
     numComplaints: string | number;
   }
 
-  interface CaNumComplaintsApiResponse extends CaBaseApiResponse<CaNumComplaintsItem> {
-  }
+  interface CaNumComplaintsApiResponse extends CaBaseApiResponse<CaNumComplaintsItem> {}
 
   interface CaTotalDiscountsDataRecord extends CaBaseDataRecord {
     discounts: string | number;
@@ -526,10 +510,7 @@ declare global {
 
   interface FuGetConversionPerUserApiResponse {
     app: string;
-    data: Record<
-      'ftas' | 'recalls' | 'ticks' | 'utas',
-      FuGetConversionPerUserItem[]
-    >;
+    data: Record<'ftas' | 'recalls' | 'ticks' | 'utas', FuGetConversionPerUserItem[]>;
     message: string;
     status: string | number;
     totalFta: number;

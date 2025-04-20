@@ -21,10 +21,10 @@ export class AppSidebarComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastr: ToastrService,
     private localStorage: LocalStorageService,
-    private clinicService: ClinicFacade
+    private clinicService: ClinicFacade,
   ) {
     this.clinicService.currentClinics$.subscribe(clinics => {
-      if(clinics.length > 0) {
+      if (clinics.length > 0) {
         //this.products = clinics[0].clinicProducts?.map(product => product.uniqueCode);
         this.currenctClinicId = clinics[0].id;
       }
@@ -32,18 +32,14 @@ export class AppSidebarComponent implements OnInit, OnDestroy {
   }
 
   get authUserName$() {
-    return this.authFacade.authUserData$.pipe(
-      map(
-        authUserData => authUserData?.displayName
-      )
-    );
+    return this.authFacade.authUserData$.pipe(map(authUserData => authUserData?.displayName));
   }
 
   ngOnInit() {
     this.authFacade.logoutSuccess$
       .pipe(
         takeUntil(this.destroy$),
-        filter(s => s)
+        filter(s => s),
       )
       .subscribe(() => {
         this.localStorage.clearData();

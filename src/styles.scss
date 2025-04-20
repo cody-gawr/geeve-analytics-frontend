@@ -134,7 +134,7 @@ html {
   .app-chart {
     display: flex;
     flex-grow: 1;
-    flex-direction:column;
+    flex-direction: column;
   }
 
   .chart-container {
@@ -147,7 +147,8 @@ html {
     padding: 0;
     flex: 1;
     .help-tip,
-    .table-info-icon, .warn-icon {
+    .table-info-icon,
+    .warn-icon {
       position: absolute;
       right: 8px;
       top: 8px;
@@ -262,16 +263,12 @@ html {
             width: 100%;
             background-color: #fbfbfb;
             line-height: 23px;
-        
+
             &.active {
               color: #fff !important;
               border-color: transparent;
               background: rgb(24, 166, 137);
-              background: linear-gradient(
-                to bottom,
-                rgb(24, 166, 137) 0%,
-                rgb(0, 111, 115) 99%
-              );
+              background: linear-gradient(to bottom, rgb(24, 166, 137) 0%, rgb(0, 111, 115) 99%);
             }
           }
         }
@@ -449,8 +446,6 @@ html {
       color: white !important;
     }
   }
-
-
 }
 
 .jeeve-custom-select-panel {

@@ -27,10 +27,10 @@ export interface ProdByAge extends BaseSpResult {
   Children: string | number;
   Adolescents: string | number;
   Adults: string | number;
-  "Middle-Aged": string | number;
+  'Middle-Aged': string | number;
   Seniors: string | number;
   Unspecified: string | number;
-  "Multi-Age": string | number;
+  'Multi-Age': string | number;
 }
 
 export interface MkXeroOrMyobAccountsApiResponse {

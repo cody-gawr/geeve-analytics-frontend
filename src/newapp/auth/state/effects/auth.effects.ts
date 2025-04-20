@@ -3,12 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
-import {
-  AuthApiActions,
-  AuthPageActions,
-  RolesApiActions,
-  RolesPageActions,
-} from '../actions';
+import { AuthApiActions, AuthPageActions, RolesApiActions, RolesPageActions } from '../actions';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
@@ -16,7 +11,7 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
   ) {}
 
   public readonly login$ = createEffect(() => {
@@ -29,10 +24,10 @@ export class AuthEffects {
             return AuthApiActions.loginSuccess({ authUserData });
           }),
           catchError((error: HttpErrorResponse) =>
-            of(AuthApiActions.loginFailure({ error: error.message }))
-          )
+            of(AuthApiActions.loginFailure({ error: error.message })),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -46,10 +41,10 @@ export class AuthEffects {
             return AuthApiActions.logoutSuccess();
           }),
           catchError((error: HttpErrorResponse) =>
-            of(AuthApiActions.logoutFailure({ error: error.message }))
-          )
+            of(AuthApiActions.logoutFailure({ error: error.message })),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -62,10 +57,10 @@ export class AuthEffects {
             return RolesApiActions.getRolesSuccess({ userRoles: res });
           }),
           catchError((error: HttpErrorResponse) =>
-            of(RolesApiActions.getRolesFailure({ error: error.error ?? error }))
-          )
+            of(RolesApiActions.getRolesFailure({ error: error.error ?? error })),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -83,11 +78,11 @@ export class AuthEffects {
             of(
               RolesApiActions.getRolesIndividualFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 }

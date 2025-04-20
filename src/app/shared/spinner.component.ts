@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  OnDestroy,
-  Inject,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, Input, OnDestroy, Inject, ViewEncapsulation } from '@angular/core';
 import {
   Router,
   NavigationStart,
@@ -30,7 +24,7 @@ export class SpinnerComponent implements OnDestroy {
 
   constructor(
     private router: Router,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
   ) {
     this.router.events.subscribe(
       (event: Event) => {
@@ -46,7 +40,7 @@ export class SpinnerComponent implements OnDestroy {
       },
       () => {
         this.isSpinnerVisible = false;
-      }
+      },
     );
   }
 

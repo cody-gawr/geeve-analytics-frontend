@@ -24,10 +24,7 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
 
   datasets: ChartDataset[] = [];
   labels = [];
-  chartNames: FN_PROD_PER_VISIT_CHART_NAME[] = [
-    'Production Per Visit',
-    'Production Per Day',
-  ];
+  chartNames: FN_PROD_PER_VISIT_CHART_NAME[] = ['Production Per Visit', 'Production Per Day'];
   chartName: FN_PROD_PER_VISIT_CHART_NAME = 'Production Per Visit';
 
   get chartName$() {
@@ -38,15 +35,17 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
     this.financeFacade.setProdPerVisitChartName(chartName);
   }
 
-  chartData: {
-    prod: number;
-    numTotal: number;
-    prodPerVisits: number;
-  }[] | {
-    prod: number;
-    numTotal: number;
-    prodPerDays: number;
-  }[];
+  chartData:
+    | {
+        prod: number;
+        numTotal: number;
+        prodPerVisits: number;
+      }[]
+    | {
+        prod: number;
+        numTotal: number;
+        prodPerDays: number;
+      }[];
 
   public labelBarOptionsSingleValue: ChartOptions<'line'> = {
     elements: {
@@ -109,7 +108,7 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
                 currency: 'USD',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
-              }).format(Number(tooltipItem.parsed.y))}`
+              }).format(Number(tooltipItem.parsed.y))}`,
             );
 
             labelItems.push(
@@ -118,14 +117,17 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
                 currency: 'USD',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
-              }).format(extraData.prod)}`
+              }).format(extraData.prod)}`,
             );
 
             labelItems.push(
-              `${this.chartName === 'Production Per Visit'?'Num Visits':'Num Days'} : ${new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-              }).format(extraData.numTotal)}`
+              `${this.chartName === 'Production Per Visit' ? 'Num Visits' : 'Num Days'} : ${new Intl.NumberFormat(
+                'en-US',
+                {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                },
+              ).format(extraData.numTotal)}`,
             );
 
             return labelItems;
@@ -142,7 +144,7 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
 
   constructor(
     private financeFacade: FinanceFacade,
-    private decimalPipe: DecimalPipe // private clinicFacade: ClinicFacade
+    private decimalPipe: DecimalPipe, // private clinicFacade: ClinicFacade
   ) {}
 
   ngOnInit(): void {
@@ -163,8 +165,7 @@ export class FinanceProdPerVisitTrendComponent implements OnInit, OnDestroy {
         });
       });
 
-      this.chartName$
-      .pipe(takeUntil(this.destroy$)).subscribe(v => this.chartName = v);
+    this.chartName$.pipe(takeUntil(this.destroy$)).subscribe(v => (this.chartName = v));
   }
 
   ngOnDestroy(): void {

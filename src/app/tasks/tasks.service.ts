@@ -17,7 +17,7 @@ export class TasksService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
 
   getHeaders() {
@@ -43,7 +43,7 @@ export class TasksService {
     return this.http.get(this.apiUrl + '/Users/userGetRoles', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
   // Get Dentist
@@ -51,13 +51,11 @@ export class TasksService {
     const formData = new FormData();
     formData.append('clinic_id', clinicID);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/KanbanTasks/ktGetTasks', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/KanbanTasks/ktGetTasks', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   getClinics(): Observable<any> {
@@ -65,7 +63,7 @@ export class TasksService {
     return this.http.get(this.apiUrl + '/clinics/clinicGet', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 }

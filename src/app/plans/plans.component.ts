@@ -5,11 +5,7 @@ import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/leg
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { CookieService } from 'ngx-cookie';
 import { Router } from '@angular/router';
-import {
-  UntypedFormBuilder,
-  Validators,
-  UntypedFormGroup,
-} from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
 declare var require: any;
 const data: any = require('@/assets/company.json');
 @Component({
@@ -23,7 +19,7 @@ export class DialogOverviewExampleDialogComponent {
   constructor(
     fb: UntypedFormBuilder,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.form = fb.group({
       plan: [this.plan, [Validators.required, Validators.maxLength(5)]],
@@ -93,7 +89,7 @@ export class PlansComponent implements AfterViewInit {
     private plansService: PlansService,
     public dialog: MatDialog,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {
     this.rows = data;
     this.temp = [...data];
@@ -123,7 +119,7 @@ export class PlansComponent implements AfterViewInit {
             result.allowedClinics,
             result.description,
             result.amount,
-            result.discount
+            result.discount,
           )
           .subscribe(
             res => {
@@ -134,7 +130,7 @@ export class PlansComponent implements AfterViewInit {
             },
             error => {
               this.warningMessage = 'Please Provide Valid Inputs!';
-            }
+            },
           );
       }
     });
@@ -151,7 +147,7 @@ export class PlansComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
   private deletePlan(row) {
@@ -166,7 +162,7 @@ export class PlansComponent implements AfterViewInit {
           },
           error => {
             this.warningMessage = 'Please Provide Valid Inputs!';
-          }
+          },
         );
       } else {
         this.rows.splice(row, 1);
@@ -239,7 +235,7 @@ export class PlansComponent implements AfterViewInit {
             result.plan,
             result.allowedClinics,
             result.description,
-            result.amount
+            result.amount,
           )
           .subscribe(
             res => {
@@ -250,7 +246,7 @@ export class PlansComponent implements AfterViewInit {
             },
             error => {
               this.warningMessage = 'Please Provide Valid Inputs!';
-            }
+            },
           );
       }
     });

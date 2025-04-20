@@ -4,9 +4,7 @@ import { localStorageSync } from 'ngrx-store-localstorage';
 interface State {}
 
 export const reducers: ActionReducerMap<State> = {};
-export function localStorageSyncReducer(
-  reducer: ActionReducer<any>
-): ActionReducer<any> {
+export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({
     keys: [
       {
@@ -24,6 +22,4 @@ export function localStorageSyncReducer(
   })(reducer);
 }
 
-export const metaReducers: Array<MetaReducer<any, any>> = [
-  localStorageSyncReducer,
-];
+export const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];

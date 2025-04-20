@@ -11,19 +11,14 @@ import { PracticeInsightOverduesComponent } from './components/overdues/overdues
 import { PracticeInsightService } from './services/practice-insights.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    AppLayoutModule,
-    PracticeInsightRoutingModule,
-  ],
+  imports: [CommonModule, SharedModule, AppLayoutModule, PracticeInsightRoutingModule],
   declarations: [
     PracticeInsightPageComponent,
     PracticeInsightRecallAttendanceComponent,
     PracticeInsightAttritionRateComponent,
     PracticeInsightLifeTimeValueComponent,
-    PracticeInsightOverduesComponent
+    PracticeInsightOverduesComponent,
   ],
-  providers: [ PracticeInsightService ]
+  providers: [PracticeInsightService],
 })
 export class PracticeInsightModule {}

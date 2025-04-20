@@ -4,7 +4,8 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title">
     {{ chartName$ | async }}
   </div>
@@ -13,7 +14,8 @@
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
@@ -21,7 +23,8 @@
           <button
             *ngFor="let chartName of profitChartNames"
             (click)="switchChartName(chartName)"
-            [ngClass]="{ active: chartName == (chartName$ | async) }">
+            [ngClass]="{ active: chartName == (chartName$ | async) }"
+          >
             {{ chartName }}
           </button>
         </div>
@@ -39,21 +42,21 @@
               [labels]="labels"
               [options]="chartOptions$ | async"
               [legend]="legend$ | async"
-              [type]="chartType$ | async">
+              [type]="chartType$ | async"
+            >
             </canvas>
             <spin-loader
               class="empty-placeholder"
               *ngIf="isDisconnectedPlatform$ | async"
-              [disableSpin]="true">
+              [disableSpin]="true"
+            >
               Please connect to Xero/MYOB to display this chart
             </spin-loader>
             <spin-loader
               class="empty-placeholder"
-              *ngIf="
-                !(datasets.length > 0 && datasets[0].data.length > 0) &&
-                !(isLoading$ | async)
-              "
-              [disableSpin]="true">
+              *ngIf="!(datasets.length > 0 && datasets[0].data.length > 0) && !(isLoading$ | async)"
+              [disableSpin]="true"
+            >
               You have no data in the selected period
             </spin-loader>
           </ng-template>

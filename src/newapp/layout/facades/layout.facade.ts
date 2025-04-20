@@ -24,49 +24,39 @@ import { layoutPageActions } from '../state/actions';
 export class LayoutFacade {
   constructor(private readonly store: Store<LayoutState>) {}
 
-  public readonly activatedRouteTitle$ = this.store.pipe(
-    select(selectActivatedRouteTitle)
-  );
+  public readonly activatedRouteTitle$ = this.store.pipe(select(selectActivatedRouteTitle));
 
   public readonly dateRange$ = this.store.pipe(select(selectDateRange));
 
-  public readonly trend$: Observable<TREND_MODE> = this.store.pipe(
-    select(selectTrend)
-  );
+  public readonly trend$: Observable<TREND_MODE> = this.store.pipe(select(selectTrend));
 
   public readonly isTrend$: Observable<boolean> = this.store.pipe(
     select(selectTrend),
-    map(v => v !== 'off')
+    map(v => v !== 'off'),
   );
 
-  public readonly average$: Observable<C_AVG_MODE> = this.store.pipe(
-    select(selectAverage)
-  );
+  public readonly average$: Observable<C_AVG_MODE> = this.store.pipe(select(selectAverage));
 
   public readonly compare$ = this.store.pipe(select(selectCompareEnabled));
 
-  public readonly isFullMonthsDateRange$ = this.store.pipe(
-    select(selectIsFullMonthsDateRange)
-  );
+  public readonly isFullMonthsDateRange$ = this.store.pipe(select(selectIsFullMonthsDateRange));
 
   public readonly isFullSingleMonthDateRange$ = this.store.pipe(
-    select(selectIsFullSingleMonthDateRange)
+    select(selectIsFullSingleMonthDateRange),
   );
 
   public readonly selectIsFullSingleMonthOrYearOrCurrentMonthDateRange$ = this.store.pipe(
-    select(selectIsFullSingleMonthOrYearOrCurrentMonthDateRange)
+    select(selectIsFullSingleMonthOrYearOrCurrentMonthDateRange),
   );
 
-  public readonly paths$ = this.store.pipe(
-    select(selectPaths)
-  );
+  public readonly paths$ = this.store.pipe(select(selectPaths));
 
   public saveDateRange(
     start: Moment | null,
     end: Moment | null,
     duration: DATE_RANGE_DURATION,
     goalCount?: number,
-    enableGoal?: boolean
+    enableGoal?: boolean,
   ) {
     this.store.dispatch(
       layoutPageActions.saveDateRange({
@@ -75,7 +65,7 @@ export class LayoutFacade {
         duration,
         goalCount,
         enableGoal,
-      })
+      }),
     );
   }
 
@@ -88,9 +78,7 @@ export class LayoutFacade {
   }
 
   public setCompareMode(compareMode: boolean) {
-    this.store.dispatch(
-      layoutPageActions.setCompareMode({ cMode: compareMode })
-    );
+    this.store.dispatch(layoutPageActions.setCompareMode({ cMode: compareMode }));
   }
 
   public setActivatedRouteTitle(title: string) {
@@ -99,12 +87,12 @@ export class LayoutFacade {
 
   public readonly durationCurrLabel$ = this.store.pipe(select(selectDurationCurrLabel));
 
-  public readonly durationPrevLabel$ = this.store.pipe(
-    select(selectDurationPrevLabel)
-  );
+  public readonly durationPrevLabel$ = this.store.pipe(select(selectDurationPrevLabel));
 
   public readonly hideDatePicker$ = this.store.pipe(select(selectHideDatePicker));
-  public readonly hideClinicSelectionDropdown$ = this.store.pipe(select(selectHideClinicSelectionDropdown));
+  public readonly hideClinicSelectionDropdown$ = this.store.pipe(
+    select(selectHideClinicSelectionDropdown),
+  );
 
   public setHideDatePicker(hide: boolean) {
     this.store.dispatch(layoutPageActions.setHideDatePicker({ hide }));
@@ -114,7 +102,7 @@ export class LayoutFacade {
     this.store.dispatch(layoutPageActions.setHideClinicSelectionDropDown({ hide }));
   }
 
-  public savePaths(paths: {name: string, path?: string}[]){
-    this.store.dispatch(layoutPageActions.setPaths({paths}));
+  public savePaths(paths: { name: string; path?: string }[]) {
+    this.store.dispatch(layoutPageActions.setPaths({ paths }));
   }
 }

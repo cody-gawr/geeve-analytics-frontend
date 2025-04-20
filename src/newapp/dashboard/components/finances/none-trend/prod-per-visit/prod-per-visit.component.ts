@@ -1,12 +1,12 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { ChartTip, FnProductionPerDayItem, FnProductionPerVisitItem } from '@/newapp/models/dashboard/finance';
 import {
-  externalTooltipHandler,
-  generatingLegend_3,
-  splitName,
-} from '@/newapp/shared/utils';
+  ChartTip,
+  FnProductionPerDayItem,
+  FnProductionPerVisitItem,
+} from '@/newapp/models/dashboard/finance';
+import { externalTooltipHandler, generatingLegend_3, splitName } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions } from 'chart.js';
@@ -26,10 +26,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
-  chartNames: FN_PROD_PER_VISIT_CHART_NAME[] = [
-    'Production Per Visit',
-    'Production Per Day',
-  ];
+  chartNames: FN_PROD_PER_VISIT_CHART_NAME[] = ['Production Per Visit', 'Production Per Day'];
   chartName: FN_PROD_PER_VISIT_CHART_NAME = 'Production Per Visit';
 
   get trendingIcon() {
@@ -42,7 +39,9 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   productionVisitVal = 0;
   productionVisitTrendVal = 0;
 
-  chartData: Array<FnProductionPerVisitItem & {numTotal: number | string}> | Array<FnProductionPerDayItem & {numTotal: number | string}>;
+  chartData:
+    | Array<FnProductionPerVisitItem & { numTotal: number | string }>
+    | Array<FnProductionPerDayItem & { numTotal: number | string }>;
 
   datasets = [
     {
@@ -66,7 +65,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
         } else {
           return this.productionVisitVal > 0;
         }
-      })
+      }),
     );
   }
 
@@ -75,9 +74,7 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
   }
 
   get isMultipleClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      map(v => typeof v == 'string')
-    );
+    return this.clinicFacade.currentClinicId$.pipe(map(v => typeof v == 'string'));
   }
 
   get durationLabel$() {
@@ -93,8 +90,8 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
       map(v =>
         this.productionVisitTrendVal > 0
           ? v + ': $' + this.decimalPipe.transform(this.productionVisitTrendVal)
-          : ''
-      )
+          : '',
+      ),
     );
   }
 
@@ -110,23 +107,19 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
   ) {}
 
   ngOnInit(): void {
+    this.financeFacade.prodPerVisitChartData$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+      this.datasets = data.datasets;
+      this.chartData = data.chartData;
+      this.labels = data.chartLabels;
+      this.productionVisitVal = data.productionVisitVal;
+      this.productionVisitTrendVal = data.productionVisitTrendVal;
+    });
 
-      this.financeFacade.prodPerVisitChartData$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data => {
-        this.datasets = data.datasets;
-        this.chartData = data.chartData;
-        this.labels = data.chartLabels;
-        this.productionVisitVal = data.productionVisitVal;
-        this.productionVisitTrendVal = data.productionVisitTrendVal;
-      });
-
-      this.chartName$
-      .pipe(takeUntil(this.destroy$)).subscribe(v => this.chartName = v);
+    this.chartName$.pipe(takeUntil(this.destroy$)).subscribe(v => (this.chartName = v));
   }
 
   ngOnDestroy(): void {
@@ -183,12 +176,15 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
             const extraData = this.chartData[tooltipItem.dataIndex];
             const labelItems = [];
             labelItems.push(
-              `Prod Per ${this.chartName === 'Production Per Visit'?'Visit':'Day'} : ${new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-              }).format(Number(tooltipItem.parsed.y))}`
+              `Prod Per ${this.chartName === 'Production Per Visit' ? 'Visit' : 'Day'} : ${new Intl.NumberFormat(
+                'en-US',
+                {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                },
+              ).format(Number(tooltipItem.parsed.y))}`,
             );
 
             labelItems.push(
@@ -197,14 +193,17 @@ export class FinanceProdPerVisitComponent implements OnInit, OnDestroy {
                 currency: 'USD',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
-              }).format(parseFloat(<string>extraData.production))}`
+              }).format(parseFloat(<string>extraData.production))}`,
             );
 
             labelItems.push(
-              `${this.chartName === 'Production Per Visit'?'Num Visits':'Num Days'} : ${new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-              }).format(parseFloat(<string>extraData.numTotal))}`
+              `${this.chartName === 'Production Per Visit' ? 'Num Visits' : 'Num Days'} : ${new Intl.NumberFormat(
+                'en-US',
+                {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                },
+              ).format(parseFloat(<string>extraData.numTotal))}`,
             );
             return labelItems;
           },

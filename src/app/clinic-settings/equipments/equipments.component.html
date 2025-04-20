@@ -3,22 +3,22 @@
     <mat-panel-title> Equipment List </mat-panel-title>
   </mat-expansion-panel-header>
   <div>
-    <mat-form-field
-      floatLabel="never"
-      class="denstist-search-form-field search-width">
+    <mat-form-field floatLabel="never" class="denstist-search-form-field search-width">
       <mat-icon matPrefix>search</mat-icon>
       <input
         matInput
         type="search"
         placeholder="Search here..."
         class="search-input"
-        (keyup)="doFilter($event.target.value)" />
+        (keyup)="doFilter($event.target.value)"
+      />
     </mat-form-field>
     <!-- lass="mat-raised-button mat-green addItemBtn" mat-raised-button -->
     <button
       class="sa-pull-right mat-raised-button mat-green"
       mat-raised-button
-      (click)="openDialog()">
+      (click)="openDialog()"
+    >
       Add Item
     </button>
     <mat-slide-toggle
@@ -26,7 +26,8 @@
       fxFlex.xs="100"
       checked="{{ EquipListEnable }}"
       name="equip_list_enable"
-      (change)="toggleMH($event)">
+      (change)="toggleMH($event)"
+    >
       <span *ngIf="EquipListEnable">Enabled</span>
       <span *ngIf="!EquipListEnable">Disabled</span>
     </mat-slide-toggle>
@@ -56,9 +57,8 @@
               <mat-slide-toggle
                 [checked]="element.is_active == 0 ? false : true"
                 name="status"
-                (change)="
-                  updateStatus($event, element.id, element.is_default)
-                "></mat-slide-toggle>
+                (change)="updateStatus($event, element.id, element.is_default)"
+              ></mat-slide-toggle>
             </span>
           </td>
         </ng-container>
@@ -69,9 +69,7 @@
               <a
                 title="Edit"
                 class="action_btn golden ng-star-inserted"
-                (click)="
-                  openDialog(element.id, element.equip_item, element.quantity)
-                "
+                (click)="openDialog(element.id, element.equip_item, element.quantity)"
                 ><i class="ti-pencil m-r-10"></i
               ></a>
             </span>
@@ -92,30 +90,26 @@
       <mat-paginator
         hidePageSize
         [pageSize]="dentistPageSize"
-        [style.display]="'none'"></mat-paginator>
+        [style.display]="'none'"
+      ></mat-paginator>
     </div>
 
-    <ul
-      class="main_pagination settings-table-pagination"
-      *ngIf="dentistTablePages.length > 1">
+    <ul class="main_pagination settings-table-pagination" *ngIf="dentistTablePages.length > 1">
       <li *ngFor="let page of dentistTablePages">
         <button
           [ngClass]="{ active: page === currentPage, page: true }"
-          (click)="handlePageChange(page)">
+          (click)="handlePageChange(page)"
+        >
           {{ page }}
         </button>
       </li>
     </ul>
 
     <div class="data-loading-main">
-      <div
-        class="no-data"
-        [ngClass]="itemList.data.length == 0 ? 'show' : 'hide'">
+      <div class="no-data" [ngClass]="itemList.data.length == 0 ? 'show' : 'hide'">
         No Data found
       </div>
-      <div
-        class="loader"
-        [ngClass]="itemList.data.length == 0 ? 'show' : 'hide'">
+      <div class="loader" [ngClass]="itemList.data.length == 0 ? 'show' : 'hide'">
         <img class="tableLoader" src="../../../assets/images/loader.gif" />
       </div>
     </div>

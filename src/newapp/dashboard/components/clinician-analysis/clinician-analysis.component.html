@@ -3,47 +3,56 @@
   <div class="toggle-section">
     <compare-mode-toggle *ngIf="isEnableCompare$ | async"></compare-mode-toggle>
     <average-mode-toggle
-      *ngIf="
-        isAverageToggleVisible$ | async;
-        else trendModeToggleBlock
-      "></average-mode-toggle>
-    <ng-template #trendModeToggleBlock
-      ><trend-mode-toggle></trend-mode-toggle
-    ></ng-template>
+      *ngIf="isAverageToggleVisible$ | async; else trendModeToggleBlock"
+    ></average-mode-toggle>
+    <ng-template #trendModeToggleBlock><trend-mode-toggle></trend-mode-toggle></ng-template>
   </div>
 </div>
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content">
   <div class="dashboard-row">
-    <caProduction-chart *ngIf="(prodChartTip$ | async) !== null" [toolTip]="prodChartTip$ | async" class="dashboard-chart33" />
-    <caHourlyRate-chart 
-      *ngIf="getChartTip$(CaChartIDs.hourlyRate) | async" 
-      [toolTip]="getChartTip$(CaChartIDs.hourlyRate) | async" class="dashboard-chart33" />
+    <caProduction-chart
+      *ngIf="(prodChartTip$ | async) !== null"
+      [toolTip]="prodChartTip$ | async"
+      class="dashboard-chart33"
+    />
+    <caHourlyRate-chart
+      *ngIf="getChartTip$(CaChartIDs.hourlyRate) | async"
+      [toolTip]="getChartTip$(CaChartIDs.hourlyRate) | async"
+      class="dashboard-chart33"
+    />
     <caNumNewPatients-chart
       *ngIf="getChartTip$(CaChartIDs.newPatients) | async"
-      [toolTip]="getChartTip$(CaChartIDs.newPatients) | async" class="dashboard-chart33" />
+      [toolTip]="getChartTip$(CaChartIDs.newPatients) | async"
+      class="dashboard-chart33"
+    />
   </div>
   <div class="dashboard-row">
     <caTxPlanAvgFees-chart
       *ngIf="(txPlanAvgTooltip$ | async) !== null"
       [toolTip]="txPlanAvgTooltip$ | async"
-      class="dashboard-chart50" />
+      class="dashboard-chart50"
+    />
     <caTxPlanCompRate-chart
       *ngIf="getChartTip$(CaChartIDs.txPlanCompleteRate) | async"
       [toolTip]="getChartTip$(CaChartIDs.txPlanCompleteRate) | async"
-      class="dashboard-chart50" />
+      class="dashboard-chart50"
+    />
   </div>
   <div class="dashboard-row">
     <caRecallRate-chart
       *ngIf="(recallRateTooltip$ | async) !== null"
       [toolTip]="recallRateTooltip$ | async"
-      class="dashboard-chart33" />
+      class="dashboard-chart33"
+    />
     <ca-total-discount
       *ngIf="getChartTip$(CaChartIDs.discounts) | async"
       [toolTip]="getChartTip$(CaChartIDs.discounts) | async"
-      class="dashboard-chart33" />
+      class="dashboard-chart33"
+    />
     <caNumComplaints-chart
       *ngIf="getChartTip$(CaChartIDs.numComplaints) | async"
       [toolTip]="getChartTip$(CaChartIDs.numComplaints) | async"
-      class="dashboard-chart33" />
+      class="dashboard-chart33"
+    />
   </div>
 </div>

@@ -14,11 +14,7 @@ import { authFeature } from './state/reducers/auth.reducer';
 import { AuthFacade } from './facades/auth.facade';
 import { ForgotPasswordCardComponent } from './components/forgot-password/forgot-password-card.component';
 
-const components = [
-  LoginComponent,
-  LoginCardComponent,
-  ForgotPasswordCardComponent,
-];
+const components = [LoginComponent, LoginCardComponent, ForgotPasswordCardComponent];
 const services = [AuthService, AuthFacade];
 
 @NgModule({

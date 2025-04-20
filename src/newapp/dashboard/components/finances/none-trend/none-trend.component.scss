@@ -11,44 +11,43 @@
     flex-direction: column;
 
     .chart-row {
-        flex-flow: wrap;
-        box-sizing: border-box;
+      flex-flow: wrap;
+      box-sizing: border-box;
+      display: flex;
+      gap: 15px;
+
+      .chart33 {
         display: flex;
-        gap: 15px;
+        flex-direction: column;
+        flex: 1 1 calc(33.3% - 10px);
+        min-width: calc(33.3% - 10px);
+        @include respond-from('tablet-portrait') {
+          min-width: 100%;
+        }
+      }
+      .prod-per-clinic-chart {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 calc(30% - 7.5px);
+        min-width: calc(30% - 7.5px);
+        @include respond-from('tablet-portrait') {
+          min-width: 100%;
+        }
+      }
+      .expenses-chart {
+        flex: 1 1 calc(70% - 7.5px);
+        min-width: calc(70% - 7.5px);
+        display: flex;
+        flex-direction: column;
+        @include respond-from('tablet-portrait') {
+          min-width: 100%;
+        }
+      }
 
-        .chart33 {
-          display: flex;
-          flex-direction: column;
-          flex: 1 1 calc(33.3% - 10px);
-          min-width: calc(33.3% - 10px);
-          @include respond-from('tablet-portrait') {
-            min-width: 100%;
-          }
-        }
-        .prod-per-clinic-chart {
-          display: flex;
-          flex-direction: column;
-          flex: 1 1 calc(30% - 7.5px);
-          min-width: calc(30% - 7.5px);
-          @include respond-from('tablet-portrait') {
-            min-width: 100%;
-          }
-        }
-        .expenses-chart {
-          flex: 1 1 calc(70% - 7.5px);
-          min-width: calc(70% - 7.5px);
-          display: flex;
-          flex-direction: column;
-          @include respond-from('tablet-portrait') {
-            min-width: 100%;
-          }
-        }
-    
-        .prod-collection-chart {
-          width: 100%;
-        }
+      .prod-collection-chart {
+        width: 100%;
+      }
     }
-
   }
 
   .stats-card-list {

@@ -5,7 +5,7 @@ export enum FD_CHART_ID {
   reappointRate = 17,
   numberTicks = 20,
   ftaRatio = 18,
-  utaRatio = 19
+  utaRatio = 19,
 }
 export interface FdUtaRatioApiResponse {
   app: string;

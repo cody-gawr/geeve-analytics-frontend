@@ -1,18 +1,10 @@
 import { Injectable } from '@angular/core';
-import {
-  Router,
-  Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot,
-} from '@angular/router';
+import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { catchError, first, map, Observable, of, throwError } from 'rxjs';
 
 import { Clinic } from '../../models/clinic';
 import { select, Store } from '@ngrx/store';
-import {
-  ClinicState,
-  selectCurrentClinics,
-} from '../state/reducers/clinic.reducer';
+import { ClinicState, selectCurrentClinics } from '../state/reducers/clinic.reducer';
 import { NotificationService } from '../../shared/services/notification.service';
 
 @Injectable({
@@ -22,12 +14,9 @@ export class ClinicResolver implements Resolve<Clinic | null> {
   constructor(
     private store: Store<ClinicState>,
     private router: Router,
-    private notifier: NotificationService
+    private notifier: NotificationService,
   ) {}
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<Clinic | null> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Clinic | null> {
     const clinicId = route.paramMap.get('clinicId');
     const error = new Error('Wrong clinic ID provided');
 
@@ -44,7 +33,7 @@ export class ClinicResolver implements Resolve<Clinic | null> {
         catchError((err: Error) => {
           this.internalErrorHandler(err);
           return throwError(() => err);
-        })
+        }),
       );
     } else {
       this.internalErrorHandler(error);

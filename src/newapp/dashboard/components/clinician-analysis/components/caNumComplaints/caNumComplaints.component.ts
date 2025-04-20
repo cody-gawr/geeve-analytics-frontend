@@ -4,24 +4,14 @@ import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-an
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
-import {
-  formatXLabel,
-  generatingLegend_3,
-} from '@/newapp/shared/utils';
+import { formatXLabel, generatingLegend_3 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
-import {
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-  Observable,
-} from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, distinctUntilChanged, Observable } from 'rxjs';
 
 @Component({
   selector: 'caNumComplaints-chart',
@@ -39,37 +29,29 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get showTableView$() {
-    return this.isTableIconVisible$.pipe(map(
-      v => this.showTableInfo && v
-    ))
+    return this.isTableIconVisible$.pipe(map(v => this.showTableInfo && v));
   }
 
   get showMaxBarsAlert$() {
-    return combineLatest([
-      this.showTableView$,
-      this.isTableIconVisible$,
-    ]).pipe(
+    return combineLatest([this.showTableView$, this.isTableIconVisible$]).pipe(
       map(([v, v1]) => {
-        return !v && (this.tableData?.length > this.labels?.length) && v1;
-      })
-    ) 
+        return !v && this.tableData?.length > this.labels?.length && v1;
+      }),
+    );
   }
 
   get showMaxBarsAlertMsg$() {
     return this.authFacade.chartLimitDesc$;
   }
   get isTableIconVisible$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isCompare$,
-      this.hasData$,
-      this.isTrend$
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isCompare$, this.hasData$, this.isTrend$]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
-          (!(isDentistMode && isTrend) || isCompare) && this.tableData.length > 0 && hasData &&
-          !this.isComingSoon
-      )
+          (!(isDentistMode && isTrend) || isCompare) &&
+          this.tableData.length > 0 &&
+          hasData &&
+          !this.isComingSoon,
+      ),
     );
   }
   get duration$() {
@@ -93,7 +75,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -103,10 +85,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
 
   get getTrendTip$() {
     return combineLatest([this.durationTrendLabel$]).pipe(
-      map(
-        ([durTrendLabel]) =>
-          durTrendLabel + ': ' + this.decimalPipe.transform(this.prev)
-      )
+      map(([durTrendLabel]) => durTrendLabel + ': ' + this.decimalPipe.transform(this.prev)),
     );
   }
 
@@ -119,15 +98,8 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   get isGaugeChartVisible$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
-      map(
-        ([isDentistMode, isTrend, isCompare]) =>
-          isDentistMode && !isTrend && !isCompare
-      )
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
+      map(([isDentistMode, isTrend, isCompare]) => isDentistMode && !isTrend && !isCompare),
     );
   }
 
@@ -155,7 +127,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
     return combineLatest([this.isDentistMode$]).pipe(
       map(([v]) => {
         return !v;
-      })
+      }),
     );
   }
 
@@ -167,8 +139,8 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
       this.caFacade.isLoadingCaNumComplaintsTrend$,
     ]).pipe(
       map(([isDentistMode, isTrend, isLoadingData, isLoadingTrendData]) =>
-        !isDentistMode || !isTrend ? isLoadingData : isLoadingTrendData
-      )
+        !isDentistMode || !isTrend ? isLoadingData : isLoadingTrendData,
+      ),
     );
   }
 
@@ -179,29 +151,22 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   get chartOptions$() {
     return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
       map(([isDentistMode, isTrend]) =>
-        !isDentistMode || !isTrend
-          ? this.doughnutChartOptions
-          : this.barChartOptionsTrend
-      )
+        !isDentistMode || !isTrend ? this.doughnutChartOptions : this.barChartOptionsTrend,
+      ),
     );
   }
 
   get hasData$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
       map(([isDentistMode, isTrend, isCompare]) => {
         if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue !== 0;
         } else {
           return this.datasets?.some(
-            it =>
-              it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v))
+            it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v)),
           );
         }
-      })
+      }),
     );
   }
 
@@ -222,20 +187,16 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
   }
 
   get chartType$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
       map(([isDentistMode, isTrend, isCompare]) =>
-        !isDentistMode || !isTrend || isCompare ? 'doughnut' : 'bar'
-      )
+        !isDentistMode || !isTrend || isCompare ? 'doughnut' : 'bar',
+      ),
     );
   }
 
   get chartLegend$() {
     return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
-      map(([isDentistMode, isTrend]) => !(isDentistMode && isTrend))
+      map(([isDentistMode, isTrend]) => !(isDentistMode && isTrend)),
     );
   }
   newpColors = [];
@@ -245,7 +206,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
   ) {}
 
   ngOnInit(): void {
@@ -257,7 +218,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
       .subscribe(([isDentistMode, isTrend, data, trendData]) => {
         if (!(isDentistMode && isTrend)) {
@@ -359,8 +320,7 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
       },
       tooltip: {
         callbacks: {
-          label: tooltipItem =>
-            `${tooltipItem.label}: ${tooltipItem.formattedValue}`,
+          label: tooltipItem => `${tooltipItem.label}: ${tooltipItem.formattedValue}`,
           title: function () {
             return '';
           },
@@ -417,16 +377,12 @@ export class CaNumComplaintsComponent implements OnInit, OnDestroy {
               Targetlable = Tlable;
             }
             let ylable = tooltipItem.parsed._custom
-              ? +(
-                  tooltipItem.parsed._custom.max +
-                  tooltipItem.parsed._custom.min
-                ) / 2
+              ? +(tooltipItem.parsed._custom.max + tooltipItem.parsed._custom.min) / 2
               : v;
             var tlab = 0;
             if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval =
-                tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
+              const tval = tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {

@@ -29,9 +29,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get trendingIcon() {
-    return this.newNumPatientsVal >= this.newNumPatientsPrev
-      ? 'trending_up'
-      : 'trending_down';
+    return this.newNumPatientsVal >= this.newNumPatientsPrev ? 'trending_up' : 'trending_down';
   }
 
   get maxNewNumPatientsGoal() {
@@ -42,7 +40,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
 
   get displayTitle$() {
     return this.marketingFacade.isActivePatients$.pipe(
-      map(v => (v ? 'No. Active Patients' : 'No. New Patients'))
+      map(v => (v ? 'No. Active Patients' : 'No. New Patients')),
     );
   }
 
@@ -61,10 +59,12 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
   get isFullMonthsDateRange$() {
     return combineLatest([
       this.isTrend$,
-      this.layoutFacade.selectIsFullSingleMonthOrYearOrCurrentMonthDateRange$
-    ]).pipe(map(([v1, v2]) => {
-      return v1 || v2
-    }));
+      this.layoutFacade.selectIsFullSingleMonthOrYearOrCurrentMonthDateRange$,
+    ]).pipe(
+      map(([v1, v2]) => {
+        return v1 || v2;
+      }),
+    );
   }
 
   get showGoal$() {
@@ -75,9 +75,8 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isFullSingle, v, isActive]) =>
-          (isFullSingle || (v.duration !== 'custom' && v.enableGoal)) &&
-          !isActive
-      )
+          (isFullSingle || (v.duration !== 'custom' && v.enableGoal)) && !isActive,
+      ),
     );
   }
 
@@ -99,21 +98,9 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
       this.marketingFacade.isLoadingMkActivePatients$,
       this.marketingFacade.isLoadingMkActivePatientsTrend$,
     ]).pipe(
-      map(
-        ([
-          isLoading,
-          isTrendLoading,
-          isActiveLoading,
-          isActiveTrendLoading,
-        ]) => {
-          return (
-            isTrendLoading ||
-            isLoading ||
-            isActiveLoading ||
-            isActiveTrendLoading
-          );
-        }
-      )
+      map(([isLoading, isTrendLoading, isActiveLoading, isActiveTrendLoading]) => {
+        return isTrendLoading || isLoading || isActiveLoading || isActiveTrendLoading;
+      }),
     );
   }
 
@@ -136,8 +123,8 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMulti]) =>
-        isTrend || isMulti ? this.labels.length > 0 : this.newNumPatientsVal > 0
-      )
+        isTrend || isMulti ? this.labels.length > 0 : this.newNumPatientsVal > 0,
+      ),
     );
   }
 
@@ -146,7 +133,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private dashboardFacade: DashboardFacade,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
   ) {}
 
   ngOnInit(): void {
@@ -160,14 +147,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        ([
-          isTrend,
-          chartData,
-          trendChartData,
-          isActive,
-          activeChartData,
-          activeTrendChartData,
-        ]) => {
+        ([isTrend, chartData, trendChartData, isActive, activeChartData, activeTrendChartData]) => {
           if (isActive) {
             if (isTrend) {
               this.datasets = activeTrendChartData.datasets;
@@ -191,7 +171,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
               this.newNumPatientsGoal = chartData.newNumPatientsGoal;
             }
           }
-        }
+        },
       );
   }
 
@@ -206,10 +186,8 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
   get chartOptions$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMultiClinic]) =>
-        isTrend && isMultiClinic
-          ? this.stackedChartOptionsMulti
-          : this.stackedChartOptions
-      )
+        isTrend && isMultiClinic ? this.stackedChartOptionsMulti : this.stackedChartOptions,
+      ),
     );
   }
 
@@ -217,7 +195,7 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMultiClinic]) => {
         return isTrend && isMultiClinic;
-      })
+      }),
     );
   }
 
@@ -309,19 +287,14 @@ export class MarketingNumNewPatientsComponent implements OnInit, OnDestroy {
           label: tooltipItem => renderTooltipLabel(tooltipItem),
           title: tooltipItems => {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
-            return `${tooltipItems[0].label}: ${this.decimalPipe.transform(
-              sumV
-            )}`;
+            return `${tooltipItems[0].label}: ${this.decimalPipe.transform(sumV)}`;
           },
         },
       },
     },
   };
 
-  barChartColors = [
-    { backgroundColor: '#39acac' },
-    { backgroundColor: '#48daba' },
-  ];
+  barChartColors = [{ backgroundColor: '#39acac' }, { backgroundColor: '#48daba' }];
 
   lineChartColors = [
     '#119682',

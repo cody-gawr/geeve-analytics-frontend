@@ -5,7 +5,8 @@
     name="Average"
     aria-label="Average"
     [value]="avgMode$ | async"
-    (change)="onChangeAvgMode($event)">
+    (change)="onChangeAvgMode($event)"
+  >
     <mat-button-toggle value="off">Off</mat-button-toggle>
     <mat-button-toggle value="average">On</mat-button-toggle>
   </mat-button-toggle-group>

@@ -3,19 +3,9 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { Component, Inject, OnInit, OnDestroy, Input } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import {
-  Subject,
-  takeUntil,
-  take,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-} from 'rxjs';
+import { Subject, takeUntil, take, combineLatest, map, distinctUntilChanged } from 'rxjs';
 export interface DialogData {
   title: string;
 }
@@ -56,15 +46,11 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
     private marketingFacade: MarketingFacade,
     private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
-    private toastService: ToastrService
+    private toastService: ToastrService,
   ) {}
 
   get authUserId$() {
-    return this.authFacade.authUserData$.pipe(
-      map(
-        authUserData => authUserData?.id
-      )
-    );
+    return this.authFacade.authUserData$.pipe(map(authUserData => authUserData?.id));
   }
 
   ngOnInit(): void {
@@ -77,23 +63,15 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
       .subscribe(params => {
-        const [
-          clinicId,
-          userId,
-          connectedWith,
-          isMyobSaveLoading,
-          isXeroSaveLoading,
-        ] = params;
+        const [clinicId, userId, connectedWith, isMyobSaveLoading, isXeroSaveLoading] = params;
 
         if (connectedWith == 'myob') {
-          if (!isMyobSaveLoading)
-            this.marketingFacade.loadMkGetMyobAccounts({ clinicId, userId });
+          if (!isMyobSaveLoading) this.marketingFacade.loadMkGetMyobAccounts({ clinicId, userId });
         } else if (connectedWith == 'xero') {
-          if (!isXeroSaveLoading)
-            this.marketingFacade.loadMkGetXeroAccounts({ clinicId, userId });
+          if (!isXeroSaveLoading) this.marketingFacade.loadMkGetXeroAccounts({ clinicId, userId });
         }
       });
 
@@ -140,9 +118,7 @@ export class MkSelectAccountsModalComponent implements OnInit, OnDestroy {
 
   addAccount(val: string) {
     this.selectedAccounts = [...this.selectedAccounts, val];
-    this.unselectedAccounts = [
-      ...this.unselectedAccounts.filter(v => v != val),
-    ];
+    this.unselectedAccounts = [...this.unselectedAccounts.filter(v => v != val)];
   }
 
   removeAccount(val: string) {

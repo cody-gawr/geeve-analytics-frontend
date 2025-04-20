@@ -9,7 +9,7 @@ import { DashboardApiActions, DashboardPageActions } from '../actions';
 export class DashboardEffects {
   constructor(
     private actions$: Actions,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
   ) {}
 
   public readonly getChartTips$ = createEffect(() => {
@@ -17,18 +17,16 @@ export class DashboardEffects {
       ofType(DashboardPageActions.loadChartTips),
       switchMap(({ dashboardId, clinicId }) => {
         return this.dashboardService.getCharts(dashboardId, clinicId).pipe(
-          map(res =>
-            DashboardApiActions.loadChartTipsSuccess({ chartData: res.data })
-          ),
+          map(res => DashboardApiActions.loadChartTipsSuccess({ chartData: res.data })),
           catchError((error: HttpErrorResponse) =>
             of(
               DashboardApiActions.loadChartTipsFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 }

@@ -20,7 +20,7 @@ export class StepperHeaderrightComponent implements AfterViewInit {
     private _cookieService: CookieService,
     private route: Router,
     private headerService: StepperHeaderService,
-    private dentistService: DentistService
+    private dentistService: DentistService,
   ) {}
 
   ngAfterViewInit() {
@@ -56,7 +56,7 @@ export class StepperHeaderrightComponent implements AfterViewInit {
       },
       error => {
         // this.warningMessage = "Please Provide Valid Inputs!";
-      }
+      },
     );
   }
   // Get Dentist
@@ -70,15 +70,12 @@ export class StepperHeaderrightComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
   private loadClinic(value) {
-    this.finalUrl = this.route.url.substring(
-      0,
-      this.route.url.lastIndexOf('/') + 1
-    );
+    this.finalUrl = this.route.url.substring(0, this.route.url.lastIndexOf('/') + 1);
     this.route.navigate([this.finalUrl + value]);
     //this.location.go(this.finalUrl+value);
   }
@@ -100,9 +97,7 @@ export class StepperHeaderrightComponent implements AfterViewInit {
   loadDentist(newValue) {
     if ($('body').find('span#currentDentist').length <= 0) {
       $('body').append(
-        '<span id="currentDentist" style="display:none" did="' +
-          newValue +
-          '"></span>'
+        '<span id="currentDentist" style="display:none" did="' + newValue + '"></span>',
       );
     } else {
       $('#currentDentist').attr('did', newValue);
@@ -115,9 +110,7 @@ export class StepperHeaderrightComponent implements AfterViewInit {
   loadClinicid(clinicValue) {
     if ($('body').find('span#currentClinicid').length <= 0) {
       $('body').append(
-        '<span id="currentClinicid" style="display:none" cid="' +
-          clinicValue +
-          '"></span>'
+        '<span id="currentClinicid" style="display:none" cid="' + clinicValue + '"></span>',
       );
     } else {
       $('#currentClinicid').attr('cid', clinicValue);

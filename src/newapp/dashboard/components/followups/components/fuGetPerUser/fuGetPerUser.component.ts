@@ -47,7 +47,7 @@ export class FuGetPerUserComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -73,9 +73,7 @@ export class FuGetPerUserComponent implements OnInit, OnDestroy {
   get hasData() {
     return (
       this.datasets.length > 0 &&
-      this.datasets?.some(
-        it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v))
-      )
+      this.datasets?.some(it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v)))
     );
   }
 
@@ -85,7 +83,7 @@ export class FuGetPerUserComponent implements OnInit, OnDestroy {
 
   constructor(
     private fuFacade: FollowupsFacade,
-    private layoutFacade: LayoutFacade
+    private layoutFacade: LayoutFacade,
   ) {}
 
   ngOnInit(): void {
@@ -166,18 +164,11 @@ export class FuGetPerUserComponent implements OnInit, OnDestroy {
         mode: 'x',
         callbacks: {
           label: function (tooltipItems) {
-            if (
-              parseInt(tooltipItems.formattedValue) > 0 &&
-              tooltipItems.dataset.label != ''
-            ) {
+            if (parseInt(tooltipItems.formattedValue) > 0 && tooltipItems.dataset.label != '') {
               if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
-                return (
-                  tooltipItems.dataset.label +
-                  ': ' +
-                  tooltipItems.formattedValue
-                );
+                return tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue;
               }
             }
             return '';

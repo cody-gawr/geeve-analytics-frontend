@@ -32,7 +32,7 @@ export class RolesComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private rolesService: RolesService,
     private route: ActivatedRoute,
-    public constants: AppConstants
+    public constants: AppConstants,
   ) {
     this.options = fb.group({
       hideRequired: false,
@@ -70,7 +70,7 @@ export class RolesComponent implements OnInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -80,21 +80,19 @@ export class RolesComponent implements OnInit {
   onSubmitBasic() {
     this.displayName = $('#displayName').val();
     this.email = $('#email').val();
-    this.rolesService
-      .updateprofileSettings(this.displayName, this.email)
-      .subscribe(
-        res => {
-          if (res.status == 200) {
-            let opts = this.constants.cookieOpt as CookieOptions;
-            this._cookieService.put('display_name', this.displayName, opts);
-            this.display_name = this.displayName;
-            alert('Profile Settings Updated');
-          }
-        },
-        error => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
+    this.rolesService.updateprofileSettings(this.displayName, this.email).subscribe(
+      res => {
+        if (res.status == 200) {
+          let opts = this.constants.cookieOpt as CookieOptions;
+          this._cookieService.put('display_name', this.displayName, opts);
+          this.display_name = this.displayName;
+          alert('Profile Settings Updated');
         }
-      );
+      },
+      error => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      },
+    );
   }
 
   public errorLogin = false;
@@ -114,23 +112,21 @@ export class RolesComponent implements OnInit {
     this.newPassword = this.form.value.newPassword;
     this.repeatPassword = this.form.value.repeatPassword;
     if (this.newPassword == this.repeatPassword) {
-      this.rolesService
-        .updatePassword(this.currentPassword, this.newPassword)
-        .subscribe(
-          res => {
-            if (res.status == 200) {
-              this.successLogin = true;
-              this.successtext = res.body.data;
-            } else {
-              this.errorLogin = true;
-              this.errortext = res.body.data;
-            }
-          },
-          error => {
+      this.rolesService.updatePassword(this.currentPassword, this.newPassword).subscribe(
+        res => {
+          if (res.status == 200) {
+            this.successLogin = true;
+            this.successtext = res.body.data;
+          } else {
             this.errorLogin = true;
-            this.errortext = 'Please Provide Valid Inputs!';
+            this.errortext = res.body.data;
           }
-        );
+        },
+        error => {
+          this.errorLogin = true;
+          this.errortext = 'Please Provide Valid Inputs!';
+        },
+      );
     } else {
       this.errorLogin = true;
       this.errortext = "Password doesn't Match!";

@@ -114,7 +114,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     private _cookieService: CookieService,
     private toastr: ToastrService,
     public constants: AppConstants,
-    public chartstipsService: ChartstipsService
+    public chartstipsService: ChartstipsService,
   ) {}
 
   ngOnInit(): void {
@@ -136,8 +136,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.clinic_id = cid;
     this.user_type = this._cookieService.get('user_type');
-    if (this._cookieService.get('childid'))
-      this.childid = this._cookieService.get('childid');
+    if (this._cookieService.get('childid')) this.childid = this._cookieService.get('childid');
     $(document).on('click', function (e) {
       if ($(document.activeElement).attr('id') == 'sa_datepicker') {
         $('.customRange').show();
@@ -202,7 +201,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           self.health_screen_mtd = self._cookieService.get('health_screen_mtd');
           resolve(true);
-        }
+        },
       );
     });
   }
@@ -227,13 +226,13 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.health_screen_mtd == 0) {
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear(), date.getMonth(), date.getDate() - 29),
-        'yyyy-MM-dd'
+        'yyyy-MM-dd',
       );
       this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     } else {
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear(), date.getMonth(), 1),
-        'yyyy-MM-dd'
+        'yyyy-MM-dd',
       );
       this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     }
@@ -353,8 +352,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
               this.production_c = 0;
               let tooltip_p = '';
               res.body.data.production.forEach(val => {
-                this.production_c =
-                  this.production_c + Math.round(val.production);
+                this.production_c = this.production_c + Math.round(val.production);
                 tooltip_p +=
                   '<span class="text">' +
                   val.clinic_name +
@@ -362,13 +360,9 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
                   Math.round(val.production) +
                   '</span>';
               });
-              this.production_c_avg = Math.round(
-                res.body.data.production_daily_avg
-              );
+              this.production_c_avg = Math.round(res.body.data.production_daily_avg);
 
-              this.production_dif = Math.round(
-                this.production_c - this.production_p
-              );
+              this.production_dif = Math.round(this.production_c - this.production_p);
               this.production_c_all = { title: '', info: tooltip_p };
 
               this.visits_p = Math.round(res.body.data.num_visit_ta);
@@ -389,14 +383,10 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
               this.visits_c_all = { title: '', info: tooltip_v };
               this.visits_dif = Math.round(this.visits_c - this.visits_p);
 
-              this.productionPrev = Math.round(
-                res.body.data.production_visit_ta
-              );
+              this.productionPrev = Math.round(res.body.data.production_visit_ta);
               this.productionVal = 0;
               let tooltip_pv = '';
-              this.productionVal = Math.round(
-                this.production_c / this.visits_c
-              );
+              this.productionVal = Math.round(this.production_c / this.visits_c);
               res.body.data.production_visit.forEach(val => {
                 tooltip_pv +=
                   '<span class="text">' +
@@ -406,36 +396,24 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
                   '</span>';
               });
               this.productionVal_all = { title: '', info: tooltip_pv };
-              this.finProductionPerVisit_dif = Math.round(
-                this.productionVal - this.productionPrev
-              );
+              this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
             } else {
               this.production_c = res.body.data.production;
               this.production_p = Math.round(res.body.data.production_ta);
               // this.production_c_avg = Math.round(data.body.data.production_daily_avg);
               if (this.health_screen_mtd == 0) {
-                this.production_c_avg = Math.round(
-                  this.production_c / avgDaysCount
-                );
+                this.production_c_avg = Math.round(this.production_c / avgDaysCount);
               } else {
-                this.production_c_avg = Math.round(
-                  this.production_c / todayMinusOffdays
-                );
+                this.production_c_avg = Math.round(this.production_c / todayMinusOffdays);
               }
 
-              this.production_dif = Math.round(
-                this.production_c - this.production_p
-              );
+              this.production_dif = Math.round(this.production_c - this.production_p);
 
               this.productionVal = res.body.data.production_visit
                 ? res.body.data.production_visit
                 : 0;
-              this.productionPrev = Math.round(
-                res.body.data.production_visit_ta
-              );
-              this.finProductionPerVisit_dif = Math.round(
-                this.productionVal - this.productionPrev
-              );
+              this.productionPrev = Math.round(res.body.data.production_visit_ta);
+              this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
 
               this.visits_c = Math.round(res.body.data.num_visit);
               this.visits_p = Math.round(res.body.data.num_visit_ta);
@@ -443,9 +421,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
               if (this.health_screen_mtd == 0) {
                 this.visits_c_avg = Math.round(this.visits_c / avgDaysCount);
               } else {
-                this.visits_c_avg = Math.round(
-                  this.visits_c / todayMinusOffdays
-                );
+                this.visits_c_avg = Math.round(this.visits_c / todayMinusOffdays);
               }
 
               this.visits_dif = Math.round(this.visits_c - this.visits_p);
@@ -456,10 +432,10 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
           $('.ajax-loader').hide();
           if (this.user_type != 7) {
             this.toastr.error(
-              'There was an error retrieving your report data, please contact our support team.'
+              'There was an error retrieving your report data, please contact our support team.',
             );
           }
-        }
+        },
       );
   }
 
@@ -472,31 +448,24 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     // Total Vists top Card
     this.dentistProductionLoader = true;
     this.healthscreenService
-      .commonCall(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        'chGetProductionMCP'
-      )
+      .commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetProductionMCP')
       .subscribe(
         res => {
           this.dentistProductionLoader = false;
           if (res.status == 200 && res.body.data) {
             this.dentistProduction = Math.round(res.body.data[0].production);
-            this.dentistProductionTa = Math.round(
-              res.body.data_ta[0].production
-            );
+            this.dentistProductionTa = Math.round(res.body.data_ta[0].production);
             this.dentistProductionDiff = Math.round(
-              this.dentistProduction - this.dentistProductionTa
+              this.dentistProduction - this.dentistProductionTa,
             );
           }
         },
         error => {
           $('.ajax-loader').hide();
           this.toastr.error(
-            'There was an error retrieving your report data, please contact our support team.'
+            'There was an error retrieving your report data, please contact our support team.',
           );
-        }
+        },
       );
   }
 
@@ -508,31 +477,24 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     // Total Vists top Card
     this.dentistHourlyRateLoader = true;
     this.healthscreenService
-      .commonCall(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        'chGetHourlyRateMCP'
-      )
+      .commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetHourlyRateMCP')
       .subscribe(
         res => {
           this.dentistHourlyRateLoader = false;
           if (res.status == 200 && res.body.data) {
             this.dentistHourlyRate = Math.round(res.body.data[0].hourly_rate);
-            this.dentistHourlyRateTa = Math.round(
-              res.body.data_ta[0].hourly_rate
-            );
+            this.dentistHourlyRateTa = Math.round(res.body.data_ta[0].hourly_rate);
             this.dentistHourlyRateDiff = Math.round(
-              this.dentistHourlyRate - this.dentistHourlyRateTa
+              this.dentistHourlyRate - this.dentistHourlyRateTa,
             );
           }
         },
         error => {
           $('.ajax-loader').hide();
           this.toastr.error(
-            'There was an error retrieving your report data, please contact our support team.'
+            'There was an error retrieving your report data, please contact our support team.',
           );
-        }
+        },
       );
   }
 
@@ -541,12 +503,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dentistHourlyRateLoader = true;
     this.dentistProductionLoader = true;
     this.healthscreenService
-      .commonCall(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        'chGetProduHrRate'
-      )
+      .commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetProduHrRate')
       .subscribe(
         res => {
           this.dentistHourlyRateLoader = false;
@@ -555,22 +512,22 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
             this.dentistProduction = Math.round(res.body.data.production);
             this.dentistProductionTa = Math.round(res.body.data.production_ta);
             this.dentistProductionDiff = Math.round(
-              this.dentistProduction - this.dentistProductionTa
+              this.dentistProduction - this.dentistProductionTa,
             );
 
             this.dentistHourlyRate = Math.round(res.body.data.hourly_rate);
             this.dentistHourlyRateTa = Math.round(res.body.data.hourly_rate_ta);
             this.dentistHourlyRateDiff = Math.round(
-              this.dentistHourlyRate - this.dentistHourlyRateTa
+              this.dentistHourlyRate - this.dentistHourlyRateTa,
             );
           }
         },
         error => {
           $('.ajax-loader').hide();
           this.toastr.error(
-            'There was an error retrieving your report data, please contact our support team.'
+            'There was an error retrieving your report data, please contact our support team.',
           );
-        }
+        },
       );
   }
 
@@ -578,33 +535,24 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     // Total Vists top Card
     this.dentistReappointRateLoader = true;
     this.healthscreenService
-      .commonCall(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        'chGetReappointmentRate'
-      )
+      .commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetReappointmentRate')
       .subscribe(
         res => {
           this.dentistReappointRateLoader = false;
           if (res.status == 200 && res.body.data) {
-            this.dentistReappointRate = Math.round(
-              res.body.data.reappoint_rate
-            );
-            this.dentistReappointRateTa = Math.round(
-              res.body.data.reappoint_rate_ta
-            );
+            this.dentistReappointRate = Math.round(res.body.data.reappoint_rate);
+            this.dentistReappointRateTa = Math.round(res.body.data.reappoint_rate_ta);
             this.dentistReappointRateDiff = Math.round(
-              this.dentistReappointRate - this.dentistReappointRateTa
+              this.dentistReappointRate - this.dentistReappointRateTa,
             );
           }
         },
         error => {
           $('.ajax-loader').hide();
           this.toastr.error(
-            'There was an error retrieving your report data, please contact our support team.'
+            'There was an error retrieving your report data, please contact our support team.',
           );
-        }
+        },
       );
   }
 
@@ -616,33 +564,24 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     // Total Vists top Card
     this.dentistReappointRateLoader = true;
     this.healthscreenService
-      .commonCall(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        'chGetReappointRateMCP'
-      )
+      .commonCall(this.clinic_id, this.startDate, this.endDate, 'chGetReappointRateMCP')
       .subscribe(
         res => {
           this.dentistReappointRateLoader = false;
           if (res.status == 200 && res.body.data) {
-            this.dentistReappointRate = Math.round(
-              res.body.data[0].reappoint_rate
-            );
-            this.dentistReappointRateTa = Math.round(
-              res.body.data_ta[0].reappoint_rate
-            );
+            this.dentistReappointRate = Math.round(res.body.data[0].reappoint_rate);
+            this.dentistReappointRateTa = Math.round(res.body.data_ta[0].reappoint_rate);
             this.dentistReappointRateDiff = Math.round(
-              this.dentistReappointRate - this.dentistReappointRateTa
+              this.dentistReappointRate - this.dentistReappointRateTa,
             );
           }
         },
         error => {
           $('.ajax-loader').hide();
           this.toastr.error(
-            'There was an error retrieving your report data, please contact our support team.'
+            'There was an error retrieving your report data, please contact our support team.',
           );
-        }
+        },
       );
   }
 
@@ -653,11 +592,11 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     var date = new Date();
     var startDate = this.datePipe.transform(
       new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     var endDate = this.datePipe.transform(
       new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7),
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     this.visits_f = 0;
     this.healthscreenService
@@ -673,10 +612,10 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
           $('.ajax-loader').hide();
           if (this.user_type != '7') {
             this.toastr.error(
-              'There was an error retrieving your report data, please contact our support team.'
+              'There was an error retrieving your report data, please contact our support team.',
             );
           }
-        }
+        },
       );
   }
 
@@ -685,34 +624,32 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     var date = new Date();
     var startDate = this.datePipe.transform(
       new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     var endDate = this.datePipe.transform(
       new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7),
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     this.utilisation_rate_f = 0;
     if (this.isExact || this.isCore) return;
     this.healthscreenService
       .commonCall(this.clinic_id, startDate, endDate, 'chUtilisationRate')
-      .subscribe(
-        {
-          next: res => {
-            if (res.status == 200) {
-              this.chairutilrate = true;
-              this.utilisation_rate_f = Math.round(res.body.data);
-            }
-          },
-          error: error => {
-            $('.ajax-loader').hide();
-            if (this.user_type != '7') {
-              this.toastr.error(
-                'There was an error retrieving your report data, please contact our support team.'
-              );
-            }
+      .subscribe({
+        next: res => {
+          if (res.status == 200) {
+            this.chairutilrate = true;
+            this.utilisation_rate_f = Math.round(res.body.data);
           }
-        }
-      );
+        },
+        error: error => {
+          $('.ajax-loader').hide();
+          if (this.user_type != '7') {
+            this.toastr.error(
+              'There was an error retrieving your report data, please contact our support team.',
+            );
+          }
+        },
+      });
   }
 
   public chUnscheduledProd() {
@@ -720,11 +657,11 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     var date = new Date();
     var startDate = this.datePipe.transform(
       new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     var endDate = this.datePipe.transform(
       new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7),
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     this.unscheduled_production_f = 0;
     // if (this.isPraktika) return;
@@ -734,8 +671,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
         res => {
           if (res.status == 200) {
             this.unscheduledproduction = true;
-            let value =
-              res.body.data >= 1000 ? res.body.data / 1000 : res.body.data;
+            let value = res.body.data >= 1000 ? res.body.data / 1000 : res.body.data;
             if (value >= 1000) {
               this.unscheduled_production_f = _.round(value / 1000, 1);
               this.unscheduled_production_unit = 'M';
@@ -749,10 +685,10 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
           $('.ajax-loader').hide();
           if (this.user_type != '7') {
             this.toastr.error(
-              'There was an error retrieving your report data, please contact our support team.'
+              'There was an error retrieving your report data, please contact our support team.',
             );
           }
-        }
+        },
       );
   }
 
@@ -782,7 +718,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
         this.endDate,
         this.duration,
         this.user_type,
-        this.childid
+        this.childid,
       )
       .subscribe(
         res => {
@@ -794,7 +730,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         error => {
           this.warningMessage = 'Please Provide Valid Inputs!';
-        }
+        },
       );
   }
 
@@ -821,12 +757,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     this.newPatientsTimeClinic = [];
 
     this.healthscreenService
-      .mkNewPatientsByReferral(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        this.duration
-      )
+      .mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration)
       .subscribe(
         res => {
           if (res.status == 200) {
@@ -836,7 +767,7 @@ export class HealthScreenComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         error => {
           this.warningMessage = 'Please Provide Valid Inputs!';
-        }
+        },
       );
   }
   getChartsTips() {

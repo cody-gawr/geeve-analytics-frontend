@@ -1,11 +1,4 @@
-import {
-  Chart,
-  ChartType,
-  LegendOptions,
-  Plugin,
-  TooltipItem,
-  TooltipModel,
-} from 'chart.js';
+import { Chart, ChartType, LegendOptions, Plugin, TooltipItem, TooltipModel } from 'chart.js';
 import moment, { Moment } from 'moment-timezone';
 import {
   LineHoverOptions,
@@ -22,7 +15,7 @@ import { DEFAULT_TIMEZONE } from '@/newapp/constants';
 import _ from 'lodash';
 
 export function convertEndpointToDataKey(endpoint: string) {
-  let key = endpoint.slice(2)
+  let key = endpoint.slice(2);
   return key.charAt(0).toLowerCase() + key.slice(1) + 'Data';
 }
 
@@ -72,7 +65,7 @@ export function correctTime(value: string) {
 export const compare = (
   a: number | string | boolean | undefined,
   b: number | string | boolean | undefined,
-  isAsc: boolean
+  isAsc: boolean,
 ) => {
   if (typeof a == 'number' && typeof b == 'number' && isNaN(a)) {
     return 1 - (isNaN(b) ? 1 : 0) * (isAsc ? 1 : -1);
@@ -105,8 +98,10 @@ export function formatXNameWithInitialChar(tickValue: string, index: number) {
   if (value && value.toString().includes('--')) {
     let lbl = value.toString().split('--');
     value = lbl[0];
-    if (typeof lbl[3] === 'undefined' ||
-      lbl[0]?.toLowerCase().trim() == lbl[3]?.toLowerCase().trim()) {
+    if (
+      typeof lbl[3] === 'undefined' ||
+      lbl[0]?.toLowerCase().trim() == lbl[3]?.toLowerCase().trim()
+    ) {
       return shortString(value);
     }
   }
@@ -184,10 +179,7 @@ export function chartPlugin(count: number, isCurrency?: boolean): Plugin {
 }
 
 export const JeeveLineFillOptions: _DeepPartialObject<
-  ScriptableAndArrayOptions<
-    LineOptions & LineHoverOptions,
-    ScriptableContext<any>
-  >
+  ScriptableAndArrayOptions<LineOptions & LineHoverOptions, ScriptableContext<any>>
 > = {
   fill: true,
   backgroundColor: 'rgba(34,127,127, 0.5)',
@@ -235,13 +227,12 @@ export const externalTooltipHandler = <T extends ChartType>(
     chart: Chart;
     tooltip: TooltipModel<T>;
   },
-  pointerStyle = 'default'
+  pointerStyle = 'default',
 ) => {
   // Tooltip Element
   const { chart, tooltip } = args;
   if (pointerStyle === 'pointer') {
-    chart.canvas.style.cursor =
-      tooltip.opacity === 0 ? 'default' : pointerStyle;
+    chart.canvas.style.cursor = tooltip.opacity === 0 ? 'default' : pointerStyle;
   }
 
   const tooltipEl = getOrCreateTooltip(chart);
@@ -328,10 +319,7 @@ export const externalTooltipHandler = <T extends ChartType>(
 
   if (tooltip.caretX - positionX <= chart.canvas.width / 3) {
     tooltipEl.style.left =
-      positionX +
-      tooltip.caretX +
-      tooltipEl.getBoundingClientRect().width / 2 +
-      'px';
+      positionX + tooltip.caretX + tooltipEl.getBoundingClientRect().width / 2 + 'px';
   } else if (
     tooltip.caretX - positionX > chart.canvas.width / 3 &&
     tooltip.caretX - positionX <= (chart.canvas.width * 2) / 3
@@ -339,16 +327,12 @@ export const externalTooltipHandler = <T extends ChartType>(
     tooltipEl.style.left = positionX + tooltip.caretX + 'px';
   } else {
     tooltipEl.style.left =
-      positionX +
-      tooltip.caretX -
-      tooltipEl.getBoundingClientRect().width / 2 +
-      'px';
+      positionX + tooltip.caretX - tooltipEl.getBoundingClientRect().width / 2 + 'px';
   }
 
   tooltipEl.style.top = positionY + tooltip.caretY + 'px';
   tooltipEl.style.fontStyle = 'Gilroy-Regular';
-  tooltipEl.style.padding =
-    tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
+  tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
   tooltipEl.style.pointerEvents = 'none';
 };
 
@@ -356,7 +340,7 @@ export const externalTooltipHandlerHiddenColorBoxes = <T extends ChartType>(
   args: {
     chart: Chart;
     tooltip: TooltipModel<T>;
-  }
+  },
   // isEachColorBoxVisible: boolean
 ) => {
   // Tooltip Element
@@ -430,10 +414,7 @@ export const externalTooltipHandlerHiddenColorBoxes = <T extends ChartType>(
   tooltipEl.style.position = 'absolute';
   if (tooltip.caretX - positionX <= chart.canvas.width / 3) {
     tooltipEl.style.left =
-      positionX +
-      tooltip.caretX +
-      tooltipEl.getBoundingClientRect().width / 2 +
-      'px';
+      positionX + tooltip.caretX + tooltipEl.getBoundingClientRect().width / 2 + 'px';
   } else if (
     tooltip.caretX - positionX > chart.canvas.width / 3 &&
     tooltip.caretX - positionX <= (chart.canvas.width * 2) / 3
@@ -441,24 +422,19 @@ export const externalTooltipHandlerHiddenColorBoxes = <T extends ChartType>(
     tooltipEl.style.left = positionX + tooltip.caretX + 'px';
   } else {
     tooltipEl.style.left =
-      positionX +
-      tooltip.caretX -
-      tooltipEl.getBoundingClientRect().width / 2 +
-      'px';
+      positionX + tooltip.caretX - tooltipEl.getBoundingClientRect().width / 2 + 'px';
   }
   tooltipEl.style.top = positionY + tooltip.caretY + 'px';
   tooltipEl.style.fontStyle = 'Gilroy-Regular';
-  tooltipEl.style.padding =
-    tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
+  tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
 };
-
 
 export function dynamicBarBackgroundColor(
   data: any[],
   labels: string[],
   isAllClinic: boolean,
   selectedClinics: Clinic[],
-  averageToggle: boolean
+  averageToggle: boolean,
 ) {
   let dynamicColors = [];
   if (isAllClinic) {
@@ -483,7 +459,10 @@ export function dynamicBarBackgroundColor(
   return dynamicColors;
 }
 
-export function generatingLegend(splitCnt = 1, separator = ' - '): _DeepPartialObject<LegendOptions<any>> {
+export function generatingLegend(
+  splitCnt = 1,
+  separator = ' - ',
+): _DeepPartialObject<LegendOptions<any>> {
   return {
     display: true,
     position: 'bottom',
@@ -502,16 +481,14 @@ export function generatingLegend(splitCnt = 1, separator = ' - '): _DeepPartialO
         return uniqueLabels.map(label => ({
           text: label,
           strokeStyle: backgroundColors[label],
-          fillStyle: backgroundColors[label]
+          fillStyle: backgroundColors[label],
         }));
       },
     },
   };
 }
 
-export function generatingLegend_2(
-  newpColors
-): _DeepPartialObject<LegendOptions<any>> {
+export function generatingLegend_2(newpColors): _DeepPartialObject<LegendOptions<any>> {
   return {
     display: true,
     position: 'bottom',
@@ -609,9 +586,8 @@ export function getSubValForGoal(maxVal: number) {
 export function renderTooltipLabel(
   tooltipItem: TooltipItem<any>,
   sign = '',
-  decimalPipe: DecimalPipe = null
+  decimalPipe: DecimalPipe = null,
 ) {
-
   var Targetlable = '';
   const v = tooltipItem.parsed.y;
   let Tlable = tooltipItem.dataset.label;
@@ -639,27 +615,27 @@ export function renderTooltipLabel(
   } else {
     const yV = decimalPipe ? decimalPipe.transform(<number>ylable) : ylable;
     if (sign === '%') {
-      return `${Tlable??''}${splitName(tooltipItem.label).join(' ')} : ${yV}${sign}`;
+      return `${Tlable ?? ''}${splitName(tooltipItem.label).join(' ')} : ${yV}${sign}`;
     } else if (sign === '$') {
-      return `${Tlable??''}${splitName(tooltipItem.label).join(' ')} : ${sign}${yV}`;
+      return `${Tlable ?? ''}${splitName(tooltipItem.label).join(' ')} : ${sign}${yV}`;
     } else {
-      return `${Tlable??''}${splitName(tooltipItem.label).join(' ')} : ${yV}`;
+      return `${Tlable ?? ''}${splitName(tooltipItem.label).join(' ')} : ${yV}`;
     }
   }
 }
 
 export class CsvUtil {
-
   // Convert an array of objects to CSV
   public static convertToCsv(data: any[], columns: Record<string, string>): string {
     if (!data || data.length === 0) {
       return '';
     }
 
-
     // Map the data to CSV rows
-    const rows = data.map(item => 
-      Object.keys(columns).map(header => item[header]).join(',')
+    const rows = data.map(item =>
+      Object.keys(columns)
+        .map(header => item[header])
+        .join(','),
     );
 
     // Join the headers with the rows to form the full CSV content
@@ -686,35 +662,39 @@ export class CsvUtil {
 }
 
 export function getUnitsInDurationRange(trend: TREND_MODE, startDate?: Moment, endDate?: Moment) {
-  if(trend === 'off' && startDate && endDate){
-    return  getMonthsBetweenDates(startDate, endDate, 'YYYY-MM-DD');
+  if (trend === 'off' && startDate && endDate) {
+    return getMonthsBetweenDates(startDate, endDate, 'YYYY-MM-DD');
   }
-  if(trend === 'current'){
+  if (trend === 'current') {
     return getAllMonthsInYear('MMM YYYY');
-  }else{
+  } else {
     return get10Years('YYYY');
   }
 }
 
 export function getAllMonthsInYear(format?: string, clinicTimezone?: string): string[] {
-  return _.range(12, 0, -1).map((m) =>
+  return _.range(12, 0, -1).map(m =>
     getTimezoneToday(clinicTimezone)
       .subtract(m - 1, 'month')
-      .format(format || 'YYYY-MM')
+      .format(format || 'YYYY-MM'),
   );
 }
 
 export function get10Years(format?: string, clinicTimezone?: string): string[] {
-  return _.range(10, 0, -1).map((y) =>
+  return _.range(10, 0, -1).map(y =>
     getTimezoneToday(clinicTimezone)
       .subtract(y - 1, 'year')
-      .format(format || 'YYYY')
+      .format(format || 'YYYY'),
   );
 }
 
-export function getMonthsBetweenDates(startDate: moment.Moment | string, endDate: moment.Moment | string, format?: string): string[] {
-  if(!moment.isMoment(startDate)) startDate = moment(startDate);
-  if(!moment.isMoment(endDate)) endDate = moment(endDate);
+export function getMonthsBetweenDates(
+  startDate: moment.Moment | string,
+  endDate: moment.Moment | string,
+  format?: string,
+): string[] {
+  if (!moment.isMoment(startDate)) startDate = moment(startDate);
+  if (!moment.isMoment(endDate)) endDate = moment(endDate);
 
   const months = [];
   let currentDate = startDate.clone();
@@ -730,7 +710,7 @@ export function getMonthsBetweenDates(startDate: moment.Moment | string, endDate
 export function getTimezoneToday(
   tz: string = DEFAULT_TIMEZONE,
   dt: string = null,
-  format: string = null
+  format: string = null,
 ) {
   if (dt) {
     if (format) {
@@ -742,70 +722,74 @@ export function getTimezoneToday(
   return moment().tz(tz);
 }
 
-export function composeCampaignFilterDescription(
-  filterName: string,
-  settings: string[]
-) {
-        switch(filterName){
-          case CAMPAIGN_FILTERS.patient_age:
-            return `<p class="campaign-filter-desc">Patient is between the age of <span >${settings[0]}</span> and <span >${settings[1]}</span></p>`;
-          case CAMPAIGN_FILTERS.incomplete_tx_plan:
-            return `<p class="campaign-filter-desc">Patient has incomplete treatment plans created between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
-          case CAMPAIGN_FILTERS.treatment:
-            let treatMode = 'any', treatmentItemCodesMode, selectedItemCodes;
+export function composeCampaignFilterDescription(filterName: string, settings: string[]) {
+  switch (filterName) {
+    case CAMPAIGN_FILTERS.patient_age:
+      return `<p class="campaign-filter-desc">Patient is between the age of <span >${settings[0]}</span> and <span >${settings[1]}</span></p>`;
+    case CAMPAIGN_FILTERS.incomplete_tx_plan:
+      return `<p class="campaign-filter-desc">Patient has incomplete treatment plans created between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
+    case CAMPAIGN_FILTERS.treatment:
+      let treatMode = 'any',
+        treatmentItemCodesMode,
+        selectedItemCodes;
 
-            if(['anyof', 'allof'].indexOf(settings[2]) > -1){
-              treatmentItemCodesMode = settings[2];
-              selectedItemCodes = settings.slice(3) || [];
-            }else{
-              selectedItemCodes = settings.slice(2) || [];
-            }
-      
-            if(selectedItemCodes.length > 0){
-              treatMode= treatmentItemCodesMode === 'anyof'? 'any of': 'all of';
-            }
-  
-            return `<p class="campaign-filter-desc">Patient had ${treatMode} treatment <span >${selectedItemCodes.join(', ')}</span> performed between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
-          case CAMPAIGN_FILTERS.no_treatment:
-            let noTreatMode = 'any', notreatmentItemCodesMode, selectedNoTreatItemCodes;
+      if (['anyof', 'allof'].indexOf(settings[2]) > -1) {
+        treatmentItemCodesMode = settings[2];
+        selectedItemCodes = settings.slice(3) || [];
+      } else {
+        selectedItemCodes = settings.slice(2) || [];
+      }
 
-            if(['anyof', 'allof'].indexOf(settings[2]) > -1){
-              notreatmentItemCodesMode = settings[2];
-              selectedNoTreatItemCodes = settings.slice(3) || [];
-            }else{
-              selectedNoTreatItemCodes = settings.slice(2) || [];
-            }
-      
-            if(selectedNoTreatItemCodes.length > 0){
-              noTreatMode= notreatmentItemCodesMode === 'anyof'? 'any of': 'all of';
-            }
-  
-            return `<p class="campaign-filter-desc">Patient did not have ${noTreatMode} treatment <span >${selectedNoTreatItemCodes.join(', ')}</span> performed between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
-          case CAMPAIGN_FILTERS.appointment:
-            return `<p class="campaign-filter-desc">Patient has an appointment between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
-          case CAMPAIGN_FILTERS.no_appointment:
-            return `<p class="campaign-filter-desc">Patient does not have an appointment between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
-          case CAMPAIGN_FILTERS.patient_status:
-            return `<p class="campaign-filter-desc">Patient is of status <span>${settings[0]}</span></p>`;
-          case CAMPAIGN_FILTERS.overdues:
-            return `<p class="campaign-filter-desc">Patient has overdue amount at least <span>${settings[0]}></span> days overdue</p>`;
-          case CAMPAIGN_FILTERS.health_insurance:
-            let healthFundIncludeNoneCheckBox;
-            let selectedHealthInsurances = [];
-            if(settings?.length > 0){
-              healthFundIncludeNoneCheckBox = !!parseInt(settings[0]);
-              const rr = settings.slice(1);
-              if(rr?.length > 0){
-                selectedHealthInsurances = rr;
-              }
-            }else{
-              healthFundIncludeNoneCheckBox = false;
-              selectedHealthInsurances = [];
-            }
-            if(selectedHealthInsurances?.length > 0){
-              return `<p class="campaign-filter-desc">Patient has health insurance with <span>${selectedHealthInsurances.join(', ')}</span></p>`;
-            }else return healthFundIncludeNoneCheckBox? `<p class="campaign-filter-desc">Patient don' have health insurance`:`Patient has health insurance</p>`;
-          default:
-            return '';
+      if (selectedItemCodes.length > 0) {
+        treatMode = treatmentItemCodesMode === 'anyof' ? 'any of' : 'all of';
+      }
+
+      return `<p class="campaign-filter-desc">Patient had ${treatMode} treatment <span >${selectedItemCodes.join(', ')}</span> performed between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
+    case CAMPAIGN_FILTERS.no_treatment:
+      let noTreatMode = 'any',
+        notreatmentItemCodesMode,
+        selectedNoTreatItemCodes;
+
+      if (['anyof', 'allof'].indexOf(settings[2]) > -1) {
+        notreatmentItemCodesMode = settings[2];
+        selectedNoTreatItemCodes = settings.slice(3) || [];
+      } else {
+        selectedNoTreatItemCodes = settings.slice(2) || [];
+      }
+
+      if (selectedNoTreatItemCodes.length > 0) {
+        noTreatMode = notreatmentItemCodesMode === 'anyof' ? 'any of' : 'all of';
+      }
+
+      return `<p class="campaign-filter-desc">Patient did not have ${noTreatMode} treatment <span >${selectedNoTreatItemCodes.join(', ')}</span> performed between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
+    case CAMPAIGN_FILTERS.appointment:
+      return `<p class="campaign-filter-desc">Patient has an appointment between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
+    case CAMPAIGN_FILTERS.no_appointment:
+      return `<p class="campaign-filter-desc">Patient does not have an appointment between <span>${settings[0]}</span> and <span>${settings[1]}</span></p>`;
+    case CAMPAIGN_FILTERS.patient_status:
+      return `<p class="campaign-filter-desc">Patient is of status <span>${settings[0]}</span></p>`;
+    case CAMPAIGN_FILTERS.overdues:
+      return `<p class="campaign-filter-desc">Patient has overdue amount at least <span>${settings[0]}></span> days overdue</p>`;
+    case CAMPAIGN_FILTERS.health_insurance:
+      let healthFundIncludeNoneCheckBox;
+      let selectedHealthInsurances = [];
+      if (settings?.length > 0) {
+        healthFundIncludeNoneCheckBox = !!parseInt(settings[0]);
+        const rr = settings.slice(1);
+        if (rr?.length > 0) {
+          selectedHealthInsurances = rr;
         }
+      } else {
+        healthFundIncludeNoneCheckBox = false;
+        selectedHealthInsurances = [];
+      }
+      if (selectedHealthInsurances?.length > 0) {
+        return `<p class="campaign-filter-desc">Patient has health insurance with <span>${selectedHealthInsurances.join(', ')}</span></p>`;
+      } else
+        return healthFundIncludeNoneCheckBox
+          ? `<p class="campaign-filter-desc">Patient don' have health insurance`
+          : `Patient has health insurance</p>`;
+    default:
+      return '';
+  }
 }

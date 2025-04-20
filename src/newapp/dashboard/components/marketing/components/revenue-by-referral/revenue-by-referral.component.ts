@@ -2,10 +2,7 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { MkRevByReferral } from '@/newapp/models/dashboard/marketing';
-import {
-  externalTooltipHandler,
-  formatXTooltipLabel,
-} from '@/newapp/shared/utils';
+import { externalTooltipHandler, formatXTooltipLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Chart, ChartOptions } from 'chart.js';
@@ -40,12 +37,15 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
   }
 
   get tableData() {
-    return this.datasets && this.datasets[0].data?.map((item, index) => {
-      return {
-        patientName: this.labels[index],
-        count: item
-      }
-    })
+    return (
+      this.datasets &&
+      this.datasets[0].data?.map((item, index) => {
+        return {
+          patientName: this.labels[index],
+          count: item,
+        };
+      })
+    );
   }
 
   get isExactOrCore$() {
@@ -55,7 +55,7 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(values => {
         return values[0] || values[1];
-      })
+      }),
     );
   }
 
@@ -72,16 +72,11 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
   }
 
   get isMultipleClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      map(v => typeof v == 'string')
-    );
+    return this.clinicFacade.currentClinicId$.pipe(map(v => typeof v == 'string'));
   }
 
   get chartType$() {
-    return combineLatest([
-      this.clinicFacade.currentClinicId$,
-      this.isTrend$,
-    ]).pipe(
+    return combineLatest([this.clinicFacade.currentClinicId$, this.isTrend$]).pipe(
       map(([v, isTrend]) => {
         if (isTrend) {
           return 'bar';
@@ -90,15 +85,12 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
         } else {
           return 'doughnut';
         }
-      })
+      }),
     );
   }
 
   get chartOptions$() {
-    return combineLatest([
-      this.clinicFacade.currentClinicId$,
-      this.isTrend$,
-    ]).pipe(
+    return combineLatest([this.clinicFacade.currentClinicId$, this.isTrend$]).pipe(
       map(([v, isTrend]) => {
         if (isTrend) {
           return this.stackedChartOptionsRev;
@@ -108,7 +100,7 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
         } else {
           return this.pieChartOptions;
         }
-      })
+      }),
     );
   }
 
@@ -122,33 +114,29 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
 
   get legend$() {
     return combineLatest([this.isMultipleClinic$, this.isTrend$]).pipe(
-      map(([isMultiClinics, isTrend]) => !isMultiClinics && !isTrend)
+      map(([isMultiClinics, isTrend]) => !isMultiClinics && !isTrend),
     );
   }
 
   get isTableIconVisible$() {
-    return combineLatest([
-      this.isTrend$,
-      this.isMultipleClinic$
-    ]).pipe(
+    return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(
-      ([isTrend, isMultiClinicsMode]) => 
-        !isTrend && !isMultiClinicsMode && this.hasData && (this.tableData?.length > 0)
-    ));
+        ([isTrend, isMultiClinicsMode]) =>
+          !isTrend && !isMultiClinicsMode && this.hasData && this.tableData?.length > 0,
+      ),
+    );
   }
 
   get showTableView$() {
-    return this.isTableIconVisible$.pipe(map(
-      v => this.showTableInfo && v
-    ))
-}
+    return this.isTableIconVisible$.pipe(map(v => this.showTableInfo && v));
+  }
 
   constructor(
     private marketingFacade: MarketingFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private decimalPipe: DecimalPipe,
-    private authFacade: AuthFacade
+    private authFacade: AuthFacade,
   ) {
     this.loadData();
   }
@@ -186,14 +174,17 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
       // pms != exact or core
       const clickedElementIndex = event.active[0].index;
       const activeLabel = camelCase(
-        <string>(<Chart>event.event.chart).data.labels[clickedElementIndex]
+        <string>(<Chart>event.event.chart).data.labels[clickedElementIndex],
       );
       combineLatest([
         this.isMultipleClinic$,
         this.marketingFacade.revByReferralData$,
-        this.chartType$
+        this.chartType$,
       ])
-        .pipe(take(1), filter(params => params[2] === 'doughnut'))
+        .pipe(
+          take(1),
+          filter(params => params[2] === 'doughnut'),
+        )
         .subscribe(([isMulti, result]) => {
           if (result != null && !isMulti) {
             const apiResData = <MkRevByReferral>result.data;
@@ -275,10 +266,7 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
           callback: function (label: number) {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              let currency =
-                label < 0
-                  ? label.toString().split('-').join('')
-                  : label.toString();
+              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
               currency = currency.split(/(?=(?:...)*$)/).join(',');
               return `${label < 0 ? '- $' : '$'}${currency}`;
             }
@@ -312,9 +300,7 @@ export class MarketingRevByReferralComponent implements OnInit, OnDestroy {
           },
           title: tooltipItems => {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
-            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(
-              sumV
-            )}`;
+            return `${tooltipItems[0].label}: $${this.decimalPipe.transform(sumV)}`;
           },
         },
       },

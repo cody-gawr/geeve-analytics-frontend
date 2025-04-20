@@ -14,26 +14,20 @@ export class DentistService {
 
   constructor(private http: HttpClient) {}
 
-  getDentists = (
-    clinicId: string | number,
-    isAll: number
-  ): Observable<DentistsListApiResponse> => {
+  getDentists = (clinicId: string | number, isAll: number): Observable<DentistsListApiResponse> => {
     return this.http
       .get<DentistsListApiResponse>(
         `${this.apiUrl}/Dentists/dentGet?clinic_id=${clinicId}&all=${isAll}`,
-        { withCredentials: true }
+        { withCredentials: true },
       )
-      .pipe(
-        map(res => <DentistsListApiResponse>camelcaseKeys(res, { deep: true }))
-      );
+      .pipe(map(res => <DentistsListApiResponse>camelcaseKeys(res, { deep: true })));
   };
 
   getSpecificDentist = (clinicId: string | number): Observable<any> => {
     return this.http
-      .get<any>(
-        `${this.apiUrl}/Users/userGetChildDentist?clinic_id=${clinicId}`,
-        { withCredentials: true }
-      )
+      .get<any>(`${this.apiUrl}/Users/userGetChildDentist?clinic_id=${clinicId}`, {
+        withCredentials: true,
+      })
       .pipe(map(res => <any>camelcaseKeys(res, { deep: true })));
   };
 }

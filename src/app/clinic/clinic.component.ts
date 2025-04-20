@@ -14,11 +14,7 @@ import { CookieService } from 'ngx-cookie';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HeaderService } from './../layouts/full/header/header.service';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { SetupService } from '../setup/setup.service';
 import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/praktika-connection-dialog.component';
@@ -46,23 +42,14 @@ export class DialogOverviewExampleDialogComponent {
   constructor(
     private fb: UntypedFormBuilder,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     dialogRef.disableClose = true;
     this.form = this.fb.group({
-      name: [
-        null,
-        Validators.compose([Validators.required, Validators.pattern(/\S/)]),
-      ],
-      address: [
-        null,
-        Validators.compose([Validators.required, Validators.pattern(/\S/)]),
-      ],
+      name: [null, Validators.compose([Validators.required, Validators.pattern(/\S/)])],
+      address: [null, Validators.compose([Validators.required, Validators.pattern(/\S/)])],
       //   patient_dob: [null, Validators.compose([Validators.required])],
-      contact_name: [
-        null,
-        Validators.compose([Validators.required, Validators.pattern(/\S/)]),
-      ],
+      contact_name: [null, Validators.compose([Validators.required, Validators.pattern(/\S/)])],
       pms: [null, Validators.compose([Validators.required])],
       coreURL: [null, ''],
     });
@@ -91,10 +78,7 @@ export class DialogOverviewExampleDialogComponent {
     if (this.showConnectButton) {
       this.form
         .get('coreURL')
-        .setValidators([
-          Validators.required,
-          Validators.pattern(this.urlPattern),
-        ]);
+        .setValidators([Validators.required, Validators.pattern(this.urlPattern)]);
     } else {
       this.form.get('coreURL').clearValidators();
       this.form.get('coreURL').updateValueAndValidity();
@@ -113,7 +97,7 @@ export class DialogOverviewExampleDialogComponent {
 export class DialogOverviewExampleLimitDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
   onNoClick(): void {
     this.dialogRef.close();
@@ -179,7 +163,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
     private _cookieService: CookieService,
     private router: Router,
     private headerService: HeaderService,
-    private setupService: SetupService
+    private setupService: SetupService,
   ) {
     this.rows = data;
     this.temp = [...data];
@@ -199,64 +183,63 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
   private warningMessage: string;
 
   checkPmsStatus() {
-    if(this.rows && this.rows.length > 0){
+    if (this.rows && this.rows.length > 0) {
       // check status
-      for(const row of this.rows){
+      for (const row of this.rows) {
         const pms = row.pms;
-        switch(pms){
+        switch (pms) {
           case 'core':
-            this.setupService.checkCoreStatus(row.id).subscribe(
-              {
-                next: res => {
-                  if (res.status == 200) {
-                    if (res.body.data.refresh_token && res.body.data.token && res.body.data.core_user_id){
-                      //
-                      row.connected = true;
-                    }else{
-                      row.connected = false;
-                    }
-                  }
-                },
-                error: error => {
-                  console.error(error);
-                  row.connected = false;
-                }
-              }
-            );
-            break;
-          case 'dentally':
-            this.setupService.checkDentallyStatus(row.id).subscribe(
-              {
-                next: res => {
-                  if (res.status == 200) {
-                    if (res.body.data.site_id) {
-                      row.connected = true;
-                    }else{
-                      row.connected = false;
-                    }
-                  }
-                },
-                error: error => {
-                  console.error(error);
-                  row.connected = false;
-                }
-              }
-            );
-            break;
-          case 'praktika':
-            this.clinicService.checkPraktikaStatus(row.id).subscribe(
-              {
-                next: (data) => {
-                  if (data.success) {
+            this.setupService.checkCoreStatus(row.id).subscribe({
+              next: res => {
+                if (res.status == 200) {
+                  if (
+                    res.body.data.refresh_token &&
+                    res.body.data.token &&
+                    res.body.data.core_user_id
+                  ) {
+                    //
                     row.connected = true;
                   } else {
                     row.connected = false;
                   }
-                }, error: err => {
+                }
+              },
+              error: error => {
+                console.error(error);
+                row.connected = false;
+              },
+            });
+            break;
+          case 'dentally':
+            this.setupService.checkDentallyStatus(row.id).subscribe({
+              next: res => {
+                if (res.status == 200) {
+                  if (res.body.data.site_id) {
+                    row.connected = true;
+                  } else {
+                    row.connected = false;
+                  }
+                }
+              },
+              error: error => {
+                console.error(error);
+                row.connected = false;
+              },
+            });
+            break;
+          case 'praktika':
+            this.clinicService.checkPraktikaStatus(row.id).subscribe({
+              next: data => {
+                if (data.success) {
+                  row.connected = true;
+                } else {
                   row.connected = false;
-                },
-              }
-            );
+                }
+              },
+              error: err => {
+                row.connected = false;
+              },
+            });
             break;
           case 'myob':
             this.setupService.checkMyobStatus(row.id).subscribe(
@@ -273,28 +256,26 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
               },
               error => {
                 row.connected = false;
-              }
+              },
             );
             break;
           case 'xero':
-            this.setupService.checkXeroStatus(row.id).subscribe(
-              {
-                next: res => {
-                  if (res.body.success) {
-                    if (!res.body.data.error && res.body.data.tenantId) {
-                      row.connected = true;
-                    } else {
-                      row.connected = false;
-                    }
+            this.setupService.checkXeroStatus(row.id).subscribe({
+              next: res => {
+                if (res.body.success) {
+                  if (!res.body.data.error && res.body.data.tenantId) {
+                    row.connected = true;
                   } else {
                     row.connected = false;
                   }
-                },
-                error: error => {
+                } else {
                   row.connected = false;
                 }
-              }
-            );
+              },
+              error: error => {
+                row.connected = false;
+              },
+            });
             break;
         }
       }
@@ -302,7 +283,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this.checkStatusInterval) clearInterval(this.checkStatusInterval);
+    if (this.checkStatusInterval) clearInterval(this.checkStatusInterval);
   }
   //open add clinic modal
   openDialog(): void {
@@ -335,13 +316,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
 
         const _createClinic = (prak_result?: any) => {
           this.clinicService
-            .addClinic(
-              result.name,
-              result.address,
-              result.contact_name,
-              result.pms,
-              coreURL
-            )
+            .addClinic(result.name, result.address, result.contact_name, result.pms, coreURL)
             .subscribe(
               res => {
                 //@audit-issue - This needs to be updated soon. Needs to check status code instead of message property.
@@ -356,35 +331,29 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
                     let id = res.body.data.id;
                     this.getConnectDentallyLink(id);
                   } else if (res.body.data.pms === 'praktika') {
-                    if (
-                      prak_result?.customer_user &&
-                      prak_result?.customer_secret
-                    ) {
+                    if (prak_result?.customer_user && prak_result?.customer_secret) {
                       this.clinicService
                         .CreatePraktikaConfig(
                           prak_result?.customer_user,
                           prak_result?.customer_secret,
-                          res.body.data.id
+                          res.body.data.id,
                         )
                         .subscribe({
                           next: response => {
                             if (!response.response) {
                               this.toastr.error(
                                 'Failed to connect Praktika account',
-                                'Praktika Account'
+                                'Praktika Account',
                               );
                               return;
                             }
-                            this.toastr.success(
-                              'Praktika account connected',
-                              'Praktika Account'
-                            );
+                            this.toastr.success('Praktika account connected', 'Praktika Account');
                             this.getClinics();
                           },
                           error: err =>
                             this.toastr.error(
                               'Failed to connect Praktika account',
-                              'Praktika Account'
+                              'Praktika Account',
                             ),
                         });
                     } else {
@@ -400,17 +369,14 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
               },
               error => {
                 this.warningMessage = 'Please Provide Valid Inputs!';
-              }
+              },
             );
         };
 
         if (result.pms == 'praktika') {
-          const dialogRef = this.dialog.open(
-            PraktikaConnectionDialogComponent,
-            {
-              width: '500px',
-            }
-          );
+          const dialogRef = this.dialog.open(PraktikaConnectionDialogComponent, {
+            width: '500px',
+          });
           dialogRef.afterClosed().subscribe((_result: any) => {
             if (_result?.customer_user && _result?.customer_secret) {
               _createClinic(_result);
@@ -425,10 +391,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
   }
   //open clinic limit dialog
   openLimitDialog(): void {
-    const dialogRef = this.dialog.open(
-      DialogOverviewExampleLimitDialogComponent,
-      {}
-    );
+    const dialogRef = this.dialog.open(DialogOverviewExampleLimitDialogComponent, {});
 
     dialogRef.afterClosed().subscribe(result => {});
   }
@@ -456,7 +419,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
   //get count of clinics allowed
@@ -477,7 +440,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
   //delete clinic
@@ -509,7 +472,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
             error => {
               $('.ajax-loader').hide();
               this.warningMessage = 'Please Provide Valid Inputs!';
-            }
+            },
           );
         } else {
           this.rows.splice(row, 1);
@@ -564,7 +527,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
         },
         error => {
           this.warningMessage = 'Please Provide Valid Inputs!';
-        }
+        },
       );
     this.rows = [...this.rows];
   }
@@ -601,7 +564,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -620,7 +583,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
   public connectToCore(link, id, reconnect = false) {
@@ -630,9 +593,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
         if (!reconnect) {
           this.checkCoreStatus(id);
         }
-        this.headerService
-          .getClinics()
-          .subscribe(data => console.log('data', data));
+        this.headerService.getClinics().subscribe(data => console.log('data', data));
         clearTimeout(timer);
       }
     }, 1000);
@@ -645,9 +606,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
         if (!reconnect) {
           this.checkDentallyStatus(id);
         }
-        this.headerService
-          .getClinics()
-          .subscribe(data => console.log('data', data));
+        this.headerService.getClinics().subscribe(data => console.log('data', data));
         clearTimeout(timer);
       }
     }, 1000);
@@ -663,7 +622,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -677,7 +636,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -735,7 +694,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
       cancelButtonText: 'No',
     }).then(result => {
       if (result.value) {
-        switch(clinic.pms){
+        switch (clinic.pms) {
           case 'core':
             this.clinicService.removeClinic(clinicId).subscribe(res => {
               if (res.status == 200) {
@@ -746,38 +705,32 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
             });
             break;
           case 'dentally':
-            this.clinicService.removeDentallyClinic(clinic.id).subscribe(
-              {
-                next: (res) => {
-                  console.log('dentally disconnected:', res)
-                  clinic.connected = false;
-                },
-                error: (err) => {
-                  console.log(err);
-                }
-              }
-            );
+            this.clinicService.removeDentallyClinic(clinic.id).subscribe({
+              next: res => {
+                console.log('dentally disconnected:', res);
+                clinic.connected = false;
+              },
+              error: err => {
+                console.log(err);
+              },
+            });
             break;
           case 'praktika':
-            this.clinicService.removePraktikaClinic(clinic.id).subscribe(
-              {
-                next: (res) => {
-                  console.log('praktika disconnected:', res)
-                  clinic.connected = false;
-                },
-                error: (err) => {
-                  console.log(err);
-                }
-              }
-            );
+            this.clinicService.removePraktikaClinic(clinic.id).subscribe({
+              next: res => {
+                console.log('praktika disconnected:', res);
+                clinic.connected = false;
+              },
+              error: err => {
+                console.log(err);
+              },
+            });
             break;
           case 'myob':
             break;
           case 'xero':
             break;
-
         }
-
       }
     });
   }
@@ -809,7 +762,7 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
     event.preventDefault();
     event.stopPropagation();
     const clinic = this.rows.find(r => r.id === clinicId);
-    switch(clinic.pms){
+    switch (clinic.pms) {
       case 'core':
         const dialogRef_core = this.dialog.open(CoreConnectionDialogComponent, {
           data: {
@@ -820,24 +773,26 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
         dialogRef_core.afterClosed().subscribe((result: any) => {
           if (result === 'success') {
             clinic.connected = undefined;
-            this.setupService.checkCoreStatus(clinic.id).subscribe(
-              {
-                next: res => {
-                  if (res.status == 200) {
-                    if (res.body.data.refresh_token && res.body.data.token && res.body.data.core_user_id){
-                      //
-                      clinic.connected = true;
-                    }else{
-                      clinic.connected = false;
-                    }
+            this.setupService.checkCoreStatus(clinic.id).subscribe({
+              next: res => {
+                if (res.status == 200) {
+                  if (
+                    res.body.data.refresh_token &&
+                    res.body.data.token &&
+                    res.body.data.core_user_id
+                  ) {
+                    //
+                    clinic.connected = true;
+                  } else {
+                    clinic.connected = false;
                   }
-                },
-                error: error => {
-                  console.error(error);
-                  clinic.connected = false;
                 }
-              }
-            );
+              },
+              error: error => {
+                console.error(error);
+                clinic.connected = false;
+              },
+            });
           }
         });
         // if (clinic.core_clinics[0]?.clinic_url) {
@@ -856,63 +811,54 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
         dialogRef_dentally.afterClosed().subscribe((result: any) => {
           if (result === 'success') {
             clinic.connected = undefined;
-            this.setupService.checkDentallyStatus(clinic.id).subscribe(
-              {
-                next: res => {
-                  if (res.status == 200) {
-                    if (res.body.data.site_id) {
-                      clinic.connected = true;
-                    }else{
-                      clinic.connected = false;
-                    }
-                  }
-                },
-                error: error => {
-                  console.error(error);
-                  clinic.connected = false;
-                }
-              }
-            );
-          }
-        });
-        break;
-      case 'praktika':
-        const dialogRef = this.dialog.open(
-          PraktikaConnectionDialogComponent,
-          {
-            width: '500px',
-            data: { clinic_id: clinic.id }
-          }
-        );
-        dialogRef.afterClosed().subscribe((_result: any) => {
-          if(_result == 'success'){
-            clinic.connected = undefined;
-            this.clinicService.checkPraktikaStatus(clinic.id).subscribe(
-              {
-                next: (data) => {
-                  if (data.success) {
+            this.setupService.checkDentallyStatus(clinic.id).subscribe({
+              next: res => {
+                if (res.status == 200) {
+                  if (res.body.data.site_id) {
                     clinic.connected = true;
                   } else {
                     clinic.connected = false;
                   }
-                }, error: err => {
+                }
+              },
+              error: error => {
+                console.error(error);
+                clinic.connected = false;
+              },
+            });
+          }
+        });
+        break;
+      case 'praktika':
+        const dialogRef = this.dialog.open(PraktikaConnectionDialogComponent, {
+          width: '500px',
+          data: { clinic_id: clinic.id },
+        });
+        dialogRef.afterClosed().subscribe((_result: any) => {
+          if (_result == 'success') {
+            clinic.connected = undefined;
+            this.clinicService.checkPraktikaStatus(clinic.id).subscribe({
+              next: data => {
+                if (data.success) {
+                  clinic.connected = true;
+                } else {
                   clinic.connected = false;
-                },
-              }
-            );
+                }
+              },
+              error: err => {
+                clinic.connected = false;
+              },
+            });
           }
         });
         break;
       case 'myob':
-        const dialogRef_myob = this.dialog.open(
-          MyobConnectionDialogComponent,
-          {
-            width: '500px',
-            data: { id: clinic.id }
-          }
-        );
+        const dialogRef_myob = this.dialog.open(MyobConnectionDialogComponent, {
+          width: '500px',
+          data: { id: clinic.id },
+        });
         dialogRef_myob.afterClosed().subscribe((_result: any) => {
-          if(_result == 'success'){
+          if (_result == 'success') {
             clinic.connected = undefined;
             this.setupService.checkMyobStatus(clinic.id).subscribe(
               res => {
@@ -928,46 +874,39 @@ export class ClinicComponent implements AfterViewInit, OnDestroy {
               },
               error => {
                 clinic.connected = false;
-              }
+              },
             );
           }
         });
         break;
       case 'xero':
-        const dialogRef_xero = this.dialog.open(
-          XeroConnectionDialogComponent,
-          {
-            width: '500px',
-            data: { id: clinic.id }
-          }
-        );
+        const dialogRef_xero = this.dialog.open(XeroConnectionDialogComponent, {
+          width: '500px',
+          data: { id: clinic.id },
+        });
         dialogRef_xero.afterClosed().subscribe((_result: any) => {
-          if(_result == 'success'){
+          if (_result == 'success') {
             clinic.connected = undefined;
-            this.setupService.checkXeroStatus(clinic.id).subscribe(
-              {
-                next: res => {
-                  if (res.body.success) {
-                    if (!res.body.data.error && res.body.data.tenantId) {
-                      clinic.connected = true;
-                    } else {
-                      clinic.connected = false;
-                    }
+            this.setupService.checkXeroStatus(clinic.id).subscribe({
+              next: res => {
+                if (res.body.success) {
+                  if (!res.body.data.error && res.body.data.tenantId) {
+                    clinic.connected = true;
                   } else {
                     clinic.connected = false;
                   }
-                },
-                error: error => {
+                } else {
                   clinic.connected = false;
                 }
-              }
-
-            );
+              },
+              error: error => {
+                clinic.connected = false;
+              },
+            });
           }
         });
         break;
     }
-
   }
 
   reconnectToDentally(event, clinicId) {
@@ -990,7 +929,7 @@ export class DialogLocationDialogComponent {
   public selectedLocation: any = null;
   constructor(
     public dialogRef: MatDialogRef<DialogLocationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     dialogRef.disableClose = true;
   }

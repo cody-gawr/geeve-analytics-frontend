@@ -108,8 +108,6 @@ export class LegacyAppOverlayContainer extends OverlayContainer {
     PlatformModule,
     PortalModule,
   ],
-  providers: [
-    { provide: OverlayContainer, useClass: LegacyAppOverlayContainer },
-  ],
+  providers: [{ provide: OverlayContainer, useClass: LegacyAppOverlayContainer }],
 })
 export class DemoMaterialModule {}

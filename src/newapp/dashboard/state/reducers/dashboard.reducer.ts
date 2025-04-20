@@ -33,42 +33,29 @@ export const dashboardFeature = createFeature({
         isLoadingData: _.union(isLoadingData, ['ctGetPageTips']),
       };
     }),
-    on(
-      DashboardApiActions.loadChartTipsSuccess,
-      (state, { chartData }): DashboardState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'ctGetPageTips'),
-          chartTips: chartData,
-          isLoadingData: _.filter(isLoadingData, n => n != 'ctGetPageTips'),
-        };
-      }
-    ),
-    on(
-      DashboardApiActions.loadChartTipsFailure,
-      (state, { error }): DashboardState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          chartTips: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'ctGetPageTips'),
-          errors: [...errors, { ...error, api: 'ctGetPageTips' }],
-        };
-      }
-    ),
+    on(DashboardApiActions.loadChartTipsSuccess, (state, { chartData }): DashboardState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'ctGetPageTips'),
+        chartTips: chartData,
+        isLoadingData: _.filter(isLoadingData, n => n != 'ctGetPageTips'),
+      };
+    }),
+    on(DashboardApiActions.loadChartTipsFailure, (state, { error }): DashboardState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        chartTips: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'ctGetPageTips'),
+        errors: [...errors, { ...error, api: 'ctGetPageTips' }],
+      };
+    }),
   ),
 });
 
-export const {
-  selectErrors,
-  selectIsLoadingData,
-  selectChartTips,
-} = dashboardFeature;
+export const { selectErrors, selectIsLoadingData, selectChartTips } = dashboardFeature;
 
-
-export const selectChartTipsError = createSelector(
-  selectErrors,
-  (errors): JeeveError | undefined =>
-    _.find(errors, e => e.api == 'ctGetPageTips')
+export const selectChartTipsError = createSelector(selectErrors, (errors): JeeveError | undefined =>
+  _.find(errors, e => e.api == 'ctGetPageTips'),
 );

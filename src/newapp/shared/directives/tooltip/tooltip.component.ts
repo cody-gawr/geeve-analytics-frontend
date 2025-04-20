@@ -9,20 +9,16 @@ export class TooltipContainerDirective {}
     <div
       [ngClass]="{
         'custom-tooltip': true,
-        'custom-tooltip-right':
-          tooltipData && tooltipData.direction === 'right',
+        'custom-tooltip-right': tooltipData && tooltipData.direction === 'right',
         'custom-tooltip-top': tooltipData && tooltipData.direction === 'top',
-        'custom-tooltip-top-right':
-          tooltipData && tooltipData.direction === 'top-right',
+        'custom-tooltip-top-right': tooltipData && tooltipData.direction === 'top-right',
         'custom-tooltip-top-right-discount':
           tooltipData && tooltipData.direction === 'top-right-discount'
-      }">
+      }"
+    >
       <div class="tooltip-title-container">
         <div class="tooltip-title">{{ tooltipData?.title ?? '' }}</div>
-        <img
-          src="../assets/images/white_heart.png"
-          class="white-heart-icon"
-          alt="analytics-icon" />
+        <img src="../assets/images/white_heart.png" class="white-heart-icon" alt="analytics-icon" />
       </div>
       <div class="tooltip-info-text" [innerHtml]="tooltipData.info || ''"></div>
     </div>
@@ -34,7 +30,7 @@ export class TooltipComponent implements OnInit {
   // private tooltipContainer;
   constructor(
     @Inject('tooltipConfig') private config,
-    @Inject('data') public tooltipData
+    @Inject('data') public tooltipData,
   ) {}
 
   ngOnInit() {

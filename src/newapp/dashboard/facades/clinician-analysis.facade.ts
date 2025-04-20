@@ -49,182 +49,150 @@ import { ChartDescParams } from '@/newapp/models/dashboard';
 export class ClinicianAnalysisFacade {
   constructor(private store: Store<ClinicianAnalysisState>) {}
 
-    isLoadingChartDesc$ = (chartDesc: CA_API_ALL_ENDPOINTS) => {
-      return this.store.pipe(
-        select(selectIsLoadingChartDesc(chartDesc))
-      );
-    };
-  
-    loadChartDescription(
-      chartDescription: CA_API_ALL_ENDPOINTS, 
-      params: ChartDescParams<CA_API_ALL_ENDPOINTS>
-    ) {
-      this.store.dispatch(
-        ClinicianAnalysisActions.loadCaChartDescription({
-          chartDescription,
-          ...params
-        })
-      );
-    };
-  
-  public readonly prodChartName$ = this.store.pipe(
-    select(selectProductionChartName)
-  );
+  isLoadingChartDesc$ = (chartDesc: CA_API_ALL_ENDPOINTS) => {
+    return this.store.pipe(select(selectIsLoadingChartDesc(chartDesc)));
+  };
 
-  public readonly hourlyRateChartName$ = this.store.pipe(
-    select(selectHourlyRateChartName)
-  );
+  loadChartDescription(
+    chartDescription: CA_API_ALL_ENDPOINTS,
+    params: ChartDescParams<CA_API_ALL_ENDPOINTS>,
+  ) {
+    this.store.dispatch(
+      ClinicianAnalysisActions.loadCaChartDescription({
+        chartDescription,
+        ...params,
+      }),
+    );
+  }
 
-  public readonly txPlanAvgFeeChartName$ = this.store.pipe(
-    select(selectTxPlanAvgFeeChartName)
-  );
+  public readonly prodChartName$ = this.store.pipe(select(selectProductionChartName));
 
-  public readonly recallRateChartName$ = this.store.pipe(
-    select(selectRecallRateChartName)
-  );
+  public readonly hourlyRateChartName$ = this.store.pipe(select(selectHourlyRateChartName));
 
-  public readonly isLoadingCaProduction$ = this.store.pipe(
-    select(selectIsLoadingCaProduction)
-  );
+  public readonly txPlanAvgFeeChartName$ = this.store.pipe(select(selectTxPlanAvgFeeChartName));
+
+  public readonly recallRateChartName$ = this.store.pipe(select(selectRecallRateChartName));
+
+  public readonly isLoadingCaProduction$ = this.store.pipe(select(selectIsLoadingCaProduction));
 
   public readonly isLoadingCaHourlyRateAll$ = this.store.pipe(
-    select(selectIsLoadingCaHourlyRateAll)
+    select(selectIsLoadingCaHourlyRateAll),
   );
 
   public readonly isLoadingTxPlanAvgFee$ = this.store.pipe(
-    select(selectIsLoadingCaTxPlanAvgFeeAll)
+    select(selectIsLoadingCaTxPlanAvgFeeAll),
   );
 
   public readonly isLoadingCaTxPlanCompRate$ = this.store.pipe(
-    select(selectIsLoadingCaTxPlanCompRate)
+    select(selectIsLoadingCaTxPlanCompRate),
   );
 
   public readonly isLoadingCaTxPlanCompRateTrend$ = this.store.pipe(
-    select(selectIsLoadingCaTxPlanCompRateTrend)
+    select(selectIsLoadingCaTxPlanCompRateTrend),
   );
 
-  public readonly isLoadingRecallRateAll$ = this.store.pipe(
-    select(selectIsLoadingCaRecallRateAll)
-  );
+  public readonly isLoadingRecallRateAll$ = this.store.pipe(select(selectIsLoadingCaRecallRateAll));
 
   public readonly isLoadingCaNumComplaints$ = this.store.pipe(
-    select(selectIsLoadingCaNumComplaints)
+    select(selectIsLoadingCaNumComplaints),
   );
 
   public readonly isLoadingCaNumComplaintsTrend$ = this.store.pipe(
-    select(selectIsLoadingCaNumComplaintsTrend)
+    select(selectIsLoadingCaNumComplaintsTrend),
   );
 
   public setProdChartName(chartName: CA_PROD_CHART_NAME) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.setProdChartName({ chartName })
-    );
+    this.store.dispatch(ClinicianAnalysisActions.setProdChartName({ chartName }));
   }
 
   public setHourlyRateChartName(chartName: CA_PROD_CHART_NAME) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.setHourlyRateChartName({ chartName })
-    );
+    this.store.dispatch(ClinicianAnalysisActions.setHourlyRateChartName({ chartName }));
   }
 
   public setTxTplanAvgFeeChartName(chartName: CA_TX_PLAN_AVG_FEE_CHART_NAME) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.setTxTplanAvgFeeChartName({ chartName })
-    );
+    this.store.dispatch(ClinicianAnalysisActions.setTxTplanAvgFeeChartName({ chartName }));
   }
 
   public setRecallRateChartName(chartName: CA_RECALL_RATE_CHART_NAME) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.setRecallRateChartName({ chartName })
-    );
+    this.store.dispatch(ClinicianAnalysisActions.setRecallRateChartName({ chartName }));
   }
 
-  public readonly isTrendIconVisible$ = this.store.pipe(
-    select(selectIsTrendIconVisible)
-  );
+  public readonly isTrendIconVisible$ = this.store.pipe(select(selectIsTrendIconVisible));
 
-  public readonly caProductionChartData$ = this.store.pipe(
-    select(selectCaProductionChartData)
-  );
+  public readonly caProductionChartData$ = this.store.pipe(select(selectCaProductionChartData));
 
   public readonly caProductionTrendChartData$ = this.store.pipe(
-    select(selectCaProductionTrendChartData)
+    select(selectCaProductionTrendChartData),
   );
 
-  public readonly caHourlyRateChartData$ = this.store.pipe(
-    select(selectCaHourlyRateChartData)
-  );
+  public readonly caHourlyRateChartData$ = this.store.pipe(select(selectCaHourlyRateChartData));
 
   public readonly caHourlyRateTrendChartData$ = this.store.pipe(
-    select(selectCaHourlyRateTrendChartData)
+    select(selectCaHourlyRateTrendChartData),
   );
 
   public readonly isLoadingCaNumNewPatients$ = this.store.pipe(
-    select(selectIsLoadingCaNumNewPatients)
+    select(selectIsLoadingCaNumNewPatients),
   );
   public readonly isLoadingCaNumNewPatientsTrend$ = this.store.pipe(
-    select(selectIsLoadingCaNumNewPatientsTrend)
+    select(selectIsLoadingCaNumNewPatientsTrend),
   );
 
   public readonly caNumNewPatientsChartData$ = this.store.pipe(
-    select(selectCaNumNewPatientsChartData)
+    select(selectCaNumNewPatientsChartData),
   );
 
   public readonly caNumNewPatientsTrendChartData$ = this.store.pipe(
-    select(selectCaNumNewPatientsTrendChartData)
+    select(selectCaNumNewPatientsTrendChartData),
   );
 
-  public readonly caTxPlanAvgFeesChartData$ = this.store.pipe(
-    select(selectTxPlanAvgFeesChartData)
-  );
+  public readonly caTxPlanAvgFeesChartData$ = this.store.pipe(select(selectTxPlanAvgFeesChartData));
 
   public readonly caTxPlanAvgFeesTrendChartData$ = this.store.pipe(
-    select(selectTxPlanAvgFeesTrendChartData)
+    select(selectTxPlanAvgFeesTrendChartData),
   );
 
   public readonly caTxPlanCompRateChartData$ = this.store.pipe(
-    select(selectTxPlanCompRateChartData)
+    select(selectTxPlanCompRateChartData),
   );
 
   public readonly caTxPlanCompRateTrendChartData$ = this.store.pipe(
-    select(selectTxPlanCompRateTrendChartData)
+    select(selectTxPlanCompRateTrendChartData),
   );
 
-  public readonly caRecallRateChartData$ = this.store.pipe(
-    select(selectRecallRateChartData)
-  );
+  public readonly caRecallRateChartData$ = this.store.pipe(select(selectRecallRateChartData));
 
   public readonly caRecallRateTrendChartData$ = this.store.pipe(
-    select(selectRecallRateTrendChartData)
+    select(selectRecallRateTrendChartData),
   );
 
   public readonly caNumComplaintsChartData$ = this.store.pipe(
-    select(selectCaDataTransformation<CaNumComplaintsItem>('caNumComplaints', 'numComplaints'))
+    select(selectCaDataTransformation<CaNumComplaintsItem>('caNumComplaints', 'numComplaints')),
   );
 
   public readonly caNumComplaintsTrendChartData$ = this.store.pipe(
-    select(selectCaDataTransformationTrend<CaNumComplaintsItem>('caNumComplaintsTrend', 'numComplaints'))
+    select(
+      selectCaDataTransformationTrend<CaNumComplaintsItem>('caNumComplaintsTrend', 'numComplaints'),
+    ),
   );
 
   public readonly caTotalDiscountsChartData$ = this.store.pipe(
-    select(selectCaDataTransformation<CaNumComplaintsItem>('caTotalDiscounts', 'discounts'))
+    select(selectCaDataTransformation<CaNumComplaintsItem>('caTotalDiscounts', 'discounts')),
   );
 
   public readonly caTotalDiscountsTrendChartData$ = this.store.pipe(
-    select(selectCaDataTransformationTrend<CaNumComplaintsItem>('caTotalDiscountsTrend', 'discounts'))
+    select(
+      selectCaDataTransformationTrend<CaNumComplaintsItem>('caTotalDiscountsTrend', 'discounts'),
+    ),
   );
 
   public readonly prodSelectTab$ = this.store.pipe(select(selectProdSelectTab));
 
   public readonly colSelectTab$ = this.store.pipe(select(selectColSelectTab));
 
-  public readonly colExpSelectTab$ = this.store.pipe(
-    select(selectColExpSelectTab)
-  );
+  public readonly colExpSelectTab$ = this.store.pipe(select(selectColExpSelectTab));
 
-  public readonly isHideFooterSection$ = this.store.pipe(
-    select(selectIsHideFooterSection)
-  );
+  public readonly isHideFooterSection$ = this.store.pipe(select(selectIsHideFooterSection));
 
   public setProdSelectTab(tabName: CA_PROD_SELECT_TAB) {
     this.store.dispatch(ClinicianAnalysisActions.setProdSelectTab({ tabName }));
@@ -235,31 +203,21 @@ export class ClinicianAnalysisFacade {
   }
 
   public setColExpSelectTab(tabName: CA_COL_EXP_SELECT_TAB) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.setColExpSelectTab({ tabName })
-    );
+    this.store.dispatch(ClinicianAnalysisActions.setColExpSelectTab({ tabName }));
   }
 
-  public readonly hourlyRateProdSelectTab$ = this.store.pipe(
-    select(selectHourlyRateProdSelectTab)
-  );
+  public readonly hourlyRateProdSelectTab$ = this.store.pipe(select(selectHourlyRateProdSelectTab));
 
   public setHourlyRateProdSelectTab(tabName: CA_HOURLY_RATE_SELECT_TAB) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.setHourlyRateProdSelectTab({ tabName })
-    );
+    this.store.dispatch(ClinicianAnalysisActions.setHourlyRateProdSelectTab({ tabName }));
   }
 
   public setHourlyRateColSelectTab(tabName: CA_COL_SELECT_TAB) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.setHourlyRateColSelectTab({ tabName })
-    );
+    this.store.dispatch(ClinicianAnalysisActions.setHourlyRateColSelectTab({ tabName }));
   }
 
   public setHourlyRateColExpSelectTab(tabName: CA_COL_EXP_SELECT_TAB) {
-    this.store.dispatch(
-      ClinicianAnalysisActions.setHourlyRateColExpSelectTab({ tabName })
-    );
+    this.store.dispatch(ClinicianAnalysisActions.setHourlyRateColExpSelectTab({ tabName }));
   }
 
   // public loadNoneTrendApiRequest({

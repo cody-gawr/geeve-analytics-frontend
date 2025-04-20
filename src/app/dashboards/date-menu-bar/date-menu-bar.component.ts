@@ -1,20 +1,10 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Output,
-  ViewChild,
-  Input,
-} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output, ViewChild, Input } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { BaseComponent } from '../../clinic-settings/base/base.component';
 import { ChartService } from '../chart.service';
 import { Router, NavigationEnd, Event } from '@angular/router';
-import {
-  NgxDaterangepickerMd,
-  DaterangepickerComponent,
-} from 'ngx-daterangepicker-material';
+import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
 import { DatePipe } from '@angular/common';
 import * as dayjs from 'dayjs';
 import moment from 'moment';
@@ -27,10 +17,7 @@ interface IDateOption {
   templateUrl: './date-menu-bar.component.html',
   styleUrls: ['./date-menu-bar.component.scss'],
 })
-export class DateMenuBarComponent
-  extends BaseComponent
-  implements AfterViewInit
-{
+export class DateMenuBarComponent extends BaseComponent implements AfterViewInit {
   @Output() filter: EventEmitter<string> = new EventEmitter();
   @Output() changeDate: EventEmitter<any> = new EventEmitter();
   @Input() isAllClinic: boolean = false;
@@ -79,7 +66,7 @@ export class DateMenuBarComponent
   constructor(
     private chartService: ChartService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {
     super();
     chartService.duration$
@@ -93,12 +80,8 @@ export class DateMenuBarComponent
           if (newAppLayoutData) {
             newAppLayoutData = JSON.parse(newAppLayoutData);
             if (newAppLayoutData.dateRange) {
-              this.startDate = moment(newAppLayoutData.dateRange.start).format(
-                'YYYY-MM-DD'
-              );
-              this.endDate = moment(newAppLayoutData.dateRange.end).format(
-                'YYYY-MM-DD'
-              );
+              this.startDate = moment(newAppLayoutData.dateRange.start).format('YYYY-MM-DD');
+              this.endDate = moment(newAppLayoutData.dateRange.end).format('YYYY-MM-DD');
               this.filterDate(newAppLayoutData.dateRange.duration);
             }
           } else {
@@ -115,12 +98,8 @@ export class DateMenuBarComponent
     if (newAppLayoutData) {
       newAppLayoutData = JSON.parse(newAppLayoutData);
       if (newAppLayoutData.dateRange) {
-        this.startDate = moment(newAppLayoutData.dateRange.start).format(
-          'YYYY-MM-DD'
-        );
-        this.endDate = moment(newAppLayoutData.dateRange.end).format(
-          'YYYY-MM-DD'
-        );
+        this.startDate = moment(newAppLayoutData.dateRange.start).format('YYYY-MM-DD');
+        this.endDate = moment(newAppLayoutData.dateRange.end).format('YYYY-MM-DD');
         this.setDate(newAppLayoutData.dateRange.duration);
       }
     } else {
@@ -187,26 +166,23 @@ export class DateMenuBarComponent
       var sd = new Date(now.setDate(first));
       this.startDate = this.datePipe.transform(sd.toUTCString(), 'yyyy-MM-dd');
       let end = now.setDate(sd.getDate() + 6);
-      this.endDate = this.datePipe.transform(
-        new Date(end).toUTCString(),
-        'yyyy-MM-dd'
-      );
+      this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'yyyy-MM-dd');
     } else if (duration == 'm') {
       var date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear(), date.getMonth(), 1),
-        'yyyy-MM-dd'
+        'yyyy-MM-dd',
       );
       this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     } else if (duration == 'lm') {
       const date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear(), date.getMonth() - 1, 1),
-        'yyyy-MM-dd'
+        'yyyy-MM-dd',
       );
       this.endDate = this.datePipe.transform(
         new Date(date.getFullYear(), date.getMonth(), 0),
-        'yyyy-MM-dd'
+        'yyyy-MM-dd',
       );
     } else if (duration == 'q') {
       const now = new Date();
@@ -214,25 +190,13 @@ export class DateMenuBarComponent
       // var cyear = now.getFullYear();
 
       if (cmonth >= 1 && cmonth <= 3) {
-        this.startDate = this.datePipe.transform(
-          new Date(now.getFullYear(), 0, 1),
-          'yyyy-MM-dd'
-        );
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
       } else if (cmonth >= 4 && cmonth <= 6) {
-        this.startDate = this.datePipe.transform(
-          new Date(now.getFullYear(), 3, 1),
-          'yyyy-MM-dd'
-        );
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
       } else if (cmonth >= 7 && cmonth <= 9) {
-        this.startDate = this.datePipe.transform(
-          new Date(now.getFullYear(), 6, 1),
-          'yyyy-MM-dd'
-        );
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
       } else if (cmonth >= 10 && cmonth <= 12) {
-        this.startDate = this.datePipe.transform(
-          new Date(now.getFullYear(), 9, 1),
-          'yyyy-MM-dd'
-        );
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'yyyy-MM-dd');
       }
       this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     } else if (duration == 'lq') {
@@ -242,81 +206,54 @@ export class DateMenuBarComponent
       if (cmonth >= 1 && cmonth <= 3) {
         this.startDate = this.datePipe.transform(
           new Date(now.getFullYear() - 1, 9, 1),
-          'yyyy-MM-dd'
+          'yyyy-MM-dd',
         );
         this.endDate = this.datePipe.transform(
           new Date(now.getFullYear() - 1, 12, 0),
-          'yyyy-MM-dd'
+          'yyyy-MM-dd',
         );
       } else if (cmonth >= 4 && cmonth <= 6) {
-        this.startDate = this.datePipe.transform(
-          new Date(now.getFullYear(), 0, 1),
-          'yyyy-MM-dd'
-        );
-        this.endDate = this.datePipe.transform(
-          new Date(now.getFullYear(), 3, 0),
-          'yyyy-MM-dd'
-        );
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'yyyy-MM-dd');
       } else if (cmonth >= 7 && cmonth <= 9) {
-        this.startDate = this.datePipe.transform(
-          new Date(now.getFullYear(), 3, 1),
-          'yyyy-MM-dd'
-        );
-        this.endDate = this.datePipe.transform(
-          new Date(now.getFullYear(), 6, 0),
-          'yyyy-MM-dd'
-        );
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'yyyy-MM-dd');
       } else if (cmonth >= 10 && cmonth <= 12) {
-        this.startDate = this.datePipe.transform(
-          new Date(now.getFullYear(), 6, 1),
-          'yyyy-MM-dd'
-        );
-        this.endDate = this.datePipe.transform(
-          new Date(now.getFullYear(), 9, 0),
-          'yyyy-MM-dd'
-        );
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'yyyy-MM-dd');
       }
     } else if (duration == 'cytd') {
       var date = new Date();
-      this.startDate = this.datePipe.transform(
-        new Date(date.getFullYear(), 0, 1),
-        'yyyy-MM-dd'
-      );
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'yyyy-MM-dd');
       this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     } else if (duration == 'lcytd') {
       var date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear() - 1, 0, 1),
-        'yyyy-MM-dd'
+        'yyyy-MM-dd',
       );
       this.endDate = this.datePipe.transform(
         new Date(date.getFullYear() - 1, 11, 31),
-        'yyyy-MM-dd'
+        'yyyy-MM-dd',
       );
     } else if (duration == 'fytd') {
       var date = new Date();
       if (date.getMonth() + 1 <= 6) {
         this.startDate = this.datePipe.transform(
           new Date(date.getFullYear() - 1, 6, 1),
-          'yyyy-MM-dd'
+          'yyyy-MM-dd',
         );
       } else {
-        this.startDate = this.datePipe.transform(
-          new Date(date.getFullYear(), 6, 1),
-          'yyyy-MM-dd'
-        );
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'yyyy-MM-dd');
       }
       this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     } else if (duration == 'lfytd') {
       var date = new Date();
       this.startDate = this.datePipe.transform(
         new Date(date.getFullYear() - 1, 7, 1),
-        'yyyy-MM-dd'
+        'yyyy-MM-dd',
       );
-      this.endDate = this.datePipe.transform(
-        new Date(date.getFullYear() , 6, 30),
-        'yyyy-MM-dd'
-      );
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 30), 'yyyy-MM-dd');
     }
 
     var start = dayjs(this.startDate);

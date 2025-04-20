@@ -33,13 +33,13 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map(v => typeof v == 'string')
+      map(v => typeof v == 'string'),
     );
   }
 
   constructor(
     private financeFacade: FinanceFacade,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
   ) {}
 
   public pieChartOptions: ChartOptions<'doughnut'> = {
@@ -64,9 +64,7 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
         external: externalTooltipHandler,
         callbacks: {
           label: function (tooltipItem) {
-            return (
-              tooltipItem.label + ': ' + Math.round(tooltipItem.parsed) + '%'
-            );
+            return tooltipItem.label + ': ' + Math.round(tooltipItem.parsed) + '%';
           },
         },
       },
@@ -102,12 +100,7 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        ([
-          clinicId,
-          prodByClinicianTotal,
-          prodByClinicianTrendTotal,
-          _prodByClinicData,
-        ]) => {
+        ([clinicId, prodByClinicianTotal, prodByClinicianTrendTotal, _prodByClinicData]) => {
           // missing sort
           const chartData = [],
             chartLabels = [];
@@ -118,21 +111,18 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
             prodByClinicData.sort(
               (a, b) =>
                 parseFloat(<string>b.productionPerClinic) -
-                parseFloat(<string>a.productionPerClinic)
+                parseFloat(<string>a.productionPerClinic),
             );
           } else {
             prodByClinicData.sort(
               (a, b) =>
-                parseFloat(<string>b.prodPerClinician) -
-                parseFloat(<string>a.prodPerClinician)
+                parseFloat(<string>b.prodPerClinician) - parseFloat(<string>a.prodPerClinician),
             );
           }
 
           prodByClinicData.forEach((val, index) => {
             if (typeof clinicId == 'number') {
-              const prodPerClinician = Math.round(
-                parseFloat(<string>val.prodPerClinician)
-              );
+              const prodPerClinician = Math.round(parseFloat(<string>val.prodPerClinician));
 
               if (prodPerClinician > 0) {
                 chartData.push(prodPerClinician);
@@ -140,12 +130,8 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
                 chartTotal = chartTotal + prodPerClinician;
               }
             } else {
-              const prodPerClinic = Math.round(
-                parseFloat(<string>val.productionPerClinic)
-              );
-              const tPr = Math.round(
-                (prodPerClinic * 100) / prodByClinicianTotal
-              );
+              const prodPerClinic = Math.round(parseFloat(<string>val.productionPerClinic));
+              const tPr = Math.round((prodPerClinic * 100) / prodByClinicianTotal);
               chartData.push(tPr);
               chartLabels.push(val.clinicName);
               chartTotal = chartTotal + tPr;
@@ -158,7 +144,7 @@ export class FinanceProdPerClinicComponent implements OnInit, OnDestroy {
           if (this.productionChartTotal >= this.productionChartTrendTotal) {
             this.productionChartTrendIcon = 'up';
           }
-        }
+        },
       );
   }
 

@@ -4,36 +4,36 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
-    <mat-icon
+    fontIcon="help"
+  ></mat-icon>
+  <mat-icon
     *ngIf="isTableIconVisible$ | async"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
-    fontIcon="table_rows_narrow" />    
+    fontIcon="table_rows_narrow"
+  />
   <div class="chart-title">New Patient Revenue by Referral</div>
   <div class="chart-content">
     <spin-loader
       class="empty-placeholder"
       *ngIf="isComingSoon; else enabledChart"
-      [disableSpin]="true">
+      [disableSpin]="true"
+    >
       Coming Soon...
     </spin-loader>
     <ng-template #enabledChart>
       <div
         [ngClass]="
           (chartType$ | async) == 'doughnut'
-            ? [
-                'canvas-wrapper',
-                'chart-box',
-                'j-justify-center',
-                'j-items-center'
-              ]
+            ? ['canvas-wrapper', 'chart-box', 'j-justify-center', 'j-items-center']
             : ['canvas-wrapper', 'chart-box']
-        ">
+        "
+      >
         <div
           class="chart-gauge rev-by-referral-chart"
-          [ngClass]="(chartType$ | async) == 'doughnut' ? ['j-padding-20'] : []">
+          [ngClass]="(chartType$ | async) == 'doughnut' ? ['j-padding-20'] : []"
+        >
           <div class="pa-table" *ngIf="showTableView$ | async; else graphEle">
             <table>
               <thead>
@@ -45,7 +45,7 @@
               <tbody>
                 <tr *ngFor="let paInfo of tableData">
                   <td>{{ paInfo.patientName }}</td>
-                  <td>{{ paInfo.count | currency:'USD':'symbol': '1.0-0' }}</td>
+                  <td>{{ paInfo.count | currency: 'USD' : 'symbol' : '1.0-0' }}</td>
                 </tr>
               </tbody>
             </table>
@@ -53,17 +53,14 @@
           <ng-template #graphEle>
             <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
             <ng-template #mainElem>
-              <button
-                *ngIf="isChartClicked"
-                (click)="loadData()"
-                mat-flat-button
-                color="primary">
+              <button *ngIf="isChartClicked" (click)="loadData()" mat-flat-button color="primary">
                 Back
               </button>
               <spin-loader
                 class="empty-placeholder"
                 *ngIf="!hasData; else chartElem3"
-                [disableSpin]="true">
+                [disableSpin]="true"
+              >
                 You have no revenue from referral sources in the selected period
               </spin-loader>
               <ng-template #chartElem3>
@@ -75,7 +72,8 @@
                   [labels]="labels"
                   [type]="chartType$ | async"
                   [legend]="legend$ | async"
-                  [options]="chartOptions$ | async"></canvas>
+                  [options]="chartOptions$ | async"
+                ></canvas>
                 <ng-template #cE02>
                   <canvas
                     #mkRevByReferral
@@ -85,22 +83,20 @@
                     [type]="chartType$ | async"
                     [legend]="legend$ | async"
                     [options]="chartOptions$ | async"
-                    (chartClick)="chartClicked($event)"></canvas>
+                    (chartClick)="chartClicked($event)"
+                  ></canvas>
                 </ng-template>
               </ng-template>
             </ng-template>
           </ng-template>
-
         </div>
-        <div
-          class="chart-foot"
-          *ngIf="!(isTrend$ | async) && isMultipleClinic$ | async">
+        <div class="chart-foot" *ngIf="!(isTrend$ | async) && isMultipleClinic$ | async">
           <div class="w-100">
             <h3>${{ revByReferralVal | number: '1.0-0' }}</h3>
             <span>Total</span>
           </div>
         </div>
       </div>
-    </ng-template>    
+    </ng-template>
   </div>
 </div>

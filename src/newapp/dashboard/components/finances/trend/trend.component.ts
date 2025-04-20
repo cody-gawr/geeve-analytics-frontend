@@ -11,29 +11,24 @@ import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 })
 export class TrendFinanceComponent implements OnInit, OnDestroy {
   get isMultipleClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      map(v => typeof v == 'string')
-    );
+    return this.clinicFacade.currentClinicId$.pipe(map(v => typeof v == 'string'));
   }
 
   get toolTipFnProductionPerVisit$() {
-    return combineLatest([
-      this.dashbordFacade.chartTips$,
-      this.isMultipleClinic$,
-    ]).pipe(
+    return combineLatest([this.dashbordFacade.chartTips$, this.isMultipleClinic$]).pipe(
       filter(params => !!params[0]),
       map(([c, v]) => {
         let tip = c[v ? 95 : 30];
-        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        if (tip && tip?.info?.toLowerCase() === 'disabled') return null;
         return tip;
-      })
+      }),
     );
   }
 
   constructor(
     private dashbordFacade: DashboardFacade,
     private financeFacade: FinanceFacade,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
   ) {}
 
   ngOnInit(): void {}
@@ -61,9 +56,9 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
           case 'Net Profit %':
             tip = tips[27];
         }
-        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        if (tip && tip?.info?.toLowerCase() === 'disabled') return null;
         return tip;
-      })
+      }),
     );
   }
 
@@ -82,13 +77,13 @@ export class TrendFinanceComponent implements OnInit, OnDestroy {
           case 'Production Per Day':
             tip = tips[99];
         }
-        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        if (tip && tip?.info?.toLowerCase() === 'disabled') return null;
         return tip;
-      })
+      }),
     );
   }
 
   getChartTip(index: number) {
-    return this.dashbordFacade.getChartTip$(index)
+    return this.dashbordFacade.getChartTip$(index);
   }
 }

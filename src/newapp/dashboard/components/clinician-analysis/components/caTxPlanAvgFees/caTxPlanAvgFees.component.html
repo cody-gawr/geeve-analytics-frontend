@@ -10,19 +10,22 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <mat-icon
     *ngIf="isTableIconVisible$ | async"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
-    fontIcon="table_rows_narrow" />
+    fontIcon="table_rows_narrow"
+  />
   <div class="chart-title">
     <mat-icon
       *ngIf="isTrendIconVisible$ | async"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"
-      [matTooltip]="getTrendTip$ | async"></mat-icon>
+      [matTooltip]="getTrendTip$ | async"
+    ></mat-icon>
 
     <span>Treatment Plan Average Cost</span>
   </div>
@@ -31,7 +34,8 @@
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
@@ -39,17 +43,13 @@
           <button
             *ngFor="let chartName of chartNames"
             (click)="switchChartName(chartName)"
-            [ngClass]="{ active: chartName == (chartName$ | async) }">
+            [ngClass]="{ active: chartName == (chartName$ | async) }"
+          >
             {{ chartName }}
           </button>
         </div>
 
-        <div
-          class="pa-table"
-          *ngIf="
-            showTableView$ | async;
-            else graphElem
-          ">
+        <div class="pa-table" *ngIf="showTableView$ | async; else graphElem">
           <table>
             <thead>
               <tr>
@@ -75,13 +75,13 @@
         </div>
         <ng-template #graphElem>
           <div class="chart-gauge ca-tx-plan-avg-fees-graph">
-            <spin-loader
-              *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+            <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
             <ng-template #chartElem>
               <spin-loader
                 class="empty-placeholder"
                 *ngIf="!(hasData$ | async); else ch11"
-                [disableSpin]="true">
+                [disableSpin]="true"
+              >
                 {{ noDataAlertMessage$ | async }}
               </spin-loader>
               <ng-template #ch11>
@@ -97,7 +97,8 @@
                   cap="round"
                   [duration]="2500"
                   prepend="$"
-                  [size]="300">
+                  [size]="300"
+                >
                 </ngx-gauge>
                 <ng-template #ch10>
                   <canvas
@@ -106,7 +107,8 @@
                     [labels]="labels"
                     [legend]="legend$ | async"
                     type="bar"
-                    [options]="chartOptions">
+                    [options]="chartOptions"
+                  >
                   </canvas>
                 </ng-template>
               </ng-template>

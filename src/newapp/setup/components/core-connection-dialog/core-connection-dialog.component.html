@@ -1,38 +1,36 @@
 <div class="dialog-header">
-    <h1 mat-dialog-title>
-        Connect Core
-    </h1>
-    <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
+  <h1 mat-dialog-title>Connect Core</h1>
+  <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
 </div>
 <div mat-dialog-content>
-        <div class="location-box">
-            <mat-form-field *ngIf="LocationData.length > 1;else otherdiv" appearance="outline">
-                <mat-label>Select Location</mat-label>
-                <mat-select [(value)]="selectedLocationId">
-                    <mat-option *ngFor="let location of LocationData" [value]="location.Identifier">
-                        {{location.LocationName}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
+  <div class="location-box">
+    <mat-form-field *ngIf="LocationData.length > 1; else otherdiv" appearance="outline">
+      <mat-label>Select Location</mat-label>
+      <mat-select [(value)]="selectedLocationId">
+        <mat-option *ngFor="let location of LocationData" [value]="location.Identifier">
+          {{ location.LocationName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-        <ng-template #otherdiv>
-            <div class="text-core">
-                <p>Please connect your Core account</p>
-            </div>
-            <div class="image-core">
-                <div>
-                    <img src="assets/stepper/logo-core-practice@2x.png">
-                    <!-- <img src="" alt="Snow"> -->
-                    <!-- https://www.corepractice.com.au/Content/img/logo-core-practice@2x.png -->
-                </div>
-            </div>
-        </ng-template>
-    <br>
+  <ng-template #otherdiv>
+    <div class="text-core">
+      <p>Please connect your Core account</p>
+    </div>
+    <div class="image-core">
+      <div>
+        <img src="assets/stepper/logo-core-practice@2x.png" />
+        <!-- <img src="" alt="Snow"> -->
+        <!-- https://www.corepractice.com.au/Content/img/logo-core-practice@2x.png -->
+      </div>
+    </div>
+  </ng-template>
+  <br />
 </div>
 <div mat-dialog-actions class="justify-between">
-    <button [mat-dialog-close]="true" mat-flat-button cancelButton>Cancel</button>
-    <button mat-flat-button color="primary" *ngIf="this.data.id" (click)="onSubmit()">{{
-            LocationData.length > 1 ? 'Save' : 'Connect to Core'
-        }}</button>
+  <button [mat-dialog-close]="true" mat-flat-button cancelButton>Cancel</button>
+  <button mat-flat-button color="primary" *ngIf="this.data.id" (click)="onSubmit()">
+    {{ LocationData.length > 1 ? 'Save' : 'Connect to Core' }}
+  </button>
 </div>

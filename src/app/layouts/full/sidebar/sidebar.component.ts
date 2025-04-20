@@ -50,7 +50,7 @@ export class ReferFriendComponent {
     private _cookieService: CookieService,
     private dentistService: DentistService,
     private toastr: ToastrService,
-    private headerService: HeaderService // private chartsService: ChartsService,
+    private headerService: HeaderService, // private chartsService: ChartsService,
   ) {}
 
   onNoClick(): void {
@@ -76,10 +76,7 @@ export class ReferFriendComponent {
 
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (
-      !re.test(this.referFriendEmail.trim()) &&
-      this.referFriendEmail.trim() != ''
-    ) {
+    if (!re.test(this.referFriendEmail.trim()) && this.referFriendEmail.trim() != '') {
       this.referFriendEmailPError = true;
       this.referFriendEmailErrorMsg = 'Please enter valid email';
     }
@@ -93,11 +90,7 @@ export class ReferFriendComponent {
     }
 
     this.dentistService
-      .getReferFriend(
-        this.clinic_id,
-        data.referFriendName.trim(),
-        data.referFriendEmail.trim()
-      )
+      .getReferFriend(this.clinic_id, data.referFriendName.trim(), data.referFriendEmail.trim())
       .subscribe(
         res => {
           if (res.status == 200) {
@@ -111,7 +104,7 @@ export class ReferFriendComponent {
         },
         error => {
           // this.warningMessage = "Please Provide Valid Inputs!";
-        }
+        },
       );
 
     return true;
@@ -159,26 +152,14 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
 
   public get isMultiClinicsVisible(): boolean {
     if (this.userId == 1) {
-      const dash1_multi = parseInt(
-        this._cookieService.get('dash1_multi') ?? '0'
-      );
-      const dash2_multi = parseInt(
-        this._cookieService.get('dash2_multi') ?? '0'
-      );
-      const dash3_multi = parseInt(
-        this._cookieService.get('dash3_multi') ?? '0'
-      );
-      const dash4_multi = parseInt(
-        this._cookieService.get('dash4_multi') ?? '0'
-      );
-      const dash5_multi = parseInt(
-        this._cookieService.get('dash5_multi') ?? '0'
-      );
+      const dash1_multi = parseInt(this._cookieService.get('dash1_multi') ?? '0');
+      const dash2_multi = parseInt(this._cookieService.get('dash2_multi') ?? '0');
+      const dash3_multi = parseInt(this._cookieService.get('dash3_multi') ?? '0');
+      const dash4_multi = parseInt(this._cookieService.get('dash4_multi') ?? '0');
+      const dash5_multi = parseInt(this._cookieService.get('dash5_multi') ?? '0');
       return (
-        ((this.activeRoute == '/dashboards/cliniciananalysis' &&
-          dash1_multi == 1) ||
-          (this.activeRoute == '/dashboards/clinicianproceedures' &&
-            dash2_multi == 1) ||
+        ((this.activeRoute == '/dashboards/cliniciananalysis' && dash1_multi == 1) ||
+          (this.activeRoute == '/dashboards/clinicianproceedures' && dash2_multi == 1) ||
           (this.activeRoute == '/dashboards/frontdesk' && dash3_multi == 1) ||
           (this.activeRoute == '/dashboards/marketing' && dash4_multi == 1) ||
           (this.activeRoute == '/dashboards/finances' && dash5_multi == 1)) &&
@@ -201,7 +182,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     private clinicFacade: ClinicFacade,
     private layoutFacde: LayoutFacade,
     private chartService: ChartService,
-    private clinicService: ClinicService
+    private clinicService: ClinicService,
   ) {
     // this.router.events.subscribe((event: Event) => {
     //   if (event instanceof NavigationEnd && event.url != '/login') {
@@ -224,8 +205,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
       newAppClinicData = JSON.parse(newAppClinicData);
       if (this.isMultiClinicsVisible) {
         this.clinic_id =
-          newAppClinicData.currentMultiClinicIds.length ===
-          this.clinicsData.length
+          newAppClinicData.currentMultiClinicIds.length === this.clinicsData.length
             ? 'all'
             : newAppClinicData.currentMultiClinicIds.join(',');
       } else {
@@ -303,7 +283,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
         getTodayMoment(),
         'm',
         1,
-        true
+        true,
       );
       this.chartService.changeDuration('m');
       this.rolesUsersService.setUnAuth(false);
@@ -322,16 +302,8 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     this.rolesUsersService.getRolesIndividual().subscribe({
       next: res => {
         this.permisions = res.data;
-        this._cookieService.put(
-          'user_type',
-          res.type + '',
-          this.constants.cookieOpt
-        );
-        this._cookieService.put(
-          'user_plan',
-          res.plan,
-          this.constants.cookieOpt
-        );
+        this._cookieService.put('user_type', res.type + '', this.constants.cookieOpt);
+        this._cookieService.put('user_plan', res.plan, this.constants.cookieOpt);
         this.userPlan = res.plan;
         //Remove apis calls when user have not permission of any page form FE
         if (res.type != 2 && res.type != 7) {

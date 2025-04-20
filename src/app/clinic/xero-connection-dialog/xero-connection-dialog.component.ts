@@ -10,7 +10,7 @@ import { ClinicSettingsService } from '@/app/clinic-settings/clinic-settings.ser
 @Component({
   selector: 'app-xero-connection-dialog',
   templateUrl: './xero-connection-dialog.component.html',
-  styleUrls: ['./xero-connection-dialog.component.scss']
+  styleUrls: ['./xero-connection-dialog.component.scss'],
 })
 export class XeroConnectionDialogComponent {
   public clinic_id!: number;
@@ -18,19 +18,18 @@ export class XeroConnectionDialogComponent {
     public dialogRef: MatDialogRef<XeroConnectionDialogComponent>,
     private clinicSvc: ClinicSettingsService,
     private toastr: ToastrService,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-  }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {}
   onSubmit() {
     this.clinic_id = this.data.id;
-    this.clinicSvc.getXeroLink(this.clinic_id).pipe(take(1))
+    this.clinicSvc
+      .getXeroLink(this.clinic_id)
+      .pipe(take(1))
       .subscribe({
-        next: (response) => {
-            if (response.status == 200) {
-                console.log(
-                  `gtt: in getxerolink, res.body: ${JSON.stringify(response.body)}`
-                );
-                const responseURL = response.body.data?.url;
+        next: response => {
+          if (response.status == 200) {
+            console.log(`gtt: in getxerolink, res.body: ${JSON.stringify(response.body)}`);
+            const responseURL = response.body.data?.url;
             if (responseURL) {
               var win = window.open(responseURL, 'MsgWindow', 'width=1000,height=800');
               var timer = setInterval(() => {
@@ -40,9 +39,9 @@ export class XeroConnectionDialogComponent {
                 }
               }, 1000);
             }
-            }else{
-                this.toastr.error('Could not retrieve the Xero Authoriz URL', 'Xero connection');
-            }
+          } else {
+            this.toastr.error('Could not retrieve the Xero Authoriz URL', 'Xero connection');
+          }
         },
         error: err => {
           console.log(err);
@@ -51,4 +50,3 @@ export class XeroConnectionDialogComponent {
       });
   }
 }
-

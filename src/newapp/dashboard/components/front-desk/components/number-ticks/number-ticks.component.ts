@@ -47,7 +47,7 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([isTrend, isLoading, isTrendLoading]) => {
         return isTrend ? isTrendLoading : isLoading;
-      })
+      }),
     );
   }
 
@@ -79,7 +79,7 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
         } else {
           return this.fdNumOfTicksVal > 0;
         }
-      })
+      }),
     );
   }
 
@@ -92,7 +92,7 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private decimalPipe: DecimalPipe,
-    private dashboardFacade: DashboardFacade
+    private dashboardFacade: DashboardFacade,
   ) {
     combineLatest([
       this.isTrend$,
@@ -123,13 +123,11 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMultiClinic]) => {
         if (isTrend) {
-          return isMultiClinic
-            ? this.stackedChartOptionsTic
-            : this.numOfTicksChartOptionsticks;
+          return isMultiClinic ? this.stackedChartOptionsTic : this.numOfTicksChartOptionsticks;
         } else {
           return this.stackedChartOptionsT;
         }
-      })
+      }),
     );
   }
 
@@ -161,10 +159,7 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
           callback: function (label: number, index, labels) {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              let currency =
-                label < 0
-                  ? label.toString().split('-').join('')
-                  : label.toString();
+              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
               currency = currency.split(/(?=(?:...)*$)/).join(',');
               return label; // `${label < 0 ? '- $' : '$'}${currency}`;
             }
@@ -183,10 +178,7 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
             return `${tooltipItems.dataset.label}: ${tooltipItems.parsed.y}`;
           },
           title: function (tooltipItems) {
-            return `${tooltipItems[0].label}: ${_.sumBy(
-              tooltipItems,
-              t => t.parsed.y
-            )}`;
+            return `${tooltipItems[0].label}: ${_.sumBy(tooltipItems, t => t.parsed.y)}`;
           },
         },
       },
@@ -317,18 +309,12 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
             }
             //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             let ylable = tooltipItems.parsed._custom
-              ? +(
-                  tooltipItems.parsed._custom.max +
-                  tooltipItems.parsed._custom.min
-                ) / 2
+              ? +(tooltipItems.parsed._custom.max + tooltipItems.parsed._custom.min) / 2
               : v;
             var tlab = 0;
             if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval =
-                tooltipItems.chart.data.datasets[1].data[
-                  tooltipItems.dataIndex
-                ];
+              const tval = tooltipItems.chart.data.datasets[1].data[tooltipItems.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -345,10 +331,7 @@ export class FrontDeskNumberTicksComponent implements OnInit, OnDestroy {
           afterLabel: function (tooltipItems) {
             let hour = '0';
             let phour = '0';
-            if (
-              tooltipItems.label.indexOf('--') >= 0 &&
-              tooltipItems.datasetIndex == 0
-            ) {
+            if (tooltipItems.label.indexOf('--') >= 0 && tooltipItems.datasetIndex == 0) {
               let lbl = tooltipItems.label.split('--');
               hour = lbl[1];
               phour = lbl[2];

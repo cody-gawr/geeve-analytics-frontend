@@ -1,9 +1,6 @@
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
-import {
-  externalTooltipHandler,
-  formatXTooltipLabel,
-} from '@/newapp/shared/utils';
+import { externalTooltipHandler, formatXTooltipLabel } from '@/newapp/shared/utils';
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { ChartDataset, ChartOptions } from 'chart.js';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
@@ -81,10 +78,7 @@ export class FinanceProdColTrendComponent implements OnInit, OnDestroy {
           callback: function (label: number, index, labels) {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              let currency =
-                label < 0
-                  ? label.toString().split('-').join('')
-                  : label.toString();
+              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
               currency = currency.split(/(?=(?:...)*$)/).join(',');
               return `${label < 0 ? '- $' : '$'}${currency}`;
             }

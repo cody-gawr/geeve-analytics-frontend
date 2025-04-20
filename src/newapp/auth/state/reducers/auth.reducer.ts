@@ -1,16 +1,7 @@
 /* NgRx */
 import { createFeature, createReducer, on, createSelector } from '@ngrx/store';
-import {
-  AuthApiActions,
-  AuthPageActions,
-  RolesApiActions,
-  RolesPageActions,
-} from '../actions';
-import {
-  RolesIndividualApiResponse,
-  RolesApiResponse,
-  LoginUser,
-} from '../../../models/user';
+import { AuthApiActions, AuthPageActions, RolesApiActions, RolesPageActions } from '../actions';
+import { RolesIndividualApiResponse, RolesApiResponse, LoginUser } from '../../../models/user';
 import _ from 'lodash';
 import { selectHasPrimeClinics } from '../../../clinic/state/reducers/clinic.reducer';
 import { JeeveError } from '@/newapp/models';
@@ -117,34 +108,22 @@ export const authFeature = createFeature({
         rolesIndividual: null,
       };
     }),
-    on(
-      RolesApiActions.getRolesIndividualSuccess,
-      (state, { userRolesIndividual }): AuthState => {
-        return {
-          ...state,
-          rolesIndividual: userRolesIndividual,
-          errors: _.filter(state.errors, n => n.api != 'rolesIndividual'),
-          isLoadingData: _.filter(
-            state.isLoadingData,
-            n => n != 'rolesIndividual'
-          ),
-        };
-      }
-    ),
-    on(
-      RolesApiActions.getRolesIndividualFailure,
-      (state, { error }): AuthState => {
-        return {
-          ...state,
-          rolesIndividual: null,
-          isLoadingData: _.filter(
-            state.isLoadingData,
-            n => n != 'rolesIndividual'
-          ),
-          errors: [...state.errors, { ...error, api: 'rolesIndividual' }],
-        };
-      }
-    )
+    on(RolesApiActions.getRolesIndividualSuccess, (state, { userRolesIndividual }): AuthState => {
+      return {
+        ...state,
+        rolesIndividual: userRolesIndividual,
+        errors: _.filter(state.errors, n => n.api != 'rolesIndividual'),
+        isLoadingData: _.filter(state.isLoadingData, n => n != 'rolesIndividual'),
+      };
+    }),
+    on(RolesApiActions.getRolesIndividualFailure, (state, { error }): AuthState => {
+      return {
+        ...state,
+        rolesIndividual: null,
+        isLoadingData: _.filter(state.isLoadingData, n => n != 'rolesIndividual'),
+        errors: [...state.errors, { ...error, api: 'rolesIndividual' }],
+      };
+    }),
   ),
 });
 
@@ -162,12 +141,12 @@ export const {
 
 export const selectIsLoadingRolesIndividual = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'rolesIndividual') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'rolesIndividual') >= 0,
 );
 
 export const selectRolesIndividualPermissions = createSelector(
   selectRolesIndividual,
-  (userRolesIndividual): string[] => userRolesIndividual?.data ?? []
+  (userRolesIndividual): string[] => userRolesIndividual?.data ?? [],
 );
 
 export const selectRolesIndividualAndClinics = createSelector(
@@ -175,10 +154,10 @@ export const selectRolesIndividualAndClinics = createSelector(
   selectHasPrimeClinics,
   (rolesIndividual, hasPrimeClinics) => {
     return { ...(rolesIndividual ?? {}), hasPrimeClinics };
-  }
+  },
 );
 
 export const selectIsClinicianUser = createSelector(
   selectRolesIndividual,
-  rolesInd => rolesInd?.type == 4 && rolesInd?.plan != 'lite'
+  rolesInd => rolesInd?.type == 4 && rolesInd?.plan != 'lite',
 );

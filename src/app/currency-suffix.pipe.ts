@@ -26,16 +26,11 @@ export class CurrencySuffixPipe implements PipeTransform {
       if (exp === 1) {
         return Math.round(input / Math.pow(1000, exp)) + suffixes[exp - 1];
       }
-      let shortenedNumber = (input / Math.pow(1000, exp))
-        .toFixed(args)
-        .toString();
+      let shortenedNumber = (input / Math.pow(1000, exp)).toFixed(args).toString();
       let failsafe = 10;
       while (failsafe > 0) {
         const lastCharIndex = shortenedNumber.length - 1;
-        if (
-          shortenedNumber[lastCharIndex] === '0' ||
-          shortenedNumber[lastCharIndex] === '.'
-        ) {
+        if (shortenedNumber[lastCharIndex] === '0' || shortenedNumber[lastCharIndex] === '.') {
           shortenedNumber = shortenedNumber.slice(0, -1);
         } else {
           break;
@@ -46,9 +41,7 @@ export class CurrencySuffixPipe implements PipeTransform {
     } else {
       input = input * -1;
       exp = Math.floor(Math.log(input) / Math.log(1000));
-      return (
-        ((input * -1) / Math.pow(1000, exp)).toFixed(args) + suffixes[exp - 1]
-      );
+      return ((input * -1) / Math.pow(1000, exp)).toFixed(args) + suffixes[exp - 1];
     }
   }
   isNumeric(value): boolean {

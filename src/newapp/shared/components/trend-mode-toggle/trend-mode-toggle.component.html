@@ -5,13 +5,10 @@
     name="Trend"
     aria-label="Trends"
     [value]="trendMode$ | async"
-    (change)="onChangeTrendMode($event)">
+    (change)="onChangeTrendMode($event)"
+  >
     <mat-button-toggle value="off">Off</mat-button-toggle>
-    <mat-button-toggle [disabled]="isLoading$ | async" value="current"
-      >Monthly</mat-button-toggle
-    >
-    <mat-button-toggle [disabled]="isLoading$ | async" value="historic"
-      >Annual</mat-button-toggle
-    >
+    <mat-button-toggle [disabled]="isLoading$ | async" value="current">Monthly</mat-button-toggle>
+    <mat-button-toggle [disabled]="isLoading$ | async" value="historic">Annual</mat-button-toggle>
   </mat-button-toggle-group>
 </div>

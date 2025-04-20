@@ -16,7 +16,7 @@ export class DentistGoalsService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
   getHeaders() {
     if (
@@ -40,25 +40,17 @@ export class DentistGoalsService {
     var header = this.getHeaders();
     return this.http
       .get(
-        this.apiUrl +
-          '/Goals/goalGetDentist?clinic_id=' +
-          clinic_id +
-          '&dentist_id=' +
-          dentist_id,
-        header
+        this.apiUrl + '/Goals/goalGetDentist?clinic_id=' + clinic_id + '&dentist_id=' + dentist_id,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
   // Get ClinicGoals
-  updateDentistGoals(
-    clinicData,
-    clinic_id = '',
-    dentist_id = ''
-  ): Observable<any> {
+  updateDentistGoals(clinicData, clinic_id = '', dentist_id = ''): Observable<any> {
     const formData = new FormData();
 
     formData.append('goals', clinicData);
@@ -66,12 +58,10 @@ export class DentistGoalsService {
     formData.append('dentist_id', dentist_id);
     var header = this.getHeaders();
 
-    return this.http
-      .post(this.apiUrl + '/Goals/goalAddDentist', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Goals/goalAddDentist', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 }

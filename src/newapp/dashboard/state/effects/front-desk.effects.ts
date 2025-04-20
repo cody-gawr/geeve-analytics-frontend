@@ -12,7 +12,7 @@ export class FrontDeskEffects {
   constructor(
     private actions$: Actions,
     private frontDeskService: FrontDeskService,
-    private store: Store<FrontDeskState>
+    private store: Store<FrontDeskState>,
   ) {}
   // FdUtilisationRate
   public readonly loadFdUtilisationRate$ = createEffect(() => {
@@ -23,17 +23,17 @@ export class FrontDeskEffects {
           map(data =>
             FrontDeskApiActions.fdUtilisationRateSuccess({
               fdUtilisationRateData: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FrontDeskApiActions.fdUtilisationRateFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -41,23 +41,21 @@ export class FrontDeskEffects {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdUtilisationRateTrend),
       switchMap(({ clinicId, mode, queryWhEnabled }) => {
-        return this.frontDeskService
-          .fdUtilisationRateTrend(clinicId, mode, queryWhEnabled)
-          .pipe(
-            map(res =>
-              FrontDeskApiActions.fdUtilisationRateTrendSuccess({
-                fdUtilisationRateTrendData: res,
-              })
+        return this.frontDeskService.fdUtilisationRateTrend(clinicId, mode, queryWhEnabled).pipe(
+          map(res =>
+            FrontDeskApiActions.fdUtilisationRateTrendSuccess({
+              fdUtilisationRateTrendData: res,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FrontDeskApiActions.fdUtilisationRateTrendFailure({
+                error: error.error ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                FrontDeskApiActions.fdUtilisationRateTrendFailure({
-                  error: error.error ?? error,
-                })
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
 
@@ -69,17 +67,17 @@ export class FrontDeskEffects {
           map(data =>
             FrontDeskApiActions.fdUtilisationRateByDaySuccess({
               fdUtilisationRateByDayData: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FrontDeskApiActions.fdUtilisationRateByDayFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
   // FdRecallRate
@@ -91,17 +89,17 @@ export class FrontDeskEffects {
           map(data =>
             FrontDeskApiActions.fdRecallRateSuccess({
               fdRecallRateData: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FrontDeskApiActions.fdRecallRateFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -109,23 +107,21 @@ export class FrontDeskEffects {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdRecallRateTrend),
       switchMap(({ clinicId, mode, queryWhEnabled }) => {
-        return this.frontDeskService
-          .fdRecallRateTrend(clinicId, mode, queryWhEnabled)
-          .pipe(
-            map(res =>
-              FrontDeskApiActions.fdRecallRateTrendSuccess({
-                fdRecallRateTrendData: res,
-              })
+        return this.frontDeskService.fdRecallRateTrend(clinicId, mode, queryWhEnabled).pipe(
+          map(res =>
+            FrontDeskApiActions.fdRecallRateTrendSuccess({
+              fdRecallRateTrendData: res,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FrontDeskApiActions.fdRecallRateTrendFailure({
+                error: error.error ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                FrontDeskApiActions.fdRecallRateTrendFailure({
-                  error: error.error ?? error,
-                })
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
 
@@ -138,17 +134,17 @@ export class FrontDeskEffects {
           map(data =>
             FrontDeskApiActions.fdReappointRateSuccess({
               fdReappointRateData: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FrontDeskApiActions.fdReappointRateFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -156,23 +152,21 @@ export class FrontDeskEffects {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdReappointRateTrend),
       switchMap(({ clinicId, mode, queryWhEnabled }) => {
-        return this.frontDeskService
-          .fdReappointRateTrend(clinicId, mode, queryWhEnabled)
-          .pipe(
-            map(res =>
-              FrontDeskApiActions.fdReappointRateTrendSuccess({
-                fdReappointRateTrendData: res,
-              })
+        return this.frontDeskService.fdReappointRateTrend(clinicId, mode, queryWhEnabled).pipe(
+          map(res =>
+            FrontDeskApiActions.fdReappointRateTrendSuccess({
+              fdReappointRateTrendData: res,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FrontDeskApiActions.fdReappointRateTrendFailure({
+                error: error.error ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                FrontDeskApiActions.fdReappointRateTrendFailure({
-                  error: error.error ?? error,
-                })
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
 
@@ -185,17 +179,17 @@ export class FrontDeskEffects {
           map(data =>
             FrontDeskApiActions.fdNumTicksSuccess({
               fdNumTicksData: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FrontDeskApiActions.fdNumTicksFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -203,23 +197,21 @@ export class FrontDeskEffects {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdNumTicksTrend),
       switchMap(({ clinicId, mode, queryWhEnabled }) => {
-        return this.frontDeskService
-          .fdNumTicksTrend(clinicId, mode, queryWhEnabled)
-          .pipe(
-            map(res =>
-              FrontDeskApiActions.fdNumTicksTrendSuccess({
-                fdNumTicksTrendData: res,
-              })
+        return this.frontDeskService.fdNumTicksTrend(clinicId, mode, queryWhEnabled).pipe(
+          map(res =>
+            FrontDeskApiActions.fdNumTicksTrendSuccess({
+              fdNumTicksTrendData: res,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FrontDeskApiActions.fdNumTicksTrendFailure({
+                error: error.error ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                FrontDeskApiActions.fdNumTicksTrendFailure({
-                  error: error.error ?? error,
-                })
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
   // FdFtaRatio
@@ -231,17 +223,17 @@ export class FrontDeskEffects {
           map(data =>
             FrontDeskApiActions.fdFtaRatioSuccess({
               fdFtaRatioData: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FrontDeskApiActions.fdFtaRatioFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -249,23 +241,21 @@ export class FrontDeskEffects {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdFtaRatioTrend),
       switchMap(({ clinicId, mode, queryWhEnabled }) => {
-        return this.frontDeskService
-          .fdFtaRatioTrend(clinicId, mode, queryWhEnabled)
-          .pipe(
-            map(res =>
-              FrontDeskApiActions.fdFtaRatioTrendSuccess({
-                fdFtaRatioTrendData: res,
-              })
+        return this.frontDeskService.fdFtaRatioTrend(clinicId, mode, queryWhEnabled).pipe(
+          map(res =>
+            FrontDeskApiActions.fdFtaRatioTrendSuccess({
+              fdFtaRatioTrendData: res,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FrontDeskApiActions.fdFtaRatioTrendFailure({
+                error: error.error ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                FrontDeskApiActions.fdFtaRatioTrendFailure({
-                  error: error.error ?? error,
-                })
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
   // FdUtaRatio
@@ -277,17 +267,17 @@ export class FrontDeskEffects {
           map(data =>
             FrontDeskApiActions.fdUtaRatioSuccess({
               fdUtaRatioData: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FrontDeskApiActions.fdUtaRatioFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -295,23 +285,21 @@ export class FrontDeskEffects {
     return this.actions$.pipe(
       ofType(FrontDeskPageActions.loadFdUtaRatioTrend),
       switchMap(({ clinicId, mode, queryWhEnabled }) => {
-        return this.frontDeskService
-          .fdUtaRatioTrend(clinicId, mode, queryWhEnabled)
-          .pipe(
-            map(res =>
-              FrontDeskApiActions.fdUtaRatioTrendSuccess({
-                fdUtaRatioTrendData: res,
-              })
+        return this.frontDeskService.fdUtaRatioTrend(clinicId, mode, queryWhEnabled).pipe(
+          map(res =>
+            FrontDeskApiActions.fdUtaRatioTrendSuccess({
+              fdUtaRatioTrendData: res,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FrontDeskApiActions.fdUtaRatioTrendFailure({
+                error: error.error ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                FrontDeskApiActions.fdUtaRatioTrendFailure({
-                  error: error.error ?? error,
-                })
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
 }

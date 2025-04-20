@@ -4,13 +4,15 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="card-icon">
     <mat-icon
       [style]="{ color: iconColor }"
       color="primary"
       [fontIcon]="fontIcon"
-      card-icon></mat-icon>
+      card-icon
+    ></mat-icon>
   </div>
   <div class="card-text">
     <h4>
@@ -22,13 +24,10 @@
 </div>
 <ng-template #placeh>
   <div class="stats-card-placeh">
-    <p *ngIf="!isConnectedWith; else elem0">
-      Please connect to Xero/MYOB to display this chart
-    </p>
+    <p *ngIf="!isConnectedWith; else elem0">Please connect to Xero/MYOB to display this chart</p>
     <ng-template #elem0>
       <p *ngIf="!isFullMonths">
-        Please select a date range consisting of full months to view Accounting
-        charts
+        Please select a date range consisting of full months to view Accounting charts
       </p>
     </ng-template>
   </div>

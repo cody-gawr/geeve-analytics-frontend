@@ -16,7 +16,7 @@ export class DialogOverviewExampleDialogComponent {
   // public form: FormGroup;
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
   // this.form = this.fb.group({
@@ -72,12 +72,7 @@ export class DentistComponent implements AfterViewInit {
   loadingIndicator = true;
   reorderable = true;
 
-  columns = [
-    { prop: 'sr' },
-    { prop: 'providerId' },
-    { name: 'name' },
-    { name: 'Action' },
-  ];
+  columns = [{ prop: 'sr' }, { prop: 'providerId' }, { name: 'name' }, { name: 'Action' }];
 
   @ViewChild(DentistComponent) table: DentistComponent;
   constructor(
@@ -86,7 +81,7 @@ export class DentistComponent implements AfterViewInit {
     private route: ActivatedRoute,
     private _cookieService: CookieService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {
     this.clinic_id = this.route.snapshot.paramMap.get('id');
 
@@ -119,7 +114,7 @@ export class DentistComponent implements AfterViewInit {
           },
           error => {
             this.warningMessage = 'Please Provide Valid Inputs!';
-          }
+          },
         );
     });
   }
@@ -141,7 +136,7 @@ export class DentistComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
   private deleteDentists(row) {
@@ -156,20 +151,18 @@ export class DentistComponent implements AfterViewInit {
       if (result.value) {
         $('.ajax-loader').show();
         if (this.rows[row]['providerId']) {
-          this.dentistService
-            .deleteDentists(this.rows[row]['providerId'])
-            .subscribe(
-              res => {
-                if (res.status == 200) {
-                  $('.ajax-loader').hide();
-                  this.toastr.success('Dentist Removed');
-                  this.getDentists();
-                }
-              },
-              error => {
-                this.warningMessage = 'Please Provide Valid Inputs!';
+          this.dentistService.deleteDentists(this.rows[row]['providerId']).subscribe(
+            res => {
+              if (res.status == 200) {
+                $('.ajax-loader').hide();
+                this.toastr.success('Dentist Removed');
+                this.getDentists();
               }
-            );
+            },
+            error => {
+              this.warningMessage = 'Please Provide Valid Inputs!';
+            },
+          );
         } else {
           $('.ajax-loader').hide();
           this.toastr.error('Something went wrong. Please try again.');
@@ -206,7 +199,7 @@ export class DentistComponent implements AfterViewInit {
         .updateDentists(
           this.rows[rowIndex]['providerId'],
           this.rows[rowIndex][cell],
-          this.clinic_id
+          this.clinic_id,
         )
         .subscribe(
           res => {
@@ -217,7 +210,7 @@ export class DentistComponent implements AfterViewInit {
           },
           error => {
             this.warningMessage = 'Please Provide Valid Inputs!';
-          }
+          },
         );
       this.rows = [...this.rows];
       console.log('UPDATED!', this.rows[rowIndex][cell]);

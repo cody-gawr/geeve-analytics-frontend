@@ -4,25 +4,14 @@ import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-an
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
-import {
-  formatXLabel,
-  generatingLegend,
-  generatingLegend_3,
-} from '@/newapp/shared/utils';
+import { formatXLabel, generatingLegend, generatingLegend_3 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
-import {
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-  Observable,
-} from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, distinctUntilChanged, Observable } from 'rxjs';
 
 @Component({
   selector: 'caTxPlanCompRate-chart',
@@ -37,37 +26,29 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
   get showTableView$() {
-    return this.isTableIconVisible$.pipe(map(
-      v => this.showTableInfo && v
-    ))
+    return this.isTableIconVisible$.pipe(map(v => this.showTableInfo && v));
   }
 
   get showMaxBarsAlert$() {
-    return combineLatest([
-      this.showTableView$,
-      this.isTableIconVisible$,
-    ]).pipe(
+    return combineLatest([this.showTableView$, this.isTableIconVisible$]).pipe(
       map(([v, v1]) => {
-        return !v && (this.tableData?.length > this.labels?.length) && v1;
-      })
-    ) 
+        return !v && this.tableData?.length > this.labels?.length && v1;
+      }),
+    );
   }
 
   get showMaxBarsAlertMsg$() {
     return this.authFacade.chartLimitDesc$;
   }
   get isTableIconVisible$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isCompare$,
-      this.hasData$,
-      this.isTrend$
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isCompare$, this.hasData$, this.isTrend$]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
-          (!(isDentistMode && isTrend) || isCompare) && this.tableData.length > 0 && hasData &&
-          !this.isComingSoon
-      )
+          (!(isDentistMode && isTrend) || isCompare) &&
+          this.tableData.length > 0 &&
+          hasData &&
+          !this.isComingSoon,
+      ),
     );
   }
 
@@ -96,7 +77,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -106,10 +87,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
 
   get getTrendTip$() {
     return combineLatest([this.durationTrendLabel$]).pipe(
-      map(
-        ([durTrendLabel]) =>
-          durTrendLabel + ': ' + this.decimalPipe.transform(this.prev) + '%'
-      )
+      map(([durTrendLabel]) => durTrendLabel + ': ' + this.decimalPipe.transform(this.prev) + '%'),
     );
   }
 
@@ -118,15 +96,8 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   }
 
   get isGaugeChartVisible$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
-      map(
-        ([isDentistMode, isTrend, isCompare]) =>
-          isDentistMode && !isTrend && !isCompare
-      )
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
+      map(([isDentistMode, isTrend, isCompare]) => isDentistMode && !isTrend && !isCompare),
     );
   }
 
@@ -146,7 +117,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
       map(([v]) => {
         return typeof v === 'string' ? true : false;
-      })
+      }),
     );
   }
 
@@ -161,8 +132,8 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isLoadingCaTxPlanCompRate, isLoadingCaTxPlanCompRateTrend]) =>
-          isLoadingCaTxPlanCompRate || isLoadingCaTxPlanCompRateTrend
-      )
+          isLoadingCaTxPlanCompRate || isLoadingCaTxPlanCompRateTrend,
+      ),
     );
   }
 
@@ -173,11 +144,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
   public chartOptions: ChartOptions;
 
   get hasData$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
       map(([isDentistMode, isTrend, isCompare]) => {
         if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue >= 0;
@@ -185,13 +152,11 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
           return (
             this.datasets?.length > 0 &&
             this.datasets?.some(
-              it =>
-                it?.data?.length > 0 &&
-                _.sumBy(it.data, v => parseFloat(<any>v))
+              it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v)),
             )
           );
         }
-      })
+      }),
     );
   }
 
@@ -221,7 +186,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
   ) {}
 
   ngOnInit(): void {
@@ -235,29 +200,27 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
-      .subscribe(
-        ([avgMode, isDentistMode, isTrend, data, trendData, goalCount]) => {
-          if (!(isDentistMode && isTrend)) {
-            this.datasets = data.datasets ?? [];
-            this.labels = data.labels ?? [];
-          } else {
-            this.datasets = trendData.datasets ?? [];
-            this.labels = trendData.labels ?? [];
-          }
-
-          this.total = data.total;
-          this.prev = data.prev;
-          this.average = data.total;
-          this.goal = data.goal;
-          this.tableData = data.tableData ?? [];
-          this.gaugeLabel = data.gaugeLabel;
-          this.gaugeValue = data.gaugeValue;
-
-          this.setChartOptions(isDentistMode, isTrend, avgMode, goalCount);
+      .subscribe(([avgMode, isDentistMode, isTrend, data, trendData, goalCount]) => {
+        if (!(isDentistMode && isTrend)) {
+          this.datasets = data.datasets ?? [];
+          this.labels = data.labels ?? [];
+        } else {
+          this.datasets = trendData.datasets ?? [];
+          this.labels = trendData.labels ?? [];
         }
-      );
+
+        this.total = data.total;
+        this.prev = data.prev;
+        this.average = data.total;
+        this.goal = data.goal;
+        this.tableData = data.tableData ?? [];
+        this.gaugeLabel = data.gaugeLabel;
+        this.gaugeValue = data.gaugeValue;
+
+        this.setChartOptions(isDentistMode, isTrend, avgMode, goalCount);
+      });
   }
 
   ngOnDestroy(): void {
@@ -268,9 +231,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     this.showTableInfo = !this.showTableInfo;
   }
 
-  getAvgPluginOptions(
-    avgVal: number
-  ): _DeepPartialObject<AnnotationPluginOptions> {
+  getAvgPluginOptions(avgVal: number): _DeepPartialObject<AnnotationPluginOptions> {
     return {
       annotations: [
         {
@@ -288,9 +249,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     };
   }
 
-  getGoalPluginOptions(
-    goalVal: number
-  ): _DeepPartialObject<AnnotationPluginOptions> {
+  getGoalPluginOptions(goalVal: number): _DeepPartialObject<AnnotationPluginOptions> {
     return {
       annotations: [
         {
@@ -419,16 +378,12 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
             }
             //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             let ylable = tooltipItem.parsed._custom
-              ? +(
-                  tooltipItem.parsed._custom.max +
-                  tooltipItem.parsed._custom.min
-                ) / 2
+              ? +(tooltipItem.parsed._custom.max + tooltipItem.parsed._custom.min) / 2
               : v;
             var tlab = 0;
             if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval =
-                tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
+              const tval = tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -461,7 +416,7 @@ export class CaTxPlanCompRateComponent implements OnInit, OnDestroy {
     isDentistMode: boolean,
     isTrend: boolean,
     avgMode: string,
-    goalCount: number
+    goalCount: number,
   ): void {
     if (!isDentistMode || !isTrend) {
       let options: ChartOptions = { ...this.barChartOptionsPercent };

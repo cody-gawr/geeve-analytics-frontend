@@ -17,26 +17,21 @@ import { DentistPageActions } from '../state/actions';
 export class DentistFacade {
   constructor(private readonly store: Store<DentistState>) {}
 
-  public readonly dentists$: Observable<Dentist[] | null> = this.store.pipe(
-    select(selectDentists)
-  );
+  public readonly dentists$: Observable<Dentist[] | null> = this.store.pipe(select(selectDentists));
 
-  public readonly dentistId$: Observable<number | null> = this.store.pipe(
-    select(selectDentistId)
-  );
+  public readonly dentistId$: Observable<number | null> = this.store.pipe(select(selectDentistId));
 
-  public readonly currentDentistId$ = this.store.pipe(
-    select(selectCurrentDentistId)
-  );
+  public readonly currentDentistId$ = this.store.pipe(select(selectCurrentDentistId));
 
   public readonly isDentistsLoading$: Observable<boolean> = this.store.pipe(
-    select(selectDentistsLoading)
+    select(selectDentistsLoading),
   );
 
   public readonly isDentistMode$ = this.store.pipe(select(selectIsDentistMode));
 
-  public readonly dentistsError$: Observable<JeeveError | null> =
-    this.store.pipe(select(selectDentistsError));
+  public readonly dentistsError$: Observable<JeeveError | null> = this.store.pipe(
+    select(selectDentistsError),
+  );
 
   public loadDentists(clinicId: string | number, all = 0) {
     this.store.dispatch(DentistPageActions.loadDentists({ clinicId, all }));

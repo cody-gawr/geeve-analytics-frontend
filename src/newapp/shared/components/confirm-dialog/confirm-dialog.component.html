@@ -4,5 +4,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button *ngIf="!hideNoButton" mat-button (click)="onNoClick()">No</button>
-  <button mat-button [color]="data.buttonColor || 'primary'" [mat-dialog-close]="true">{{okLabel}}</button>
+  <button mat-button [color]="data.buttonColor || 'primary'" [mat-dialog-close]="true">
+    {{ okLabel }}
+  </button>
 </mat-dialog-actions>

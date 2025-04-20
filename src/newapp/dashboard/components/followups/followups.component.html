@@ -4,26 +4,31 @@
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content">
   <div class="dashboard-row">
     <fuGetConversion
-    *ngIf="getChartTip(57) | async"
-    [toolTip]="getChartTip(57) | async"
-    class="dashboard-chart33"></fuGetConversion>
+      *ngIf="getChartTip(57) | async"
+      [toolTip]="getChartTip(57) | async"
+      class="dashboard-chart33"
+    ></fuGetConversion>
     <fuGetFollowupCompletion
-    *ngIf="getChartTip(59) | async"
+      *ngIf="getChartTip(59) | async"
       [toolTip]="getChartTip(59) | async"
-      class="dashboard-chart33"></fuGetFollowupCompletion>
+      class="dashboard-chart33"
+    ></fuGetFollowupCompletion>
     <fuGetOutcome
-    *ngIf="getChartTip(56) | async"
+      *ngIf="getChartTip(56) | async"
       [toolTip]="getChartTip(56) | async"
-      class="dashboard-chart33"></fuGetOutcome>
+      class="dashboard-chart33"
+    ></fuGetOutcome>
   </div>
   <div class="dashboard-row">
     <fuGetConversionPerUser
-    *ngIf="getChartTip(58) | async"
-     [toolTip]="getChartTip(58) | async"
-     class="dashboard-chart50"></fuGetConversionPerUser>
-   <fuGetPerUser
-     *ngIf="getChartTip(55) | async"
-     [toolTip]="getChartTip(55) | async"
-     class="dashboard-chart50"></fuGetPerUser>
+      *ngIf="getChartTip(58) | async"
+      [toolTip]="getChartTip(58) | async"
+      class="dashboard-chart50"
+    ></fuGetConversionPerUser>
+    <fuGetPerUser
+      *ngIf="getChartTip(55) | async"
+      [toolTip]="getChartTip(55) | async"
+      class="dashboard-chart50"
+    ></fuGetPerUser>
   </div>
 </div>

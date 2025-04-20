@@ -53,28 +53,28 @@ import { CookieService } from 'ngx-cookie';
 //     }
 //   }
 // }
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   constructor(
-    private loginService: LoginService, 
-    private cookieService: CookieService) {
-      Chart.defaults.font.family = 'Gilroy-Regular';
-      Chart.register(annotationPlugin);
-      Chart.register({
-        id: 'check-legend-items',
-        beforeUpdate: function(chart) {
-          //if(['bar', 'line'].indexOf(chart.config.type) > -1){
-            const legendItems = chart.legend?.legendItems?.length;
-            if (legendItems > 12) {
-                chart.options.plugins.legend.display = false;
-            }
-          //}
+    private loginService: LoginService,
+    private cookieService: CookieService,
+  ) {
+    Chart.defaults.font.family = 'Gilroy-Regular';
+    Chart.register(annotationPlugin);
+    Chart.register({
+      id: 'check-legend-items',
+      beforeUpdate: function (chart) {
+        //if(['bar', 'line'].indexOf(chart.config.type) > -1){
+        const legendItems = chart.legend?.legendItems?.length;
+        if (legendItems > 12) {
+          chart.options.plugins.legend.display = false;
         }
-      });
-      // Chart.register(Colors);
+        //}
+      },
+    });
+    // Chart.register(Colors);
   }
 
   ngOnInit(): void {
-    if(this.cookieService.get('is_logged_in') === "YES")
-    this.loginService.me();
+    if (this.cookieService.get('is_logged_in') === 'YES') this.loginService.me();
   }
 }

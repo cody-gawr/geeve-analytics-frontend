@@ -22,95 +22,83 @@ export class FollowupsFacade {
   constructor(private store: Store<FollowupsState>) {}
 
   public readonly fuGetConversionPerUserChartName$ = this.store.pipe(
-    select(selectFuGetConversionPerUserChartName)
+    select(selectFuGetConversionPerUserChartName),
   );
 
-  public readonly fuGetOutcomeChartName$ = this.store.pipe(
-    select(selectFuGetOutcomeChartName)
-  );
+  public readonly fuGetOutcomeChartName$ = this.store.pipe(select(selectFuGetOutcomeChartName));
 
   public readonly isLoadingFuGetConversion$ = this.store.pipe(
-    select(selectIsLoadingFuGetConversion)
+    select(selectIsLoadingFuGetConversion),
   );
 
   public readonly isLoadingFuGetConversionPerUser$ = this.store.pipe(
-    select(selectIsLoadingFuGetConversionPerUser)
+    select(selectIsLoadingFuGetConversionPerUser),
   );
 
   public readonly isLoadingFuGetFollowupCompletion$ = this.store.pipe(
-    select(selectIsLoadingFuGetFollowupCompletion)
+    select(selectIsLoadingFuGetFollowupCompletion),
   );
 
-  public readonly isLoadingFuGetOutcome$ = this.store.pipe(
-    select(selectIsLoadingFuGetOutcome)
-  );
+  public readonly isLoadingFuGetOutcome$ = this.store.pipe(select(selectIsLoadingFuGetOutcome));
 
-  public readonly isLoadingFuGetPerUser$ = this.store.pipe(
-    select(selectIsLoadingFuGetPerUser)
-  );
+  public readonly isLoadingFuGetPerUser$ = this.store.pipe(select(selectIsLoadingFuGetPerUser));
 
   public setFuOutComeChartName(chartName: FU_OUTCOME_CHART_NAME) {
     this.store.dispatch(FollowupsActions.setFuOutComeChartName({ chartName }));
   }
 
   public setFuConversionPerUserChartName(chartName: FU_OUTCOME_CHART_NAME) {
-    this.store.dispatch(
-      FollowupsActions.setFuConversionPerUserChartName({ chartName })
-    );
+    this.store.dispatch(FollowupsActions.setFuConversionPerUserChartName({ chartName }));
   }
 
   public readonly fuGetConversionChartData$ = this.store.pipe(
-    select(selectFuGetConversionChartData)
+    select(selectFuGetConversionChartData),
   );
   public loadFuGetConversion(params: FuApiQueryParams) {
     this.store.dispatch(
       FollowupsActions.loadFuGetConversion({
         params,
-      })
+      }),
     );
   }
 
   public readonly fuGetConversionPerUserChartDat$ = this.store.pipe(
-    select(selectFuGetConversionPerUserChartData)
+    select(selectFuGetConversionPerUserChartData),
   );
   public loadFuGetConversionPerUser(params: FuApiQueryParams) {
     this.store.dispatch(
       FollowupsActions.loadFuGetConversionPerUser({
         params,
-      })
+      }),
     );
   }
 
   public readonly fuGetFollowupCompletionChartData$ = this.store.pipe(
-    select(selectFuGetFollowupCompletionChartData)
+    select(selectFuGetFollowupCompletionChartData),
   );
   public loadFuGetFollowupCompletion(params: FuApiQueryParams) {
     this.store.dispatch(
       FollowupsActions.loadFuGetFollowupCompletion({
         params,
-      })
+      }),
     );
   }
 
-  public readonly fuGetOutcomeChartData$ = this.store.pipe(
-    select(selectFuGetOutcomeChartData)
-  );
+  public readonly fuGetOutcomeChartData$ = this.store.pipe(select(selectFuGetOutcomeChartData));
   public loadFuGetOutcome(params: FuApiQueryParams) {
     this.store.dispatch(
       FollowupsActions.loadFuGetOutcome({
         params,
-      })
+      }),
     );
   }
 
-  public readonly fuGetPerUserChartData$ = this.store.pipe(
-    select(selectFuGetPerUserChartData)
-  );
+  public readonly fuGetPerUserChartData$ = this.store.pipe(select(selectFuGetPerUserChartData));
   public loadFuGetPerUser(params: FuApiQueryParams) {
     this.store.dispatch(
       FollowupsActions.loadFuGetPerUser({
         params,
-      })
+      }),
     );
   }
 }

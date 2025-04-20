@@ -2,13 +2,7 @@ import * as $ from 'jquery';
 import { DOCUMENT } from '@angular/common';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ActivatedRoute } from '@angular/router';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  AfterViewInit,
-  Inject,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, AfterViewInit, Inject } from '@angular/core';
 // import { MenuItems } from '../../shared/menu-items/menu-items';
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -58,7 +52,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     public constants: AppConstants,
     private rolesUsersService: RolesUsersService,
-    @Inject(DOCUMENT) private document: any
+    @Inject(DOCUMENT) private document: any,
   ) {
     if (!this._cookieService.get('trailInfo')) {
       this.showTrail = true;
@@ -71,21 +65,9 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    document.addEventListener(
-      'fullscreenchange',
-      this.onFullScreenChange,
-      false
-    );
-    document.addEventListener(
-      'webkitfullscreenchange',
-      this.onFullScreenChange,
-      false
-    );
-    document.addEventListener(
-      'mozfullscreenchange',
-      this.onFullScreenChange,
-      false
-    );
+    document.addEventListener('fullscreenchange', this.onFullScreenChange, false);
+    document.addEventListener('webkitfullscreenchange', this.onFullScreenChange, false);
+    document.addEventListener('mozfullscreenchange', this.onFullScreenChange, false);
   }
 
   ngOnDestroy(): void {

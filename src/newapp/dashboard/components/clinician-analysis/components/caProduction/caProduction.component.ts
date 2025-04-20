@@ -44,30 +44,20 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-  prodChartNames: CA_PROD_CHART_NAME[] = [
-    'Production',
-    'Collection',
-    'Collection-Exp',
-  ];
-  
+  prodChartNames: CA_PROD_CHART_NAME[] = ['Production', 'Collection', 'Collection-Exp'];
+
   get showTableView$() {
-    return combineLatest([
-      this.isTableViewEnabled$,
-      this.isTableIconVisible$
-    ]) .pipe(map(
-      ([v1, v2]) => v1 && v2
-    ))
+    return combineLatest([this.isTableViewEnabled$, this.isTableIconVisible$]).pipe(
+      map(([v1, v2]) => v1 && v2),
+    );
   }
 
   get showMaxBarsAlert$() {
-    return combineLatest([
-      this.showTableView$,
-      this.isTableIconVisible$,
-    ]).pipe(
+    return combineLatest([this.showTableView$, this.isTableIconVisible$]).pipe(
       map(([v, v1]) => {
-        return !v && (this.tableData?.length > this.labels?.length) && v1;
-      })
-    ) 
+        return !v && this.tableData?.length > this.labels?.length && v1;
+      }),
+    );
   }
 
   get showMaxBarsAlertMsg$() {
@@ -76,10 +66,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   get prodChartNames$() {
     return this.isEachClinicD4w$.pipe(
       map(v => {
-        return v
-          ? ['Production', 'Collection', 'Collection-Exp']
-          : ['Production', 'Collection'];
-      })
+        return v ? ['Production', 'Collection', 'Collection-Exp'] : ['Production', 'Collection'];
+      }),
     );
   }
 
@@ -90,7 +78,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -128,7 +116,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     return combineLatest([this.durationTrendLabel$]).pipe(
       map(([durTrendLabel]) => {
         return durTrendLabel + ': $' + this.decimalPipe.transform(this.prev);
-      })
+      }),
     );
   }
 
@@ -160,9 +148,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.isDentistMode$,
       this.isTrend$,
     ]).pipe(
-      map(([clinics, isDentistMode, isTrend]) =>
-        !isDentistMode ? clinics.length > 1 : false
-      )
+      map(([clinics, isDentistMode, isTrend]) => (!isDentistMode ? clinics.length > 1 : false)),
     );
   }
 
@@ -183,11 +169,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get hasData$(): Observable<boolean> {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
       map(([isDentistMode, isTrend, isCompare]) => {
         if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue !== 0;
@@ -195,13 +177,11 @@ export class CaProductionComponent implements OnInit, OnDestroy {
           return (
             this.datasets?.length > 0 &&
             this.datasets?.some(
-              it =>
-                it?.data?.length > 0 &&
-                _.sumBy(it.data, v => parseFloat(<any>v))
+              it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v)),
             )
           );
         }
-      })
+      }),
     );
   }
 
@@ -210,14 +190,11 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isFooterEnabled$(): Observable<boolean> {
-    return combineLatest([
-      this.caFacade.isHideFooterSection$,
-      this.isWeeklyModeEnabled$,
-    ]).pipe(
+    return combineLatest([this.caFacade.isHideFooterSection$, this.isWeeklyModeEnabled$]).pipe(
       map(
         ([isFooterSectionHidden, isWeeklyModeEnabled]) =>
-          !(isFooterSectionHidden || isWeeklyModeEnabled)
-      )
+          !(isFooterSectionHidden || isWeeklyModeEnabled),
+      ),
     );
   }
 
@@ -229,8 +206,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isTableViewEnabled, isDentistMode, isEachClinicD4w]) =>
-          isTableViewEnabled && isDentistMode && isEachClinicD4w
-      )
+          isTableViewEnabled && isDentistMode && isEachClinicD4w,
+      ),
     );
   }
 
@@ -253,10 +230,12 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       map(([isDentistMode, isCompare, hasData, isTrend, isGaugeChart]) => {
         return (
           (!(isDentistMode && isTrend) || isCompare) &&
-          this.tableData.length > 0 && hasData &&
-          !this.isComingSoon && !isGaugeChart
+          this.tableData.length > 0 &&
+          hasData &&
+          !this.isComingSoon &&
+          !isGaugeChart
         );
-      })
+      }),
     );
   }
 
@@ -265,15 +244,8 @@ export class CaProductionComponent implements OnInit, OnDestroy {
   }
 
   get isGaugeChartVisible$(): Observable<boolean> {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
-      map(
-        ([isDentistMode, isTrend, isCompare]) =>
-          isDentistMode && !isTrend && !isCompare
-      )
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
+      map(([isDentistMode, isTrend, isCompare]) => isDentistMode && !isTrend && !isCompare),
     );
   }
 
@@ -285,57 +257,49 @@ export class CaProductionComponent implements OnInit, OnDestroy {
       this.caFacade.colSelectTab$,
       this.caFacade.colExpSelectTab$,
     ]).pipe(
-      map(
-        ([
-          isDentistMode,
-          visibility,
-          prodSelectShow,
-          colSelectShow,
-          colExpSelectShow,
-        ]) => {
-          switch (visibility) {
-            case 'Production':
-              if (!isDentistMode) {
-                switch (prodSelectShow) {
-                  case 'production_all':
-                    return 'You have no production in the selected period';
-                  case 'production_dentists':
-                    return 'You have no Dentist production for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
-                  case 'production_oht':
-                    return 'You have no OHT production for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
-                }
-              } else {
-                return 'You have no production in the selected period';
+      map(([isDentistMode, visibility, prodSelectShow, colSelectShow, colExpSelectShow]) => {
+        switch (visibility) {
+          case 'Production':
+            if (!isDentistMode) {
+              switch (prodSelectShow) {
+                case 'production_all':
+                  return 'You have no production in the selected period';
+                case 'production_dentists':
+                  return 'You have no Dentist production for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
+                case 'production_oht':
+                  return 'You have no OHT production for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
               }
-            case 'Collection':
-              if (!isDentistMode) {
-                switch (colSelectShow) {
-                  case 'collection_all':
-                    return 'You have no collection in the selected period';
-                  case 'collection_dentists':
-                    return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
-                  case 'collection_oht':
-                    return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
-                }
-              } else {
-                return 'You have no collection in the selected period';
+            } else {
+              return 'You have no production in the selected period';
+            }
+          case 'Collection':
+            if (!isDentistMode) {
+              switch (colSelectShow) {
+                case 'collection_all':
+                  return 'You have no collection in the selected period';
+                case 'collection_dentists':
+                  return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
+                case 'collection_oht':
+                  return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
               }
-            case 'Collection-Exp':
-              if (!isDentistMode) {
-                switch (colExpSelectShow) {
-                  case 'collection_exp_all':
-                    return 'You have no collection in the selected period';
-                  case 'collection_exp_dentists':
-                    return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
-                  case 'collection_exp_oht':
-                    return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
-                }
-              } else {
-                return 'You have no collection in the selected period';
+            } else {
+              return 'You have no collection in the selected period';
+            }
+          case 'Collection-Exp':
+            if (!isDentistMode) {
+              switch (colExpSelectShow) {
+                case 'collection_exp_all':
+                  return 'You have no collection in the selected period';
+                case 'collection_exp_dentists':
+                  return 'You have no Dentist Collection for the selected period. Have you configured your Dentists in Settings -> Clinics -> Dentists?';
+                case 'collection_exp_oht':
+                  return 'You have no OHT Collection for the selected period. Have you configured your OHTs in Settings -> Clinics -> Dentists?';
               }
-          }
+            } else {
+              return 'You have no collection in the selected period';
+            }
         }
-      )
+      }),
     );
   }
 
@@ -353,7 +317,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
   ) {}
 
   ngOnInit(): void {
@@ -368,45 +332,35 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
-      .subscribe(
-        ([
-          avgMode,
-          isDentistMode,
-          isTrend,
-          data,
-          trendData,
-          isCompare,
-          goalCount,
-        ]) => {
-          if (!isDentistMode || !isTrend) {
-            this.datasets = data.datasets ?? [];
-            this.labels = data.labels ?? [];
-          } else {
-            this.datasets = trendData.datasets ?? [];
-            this.labels = trendData.labels ?? [];
-          }
-          this.total = data.total;
-          this.prev = data.prev;
-          this.average = data.average;
-          this.goal = data.goal;
-          if (!isDentistMode || isCompare) {
-            this.tableData = data.tableData ?? [];
-          } else {
-            this.tableData = trendData.tableData ?? [];
-          }
-
-          this.maxGoal = data.maxGoal;
-          this.gaugeLabel = data.gaugeLabel;
-          this.gaugeValue = data.gaugeValue;
-          this.setChartOptions(isDentistMode, isTrend, avgMode, goalCount);
+      .subscribe(([avgMode, isDentistMode, isTrend, data, trendData, isCompare, goalCount]) => {
+        if (!isDentistMode || !isTrend) {
+          this.datasets = data.datasets ?? [];
+          this.labels = data.labels ?? [];
+        } else {
+          this.datasets = trendData.datasets ?? [];
+          this.labels = trendData.labels ?? [];
         }
-      );
+        this.total = data.total;
+        this.prev = data.prev;
+        this.average = data.average;
+        this.goal = data.goal;
+        if (!isDentistMode || isCompare) {
+          this.tableData = data.tableData ?? [];
+        } else {
+          this.tableData = trendData.tableData ?? [];
+        }
+
+        this.maxGoal = data.maxGoal;
+        this.gaugeLabel = data.gaugeLabel;
+        this.gaugeValue = data.gaugeValue;
+        this.setChartOptions(isDentistMode, isTrend, avgMode, goalCount);
+      });
     this.dentistFacade.currentDentistId$
       .pipe(
         filter(dentistId => dentistId != 'all'),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       )
       .subscribe(() => this.isTableViewEnabled.next(false));
   }
@@ -434,9 +388,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     this.isTableViewEnabled.next(!this.isTableViewEnabled.value);
   }
 
-  getAvgPluginOptions(
-    avgVal: number
-  ): _DeepPartialObject<AnnotationPluginOptions> {
+  getAvgPluginOptions(avgVal: number): _DeepPartialObject<AnnotationPluginOptions> {
     return {
       annotations: [
         {
@@ -474,19 +426,19 @@ export class CaProductionComponent implements OnInit, OnDestroy {
 
   onChangeProdSelectTab(event: MatSelectChange) {
     const t = event.value.split('_');
-    this.tabSelectionType = t[t.length -1];
+    this.tabSelectionType = t[t.length - 1];
     this.caFacade.setProdSelectTab(event.value);
   }
 
   onChangeColSelectTab(event: MatSelectChange) {
     const t = event.value.split('_');
-    this.tabSelectionType = t[t.length -1];
+    this.tabSelectionType = t[t.length - 1];
     this.caFacade.setColSelectTab(event.value);
   }
 
   onChangeColExpSelectTab(event: MatSelectChange) {
     const t = event.value.split('_');
-    this.tabSelectionType = t[t.length -1];
+    this.tabSelectionType = t[t.length - 1];
     this.caFacade.setColExpSelectTab(event.value);
   }
 
@@ -494,7 +446,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
     isDentistMode: boolean,
     isTrend: boolean,
     avgMode: string,
-    goalCount: number
+    goalCount: number,
   ): void {
     if (!isDentistMode || !isTrend) {
       let options: ChartOptions = { ...this.barChartOptions };
@@ -617,8 +569,7 @@ export class CaProductionComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           // use label callback to return the desired label
-          label: tooltipItem =>
-            renderTooltipLabel(tooltipItem, '$', this.decimalPipe),
+          label: tooltipItem => renderTooltipLabel(tooltipItem, '$', this.decimalPipe),
           title: function () {
             return '';
           },

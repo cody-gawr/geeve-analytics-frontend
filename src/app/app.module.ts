@@ -121,7 +121,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DndDirective,
     StaffMeetingsComponent,
     GraphsComponent,
-    AppSwitchMenu
+    AppSwitchMenu,
   ],
   imports: [
     DemoMaterialModule,
@@ -177,7 +177,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     httpInterceptors,
     ClinicFacade,
     LayoutFacade,
-    LoginService
+    LoginService,
   ],
   bootstrap: [AppComponent],
 })

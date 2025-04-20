@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Inject,
-  Component,
-  Input,
-  ViewEncapsulation,
-} from '@angular/core';
+import { AfterViewInit, Inject, Component, Input, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
@@ -12,11 +6,7 @@ import { BehaviorSubject, map } from 'rxjs';
 import { CustomisationsService } from './customisations.service';
 import { BaseComponent } from '../base/base.component';
 import { environment } from '../../../environments/environment';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ClinicSettingsService } from '../clinic-settings.service';
 import { AppConstants } from '../../app.constants';
 import {
@@ -37,7 +27,7 @@ export class DialogSetColorsDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
     private CustomisationsService: CustomisationsService,
-    private router: Router
+    private router: Router,
   ) {}
 
   onNoClick(): void {
@@ -53,19 +43,16 @@ export class DialogSetColorsDialogComponent {
       data.clinic_id,
       data.status_code,
       data.bgcolour,
-      data.colour
+      data.colour,
     ).subscribe(
       res => {
         if (res.status == 200) {
-          this.CustomisationsService.getStatusCodeList(
-            data.clinic_id
-          ).subscribe(res => {
+          this.CustomisationsService.getStatusCodeList(data.clinic_id).subscribe(res => {
             if (res.status == 200) {
               this.dialogRef.componentInstance.data.status_code = '';
               this.dialogRef.componentInstance.data.bgcolour = '';
               this.dialogRef.componentInstance.data.colour = '';
-              this.dialogRef.componentInstance.data.statusCodeList =
-                res.body.data;
+              this.dialogRef.componentInstance.data.statusCodeList = res.body.data;
             }
           });
           //this.dialogRef.close();
@@ -75,7 +62,7 @@ export class DialogSetColorsDialogComponent {
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
     return true;
   }
@@ -83,10 +70,7 @@ export class DialogSetColorsDialogComponent {
   removeItem(i) {
     let data = this.dialogRef.componentInstance.data.statusCodeList[i];
     if (data) {
-      this.CustomisationsService.deleteStatusCode(
-        data.clinic_id,
-        data.status_code
-      ).subscribe(
+      this.CustomisationsService.deleteStatusCode(data.clinic_id, data.status_code).subscribe(
         res => {
           if (res.status == 200) {
             this.dialogRef.componentInstance.data.statusCodeList.splice(i, 1);
@@ -96,7 +80,7 @@ export class DialogSetColorsDialogComponent {
         },
         error => {
           console.log('error', error);
-        }
+        },
       );
     }
   }
@@ -115,10 +99,7 @@ export class DialogSetColorsDialogComponent {
   styleUrls: ['./customisations.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class CustomisationsComponent
-  extends BaseComponent
-  implements AfterViewInit
-{
+export class CustomisationsComponent extends BaseComponent implements AfterViewInit {
   clinic_id$ = new BehaviorSubject<any>(null);
   clinic_pms$ = new BehaviorSubject<string>(null);
 
@@ -160,7 +141,7 @@ export class CustomisationsComponent
     public dialog: MatDialog,
     public constants: AppConstants,
     private clinicSettingsService: ClinicSettingsService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
   ) {
     super();
 
@@ -182,7 +163,7 @@ export class CustomisationsComponent
       max_chart_bars: this.visibleMaxBarSetting
         ? null
         : [null, Validators.compose([Validators.required])],
-      util_rate_include_inactive_calendar: false
+      util_rate_include_inactive_calendar: false,
     });
   }
 
@@ -287,7 +268,7 @@ export class CustomisationsComponent
         console.log('error', error);
         this.toastr.error(error);
         $('.ajax-loader').hide();
-      }
+      },
     );
   }
 
@@ -298,36 +279,24 @@ export class CustomisationsComponent
   }
 
   getclinicHuddleNotifications() {
-    this.customisationsService
-      .getclinicHuddleNotifications(this.clinic_id$.value)
-      .subscribe(
-        res => {
-          $('.ajax-loader').hide();
-          if (res.status == 200) {
-            if (res.body.data) {
-              this.recall_overdue_enable = res.body.data.recall_overdue_enable
-                ? true
-                : false;
-              this.lab_needed_enable = res.body.data.lab_needed_enable
-                ? true
-                : false;
-              this.opg_overdue_enable = res.body.data.opg_overdue_enable
-                ? true
-                : false;
-              this.xray_overdue_enable = res.body.data.xray_overdue_enable
-                ? true
-                : false;
-              this.status_codes_enable = res.body.data.status_codes_enable
-                ? true
-                : false;
-            }
+    this.customisationsService.getclinicHuddleNotifications(this.clinic_id$.value).subscribe(
+      res => {
+        $('.ajax-loader').hide();
+        if (res.status == 200) {
+          if (res.body.data) {
+            this.recall_overdue_enable = res.body.data.recall_overdue_enable ? true : false;
+            this.lab_needed_enable = res.body.data.lab_needed_enable ? true : false;
+            this.opg_overdue_enable = res.body.data.opg_overdue_enable ? true : false;
+            this.xray_overdue_enable = res.body.data.xray_overdue_enable ? true : false;
+            this.status_codes_enable = res.body.data.status_codes_enable ? true : false;
           }
-        },
-        error => {
-          console.log('error', error);
-          $('.ajax-loader').hide();
         }
-      );
+      },
+      error => {
+        console.log('error', error);
+        $('.ajax-loader').hide();
+      },
+    );
   }
 
   getCustomiseSettings() {
@@ -340,17 +309,13 @@ export class CustomisationsComponent
             this.recallCode2 = res.body.data.recall_code2;
             this.recallCode3 = res.body.data.recall_code3;
 
-            this.form.controls['disc_code_1'].setValue(
-              res.body.data.disc_code_1 ?? ''
-            );
-            this.form.controls['disc_code_2'].setValue(
-              res.body.data.disc_code_2 ?? ''
-            );
-            this.form.controls['disc_code_3'].setValue(
-              res.body.data.disc_code_3 ?? ''
-            );
+            this.form.controls['disc_code_1'].setValue(res.body.data.disc_code_1 ?? '');
+            this.form.controls['disc_code_2'].setValue(res.body.data.disc_code_2 ?? '');
+            this.form.controls['disc_code_3'].setValue(res.body.data.disc_code_3 ?? '');
 
-            this.form.controls['util_rate_include_inactive_calendar'].setValue(!!res.body.data.util_rate_include_inactive_calendar);
+            this.form.controls['util_rate_include_inactive_calendar'].setValue(
+              !!res.body.data.util_rate_include_inactive_calendar,
+            );
 
             this.labCode1 = res.body.data.lab_code1;
             this.labCode2 = res.body.data.lab_code2;
@@ -423,7 +388,7 @@ export class CustomisationsComponent
       lab_code1: this.form.value.lab_code1,
       lab_code2: this.form.value.lab_code2,
       max_chart_bars: this.form.value.max_chart_bars,
-      util_rate_include_inactive_calendar: this.form.value.util_rate_include_inactive_calendar
+      util_rate_include_inactive_calendar: this.form.value.util_rate_include_inactive_calendar,
     };
 
     this.customisationsService.updateCustomiseSettings(data).subscribe(
@@ -445,7 +410,7 @@ export class CustomisationsComponent
         console.log('error', error);
         this.toastr.error(error);
         $('.ajax-loader').hide();
-      }
+      },
     );
   }
 
@@ -458,29 +423,27 @@ export class CustomisationsComponent
   }
 
   openDialog(status_code = '', colour = '', bgcolour = ''): void {
-    this.customisationsService
-      .getStatusCodeList(this.clinic_id$.value)
-      .subscribe(
-        res => {
-          if (res.status == 200) {
-            const dialogRef = this.dialog.open(DialogSetColorsDialogComponent, {
-              width: '500px',
-              data: {
-                clinic_id: this.clinic_id$.value,
-                statusCodeList: res.body.data,
-                status_code: status_code,
-                colour: colour,
-                bgcolour: bgcolour,
-              },
-            });
-            dialogRef.afterClosed().subscribe(result => {});
-          } else if (res.status == 401) {
-            this.handleUnAuthorization();
-          }
-        },
-        error => {
-          console.log('error', error);
+    this.customisationsService.getStatusCodeList(this.clinic_id$.value).subscribe(
+      res => {
+        if (res.status == 200) {
+          const dialogRef = this.dialog.open(DialogSetColorsDialogComponent, {
+            width: '500px',
+            data: {
+              clinic_id: this.clinic_id$.value,
+              statusCodeList: res.body.data,
+              status_code: status_code,
+              colour: colour,
+              bgcolour: bgcolour,
+            },
+          });
+          dialogRef.afterClosed().subscribe(result => {});
+        } else if (res.status == 401) {
+          this.handleUnAuthorization();
         }
-      );
+      },
+      error => {
+        console.log('error', error);
+      },
+    );
   }
 }

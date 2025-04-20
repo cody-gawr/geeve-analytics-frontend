@@ -46,8 +46,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   destroy$ = this.destroy.asObservable();
   public title: string;
   public activatedRoute = new BehaviorSubject<string>('');
-  public activatedRoute$: Observable<string> =
-    this.activatedRoute.asObservable();
+  public activatedRoute$: Observable<string> = this.activatedRoute.asObservable();
   public unsubscribedClinic: Clinic = null;
 
   range = new FormGroup({
@@ -68,7 +67,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
           ['/dashboards/healthscreen'].includes(activatedRoute) &&
           userType != 7
         );
-      })
+      }),
     );
   }
 
@@ -87,7 +86,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
             '/newapp/dashboard/clinicianproceedures',
           ].includes(activatedRoute)
         );
-      })
+      }),
     );
   }
 
@@ -106,7 +105,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
             '/newapp/dashboard/clinicianproceedures',
           ].includes(activatedRoute)
         );
-      })
+      }),
     );
   }
 
@@ -128,11 +127,11 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return this.dentistFacade.dentists$;
   }
 
-  get hideDatePicker$()  {
+  get hideDatePicker$() {
     return this.layoutFacade.hideDatePicker$;
   }
 
-  get hideClinicSelectionDropdown$()  {
+  get hideClinicSelectionDropdown$() {
     return this.layoutFacade.hideClinicSelectionDropdown$;
   }
 
@@ -145,12 +144,12 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     private dentistFacade: DentistFacade,
     private toastr: ToastrService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {
-    if(router.url === '/newapp/dashboard/unsubscribed'){
+    if (router.url === '/newapp/dashboard/unsubscribed') {
       const clinicStr = localStorage.getItem('unsubscribed_clinic');
       this.unsubscribedClinic = clinicStr && JSON.parse(clinicStr);
-    }else{
+    } else {
       this.unsubscribedClinic = null;
     }
   }
@@ -172,10 +171,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        filter(
-          ([, rolesIndividual, clinics]) =>
-            rolesIndividual !== null && clinics?.length > 0
-        ),
+        filter(([, rolesIndividual, clinics]) => rolesIndividual !== null && clinics?.length > 0),
         map(data => {
           const [authUserData, rolesIndividual, clinics, activatedRoute] = data;
 
@@ -191,32 +187,25 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
             totalClinicsLength: clinics?.length,
             activatedRoute,
           };
-        })
+        }),
       )
-      .subscribe(
-        ({
-          multiClinicEnabled,
-          userType,
-          totalClinicsLength,
-          activatedRoute,
-        }) => {
-          const value =
-            totalClinicsLength > 1 &&
-            ((activatedRoute == '/newapp/dashboard/cliniciananalysis' &&
-              multiClinicEnabled.dash1Multi == 1) ||
-              (activatedRoute == '/newapp/dashboard/clinicianproceedures' &&
-                multiClinicEnabled.dash2Multi == 1) ||
-              (activatedRoute == '/newapp/dashboard/frontdesk' &&
-                multiClinicEnabled.dash3Multi == 1) ||
-              (activatedRoute == '/newapp/dashboard/marketing' &&
-                multiClinicEnabled.dash4Multi == 1) ||
-              (activatedRoute == '/newapp/dashboard/finances' &&
-                multiClinicEnabled.dash5Multi == 1)) &&
-            ![4, 7].includes(userType);
+      .subscribe(({ multiClinicEnabled, userType, totalClinicsLength, activatedRoute }) => {
+        const value =
+          totalClinicsLength > 1 &&
+          ((activatedRoute == '/newapp/dashboard/cliniciananalysis' &&
+            multiClinicEnabled.dash1Multi == 1) ||
+            (activatedRoute == '/newapp/dashboard/clinicianproceedures' &&
+              multiClinicEnabled.dash2Multi == 1) ||
+            (activatedRoute == '/newapp/dashboard/frontdesk' &&
+              multiClinicEnabled.dash3Multi == 1) ||
+            (activatedRoute == '/newapp/dashboard/marketing' &&
+              multiClinicEnabled.dash4Multi == 1) ||
+            (activatedRoute == '/newapp/dashboard/finances' &&
+              multiClinicEnabled.dash5Multi == 1)) &&
+          ![4, 7].includes(userType);
 
-          this.clinicFacade.setMultiClinicSelection(value);
-        }
-      );
+        this.clinicFacade.setMultiClinicSelection(value);
+      });
 
     combineLatest([
       this.isEnableDentistDropdown$,
@@ -225,7 +214,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
       .subscribe(params => {
         const [isEnable, clinics, isDentistUser] = params;
@@ -241,7 +230,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     combineLatest([this.dentistFacade.dentistId$, this.isDentistUser$])
       .pipe(
         takeUntil(this.destroy$),
-        filter(([dentistId, isDentistUser]) => dentistId && isDentistUser)
+        filter(([dentistId, isDentistUser]) => dentistId && isDentistUser),
       )
       .subscribe(([dentistId]) => {
         this.dentistFacade.setCurrentDentistId(dentistId);
@@ -251,14 +240,10 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(v => (this.title = v));
 
-    this.layoutFacade.dateRange$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(({ start, end }) => {
-        this.range.controls['start'].setValue(
-          isMoment(start) ? start : moment(start)
-        );
-        this.range.controls['end'].setValue(isMoment(end) ? end : moment(end));
-      });
+    this.layoutFacade.dateRange$.pipe(takeUntil(this.destroy$)).subscribe(({ start, end }) => {
+      this.range.controls['start'].setValue(isMoment(start) ? start : moment(start));
+      this.range.controls['end'].setValue(isMoment(end) ? end : moment(end));
+    });
 
     combineLatest([
       this.clinicFacade.currentClinics$,
@@ -268,7 +253,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
       .subscribe(([currentClinics, isEnableAll, isMulti, clinics]) => {
         if (isMulti == null) return;
@@ -302,20 +287,22 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     this.clinicFacade.currentClinics$
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((prev, curr) => _.min(prev.map(p => p.id)) == _.min(curr.map(c => c.id)))
-      ) 
+        distinctUntilChanged(
+          (prev, curr) => _.min(prev.map(p => p.id)) == _.min(curr.map(c => c.id)),
+        ),
+      )
       .subscribe(currentClinicIDs => {
         if (currentClinicIDs.length > 0) {
-          const clinic =  currentClinicIDs.find(cu => cu.id === _.min(currentClinicIDs.map(c => c.id)));
+          const clinic = currentClinicIDs.find(
+            cu => cu.id === _.min(currentClinicIDs.map(c => c.id)),
+          );
           this.clinicFacade.loadClinicAccountingPlatform(clinic.id, clinic.connectedwith);
         }
       });
 
-    this.dentistFacade.currentDentistId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(dentistId => {
-        this.selectedDentist = dentistId;
-      });
+    this.dentistFacade.currentDentistId$.pipe(takeUntil(this.destroy$)).subscribe(dentistId => {
+      this.selectedDentist = dentistId;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -331,23 +318,19 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   getClinicName$(clinicId: Array<number | 'all'>) {
     return this.clinicFacade.clinics$.pipe(
       map(values => {
-        if (clinicId.length > 1 && clinicId.includes('all'))
-          return 'All Clinics';
+        if (clinicId.length > 1 && clinicId.includes('all')) return 'All Clinics';
         else return values.find(v => v.id == clinicId[0])?.clinicName || '';
-      })
+      }),
     );
   }
 
-  onDateRangeChange(
-    target: 'start' | 'end',
-    event: MatDatepickerInputEvent<Moment>
-  ) {
+  onDateRangeChange(target: 'start' | 'end', event: MatDatepickerInputEvent<Moment>) {
     if (target === 'end' && !!event.value) {
       this.layoutFacade.saveDateRange(
         this.range.controls['start'].value,
         event.value,
         'custom',
-        1
+        1,
         // this.range.controls['start'].value.date() ==
         //   this.range.controls['start'].value.clone().startOf('month').date() &&
         //   event.value.date() == event.value.clone().endOf('month').date()
@@ -373,19 +356,12 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
       this.previousSelectedMultiClinics = this.selectedMultiClinics.slice();
       const clinicIDs = event.value;
       const isPrevAll =
-        this.previousSelectedMultiClinics.filter(v => v !== 'all').length ===
-        clinics.length;
+        this.previousSelectedMultiClinics.filter(v => v !== 'all').length === clinics.length;
       let currentMultiClinicIds: Array<'all' | number> = [];
-      if (
-        clinicIDs.length == clinics.length &&
-        !clinicIDs.includes('all') &&
-        isPrevAll
-      ) {
+      if (clinicIDs.length == clinics.length && !clinicIDs.includes('all') && isPrevAll) {
         currentMultiClinicIds = [];
       } else if (
-        (clinicIDs.length == clinics.length &&
-          !clinicIDs.includes('all') &&
-          !isPrevAll) ||
+        (clinicIDs.length == clinics.length && !clinicIDs.includes('all') && !isPrevAll) ||
         (clinicIDs.includes('all') && !isPrevAll)
       ) {
         currentMultiClinicIds = [...clinics.map(c => c.id), 'all'];

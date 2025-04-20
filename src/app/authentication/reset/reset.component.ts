@@ -17,7 +17,7 @@ const passwordValidation = new UntypedFormControl('', [
 ]);
 const confirmPasswordValidation = new UntypedFormControl(
   '',
-  CustomValidators.equalTo(passwordValidation)
+  CustomValidators.equalTo(passwordValidation),
 );
 @Component({
   selector: 'app-reset',
@@ -38,7 +38,7 @@ export class ResetComponent implements OnInit {
     private router: Router,
     private loginService: LoginService,
     private route: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
   ngOnInit() {
     this.form = this.fb.group({
@@ -103,28 +103,26 @@ export class ResetComponent implements OnInit {
 
     if (this.id) {
       if (this.form.value.password == this.form.value.cpassword) {
-        this.loginService
-          .resetPassword(this.form.value.password, this.id)
-          .subscribe(
-            res => {
-              this.errorLogin = false;
-              this.errorLoginText = '';
-              this.successLogin = false;
-              this.successLoginText = '';
-              if (res.status == 200) {
-                this.successLogin = true;
-                this.isPasswordSet = true;
-                this.successLoginText = res.body.data;
-              } else if (res.body.message == 'error') {
-                this.errorLogin = true;
-                this.errorLoginText = res.body.data;
-              }
-            },
-            error => {
-              this.toastr.error('This link has expired');
-              this.router.navigate(['/login']);
+        this.loginService.resetPassword(this.form.value.password, this.id).subscribe(
+          res => {
+            this.errorLogin = false;
+            this.errorLoginText = '';
+            this.successLogin = false;
+            this.successLoginText = '';
+            if (res.status == 200) {
+              this.successLogin = true;
+              this.isPasswordSet = true;
+              this.successLoginText = res.body.data;
+            } else if (res.body.message == 'error') {
+              this.errorLogin = true;
+              this.errorLoginText = res.body.data;
             }
-          );
+          },
+          error => {
+            this.toastr.error('This link has expired');
+            this.router.navigate(['/login']);
+          },
+        );
       }
     } else {
       this.toastr.success('This link has expired');

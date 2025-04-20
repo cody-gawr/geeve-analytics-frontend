@@ -19,21 +19,16 @@ export class ServerErrorInterceptor implements HttpInterceptor {
   constructor(
     private store: Store<AuthState>,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       retry(1),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           // refresh token
-          this.store.dispatch(
-            AuthApiActions.loginFailure({ error: error.message })
-          );
+          this.store.dispatch(AuthApiActions.loginFailure({ error: error.message }));
           if (!(error.url && error.url.includes('/login'))) {
             //this.router.navigateByUrl('/login', );
             this.router.navigate(['/login'], {
@@ -50,7 +45,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
           this.toastr.error(getApiErrorMesssage(error));
         }
         return throwError(() => error);
-      })
+      }),
     );
   }
 }

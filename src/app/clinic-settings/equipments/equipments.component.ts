@@ -38,7 +38,7 @@ export class DialogOverviewExampleComponent {
     private _cookieService: CookieService,
     private equipmentsService: EquipmentsService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
   onNoClick(): void {
@@ -47,9 +47,7 @@ export class DialogOverviewExampleComponent {
 
   save(data) {
     if (
-      (data.id &&
-        data.old == data.item_name &&
-        data.quantityold == data.quantity) ||
+      (data.id && data.old == data.item_name && data.quantityold == data.quantity) ||
       data.item_name == ''
     ) {
       return false;
@@ -68,7 +66,7 @@ export class DialogOverviewExampleComponent {
         },
         error => {
           console.log('error', error);
-        }
+        },
       );
     return true;
   }
@@ -113,7 +111,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     private toastr: ToastrService,
     public dialog: MatDialog,
     public clinicianAnalysisService: ClinicianAnalysisService,
-    public clinicSettingsService: ClinicSettingsService
+    public clinicSettingsService: ClinicSettingsService,
   ) {
     super();
   }
@@ -176,11 +174,10 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     this.clinicSettingsService.getClinicData.subscribe(
       (data: any) => {
         if (data.status == 200) {
-          this.EquipListEnable =
-            data.body.data[0].equip_list_enable == 1 ? true : false;
+          this.EquipListEnable = data.body.data[0].equip_list_enable == 1 ? true : false;
         }
       },
-      error => {}
+      error => {},
     );
   }
 
@@ -198,7 +195,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
   }
 
@@ -241,7 +238,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
             this.toastr.success('Equipment List Updated');
           }
         },
-        error => {}
+        error => {},
       );
   }
 
@@ -255,23 +252,21 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
       cancelButtonText: 'No',
     }).then(result => {
       if (result.value) {
-        this.clinicSettingsService
-          .deleteEqupList(this.clinic_id$.value, listId)
-          .subscribe(
-            res => {
-              if (res.status == 200) {
-                Swal.fire({
-                  position: 'top',
-                  icon: 'success',
-                  title: 'successfully deleted',
-                  showConfirmButton: false,
-                  timer: 1000,
-                });
-                this.getItems(this.clinic_id$.value);
-              }
-            },
-            error => {}
-          );
+        this.clinicSettingsService.deleteEqupList(this.clinic_id$.value, listId).subscribe(
+          res => {
+            if (res.status == 200) {
+              Swal.fire({
+                position: 'top',
+                icon: 'success',
+                title: 'successfully deleted',
+                showConfirmButton: false,
+                timer: 1000,
+              });
+              this.getItems(this.clinic_id$.value);
+            }
+          },
+          error => {},
+        );
       }
     });
   }

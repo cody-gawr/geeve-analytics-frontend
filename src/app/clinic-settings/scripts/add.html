@@ -4,11 +4,7 @@
   <div mat-dialog-content class="sa_forms_design">
     <div class="sa-form-group">
       <label>Name</label>
-      <input
-        [(ngModel)]="data.name"
-        class="mat-form-control"
-        required="true"
-        placeholder="" />
+      <input [(ngModel)]="data.name" class="mat-form-control" required="true" placeholder="" />
     </div>
 
     <div mat-dialog-content class="sa_forms_design">
@@ -21,7 +17,8 @@
           required="true"
           placeholder=""
           (keypress)="countCharDown($event)"
-          (keyup)="countCharUp($event)"></textarea>
+          (keyup)="countCharUp($event)"
+        ></textarea>
       </div>
     </div>
     <div class="sa-form-group">
@@ -39,10 +36,7 @@
     </div>
     <div class="sa-form-group">
       <label
-        >Color
-        <span
-          class="clour-span-{{data.colour}} clour-span"
-          *ngIf="data.colour"></span
+        >Color <span class="clour-span-{{data.colour}} clour-span" *ngIf="data.colour"></span
       ></label>
       <select [(ngModel)]="data.colour" name="color" class="colour">
         <option value="">Default Color</option>
@@ -69,11 +63,7 @@
   </div>
 
   <div mat-dialog-actions class="justify-between">
-    <button
-      mat-button
-      (click)="onNoClick()"
-      tabindex="-1"
-      class="mat-raised-button mat-gray">
+    <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">
       Cancel
     </button>
 
@@ -82,14 +72,16 @@
       (click)="save(data)"
       [disabled]="data.type == '' || data.name == '' || data.text == ''"
       tabindex="2"
-      class="mat-raised-button mat-dc float-right">
+      class="mat-raised-button mat-dc float-right"
+    >
       Save
     </button>
     <button
       *ngIf="data.id"
       (click)="save(data)"
       tabindex="2"
-      class="mat-raised-button mat-dc float-right">
+      class="mat-raised-button mat-dc float-right"
+    >
       Update
     </button>
   </div>

@@ -6,14 +6,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
-import {
-  Observable,
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-} from 'rxjs';
+import { Observable, Subject, takeUntil, combineLatest, map, distinctUntilChanged } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
@@ -58,15 +51,13 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isLoadingCpReferrals, isLoadingCpReferralsTrend]) =>
-          isLoadingCpReferrals || isLoadingCpReferralsTrend
-      )
+          isLoadingCpReferrals || isLoadingCpReferralsTrend,
+      ),
     );
   }
 
   get isMultipleClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      map(v => typeof v == 'string')
-    );
+    return this.clinicFacade.currentClinicId$.pipe(map(v => typeof v == 'string'));
   }
 
   get isTrend$() {
@@ -79,7 +70,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
 
   get hasData$(): Observable<boolean> {
     return combineLatest([this.isTrend$]).pipe(
-      map(([isTrend]) => (isTrend ? this.labels.length > 0 : this.maxValue > 0))
+      map(([isTrend]) => (isTrend ? this.labels.length > 0 : this.maxValue > 0)),
     );
   }
 
@@ -96,7 +87,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
           default:
             return '';
         }
-      })
+      }),
     );
   }
 
@@ -115,7 +106,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private cpFacade: ClinicianProcedureFacade,
     private breakpointObserver: BreakpointObserver,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
   ) {}
 
   ngOnInit(): void {
@@ -127,7 +118,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe(([chartData, trendChartData, isTrend, dentistMode]) => {
         if (dentistMode && isTrend) {
@@ -159,7 +150,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
         } else {
           return this.pieChartOptions;
         }
-      })
+      }),
     );
   }
 
@@ -175,7 +166,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([isTrend, isDentist]) => {
         return isTrend && isDentist ? 'bar' : 'doughnut';
-      })
+      }),
     );
   }
 
@@ -251,11 +242,7 @@ export class CpClinicianReferralsComponent implements OnInit, OnDestroy {
               if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
-                return (
-                  tooltipItems.dataset.label +
-                  ': ' +
-                  tooltipItems.formattedValue
-                );
+                return tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue;
               }
             }
             return '';

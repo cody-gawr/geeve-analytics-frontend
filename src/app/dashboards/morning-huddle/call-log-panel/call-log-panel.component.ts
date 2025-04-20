@@ -1,6 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
@@ -43,24 +46,14 @@ interface CallLogData {
         <div class="info-section">
           <h3>Call Information</h3>
           <div class="info-grid">
+            <div class="info-item"><strong>Patient:</strong> {{ data.patientName }}</div>
+            <div class="info-item"><strong>Phone:</strong> {{ data.phoneNumber }}</div>
+            <div class="info-item"><strong>Provider:</strong> {{ data.providerName }}</div>
+            <div class="info-item"><strong>Treatment:</strong> {{ data.treatment }}</div>
             <div class="info-item">
-              <strong>Patient:</strong> {{data.patientName}}
+              <strong>Call Duration:</strong> {{ formatDuration(data.call_duration) }}
             </div>
-            <div class="info-item">
-              <strong>Phone:</strong> {{data.phoneNumber}}
-            </div>
-            <div class="info-item">
-              <strong>Provider:</strong> {{data.providerName}}
-            </div>
-            <div class="info-item">
-              <strong>Treatment:</strong> {{data.treatment}}
-            </div>
-            <div class="info-item">
-              <strong>Call Duration:</strong> {{formatDuration(data.call_duration)}}
-            </div>
-            <div class="info-item">
-              <strong>Status:</strong> {{data.status}}
-            </div>
+            <div class="info-item"><strong>Status:</strong> {{ data.status }}</div>
           </div>
         </div>
 
@@ -68,34 +61,36 @@ interface CallLogData {
           <mat-tab label="Summary">
             <div class="tab-content summary-tab">
               <div class="summary-content">
-                <pre>{{data.summary}}</pre>
+                <pre>{{ data.summary }}</pre>
               </div>
             </div>
           </mat-tab>
-          
+
           <mat-tab label="Transcript">
             <div class="tab-content transcript-tab">
-              <div *ngFor="let item of data.transcript" 
-                   [ngClass]="{
-                     'message-item': item.role !== 'system',
-                     'system-event': item.role === 'system',
-                     'user-message': item.role === 'user',
-                     'assistant-message': item.role === 'assistant'
-                   }">
+              <div
+                *ngFor="let item of data.transcript"
+                [ngClass]="{
+                  'message-item': item.role !== 'system',
+                  'system-event': item.role === 'system',
+                  'user-message': item.role === 'user',
+                  'assistant-message': item.role === 'assistant'
+                }"
+              >
                 <ng-container *ngIf="item.role === 'system'">
-                  <div class="system-text">{{item.transcript}}</div>
-                  <div class="time-elapsed">({{item.timeElapsed}})</div>
+                  <div class="system-text">{{ item.transcript }}</div>
+                  <div class="time-elapsed">({{ item.timeElapsed }})</div>
                 </ng-container>
                 <ng-container *ngIf="item.role !== 'system'">
                   <div class="message-header">
                     <span class="speaker-name">
                       <span *ngIf="item.role === 'user'">👤</span>
                       <span *ngIf="item.role === 'assistant'">👩</span>
-                      {{item.name}}
+                      {{ item.name }}
                     </span>
-                    <span class="time-elapsed">{{item.timeElapsed}}</span>
+                    <span class="time-elapsed">{{ item.timeElapsed }}</span>
                   </div>
-                  <div class="content">{{item.transcript}}</div>
+                  <div class="content">{{ item.transcript }}</div>
                 </ng-container>
               </div>
             </div>
@@ -106,18 +101,13 @@ interface CallLogData {
   `,
   styleUrls: ['./call-log-panel.component.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTabsModule
-  ]
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatTabsModule],
 })
 export class CallLogPanelComponent {
   constructor(
     public dialogRef: MatDialogRef<CallLogPanelComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: CallLogData
-  ) { }
+    @Inject(MAT_DIALOG_DATA) public data: CallLogData,
+  ) {}
 
   formatDuration(duration: string): string {
     const seconds = Math.floor(parseFloat(duration) / 1000);
@@ -134,4 +124,4 @@ export class CallLogPanelComponent {
   onClose(): void {
     this.dialogRef.close();
   }
-} 
+}

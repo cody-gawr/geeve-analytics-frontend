@@ -4,14 +4,16 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title">
     <div>Expenses</div>
     <button
       *ngIf="selectedData.length > 1 && !(isMultipleClinic$ | async)"
       (click)="openExpensesDialog()"
       mat-flat-button
-      color="primary">
+      color="primary"
+    >
       Show More
     </button>
   </div>
@@ -19,7 +21,8 @@
     <spin-loader
       class="empty-placeholder"
       *ngIf="isComingSoon; else enabledChart"
-      [disableSpin]="true">
+      [disableSpin]="true"
+    >
       Coming Soon...
     </spin-loader>
     <ng-template #enabledChart>
@@ -27,26 +30,27 @@
         <spin-loader
           class="empty-placeholder"
           *ngIf="!(isConnectedWith$ | async); else chartEle"
-          [disableSpin]="true">
+          [disableSpin]="true"
+        >
           Please connect to Xero/MYOB to display this chart
         </spin-loader>
-  
+
         <ng-template #chartEle>
           <spin-loader
             class="empty-placeholder"
             *ngIf="!isFullMonths; else ce0"
-            [disableSpin]="true">
-            Please select a date range consisting of full months to view
-            Accounting charts
+            [disableSpin]="true"
+          >
+            Please select a date range consisting of full months to view Accounting charts
           </spin-loader>
           <ng-template #ce0>
-            <spin-loader
-              *ngIf="isLoading$ | async; else chartElem0"></spin-loader>
+            <spin-loader *ngIf="isLoading$ | async; else chartElem0"></spin-loader>
             <ng-template #chartElem0>
               <spin-loader
                 class="empty-placeholder"
                 *ngIf="!(hasData$ | async); else chartElem2"
-                [disableSpin]="true">
+                [disableSpin]="true"
+              >
                 No expenses found for the selected period
               </spin-loader>
               <ng-template #chartElem2>
@@ -57,7 +61,8 @@
                   [labels]="labels"
                   [options]="labelBarOptionsMultiPercentage"
                   [legend]="false"
-                  type="bar"></canvas>
+                  type="bar"
+                ></canvas>
                 <ng-template #singleChart>
                   <ngx-charts-pie-chart
                     [view]="[500, 320]"
@@ -73,7 +78,8 @@
                     [gradient]="isGradient"
                     [tooltipDisabled]="isTooltipDisabled"
                     [tooltipText]="pieTooltipText"
-                    [labelFormatting]="pieLabelText">
+                    [labelFormatting]="pieLabelText"
+                  >
                   </ngx-charts-pie-chart>
                 </ng-template>
               </ng-template>
@@ -92,6 +98,5 @@
         <span><b>EBITDA (profit):</b> 5-25%</span>
       </div>
     </ng-template>
-
   </div>
 </div>

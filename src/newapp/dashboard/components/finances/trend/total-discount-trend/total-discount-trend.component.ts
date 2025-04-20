@@ -8,12 +8,7 @@ import {
   generatingLegend_4,
 } from '@/newapp/shared/utils';
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
-import {
-  ChartOptions,
-  LegendOptions,
-  TooltipItem,
-  ChartDataset,
-} from 'chart.js';
+import { ChartOptions, LegendOptions, TooltipItem, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map } from 'rxjs';
@@ -44,28 +39,26 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
 
   get chartType$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      map(v => (typeof v === 'string' ? 'bar' : 'line'))
+      map(v => (typeof v === 'string' ? 'bar' : 'line')),
     );
   }
 
   get legend$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      map(v => (typeof v === 'string' ? true : false))
+      map(v => (typeof v === 'string' ? true : false)),
     );
   }
 
   constructor(
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
-    private layoutFacade: LayoutFacade
+    private layoutFacade: LayoutFacade,
   ) {}
 
   get hasData() {
     return (
       this.datasets?.length > 0 &&
-      this.datasets?.some(
-        it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v))
-      )
+      this.datasets?.some(it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v)))
     );
   }
 
@@ -184,10 +177,7 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
           callback: function (label: number, index, labels) {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              let currency =
-                label < 0
-                  ? label.toString().split('-').join('')
-                  : label.toString();
+              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
               currency = currency.split(/(?=(?:...)*$)/).join(',');
               return `${label < 0 ? '- $' : '$'}${currency}`;
             }
@@ -224,10 +214,8 @@ export class FinanceTotalDiscountTrendComponent implements OnInit, OnDestroy {
   get chartOptions$() {
     return this.clinicFacade.currentClinicId$.pipe(
       map(v =>
-        typeof v === 'string'
-          ? this.stackedChartOptionsDiscount
-          : this.labelBarOptionsSingleValue
-      )
+        typeof v === 'string' ? this.stackedChartOptionsDiscount : this.labelBarOptionsSingleValue,
+      ),
     );
   }
 }

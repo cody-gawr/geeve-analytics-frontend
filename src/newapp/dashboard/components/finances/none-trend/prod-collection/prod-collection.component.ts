@@ -23,7 +23,7 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
   @Input() toolTip: ChartTip;
   get isComingSoon() {
     return this.toolTip?.info?.toLowerCase() === 'coming-soon';
-  }  
+  }
   get isLoading$() {
     return combineLatest([
       this.financeFacade.isLoadingTotalProduction$,
@@ -33,11 +33,7 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
 
   get chartOptions$() {
     return this.clinicFacade.currentClinicId$.pipe(
-      map(v =>
-        typeof v === 'string'
-          ? this.labelBarOptionsMultiTC
-          : this.labelBarOptionsTC
-      )
+      map(v => (typeof v === 'string' ? this.labelBarOptionsMultiTC : this.labelBarOptionsTC)),
     );
   }
 
@@ -78,7 +74,7 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
   constructor(
     private financeFacade: FinanceFacade,
     private layoutFacade: LayoutFacade,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
   ) {}
 
   ngOnInit(): void {
@@ -106,16 +102,11 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
           chartData = pChartData
             .sort((a, b) => a.data[0] - b.data[0])
             .map(item => {
-              const collectionItem = collData.find(
-                ele => ele.clinicName == item.label
-              );
+              const collectionItem = collData.find(ele => ele.clinicName == item.label);
               return {
                 ...item,
                 data: !!collectionItem
-                  ? [
-                      ...item.data,
-                      Math.round(parseFloat(<string>collectionItem.collection)),
-                    ]
+                  ? [...item.data, Math.round(parseFloat(<string>collectionItem.collection))]
                   : item.data,
               };
             });
@@ -153,7 +144,7 @@ export class FinanceProdColComponent implements OnInit, OnDestroy {
   get isMultipleClinic$() {
     return this.clinicFacade.currentClinicId$.pipe(
       takeUntil(this.destroy$),
-      map(v => typeof v == 'string')
+      map(v => typeof v == 'string'),
     );
   }
 

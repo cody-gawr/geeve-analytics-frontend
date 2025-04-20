@@ -5,13 +5,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
-import {
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-} from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, distinctUntilChanged } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
@@ -56,8 +50,8 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isLoadingCpPredictorRatio, isLoadingCpPredictorRatioTrend]) =>
-          isLoadingCpPredictorRatio || isLoadingCpPredictorRatioTrend
-      )
+          isLoadingCpPredictorRatio || isLoadingCpPredictorRatioTrend,
+      ),
     );
   }
 
@@ -70,18 +64,15 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   }
 
   get legend$() {
-    return combineLatest([
-      this.clinicFacade.currentClinics$,
-      this.isTrend$,
-    ]).pipe(map(([clinics, isTrend]) => clinics.length != 1 || isTrend));
+    return combineLatest([this.clinicFacade.currentClinics$, this.isTrend$]).pipe(
+      map(([clinics, isTrend]) => clinics.length != 1 || isTrend),
+    );
   }
 
   get hasData() {
     return (
       this.datasets?.length > 0 &&
-      this.datasets?.some(
-        it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v))
-      )
+      this.datasets?.some(it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v)))
     );
   }
 
@@ -96,7 +87,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
           case 'rct conversion':
             return 'You have no RCTs in the selected period';
         }
-      })
+      }),
     );
   }
 
@@ -110,12 +101,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
       .pipe(map(result => result.matches));
   }
 
-  setVisibility(
-    val:
-      | 'indirect to large direct fillings'
-      | 'rct to extraction'
-      | 'rct conversion'
-  ) {
+  setVisibility(val: 'indirect to large direct fillings' | 'rct to extraction' | 'rct conversion') {
     this.cpFacade.setCpPredictorRatioVisibility(val);
   }
 
@@ -124,7 +110,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private cpFacade: ClinicianProcedureFacade,
     private breakpointObserver: BreakpointObserver,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
   ) {}
 
   ngOnInit(): void {
@@ -137,25 +123,23 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
-      .subscribe(
-        ([chartData, chartTrendData, isTrend, dentistMode, isMultiClinics]) => {
-          if (dentistMode && isTrend) {
-            this.datasets = chartTrendData.datasets;
-            this.labels = chartTrendData.labels;
+      .subscribe(([chartData, chartTrendData, isTrend, dentistMode, isMultiClinics]) => {
+        if (dentistMode && isTrend) {
+          this.datasets = chartTrendData.datasets;
+          this.labels = chartTrendData.labels;
+        } else {
+          this.datasets = chartData.datasets;
+          this.labels = chartData.labels;
+          if (isMultiClinics) {
+            this.multifulRatio = chartData.multifulRatio;
           } else {
-            this.datasets = chartData.datasets;
-            this.labels = chartData.labels;
-            if (isMultiClinics) {
-              this.multifulRatio = chartData.multifulRatio;
-            } else {
-              this.predictorRatioValue = chartData.cpPredictorRatioAvr;
-            }
-            this.predictorRatioPrev = chartData.cpPredictorRatioPrev;
+            this.predictorRatioValue = chartData.cpPredictorRatioAvr;
           }
+          this.predictorRatioPrev = chartData.cpPredictorRatioPrev;
         }
-      );
+      });
   }
 
   ngOnDestroy(): void {
@@ -167,15 +151,10 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
   }
 
   get chartOptions$() {
-    return combineLatest([
-      this.isTrend$,
-      this.clinicFacade.currentClinics$,
-    ]).pipe(
+    return combineLatest([this.isTrend$, this.clinicFacade.currentClinics$]).pipe(
       map(([isTrend, clinics]) =>
-        clinics.length === 1
-          ? this.stackedChartOptions
-          : this.stackedChartOptionsmulti
-      )
+        clinics.length === 1 ? this.stackedChartOptions : this.stackedChartOptionsmulti,
+      ),
     );
   }
 
@@ -245,11 +224,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
               if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
-                return (
-                  tooltipItems.dataset.label +
-                  ': ' +
-                  tooltipItems.formattedValue
-                );
+                return tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue;
               }
             }
             return '';
@@ -325,11 +300,7 @@ export class CpPredictorRatioComponent implements OnInit, OnDestroy {
               if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
-                return (
-                  tooltipItems.dataset.label +
-                  ': ' +
-                  tooltipItems.formattedValue
-                );
+                return tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue;
               }
             }
             return '';

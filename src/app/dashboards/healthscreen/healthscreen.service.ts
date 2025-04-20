@@ -17,7 +17,7 @@ export class HealthScreenService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
   getHeaders() {
     if (
@@ -40,14 +40,11 @@ export class HealthScreenService {
   getCustomiseSettings(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/clinics/clinicGetSettings?clinic_id=' + clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/clinics/clinicGetSettings?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -58,7 +55,7 @@ export class HealthScreenService {
     duration = '',
     user_type = '',
     clinician = '',
-    limit = 5
+    limit = 5,
   ): Observable<any> {
     const urlParams = new URLSearchParams(window.location.search);
     const isWh = parseInt(urlParams.get('wh') ?? '0');
@@ -75,12 +72,12 @@ export class HealthScreenService {
             endDate +
             '&limit=5' +
             (isWh ? '&wh=1' : ''),
-          header
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
 
@@ -97,12 +94,12 @@ export class HealthScreenService {
           duration +
           '&limit=5' +
           (isWh ? '&wh=1' : ''),
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
   // Items Predictor Analysis
@@ -111,7 +108,7 @@ export class HealthScreenService {
     startDate = '',
     endDate = '',
     duration = '',
-    limit = 5
+    limit = 5,
   ): Observable<any> {
     const urlParams = new URLSearchParams(window.location.search);
     const isWh = parseInt(urlParams.get('wh') ?? '0');
@@ -129,12 +126,12 @@ export class HealthScreenService {
             '&limit=' +
             limit +
             (isWh ? '&wh=1' : ''),
-          header
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
 
@@ -152,22 +149,17 @@ export class HealthScreenService {
           '&limit=' +
           limit +
           (isWh ? '&wh=1' : ''),
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   // finProductionPerVisit
-  finProductionPerVisit(
-    clinic_id,
-    startDate = '',
-    endDate = '',
-    duration = ''
-  ): Observable<any> {
+  finProductionPerVisit(clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
     const urlParams = new URLSearchParams(window.location.search);
     const isWh = parseInt(urlParams.get('wh') ?? '0');
     var header = this.getHeaders();
@@ -182,12 +174,12 @@ export class HealthScreenService {
             '&end_date=' +
             endDate +
             (isWh ? '&wh=1' : ''),
-          header
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
 
@@ -203,12 +195,12 @@ export class HealthScreenService {
           '&duration=' +
           duration +
           (isWh ? '&wh=1' : ''),
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -230,12 +222,12 @@ export class HealthScreenService {
           '&end_date=' +
           endDate +
           (isWh ? '&wh=1' : ''),
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -246,7 +238,7 @@ export class HealthScreenService {
     return this.http.get(this.apiUrl + '/health/chGetSetting', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 }

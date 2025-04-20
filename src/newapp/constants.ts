@@ -70,7 +70,7 @@ export const COLORS = {
     '#ffb4b5',
     '#119582',
     '#ffb4b5',
-  ]
+  ],
 };
 
 export const CAMPAIGN_FILTERS = {
@@ -82,17 +82,17 @@ export const CAMPAIGN_FILTERS = {
   no_appointment: 'no_appointment',
   health_insurance: 'health_insurance',
   overdues: 'overdues',
-  appointment: 'appointment'
-}
+  appointment: 'appointment',
+};
 
 export const DEFAULT_TIMEZONE = 'Australia/Brisbane';
 
 export const PROD_AGE_LIST = {
-  'Children': 'Children (0-12)',
-  'Adolescents': 'Teens & Young Adults (13-24)',
-  'Adults': 'Adults (25-44)',
+  Children: 'Children (0-12)',
+  Adolescents: 'Teens & Young Adults (13-24)',
+  Adults: 'Adults (25-44)',
   'Middle-Aged': 'Middle-Aged (45-64)',
-  'Seniors': 'Seniors (65+)',
+  Seniors: 'Seniors (65+)',
   'Multi-Age': 'Multi-Age',
-  'Unspecified': 'Unspecified',
+  Unspecified: 'Unspecified',
 };

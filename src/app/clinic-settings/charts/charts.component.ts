@@ -43,7 +43,7 @@ export class DentisChartComponent {
     private _cookieService: CookieService,
     private router: Router,
     private chartsService: ChartsService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
   onNoClick(): void {
@@ -75,22 +75,20 @@ export class DentisChartComponent {
   }
 
   saveRecord(chart_id, clinic_id, providerId, status) {
-    this.chartsService
-      .addDentistRecord(chart_id, clinic_id, providerId, status)
-      .subscribe(
-        res => {
-          if (res.status == 200) {
-            if (status == 'exclude') {
-              this.toastr.success('Provider successfully disabled');
-            } else {
-              this.toastr.success('Provider successfully enabled');
-            }
+    this.chartsService.addDentistRecord(chart_id, clinic_id, providerId, status).subscribe(
+      res => {
+        if (res.status == 200) {
+          if (status == 'exclude') {
+            this.toastr.success('Provider successfully disabled');
+          } else {
+            this.toastr.success('Provider successfully enabled');
           }
-        },
-        error => {
-          console.log('error', error);
         }
-      );
+      },
+      error => {
+        console.log('error', error);
+      },
+    );
   }
 
   save(data) {
@@ -154,7 +152,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
     private router: Router,
     private toastr: ToastrService,
     public dialog: MatDialog,
-    public constants: AppConstants
+    public constants: AppConstants,
   ) {
     super();
   }
@@ -224,7 +222,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
   }
 
@@ -244,7 +242,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
   }
   public jeeveNames: any = {};
@@ -273,7 +271,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
       if (this.userPlan == 'lite') {
         if (this.activeDentist >= 2 || !event.target.checked) {
           this.toastr.error(
-            'Please contact the Jeeve support team to change your dentist selections'
+            'Please contact the Jeeve support team to change your dentist selections',
           );
           $(event.target).prop('checked', !event.target.checked);
           return false;
@@ -291,7 +289,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
         this.clinic_id$.value,
         isActive,
         jeeveId,
-        updatedColumn
+        updatedColumn,
       )
       .pipe(takeUntil(this.destroyed$))
       .subscribe(
@@ -304,51 +302,49 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
         },
         error => {
           this.toastr.error('Opps, Error occurs in updating dentist!');
-        }
+        },
       );
     return true;
   }
 
   openSetJeeveName(chartID, chartName) {
     let dentistsExclusions = [];
-    this.chartsService
-      .getDentistsExclusions(this.clinic_id$.value, chartID)
-      .subscribe(
-        res => {
-          if (res.status == 200) {
-            dentistsExclusions = res.body.data.map(function (data) {
-              return data.providerId;
-            });
-            this.dentistListData.map(function (data) {
-              if (dentistsExclusions.includes(data.id)) {
-                // found element
-                data.checked = false;
-              } else {
-                data.checked = true;
-              }
-              return data;
-            });
-            const dialogRef = this.dialog.open(DentisChartComponent, {
-              width: '650px',
-              data: {
-                clinic_id: this.clinic_id$.value,
-                chartID: chartID,
-                dentistDataList: this.dentistListData,
-                dentistsExclusions: dentistsExclusions,
-                chartName: chartName,
-              },
-            });
-            dialogRef.afterClosed().subscribe(result => {
-              this.getDentists(this.clinic_id$.value);
-            });
-          } else if (res.status == '401') {
-            this.handleUnAuthorization();
-          }
-        },
-        error => {
-          console.log('error', error);
+    this.chartsService.getDentistsExclusions(this.clinic_id$.value, chartID).subscribe(
+      res => {
+        if (res.status == 200) {
+          dentistsExclusions = res.body.data.map(function (data) {
+            return data.providerId;
+          });
+          this.dentistListData.map(function (data) {
+            if (dentistsExclusions.includes(data.id)) {
+              // found element
+              data.checked = false;
+            } else {
+              data.checked = true;
+            }
+            return data;
+          });
+          const dialogRef = this.dialog.open(DentisChartComponent, {
+            width: '650px',
+            data: {
+              clinic_id: this.clinic_id$.value,
+              chartID: chartID,
+              dentistDataList: this.dentistListData,
+              dentistsExclusions: dentistsExclusions,
+              chartName: chartName,
+            },
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            this.getDentists(this.clinic_id$.value);
+          });
+        } else if (res.status == '401') {
+          this.handleUnAuthorization();
         }
-      );
+      },
+      error => {
+        console.log('error', error);
+      },
+    );
   }
 
   historyPosChips(event, colour, type = '') {

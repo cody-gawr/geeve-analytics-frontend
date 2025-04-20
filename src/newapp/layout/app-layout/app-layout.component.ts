@@ -28,29 +28,35 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         map((event: any) => event.routerEvent ?? event),
-        filter(event => event instanceof NavigationEnd)
+        filter(event => event instanceof NavigationEnd),
       )
       .subscribe(event => {
         const { url } = <NavigationEnd>event;
         this.activatedUrl = url.split('?')[0];
-        if(
-          this.activatedUrl.includes('campaigns') || 
-          this.activatedUrl.includes('unsubscribed') || 
-          this.activatedUrl.includes('practice-insights')) {
+        if (
+          this.activatedUrl.includes('campaigns') ||
+          this.activatedUrl.includes('unsubscribed') ||
+          this.activatedUrl.includes('practice-insights')
+        ) {
           layoutFacade.setHideDatePicker(true);
-        }else{
+        } else {
           layoutFacade.setHideDatePicker(false);
         }
-        if(this.activatedUrl.includes('campaigns/create') || this.activatedUrl.includes('campaigns/view')){
-          
+        if (
+          this.activatedUrl.includes('campaigns/create') ||
+          this.activatedUrl.includes('campaigns/view')
+        ) {
           layoutFacade.savePaths([
-            {name: 'Campaigns', path: '/newapp/campaigns'},
-            {name: '[ClinicName]'}
+            { name: 'Campaigns', path: '/newapp/campaigns' },
+            { name: '[ClinicName]' },
           ]);
 
-          if(url.includes('campaigns/create?campaign_id=') || this.activatedUrl.includes('campaigns/view'))
+          if (
+            url.includes('campaigns/create?campaign_id=') ||
+            this.activatedUrl.includes('campaigns/view')
+          )
             layoutFacade.setHideClinicSelectionDropDown(true);
-        }else{
+        } else {
           layoutFacade.savePaths([]);
           layoutFacade.setHideClinicSelectionDropDown(false);
         }

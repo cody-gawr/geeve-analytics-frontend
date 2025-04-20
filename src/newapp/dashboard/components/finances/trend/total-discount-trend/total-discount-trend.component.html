@@ -4,14 +4,16 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title">Total Discounts</div>
   <div class="chart-content">
     <div class="total-discount-trend-chart">
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
@@ -20,7 +22,8 @@
           <spin-loader
             class="empty-placeholder"
             *ngIf="!hasData; else chartElem01"
-            [disableSpin]="true">
+            [disableSpin]="true"
+          >
             You have no data in the selected period
           </spin-loader>
           <ng-template #chartElem01>
@@ -30,7 +33,8 @@
               [labels]="labels"
               [options]="chartOptions$ | async"
               [legend]="legend$ | async"
-              [type]="chartType$ | async">
+              [type]="chartType$ | async"
+            >
             </canvas>
           </ng-template>
         </ng-template>

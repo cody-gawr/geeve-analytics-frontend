@@ -9,7 +9,7 @@ import { DentistService } from '../../services/dentist.service';
 export class DentistEffects {
   constructor(
     private actions$: Actions,
-    private dentistService: DentistService
+    private dentistService: DentistService,
   ) {}
 
   public readonly loadDentists$ = createEffect(() => {
@@ -26,11 +26,11 @@ export class DentistEffects {
             of(
               DentistApiActions.loadDentistsFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -48,11 +48,11 @@ export class DentistEffects {
             of(
               DentistApiActions.loadSpecificDentistFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 }

@@ -4,20 +4,18 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title">
-    {{
-      (isMultiClinic$ | async)
-        ? 'Production % Per Clinic'
-        : 'Production % Per Clinician'
-    }}
+    {{ (isMultiClinic$ | async) ? 'Production % Per Clinic' : 'Production % Per Clinician' }}
   </div>
   <div class="chart-content">
     <div class="prod-per-clinic-trend-chart">
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
@@ -30,20 +28,18 @@
             [labels]="labels"
             [options]="labelBarPercentOptionsStacked"
             [legend]="legend$ | async"
-            type="bar">
+            type="bar"
+          >
           </canvas>
           <spin-loader
             class="empty-placeholder"
-            *ngIf="
-              !(datasets.length > 0 && datasets[0].data.length > 0) &&
-              !(isLoading$ | async)
-            "
-            [disableSpin]="true">
+            *ngIf="!(datasets.length > 0 && datasets[0].data.length > 0) && !(isLoading$ | async)"
+            [disableSpin]="true"
+          >
             You have no data in the selected period
           </spin-loader>
         </ng-template>
       </ng-template>
-
     </div>
   </div>
 </div>

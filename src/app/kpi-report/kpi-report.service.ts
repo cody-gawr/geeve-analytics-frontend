@@ -17,7 +17,7 @@ export class KpiReportService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
 
   getHeaders() {
@@ -37,12 +37,7 @@ export class KpiReportService {
     return headers;
   }
 
-  getKpiReport(
-    clinic_id,
-    startDate = '',
-    endDate = '',
-    clinician = ''
-  ): Observable<any> {
+  getKpiReport(clinic_id, startDate = '', endDate = '', clinician = ''): Observable<any> {
     var header = this.getHeaders();
     const urlParams = new URLSearchParams(window.location.search);
     const isWhEnabled = parseInt(urlParams.get('wh') ?? '0');
@@ -57,12 +52,12 @@ export class KpiReportService {
             '&end_date=' +
             endDate +
             (isWhEnabled ? '&wh=1' : ''),
-          header
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
     return this.http
@@ -77,23 +72,21 @@ export class KpiReportService {
           '&provider_id=' +
           clinician +
           (isWhEnabled ? '&wh=1' : ''),
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
   // Get ClinicSettings
   getClinicSettings(clinic_id): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/clinics/clinicGet?clinic_id=' + clinic_id, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/clinics/clinicGet?clinic_id=' + clinic_id, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 }

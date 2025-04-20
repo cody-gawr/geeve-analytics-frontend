@@ -40,8 +40,8 @@ const routes: Routes = [
       },
       {
         path: 'unsubscribed',
-        component: UnsubscribedPageComponent
-      }
+        component: UnsubscribedPageComponent,
+      },
     ],
   },
 ];

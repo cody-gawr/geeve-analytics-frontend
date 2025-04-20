@@ -8,7 +8,7 @@ export const loadFdUtilisationRate = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdUtilisationRateTrend = createAction(
@@ -17,7 +17,7 @@ export const loadFdUtilisationRateTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdUtilisationRateByDay = createAction(
@@ -28,7 +28,7 @@ export const loadFdUtilisationRateByDay = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdRecallRate = createAction(
@@ -39,7 +39,7 @@ export const loadFdRecallRate = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdRecallRateTrend = createAction(
@@ -48,7 +48,7 @@ export const loadFdRecallRateTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdReappointRate = createAction(
@@ -59,7 +59,7 @@ export const loadFdReappointRate = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdReappointRateTrend = createAction(
@@ -68,7 +68,7 @@ export const loadFdReappointRateTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdNumTicks = createAction(
@@ -79,7 +79,7 @@ export const loadFdNumTicks = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdNumTicksTrend = createAction(
@@ -88,7 +88,7 @@ export const loadFdNumTicksTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdFtaRatio = createAction(
@@ -99,7 +99,7 @@ export const loadFdFtaRatio = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdFtaRatioTrend = createAction(
@@ -108,7 +108,7 @@ export const loadFdFtaRatioTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdUtaRatio = createAction(
@@ -119,7 +119,7 @@ export const loadFdUtaRatio = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFdUtaRatioTrend = createAction(
@@ -128,17 +128,17 @@ export const loadFdUtaRatioTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const setIsByDayData = createAction(
   '[FrontDesk Page] Set isByDayData',
-  props<{ value: boolean }>()
+  props<{ value: boolean }>(),
 );
 
 export const setErrors = createAction(
   '[FrontDesk API] Set Errors',
   props<{
     errors: JeeveError[];
-  }>()
+  }>(),
 );

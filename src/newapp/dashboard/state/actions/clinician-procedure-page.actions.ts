@@ -5,14 +5,14 @@ export const loadTrendApiRequest = createAction(
   props<{
     api: CP_API_TREND_ENDPOINTS;
     params: CaTrendQueryParams;
-  }>()
+  }>(),
 );
 
 export const loadTrendApiRequests = createAction(
   '[Clinician Procedure API] load Trend Api Request',
   props<{
     requests: { api: CP_API_TREND_ENDPOINTS; params: CaTrendQueryParams }[];
-  }>()
+  }>(),
 );
 
 export const loadCpPredictorAnalysis = createAction(
@@ -23,7 +23,7 @@ export const loadCpPredictorAnalysis = createAction(
     endDate: string;
     queryWhEnabled: number;
     dentistId?: number;
-  }>()
+  }>(),
 );
 
 export const loadCpPredictorSpecialistAnalysis = createAction(
@@ -34,7 +34,7 @@ export const loadCpPredictorSpecialistAnalysis = createAction(
     endDate: string;
     queryWhEnabled: number;
     dentistId?: number;
-  }>()
+  }>(),
 );
 
 export const loadCpRevPerProcedure = createAction(
@@ -45,7 +45,7 @@ export const loadCpRevPerProcedure = createAction(
     endDate: string;
     queryWhEnabled: number;
     dentistId?: number;
-  }>()
+  }>(),
 );
 
 export const loadCpPredictorRatio = createAction(
@@ -57,7 +57,7 @@ export const loadCpPredictorRatio = createAction(
     duration: string;
     queryWhEnabled: number;
     dentistId?: number;
-  }>()
+  }>(),
 );
 
 export const loadCpReferrals = createAction(
@@ -69,32 +69,29 @@ export const loadCpReferrals = createAction(
     duration: string;
     queryWhEnabled: number;
     dentistId?: number;
-  }>()
+  }>(),
 );
 
 export const setCpPredictorAnalysisVisibility = createAction(
   '[Clinician Procedure Page] Set cpPredictorAnalysisVisibility',
-  props<{ value: 'general' | 'specialist' }>()
+  props<{ value: 'general' | 'specialist' }>(),
 );
 
 export const setCpPredictorRatioVisibility = createAction(
   '[Clinician Procedure Page] Set cpPredictorRatioVisibility',
   props<{
-    value:
-      | 'indirect to large direct fillings'
-      | 'rct to extraction'
-      | 'rct conversion';
-  }>()
+    value: 'indirect to large direct fillings' | 'rct to extraction' | 'rct conversion';
+  }>(),
 );
 
 export const setCpReferralsVisibility = createAction(
   '[Clinician Procedure Page] Set cpReferralsVisibility',
-  props<{ value: 'combined' | 'internal' | 'external' }>()
+  props<{ value: 'combined' | 'internal' | 'external' }>(),
 );
 
 export const loadCpNoneTrendApiRequestSuccess = createAction(
   '[Clinician Procedure API] Load None Trend Api Success',
-  props<{ api: CP_API_ENDPOINTS; resBody: any }>()
+  props<{ api: CP_API_ENDPOINTS; resBody: any }>(),
 );
 
 export const loadCpNoneTrendApiRequestFailure = createAction(
@@ -102,12 +99,12 @@ export const loadCpNoneTrendApiRequestFailure = createAction(
   props<{
     api: CP_API_ENDPOINTS;
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const loadCpTrendApiRequestSuccess = createAction(
   '[Clinician Procedure API] Load Trend Api Success',
-  props<{ api: CP_API_TREND_ENDPOINTS; resBody: any }>()
+  props<{ api: CP_API_TREND_ENDPOINTS; resBody: any }>(),
 );
 
 export const loadCpTrendApiRequestFailure = createAction(
@@ -115,5 +112,5 @@ export const loadCpTrendApiRequestFailure = createAction(
   props<{
     api: CP_API_TREND_ENDPOINTS;
     error: JeeveError;
-  }>()
+  }>(),
 );

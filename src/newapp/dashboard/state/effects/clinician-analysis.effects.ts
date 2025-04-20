@@ -20,39 +20,35 @@ export class ClinicianAnalysisEffects {
   ) {}
 
   public readonly loadCaChartDescription$ = createEffect(() => {
-      return this.actions$.pipe(
-        ofType(ClinicianAnalysisActions.loadCaChartDescription),
-        groupBy((action) => action.chartDescription), // Group actions by `chart description`
-        mergeMap((grouped$) =>
-          grouped$.pipe(
-            switchMap((params: ChartDescParams<CA_API_ALL_ENDPOINTS>) => {
-              return this.dashboardService
-                .spChartDescriptionCall<any, CA_API_ALL_ENDPOINTS>(
-                  'ClinicianAnalysis',
-                  params
-                )
-                .pipe(
-                  map(data =>
-                    ClinicianAnalysisActions.caChartDescriptionSuccess({
+    return this.actions$.pipe(
+      ofType(ClinicianAnalysisActions.loadCaChartDescription),
+      groupBy(action => action.chartDescription), // Group actions by `chart description`
+      mergeMap(grouped$ =>
+        grouped$.pipe(
+          switchMap((params: ChartDescParams<CA_API_ALL_ENDPOINTS>) => {
+            return this.dashboardService
+              .spChartDescriptionCall<any, CA_API_ALL_ENDPOINTS>('ClinicianAnalysis', params)
+              .pipe(
+                map(data =>
+                  ClinicianAnalysisActions.caChartDescriptionSuccess({
+                    chartDesc: params.chartDescription,
+                    chartDescData: camelcaseKeys(data, { deep: true }),
+                  }),
+                ),
+                catchError((error: HttpErrorResponse) =>
+                  of(
+                    ClinicianAnalysisActions.caChartDescriptionFailure({
                       chartDesc: params.chartDescription,
-                      chartDescData: camelcaseKeys(data, { deep: true }),
-                    })
+                      error: error.error ?? error,
+                    }),
                   ),
-                  catchError((error: HttpErrorResponse) =>
-                    of(
-                      ClinicianAnalysisActions.caChartDescriptionFailure({
-                        chartDesc: params.chartDescription,
-                        error: error.error ?? error,
-                      })
-                    )
-                  )
-                );
-              }
-            )
-          )
-        )
-      );
-    });
+                ),
+              );
+          }),
+        ),
+      ),
+    );
+  });
   // // None Trend
   // public readonly loadNoneTrendApiRequest$ = createEffect(() => {
   //   return this.actions$.pipe(

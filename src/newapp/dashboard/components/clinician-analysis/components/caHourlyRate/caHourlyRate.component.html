@@ -10,37 +10,35 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <mat-icon
     *ngIf="isTableIconVisible$ | async"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
-    fontIcon="table_rows_narrow" />
+    fontIcon="table_rows_narrow"
+  />
   <div class="chart-title">
     <mat-icon
       *ngIf="isTrendIconVisible$ | async"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"
-      [matTooltip]="getTrendTip$ | async"></mat-icon>
+      [matTooltip]="getTrendTip$ | async"
+    ></mat-icon>
     <div class="dropdown-title">
       <div style="min-width: 200px">
-        <span
-          *ngIf="
-            (userType$ | async) === 4 || (isDentistMode$ | async);
-            else prodSelectTitle
-          "
+        <span *ngIf="(userType$ | async) === 4 || (isDentistMode$ | async); else prodSelectTitle"
           >Hourly Rate</span
         >
         <ng-template #prodSelectTitle>
           <mat-select
             class="dropdown-font"
             [value]="prodSelectShow$ | async"
-            (selectionChange)="onChangeProdSelectTab($event)">
+            (selectionChange)="onChangeProdSelectTab($event)"
+          >
             <mat-option value="hourly_rate_all">Hourly Rate - All</mat-option>
-            <mat-option value="hourly_rate_dentists"
-              >Hourly Rate - Dentists</mat-option
-            >
+            <mat-option value="hourly_rate_dentists">Hourly Rate - Dentists</mat-option>
             <mat-option value="hourly_rate_oht">Hourly Rate - OHT</mat-option>
           </mat-select>
         </ng-template>
@@ -50,29 +48,29 @@
   <div class="chart-content">
     <div class="canvas-wrapper chart-box ca-hourly-chart">
       <spin-loader
-            class="empty-placeholder"
-            *ngIf="isComingSoon; else enabledChart"
-            [disableSpin]="true">
-            Coming Soon...
-          </spin-loader>
+        class="empty-placeholder"
+        *ngIf="isComingSoon; else enabledChart"
+        [disableSpin]="true"
+      >
+        Coming Soon...
+      </spin-loader>
       <ng-template #enabledChart>
         <div class="ca-hourly-switch">
           <button
             *ngFor="let chartName of hourlyRateChartNames$ | async"
             (click)="switchChartName(chartName)"
-            [ngClass]="{ active: chartName == (chartName$ | async) }">
+            [ngClass]="{ active: chartName == (chartName$ | async) }"
+          >
             {{ chartName }}
           </button>
         </div>
-  
-        <div
-          class="pa-table"
-          *ngIf="showTableView$ | async; else graphElem">
+
+        <div class="pa-table" *ngIf="showTableView$ | async; else graphElem">
           <table>
             <thead>
               <tr>
                 <th>Name</th>
-                <th>{{chartName$ | async}}</th>
+                <th>{{ chartName$ | async }}</th>
                 <th>Hours</th>
                 <th>Hourly Rate</th>
               </tr>
@@ -89,7 +87,6 @@
         </div>
         <ng-template #graphElem>
           <div class="chart-gauge ca-hourly-graph">
-            
             <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
             <ng-template #chartElem>
               <ngx-gauge
@@ -109,53 +106,50 @@
                 cap="round"
                 [duration]="2500"
                 prepend="$"
-                [size]="300">
+                [size]="300"
+              >
               </ngx-gauge>
               <canvas
                 baseChart
                 *ngIf="
-                  (!(isDentistMode$ | async) ||
-                    (isCompare$ | async) ||
-                    (isTrend$ | async)) &&
+                  (!(isDentistMode$ | async) || (isCompare$ | async) || (isTrend$ | async)) &&
                   (hasData$ | async)
                 "
                 [datasets]="datasets"
                 [labels]="labels"
                 [legend]="legend$ | async"
                 type="bar"
-                [options]="chartOptions$ | async">
+                [options]="chartOptions$ | async"
+              >
               </canvas>
-  
+
               <spin-loader
                 class="empty-placeholder"
                 *ngIf="!(hasData$ | async)"
-                [disableSpin]="true">
+                [disableSpin]="true"
+              >
                 {{ noDataAlertMessage$ | async }}
               </spin-loader>
             </ng-template>
           </div>
         </ng-template>
-  
+
         <div class="chart-foot" *ngIf="isEnableFooter$ | async">
           <div>
             <h3>{{ total | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
             <span>{{ durationLabel$ | async }}</span>
           </div>
-  
+
           <div *ngIf="(duration$ | async) !== 'custom'">
             <h3>{{ prev | currency: 'USD' : 'symbol' : '1.0-0' }}</h3>
             <span>{{ durationTrendLabel$ | async }}</span>
           </div>
-          <div
-            *ngIf="
-              goal >= 0 && (showGoals$ | async) == true && (goalCount$ | async)
-            ">
+          <div *ngIf="goal >= 0 && (showGoals$ | async) == true && (goalCount$ | async)">
             <h3>${{ goal * (goalCount$ | async) }}</h3>
             <span>Goal</span>
           </div>
         </div>
       </ng-template>
-
     </div>
   </div>
 </div>

@@ -57,194 +57,156 @@ export class MarketingFacade {
   constructor(private store: Store<MarketingState>) {}
 
   loadChartDescription(
-    chartDescription: MarketingEndpoints, 
-    params: ChartDescParams<MarketingEndpoints>
+    chartDescription: MarketingEndpoints,
+    params: ChartDescParams<MarketingEndpoints>,
   ) {
     this.store.dispatch(
       MarketingPageActions.loadMkChartDescription({
         chartDescription,
-        ...params
-      })
+        ...params,
+      }),
     );
   }
 
-  public readonly errors$: Observable<JeeveError[]> = this.store.pipe(
-    select(selectErrors)
-  );
+  public readonly errors$: Observable<JeeveError[]> = this.store.pipe(select(selectErrors));
 
   public readonly xeroAccounts$ = this.store.pipe(select(selectXeroAccounts));
 
   public readonly myobAccounts$ = this.store.pipe(select(selectMyobAccounts));
 
   public readonly newPatientsByReferralChartData$ = this.store.pipe(
-    select(selectNewPatientsByReferralChartData)
+    select(selectNewPatientsByReferralChartData),
   );
 
   public readonly newPatientsByReferralData$ = this.store.pipe(
-    select(selectNewPatientsByReferralData)
+    select(selectNewPatientsByReferralData),
   );
 
   public readonly newPatientsByReferralTrendChartData$ = this.store.pipe(
-    select(selectNewPatientsByReferralTrendChartData)
+    select(selectNewPatientsByReferralTrendChartData),
   );
 
-  public readonly newNumPatientsChartData$ = this.store.pipe(
-    select(selectNumNewPatientsChartData)
-  );
+  public readonly newNumPatientsChartData$ = this.store.pipe(select(selectNumNewPatientsChartData));
 
   public readonly newNumPatientsTrendChartData$ = this.store.pipe(
-    select(selectNumNewPatientsTrendChartData)
+    select(selectNumNewPatientsTrendChartData),
   );
 
-  public readonly activePatientsChartData$ = this.store.pipe(
-    select(selectActivePatientsChartData)
-  );
+  public readonly activePatientsChartData$ = this.store.pipe(select(selectActivePatientsChartData));
 
   public readonly activePatientsTrendChartData$ = this.store.pipe(
-    select(selectActivePatientsTrendChartData)
+    select(selectActivePatientsTrendChartData),
   );
 
-  public readonly revByReferralChartData$ = this.store.pipe(
-    select(selectRevByReferralChartData)
-  );
+  public readonly revByReferralChartData$ = this.store.pipe(select(selectRevByReferralChartData));
 
-  public readonly revByReferralData$ = this.store.pipe(
-    select(selectRevenueByReferralData)
-  );
+  public readonly revByReferralData$ = this.store.pipe(select(selectRevenueByReferralData));
 
   public readonly revByReferralTrendChartData$ = this.store.pipe(
-    select(selectRevByReferralTrendChartData)
+    select(selectRevByReferralTrendChartData),
   );
 
-  public readonly newPatientsAcqChartData$ = this.store.pipe(
-    select(selectNewPatientAcqChartData)
-  );
+  public readonly newPatientsAcqChartData$ = this.store.pipe(select(selectNewPatientAcqChartData));
 
   public readonly newPatientsAcqTrendChartData$ = this.store.pipe(
-    select(selectNewPatientAcqTrendChartData)
+    select(selectNewPatientAcqTrendChartData),
   );
 
-  public readonly totalVisitsChartData$ = this.store.pipe(
-    select(selectTotalVisitsChartData)
-  );
+  public readonly totalVisitsChartData$ = this.store.pipe(select(selectTotalVisitsChartData));
 
   public readonly totalVisitsTrendChartData$ = this.store.pipe(
-    select(selectTotalVisitsTrendChartData)
+    select(selectTotalVisitsTrendChartData),
   );
 
-  public readonly prodByPostCodeChartName$ = this.store.pipe(
-    select(selectProdByPostCodeChartName)
-  );
+  public readonly prodByPostCodeChartName$ = this.store.pipe(select(selectProdByPostCodeChartName));
 
   public readonly prodByPostCodeChartData$ = this.store.pipe(
-    select(selectMkProdByPostCodeChartData)
+    select(selectMkProdByPostCodeChartData),
   );
 
   public readonly prodByPostCodeTrendChartData$ = this.store.pipe(
-    select(selectProdByPostCodeTrendChartData)
+    select(selectProdByPostCodeTrendChartData),
   );
 
-  public readonly prodByAgeChartData$ = this.store.pipe(
-    select(selectMkProdByAgeChartData)
-  );
+  public readonly prodByAgeChartData$ = this.store.pipe(select(selectMkProdByAgeChartData));
 
-  public readonly prodByAgeTrendChartData$ = this.store.pipe(
-    select(selectProdByAgeTrendChartData)
-  );
+  public readonly prodByAgeTrendChartData$ = this.store.pipe(select(selectProdByAgeTrendChartData));
 
   public readonly isLoadingNewPatientsByReferral$ = this.store.pipe(
-    select(selectIsLoadingMkNewPatientsByReferral)
+    select(selectIsLoadingMkNewPatientsByReferral),
   );
 
   public readonly isLoadingNewPatientsByReferralTrend$ = this.store.pipe(
-    select(selectIsLoadingMkNewPatientsByReferralTrend)
+    select(selectIsLoadingMkNewPatientsByReferralTrend),
   );
 
-  public readonly isLoadingRevByReferral$ = this.store.pipe(
-    select(selectIsLoadingMkRevByReferral)
-  );
+  public readonly isLoadingRevByReferral$ = this.store.pipe(select(selectIsLoadingMkRevByReferral));
 
   public readonly isLoadingRevByReferralTrend$ = this.store.pipe(
-    select(selectIsLoadingMkRevByReferralTrend)
+    select(selectIsLoadingMkRevByReferralTrend),
   );
 
   public readonly isLoadingNewNumPatients$ = this.store.pipe(
-    select(selectIsLoadingMkNumNewPatients)
+    select(selectIsLoadingMkNumNewPatients),
   );
 
   public readonly isLoadingNewNumPatientsTrend$ = this.store.pipe(
-    select(selectIsLoadingMkNumNewPatientsTrend)
+    select(selectIsLoadingMkNumNewPatientsTrend),
   );
 
   public readonly isLoadingMkActivePatients$ = this.store.pipe(
-    select(selectIsLoadingMkActivePatients)
+    select(selectIsLoadingMkActivePatients),
   );
 
   public readonly isLoadingMkActivePatientsTrend$ = this.store.pipe(
-    select(selectIsLoadingMkActivePatientsTrend)
+    select(selectIsLoadingMkActivePatientsTrend),
   );
 
   public readonly isLoadingNewPatientsAcq$ = this.store.pipe(
-    select(selectIsLoadingMkNewPatientAcq)
+    select(selectIsLoadingMkNewPatientAcq),
   );
 
   public readonly isLoadingNewPatientsAcqTrend$ = this.store.pipe(
-    select(selectIsLoadingMkNewPatientAcqTrend)
+    select(selectIsLoadingMkNewPatientAcqTrend),
   );
 
-  public readonly isLoadingTotalVisits$ = this.store.pipe(
-    select(selectIsLoadingMkTotalVisits)
-  );
+  public readonly isLoadingTotalVisits$ = this.store.pipe(select(selectIsLoadingMkTotalVisits));
 
   public readonly isLoadingTotalVisitsTrend$ = this.store.pipe(
-    select(selectIsLoadingMkTotalVisitsTrend)
+    select(selectIsLoadingMkTotalVisitsTrend),
   );
 
-  public readonly isLoadingMkMyobAccounts$ = this.store.pipe(
-    select(selectIsLoadingMkMyobAccounts)
-  );
+  public readonly isLoadingMkMyobAccounts$ = this.store.pipe(select(selectIsLoadingMkMyobAccounts));
 
-  public readonly isLoadingMkXeroAccounts$ = this.store.pipe(
-    select(selectIsLoadingMkXeroAccounts)
-  );
+  public readonly isLoadingMkXeroAccounts$ = this.store.pipe(select(selectIsLoadingMkXeroAccounts));
 
   public readonly isLoadingMkSaveMyobAccounts$ = this.store.pipe(
-    select(selectIsLoadingMkSaveAcctMyob)
+    select(selectIsLoadingMkSaveAcctMyob),
   );
 
   public readonly isLoadingMkSaveXeroAccounts$ = this.store.pipe(
-    select(selectIsLoadingMkSaveAcctXero)
+    select(selectIsLoadingMkSaveAcctXero),
   );
 
-  public readonly isActivePatients$ = this.store.pipe(
-    select(selectIsActivePatientsWithPlatform)
-  );
+  public readonly isActivePatients$ = this.store.pipe(select(selectIsActivePatientsWithPlatform));
 
-  public readonly isLoadingAllData$ = this.store.pipe(
-    select(selectIsLoadingAllData)
-  );
+  public readonly isLoadingAllData$ = this.store.pipe(select(selectIsLoadingAllData));
 
-  public readonly isLoadingAllTrendData$ = this.store.pipe(
-    select(selectIsLoadingAllTrendData)
-  );
+  public readonly isLoadingAllTrendData$ = this.store.pipe(select(selectIsLoadingAllTrendData));
 
   public readonly isLoadingMkProdByPostCode$ = this.store.pipe(
-    select(selectIsLoadingMkProdByPostCode)
+    select(selectIsLoadingMkProdByPostCode),
   );
 
   public readonly isLoadingMkProdByPostCodeTrend$ = this.store.pipe(
-    select(selectIsLoadingMkProdByPostCodeTrend)
+    select(selectIsLoadingMkProdByPostCodeTrend),
   );
 
-  public readonly isLoadingMkProdByAge$ = this.store.pipe(
-    select(selectIsLoadingMkProdByAge)
-  );
+  public readonly isLoadingMkProdByAge$ = this.store.pipe(select(selectIsLoadingMkProdByAge));
 
   public readonly isLoadingMkProdByAgeTrend$ = this.store.pipe(
-    select(selectIsLoadingMkProdByAgeTrend)
+    select(selectIsLoadingMkProdByAgeTrend),
   );
-
-
 
   public setProdByPostCodeChartName(chartName: MK_PROD_BY_POSTCODE_CHART_NAME) {
     this.store.dispatch(MarketingPageActions.setProdByPostCodeChartName({ chartName }));
@@ -254,13 +216,7 @@ export class MarketingFacade {
     this.store.dispatch(MarketingPageActions.setIsActivePatients({ isActive }));
   }
 
-  public loadMkNewPatientsByReferral({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadMkNewPatientsByReferral({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       MarketingPageActions.loadMkNewPatientsByReferral({
         clinicId,
@@ -268,7 +224,7 @@ export class MarketingFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -278,7 +234,7 @@ export class MarketingFacade {
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -298,33 +254,22 @@ export class MarketingFacade {
         duration,
         queryWhEnabled,
         connectedWith,
-      })
+      }),
     );
   }
 
-  public loadNewPatientsAcqTrend({
-    clinicId,
-    mode,
-    queryWhEnabled,
-    connectedWith,
-  }) {
+  public loadNewPatientsAcqTrend({ clinicId, mode, queryWhEnabled, connectedWith }) {
     this.store.dispatch(
       MarketingPageActions.loadMkNewPatientAcqTrend({
         clinicId,
         mode,
         queryWhEnabled,
         connectedWith,
-      })
+      }),
     );
   }
 
-  public loadNewNumPatients({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadNewNumPatients({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       MarketingPageActions.loadMkNumNewPatients({
         clinicId,
@@ -332,7 +277,7 @@ export class MarketingFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -342,17 +287,11 @@ export class MarketingFacade {
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadActivePatients({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadActivePatients({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       MarketingPageActions.loadMkActivePatients({
         clinicId,
@@ -360,7 +299,7 @@ export class MarketingFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -370,17 +309,11 @@ export class MarketingFacade {
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadRevByReferral({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadRevByReferral({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       MarketingPageActions.loadMkRevenueByReferral({
         clinicId,
@@ -388,7 +321,7 @@ export class MarketingFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -398,17 +331,11 @@ export class MarketingFacade {
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadTotalVisits({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadTotalVisits({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       MarketingPageActions.loadMkTotalVisits({
         clinicId,
@@ -416,7 +343,7 @@ export class MarketingFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -426,7 +353,7 @@ export class MarketingFacade {
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -435,7 +362,7 @@ export class MarketingFacade {
       MarketingPageActions.loadMkGetMyobAccounts({
         clinicId,
         userId,
-      })
+      }),
     );
   }
 
@@ -444,7 +371,7 @@ export class MarketingFacade {
       MarketingPageActions.loadMkGetXeroAccounts({
         clinicId,
         userId,
-      })
+      }),
     );
   }
 
@@ -453,7 +380,7 @@ export class MarketingFacade {
       MarketingPageActions.saveAcctXero({
         clinicId,
         categories,
-      })
+      }),
     );
   }
 
@@ -462,7 +389,7 @@ export class MarketingFacade {
       MarketingPageActions.saveAcctMyob({
         clinicId,
         categories,
-      })
+      }),
     );
   }
 
@@ -470,7 +397,7 @@ export class MarketingFacade {
     this.store.dispatch(
       MarketingPageActions.setErrors({
         errors,
-      })
+      }),
     );
   }
 }

@@ -20,14 +20,7 @@ import { ChartOptions, LegendOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
-import {
-  Observable,
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-} from 'rxjs';
+import { Observable, Subject, takeUntil, combineLatest, map, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'caHourlyRate-chart',
@@ -43,11 +36,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-  hourlyRateChartNames: CA_PROD_CHART_NAME[] = [
-    'Production',
-    'Collection',
-    'Collection-Exp',
-  ];
+  hourlyRateChartNames: CA_PROD_CHART_NAME[] = ['Production', 'Collection', 'Collection-Exp'];
 
   get hourlyRateChartNames$() {
     return this.isEachClinicD4w$.pipe(
@@ -56,7 +45,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
           return this.hourlyRateChartNames.filter(v => v !== 'Collection-Exp');
         }
         return this.hourlyRateChartNames;
-      })
+      }),
     );
   }
 
@@ -89,7 +78,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -101,7 +90,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     return combineLatest([this.durationTrendLabel$]).pipe(
       map(([durTrendLabel]) => {
         return durTrendLabel + ': $' + this.decimalPipe.transform(this.prev);
-      })
+      }),
     );
   }
 
@@ -123,7 +112,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
   get legend$() {
     return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
-      map(([v]) => typeof v === 'string')
+      map(([v]) => typeof v === 'string'),
     );
   }
 
@@ -144,12 +133,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get chartOptions$() {
-    return combineLatest([
-      this.avgMode$,
-      this.isDentistMode$,
-      this.isTrend$,
-      this.goalCount$,
-    ]).pipe(
+    return combineLatest([this.avgMode$, this.isDentistMode$, this.isTrend$, this.goalCount$]).pipe(
       map(([avgMode, isDentistMode, isTrend, goalCount]) => {
         if (!isDentistMode || !isTrend) {
           let options: ChartOptions = { ...this.barChartOptions };
@@ -165,16 +149,12 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         } else {
           return this.barChartOptionsTrend;
         }
-      })
+      }),
     );
   }
 
   get hasData$() {
-    return combineLatest([
-      this.isCompare$,
-      this.isDentistMode$,
-      this.isTrend$,
-    ]).pipe(
+    return combineLatest([this.isCompare$, this.isDentistMode$, this.isTrend$]).pipe(
       map(([isCompare, isDentistMode, isTrend]) => {
         if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue !== 0;
@@ -182,13 +162,11 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
           return (
             this.datasets.length > 0 &&
             this.datasets?.some(
-              it =>
-                it?.data?.length > 0 &&
-                _.sumBy(it.data, v => parseFloat(<any>v))
+              it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v)),
             )
           );
         }
-      })
+      }),
     );
   }
 
@@ -213,10 +191,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get noDataAlertMessage$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.caFacade.hourlyRateProdSelectTab$,
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.caFacade.hourlyRateProdSelectTab$]).pipe(
       map(([isDentistMode, prodSelectShow]) => {
         if (!isDentistMode) {
           switch (prodSelectShow) {
@@ -230,7 +205,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         } else {
           return 'You have no hourly rates for the selected period';
         }
-      })
+      }),
     );
   }
 
@@ -239,18 +214,14 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$(): Observable<boolean> {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isCompare$,
-      this.hasData$,
-      this.isTrend$,
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isCompare$, this.hasData$, this.isTrend$]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
-          (!(isDentistMode && isTrend) || isCompare) && 
-          this.tableData.length > 0 && hasData &&
-          !this.isComingSoon
-      )
+          (!(isDentistMode && isTrend) || isCompare) &&
+          this.tableData.length > 0 &&
+          hasData &&
+          !this.isComingSoon,
+      ),
     );
   }
 
@@ -258,15 +229,13 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     return this.caFacade.isTrendIconVisible$;
   }
 
-  
-
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,
     private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
   ) {}
 
   ngOnInit(): void {
@@ -278,7 +247,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
       .subscribe(([isDentistMode, isTrend, data, trendData]) => {
         if (!isDentistMode || !isTrend) {
@@ -294,7 +263,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         this.goal = data.goal;
 
         this.tableData = data.tableData ?? [];
-        
+
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
@@ -302,20 +271,15 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
   }
 
   get showTableView$() {
-    return this.isTableIconVisible$.pipe(map(
-      v => this.showTableInfo && v
-    ))
+    return this.isTableIconVisible$.pipe(map(v => this.showTableInfo && v));
   }
 
   get showMaxBarsAlert$() {
-    return combineLatest([
-      this.showTableView$,
-      this.isTableIconVisible$,
-    ]).pipe(
+    return combineLatest([this.showTableView$, this.isTableIconVisible$]).pipe(
       map(([v, v1]) => {
-        return !v && (this.tableData?.length > this.labels?.length) && v1;
-      })
-    ) 
+        return !v && this.tableData?.length > this.labels?.length && v1;
+      }),
+    );
   }
 
   get showMaxBarsAlertMsg$() {
@@ -324,7 +288,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
 
   formatNumber(value: number): string {
     if (value % 1 === 0) {
-      return this.decimalPipe.transform(value, '1.0-0') // No decimals for whole numbers
+      return this.decimalPipe.transform(value, '1.0-0'); // No decimals for whole numbers
     }
     return this.decimalPipe.transform(value, '1.2-2') || ''; // Exactly 2 decimals
   }
@@ -483,8 +447,7 @@ export class CaHourlyRateComponent implements OnInit, OnDestroy {
         },
         callbacks: {
           // use label callback to return the desired label
-          label: tooltipItem =>
-            renderTooltipLabel(tooltipItem, '$', this.decimalPipe),
+          label: tooltipItem => renderTooltipLabel(tooltipItem, '$', this.decimalPipe),
           title: function () {
             return '';
           },

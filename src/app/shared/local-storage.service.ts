@@ -14,9 +14,7 @@ export class LocalStorageService {
   }
 
   private decrypt(txtToDecrypt: string) {
-    return CryptoJS.AES.decrypt(txtToDecrypt, this.key).toString(
-      CryptoJS.enc.Utf8
-    );
+    return CryptoJS.AES.decrypt(txtToDecrypt, this.key).toString(CryptoJS.enc.Utf8);
   }
 
   public saveData(key: string, value: string) {
@@ -57,24 +55,18 @@ export class LocalStorageService {
     if (typeof clinicId == 'string') {
       clinics = clinics.filter(c => c.id == parseInt(clinicId));
     } else if (Array.isArray(clinicId)) {
-      clinics = clinics.filter(c =>
-        (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id)
-      );
+      clinics = clinics.filter(c => (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id));
     }
 
     return clinics.every(c => ['exact'].includes(c.pms));
   }
 
-  public isEachClinicExactOrCoreOrPraktika(
-    clinicId: string | string[]
-  ): boolean {
+  public isEachClinicExactOrCoreOrPraktika(clinicId: string | string[]): boolean {
     let clinics = this.getObject<any[]>('clinics') || [];
     if (typeof clinicId == 'string') {
       clinics = clinics.filter(c => c.id == parseInt(clinicId));
     } else if (Array.isArray(clinicId)) {
-      clinics = clinics.filter(c =>
-        (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id)
-      );
+      clinics = clinics.filter(c => (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id));
     }
 
     return clinics.every(c => ['exact', 'core', 'praktika'].includes(c.pms));
@@ -85,9 +77,7 @@ export class LocalStorageService {
     if (typeof clinicId == 'string') {
       clinics = clinics.filter(c => c.id == parseInt(clinicId));
     } else if (Array.isArray(clinicId)) {
-      clinics = clinics.filter(c =>
-        (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id)
-      );
+      clinics = clinics.filter(c => (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id));
     }
     return clinics.every(c => ['exact', 'core'].includes(c.pms));
   }
@@ -97,9 +87,7 @@ export class LocalStorageService {
     if (typeof clinicId == 'string') {
       clinics = clinics.filter(c => c.id == parseInt(clinicId));
     } else if (Array.isArray(clinicId)) {
-      clinics = clinics.filter(c =>
-        (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id)
-      );
+      clinics = clinics.filter(c => (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id));
     }
     return clinics.every(c => ['core'].includes(c.pms));
   }
@@ -109,9 +97,7 @@ export class LocalStorageService {
     if (typeof clinicId == 'string') {
       clinics = clinics.filter(c => c.id == parseInt(clinicId));
     } else if (Array.isArray(clinicId)) {
-      clinics = clinics.filter(c =>
-        (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id)
-      );
+      clinics = clinics.filter(c => (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id));
     }
     return clinics.every(c => ['praktika'].includes(c.pms));
   }
@@ -121,17 +107,12 @@ export class LocalStorageService {
     if (typeof clinicId == 'string') {
       clinics = clinics.filter(c => c.id == parseInt(clinicId));
     } else if (Array.isArray(clinicId)) {
-      clinics = clinics.filter(c =>
-        (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id)
-      );
+      clinics = clinics.filter(c => (<string[]>clinicId).map(cId => parseInt(cId)).includes(c.id));
     }
     return clinics.every(c => c.pms == 'd4w');
   }
 
-  public isClinicPmsType(
-    clinicId: number | string,
-    pms: 'd4w' | 'exact' | 'core'
-  ) {
+  public isClinicPmsType(clinicId: number | string, pms: 'd4w' | 'exact' | 'core') {
     let clinics = this.getObject<any[]>('clinics') || [];
     const clinic = clinics.find(c => c.id == parseInt(<string>clinicId));
     return clinic?.pms && clinic?.pms == pms;

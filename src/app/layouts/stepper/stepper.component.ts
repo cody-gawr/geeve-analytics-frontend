@@ -2,13 +2,7 @@ import * as $ from 'jquery';
 import { DOCUMENT, Location } from '@angular/common';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Router, ActivatedRoute } from '@angular/router';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  AfterViewInit,
-  Inject,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, AfterViewInit, Inject } from '@angular/core';
 // import { MenuItems } from '../../shared/menu-items/menu-items';
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -53,28 +47,16 @@ export class StepperComponent implements OnDestroy, AfterViewInit {
     private _cookieService: CookieService,
     private location: Location,
     private route: ActivatedRoute,
-    @Inject(DOCUMENT) private document: any
+    @Inject(DOCUMENT) private document: any,
   ) {
     this.id = this.route.snapshot.paramMap.get('id');
 
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    document.addEventListener(
-      'fullscreenchange',
-      this.onFullScreenChange,
-      false
-    );
-    document.addEventListener(
-      'webkitfullscreenchange',
-      this.onFullScreenChange,
-      false
-    );
-    document.addEventListener(
-      'mozfullscreenchange',
-      this.onFullScreenChange,
-      false
-    );
+    document.addEventListener('fullscreenchange', this.onFullScreenChange, false);
+    document.addEventListener('webkitfullscreenchange', this.onFullScreenChange, false);
+    document.addEventListener('mozfullscreenchange', this.onFullScreenChange, false);
   }
 
   ngOnDestroy(): void {
@@ -98,10 +80,7 @@ export class StepperComponent implements OnDestroy, AfterViewInit {
   }
 
   private loadClinic(value) {
-    this.finalUrl = this.router.url.substring(
-      0,
-      this.router.url.lastIndexOf('/') + 1
-    );
+    this.finalUrl = this.router.url.substring(0, this.router.url.lastIndexOf('/') + 1);
 
     this.router.navigate([this.finalUrl + value]);
     //this.location.go(this.finalUrl+value);
@@ -115,7 +94,7 @@ export class StepperComponent implements OnDestroy, AfterViewInit {
       },
       error => {
         // this.warningMessage = "Please Provide Valid Inputs!";
-      }
+      },
     );
   }
   fullScreen() {
@@ -165,7 +144,7 @@ export class StepperComponent implements OnDestroy, AfterViewInit {
           this.router.navigate(['/login']);
         }
       },
-      error => {}
+      error => {},
     );
   }
   // Mini sidebar

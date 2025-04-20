@@ -4,14 +4,14 @@ import { createAction, props } from '@ngrx/store';
 
 export const loadChartTipsSuccess = createAction(
   '[Dashboard API] Load Chart Tips',
-  props<{ chartData: { [key: number]: ChartTip } }>()
+  props<{ chartData: { [key: number]: ChartTip } }>(),
 );
 
 export const loadChartTipsFailure = createAction(
   '[Dashboard API] Load Chart Tips Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 // export const clinicAccountingPlatformSuccess = createAction(

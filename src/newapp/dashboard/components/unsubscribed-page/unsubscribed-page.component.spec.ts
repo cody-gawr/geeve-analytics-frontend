@@ -8,7 +8,7 @@ describe('UnauthorizedPageComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [UnsubscribedPageComponent]
+      declarations: [UnsubscribedPageComponent],
     });
     fixture = TestBed.createComponent(UnsubscribedPageComponent);
     component = fixture.componentInstance;

@@ -46,7 +46,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private headerService: HeaderService,
     public constants: AppConstants,
-    public chartstipsService: ChartstipsService
+    public chartstipsService: ChartstipsService,
   ) {
     // this.getChartsTips();
   }
@@ -92,8 +92,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
           this.caseAcceptanceReal = this.caseAcceptance;
           this.production = data.body.data.production;
           this.productionReal = this.production;
-          this.lostOpportunity =
-            this.discounts + this.collectionProduction + this.caseAcceptance;
+          this.lostOpportunity = this.discounts + this.collectionProduction + this.caseAcceptance;
           this.lostOpportunityReal = this.lostOpportunity;
           this.productionImp = 0;
           this.improvement = 0;
@@ -105,7 +104,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
       },
       error => {
         //alert('Something Went Wrong.');
-      }
+      },
     );
   }
 
@@ -115,27 +114,18 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
       this.discountsImp = this.countDiscount(this.discountsReal, value);
       this.discounts = Math.round(this.discountsReal - this.discountsImp);
 
-      this.collectionProductionImp = this.countDiscount(
-        this.collectionProductionReal,
-        value
-      );
+      this.collectionProductionImp = this.countDiscount(this.collectionProductionReal, value);
       this.collectionProduction = Math.round(
-        this.collectionProductionReal - this.collectionProductionImp
+        this.collectionProductionReal - this.collectionProductionImp,
       );
 
-      this.caseAcceptanceImp = this.countDiscount(
-        this.caseAcceptanceReal,
-        value
-      );
-      this.caseAcceptance = Math.round(
-        this.caseAcceptanceReal - this.caseAcceptanceImp
-      );
+      this.caseAcceptanceImp = this.countDiscount(this.caseAcceptanceReal, value);
+      this.caseAcceptance = Math.round(this.caseAcceptanceReal - this.caseAcceptanceImp);
 
       var tempLO = this.countDiscount(this.lostOpportunityReal, value);
       this.lostOpportunity = Math.round(this.lostOpportunityReal - tempLO);
       this.production = Math.round(this.productionReal + tempLO);
-      this.productionImp =
-        Math.round(this.productionReal - this.production) * -1;
+      this.productionImp = Math.round(this.productionReal - this.production) * -1;
     }
   }
 
@@ -147,7 +137,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
       res => {
         this.charTips = res.data;
       },
-      error => {}
+      error => {},
     );
   }
 }

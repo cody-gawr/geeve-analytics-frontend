@@ -10,21 +10,16 @@ import { CoreConnectionDialogComponent } from './components/core-connection-dial
 import { DentallyConnectionDialogComponent } from './components/dentally-connection-dialog/dentally-connection-dialog.component';
 import { PraktikaConnectionDialogComponent } from './components/praktika-connection-dialog/praktika-connection-dialog.component';
 const components = [
-    SetupComponent,
-    CoreConnectionDialogComponent,
-    DentallyConnectionDialogComponent,
-    PraktikaConnectionDialogComponent
+  SetupComponent,
+  CoreConnectionDialogComponent,
+  DentallyConnectionDialogComponent,
+  PraktikaConnectionDialogComponent,
 ];
 // const services = [];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SetupRoutingModule,
-    SharedModule,
-    AppLayoutModule,
-  ],
+  imports: [CommonModule, SetupRoutingModule, SharedModule, AppLayoutModule],
   declarations: [...components],
-//   providers: [...services],
+  //   providers: [...services],
 })
 export class SetupModule {}

@@ -25,14 +25,14 @@ export class PraktikaConnectionDialogComponent {
     private toastr: ToastrService,
     private _adapter: DateAdapter<any>,
     public dialogRef: MatDialogRef<PraktikaConnectionDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     const todayDate = new Date();
     this._adapter.setLocale('en-UK');
     this.form = this.formBuilder.group({
       customer_user: ['', [Validators.required]],
       customer_secret: ['', [Validators.required]],
-      customer_id: ['']
+      customer_id: [''],
     });
     this.customers = [];
   }
@@ -46,62 +46,35 @@ export class PraktikaConnectionDialogComponent {
     const { customer_user, customer_secret, customer_id } = this.form.getRawValue();
     if (this.customers.length > 0 && customer_id) {
       this.pmsService
-        .CreatePraktikaConfig(
-          customer_user,
-          customer_secret,
-          this.data.clinic_id,
-          customer_id
-        )
+        .CreatePraktikaConfig(customer_user, customer_secret, this.data.clinic_id, customer_id)
         .subscribe({
           next: response => {
             if (!response.response) {
-              this.toastr.error(
-                'Failed to connect Praktika account',
-                'Praktika Account'
-              );
+              this.toastr.error('Failed to connect Praktika account', 'Praktika Account');
               return;
             }
-            this.toastr.success(
-              'Praktika account connected',
-              'Praktika Account'
-            );
+            this.toastr.success('Praktika account connected', 'Praktika Account');
             this.dialogRef.close('success');
           },
-          error: err =>
-            this.toastr.error(
-              'Failed to connect Praktika account',
-              'Praktika Account'
-            ),
+          error: err => this.toastr.error('Failed to connect Praktika account', 'Praktika Account'),
         });
     } else {
-      this.pmsService
-        .validatePraktikaLogin(customer_user, customer_secret)
-        .subscribe({
-          next: response => {
-            if (!response.response) {
-              this.toastr.error(
-                'Failed to connect Praktika account',
-                'Praktika Account'
-              );
-              return;
-            }
-            this.toastr.success(
-              'Praktika account connected',
-              'Praktika Account'
-            );
-            if(!this.data?.clinic_id){
-              this.dialogRef.close({ customer_user, customer_secret });
-            }else{
-              this.customers = response.response?.data?.customers;
-              this.form.controls['customer_id'].setValue(this.customers[0]?.id);
-            }
-          },
-          error: err =>
-            this.toastr.error(
-              'Failed to connect Praktika account',
-              'Praktika Account'
-            ),
-        });
+      this.pmsService.validatePraktikaLogin(customer_user, customer_secret).subscribe({
+        next: response => {
+          if (!response.response) {
+            this.toastr.error('Failed to connect Praktika account', 'Praktika Account');
+            return;
+          }
+          this.toastr.success('Praktika account connected', 'Praktika Account');
+          if (!this.data?.clinic_id) {
+            this.dialogRef.close({ customer_user, customer_secret });
+          } else {
+            this.customers = response.response?.data?.customers;
+            this.form.controls['customer_id'].setValue(this.customers[0]?.id);
+          }
+        },
+        error: err => this.toastr.error('Failed to connect Praktika account', 'Praktika Account'),
+      });
     }
   }
 }

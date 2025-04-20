@@ -17,7 +17,7 @@ export class RewardsService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
 
   getHeaders() {
@@ -42,7 +42,7 @@ export class RewardsService {
     return this.http.get(this.apiUrl + '/Rewards/getRewards', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 }

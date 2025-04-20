@@ -10,19 +10,22 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <mat-icon
     *ngIf="isTableIconVisible$ | async"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
-    fontIcon="table_rows_narrow" />
+    fontIcon="table_rows_narrow"
+  />
   <div class="chart-title">
     <mat-icon
       *ngIf="isTrendIconVisible$ | async"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"
-      [matTooltip]="getTrendTip$ | async"></mat-icon>
+      [matTooltip]="getTrendTip$ | async"
+    ></mat-icon>
 
     <span>Prebooking Rate</span>
   </div>
@@ -31,7 +34,8 @@
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
@@ -39,14 +43,13 @@
           <button
             *ngFor="let chartName of chartNames"
             (click)="switchChartName(chartName)"
-            [ngClass]="{ active: chartName == (chartName$ | async) }">
+            [ngClass]="{ active: chartName == (chartName$ | async) }"
+          >
             {{ chartName }}
           </button>
         </div>
-  
-        <div
-          class="pa-table"
-          *ngIf="showTableView$ | async; else graphElem">
+
+        <div class="pa-table" *ngIf="showTableView$ | async; else graphElem">
           <table>
             <thead>
               <tr>
@@ -75,7 +78,8 @@
               <spin-loader
                 class="empty-placeholder"
                 *ngIf="!(hasData$ | async); else ch11"
-                [disableSpin]="true">
+                [disableSpin]="true"
+              >
                 {{ noDataAlertMessage$ | async }}
               </spin-loader>
               <ng-template #ch11>
@@ -91,7 +95,8 @@
                   cap="round"
                   [duration]="2500"
                   append="%"
-                  [size]="300">
+                  [size]="300"
+                >
                 </ngx-gauge>
                 <ng-template #ch10>
                   <canvas
@@ -100,28 +105,26 @@
                     [labels]="labels"
                     [legend]="legend$ | async"
                     type="bar"
-                    [options]="chartOptions">
+                    [options]="chartOptions"
+                  >
                   </canvas>
                 </ng-template>
               </ng-template>
             </ng-template>
           </div>
         </ng-template>
-  
+
         <div class="chart-foot" *ngIf="isEnableFooter$ | async">
           <div>
             <h3>{{ total }}%</h3>
             <span>{{ durationLabel$ | async }}</span>
           </div>
-  
+
           <div *ngIf="(duration$ | async) !== 'custom'">
             <h3>{{ prev }}%</h3>
             <span>{{ durationTrendLabel$ | async }}</span>
           </div>
-          <div
-            *ngIf="
-              goal >= 0 && (showGoals$ | async) == true && (goalCount$ | async)
-            ">
+          <div *ngIf="goal >= 0 && (showGoals$ | async) == true && (goalCount$ | async)">
             <h3>{{ goal * (goalCount$ | async) }}%</h3>
             <span>Goal</span>
           </div>

@@ -20,7 +20,7 @@ export interface LayoutState {
   compare: boolean;
   hideDatePicker: boolean;
   hideClinicSelectionDropdown: boolean;
-  paths: { name: string, path?: string }[];
+  paths: { name: string; path?: string }[];
 }
 
 const initialState: LayoutState = {
@@ -38,7 +38,7 @@ const initialState: LayoutState = {
   activatedRouteTitle: '',
   hideDatePicker: false,
   hideClinicSelectionDropdown: false,
-  paths: []
+  paths: [],
 };
 
 export const layoutFeature = createFeature({
@@ -58,7 +58,7 @@ export const layoutFeature = createFeature({
             enableGoal: enableGoal ?? state.dateRange.enableGoal,
           },
         };
-      }
+      },
     ),
     on(layoutPageActions.setHideDatePicker, (state, { hide }): LayoutState => {
       return {
@@ -93,24 +93,18 @@ export const layoutFeature = createFeature({
         trend,
       };
     }),
-    on(
-      layoutPageActions.setActivatedRouteTitle,
-      (state, { title }): LayoutState => {
-        return {
-          ...state,
-          activatedRouteTitle: title,
-        };
-      }
-    ),
-    on(
-      layoutPageActions.setPaths,
-      (state, { paths }): LayoutState => {
-        return {
-          ...state,
-          paths: paths,
-        };
-      }
-    ),
+    on(layoutPageActions.setActivatedRouteTitle, (state, { title }): LayoutState => {
+      return {
+        ...state,
+        activatedRouteTitle: title,
+      };
+    }),
+    on(layoutPageActions.setPaths, (state, { paths }): LayoutState => {
+      return {
+        ...state,
+        paths: paths,
+      };
+    }),
   ),
 });
 
@@ -123,15 +117,15 @@ export const {
   selectCompare,
   selectHideDatePicker,
   selectHideClinicSelectionDropdown,
-  selectPaths
+  selectPaths,
 } = layoutFeature;
 
 export const selectComputedDurationUnits = createSelector(
   selectTrend,
   selectDateRange,
-  (trend, {start, end}) => {
+  (trend, { start, end }) => {
     return getUnitsInDurationRange(trend, start, end);
-  }
+  },
 );
 
 export const selectCompareEnabled = createSelector(
@@ -139,75 +133,60 @@ export const selectCompareEnabled = createSelector(
   selectIsClinicianUser,
   (compare, isClinicianUser) => {
     return isClinicianUser && compare;
-  }
+  },
 );
 
-export const selectIsFullMonthsDateRange = createSelector(
-  selectDateRange,
-  ({ start, end }) => {
-    const _startDate = isMoment(start) ? start : moment(start);
-    const _endDate = isMoment(end) ? end : moment(end);
-    return (
-      _startDate.date() == 1 &&
-      (_endDate.date() == _endDate.clone().endOf('month').date() ||
-        _endDate.date() == moment().date())
-    );
-  }
-);
+export const selectIsFullMonthsDateRange = createSelector(selectDateRange, ({ start, end }) => {
+  const _startDate = isMoment(start) ? start : moment(start);
+  const _endDate = isMoment(end) ? end : moment(end);
+  return (
+    _startDate.date() == 1 &&
+    (_endDate.date() == _endDate.clone().endOf('month').date() ||
+      _endDate.date() == moment().date())
+  );
+});
 
 export const selectIsFullSingleMonthDateRange = createSelector(
   selectDateRange,
   ({ start, end }) => {
     const _startDate = isMoment(start) ? start : moment(start);
     const _endDate = isMoment(end) ? end : moment(end);
-    return (
-      _startDate.date() == 1 &&
-      _endDate.date() == _startDate.clone().endOf('month').date()
-    );
-  }
+    return _startDate.date() == 1 && _endDate.date() == _startDate.clone().endOf('month').date();
+  },
 );
 
 export const selectIsFullSingleMonthOrYearOrCurrentMonthDateRange = createSelector(
   selectDateRange,
   ({ start, end, duration }) => {
-    if(['m', 'lm', 'cytd', 'lcytd'].includes(duration)){
+    if (['m', 'lm', 'cytd', 'lcytd'].includes(duration)) {
       return true;
-    } else if(duration === 'custom'){
+    } else if (duration === 'custom') {
       const _startDate = isMoment(start) ? start : moment(start);
       const _endDate = isMoment(end) ? end : moment(end);
 
-      return _startDate.isSame(moment().startOf('month'), 'day') || (
-        _startDate.isSame(moment().startOf('year'), 'day') &&
-        _endDate.isSame(moment(), 'day')
-      ) || (
-        _startDate.date() == 1 &&
-        _endDate.isSame(_startDate.clone().endOf('month'), 'day')
-      ) || (
-        _startDate.isSame(_startDate.clone().startOf('year'), 'day') &&
-        _endDate.isSame(_startDate.clone().endOf('year'), 'day')
+      return (
+        _startDate.isSame(moment().startOf('month'), 'day') ||
+        (_startDate.isSame(moment().startOf('year'), 'day') && _endDate.isSame(moment(), 'day')) ||
+        (_startDate.date() == 1 && _endDate.isSame(_startDate.clone().endOf('month'), 'day')) ||
+        (_startDate.isSame(_startDate.clone().startOf('year'), 'day') &&
+          _endDate.isSame(_startDate.clone().endOf('year'), 'day'))
       );
-    }else{
+    } else {
       return false;
     }
-  }
+  },
 );
 
-export const selectDurationCurrLabel = createSelector(
-  selectDateRange,
-  ({ duration }) => {
-    const menu = DateRangeMenus.find(m => m.range == duration);
-    if (menu) return menu.label;
-    else return 'Current';
-  }
-);
+export const selectDurationCurrLabel = createSelector(selectDateRange, ({ duration }) => {
+  const menu = DateRangeMenus.find(m => m.range == duration);
+  if (menu) return menu.label;
+  else return 'Current';
+});
 
-export const selectDurationPrevLabel = createSelector(
-  selectDurationCurrLabel,
-  l => {
-    if (l.includes('Last') || l.includes('This')) {
-      return l.replace(/^Last/g, 'Previous').replace(/^This/g, 'Last');
-    } else {
-      return 'Last ' + l;
-    }
+export const selectDurationPrevLabel = createSelector(selectDurationCurrLabel, l => {
+  if (l.includes('Last') || l.includes('This')) {
+    return l.replace(/^Last/g, 'Previous').replace(/^This/g, 'Last');
+  } else {
+    return 'Last ' + l;
   }
-);
+});

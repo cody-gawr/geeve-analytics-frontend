@@ -4,14 +4,16 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title">Followup Outcome</div>
   <div class="chart-content">
     <div class="profit-prod-trend-chart">
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
@@ -19,7 +21,8 @@
           <button
             *ngFor="let chartName of chartNames"
             (click)="switchChartName(chartName)"
-            [ngClass]="{ active: chartName == (chartName$ | async) }">
+            [ngClass]="{ active: chartName == (chartName$ | async) }"
+          >
             {{ chartName }}
           </button>
         </div>
@@ -42,13 +45,15 @@
               [gradient]="false"
               [tooltipDisabled]="false"
               [tooltipText]="pieTooltipText"
-              [labelFormatting]="pieLabelText">
+              [labelFormatting]="pieLabelText"
+            >
             </ngx-charts-pie-chart>
-  
+
             <spin-loader
               class="empty-placeholder"
               *ngIf="!hasData && !(isLoading$ | async)"
-              [disableSpin]="true">
+              [disableSpin]="true"
+            >
               {{ noDataMessage$ | async }}
             </spin-loader>
           </ng-template>

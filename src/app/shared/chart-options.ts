@@ -7,10 +7,7 @@ import {
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 
 export const JeeveLineFillOptions: _DeepPartialObject<
-  ScriptableAndArrayOptions<
-    LineOptions & LineHoverOptions,
-    ScriptableContext<any>
-  >
+  ScriptableAndArrayOptions<LineOptions & LineHoverOptions, ScriptableContext<any>>
 > = {
   fill: true,
   backgroundColor: 'rgba(34,127,127, 0.5)',

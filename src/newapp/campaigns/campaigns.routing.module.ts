@@ -10,20 +10,20 @@ const routes: Routes = [
     path: '',
     component: AppLayoutComponent,
     children: [
-        {
-            path: '',
-            component: CampaignsComponent,
-        },
-        {
-          path: 'create',
-          component: CreateCampaignComponent,
-        },
-        {
-          path: 'view',
-          component: ViewCampaignComponent
-        }
-      ]
-    },
+      {
+        path: '',
+        component: CampaignsComponent,
+      },
+      {
+        path: 'create',
+        component: CreateCampaignComponent,
+      },
+      {
+        path: 'view',
+        component: ViewCampaignComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({

@@ -1,42 +1,42 @@
-.campaign-page-container{
+.campaign-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  .campaign-header {
     display: flex;
-    flex-direction: column;
-    gap: 25px;
-    .campaign-header {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        width: 100%;
-        gap: 15px;
-        .date-box{
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
-        form {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            align-items: center;
-        }
-        .date-picker-wrapper {
-            display: flex;
-            justify-content: center;
-            .date-picker-field {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 14px;
-                height: 32px;
-                min-width: 280px;
-                background-color: #fafafa;
-                padding-left: 15px;
-                border-radius: 10px;
-            }
-        }
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+    .date-box {
+      flex: 1;
+      display: flex;
+      justify-content: center;
     }
+    form {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      align-items: center;
+    }
+    .date-picker-wrapper {
+      display: flex;
+      justify-content: center;
+      .date-picker-field {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        height: 32px;
+        min-width: 280px;
+        background-color: #fafafa;
+        padding-left: 15px;
+        border-radius: 10px;
+      }
+    }
+  }
 }
 
 tr.element-row:hover {
-    background: #279b8e12;
+  background: #279b8e12;
 }

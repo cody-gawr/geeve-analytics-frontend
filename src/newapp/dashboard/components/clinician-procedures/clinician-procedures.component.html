@@ -7,27 +7,29 @@
 <div *ngIf="(clinicId$ | async) !== null" class="dashboard-content">
   <div class="dashboard-row">
     <cp-procedure-analysis-chart
-    *ngIf="cpPredictorAnalysisTip$ | async"
-    [toolTip]="cpPredictorAnalysisTip$ | async"
-    class="dashboard-chart50"></cp-procedure-analysis-chart>
+      *ngIf="cpPredictorAnalysisTip$ | async"
+      [toolTip]="cpPredictorAnalysisTip$ | async"
+      class="dashboard-chart50"
+    ></cp-procedure-analysis-chart>
     <cp-rev-per-procedure-chart
-      *ngIf="!(isDentistMode$ | async) || !(isTrend$ | async) && (getChartTip(13) | async)"
+      *ngIf="!(isDentistMode$ | async) || (!(isTrend$ | async) && (getChartTip(13) | async))"
       [toolTip]="getChartTip(13) | async"
-      class="dashboard-chart50"></cp-rev-per-procedure-chart>
+      class="dashboard-chart50"
+    ></cp-rev-per-procedure-chart>
   </div>
   <div class="dashboard-row">
     <cp-predictor-ratio-chart
       *ngIf="cpPredictorRatioTip$ | async"
       [toolTip]="cpPredictorRatioTip$ | async"
-      class="dashboard-chart50"></cp-predictor-ratio-chart>
+      class="dashboard-chart50"
+    ></cp-predictor-ratio-chart>
     <cp-clinician-referrals-chart
       *ngIf="getChartTip(14) | async"
       [toolTip]="getChartTip(14) | async"
       [ngClass]="
-        !(isDentistMode$ | async) || !(isTrend$ | async)
-          ? 'dashboard-chart50'
-          : 'cp-chart-1'
+        !(isDentistMode$ | async) || !(isTrend$ | async) ? 'dashboard-chart50' : 'cp-chart-1'
       "
-      class="dashboard-chart50"></cp-clinician-referrals-chart>
+      class="dashboard-chart50"
+    ></cp-clinician-referrals-chart>
   </div>
 </div>

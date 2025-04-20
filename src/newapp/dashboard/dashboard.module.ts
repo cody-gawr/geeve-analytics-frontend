@@ -170,7 +170,7 @@ import { CaTotalDiscountComponent } from './components/clinician-analysis/compon
     FuGetOutcomeComponent,
     FuGetPerUserComponent,
 
-    UnsubscribedPageComponent
+    UnsubscribedPageComponent,
   ],
   providers: [
     DashboardService,

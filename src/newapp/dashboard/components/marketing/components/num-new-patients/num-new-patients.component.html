@@ -4,19 +4,15 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title">
     <mat-icon
-      *ngIf="
-        !(isTrend$ | async) && (durationTrendLabel$ | async) !== 'Last Current'
-      "
-      [matTooltip]="
-        (durationTrendLabel$ | async) +
-        ': ' +
-        (newNumPatientsPrev | number: '1.0-0')
-      "
+      *ngIf="!(isTrend$ | async) && (durationTrendLabel$ | async) !== 'Last Current'"
+      [matTooltip]="(durationTrendLabel$ | async) + ': ' + (newNumPatientsPrev | number: '1.0-0')"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
-      [fontIcon]="trendingIcon"></mat-icon>
+      [fontIcon]="trendingIcon"
+    ></mat-icon>
     <span>
       {{ displayTitle$ | async }}
     </span>
@@ -26,7 +22,8 @@
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
@@ -35,51 +32,41 @@
             *ngIf="isActivePatients$ | async; else elem1"
             (click)="disableActivePatients()"
             mat-stroked-button
-            color="primary">
+            color="primary"
+          >
             New Patients
           </button>
           <ng-template #elem1>
-            <button
-              mat-flat-button
-              (click)="disableActivePatients()"
-              color="primary">
+            <button mat-flat-button (click)="disableActivePatients()" color="primary">
               New Patients
             </button>
           </ng-template>
-  
+
           <button
             (click)="enableActivePatients()"
             *ngIf="isActivePatients$ | async; else elem2"
             color="primary"
-            mat-flat-button>
+            mat-flat-button
+          >
             Active Patients
           </button>
           <ng-template #elem2>
-            <button (click)="enableActivePatients()" mat-stroked-button>
-              Active Patients
-            </button>
+            <button (click)="enableActivePatients()" mat-stroked-button>Active Patients</button>
           </ng-template>
         </div>
         <div class="chart-gauge num-new-patients-gauge">
           <spin-loader
             class="empty-placeholder"
-            *ngIf="
-              !(isFullMonthsDateRange$ | async);
-              else chElem33
-            "
-            [disableSpin]="true">
-            Please select a date range consisting of full months to view Active
-            Patients
+            *ngIf="!(isFullMonthsDateRange$ | async); else chElem33"
+            [disableSpin]="true"
+          >
+            Please select a date range consisting of full months to view Active Patients
           </spin-loader>
           <ng-template #chElem33>
             <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
             <ng-template #chartElem>
               <ngx-gauge
-                *ngIf="
-                  (hasData$ | async) &&
-                  !(isMultipleClinic$ | async) &&
-                  !(isTrend$ | async)
-                "
+                *ngIf="(hasData$ | async) && !(isMultipleClinic$ | async) && !(isTrend$ | async)"
                 type="arch"
                 [value]="newNumPatientsVal"
                 [thick]="20"
@@ -88,29 +75,28 @@
                 backgroundColor="#f4f0fa"
                 cap="round"
                 size="250"
-                [max]="maxNewNumPatientsGoal">
+                [max]="maxNewNumPatientsGoal"
+              >
               </ngx-gauge>
               <canvas
                 #mkNewNumPatients
-                *ngIf="
-                  ((isMultipleClinic$ | async) || (isTrend$ | async)) &&
-                  (hasData$ | async)
-                "
+                *ngIf="((isMultipleClinic$ | async) || (isTrend$ | async)) && (hasData$ | async)"
                 baseChart
                 [datasets]="datasets"
                 [labels]="labels"
                 [legend]="legend$ | async"
                 type="bar"
                 [options]="chartOptions$ | async"
-                [colors]="lineChartColors">
+                [colors]="lineChartColors"
+              >
               </canvas>
               <spin-loader
                 class="empty-placeholder"
                 *ngIf="!(hasData$ | async)"
-                [disableSpin]="true">
+                [disableSpin]="true"
+              >
                 You have no
-                {{ (isActivePatients$ | async) ? 'active' : 'new' }} patients in
-                the selected period
+                {{ (isActivePatients$ | async) ? 'active' : 'new' }} patients in the selected period
               </spin-loader>
             </ng-template>
           </ng-template>

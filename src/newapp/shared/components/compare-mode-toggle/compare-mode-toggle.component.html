@@ -5,7 +5,8 @@
     name="Compare"
     aria-label="Compare"
     [value]="compareMode$ | async"
-    (change)="onChangeCompareMode($event)">
+    (change)="onChangeCompareMode($event)"
+  >
     <mat-button-toggle value="off">Off</mat-button-toggle>
     <mat-button-toggle value="on">On</mat-button-toggle>
   </mat-button-toggle-group>

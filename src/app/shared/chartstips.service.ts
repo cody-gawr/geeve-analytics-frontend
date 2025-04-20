@@ -16,7 +16,7 @@ export class ChartstipsService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
   getHeaders() {
     if (
@@ -37,7 +37,7 @@ export class ChartstipsService {
   // Dentist Production Service
   getCharts(
     dashboard_id,
-    clinic_id: number
+    clinic_id: number,
   ): Observable<{
     app: string;
     data: { title: string; info: string }[];
@@ -49,12 +49,12 @@ export class ChartstipsService {
           '/chartsTips/ctGetPageTips?dashboard_id=' +
           dashboard_id +
           `&clinic_id=${clinic_id}`,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<any>) => {
           return response.body;
-        })
+        }),
       );
   }
 }

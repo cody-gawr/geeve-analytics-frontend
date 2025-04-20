@@ -24,7 +24,10 @@ import {
   selectCurrentClinics,
   selectIsMultiClinicsSelected,
 } from '@/newapp/clinic/state/reducers/clinic.reducer';
-import { selectComputedDurationUnits, selectTrend } from '@/newapp/layout/state/reducers/layout.reducer';
+import {
+  selectComputedDurationUnits,
+  selectTrend,
+} from '@/newapp/layout/state/reducers/layout.reducer';
 import { selectAuthUserData } from '@/newapp/auth/state/reducers/auth.reducer';
 import { COLORS } from '@/newapp/constants';
 
@@ -131,33 +134,27 @@ export const frontDeskFeature = createFeature({
           fdUtilisationRateData,
           isLoadingData: _.filter(isLoadingData, n => n != 'fdUtilisationRate'),
         };
-      }
+      },
     ),
-    on(
-      FrontDeskApiActions.fdUtilisationRateFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdUtilisationRateData: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtilisationRate'),
-          errors: [...errors, { ...error, api: 'fdUtilisationRate' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdUtilisationRateFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdUtilisationRateData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdUtilisationRate'),
+        errors: [...errors, { ...error, api: 'fdUtilisationRate' }],
+      };
+    }),
     // FdUtilisationRateTrend
-    on(
-      FrontDeskPageActions.loadFdUtilisationRateTrend,
-      (state): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'fdUtilisationRateTrend'),
-          fdUtilisationRateTrendData: null,
-          isLoadingData: _.union(isLoadingData, ['fdUtilisationRateTrend']),
-        };
-      }
-    ),
+    on(FrontDeskPageActions.loadFdUtilisationRateTrend, (state): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'fdUtilisationRateTrend'),
+        fdUtilisationRateTrendData: null,
+        isLoadingData: _.union(isLoadingData, ['fdUtilisationRateTrend']),
+      };
+    }),
     on(
       FrontDeskApiActions.fdUtilisationRateTrendSuccess,
       (state, { fdUtilisationRateTrendData }): FrontDeskState => {
@@ -166,41 +163,29 @@ export const frontDeskFeature = createFeature({
           ...state,
           errors: _.filter(errors, n => n.api != 'fdUtilisationRateTrend'),
           fdUtilisationRateTrendData,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'fdUtilisationRateTrend'
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtilisationRateTrend'),
         };
-      }
+      },
     ),
-    on(
-      FrontDeskApiActions.fdUtilisationRateTrendFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdUtilisationRateTrendData: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'fdUtilisationRateTrend'
-          ),
-          errors: [...errors, { ...error, api: 'fdUtilisationRateTrend' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdUtilisationRateTrendFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdUtilisationRateTrendData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdUtilisationRateTrend'),
+        errors: [...errors, { ...error, api: 'fdUtilisationRateTrend' }],
+      };
+    }),
     // FdUtilisationRateByDay
-    on(
-      FrontDeskPageActions.loadFdUtilisationRateByDay,
-      (state): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'fdUtilisationRateByDay'),
-          fdUtilisationRateByDayData: null,
-          isLoadingData: _.union(isLoadingData, ['fdUtilisationRateByDay']),
-        };
-      }
-    ),
+    on(FrontDeskPageActions.loadFdUtilisationRateByDay, (state): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'fdUtilisationRateByDay'),
+        fdUtilisationRateByDayData: null,
+        isLoadingData: _.union(isLoadingData, ['fdUtilisationRateByDay']),
+      };
+    }),
     on(
       FrontDeskApiActions.fdUtilisationRateByDaySuccess,
       (state, { fdUtilisationRateByDayData }): FrontDeskState => {
@@ -209,28 +194,19 @@ export const frontDeskFeature = createFeature({
           ...state,
           errors: _.filter(errors, n => n.api != 'fdUtilisationRateByDay'),
           fdUtilisationRateByDayData,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'fdUtilisationRateByDay'
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtilisationRateByDay'),
         };
-      }
+      },
     ),
-    on(
-      FrontDeskApiActions.fdUtilisationRateByDayFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdUtilisationRateByDayData: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'fdUtilisationRateByDay'
-          ),
-          errors: [...errors, { ...error, api: 'fdUtilisationRateByDay' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdUtilisationRateByDayFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdUtilisationRateByDayData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdUtilisationRateByDay'),
+        errors: [...errors, { ...error, api: 'fdUtilisationRateByDay' }],
+      };
+    }),
     // FdRecallRate
     on(FrontDeskPageActions.loadFdRecallRate, (state): FrontDeskState => {
       const { isLoadingData, errors } = state;
@@ -241,30 +217,24 @@ export const frontDeskFeature = createFeature({
         isLoadingData: _.union(isLoadingData, ['fdRecallRate']),
       };
     }),
-    on(
-      FrontDeskApiActions.fdRecallRateSuccess,
-      (state, { fdRecallRateData }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'fdRecallRate'),
-          fdRecallRateData,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdRecallRate'),
-        };
-      }
-    ),
-    on(
-      FrontDeskApiActions.fdRecallRateFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdRecallRateData: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdRecallRate'),
-          errors: [...errors, { ...error, api: 'fdRecallRate' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdRecallRateSuccess, (state, { fdRecallRateData }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'fdRecallRate'),
+        fdRecallRateData,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdRecallRate'),
+      };
+    }),
+    on(FrontDeskApiActions.fdRecallRateFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdRecallRateData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdRecallRate'),
+        errors: [...errors, { ...error, api: 'fdRecallRate' }],
+      };
+    }),
     // FdRecallRateTrend
     on(FrontDeskPageActions.loadFdRecallRateTrend, (state): FrontDeskState => {
       const { isLoadingData, errors } = state;
@@ -285,20 +255,17 @@ export const frontDeskFeature = createFeature({
           fdRecallRateTrendData,
           isLoadingData: _.filter(isLoadingData, n => n != 'fdRecallRateTrend'),
         };
-      }
+      },
     ),
-    on(
-      FrontDeskApiActions.fdRecallRateTrendFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdRecallRateTrendData: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdRecallRateTrend'),
-          errors: [...errors, { ...error, api: 'fdRecallRateTrend' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdRecallRateTrendFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdRecallRateTrendData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdRecallRateTrend'),
+        errors: [...errors, { ...error, api: 'fdRecallRateTrend' }],
+      };
+    }),
     // FdReappointRate
     on(FrontDeskPageActions.loadFdReappointRate, (state): FrontDeskState => {
       const { isLoadingData, errors } = state;
@@ -319,33 +286,27 @@ export const frontDeskFeature = createFeature({
           fdReappointRateData,
           isLoadingData: _.filter(isLoadingData, n => n != 'fdReappointRate'),
         };
-      }
+      },
     ),
-    on(
-      FrontDeskApiActions.fdReappointRateFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdReappointRateData: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdReappointRate'),
-          errors: [...errors, { ...error, api: 'fdReappointRate' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdReappointRateFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdReappointRateData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdReappointRate'),
+        errors: [...errors, { ...error, api: 'fdReappointRate' }],
+      };
+    }),
     // FdReappointRateTrend
-    on(
-      FrontDeskPageActions.loadFdReappointRateTrend,
-      (state): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'fdReappointRateTrend'),
-          fdReappointRateTrendData: null,
-          isLoadingData: _.union(isLoadingData, ['fdReappointRateTrend']),
-        };
-      }
-    ),
+    on(FrontDeskPageActions.loadFdReappointRateTrend, (state): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'fdReappointRateTrend'),
+        fdReappointRateTrendData: null,
+        isLoadingData: _.union(isLoadingData, ['fdReappointRateTrend']),
+      };
+    }),
     on(
       FrontDeskApiActions.fdReappointRateTrendSuccess,
       (state, { fdReappointRateTrendData }): FrontDeskState => {
@@ -354,28 +315,19 @@ export const frontDeskFeature = createFeature({
           ...state,
           errors: _.filter(errors, n => n.api != 'fdReappointRateTrend'),
           fdReappointRateTrendData,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'fdReappointRateTrend'
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'fdReappointRateTrend'),
         };
-      }
+      },
     ),
-    on(
-      FrontDeskApiActions.fdReappointRateTrendFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdReappointRateTrendData: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'fdReappointRateTrend'
-          ),
-          errors: [...errors, { ...error, api: 'fdReappointRateTrend' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdReappointRateTrendFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdReappointRateTrendData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdReappointRateTrend'),
+        errors: [...errors, { ...error, api: 'fdReappointRateTrend' }],
+      };
+    }),
     // FdNumTicks
     on(FrontDeskPageActions.loadFdNumTicks, (state): FrontDeskState => {
       const { isLoadingData, errors } = state;
@@ -386,30 +338,24 @@ export const frontDeskFeature = createFeature({
         isLoadingData: _.union(isLoadingData, ['fdNumTicks']),
       };
     }),
-    on(
-      FrontDeskApiActions.fdNumTicksSuccess,
-      (state, { fdNumTicksData }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'fdNumTicks'),
-          fdNumTicksData,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdNumTicks'),
-        };
-      }
-    ),
-    on(
-      FrontDeskApiActions.fdNumTicksFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdNumTicksData: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdNumTicks'),
-          errors: [...errors, { ...error, api: 'fdNumTicks' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdNumTicksSuccess, (state, { fdNumTicksData }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'fdNumTicks'),
+        fdNumTicksData,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdNumTicks'),
+      };
+    }),
+    on(FrontDeskApiActions.fdNumTicksFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdNumTicksData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdNumTicks'),
+        errors: [...errors, { ...error, api: 'fdNumTicks' }],
+      };
+    }),
     // FdNumTicksTrend
     on(FrontDeskPageActions.loadFdNumTicksTrend, (state): FrontDeskState => {
       const { isLoadingData, errors } = state;
@@ -430,20 +376,17 @@ export const frontDeskFeature = createFeature({
           fdNumTicksTrendData,
           isLoadingData: _.filter(isLoadingData, n => n != 'fdNumTicksTrend'),
         };
-      }
+      },
     ),
-    on(
-      FrontDeskApiActions.fdNumTicksTrendFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdNumTicksTrendData: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdNumTicksTrend'),
-          errors: [...errors, { ...error, api: 'fdNumTicksTrend' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdNumTicksTrendFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdNumTicksTrendData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdNumTicksTrend'),
+        errors: [...errors, { ...error, api: 'fdNumTicksTrend' }],
+      };
+    }),
     // fdFtaRatio
     on(FrontDeskPageActions.loadFdFtaRatio, (state): FrontDeskState => {
       const { isLoadingData, errors } = state;
@@ -454,30 +397,24 @@ export const frontDeskFeature = createFeature({
         isLoadingData: _.union(isLoadingData, ['fdFtaRatio']),
       };
     }),
-    on(
-      FrontDeskApiActions.fdFtaRatioSuccess,
-      (state, { fdFtaRatioData }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'fdFtaRatio'),
-          fdFtaRatioData,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdFtaRatio'),
-        };
-      }
-    ),
-    on(
-      FrontDeskApiActions.fdFtaRatioFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdFtaRatioData: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdFtaRatio'),
-          errors: [...errors, { ...error, api: 'fdFtaRatio' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdFtaRatioSuccess, (state, { fdFtaRatioData }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'fdFtaRatio'),
+        fdFtaRatioData,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdFtaRatio'),
+      };
+    }),
+    on(FrontDeskApiActions.fdFtaRatioFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdFtaRatioData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdFtaRatio'),
+        errors: [...errors, { ...error, api: 'fdFtaRatio' }],
+      };
+    }),
     // FdFtaRatioTrend
     on(FrontDeskPageActions.loadFdFtaRatioTrend, (state): FrontDeskState => {
       const { isLoadingData, errors } = state;
@@ -498,20 +435,17 @@ export const frontDeskFeature = createFeature({
           fdFtaRatioTrendData,
           isLoadingData: _.filter(isLoadingData, n => n != 'fdFtaRatioTrend'),
         };
-      }
+      },
     ),
-    on(
-      FrontDeskApiActions.fdFtaRatioTrendFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdFtaRatioTrendData: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdFtaRatioTrend'),
-          errors: [...errors, { ...error, api: 'fdFtaRatioTrend' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdFtaRatioTrendFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdFtaRatioTrendData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdFtaRatioTrend'),
+        errors: [...errors, { ...error, api: 'fdFtaRatioTrend' }],
+      };
+    }),
     // FdUtaRatio
     on(FrontDeskPageActions.loadFdUtaRatio, (state): FrontDeskState => {
       const { isLoadingData, errors } = state;
@@ -522,30 +456,24 @@ export const frontDeskFeature = createFeature({
         isLoadingData: _.union(isLoadingData, ['fdUtaRatio']),
       };
     }),
-    on(
-      FrontDeskApiActions.fdUtaRatioSuccess,
-      (state, { fdUtaRatioData }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'fdUtaRatio'),
-          fdUtaRatioData,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtaRatio'),
-        };
-      }
-    ),
-    on(
-      FrontDeskApiActions.fdUtaRatioFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdUtaRatioData: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtaRatio'),
-          errors: [...errors, { ...error, api: 'fdUtaRatio' }],
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdUtaRatioSuccess, (state, { fdUtaRatioData }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'fdUtaRatio'),
+        fdUtaRatioData,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdUtaRatio'),
+      };
+    }),
+    on(FrontDeskApiActions.fdUtaRatioFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdUtaRatioData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdUtaRatio'),
+        errors: [...errors, { ...error, api: 'fdUtaRatio' }],
+      };
+    }),
     // FdUtaRatioTrend
     on(FrontDeskPageActions.loadFdUtaRatioTrend, (state): FrontDeskState => {
       const { isLoadingData, errors } = state;
@@ -566,35 +494,29 @@ export const frontDeskFeature = createFeature({
           fdUtaRatioTrendData,
           isLoadingData: _.filter(isLoadingData, n => n != 'fdUtaRatioTrend'),
         };
-      }
+      },
     ),
-    on(
-      FrontDeskApiActions.fdUtaRatioTrendFailure,
-      (state, { error }): FrontDeskState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          fdUtaRatioTrendData: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'fdUtaRatioTrend'),
-          errors: [...errors, { ...error, api: 'fdUtaRatioTrend' }],
-        };
-      }
-    ),
-    on(
-      FrontDeskPageActions.setIsByDayData,
-      (state, { value }): FrontDeskState => {
-        return {
-          ...state,
-          isByDayData: value,
-        };
-      }
-    ),
+    on(FrontDeskApiActions.fdUtaRatioTrendFailure, (state, { error }): FrontDeskState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        fdUtaRatioTrendData: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'fdUtaRatioTrend'),
+        errors: [...errors, { ...error, api: 'fdUtaRatioTrend' }],
+      };
+    }),
+    on(FrontDeskPageActions.setIsByDayData, (state, { value }): FrontDeskState => {
+      return {
+        ...state,
+        isByDayData: value,
+      };
+    }),
     on(FrontDeskPageActions.setErrors, (state, { errors }): FrontDeskState => {
       return {
         ...state,
         errors,
       };
-    })
+    }),
   ),
 });
 
@@ -625,57 +547,55 @@ export const {
 
 export const selectIsLoadingFdUtilisationRateData = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'fdUtilisationRate') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdUtilisationRate') >= 0,
 );
 export const selectIsLoadingFdUtilisationRateTrendData = createSelector(
   selectIsLoadingData,
-  loadingData =>
-    _.findIndex(loadingData, l => l == 'fdUtilisationRateTrend') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdUtilisationRateTrend') >= 0,
 );
 export const selectIsLoadingFdUtilisationRateByDayData = createSelector(
   selectIsLoadingData,
-  loadingData =>
-    _.findIndex(loadingData, l => l == 'fdUtilisationRateByDay') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdUtilisationRateByDay') >= 0,
 );
 export const selectIsLoadingFdRecallRateData = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'fdRecallRate') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdRecallRate') >= 0,
 );
 export const selectIsLoadingFdRecallRateTrendData = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'fdRecallRateTrend') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdRecallRateTrend') >= 0,
 );
 export const selectIsLoadingFdReappointRateData = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'fdReappointRate') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdReappointRate') >= 0,
 );
 export const selectIsLoadingFdReappointRateTrendData = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'fdReappointRateTrend') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdReappointRateTrend') >= 0,
 );
 export const selectIsLoadingFdNumTicksData = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'fdNumTicks') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdNumTicks') >= 0,
 );
 export const selectIsLoadingFdNumTicksTrendData = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'fdNumTicksTrend') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdNumTicksTrend') >= 0,
 );
 export const selectIsLoadingFdFtaRatioData = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'fdFtaRatio') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdFtaRatio') >= 0,
 );
 export const selectIsLoadingFdFtaRatioTrendData = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'fdFtaRatioTrend') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdFtaRatioTrend') >= 0,
 );
 export const selectIsLoadingFdUtaRatioData = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'fdUtaRatio') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdUtaRatio') >= 0,
 );
 export const selectIsLoadingFdUtaRatioTrendData = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'fdUtaRatioTrend') >= 0
+  loadingData => _.findIndex(loadingData, l => l == 'fdUtaRatioTrend') >= 0,
 );
 
 export const selectFdUtilRateChartData = createSelector(
@@ -693,25 +613,24 @@ export const selectFdUtilRateChartData = createSelector(
         fdUtilRateGoal: 0,
       };
     }
-    const tableData = [], chartData = [],
+    const tableData = [],
+      chartData = [],
       chartLabels = [];
 
     resBody.data.forEach((val, i) => {
       const value = Math.round(parseFloat(<string>val.utilRate) * 100);
-      const label =  `${val.appBookName}--${val.workedHour}--${val.plannedHour}--${val.clinicName}`;
-      if(i < authUserData.maxChartBars){
+      const label = `${val.appBookName}--${val.workedHour}--${val.plannedHour}--${val.clinicName}`;
+      if (i < authUserData.maxChartBars) {
         chartData.push(value);
         chartLabels.push(label);
       }
-      tableData.push(
-        {
-          value,
-          appBookName: val.appBookName,
-          workedHour: val.workedHour,
-          plannedHour: val.plannedHour,
-          clinicName: val.clinicName
-        }
-      )
+      tableData.push({
+        value,
+        appBookName: val.appBookName,
+        workedHour: val.workedHour,
+        plannedHour: val.plannedHour,
+        clinicName: val.clinicName,
+      });
     });
 
     const chartDatasets = [
@@ -772,7 +691,7 @@ export const selectFdUtilRateChartData = createSelector(
       fdutilRatePrev: Math.round(resBody.totalTa),
       fdUtilRateGoal: resBody.goals,
     };
-  }
+  },
 );
 
 export const selectFdUtilRateByDayChartData = createSelector(
@@ -790,15 +709,7 @@ export const selectFdUtilRateByDayChartData = createSelector(
     const chartData = [],
       chartLabels = [],
       tableData = [];
-    const days = [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday',
-    ];
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     days.forEach(d => {
       tableData.push({
         day: d,
@@ -812,12 +723,8 @@ export const selectFdUtilRateByDayChartData = createSelector(
     _.chain(resBody.data)
       .groupBy('dayName')
       .map((items, day) => {
-        const plannedHour = _.sumBy(items, v =>
-          parseFloat(<string>v.plannedHour)
-        );
-        const workedHour = _.sumBy(items, v =>
-          parseFloat(<string>v.workedHour)
-        );
+        const plannedHour = _.sumBy(items, v => parseFloat(<string>v.plannedHour));
+        const workedHour = _.sumBy(items, v => parseFloat(<string>v.workedHour));
         return {
           day,
           plannedHour,
@@ -836,8 +743,7 @@ export const selectFdUtilRateByDayChartData = createSelector(
             utilRate: utilRate,
           };
           chartData[idx] = utilRate;
-          chartLabels[idx] =
-            `${item.day}--${item.workedHour}--${item.plannedHour}`;
+          chartLabels[idx] = `${item.day}--${item.workedHour}--${item.plannedHour}`;
         }
       });
 
@@ -883,7 +789,7 @@ export const selectFdUtilRateByDayChartData = createSelector(
       fdUtilRateByDayVal: Math.round(resBody.total),
       fdUtilRateByDayPrev: Math.round(resBody.totalTa),
     };
-  }
+  },
 );
 
 export const selectFdUtilRateTrendChartData = createSelector(
@@ -931,45 +837,44 @@ export const selectFdUtilRateTrendChartData = createSelector(
       const chartData = [],
         targetData = [];
       const temp = _.chain(resBody.data)
-        .groupBy((item) => {
+        .groupBy(item => {
           const date = moment();
-          if(trendMode === 'current'){
+          if (trendMode === 'current') {
             date.set({ year: Number(item.year), month: Number(item.month) - 1 });
-          }else{
-            date.set({ year: Number(item.year)});          
+          } else {
+            date.set({ year: Number(item.year) });
           }
-          return trendMode === 'current'? date.format('MMM YYYY'): date.format('YYYY');
-        }).map((values: FdUtilisationRateItem[], key: string) => ({values, key})).value();
+          return trendMode === 'current' ? date.format('MMM YYYY') : date.format('YYYY');
+        })
+        .map((values: FdUtilisationRateItem[], key: string) => ({ values, key }))
+        .value();
 
-        const d = yearsOrMonths.map(
-            (ym) =>
-              temp.find((i) => i.key == ym) || {
-                key: ym,
-                values: []
-              }
-        );
-      d.forEach(({values, key}) => {
+      const d = yearsOrMonths.map(
+        ym =>
+          temp.find(i => i.key == ym) || {
+            key: ym,
+            values: [],
+          },
+      );
+      d.forEach(({ values, key }) => {
         const plannedHour = _.chain(values)
-            .sumBy(item => Number(item.plannedHour))
-            .value();
-          const workedHour = _.chain(values)
-            .sumBy(item => Number(item.workedHour))
-            .value();
-            console.log(_.round((workedHour / plannedHour) * 100, 0))
-        chartData.push(Math.round(_.sumBy(values, v => (workedHour / plannedHour) * 100) / values.length));
+          .sumBy(item => Number(item.plannedHour))
+          .value();
+        const workedHour = _.chain(values)
+          .sumBy(item => Number(item.workedHour))
+          .value();
+        console.log(_.round((workedHour / plannedHour) * 100, 0));
+        chartData.push(
+          Math.round(_.sumBy(values, v => (workedHour / plannedHour) * 100) / values.length),
+        );
         if (values.every(item => item.goals == -1 || item.goals == '' || item.goals == null)) {
           targetData.push([0, 0]);
         } else {
           const goals = _.sumBy(values, v => parseFloat(<string>v.goals) || 0) / values.length;
-          targetData.push([
-            goals - GOAL_THICKNESS,
-            goals + GOAL_THICKNESS,
-          ]);
+          targetData.push([goals - GOAL_THICKNESS, goals + GOAL_THICKNESS]);
         }
         chartLabels.push(
-          `${
-            key
-          }--${_.sumBy(values, v => Number(v.workedHour))/ values.length}--${_.sumBy(values, v => Number(v.plannedHour))/values.length}`
+          `${key}--${_.sumBy(values, v => Number(v.workedHour)) / values.length}--${_.sumBy(values, v => Number(v.plannedHour)) / values.length}`,
         );
       });
       chartDatasets = [
@@ -1035,7 +940,7 @@ export const selectFdUtilRateTrendChartData = createSelector(
       datasets: chartDatasets,
       labels: chartLabels,
     };
-  }
+  },
 );
 
 export const selectFdRecallRateChartData = createSelector(
@@ -1059,10 +964,9 @@ export const selectFdRecallRateChartData = createSelector(
         if (item.clinicId) {
           chartData.push(
             Math.round(
-              (parseFloat(<string>item.recallPatient) /
-                parseFloat(<string>item.totalPatient)) *
-                100
-            )
+              (parseFloat(<string>item.recallPatient) / parseFloat(<string>item.totalPatient)) *
+                100,
+            ),
           );
           chartLabels.push(item.clinicName);
         }
@@ -1085,7 +989,7 @@ export const selectFdRecallRateChartData = createSelector(
       fdRecallRatePrev: Math.round(resBody.totalTa),
       fdRecallRateGoal: resBody.goals,
     };
-  }
+  },
 );
 
 export const selectFdRecallRateTrendChartData = createSelector(
@@ -1121,17 +1025,14 @@ export const selectFdRecallRateTrendChartData = createSelector(
         .forEach(item => {
           chartData.push(_.round(item.recallPercent));
           chartLabels.push(
-            trendMode === 'current'
-              ? moment(item.duration).format('MMM YYYY')
-              : item.duration
+            trendMode === 'current' ? moment(item.duration).format('MMM YYYY') : item.duration,
           );
         });
-      chartDatasets = [
-        { data: chartData, backgroundColor: COLORS.presetColors[0], label: '' },
-      ];
+      chartDatasets = [{ data: chartData, backgroundColor: COLORS.presetColors[0], label: '' }];
     } else {
       const chartData = [],
-        targetData = [], backgroundColor = [];
+        targetData = [],
+        backgroundColor = [];
       resBody.data.forEach((item, index) => {
         const recallPercent = Math.round(<number>item.recallPercent);
         if (recallPercent >= 0) {
@@ -1146,9 +1047,7 @@ export const selectFdRecallRateTrendChartData = createSelector(
             ]);
           }
           chartLabels.push(
-            trendMode === 'current'
-              ? moment(item.yearMonth).format('MMM YYYY')
-              : item.year
+            trendMode === 'current' ? moment(item.yearMonth).format('MMM YYYY') : item.year,
           );
         }
       });
@@ -1194,48 +1093,45 @@ export const selectFdRecallRateTrendChartData = createSelector(
       datasets: chartDatasets,
       labels: chartLabels,
     };
-  }
+  },
 );
 
-export const selectFdReappointRateChartData = createSelector(
-  selectFdReappointRateData,
-  resBody => {
-    if (resBody == null) {
-      return {
-        datasets: [],
-        labels: [],
-        fdReappointRateVal: 0,
-        fdReappointRatePrev: 0,
-        fdReappointRateGoal: 0,
-      };
-    }
-    const chartData = [],
-      chartLabels = [];
-    if (resBody.total > 0) {
-      resBody.data.forEach(item => {
-        chartData.push(Math.round(<number>item.reappointRate));
-        chartLabels.push(item.clinicName);
-      });
-    }
-
-    const chartDatasets = [
-      {
-        data: [],
-        label: '',
-        backgroundColor: COLORS.alterColors,
-        hoverBackgroundColor: COLORS.alterColors,
-      },
-    ];
-    chartDatasets[0]['data'] = chartData;
+export const selectFdReappointRateChartData = createSelector(selectFdReappointRateData, resBody => {
+  if (resBody == null) {
     return {
-      datasets: chartDatasets,
-      labels: chartLabels,
-      fdReappointRateVal: Math.round(resBody.total),
-      fdReappointRatePrev: Math.round(resBody.totalTa),
-      fdReappointRateGoal: resBody.goals,
+      datasets: [],
+      labels: [],
+      fdReappointRateVal: 0,
+      fdReappointRatePrev: 0,
+      fdReappointRateGoal: 0,
     };
   }
-);
+  const chartData = [],
+    chartLabels = [];
+  if (resBody.total > 0) {
+    resBody.data.forEach(item => {
+      chartData.push(Math.round(<number>item.reappointRate));
+      chartLabels.push(item.clinicName);
+    });
+  }
+
+  const chartDatasets = [
+    {
+      data: [],
+      label: '',
+      backgroundColor: COLORS.alterColors,
+      hoverBackgroundColor: COLORS.alterColors,
+    },
+  ];
+  chartDatasets[0]['data'] = chartData;
+  return {
+    datasets: chartDatasets,
+    labels: chartLabels,
+    fdReappointRateVal: Math.round(resBody.total),
+    fdReappointRatePrev: Math.round(resBody.totalTa),
+    fdReappointRateGoal: resBody.goals,
+  };
+});
 
 export const selectFdReappointRateTrendChartData = createSelector(
   selectFdReappointRateTrendData,
@@ -1270,17 +1166,14 @@ export const selectFdReappointRateTrendChartData = createSelector(
         .forEach(item => {
           chartData.push(_.round(item.reappointRate));
           chartLabels.push(
-            trendMode === 'current'
-              ? moment(item.duration).format('MMM YYYY')
-              : item.duration
+            trendMode === 'current' ? moment(item.duration).format('MMM YYYY') : item.duration,
           );
         });
-      chartDatasets = [
-        { data: chartData, label: '', backgroundColor: COLORS.presetColors[0] },
-      ];
+      chartDatasets = [{ data: chartData, label: '', backgroundColor: COLORS.presetColors[0] }];
     } else {
       const chartData = [],
-        targetData = [], backgroundColor = [];
+        targetData = [],
+        backgroundColor = [];
       resBody.data.forEach((item, index) => {
         chartData.push(Math.round(<number>item.reappointRate));
         backgroundColor.push(index % 2 == 0 ? COLORS.even : COLORS.odd);
@@ -1293,9 +1186,7 @@ export const selectFdReappointRateTrendChartData = createSelector(
           ]);
         }
         chartLabels.push(
-          trendMode === 'current'
-            ? moment(item.yearMonth).format('MMM YYYY')
-            : item.year
+          trendMode === 'current' ? moment(item.yearMonth).format('MMM YYYY') : item.year,
         );
       });
       chartDatasets = [
@@ -1328,7 +1219,7 @@ export const selectFdReappointRateTrendChartData = createSelector(
       datasets: chartDatasets,
       labels: chartLabels,
     };
-  }
+  },
 );
 
 export const selectFdNumTicksChartData = createSelector(
@@ -1370,7 +1261,7 @@ export const selectFdNumTicksChartData = createSelector(
       fdNumOfTicksVal: Math.round(resBody.total),
       fdNumOfTicksPrev: Math.round(resBody.totalTa),
     };
-  }
+  },
 );
 
 export const selectFdNumTicksTrendChartData = createSelector(
@@ -1390,9 +1281,7 @@ export const selectFdNumTicksTrendChartData = createSelector(
       chartLabels = _.chain(resBody.data)
         .groupBy(trendMode === 'current' ? 'yearMonth' : 'year')
         .map((items, duration) => {
-          return trendMode === 'current'
-            ? moment(duration).format('MMM YYYY')
-            : duration;
+          return trendMode === 'current' ? moment(duration).format('MMM YYYY') : duration;
         })
         .value();
       let i = 0;
@@ -1411,14 +1300,13 @@ export const selectFdNumTicksTrendChartData = createSelector(
         })
         .value();
     } else {
-      const chartData = [], backgroundColor = [];
+      const chartData = [],
+        backgroundColor = [];
       resBody.data.forEach((item, index) => {
         chartData.push(Math.round(<number>item.numTicks));
         backgroundColor.push(index % 2 == 0 ? COLORS.even : COLORS.odd);
         chartLabels.push(
-          trendMode === 'current'
-            ? moment(item.yearMonth).format('MMM YYYY')
-            : item.year
+          trendMode === 'current' ? moment(item.yearMonth).format('MMM YYYY') : item.year,
         );
       });
       chartDatasets = [
@@ -1446,50 +1334,47 @@ export const selectFdNumTicksTrendChartData = createSelector(
       datasets: chartDatasets,
       labels: chartLabels,
     };
-  }
+  },
 );
 
-export const selectFdFtaRatioChartData = createSelector(
-  selectFdFtaRatioData,
-  resBody => {
-    if (resBody == null) {
-      return {
-        datasets: [],
-        labels: [],
-        fdFtaRatioVal: 0,
-        fdFtaRatioPrev: 0,
-        fdFtaRatioGoal: 0,
-      };
-    }
-    const chartData = [],
-      chartLabels = [];
-    if (resBody.total > 0) {
-      resBody.data.forEach(item => {
-        chartData.push(_.round(<number>item.ftaRatio, 1));
-        chartLabels.push(item.clinicName);
-      });
-    }
-
-    const chartDatasets = [
-      {
-        data: [],
-        label: '',
-        backgroundColor: COLORS.alterColors,
-        hoverBackgroundColor: COLORS.alterColors,
-      },
-    ];
-
-    chartDatasets[0]['data'] = chartData;
-
+export const selectFdFtaRatioChartData = createSelector(selectFdFtaRatioData, resBody => {
+  if (resBody == null) {
     return {
-      datasets: chartDatasets,
-      labels: chartLabels,
-      fdFtaRatioVal: _.round(resBody.total > 100 ? 100 : resBody.total, 1),
-      fdFtaRatioPrev: _.round(resBody.totalTa, 1),
-      fdFtaRatioGoal: resBody.goals,
+      datasets: [],
+      labels: [],
+      fdFtaRatioVal: 0,
+      fdFtaRatioPrev: 0,
+      fdFtaRatioGoal: 0,
     };
   }
-);
+  const chartData = [],
+    chartLabels = [];
+  if (resBody.total > 0) {
+    resBody.data.forEach(item => {
+      chartData.push(_.round(<number>item.ftaRatio, 1));
+      chartLabels.push(item.clinicName);
+    });
+  }
+
+  const chartDatasets = [
+    {
+      data: [],
+      label: '',
+      backgroundColor: COLORS.alterColors,
+      hoverBackgroundColor: COLORS.alterColors,
+    },
+  ];
+
+  chartDatasets[0]['data'] = chartData;
+
+  return {
+    datasets: chartDatasets,
+    labels: chartLabels,
+    fdFtaRatioVal: _.round(resBody.total > 100 ? 100 : resBody.total, 1),
+    fdFtaRatioPrev: _.round(resBody.totalTa, 1),
+    fdFtaRatioGoal: resBody.goals,
+  };
+});
 
 export const selectFdFtaRatioTrendChartData = createSelector(
   selectFdFtaRatioTrendData,
@@ -1517,10 +1402,7 @@ export const selectFdFtaRatioTrendChartData = createSelector(
             .sumBy(item => Number(item.totalAppts))
             .value();
           return {
-            duration:
-              trendMode === 'current'
-                ? moment(duration).format('MMM YYYY')
-                : duration,
+            duration: trendMode === 'current' ? moment(duration).format('MMM YYYY') : duration,
             ftaRatio: _.round((totalFta / totalAppts) * 100, 1),
           };
         })
@@ -1529,9 +1411,7 @@ export const selectFdFtaRatioTrendChartData = createSelector(
           chartData.push(_.round(item.ftaRatio, 1));
           chartLabels.push(item.duration);
         });
-      chartDatasets = [
-        { data: chartData, label: '', backgroundColor: COLORS.presetColors[0] },
-      ];
+      chartDatasets = [{ data: chartData, label: '', backgroundColor: COLORS.presetColors[0] }];
     } else {
       resBody.data.forEach(item => {
         chartData.push(_.round(<number>item.ftaRatio, 1));
@@ -1541,9 +1421,7 @@ export const selectFdFtaRatioTrendChartData = createSelector(
           targetData.push(item.goals);
         }
         chartLabels.push(
-          trendMode === 'current'
-            ? moment(item.yearMonth).format('MMM YYYY')
-            : item.year
+          trendMode === 'current' ? moment(item.yearMonth).format('MMM YYYY') : item.year,
         );
       });
       const mappedtargetData = [];
@@ -1575,50 +1453,47 @@ export const selectFdFtaRatioTrendChartData = createSelector(
       datasets: chartDatasets,
       labels: chartLabels,
     };
-  }
+  },
 );
 
-export const selectFdUtaRatioChartData = createSelector(
-  selectFdUtaRatioData,
-  resBody => {
-    if (resBody == null) {
-      return {
-        datasets: [],
-        labels: [],
-        fdUtaRatioVal: 0,
-        fdUtaRatioPrev: 0,
-        fdUtaRatioGoal: 0,
-      };
-    }
-    const chartData = [],
-      chartLabels = [];
-    if (resBody.total > 0) {
-      resBody.data.forEach(item => {
-        chartData.push(_.round(<number>item.utaRatio, 1));
-        chartLabels.push(item.clinicName);
-      });
-    }
-
-    const chartDatasets = [
-      {
-        data: [],
-        label: '',
-        backgroundColor: COLORS.alterColors,
-        hoverBackgroundColor: COLORS.alterColors,
-      },
-    ];
-
-    chartDatasets[0]['data'] = chartData;
-
+export const selectFdUtaRatioChartData = createSelector(selectFdUtaRatioData, resBody => {
+  if (resBody == null) {
     return {
-      datasets: chartDatasets,
-      labels: chartLabels,
-      fdUtaRatioVal: _.round(resBody.total > 100 ? 100 : resBody.total, 1),
-      fdUtaRatioPrev: _.round(resBody.totalTa, 1),
-      fdUtaRatioGoal: resBody.goals,
+      datasets: [],
+      labels: [],
+      fdUtaRatioVal: 0,
+      fdUtaRatioPrev: 0,
+      fdUtaRatioGoal: 0,
     };
   }
-);
+  const chartData = [],
+    chartLabels = [];
+  if (resBody.total > 0) {
+    resBody.data.forEach(item => {
+      chartData.push(_.round(<number>item.utaRatio, 1));
+      chartLabels.push(item.clinicName);
+    });
+  }
+
+  const chartDatasets = [
+    {
+      data: [],
+      label: '',
+      backgroundColor: COLORS.alterColors,
+      hoverBackgroundColor: COLORS.alterColors,
+    },
+  ];
+
+  chartDatasets[0]['data'] = chartData;
+
+  return {
+    datasets: chartDatasets,
+    labels: chartLabels,
+    fdUtaRatioVal: _.round(resBody.total > 100 ? 100 : resBody.total, 1),
+    fdUtaRatioPrev: _.round(resBody.totalTa, 1),
+    fdUtaRatioGoal: resBody.goals,
+  };
+});
 
 export const selectFdUtaRatioTrendChartData = createSelector(
   selectFdUtaRatioTrendData,
@@ -1646,10 +1521,7 @@ export const selectFdUtaRatioTrendChartData = createSelector(
             .sumBy(item => Number(item.totalAppts))
             .value();
           return {
-            duration:
-              trendMode === 'current'
-                ? moment(duration).format('MMM YYYY')
-                : duration,
+            duration: trendMode === 'current' ? moment(duration).format('MMM YYYY') : duration,
             utaRatio: _.round((totalUta / totalAppts) * 100, 1),
           };
         })
@@ -1658,9 +1530,7 @@ export const selectFdUtaRatioTrendChartData = createSelector(
           chartData.push(_.round(item.utaRatio, 1));
           chartLabels.push(item.duration);
         });
-      chartDatasets = [
-        { data: chartData, label: '', backgroundColor: COLORS.presetColors[0] },
-      ];
+      chartDatasets = [{ data: chartData, label: '', backgroundColor: COLORS.presetColors[0] }];
     } else {
       resBody.data.forEach(item => {
         chartData.push(_.round(<number>item.utaRatio, 1));
@@ -1670,9 +1540,7 @@ export const selectFdUtaRatioTrendChartData = createSelector(
           targetData.push(item.goals);
         }
         chartLabels.push(
-          trendMode === 'current'
-            ? moment(item.yearMonth).format('MMM YYYY')
-            : item.year
+          trendMode === 'current' ? moment(item.yearMonth).format('MMM YYYY') : item.year,
         );
       });
       const mappedtargetData = [];
@@ -1703,5 +1571,5 @@ export const selectFdUtaRatioTrendChartData = createSelector(
       datasets: chartDatasets,
       labels: chartLabels,
     };
-  }
+  },
 );

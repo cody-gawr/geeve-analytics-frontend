@@ -5,21 +5,16 @@
       (click)="setDuration(menu.range)"
       [class]="
         menu.range === (duration$ | async) &&
-        !(
-          (isDentistMode$ | async) &&
-          (isTrend$ | async) &&
-          !(enableDatePresets$ | async)
-        )
+        !((isDentistMode$ | async) && (isTrend$ | async) && !(enableDatePresets$ | async))
           ? 'active'
           : ''
-      ">
+      "
+    >
       {{ menu.label }}
     </button>
   </div>
   <div class="dropdown-box">
-    <mat-select
-      (selectionChange)="setDuration($event.value)"
-      [value]="selectedMenu">
+    <mat-select (selectionChange)="setDuration($event.value)" [value]="selectedMenu">
       <mat-option *ngFor="let menu of dateRangeMenus" [value]="menu.range">
         {{ menu.label }}
       </mat-option>

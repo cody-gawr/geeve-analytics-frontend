@@ -10,24 +10,22 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <mat-icon
     *ngIf="isTableIconVisible$ | async"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
-    fontIcon="table_rows_narrow" />
+    fontIcon="table_rows_narrow"
+  />
   <div class="chart-title">
     <mat-icon
       *ngIf="!(isTrend$ | async)"
-      [matTooltip]="
-        (durationTrendLabel$ | async) +
-        ': ' +
-        (fdUtilRatePrev | number: '1.0-0') +
-        '%'
-      "
+      [matTooltip]="(durationTrendLabel$ | async) + ': ' + (fdUtilRatePrev | number: '1.0-0') + '%'"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
-      [fontIcon]="trendingIcon"></mat-icon>
+      [fontIcon]="trendingIcon"
+    ></mat-icon>
     <span> Utilisation Rate </span>
   </div>
   <div class="chart-content">
@@ -57,15 +55,13 @@
           <button
             *ngIf="isByDayData$ | async; else elem1"
             (click)="disableIsByDayData()"
-            mat-stroked-button>
-            {{(isPraktika$ | async) ? 'By Provider' : 'By ApptBook'}}
+            mat-stroked-button
+          >
+            {{ (isPraktika$ | async) ? 'By Provider' : 'By ApptBook' }}
           </button>
           <ng-template #elem1>
-            <button
-              mat-flat-button
-              (click)="disableIsByDayData()"
-              color="primary">
-              {{(isPraktika$ | async) ? 'By Provider' : 'By ApptBook'}}
+            <button mat-flat-button (click)="disableIsByDayData()" color="primary">
+              {{ (isPraktika$ | async) ? 'By Provider' : 'By ApptBook' }}
             </button>
           </ng-template>
 
@@ -73,21 +69,21 @@
             (click)="enableIsByDayData()"
             *ngIf="isByDayData$ | async; else elem2"
             color="primary"
-            mat-flat-button>
+            mat-flat-button
+          >
             By Day
           </button>
           <ng-template #elem2>
-            <button (click)="enableIsByDayData()" mat-stroked-button>
-              By Day
-            </button>
+            <button (click)="enableIsByDayData()" mat-stroked-button>By Day</button>
           </ng-template>
         </div>
         <div class="chart-gauge utilisation-rate-gauge">
           <spin-loader
-                class="empty-placeholder"
-                *ngIf="(isExact$ | async) || (isCore$ | async) || isComingSoon; else enabledChart"
-                [disableSpin]="true">
-                Coming Soon...
+            class="empty-placeholder"
+            *ngIf="(isExact$ | async) || (isCore$ | async) || isComingSoon; else enabledChart"
+            [disableSpin]="true"
+          >
+            Coming Soon...
           </spin-loader>
           <ng-template #enabledChart>
             <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
@@ -95,43 +91,36 @@
               <spin-loader
                 class="empty-placeholder"
                 *ngIf="isDateRageInvalid$ | async; else chartElem1"
-                [disableSpin]="true">
-                Utilisation Rate shows currently Active appointment books only.
-                Historic data beyond 12 months is not available
+                [disableSpin]="true"
+              >
+                Utilisation Rate shows currently Active appointment books only. Historic data beyond
+                12 months is not available
               </spin-loader>
               <ng-template #chartElem1>
-                  <canvas
-                    #fdUtilRateChart
-                    *ngIf="hasData$ | async; else chartElem03"
-                    baseChart
-                    [datasets]="datasets"
-                    [labels]="labels"
-                    [legend]="
-                      (isLegend$ | async) && queryWhEnabled === 0
-                    "
-                    type="bar"
-                    [options]="chartOptions$ | async"
-                    [plugins]="chatPlugins"
-                    >
-                  </canvas>
-                  <ng-template #chartElem03>
-                    <spin-loader class="empty-placeholder" [disableSpin]="true">
-                      You have no appointments in the selected period
-                    </spin-loader>
-                  </ng-template>
+                <canvas
+                  #fdUtilRateChart
+                  *ngIf="hasData$ | async; else chartElem03"
+                  baseChart
+                  [datasets]="datasets"
+                  [labels]="labels"
+                  [legend]="(isLegend$ | async) && queryWhEnabled === 0"
+                  type="bar"
+                  [options]="chartOptions$ | async"
+                  [plugins]="chatPlugins"
+                >
+                </canvas>
+                <ng-template #chartElem03>
+                  <spin-loader class="empty-placeholder" [disableSpin]="true">
+                    You have no appointments in the selected period
+                  </spin-loader>
+                </ng-template>
               </ng-template>
             </ng-template>
           </ng-template>
         </div>
-        <div
-          class="chart-foot"
-          *ngIf="!(isTrend$ | async) && !(isExact$ | async) && !isComingSoon;">
+        <div class="chart-foot" *ngIf="!(isTrend$ | async) && !(isExact$ | async) && !isComingSoon">
           <div>
-            <h3>
-              {{
-                (fdUtilRateVal > 100 ? 100 : fdUtilRateVal) | number: '1.0-0'
-              }}%
-            </h3>
+            <h3>{{ (fdUtilRateVal > 100 ? 100 : fdUtilRateVal) | number: '1.0-0' }}%</h3>
             <span>{{ durationLabel$ | async }} Avg</span>
           </div>
           <div *ngIf="isFullMonthDate$ | async">
@@ -144,12 +133,9 @@
               fdUtilRateGoal >= 0 &&
               !(isMultipleClinic$ | async) &&
               (showGoals$ | async)
-            ">
-            <h3>
-              {{
-                fdUtilRateGoal > 100 ? 100 : (fdUtilRateGoal | number: '1.0-0')
-              }}%
-            </h3>
+            "
+          >
+            <h3>{{ fdUtilRateGoal > 100 ? 100 : (fdUtilRateGoal | number: '1.0-0') }}%</h3>
             <span>Goal</span>
           </div>
         </div>

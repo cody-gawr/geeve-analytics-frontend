@@ -68,222 +68,162 @@ export class FinanceFacade {
   constructor(private store: Store<FinanceState>) {}
 
   isLoadingChartDesc$ = (chartDesc: FinanceEndpoints) => {
-    return this.store.pipe(
-      select(selectIsLoadingChartDesc(chartDesc))
-    );
+    return this.store.pipe(select(selectIsLoadingChartDesc(chartDesc)));
   };
 
   loadChartDescription(
-    chartDescription: FinanceEndpoints, 
-    params: ChartDescParams<FinanceEndpoints>
+    chartDescription: FinanceEndpoints,
+    params: ChartDescParams<FinanceEndpoints>,
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnChartDescription({
         chartDescription,
-        ...params
-      })
+        ...params,
+      }),
     );
-  };
+  }
 
-  public readonly errors$: Observable<JeeveError[]> = this.store.pipe(
-    select(selectErrors)
-  );
+  public readonly errors$: Observable<JeeveError[]> = this.store.pipe(select(selectErrors));
 
-  public readonly hourlyRateChartData$ = this.store.pipe(
-    select(selectHourlyRateChartData)
-  );
+  public readonly hourlyRateChartData$ = this.store.pipe(select(selectHourlyRateChartData));
 
-  public readonly productionVal$ = this.store.pipe(
-    select(selectNetProfitProductionVal)
-  );
+  public readonly productionVal$ = this.store.pipe(select(selectNetProfitProductionVal));
 
   public readonly netProfitVal$ = this.store.pipe(select(selectNetProfitVal));
 
-  public readonly netProfitTrendData$ = this.store.pipe(
-    select(selectNetProfitTrendData)
-  );
+  public readonly netProfitTrendData$ = this.store.pipe(select(selectNetProfitTrendData));
 
-  public readonly netProfitTrendChartData$ = this.store.pipe(
-    select(selectNetProfitTrendChartData)
-  );
+  public readonly netProfitTrendChartData$ = this.store.pipe(select(selectNetProfitTrendChartData));
 
-  public readonly productionTrendVal$ = this.store.pipe(
-    select(selectProductionTrendVal)
-  );
+  public readonly productionTrendVal$ = this.store.pipe(select(selectProductionTrendVal));
 
-  public readonly netProfitPercentageVal$ = this.store.pipe(
-    select(selectNetProfitPercentageVal)
-  );
+  public readonly netProfitPercentageVal$ = this.store.pipe(select(selectNetProfitPercentageVal));
 
   public readonly netProfitPercentTrendChartData$ = this.store.pipe(
-    select(selectNetProfitPercentTrendChartData)
+    select(selectNetProfitPercentTrendChartData),
   );
 
   public readonly isLoadingTotalProduction$ = this.store.pipe(
-    select(selectIsLoadingTotalProduction)
+    select(selectIsLoadingTotalProduction),
   );
 
   public readonly isLoadingTotalProductionTrend$ = this.store.pipe(
-    select(selectIsLoadingTotalProductionTrend)
+    select(selectIsLoadingTotalProductionTrend),
   );
 
-  public readonly isLoadingCollection$ = this.store.pipe(
-    select(selectIsLoadingCollection)
-  );
+  public readonly isLoadingCollection$ = this.store.pipe(select(selectIsLoadingCollection));
 
   public readonly isLoadingCollectionTrend$ = this.store.pipe(
-    select(selectIsLoadingCollectionTrend)
+    select(selectIsLoadingCollectionTrend),
   );
 
-  public readonly isLoadingNetProfit$ = this.store.pipe(
-    select(selectIsLoadingNetProfit)
-  );
+  public readonly isLoadingNetProfit$ = this.store.pipe(select(selectIsLoadingNetProfit));
 
-  public readonly isLoadingNetProfitTrend$ = this.store.pipe(
-    select(selectIsLoadingNetProfitTrend)
-  );
+  public readonly isLoadingNetProfitTrend$ = this.store.pipe(select(selectIsLoadingNetProfitTrend));
 
   public readonly isLoadingNetProfitPercentage$ = this.store.pipe(
-    select(selectIsLoadingNetProfitPercentage)
+    select(selectIsLoadingNetProfitPercentage),
   );
 
   public readonly isLoadingNetProfitPercentageTrend$ = this.store.pipe(
-    select(selectIsLoadingNetProfitPercentTrend)
+    select(selectIsLoadingNetProfitPercentTrend),
   );
 
-  public readonly isLoadingFnExpenses$ = this.store.pipe(
-    select(selectIsLoadingFnExpenses)
-  );
+  public readonly isLoadingFnExpenses$ = this.store.pipe(select(selectIsLoadingFnExpenses));
 
   public readonly isLoadingFnExpensesTrend$ = this.store.pipe(
-    select(selectIsLoadingFnExpensesTrend)
+    select(selectIsLoadingFnExpensesTrend),
   );
 
   public readonly isLoadingFnProdPerVisit$ = this.store.pipe(
-    select(selectIsLoadingFnProdPerVisitOrDay)
+    select(selectIsLoadingFnProdPerVisitOrDay),
   );
 
   public readonly isLoadingFnProdPerVisitTrend$ = this.store.pipe(
-    select(selectIsLoadingFnProdPerVisitOrDayTrend)
+    select(selectIsLoadingFnProdPerVisitOrDayTrend),
   );
 
   public readonly isLoadingFnProdPerClinician$ = this.store.pipe(
-    select(selectIsLoadingFnProdPerClinic)
+    select(selectIsLoadingFnProdPerClinic),
   );
 
   public readonly isLoadingFnProdPerClinicianTrend$ = this.store.pipe(
-    select(selectIsLoadingFnProdPerClinicTrend)
+    select(selectIsLoadingFnProdPerClinicTrend),
   );
 
   public readonly isLoadingFnTotalDiscount$ = this.store.pipe(
-    select(selectIsLoadingFnTotalDiscount)
+    select(selectIsLoadingFnTotalDiscount),
   );
 
   public readonly isLoadingFnTotalDiscountTrend$ = this.store.pipe(
-    select(selectIsLoadingFnTotalDiscountTrend)
+    select(selectIsLoadingFnTotalDiscountTrend),
   );
 
   public readonly expensesData$ = this.store.pipe(select(selectExpensesData));
-  public readonly fnExpensesData$ = this.store.pipe(
-    select(selectFnExpensesData)
-  );
+  public readonly fnExpensesData$ = this.store.pipe(select(selectFnExpensesData));
 
-  public readonly expensesTrendChartData$ = this.store.pipe(
-    select(selectExpensesTrendChartData)
-  );
+  public readonly expensesTrendChartData$ = this.store.pipe(select(selectExpensesTrendChartData));
 
-  public readonly expensesTrendDurations$ = this.store.pipe(
-    select(selectExpensesTrendDurations)
-  );
+  public readonly expensesTrendDurations$ = this.store.pipe(select(selectExpensesTrendDurations));
 
-  public readonly expensesProduction$ = this.store.pipe(
-    select(selectExpenseProduction)
-  );
+  public readonly expensesProduction$ = this.store.pipe(select(selectExpenseProduction));
 
-  public readonly prodByClinicianChartData$ = this.store.pipe(
-    select(selectProdByClinicData)
-  );
+  public readonly prodByClinicianChartData$ = this.store.pipe(select(selectProdByClinicData));
 
   public readonly prodByClinicianTrendChartData$ = this.store.pipe(
-    select(selectProdByClinicianTrendChartData)
+    select(selectProdByClinicianTrendChartData),
   );
 
   public readonly prodData$ = this.store.pipe(select(selectProdData));
 
   public readonly prodTrendData$ = this.store.pipe(select(selectProdTrendData));
 
-  public readonly prodTrendChartData$ = this.store.pipe(
-    select(selectProdTrendChartData)
-  );
+  public readonly prodTrendChartData$ = this.store.pipe(select(selectProdTrendChartData));
 
-  public readonly collectionData$ = this.store.pipe(
-    select(selectCollectionData)
-  );
+  public readonly collectionData$ = this.store.pipe(select(selectCollectionData));
 
-  public readonly collectionTrendData$ = this.store.pipe(
-    select(selectCollectionTrendData)
-  );
+  public readonly collectionTrendData$ = this.store.pipe(select(selectCollectionTrendData));
 
   public readonly collectionTrendChartData$ = this.store.pipe(
-    select(selectCollectionTrendChartData)
+    select(selectCollectionTrendChartData),
   );
 
   public readonly collectionVal$ = this.store.pipe(select(selectCollectionVal));
 
-  public readonly collectionTrendVal$ = this.store.pipe(
-    select(selectCollectionTrendVal)
-  );
+  public readonly collectionTrendVal$ = this.store.pipe(select(selectCollectionTrendVal));
 
-  public readonly prodByClinicianTotal$ = this.store.pipe(
-    select(selectProdByClinicianTotal)
-  );
+  public readonly prodByClinicianTotal$ = this.store.pipe(select(selectProdByClinicianTotal));
 
   public readonly prodByClinicianTrendTotal$ = this.store.pipe(
-    select(selectProdByClinicianTrendTotal)
+    select(selectProdByClinicianTrendTotal),
   );
 
-  public readonly prodPerVisitChartData$ = this.store.pipe(
-    select(selectProdPerVisitChartData)
-  );
+  public readonly prodPerVisitChartData$ = this.store.pipe(select(selectProdPerVisitChartData));
 
   public readonly prodPerVisitTrendChartData$ = this.store.pipe(
-    select(selectProdPerVisitTrendChartData)
+    select(selectProdPerVisitTrendChartData),
   );
 
-  public readonly prodPerVisitChartName$ = this.store.pipe(
-    select(selectProdPerVisitChartName)
-  );
+  public readonly prodPerVisitChartName$ = this.store.pipe(select(selectProdPerVisitChartName));
 
-  public readonly totalDiscountData$ = this.store.pipe(
-    select(selectTotalDiscountData)
-  );
+  public readonly totalDiscountData$ = this.store.pipe(select(selectTotalDiscountData));
 
   public readonly totalDiscountTrendChartData$ = this.store.pipe(
-    select(selectTotalDiscountTrendChartData)
+    select(selectTotalDiscountTrendChartData),
   );
 
-  public readonly totalDiscountTotal$ = this.store.pipe(
-    select(selectTotalDiscountTotal)
-  );
+  public readonly totalDiscountTotal$ = this.store.pipe(select(selectTotalDiscountTotal));
 
-  public readonly totalDiscountTrendTotal$ = this.store.pipe(
-    select(selectTotalDiscountTrendTotal)
-  );
+  public readonly totalDiscountTrendTotal$ = this.store.pipe(select(selectTotalDiscountTrendTotal));
 
-  public readonly profitTrendChartName$ = this.store.pipe(
-    select(selectTrendProfitChartName)
-  );
+  public readonly profitTrendChartName$ = this.store.pipe(select(selectTrendProfitChartName));
 
-  public readonly isLoadingAllData$ = this.store.pipe(
-    select(selectIsLoadingAllData)
-  );
+  public readonly isLoadingAllData$ = this.store.pipe(select(selectIsLoadingAllData));
 
-  public readonly isLoadingAllTrendData$ = this.store.pipe(
-    select(selectIsLoadingAllTrendData)
-  );
+  public readonly isLoadingAllTrendData$ = this.store.pipe(select(selectIsLoadingAllTrendData));
 
   public readonly prodCollChartData$ = this.store.pipe(
-    select(selectProductionCollectionTrendChartData)
+    select(selectProductionCollectionTrendChartData),
   );
 
   public setErrors(errors: JeeveError[]) {
@@ -297,14 +237,14 @@ export class FinanceFacade {
   public loadFnTotalProductionTrend(
     clinicId: string | number,
     mode = '',
-    queryWhEnabled = undefined
+    queryWhEnabled = undefined,
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnTotalProductionTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -315,14 +255,14 @@ export class FinanceFacade {
   public loadFnTotalCollectionTrend(
     clinicId: string | number,
     mode = '',
-    queryWhEnabled = undefined
+    queryWhEnabled = undefined,
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnTotalCollectionTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -334,7 +274,7 @@ export class FinanceFacade {
     clinicId: string | number,
     mode = '',
     connectedWith = '',
-    queryWhEnabled = undefined
+    queryWhEnabled = undefined,
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnNetProfitTrend({
@@ -342,7 +282,7 @@ export class FinanceFacade {
         mode,
         connectedWith,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -354,7 +294,7 @@ export class FinanceFacade {
     clinicId: string | number,
     mode = '',
     connectedWith = '',
-    queryWhEnabled = undefined
+    queryWhEnabled = undefined,
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnNetProfitPercentageTrend({
@@ -362,7 +302,7 @@ export class FinanceFacade {
         mode,
         queryWhEnabled,
         connectedWith,
-      })
+      }),
     );
   }
 
@@ -374,7 +314,7 @@ export class FinanceFacade {
     clinicId: string | number,
     mode: string,
     connectedWith: string,
-    queryWhEnabled: number = undefined
+    queryWhEnabled: number = undefined,
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnExpensesTrend({
@@ -382,7 +322,7 @@ export class FinanceFacade {
         mode,
         connectedWith,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -393,14 +333,14 @@ export class FinanceFacade {
   public loadFnProductionByClinicianTrend(
     clinicId: string | number,
     mode: string,
-    queryWhEnabled: number = undefined
+    queryWhEnabled: number = undefined,
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnProdByClinicianTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
@@ -415,35 +355,33 @@ export class FinanceFacade {
   public loadFnProductionPerVisitTrend(
     clinicId: string | number,
     mode: string,
-    queryWhEnabled: number = undefined
+    queryWhEnabled: number = undefined,
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnProdPerVisitTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
   public loadFnProductionPerDayTrend(
     clinicId: string | number,
     mode: string,
-    queryWhEnabled: number = undefined
+    queryWhEnabled: number = undefined,
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnProdPerDayTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
   public setProdPerVisitChartName(chartName: FN_PROD_PER_VISIT_CHART_NAME) {
-    this.store.dispatch(
-      FinancePageActions.setProdPerVisitChartName({ chartName })
-    );
+    this.store.dispatch(FinancePageActions.setProdPerVisitChartName({ chartName }));
   }
 
   public loadFnTotalDiscounts(params: FnFinanceSpParams) {
@@ -453,14 +391,14 @@ export class FinanceFacade {
   public loadFnTotalDiscountsTrend(
     clinicId: string | number,
     mode: string,
-    queryWhEnabled: number = undefined
+    queryWhEnabled: number = undefined,
   ) {
     this.store.dispatch(
       FinancePageActions.loadFnTotalDiscountsTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 

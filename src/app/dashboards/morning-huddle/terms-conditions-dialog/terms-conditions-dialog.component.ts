@@ -20,7 +20,7 @@ export class TermsConditionsDialog {
   constructor(
     public dialogRef: MatDialogRef<TermsConditionsDialog>,
     private clinicSettingService: ClinicSettingsService,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {}
   submitBtn(event: any) {
     this.isLoading = true;

@@ -12,7 +12,7 @@ export class ChartsService {
 
   constructor(
     private http: HttpClient,
-    private _cookieService: CookieService
+    private _cookieService: CookieService,
   ) {}
 
   getHeaders() {
@@ -38,7 +38,7 @@ export class ChartsService {
     return this.http.get(this.apiUrl + '/ChartsTips/getCharts', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 
@@ -52,12 +52,12 @@ export class ChartsService {
           clinic_id +
           '&chart_id=' +
           chart_id,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -69,13 +69,11 @@ export class ChartsService {
     formData.append('chart_id', chart_id);
     formData.append('status', status);
 
-    return this.http
-      .post(this.apiUrl + '/Dentists/saveDentistsExclusions', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Dentists/saveDentistsExclusions', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   updateCustomiseSettings(data): Observable<any> {
@@ -86,12 +84,10 @@ export class ChartsService {
     formData.append('opg_months', data.opg_months);
     formData.append('recall_codes', data.recall_codes);
 
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicSettingsSave', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicSettingsSave', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 }

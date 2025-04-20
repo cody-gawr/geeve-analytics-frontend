@@ -1,7 +1,5 @@
 <div class="dialog-header">
-  <h1 mat-dialog-title>
-    Select Accounts ({{ connectedWith$ | async | uppercase }})
-  </h1>
+  <h1 mat-dialog-title>Select Accounts ({{ connectedWith$ | async | uppercase }})</h1>
   <mat-icon aria-hidden="false" (click)="onNoClick()">close</mat-icon>
 </div>
 <div mat-dialog-content>
@@ -16,7 +14,8 @@
             (click)="removeAccount(item)"
             mat-stroked-button
             color="primary"
-            extended>
+            extended
+          >
             <mat-icon>close</mat-icon>
             {{ item }}
           </button>
@@ -30,7 +29,8 @@
             (click)="addAccount(item)"
             mat-stroked-button
             color="primary"
-            extended>
+            extended
+          >
             <mat-icon>add</mat-icon>
             {{ item }}
           </button>
@@ -46,7 +46,8 @@
     color="primary"
     [disabled]="(isLoading$ | async) || (isWaiting$ | async)"
     (click)="onSubmitClick()"
-    cdkFocusInitial>
+    cdkFocusInitial
+  >
     Save
   </button>
 </div>

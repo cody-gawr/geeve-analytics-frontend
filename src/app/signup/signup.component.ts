@@ -33,7 +33,7 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private signupService: SignupService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     this.route.queryParams.subscribe(params => {
       if (typeof params.login != 'undefined') {
@@ -53,9 +53,7 @@ export class SignupComponent implements OnInit {
       setTimeout(() => {
         this.loadScript('../../assets/js/mailerlite/embed.js');
         this.loadScript('../../assets/js/mailerlite/webforms.min.js');
-        this.loadScript(
-          '../../assets/js/mailerlite/ml_jQuery.inputmask.bundle.min.js'
-        );
+        this.loadScript('../../assets/js/mailerlite/ml_jQuery.inputmask.bundle.min.js');
         this.loadScript('../../assets/js/signupxero.js');
       }, 500);
     });
@@ -73,11 +71,7 @@ export class SignupComponent implements OnInit {
       if (res.status == 200) {
         this.xeroUrl = res.body.data;
         this.token = res.id;
-        var win = window.open(
-          this.xeroUrl,
-          'MsgWindow',
-          'width=400,height=400'
-        );
+        var win = window.open(this.xeroUrl, 'MsgWindow', 'width=400,height=400');
         var self = this;
         var timer = setInterval(function () {
           // Set Interval
@@ -94,15 +88,12 @@ export class SignupComponent implements OnInit {
   checkInfo() {
     this.signupService.getInfo(this.token).subscribe(res => {
       if (res.status == 200) {
-        $('form.ml-block-form input[aria-label="email"]').val(
-          res.body.data.email
+        $('form.ml-block-form input[aria-label="email"]').val(res.body.data.email);
+        $('form.ml-block-form input[aria-label="name"]').val(res.body.data.name);
+        $('form.ml-block-form select[aria-label="country"] option:contains(Xero)').attr(
+          'selected',
+          'selected',
         );
-        $('form.ml-block-form input[aria-label="name"]').val(
-          res.body.data.name
-        );
-        $(
-          'form.ml-block-form select[aria-label="country"] option:contains(Xero)'
-        ).attr('selected', 'selected');
       }
     });
   }

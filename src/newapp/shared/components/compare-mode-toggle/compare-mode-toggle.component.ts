@@ -18,7 +18,7 @@ export class CompareModeToggleComponent implements OnInit, OnDestroy {
   get compareMode$() {
     return this.layoutFacade.compare$.pipe(
       takeUntil(this.destroy$),
-      map(v => (v ? 'on' : 'off'))
+      map(v => (v ? 'on' : 'off')),
     );
   }
 

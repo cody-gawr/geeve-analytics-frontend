@@ -17,7 +17,7 @@ export class FollowupsService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
 
   getHeaders() {
@@ -48,12 +48,12 @@ export class FollowupsService {
           month +
           '&year=' +
           year,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -68,12 +68,12 @@ export class FollowupsService {
           month +
           '&year=' +
           year,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -88,12 +88,12 @@ export class FollowupsService {
           month +
           '&year=' +
           year,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -108,12 +108,12 @@ export class FollowupsService {
           month +
           '&year=' +
           year,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -128,12 +128,12 @@ export class FollowupsService {
           month +
           '&year=' +
           year,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -148,22 +148,16 @@ export class FollowupsService {
           month +
           '&year=' +
           year,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  checkExportFollowUpData(
-    clinic_id,
-    startDate,
-    endDate,
-    showcompleted,
-    followuptype
-  ): any {
+  checkExportFollowUpData(clinic_id, startDate, endDate, showcompleted, followuptype): any {
     let header = this.getHeaders();
     return this.http.get(
       this.apiUrl +
@@ -177,7 +171,7 @@ export class FollowupsService {
         showcompleted +
         '&followuptype=' +
         followuptype,
-      header
+      header,
     );
   }
 
@@ -188,7 +182,7 @@ export class FollowupsService {
     showcompleted,
     filetype,
     followuptype,
-    filename
+    filename,
   ): any {
     let header = {
       headers: new HttpHeaders({ 'Content-Type': 'application/octet-stream' }),
@@ -211,19 +205,15 @@ export class FollowupsService {
         followuptype +
         '&filename=' +
         filename,
-      header
+      header,
     );
   }
 
   deletefiles(filename, filetype): any {
     let header = this.getHeaders();
     return this.http.get(
-      this.apiUrl +
-        '/Followups/fuDeletefiles?filename=' +
-        filename +
-        '&filetype=' +
-        filetype,
-      header
+      this.apiUrl + '/Followups/fuDeletefiles?filename=' + filename + '&filetype=' + filetype,
+      header,
     );
   }
 
@@ -234,7 +224,7 @@ export class FollowupsService {
     type,
     previousDays,
     fdate,
-    treatItem = ''
+    treatItem = '',
   ): Observable<any> {
     var header = this.getHeaders();
     const formData = new FormData();
@@ -247,24 +237,14 @@ export class FollowupsService {
     if (treatItem != '' && type == 'internal-referrals') {
       formData.append('treat_item', treatItem);
     }
-    return this.http
-      .post(this.apiUrl + '/Followups/fuUpdateFollowupStatus', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Followups/fuUpdateFollowupStatus', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
-  updateStatus(
-    event,
-    pid,
-    cid,
-    type,
-    previousDays,
-    fdate,
-    treatItem = ''
-  ): Observable<any> {
+  updateStatus(event, pid, cid, type, previousDays, fdate, treatItem = ''): Observable<any> {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('status', event);
@@ -276,13 +256,11 @@ export class FollowupsService {
     if (treatItem != '' && type == 'internal-referrals') {
       formData.append('treat_item', treatItem);
     }
-    return this.http
-      .post(this.apiUrl + '/Followups/fuUpdateStatus', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Followups/fuUpdateStatus', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   cloneRecord(
     pid,
@@ -292,7 +270,7 @@ export class FollowupsService {
     newFollowupDate,
     original_appt_date,
     treatItem,
-    nextReach = ''
+    nextReach = '',
   ): Observable<{
     status: boolean;
     message: 'success' | 'already';
@@ -310,13 +288,11 @@ export class FollowupsService {
     if (treatItem != '' && type == 'internal-referrals') {
       formData.append('treat_item', treatItem);
     }
-    return this.http
-      .post(this.apiUrl + '/Followups/fuCloneStatus', formData, header)
-      .pipe(
-        map((response: HttpResponse<any>) => {
-          return response.body;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Followups/fuCloneStatus', formData, header).pipe(
+      map((response: HttpResponse<any>) => {
+        return response.body;
+      }),
+    );
   }
 
   // Updae tick notes add/update
@@ -332,23 +308,19 @@ export class FollowupsService {
     if (treatItem != '' && type == 'internal-referrals') {
       formData.append('treat_item', treatItem);
     }
-    return this.http
-      .post(this.apiUrl + '/Followups/fuUpdateStatus', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Followups/fuUpdateStatus', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   getScripts(cid): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/MorningHuddle/mhGetScripts?clinic_id=' + cid, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/MorningHuddle/mhGetScripts?clinic_id=' + cid, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 }

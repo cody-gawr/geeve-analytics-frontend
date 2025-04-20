@@ -151,7 +151,7 @@ export class MenuItems {
   private _routerSub = Subscription.EMPTY;
   constructor(
     private rolesUsersService: RolesUsersService,
-    private router: Router
+    private router: Router,
   ) {
     this._routerSub = this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -272,33 +272,33 @@ export class MenuItems {
   getRoles() {
     this.rolesUsersService.getRoles().subscribe(
       res => {
-          res.data.forEach((item: any) => {
-            if (item.permisions) {
-              var dashboards = item.permisions;
-              if (dashboards.includes('dashboard1'))
-                this.dashboard1role.push(item.role_id.toString());
-              if (dashboards.includes('dashboard2'))
-                this.dashboard2role.push(item.role_id.toString());
-              if (dashboards.includes('dashboard3'))
-                this.dashboard3role.push(item.role_id.toString());
-              if (dashboards.includes('dashboard4'))
-                this.dashboard4role.push(item.role_id.toString());
-              if (dashboards.includes('dashboard5'))
-                this.dashboard5role.push(item.role_id.toString());
-              if (dashboards.includes('healthscreen'))
-                this.healthscreenrole.push(item.role_id.toString());
-              if (dashboards.includes('morninghuddle'))
-                this.morninghuddlerole.push(item.role_id.toString());
-              if (dashboards.includes('lostoppurtunity'))
-                this.lostoppurtunityrole.push(item.role_id.toString());
-              if (dashboards.includes('profilesettings'))
-                this.profilesettingsrole.push(item.role_id.toString());
-            }
-          });
+        res.data.forEach((item: any) => {
+          if (item.permisions) {
+            var dashboards = item.permisions;
+            if (dashboards.includes('dashboard1'))
+              this.dashboard1role.push(item.role_id.toString());
+            if (dashboards.includes('dashboard2'))
+              this.dashboard2role.push(item.role_id.toString());
+            if (dashboards.includes('dashboard3'))
+              this.dashboard3role.push(item.role_id.toString());
+            if (dashboards.includes('dashboard4'))
+              this.dashboard4role.push(item.role_id.toString());
+            if (dashboards.includes('dashboard5'))
+              this.dashboard5role.push(item.role_id.toString());
+            if (dashboards.includes('healthscreen'))
+              this.healthscreenrole.push(item.role_id.toString());
+            if (dashboards.includes('morninghuddle'))
+              this.morninghuddlerole.push(item.role_id.toString());
+            if (dashboards.includes('lostoppurtunity'))
+              this.lostoppurtunityrole.push(item.role_id.toString());
+            if (dashboards.includes('profilesettings'))
+              this.profilesettingsrole.push(item.role_id.toString());
+          }
+        });
       },
       error => {
         console.error('getRoles', error);
-      }
+      },
     );
   }
 }

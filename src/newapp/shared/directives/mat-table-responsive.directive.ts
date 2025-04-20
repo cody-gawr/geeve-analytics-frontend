@@ -1,26 +1,10 @@
-import {
-  AfterViewInit,
-  Directive,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-} from '@angular/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  map,
-  mapTo,
-  Subject,
-  takeUntil,
-} from 'rxjs';
+import { AfterViewInit, Directive, ElementRef, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { BehaviorSubject, combineLatest, map, mapTo, Subject, takeUntil } from 'rxjs';
 
 @Directive({
   selector: '[appMatTableResponsive]',
 })
-export class MatTableResponsiveDirective
-  implements OnInit, AfterViewInit, OnDestroy
-{
+export class MatTableResponsiveDirective implements OnInit, AfterViewInit, OnDestroy {
   private destroy = new Subject<void>();
   private destroy$ = this.destroy.asObservable();
 
@@ -30,16 +14,12 @@ export class MatTableResponsiveDirective
   private theadChanged = new BehaviorSubject(true);
   private tbodyChanged = new Subject<boolean>();
 
-  private theadObserver = new MutationObserver(() =>
-    this.theadChanged.next(true)
-  );
-  private tbodyObserver = new MutationObserver(() =>
-    this.tbodyChanged.next(true)
-  );
+  private theadObserver = new MutationObserver(() => this.theadChanged.next(true));
+  private tbodyObserver = new MutationObserver(() => this.tbodyChanged.next(true));
 
   constructor(
     private table: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
   ) {}
 
   ngOnInit(): void {
@@ -62,12 +42,10 @@ export class MatTableResponsiveDirective
       .pipe(
         mapTo({ headRow: this.thead.rows.item(0)!, bodyRows: this.tbody.rows }),
         map(({ headRow, bodyRows }) => ({
-          columnNames: Array.from(headRow.children).map(
-            headerCell => headerCell.textContent!
-          ),
+          columnNames: Array.from(headRow.children).map(headerCell => headerCell.textContent!),
           rows: Array.from(bodyRows).map(row => Array.from(row.children)),
         })),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe(({ columnNames, rows }) =>
         rows.forEach(rowCells =>
@@ -75,10 +53,10 @@ export class MatTableResponsiveDirective
             this.renderer.setAttribute(
               cell,
               'data-column-name',
-              columnNames[(cell as HTMLTableCellElement).cellIndex]
-            )
-          )
-        )
+              columnNames[(cell as HTMLTableCellElement).cellIndex],
+            ),
+          ),
+        ),
       );
   }
 

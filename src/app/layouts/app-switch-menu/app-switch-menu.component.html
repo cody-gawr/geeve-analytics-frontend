@@ -1,21 +1,21 @@
 <div>
-    <button style="color: dark" mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon class="apps-icon">apps</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-        <div class="analytics menu-switch-button" mat-menu-item (click)="goToAnalytics()">
-            <div class="btn-icon">
-                <mat-icon>check_circle</mat-icon>
-                <img alt="Analytics" class="" src="assets/jeeve/images/logo-analytics.png" />
-            </div>
-            <span class="btn-label">Jeeve Analytics</span>
-        </div>
-        <div class="pay menu-switch-button" mat-menu-item (click)="goToPay()">
-            <div class="btn-icon">
-                <!-- <mat-icon>check_circle</mat-icon> -->
-                <img alt="Pay" class="" src="assets/jeeve/images/logo-white-pay.png" />
-            </div>
-            <span class="btn-label">Jeeve Pay</span>
-        </div>
-    </mat-menu>
+  <button style="color: dark" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon class="apps-icon">apps</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <div class="analytics menu-switch-button" mat-menu-item (click)="goToAnalytics()">
+      <div class="btn-icon">
+        <mat-icon>check_circle</mat-icon>
+        <img alt="Analytics" class="" src="assets/jeeve/images/logo-analytics.png" />
+      </div>
+      <span class="btn-label">Jeeve Analytics</span>
+    </div>
+    <div class="pay menu-switch-button" mat-menu-item (click)="goToPay()">
+      <div class="btn-icon">
+        <!-- <mat-icon>check_circle</mat-icon> -->
+        <img alt="Pay" class="" src="assets/jeeve/images/logo-white-pay.png" />
+      </div>
+      <span class="btn-label">Jeeve Pay</span>
+    </div>
+  </mat-menu>
 </div>

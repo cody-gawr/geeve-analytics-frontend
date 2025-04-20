@@ -44,7 +44,7 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -60,11 +60,7 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
       this.isTrend$,
       this.frontDeskFacade.isLoadingFdRecallRateData$,
       this.frontDeskFacade.isLoadingFdRecallRateTrendData$,
-    ]).pipe(
-      map(([isTrend, isLoading, isTrendLoading]) =>
-        isTrend ? isTrendLoading : isLoading
-      )
-    );
+    ]).pipe(map(([isTrend, isLoading, isTrendLoading]) => (isTrend ? isTrendLoading : isLoading)));
   }
 
   get isMultipleClinic$() {
@@ -90,8 +86,8 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMulti]) =>
-        isTrend || isMulti ? this.labels.length > 0 : this.fdRecallRateVal > 0
-      )
+        isTrend || isMulti ? this.labels.length > 0 : this.fdRecallRateVal > 0,
+      ),
     );
   }
 
@@ -103,7 +99,7 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
     private frontDeskFacade: FrontDeskFacade,
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
-    private dashboardFacade: DashboardFacade
+    private dashboardFacade: DashboardFacade,
   ) {}
 
   ngOnInit(): void {
@@ -135,13 +131,11 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMultiClinic]) => {
         if (isTrend) {
-          return isMultiClinic
-            ? this.stackedChartOptionsTC
-            : this.stackedChartOptions;
+          return isMultiClinic ? this.stackedChartOptionsTC : this.stackedChartOptions;
         } else {
           return this.stackedChartOptionsUti;
         }
-      })
+      }),
     );
   }
 
@@ -221,18 +215,12 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
             }
             //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             let ylable = tooltipItems.parsed._custom
-              ? +(
-                  tooltipItems.parsed._custom.max +
-                  tooltipItems.parsed._custom.min
-                ) / 2
+              ? +(tooltipItems.parsed._custom.max + tooltipItems.parsed._custom.min) / 2
               : v;
             var tlab = 0;
             if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval =
-                tooltipItems.chart.data.datasets[1].data[
-                  tooltipItems.dataIndex
-                ];
+              const tval = tooltipItems.chart.data.datasets[1].data[tooltipItems.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -361,19 +349,13 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
             }
             //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             let ylable = tooltipItems.parsed._custom
-              ? +(
-                  tooltipItems.parsed._custom.max +
-                  tooltipItems.parsed._custom.min
-                ) / 2
+              ? +(tooltipItems.parsed._custom.max + tooltipItems.parsed._custom.min) / 2
               : v;
 
             var tlab = 0;
             if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval =
-                tooltipItems.chart.data.datasets[1].data[
-                  tooltipItems.dataIndex
-                ];
+              const tval = tooltipItems.chart.data.datasets[1].data[tooltipItems.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -390,10 +372,7 @@ export class FrontDeskRecallRateComponent implements OnInit, OnDestroy {
           afterLabel: function (tooltipItems) {
             let hour = 0;
             let phour = 0;
-            if (
-              tooltipItems.label.indexOf('--') >= 0 &&
-              tooltipItems.datasetIndex == 0
-            ) {
+            if (tooltipItems.label.indexOf('--') >= 0 && tooltipItems.datasetIndex == 0) {
               let lbl = tooltipItems.label.split('--');
               hour = Number(lbl[1]);
               phour = Number(lbl[2]);

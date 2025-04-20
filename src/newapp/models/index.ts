@@ -1,9 +1,7 @@
 import { FormControl, FormGroup } from '@angular/forms';
 
 export type ControlsOf<T extends Record<string, any>> = {
-  [K in keyof T]: T[K] extends Record<any, any>
-    ? FormGroup<ControlsOf<T[K]>>
-    : FormControl<T[K]>;
+  [K in keyof T]: T[K] extends Record<any, any> ? FormGroup<ControlsOf<T[K]>> : FormControl<T[K]>;
 };
 
 export class JeeveError {
@@ -18,7 +16,7 @@ export class JeeveError {
     status: number = 500,
     errors: any[] = [],
     api = '',
-    platform = null
+    platform = null,
   ) {
     this.message = message;
     this.status = status;

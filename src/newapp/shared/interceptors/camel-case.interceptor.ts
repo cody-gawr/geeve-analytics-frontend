@@ -13,10 +13,7 @@ import camelcaseKeys from 'camelcase-keys';
 export class CamelCaseInterceptor implements HttpInterceptor {
   constructor() {}
 
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
@@ -27,7 +24,7 @@ export class CamelCaseInterceptor implements HttpInterceptor {
           return modEvent;
         }
         return event;
-      })
+      }),
     );
   }
 }

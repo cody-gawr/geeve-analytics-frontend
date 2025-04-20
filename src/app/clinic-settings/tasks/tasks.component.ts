@@ -35,7 +35,7 @@ export class DialogOverviewExampleDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
     private taskService: TaskService,
-    private router: Router
+    private router: Router,
   ) {}
 
   onNoClick(): void {
@@ -57,7 +57,7 @@ export class DialogOverviewExampleDialogComponent {
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
     return true;
   }
@@ -161,11 +161,10 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     this.clinicSettingsService.getClinicData.subscribe(
       (data: any) => {
         if (data.status == 200) {
-          this.dailyTaskEnable =
-            data.body.data[0].daily_task_enable == 1 ? true : false;
+          this.dailyTaskEnable = data.body.data[0].daily_task_enable == 1 ? true : false;
         }
       },
-      error => {}
+      error => {},
     );
   }
 
@@ -181,7 +180,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
   }
 
@@ -217,7 +216,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
           if (res.status == 200) {
           }
         },
-        error => {}
+        error => {},
       );
   }
 
@@ -231,16 +230,14 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
       cancelButtonText: 'No',
     }).then(result => {
       if (result.value) {
-        this.clinicSettingsService
-          .deleteDailyTask(this.clinic_id$.value, taskId)
-          .subscribe(
-            res => {
-              if (res.status == 200) {
-                this.getTasks(this.clinic_id$.value);
-              }
-            },
-            error => {}
-          );
+        this.clinicSettingsService.deleteDailyTask(this.clinic_id$.value, taskId).subscribe(
+          res => {
+            if (res.status == 200) {
+              this.getTasks(this.clinic_id$.value);
+            }
+          },
+          error => {},
+        );
       }
     });
   }

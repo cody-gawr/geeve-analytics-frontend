@@ -32,9 +32,7 @@ export class CpRevPerProcedureComponent implements OnInit, OnDestroy {
   }
 
   get isMultipleClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      map(v => typeof v == 'string')
-    );
+    return this.clinicFacade.currentClinicId$.pipe(map(v => typeof v == 'string'));
   }
 
   get isTrend$() {
@@ -49,7 +47,7 @@ export class CpRevPerProcedureComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private cpFacade: ClinicianProcedureFacade,
-    private numPipe: DecimalPipe
+    private numPipe: DecimalPipe,
   ) {}
 
   ngOnInit(): void {
@@ -70,9 +68,7 @@ export class CpRevPerProcedureComponent implements OnInit, OnDestroy {
   }
 
   get chartOptions() {
-    return this.showTopValues
-      ? this.proceedureChartOptions1
-      : this.proceedureChartOptionsDP;
+    return this.showTopValues ? this.proceedureChartOptions1 : this.proceedureChartOptionsDP;
   }
 
   public proceedureChartOptionsDP: ChartOptions = {

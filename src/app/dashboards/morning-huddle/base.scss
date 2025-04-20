@@ -1049,23 +1049,11 @@ tr.mat-row.cdk-row.ng-star-inserted:empty {
 .morning-huddle .mat-tab-label.mat-tab-label-active {
   background: rgb(24, 166, 137);
   /* / Old browsers / */
-  background: -moz-linear-gradient(
-    top,
-    rgba(24, 166, 137, 1) 0%,
-    rgba(0, 111, 115, 1) 99%
-  );
+  background: -moz-linear-gradient(top, rgba(24, 166, 137, 1) 0%, rgba(0, 111, 115, 1) 99%);
   /* / FF3.6-15 / */
-  background: -webkit-linear-gradient(
-    top,
-    rgba(24, 166, 137, 1) 0%,
-    rgba(0, 111, 115, 1) 99%
-  );
+  background: -webkit-linear-gradient(top, rgba(24, 166, 137, 1) 0%, rgba(0, 111, 115, 1) 99%);
   /* / Chrome10-25,Safari5.1-6 / */
-  background: linear-gradient(
-    to bottom,
-    rgba(24, 166, 137, 1) 0%,
-    rgba(0, 111, 115, 1) 99%
-  );
+  background: linear-gradient(to bottom, rgba(24, 166, 137, 1) 0%, rgba(0, 111, 115, 1) 99%);
   /* / W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ / */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#18a689', endColorstr='#006f73', GradientType=0);
   /* / IE6-9 / */

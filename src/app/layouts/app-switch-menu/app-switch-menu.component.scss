@@ -1,63 +1,61 @@
 .menu-switch-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  padding-top: 15px;
+
+  .btn-icon {
+    background-color: aliceblue;
+    border: 1px solid #00897b;
+    border-radius: 10px;
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 10px 20px;
-    padding-top: 15px;
+    padding: 20px;
+    width: 200px;
 
-
-    
-    .btn-icon {
-        background-color: aliceblue;
-        border: 1px solid #00897b;
-        border-radius: 10px;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        width: 200px;
-
-        .mat-icon {
-            position: absolute;
-            top:5px;
-            left:5px;
-            color: #00897b;
-        }
+    .mat-icon {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      color: #00897b;
     }
-    .btn-label {
-        padding-top: 5px;
-        font-family: 'Gilroy-Medium';
-        display: block;
-        width: 100%;
-        text-align: center;
-    }
+  }
+  .btn-label {
+    padding-top: 5px;
+    font-family: 'Gilroy-Medium';
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .pay {
-    .btn-icon {
-        border: 0px !important;
-    }
-    img {
-        width: 140px;
-        height: auto;
-    }
+  .btn-icon {
+    border: 0px !important;
+  }
+  img {
+    width: 140px;
+    height: auto;
+  }
 }
 .analytics {
-    img {
-        width: 105px;
-        height: auto;
-    }
+  img {
+    width: 105px;
+    height: auto;
+  }
 }
 .mat-icon-button {
-    color: black !important;
+  color: black !important;
 }
 .apps-icon {
-    font-size: 24px !important;
+  font-size: 24px !important;
 }
 
 .mat-menu-item {
-    height: auto !important;
+  height: auto !important;
 }

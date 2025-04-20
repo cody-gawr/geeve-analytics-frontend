@@ -4,49 +4,57 @@
       <button
         (click)="filterDate('m')"
         class="filter_m filter sa_filter_span"
-        [ngClass]="{ active: currentSelectedPeriod === 'm' }">
+        [ngClass]="{ active: currentSelectedPeriod === 'm' }"
+      >
         This Month
       </button>
       <button
         (click)="filterDate('lm')"
         class="filter_lm filter sa_filter_span"
-        [ngClass]="{ active: currentSelectedPeriod === 'lm' }">
+        [ngClass]="{ active: currentSelectedPeriod === 'lm' }"
+      >
         Last Month
       </button>
       <button
         (click)="filterDate('q')"
         class="filter_q filter sa_filter_span"
-        [ngClass]="{ active: currentSelectedPeriod === 'q' }">
+        [ngClass]="{ active: currentSelectedPeriod === 'q' }"
+      >
         This Quarter
       </button>
       <button
         (click)="filterDate('lq')"
         class="filter_lq filter sa_filter_span"
-        [ngClass]="{ active: currentSelectedPeriod === 'lq' }">
+        [ngClass]="{ active: currentSelectedPeriod === 'lq' }"
+      >
         Last Quarter
       </button>
       <button
         (click)="filterDate('cytd')"
         class="filter_cytd filter sa_filter_span"
-        [ngClass]="{ active: currentSelectedPeriod === 'cytd' }">
+        [ngClass]="{ active: currentSelectedPeriod === 'cytd' }"
+      >
         Calendar Year
       </button>
       <button
         (click)="filterDate('lcytd')"
         class="filter_lcytd filter sa_filter_span"
-        [ngClass]="{ active: currentSelectedPeriod === 'lcytd' }">
+        [ngClass]="{ active: currentSelectedPeriod === 'lcytd' }"
+      >
         Last Calendar Year
       </button>
       <button
         (click)="filterDate('fytd')"
         class="filter_fytd filter sa_filter_span"
-        [ngClass]="{ active: currentSelectedPeriod === 'fytd' }">
+        [ngClass]="{ active: currentSelectedPeriod === 'fytd' }"
+      >
         Financial Year
       </button>
       <button
         (click)="filterDate('lfytd')"
         class="filter_lfytd filter sa_filter_span"
-        [ngClass]="{ active: currentSelectedPeriod === 'lfytd' }">
+        [ngClass]="{ active: currentSelectedPeriod === 'lfytd' }"
+      >
         Last Financial Year
       </button>
     </div>
@@ -57,10 +65,9 @@
         <mat-select
           class="external_clinic"
           [(value)]="currentSelectedPeriod"
-          (selectionChange)="handleSelection($event)">
-          <mat-option
-            *ngFor="let clinicData of DateOptions"
-            [value]="clinicData.value">
+          (selectionChange)="handleSelection($event)"
+        >
+          <mat-option *ngFor="let clinicData of DateOptions" [value]="clinicData.value">
             {{ clinicData.name }}
           </mat-option>
         </mat-select>
@@ -70,20 +77,23 @@
   <div
     class="date-menu-bar custom_date"
     [hidden]="isAllClinic"
-    [ngClass]="{ 'date-picker active': currentSelectedPeriod === 'custom' }">
+    [ngClass]="{ 'date-picker active': currentSelectedPeriod === 'custom' }"
+  >
     <input
       class="filter_custom filter sa_datepicker"
       id="sa_datepicker"
       value=""
       placeholder=""
-      readonly />
+      readonly
+    />
     <ngx-daterangepicker-material
       class="customRange"
       id="customRange"
       (choosedDate)="choosedDate($event)"
       [style.display]="'none'"
       [locale]="{ applyLabel: 'ok', displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
-      [showDropdowns]="true">
+      [showDropdowns]="true"
+    >
     </ngx-daterangepicker-material>
   </div>
 </div>

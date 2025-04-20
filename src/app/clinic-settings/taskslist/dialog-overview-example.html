@@ -10,7 +10,8 @@
           [(ngModel)]="data.list_name"
           class="mat-form-control"
           required="true"
-          placeholder="" />
+          placeholder=""
+        />
       </div>
       <div class="sa-form-group">
         <label>Assigned To</label>
@@ -18,10 +19,9 @@
           [(ngModel)]="data.assigned_roles"
           placeholder="Assigned Roles"
           [multiple]="true"
-          #multiSelect>
-          <mat-option #allSelected (click)="toggleAllSelection()" [value]="'0'"
-            >All</mat-option
-          >
+          #multiSelect
+        >
+          <mat-option #allSelected (click)="toggleAllSelection()" [value]="'0'">All</mat-option>
           <mat-option *ngFor="let user of assigneeData" [value]="user.id">
             {{user.name}}
           </mat-option>
@@ -35,7 +35,8 @@
           [(ngModel)]="data.task_name"
           class="mat-form-control"
           required="true"
-          placeholder="" />
+          placeholder=""
+        />
       </div>
     </div>
   </div>
@@ -55,21 +56,18 @@
                 #task
                 required
                 autofocus
-                placeholder="New Task" />
+                placeholder="New Task"
+              />
               <div class="alert alert-danger task-add-error">
                 <small *ngIf="taskAddErr">Task name required.</small>
               </div>
             </td>
             <td>
               <span class="action">
-                <a
-                  (click)="addTaskIn(data)"
-                  class="action_btn golden ng-star-inserted"
+                <a (click)="addTaskIn(data)" class="action_btn golden ng-star-inserted"
                   ><i class="ti-save m-r-10"></i
                 ></a>
-                <a
-                  (click)="addTaskInput = false"
-                  class="action_btn danger ng-star-inserted"
+                <a (click)="addTaskInput = false" class="action_btn danger ng-star-inserted"
                   ><i class="ti-trash m-r-10"></i
                 ></a>
               </span>
@@ -78,14 +76,16 @@
         </ng-container>
         <ng-container *ngIf="data.tasksListItems.length>0">
           <tr
-            *ngFor="let item of data.tasksListItems | paginate: { itemsPerPage: data.itemsPerPage, currentPage: data.currPage ,totalItems: data.totalRecords};let i =index;">
+            *ngFor="let item of data.tasksListItems | paginate: { itemsPerPage: data.itemsPerPage, currentPage: data.currPage ,totalItems: data.totalRecords};let i =index;"
+          >
             <td>
               <input
                 type="text"
                 autofocus
                 placeholder="New Task"
                 [readonly]="item.readOnly"
-                [(ngModel)]="item.task_name" />
+                [(ngModel)]="item.task_name"
+              />
             </td>
             <td>
               <span class="action">
@@ -103,9 +103,7 @@
                   ><i class="ti-save m-r-10"></i
                 ></a>
               </span>
-              <span
-                class="action"
-                (click)="removeItem(i,data.itemsPerPage,data.currPage)">
+              <span class="action" (click)="removeItem(i,data.itemsPerPage,data.currPage)">
                 <a title="Delete" class="action_btn danger ng-star-inserted"
                   ><i class="ti-trash m-r-10"></i
                 ></a>
@@ -121,7 +119,8 @@
         <pagination-controls
           [maxSize]="maxSize"
           [autoHide]="autoHide"
-          (pageChange)="pageChanged($event)">
+          (pageChange)="pageChanged($event)"
+        >
         </pagination-controls>
       </div>
     </div>
@@ -131,23 +130,21 @@
     <button
       *ngIf="!addTaskInput && data.list_id"
       class="mat-raised-button mat-dc float-right ng-star-inserted"
-      (click)="addTaskInput = true">
+      (click)="addTaskInput = true"
+    >
       Add Task
     </button>
     <button
       *ngIf="addTaskInput && data.list_id"
       class="mat-raised-button mat-dc float-right ng-star-inserted"
-      (click)="addTaskIn(data)">
+      (click)="addTaskIn(data)"
+    >
       Add Task
     </button>
     <!-- <i *ngIf="data.list_id" (click)="additemNew(data)">Add Task</i> -->
   </div>
   <div mat-dialog-actions class="justify-between">
-    <button
-      mat-button
-      (click)="onNoClick()"
-      tabindex="-1"
-      class="mat-raised-button mat-gray">
+    <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">
       Cancel
     </button>
     <button
@@ -155,7 +152,8 @@
       (click)="save(data)"
       [disabled]="data.list_name == '' || data.assigned_roles == '' "
       tabindex="2"
-      class="mat-raised-button mat-dc float-right">
+      class="mat-raised-button mat-dc float-right"
+    >
       Save
     </button>
     <button
@@ -163,7 +161,8 @@
       [disabled]="data.list_name == '' || data.assigned_roles == ''"
       (click)="update(data)"
       tabindex="2"
-      class="mat-raised-button mat-dc float-right">
+      class="mat-raised-button mat-dc float-right"
+    >
       Update
     </button>
   </div>

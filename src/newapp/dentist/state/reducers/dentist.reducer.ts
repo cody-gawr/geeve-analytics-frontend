@@ -34,31 +34,25 @@ export const dentistFeature = createFeature({
         isLoadingData: _.union(isLoadingData, ['dentGet']),
       };
     }),
-    on(
-      DentistApiActions.loadDentistsSuccess,
-      (state, { dentists }): DentistState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'dentGet'),
-          dentists: dentists,
-          currentDentistId: 'all',
-          isLoadingData: _.filter(isLoadingData, n => n != 'dentGet'),
-        };
-      }
-    ),
-    on(
-      DentistApiActions.loadDentistsFailure,
-      (state, { error }): DentistState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          dentists: null,
-          isLoadingData: _.filter(isLoadingData, n => n != 'dentGet'),
-          errors: [...errors, { ...error, api: 'dentGet' }],
-        };
-      }
-    ),
+    on(DentistApiActions.loadDentistsSuccess, (state, { dentists }): DentistState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'dentGet'),
+        dentists: dentists,
+        currentDentistId: 'all',
+        isLoadingData: _.filter(isLoadingData, n => n != 'dentGet'),
+      };
+    }),
+    on(DentistApiActions.loadDentistsFailure, (state, { error }): DentistState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        dentists: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'dentGet'),
+        errors: [...errors, { ...error, api: 'dentGet' }],
+      };
+    }),
 
     on(DentistPageActions.loadSpecificDentist, (state, {}): DentistState => {
       const { isLoadingData, errors } = state;
@@ -69,45 +63,30 @@ export const dentistFeature = createFeature({
         isLoadingData: _.union(isLoadingData, ['userGetChildDentist']),
       };
     }),
-    on(
-      DentistApiActions.loadSpecificDentistSuccess,
-      (state, { dentistId }): DentistState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'userGetChildDentist'),
-          dentistId,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'userGetChildDentist'
-          ),
-        };
-      }
-    ),
-    on(
-      DentistApiActions.loadSpecificDentistFailure,
-      (state, { error }): DentistState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          dentistId: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'userGetChildDentist'
-          ),
-          errors: [...errors, { ...error, api: 'userGetChildDentist' }],
-        };
-      }
-    ),
-    on(
-      DentistPageActions.setCurrentDentistId,
-      (state, { dentistId }): DentistState => {
-        return {
-          ...state,
-          currentDentistId: dentistId,
-        };
-      }
-    )
+    on(DentistApiActions.loadSpecificDentistSuccess, (state, { dentistId }): DentistState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'userGetChildDentist'),
+        dentistId,
+        isLoadingData: _.filter(isLoadingData, n => n != 'userGetChildDentist'),
+      };
+    }),
+    on(DentistApiActions.loadSpecificDentistFailure, (state, { error }): DentistState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        dentistId: null,
+        isLoadingData: _.filter(isLoadingData, n => n != 'userGetChildDentist'),
+        errors: [...errors, { ...error, api: 'userGetChildDentist' }],
+      };
+    }),
+    on(DentistPageActions.setCurrentDentistId, (state, { dentistId }): DentistState => {
+      return {
+        ...state,
+        currentDentistId: dentistId,
+      };
+    }),
   ),
 });
 
@@ -121,12 +100,11 @@ export const {
 
 export const selectDentistsLoading = createSelector(
   selectIsLoadingData,
-  (loadingData): boolean => _.findIndex(loadingData, d => d === 'dentGet') >= 0
+  (loadingData): boolean => _.findIndex(loadingData, d => d === 'dentGet') >= 0,
 );
 
-export const selectDentistsError = createSelector(
-  selectErrors,
-  (errors): JeeveError | undefined => _.find(errors, e => e.api == 'dentGet')
+export const selectDentistsError = createSelector(selectErrors, (errors): JeeveError | undefined =>
+  _.find(errors, e => e.api == 'dentGet'),
 );
 
 export const selectIsDentistMode = createSelector(
@@ -134,5 +112,5 @@ export const selectIsDentistMode = createSelector(
   selectCurrentClinics,
   (dentistId, clinics) => {
     return !(dentistId === 'all' || clinics.length > 1);
-  }
+  },
 );

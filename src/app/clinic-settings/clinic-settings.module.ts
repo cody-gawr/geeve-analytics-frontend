@@ -13,35 +13,23 @@ import { ScriptsService } from './scripts/scripts.service';
 import { SharedMatModule } from '../shared-mat.module';
 import { DemoMaterialModule } from '../demo-material-module';
 import { BaseComponent } from './base/base.component';
-import {
-  DentistComponent,
-  AddJeeveNameComponent,
-} from './dentist/dentist.component';
+import { DentistComponent, AddJeeveNameComponent } from './dentist/dentist.component';
 import { AlertsComponent } from './alerts/alerts.component';
-import {
-  TasksComponent,
-  DialogOverviewExampleDialogComponent,
-} from './tasks/tasks.component';
+import { TasksComponent, DialogOverviewExampleDialogComponent } from './tasks/tasks.component';
 import {
   TasklistComponent,
   DialogOverviewTasklistDialogComponent,
 } from './taskslist/tasklist.component';
 import { DialogSetColorsDialogComponent } from './customisations/customisations.component';
 
-import {
-  ScriptsComponent,
-  AddScriptsComponent,
-} from './scripts/scripts.component';
+import { ScriptsComponent, AddScriptsComponent } from './scripts/scripts.component';
 import {
   EquipmentComponent,
   DialogOverviewExampleComponent,
 } from './equipments/equipments.component';
 import { GoalsComponent } from './goals/goals.component';
 import { CustomisationsComponent } from './customisations/customisations.component';
-import {
-  ChartsComponent,
-  DentisChartComponent,
-} from './charts/charts.component';
+import { ChartsComponent, DentisChartComponent } from './charts/charts.component';
 import { AutofocusDirective } from './auto-focus.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';

@@ -14,7 +14,8 @@
             (click)="removeFromSelected(i)"
             mat-stroked-button
             color="primary"
-            extended>
+            extended
+          >
             <mat-icon>close</mat-icon>
             {{ category.name.split('--')[0] }}
           </button>
@@ -28,7 +29,8 @@
             (click)="addToSelected(i)"
             mat-stroked-button
             color="primary"
-            extended>
+            extended
+          >
             <mat-icon>add</mat-icon>
             {{ category.name.split('--')[0] }}
           </button>
@@ -44,7 +46,8 @@
     color="primary"
     [disabled]="isLoading$ | async"
     (click)="refreshFinanceChart()"
-    cdkFocusInitial>
+    cdkFocusInitial
+  >
     Save
   </button>
 </div>

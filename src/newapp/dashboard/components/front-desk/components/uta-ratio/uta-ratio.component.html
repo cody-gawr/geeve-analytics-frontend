@@ -4,13 +4,15 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title">
     <mat-icon
       *ngIf="!(isTrend$ | async)"
       [matTooltip]="(durationTrendLabel$ | async) + ': ' + fdUtaRatioPrev + '%'"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
-      [fontIcon]="trendingIcon"></mat-icon>
+      [fontIcon]="trendingIcon"
+    ></mat-icon>
     <span> UTA Ratio (%) </span>
   </div>
   <div class="chart-content">
@@ -19,18 +21,15 @@
         <spin-loader
           class="empty-placeholder"
           *ngIf="isComingSoon; else enabledChart"
-          [disableSpin]="true">
+          [disableSpin]="true"
+        >
           Coming Soon...
         </spin-loader>
         <ng-template #enabledChart>
           <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
           <ng-template #mainElem>
             <ngx-gauge
-              *ngIf="
-                !(isMultipleClinic$ | async) &&
-                (hasData$ | async) &&
-                !(isTrend$ | async)
-              "
+              *ngIf="!(isMultipleClinic$ | async) && (hasData$ | async) && !(isTrend$ | async)"
               type="arch"
               [value]="fdUtaRatioVal"
               [thick]="20"
@@ -39,26 +38,22 @@
               cap="round"
               size="250"
               append="%"
-              [max]="100">
+              [max]="100"
+            >
             </ngx-gauge>
             <canvas
               #fdUtaRatioChart
-              *ngIf="
-                ((isTrend$ | async) || (isMultipleClinic$ | async)) &&
-                (hasData$ | async)
-              "
+              *ngIf="((isTrend$ | async) || (isMultipleClinic$ | async)) && (hasData$ | async)"
               baseChart
               [datasets]="datasets"
               [labels]="labels"
               [legend]="false"
               [type]="chartType$ | async"
-              [options]="chartOptions$ | async">
+              [options]="chartOptions$ | async"
+            >
             </canvas>
-  
-            <spin-loader
-              class="empty-placeholder"
-              *ngIf="!(hasData$ | async)"
-              [disableSpin]="true">
+
+            <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
               You have no UTA's in the selected period
             </spin-loader>
           </ng-template>
@@ -74,11 +69,7 @@
           <span>{{ durationTrendLabel$ | async }}</span>
         </div>
         <div *ngIf="fdUtaRatioGoal > 0 && showGoals$ | async">
-          <h3>
-            {{
-              (fdUtaRatioGoal > 100 ? 100 : fdUtaRatioGoal) | number: '1.0-0'
-            }}%
-          </h3>
+          <h3>{{ (fdUtaRatioGoal > 100 ? 100 : fdUtaRatioGoal) | number: '1.0-0' }}%</h3>
           <span>Goal</span>
         </div>
       </div>

@@ -15,7 +15,7 @@ export class HeaderrightService {
 
   constructor(
     private http: HttpClient,
-    private _cookieService: CookieService
+    private _cookieService: CookieService,
   ) {}
   getHeaders() {
     if (
@@ -40,7 +40,7 @@ export class HeaderrightService {
     return this.http.post(this.apiUrl + '/users/userLogout', formData).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 
@@ -49,7 +49,7 @@ export class HeaderrightService {
     return this.http.get(this.apiUrl + '/clinics/clinicGet', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 }

@@ -1,14 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import {
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-  filter,
-} from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, distinctUntilChanged, filter } from 'rxjs';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
 import moment from 'moment';
@@ -31,11 +24,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
   }
 
   get authUserId$() {
-    return this.authFacade.authUserData$.pipe(
-      map(
-        authUserData => authUserData?.id
-      )
-    );
+    return this.authFacade.authUserData$.pipe(map(authUserData => authUserData?.id));
   }
 
   get clinicId$() {
@@ -48,7 +37,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
     private marketingFacade: MarketingFacade,
     private layoutFacade: LayoutFacade,
     private authFacade: AuthFacade,
-    private router: Router
+    private router: Router,
   ) {
     this.layoutFacade.setTrend('off');
   }
@@ -58,7 +47,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         filter(v => !!v),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       )
       .subscribe(clinicIds => {
         this.dashbordFacade.loadChartTips(4, clinicIds);
@@ -75,7 +64,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
       .subscribe(params => {
         const [
@@ -89,9 +78,7 @@ export class MarketingComponent implements OnInit, OnDestroy {
         ] = params;
         if (clinicId == null) return;
         const newConnectedId =
-          typeof clinicId == 'string'
-            ? _.min(clinicId.split(',').map(c => parseInt(c)))
-            : clinicId;
+          typeof clinicId == 'string' ? _.min(clinicId.split(',').map(c => parseInt(c))) : clinicId;
         if (newConnectedId !== connectedClinicId) {
           return;
         }
@@ -114,12 +101,11 @@ export class MarketingComponent implements OnInit, OnDestroy {
             this.marketingFacade.loadRevByReferral(<any>params);
             this.marketingFacade.loadMkNewPatientsByReferral(<any>params);
             ['mkProdByPostCode', 'mkProdByAge'].forEach(chartName => {
-              this.marketingFacade.loadChartDescription(
-                <MarketingEndpoints>chartName, params);
+              this.marketingFacade.loadChartDescription(<MarketingEndpoints>chartName, params);
             });
             if (['xero', 'myob'].includes(connectedWith) || isMultiClinics) {
               this.marketingFacade.loadNewPatientsAcq({
-                ...<any>params,
+                ...(<any>params),
                 connectedWith,
               });
             }
@@ -193,9 +179,9 @@ export class MarketingComponent implements OnInit, OnDestroy {
         } else {
           tip = chartTips[36];
         }
-        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        if (tip && tip?.info?.toLowerCase() === 'disabled') return null;
         return tip;
-      })
+      }),
     );
   }
 
@@ -212,11 +198,11 @@ export class MarketingComponent implements OnInit, OnDestroy {
       let tip;
       if (chartName === 'Production By Post Code') {
         tip = tips[100];
-      }else if (chartName === 'Production By Age') {
+      } else if (chartName === 'Production By Age') {
         tip = tips[101];
       }
-      if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+      if (tip && tip?.info?.toLowerCase() === 'disabled') return null;
       return tip;
-    })
+    }),
   );
 }

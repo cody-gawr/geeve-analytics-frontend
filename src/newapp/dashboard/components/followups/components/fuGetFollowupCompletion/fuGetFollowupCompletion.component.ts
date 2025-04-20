@@ -44,7 +44,7 @@ export class FuGetFollowupCompletionComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -70,9 +70,7 @@ export class FuGetFollowupCompletionComponent implements OnInit, OnDestroy {
   get hasData() {
     return (
       this.datasets.length > 0 &&
-      this.datasets?.some(
-        it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v))
-      )
+      this.datasets?.some(it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v)))
     );
   }
 
@@ -83,7 +81,7 @@ export class FuGetFollowupCompletionComponent implements OnInit, OnDestroy {
   constructor(
     private fuFacade: FollowupsFacade,
     private layoutFacade: LayoutFacade,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
   ) {}
 
   ngOnInit(): void {

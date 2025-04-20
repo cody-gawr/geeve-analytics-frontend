@@ -24,17 +24,14 @@ import {
   selectIsLoadingCpReferrals,
   selectIsLoadingCpRevPerProcedure,
 } from '../reducers/clinician-procedure.reducer';
-import {
-  ClinicianProcedurePageActions,
-  ClinicianProcedureApiActions,
-} from '../actions';
+import { ClinicianProcedurePageActions, ClinicianProcedureApiActions } from '../actions';
 
 @Injectable()
 export class ClinicianProcedureEffects {
   constructor(
     private actions$: Actions,
     private clinicianProcedureService: ClinicianProcedureService,
-    private store: Store<ClinicianProcedureState>
+    private store: Store<ClinicianProcedureState>,
   ) {}
   // cpPredictorAnalysis
   public readonly loadCpPredictorAnalysis$ = createEffect(() => {
@@ -47,17 +44,17 @@ export class ClinicianProcedureEffects {
           map(data =>
             ClinicianProcedureApiActions.loadCpPredictorAnalysisSuccess({
               cpPredictorAnalysisData: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               ClinicianProcedureApiActions.loadCpPredictorAnalysisFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -65,30 +62,24 @@ export class ClinicianProcedureEffects {
   public readonly loadCpPredictorSpecialistAnalysis$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ClinicianProcedurePageActions.loadCpPredictorSpecialistAnalysis),
-      withLatestFrom(
-        this.store.select(selectIsLoadingCpPredictorSpecialistAnalysis)
-      ),
+      withLatestFrom(this.store.select(selectIsLoadingCpPredictorSpecialistAnalysis)),
       filter(([action, isLoading]) => isLoading),
       switchMap(([params]) => {
-        return this.clinicianProcedureService
-          .cpPredictorSpecialistAnalysis(params)
-          .pipe(
-            map(data =>
-              ClinicianProcedureApiActions.loadCpPredictorSpecialistAnalysisSuccess(
-                { cpPredictorSpecialistAnalysisData: data }
-              )
+        return this.clinicianProcedureService.cpPredictorSpecialistAnalysis(params).pipe(
+          map(data =>
+            ClinicianProcedureApiActions.loadCpPredictorSpecialistAnalysisSuccess({
+              cpPredictorSpecialistAnalysisData: data,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              ClinicianProcedureApiActions.loadCpPredictorSpecialistAnalysisFailure({
+                error: error.error ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                ClinicianProcedureApiActions.loadCpPredictorSpecialistAnalysisFailure(
-                  {
-                    error: error.error ?? error,
-                  }
-                )
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
 
@@ -103,17 +94,17 @@ export class ClinicianProcedureEffects {
           map(data =>
             ClinicianProcedureApiActions.loadCpRevPerProcedureSuccess({
               cpRevPerProcedureData: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               ClinicianProcedureApiActions.loadCpRevPerProcedureFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -128,17 +119,17 @@ export class ClinicianProcedureEffects {
           map(data =>
             ClinicianProcedureApiActions.loadCpPredictorRatioSuccess({
               cpPredictorRatioData: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               ClinicianProcedureApiActions.loadCpPredictorRatioFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -153,17 +144,17 @@ export class ClinicianProcedureEffects {
           map(data =>
             ClinicianProcedureApiActions.loadCpReferralsSuccess({
               cpReferralsData: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               ClinicianProcedureApiActions.loadCpReferralsFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -172,25 +163,23 @@ export class ClinicianProcedureEffects {
     return this.actions$.pipe(
       ofType(ClinicianProcedurePageActions.loadTrendApiRequest),
       mergeMap(({ api, params }) => {
-        return this.clinicianProcedureService
-          .cpTrendApiRequest(api, params)
-          .pipe(
-            map(data =>
-              ClinicianProcedurePageActions.loadCpTrendApiRequestSuccess({
+        return this.clinicianProcedureService.cpTrendApiRequest(api, params).pipe(
+          map(data =>
+            ClinicianProcedurePageActions.loadCpTrendApiRequestSuccess({
+              api,
+              resBody: data,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              ClinicianProcedurePageActions.loadCpTrendApiRequestFailure({
                 api,
-                resBody: data,
-              })
+                error: error.error ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                ClinicianProcedurePageActions.loadCpTrendApiRequestFailure({
-                  api,
-                  error: error.error ?? error,
-                })
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
 

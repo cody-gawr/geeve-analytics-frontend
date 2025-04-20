@@ -4,19 +4,22 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
-    <mat-icon
+    fontIcon="help"
+  ></mat-icon>
+  <mat-icon
     *ngIf="hasData"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
-    fontIcon="table_rows_narrow" />
+    fontIcon="table_rows_narrow"
+  />
   <div class="chart-title">
     <mat-icon
       *ngIf="(duration$ | async) != 'custom'"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"
-      [matTooltip]="getTrendTip$ | async"></mat-icon>
+      [matTooltip]="getTrendTip$ | async"
+    ></mat-icon>
     <span> Total Discounts </span>
   </div>
   <div class="chart-content">
@@ -24,18 +27,17 @@
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
         <div></div>
-        <div
-          class="pa-table"
-          *ngIf="showTableView; else graphElem">
+        <div class="pa-table" *ngIf="showTableView; else graphElem">
           <table>
             <thead>
               <tr>
-                <th>{{paTableColumnA$ | async}}</th>
+                <th>{{ paTableColumnA$ | async }}</th>
                 <th>Discounts</th>
               </tr>
             </thead>
@@ -59,7 +61,8 @@
                 type="doughnut"
                 [legend]="false"
                 [options]="pieChartOptions"
-                [plugins]="plugins$ | async">
+                [plugins]="plugins$ | async"
+              >
               </canvas>
               <ng-template #chartElem01>
                 <spin-loader class="empty-placeholder" [disableSpin]="true">

@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NotificationService {
   constructor(
     private toastr: ToastrService,
-    private zone: NgZone
+    private zone: NgZone,
   ) {}
 
   showSuccess(message: string) {

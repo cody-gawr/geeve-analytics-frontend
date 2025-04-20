@@ -14,7 +14,7 @@ export class StepperHeaderComponent {
   constructor(
     private _cookieService: CookieService,
     private headerService: StepperHeaderService,
-    private router: Router
+    private router: Router,
   ) {}
 
   public config: PerfectScrollbarConfigInterface = {};
@@ -30,7 +30,7 @@ export class StepperHeaderComponent {
           this.router.navigate(['/login']);
         }
       },
-      error => {}
+      error => {},
     );
   }
   // This is for Notifications

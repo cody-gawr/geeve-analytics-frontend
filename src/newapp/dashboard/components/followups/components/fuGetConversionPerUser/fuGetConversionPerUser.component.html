@@ -4,18 +4,15 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title">
     <mat-icon
       *ngIf="!(isCustomDateRange$ | async)"
-      [matTooltip]="
-        (durationTrendLabel$ | async) +
-        ': ' +
-        ((prev | number: '1.0-0') ?? '0') +
-        '%'
-      "
+      [matTooltip]="(durationTrendLabel$ | async) + ': ' + ((prev | number: '1.0-0') ?? '0') + '%'"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
-      [fontIcon]="trendingIcon"></mat-icon>
+      [fontIcon]="trendingIcon"
+    ></mat-icon>
     <span>Followup Conversion Per User</span>
   </div>
   <div class="chart-content">
@@ -23,7 +20,8 @@
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
@@ -31,7 +29,8 @@
           <button
             *ngFor="let chartName of chartNames"
             (click)="switchChartName(chartName)"
-            [ngClass]="{ active: chartName == (chartName$ | async) }">
+            [ngClass]="{ active: chartName == (chartName$ | async) }"
+          >
             {{ chartName }}
           </button>
         </div>
@@ -46,11 +45,13 @@
               [labels]="labels"
               [legend]="false"
               [type]="'bar'"
-              [options]="barChartOptions1"></canvas>
+              [options]="barChartOptions1"
+            ></canvas>
             <spin-loader
               class="empty-placeholder"
               *ngIf="!hasData && !(isLoading$ | async)"
-              [disableSpin]="true">
+              [disableSpin]="true"
+            >
               {{ noDataMessage$ | async }}
             </spin-loader>
           </ng-template>

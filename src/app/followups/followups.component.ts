@@ -24,10 +24,7 @@ import {
   MatLegacyDialogRef as MatDialogRef,
   MatLegacyDialog as MatDialog,
 } from '@angular/material/legacy-dialog';
-import {
-  NgxDaterangepickerMd,
-  DaterangepickerComponent,
-} from 'ngx-daterangepicker-material';
+import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
 import { ChartstipsService } from '../shared/chartstips.service';
 import { environment } from '../../environments/environment';
 import * as moment from 'moment';
@@ -47,7 +44,7 @@ export class ExportDataDialogComponent {
     private router: Router,
     private toastr: ToastrService,
     private followupsService: FollowupsService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {}
 
   public loader = false;
@@ -74,13 +71,7 @@ export class ExportDataDialogComponent {
     }
     this.loader = true;
     this.followupsService
-      .checkExportFollowUpData(
-        clinic_id,
-        startDate,
-        endDate,
-        showcompleted,
-        followuptype
-      )
+      .checkExportFollowUpData(clinic_id, startDate, endDate, showcompleted, followuptype)
       .subscribe(
         res => {
           if (res.status == 200) {
@@ -92,7 +83,7 @@ export class ExportDataDialogComponent {
                 showcompleted,
                 filetype,
                 followuptype,
-                filename
+                filename,
               )
               .subscribe(
                 (data: File) => {
@@ -114,18 +105,16 @@ export class ExportDataDialogComponent {
                   a.remove();
                   this.dialogRef.close();
                   this.toastr.success('File exported successfully!');
-                  this.followupsService
-                    .deletefiles(filename, filetype)
-                    .subscribe(
-                      res => {},
-                      error => {
-                        console.log('error', error);
-                      }
-                    );
+                  this.followupsService.deletefiles(filename, filetype).subscribe(
+                    res => {},
+                    error => {
+                      console.log('error', error);
+                    },
+                  );
                 },
                 error => {
                   console.log('error', error);
-                }
+                },
               );
           } else if (res.status == '204') {
             this.toastr.info(res.body.message);
@@ -135,7 +124,7 @@ export class ExportDataDialogComponent {
         },
         error => {
           console.log('error', error);
-        }
+        },
       );
   }
 
@@ -158,7 +147,7 @@ export class FollowupsDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
     private router: Router,
-    private followupsService: FollowupsService
+    private followupsService: FollowupsService,
   ) {}
 
   onNoClick(): void {
@@ -178,7 +167,7 @@ export class FollowupsDialogComponent {
         data.clinic_id,
         data.followup_date,
         data.type,
-        data.treatItem
+        data.treatItem,
       )
       .subscribe(
         res => {
@@ -190,7 +179,7 @@ export class FollowupsDialogComponent {
         },
         error => {
           console.log('error', error);
-        }
+        },
       );
     return true;
   }
@@ -219,7 +208,7 @@ export class StatusDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
     private router: Router,
-    private followupsService: FollowupsService
+    private followupsService: FollowupsService,
   ) {}
   onNoClick(): void {
     this.nextCustomFollowup = false;
@@ -230,14 +219,7 @@ export class StatusDialogComponent {
       return false;
     }
     this.followupsService
-      .notes(
-        data.notes,
-        data.patientId,
-        data.date,
-        data.clinic_id,
-        data.followup_date,
-        data.type
-      )
+      .notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type)
       .subscribe(
         res => {
           if (res.status == 200) {
@@ -248,7 +230,7 @@ export class StatusDialogComponent {
         },
         error => {
           console.log('error', error);
-        }
+        },
       );
     return true;
   }
@@ -269,7 +251,7 @@ export class StatusDialogComponent {
         data.type,
         data.original_appt_date,
         data.followup_date,
-        data.treatItem
+        data.treatItem,
       )
       .subscribe((update: any) => {
         this.onNoClick();
@@ -282,7 +264,7 @@ export class StatusDialogComponent {
               data.followup_date,
               this.nextDate,
               data.original_appt_date,
-              data.treatItem
+              data.treatItem,
             )
             .subscribe(update => {
               if (update.message === 'already') {
@@ -301,7 +283,7 @@ export class StatusDialogComponent {
         data.cid,
         data.type,
         data.original_appt_date,
-        data.followup_date
+        data.followup_date,
       )
       .subscribe((update: any) => {
         if (update.status && event != 'no') {
@@ -314,7 +296,7 @@ export class StatusDialogComponent {
               this.nextDate,
               data.original_appt_date,
               data.treatItem,
-              event
+              event,
             )
             .subscribe(clone => {
               if (clone.message == 'already') {
@@ -478,9 +460,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id);
   }
   public get isExactOrCoreOrPraktika(): boolean {
-    return this.localStorageService.isEachClinicExactOrCoreOrPraktika(
-      this.clinic_id
-    );
+    return this.localStorageService.isEachClinicExactOrCoreOrPraktika(this.clinic_id);
   }
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
@@ -494,7 +474,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     public constants: AppConstants,
     public dialog: MatDialog,
     public chartstipsService: ChartstipsService,
-    public clinicianAnalysisService: ClinicianAnalysisService
+    public clinicianAnalysisService: ClinicianAnalysisService,
   ) {
     // this.getChartsTips();
   }
@@ -548,24 +528,19 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
 
-      this.clinicianAnalysisService
-        .getClinicFollowUpSettings(this.clinic_id)
-        .subscribe(data => {
-          //if (data.status == 200) {
-          this.isEnablePO = data.data.post_op_enable == 1 ? true : false;
-          this.isEnableOR = data.data.recall_enable == 1 ? true : false;
-          this.isEnableTH = data.data.tick_enable == 1 ? true : false;
-          this.isEnableFT = data.data.fta_enable == 1 ? true : false;
-          this.isEnableUT = data.data.uta_enable == 1 ? true : false;
-          //}
-        });
+      this.clinicianAnalysisService.getClinicFollowUpSettings(this.clinic_id).subscribe(data => {
+        //if (data.status == 200) {
+        this.isEnablePO = data.data.post_op_enable == 1 ? true : false;
+        this.isEnableOR = data.data.recall_enable == 1 ? true : false;
+        this.isEnableTH = data.data.tick_enable == 1 ? true : false;
+        this.isEnableFT = data.data.fta_enable == 1 ? true : false;
+        this.isEnableUT = data.data.uta_enable == 1 ? true : false;
+        //}
+      });
       $('#title').html('Follow Ups');
 
       this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
-      this.selectedYear = this.datepipe.transform(
-        this.selectedMonthYear,
-        'yyyy'
-      );
+      this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
 
       this.getChartsTips();
 
@@ -633,11 +608,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   getFollowupPostOpCalls() {
     this.poLoadingLoading = true;
     this.followupsService
-      .followupPostOpCalls(
-        this.clinic_id,
-        this.selectedMonth,
-        this.selectedYear
-      )
+      .followupPostOpCalls(this.clinic_id, this.selectedMonth, this.selectedYear)
       .subscribe((res: any) => {
         this.followupPostOpCallsInComp = [];
         this.poLoadingLoading = false;
@@ -650,7 +621,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               this.followupPostOpCallsInComp = this.followupPostOpCalls;
             } else {
               this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
-                p => p.is_complete != true
+                p => p.is_complete != true,
               );
             }
             if (
@@ -663,7 +634,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
             this.setPaginationButtons(this.followupPostOpCallsInComp, 'OP');
             this.followupPostOpCallsInComp = this.setPaginationData(
               this.followupPostOpCallsInComp,
-              'OP'
+              'OP',
             );
 
             this.followupsPostopCallsDate = res.body.data.date;
@@ -678,11 +649,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.recallLoadingLoading = true;
     }
     this.followupsService
-      .followupOverdueRecalls(
-        this.clinic_id,
-        this.selectedMonth,
-        this.selectedYear
-      )
+      .followupOverdueRecalls(this.clinic_id, this.selectedMonth, this.selectedYear)
       .subscribe((res: any) => {
         this.followupOverDueRecallInCMP = [];
         this.recallLoadingLoading = false;
@@ -695,8 +662,9 @@ export class FollowupsComponent implements OnInit, OnDestroy {
             if (this.showCompleteOverdue == true) {
               this.followupOverDueRecallInCMP = this.followupOverDueRecall;
             } else {
-              this.followupOverDueRecallInCMP =
-                this.followupOverDueRecall.filter(p => p.is_complete != true);
+              this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
+                p => p.is_complete != true,
+              );
             }
             if (
               this.followupOverDueRecallInCMP.length <=
@@ -708,7 +676,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
             this.setPaginationButtons(this.followupOverDueRecallInCMP, 'OR');
             this.followupOverDueRecallInCMP = this.setPaginationData(
               this.followupOverDueRecallInCMP,
-              'OR'
+              'OR',
             );
             this.OverDueRecallDays = res.body.previous;
           }
@@ -735,7 +703,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
             this.internalReferralRecallInCMP = this.internalReferrals;
           } else {
             this.internalReferralRecallInCMP = this.internalReferrals.filter(
-              p => p.is_complete != true
+              p => p.is_complete != true,
             );
           }
 
@@ -749,7 +717,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           this.setPaginationButtons(this.internalReferralRecallInCMP, 'IR');
           this.internalReferralRecallInCMP = this.setPaginationData(
             this.internalReferralRecallInCMP,
-            'IR'
+            'IR',
           );
         }
       });
@@ -763,11 +731,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.endTaksLoadingLoading = true;
     }
     this.followupsService
-      .followupTickFollowups(
-        this.clinic_id,
-        this.selectedMonth,
-        this.selectedYear
-      )
+      .followupTickFollowups(this.clinic_id, this.selectedMonth, this.selectedYear)
       .subscribe((res: any) => {
         this.followupTickFollowupsInCMP = [];
         this.endTaksLoadingLoading = false;
@@ -779,8 +743,9 @@ export class FollowupsComponent implements OnInit, OnDestroy {
             if (this.showCompleteTick == true) {
               this.followupTickFollowupsInCMP = this.followupTickFollowups;
             } else {
-              this.followupTickFollowupsInCMP =
-                this.followupTickFollowups.filter(p => p.is_complete != true);
+              this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
+                p => p.is_complete != true,
+              );
             }
             if (
               this.followupTickFollowupsInCMP.length <=
@@ -792,17 +757,14 @@ export class FollowupsComponent implements OnInit, OnDestroy {
             this.setPaginationButtons(this.followupTickFollowupsInCMP, 'TH');
             this.followupTickFollowupsInCMP = this.setPaginationData(
               this.followupTickFollowupsInCMP,
-              'TH'
+              'TH',
             );
             this.followupTickFollowupsInCMP.forEach(tool => {
               this.tipDoneCode[tool.patient_id] = {
                 title: 'Outstanding Treatments',
                 info: tool.code,
               };
-              var date = this.datepipe.transform(
-                tool.future_appt_date,
-                'MMM d, y'
-              );
+              var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
               this.tipFutureDate[tool.patient_id] = {
                 title: 'Future Appointment',
                 info: date,
@@ -830,11 +792,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.ftaTaksLoadingLoading = true;
     }
     this.followupsService
-      .followupFtaFollowups(
-        this.clinic_id,
-        this.selectedMonth,
-        this.selectedYear
-      )
+      .followupFtaFollowups(this.clinic_id, this.selectedMonth, this.selectedYear)
       .subscribe((res: any) => {
         this.followupFtaFollowupsInCMP = [];
         this.ftaTaksLoadingLoading = false;
@@ -847,7 +805,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
             } else {
               this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(
-                p => p.is_complete != true
+                p => p.is_complete != true,
               );
             }
             if (
@@ -860,17 +818,14 @@ export class FollowupsComponent implements OnInit, OnDestroy {
             this.setPaginationButtons(this.followupFtaFollowupsInCMP, 'FT');
             this.followupFtaFollowupsInCMP = this.setPaginationData(
               this.followupFtaFollowupsInCMP,
-              'FT'
+              'FT',
             );
             this.followupFtaFollowups.forEach(tool => {
               this.tipFtaDoneCode[tool.patient_id] = {
                 title: 'Outstanding Treatments',
                 info: tool.code,
               };
-              var date = this.datepipe.transform(
-                tool.future_appt_date,
-                'MMM d, y'
-              );
+              var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
               this.tipFtaFutureDate[tool.patient_id] = {
                 title: 'Future Appointment',
                 info: date,
@@ -895,11 +850,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.utaTaksLoadingLoading = true;
     }
     this.followupsService
-      .followupUtaFollowups(
-        this.clinic_id,
-        this.selectedMonth,
-        this.selectedYear
-      )
+      .followupUtaFollowups(this.clinic_id, this.selectedMonth, this.selectedYear)
       .subscribe((res: any) => {
         this.followupUtaFollowupsInCMP = [];
         this.utaTaksLoadingLoading = false;
@@ -912,7 +863,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
               this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
             } else {
               this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(
-                p => p.is_complete != true
+                p => p.is_complete != true,
               );
             }
             if (
@@ -925,17 +876,14 @@ export class FollowupsComponent implements OnInit, OnDestroy {
             this.setPaginationButtons(this.followupUtaFollowupsInCMP, 'UT');
             this.followupUtaFollowupsInCMP = this.setPaginationData(
               this.followupUtaFollowupsInCMP,
-              'UT'
+              'UT',
             );
             this.followupUtaFollowups.forEach(tool => {
               this.tipUtaDoneCode[tool.patient_id] = {
                 title: 'Outstanding Treatments',
                 info: tool.code,
               };
-              var date = this.datepipe.transform(
-                tool.future_appt_date,
-                'MMM d, y'
-              );
+              var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
               this.tipUtaFutureDate[tool.patient_id] = {
                 title: 'Future Appointment',
                 info: date,
@@ -947,16 +895,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
   //toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')
-  toggleUpdate(
-    event,
-    pid,
-    date,
-    fdate,
-    cid,
-    type,
-    status = 'default',
-    treatItem = ''
-  ) {
+  toggleUpdate(event, pid, date, fdate, cid, type, status = 'default', treatItem = '') {
     if (!status || status == '' || status == 'null') {
       event.source.checked = false;
       this.toastr.error('Please update status first to mark complete.');
@@ -972,15 +911,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.IRLoadingLoading = true;
     }
     this.followupsService
-      .updateFollowUpStatus(
-        event.checked,
-        pid,
-        cid,
-        type,
-        date,
-        fdate,
-        treatItem
-      )
+      .updateFollowUpStatus(event.checked, pid, cid, type, date, fdate, treatItem)
       .subscribe((update: any) => {
         if (type == 'post-op-calls') {
           this.getFollowupPostOpCalls();
@@ -1010,7 +941,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     followup_date,
     type,
     nextBussinessDay,
-    treatItem = ''
+    treatItem = '',
   ) {
     if (
       event == 'Wants another follow-up' ||
@@ -1018,10 +949,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       event == "Can't be reached - left voicemail"
     ) {
       let width = '450px';
-      if (
-        event == "Can't be reached" ||
-        event == "Can't be reached - left voicemail"
-      )
+      if (event == "Can't be reached" || event == "Can't be reached - left voicemail")
         width = '650px';
       const dialogRef = this.dialog.open(StatusDialogComponent, {
         width: width,
@@ -1091,9 +1019,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.endOfDaysTasksInComp = this.endOfDaysTasks;
     } else {
-      this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(
-        p => p.is_complete != 1
-      );
+      this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.is_complete != 1);
     }
   }
 
@@ -1102,16 +1028,11 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.followupPostOpCallsInComp = this.followupPostOpCalls;
     } else {
-      this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
-        p => p.is_complete != true
-      );
+      this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);
     }
     this.currentOpPage = 1;
     this.setPaginationButtons(this.followupPostOpCallsInComp, 'OP');
-    this.followupPostOpCallsInComp = this.setPaginationData(
-      this.followupPostOpCallsInComp,
-      'OP'
-    );
+    this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp, 'OP');
   }
 
   updateToCompleteOR(event) {
@@ -1120,15 +1041,12 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.followupOverDueRecallInCMP = this.followupOverDueRecall;
     } else {
       this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
-        p => p.is_complete != true
+        p => p.is_complete != true,
       );
     }
     this.currentORPage = 1;
     this.setPaginationButtons(this.followupOverDueRecallInCMP, 'OR');
-    this.followupOverDueRecallInCMP = this.setPaginationData(
-      this.followupOverDueRecallInCMP,
-      'OR'
-    );
+    this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP, 'OR');
   }
 
   updateToCompleteTF(event) {
@@ -1137,15 +1055,12 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.followupTickFollowupsInCMP = this.followupTickFollowups;
     } else {
       this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
-        p => p.is_complete != true
+        p => p.is_complete != true,
       );
     }
     this.currentThickPage = 1;
     this.setPaginationButtons(this.followupTickFollowupsInCMP, 'TH');
-    this.followupTickFollowupsInCMP = this.setPaginationData(
-      this.followupTickFollowupsInCMP,
-      'TH'
-    );
+    this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP, 'TH');
   }
 
   updateToCompleteFT(event) {
@@ -1153,16 +1068,11 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
     } else {
-      this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(
-        p => p.is_complete != true
-      );
+      this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);
     }
     this.currentFTPage = 1;
     this.setPaginationButtons(this.followupFtaFollowupsInCMP, 'FT');
-    this.followupFtaFollowupsInCMP = this.setPaginationData(
-      this.followupFtaFollowupsInCMP,
-      'FT'
-    );
+    this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP, 'FT');
   }
 
   updateToCompleteUT(event) {
@@ -1170,16 +1080,11 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
     } else {
-      this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(
-        p => p.is_complete != true
-      );
+      this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(p => p.is_complete != true);
     }
     this.currentUTPage = 1;
     this.setPaginationButtons(this.followupUtaFollowupsInCMP, 'UT');
-    this.followupUtaFollowupsInCMP = this.setPaginationData(
-      this.followupUtaFollowupsInCMP,
-      'UT'
-    );
+    this.followupUtaFollowupsInCMP = this.setPaginationData(this.followupUtaFollowupsInCMP, 'UT');
   }
 
   updateToCompleteIR(event) {
@@ -1187,15 +1092,13 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (event.checked == true) {
       this.internalReferralRecallInCMP = this.internalReferrals;
     } else {
-      this.internalReferralRecallInCMP = this.internalReferrals.filter(
-        p => p.is_complete != true
-      );
+      this.internalReferralRecallInCMP = this.internalReferrals.filter(p => p.is_complete != true);
     }
     this.currentIRPage = 1;
     this.setPaginationButtons(this.internalReferralRecallInCMP, 'IR');
     this.internalReferralRecallInCMP = this.setPaginationData(
       this.internalReferralRecallInCMP,
-      'IR'
+      'IR',
     );
   }
 
@@ -1204,20 +1107,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       startDate: null,
       endRaw: null,
     };
-    var selmonth: number = parseInt(
-      this.datepipe.transform(this.selectedMonthYear, 'M')
-    );
-    var selyear: number = parseInt(
-      this.datepipe.transform(this.selectedMonthYear, 'yyyy')
-    );
-    var selctedEndDate = this.datepipe.transform(
-      new Date(selyear, selmonth, 0),
-      'yyyy-MM-dd'
-    );
-    var selctedStartDate = this.datepipe.transform(
-      this.selectedMonthYear,
-      'yyyy-MM-dd'
-    );
+    var selmonth: number = parseInt(this.datepipe.transform(this.selectedMonthYear, 'M'));
+    var selyear: number = parseInt(this.datepipe.transform(this.selectedMonthYear, 'yyyy'));
+    var selctedEndDate = this.datepipe.transform(new Date(selyear, selmonth, 0), 'yyyy-MM-dd');
+    var selctedStartDate = this.datepipe.transform(this.selectedMonthYear, 'yyyy-MM-dd');
     let start_date = { start: moment(selctedStartDate) };
     let end_date = { end: moment(selctedEndDate) };
     const dialogRef = this.dialog.open(ExportDataDialogComponent, {
@@ -1235,14 +1128,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {});
   }
 
-  openNotes(
-    notes,
-    patient_id,
-    original_appt_date,
-    followup_date,
-    type,
-    treatItem = ''
-  ): void {
+  openNotes(notes, patient_id, original_appt_date, followup_date, type, treatItem = ''): void {
     const dialogRef = this.dialog.open(FollowupsDialogComponent, {
       width: '500px',
       data: {
@@ -1347,28 +1233,22 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
   setPaginationData(totalData, type) {
     if (type == 'OR') {
-      var startIndex: number =
-        this.currentORPage * this.pageSize - this.pageSize;
+      var startIndex: number = this.currentORPage * this.pageSize - this.pageSize;
     }
     if (type == 'TH') {
-      var startIndex: number =
-        this.currentThickPage * this.pageSize - this.pageSize;
+      var startIndex: number = this.currentThickPage * this.pageSize - this.pageSize;
     }
     if (type == 'OP') {
-      var startIndex: number =
-        this.currentOpPage * this.pageSize - this.pageSize;
+      var startIndex: number = this.currentOpPage * this.pageSize - this.pageSize;
     }
     if (type == 'FT') {
-      var startIndex: number =
-        this.currentFTPage * this.pageSize - this.pageSize;
+      var startIndex: number = this.currentFTPage * this.pageSize - this.pageSize;
     }
     if (type == 'UT') {
-      var startIndex: number =
-        this.currentUTPage * this.pageSize - this.pageSize;
+      var startIndex: number = this.currentUTPage * this.pageSize - this.pageSize;
     }
     if (type == 'IR') {
-      var startIndex: number =
-        this.currentIRPage * this.pageSize - this.pageSize;
+      var startIndex: number = this.currentIRPage * this.pageSize - this.pageSize;
     }
     var endIndex: any = startIndex + this.pageSize;
     var temp: any = [];
@@ -1387,12 +1267,12 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupOverDueRecallInCMP = this.followupOverDueRecall;
       } else {
         this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
-          p => p.is_complete != true
+          p => p.is_complete != true,
         );
       }
       this.followupOverDueRecallInCMP = this.setPaginationData(
         this.followupOverDueRecallInCMP,
-        type
+        type,
       );
     }
     if (type == 'TH') {
@@ -1401,12 +1281,12 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupTickFollowupsInCMP = this.followupTickFollowups;
       } else {
         this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
-          p => p.is_complete != true
+          p => p.is_complete != true,
         );
       }
       this.followupTickFollowupsInCMP = this.setPaginationData(
         this.followupTickFollowupsInCMP,
-        'TH'
+        'TH',
       );
     }
     if (type == 'OP') {
@@ -1415,13 +1295,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupPostOpCallsInComp = this.followupPostOpCalls;
       } else {
         this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
-          p => p.is_complete != true
+          p => p.is_complete != true,
         );
       }
-      this.followupPostOpCallsInComp = this.setPaginationData(
-        this.followupPostOpCallsInComp,
-        'OP'
-      );
+      this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp, 'OP');
     }
     if (type == 'FT') {
       this.currentFTPage = goPage;
@@ -1429,13 +1306,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
       } else {
         this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(
-          p => p.is_complete != true
+          p => p.is_complete != true,
         );
       }
-      this.followupFtaFollowupsInCMP = this.setPaginationData(
-        this.followupFtaFollowupsInCMP,
-        'FT'
-      );
+      this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP, 'FT');
     }
     if (type == 'UT') {
       this.currentUTPage = goPage;
@@ -1443,13 +1317,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
       } else {
         this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(
-          p => p.is_complete != true
+          p => p.is_complete != true,
         );
       }
-      this.followupUtaFollowupsInCMP = this.setPaginationData(
-        this.followupUtaFollowupsInCMP,
-        'UT'
-      );
+      this.followupUtaFollowupsInCMP = this.setPaginationData(this.followupUtaFollowupsInCMP, 'UT');
     }
     if (type == 'IR') {
       this.currentIRPage = goPage;
@@ -1457,12 +1328,12 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.internalReferralRecallInCMP = this.internalReferrals;
       } else {
         this.internalReferralRecallInCMP = this.internalReferrals.filter(
-          p => p.is_complete != true
+          p => p.is_complete != true,
         );
       }
       this.internalReferralRecallInCMP = this.setPaginationData(
         this.internalReferralRecallInCMP,
-        'IR'
+        'IR',
       );
     }
   }
@@ -1488,7 +1359,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       data => {
         this.charTips = data.data;
       },
-      error => {}
+      error => {},
     );
   }
 
@@ -1500,30 +1371,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       'Cant be reached - left': "Can't be reached - left voicemail",
     };
     history.forEach(tip => {
-      let date = this.datepipe.transform(
-        new Date(tip.followup_date),
-        'MMM dd, yyyy'
-      );
+      let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM dd, yyyy');
       if (typeof statusSpe[tip.status] != 'undefined') {
         html +=
-          '<tr><td width="28%">' +
-          date +
-          ':</td><td> ' +
-          statusSpe[tip.status] +
-          '</td></tr>';
+          '<tr><td width="28%">' + date + ':</td><td> ' + statusSpe[tip.status] + '</td></tr>';
       } else {
-        html +=
-          '<tr><td width="28%">' +
-          date +
-          ':</td><td> ' +
-          tip.status +
-          '</td></tr>';
+        html += '<tr><td width="28%">' + date + ':</td><td> ' + tip.status + '</td></tr>';
       }
       if (tip.notes && tip.notes != '' && tip.notes != 'null') {
-        html +=
-          '<tr><td  class="notes" width="28%">Notes:</td><td> ' +
-          tip.notes +
-          '</td></tr>';
+        html += '<tr><td  class="notes" width="28%">Notes:</td><td> ' + tip.notes + '</td></tr>';
       }
     });
     html += '</table>';

@@ -17,19 +17,28 @@
   width: 100%;
 }
 
-
 .patient-info {
   font-size: 14px;
 }
 
 .sms-form {
-  display: flex; flex-direction: column; gap: 15px; width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 550px;
 }
 
 .phone-f {
-  display: flex; flex-direction: column;height: 100%; border: 5px solid whitesmoke; padding: 10px; border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 5px solid whitesmoke;
+  padding: 10px;
+  border-radius: 20px;
   .phone-h-box {
-    display: flex; justify-content: center; margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
     .phone-h {
       width: 40px;
       height: 7px;
@@ -37,10 +46,12 @@
       border-radius: 5px;
     }
   }
-  
-  
+
   .phone-s {
-    border: 3px solid whitesmoke; padding: 10px; border-radius: 15px; height: 100%;
+    border: 3px solid whitesmoke;
+    padding: 10px;
+    border-radius: 15px;
+    height: 100%;
     .phone-m {
       margin-right: 26px;
       font-size: 14px;
@@ -52,4 +63,3 @@
     }
   }
 }
-

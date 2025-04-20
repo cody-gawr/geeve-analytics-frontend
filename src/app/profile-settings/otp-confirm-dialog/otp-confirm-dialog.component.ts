@@ -22,14 +22,14 @@ export class OtpConfirmDialog {
     public dialogRef: MatDialogRef<OtpConfirmDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toastrService: ToastrService,
-    private authService: ProfileSettingsService
+    private authService: ProfileSettingsService,
   ) {
     this.otpFormGroup = this.formBuilder.group({
       otp: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
     });
-    if(this.data?.MfaEnabled){
+    if (this.data?.MfaEnabled) {
       this.imageUrl = '';
-    }else{
+    } else {
       this.imageUrl = environment.baseApiUrl + '/v1/common/generateQR';
     }
   }
@@ -40,9 +40,9 @@ export class OtpConfirmDialog {
 
   onSubmit() {
     this.formSubmitted = true;
-    if(this.imageUrl){
+    if (this.imageUrl) {
       this.enable2FA();
-    }else{
+    } else {
       this.disable2FA();
     }
   }
@@ -65,22 +65,21 @@ export class OtpConfirmDialog {
     this.authService.verifyCode(otp).subscribe({
       next: (res: any) => {
         const result = res.body;
-        if(result.status){
+        if (result.status) {
           this.imageUrl = '';
           this.toastrService.success(result?.message || 'OTP verified!');
           this.dialogRef.close(true);
-        }else{
+        } else {
           this.toastrService.error(result?.message || 'Invalid Code!');
-          this.setErrors({otp: 'Invalid Code!'});
+          this.setErrors({ otp: 'Invalid Code!' });
         }
       },
       error: error => {
         console.log('Error', error);
         this.toastrService.error(error?.error?.message || 'Invalid Code!');
-        this.setErrors({otp: 'Invalid Code!'});
+        this.setErrors({ otp: 'Invalid Code!' });
       },
     });
-
   }
 
   disable2FA() {
@@ -88,18 +87,18 @@ export class OtpConfirmDialog {
     this.authService.verifyCode(otp, true).subscribe({
       next: (res: any) => {
         const result = res.body;
-        if(!result.status){
+        if (!result.status) {
           this.toastrService.error(result?.message || 'Invalid Code!');
-          this.setErrors({otp: 'Invalid Code!'});
-        }else{
+          this.setErrors({ otp: 'Invalid Code!' });
+        } else {
           this.dialogRef.close(false);
         }
       },
       error: error => {
         console.log('Error', error);
         this.toastrService.error(error?.error?.message || 'Invalid Code!');
-        this.setErrors({otp: 'Invalid Code!'});
-      }
+        this.setErrors({ otp: 'Invalid Code!' });
+      },
     });
   }
 

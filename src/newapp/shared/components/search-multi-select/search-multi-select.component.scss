@@ -1,14 +1,14 @@
 mat-form-field {
-    width: 100%;
+  width: 100%;
+}
+
+ngx-mat-select-search {
+  mat-option {
+    display: flex;
+    align-items: center;
   }
-  
-  ngx-mat-select-search {
-    mat-option {
-      display: flex;
-      align-items: center;
-    }
-  }
+}
 
 ::ng-deep .mat-select-search-inner {
-    background-color: white !important;
+  background-color: white !important;
 }

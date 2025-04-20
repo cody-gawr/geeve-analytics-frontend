@@ -32,7 +32,7 @@ export class SendReviewDialog {
   phoneNumber = new UntypedFormControl('', [
     Validators.required,
     Validators.pattern(
-      /^(\+614?|04|614)[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}$/
+      /^(\+614?|04|614)[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}[\s]?\d{1}$/,
     ),
   ]);
 
@@ -51,15 +51,10 @@ export class SendReviewDialog {
     private clinicSettingService: ClinicSettingsService,
     private _headerService: HeaderService,
     private _morningHuddleService: MorningHuddleService,
-    private _toastrService: ToastrService
+    private _toastrService: ToastrService,
   ) {
-    this.phoneNumber.setValue(
-      (this.data.mobile || data.phone_number || '').replace(/\s/g, '')
-    );
-    this.clinic = _.find(
-      this._headerService.clinics,
-      c => c.id == this.data.clinic_id
-    );
+    this.phoneNumber.setValue((this.data.mobile || data.phone_number || '').replace(/\s/g, ''));
+    this.clinic = _.find(this._headerService.clinics, c => c.id == this.data.clinic_id);
     if (data.phone_number) {
       this.review_msg.setValue(data.review_msg);
     }
@@ -84,8 +79,7 @@ export class SendReviewDialog {
       }
     });
 
-    this.availableMsgLength =
-      data.total_remains < 5 ? data.total_remains * 160 : 800;
+    this.availableMsgLength = data.total_remains < 5 ? data.total_remains * 160 : 800;
   }
 
   get numOfMessages() {
@@ -117,7 +111,7 @@ export class SendReviewDialog {
           this.data.patient_name,
           this.review_msg.value,
           this.phoneNumber.value,
-          this.data.appoint_id?.toString()
+          this.data.appoint_id?.toString(),
         )
         .subscribe({
           next: res => {
@@ -129,9 +123,7 @@ export class SendReviewDialog {
           },
           error: err => {
             this.isWaitingResponse = false;
-            this._toastrService.error(
-              (err.error && err.error.message) || err.message
-            );
+            this._toastrService.error((err.error && err.error.message) || err.message);
           },
           complete: () => {
             this._toastrService.success('Sent Message Sucessfully!');
@@ -141,18 +133,12 @@ export class SendReviewDialog {
   }
 
   onChangeReviewMsg() {
-    const msg = _.find(
-      this.msgTemplates,
-      it => it.id == this.selectedReviewMsg
-    );
+    const msg = _.find(this.msgTemplates, it => it.id == this.selectedReviewMsg);
     let renderedMsg = msg.msg_template.replaceAll(
       '[Patient Name]',
-      this.data.patient_name?.split(' ')[0]
+      this.data.patient_name?.split(' ')[0],
     );
-    renderedMsg = renderedMsg.replaceAll(
-      '[Clinic Name]',
-      this.clinic.clinicName
-    );
+    renderedMsg = renderedMsg.replaceAll('[Clinic Name]', this.clinic.clinicName);
     if (this.facebookId) {
       renderedMsg = renderedMsg.replaceAll('[Facebook Link]', this.facebookId);
     }

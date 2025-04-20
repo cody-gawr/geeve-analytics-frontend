@@ -29,11 +29,13 @@
   min-height: 39px;
 }
 
-::ng-deep #addAddCashForm .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+::ng-deep
+  #addAddCashForm
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined
+  .mat-mdc-form-field-infix {
   padding-top: 8px;
   padding-bottom: 8px;
 }
-
 
 ::ng-deep #addAddCashForm .mdc-notched-outline__leading {
   border-color: #9e9e9e !important;

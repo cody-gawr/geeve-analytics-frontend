@@ -37,7 +37,7 @@ export interface Dentist {
 export class FeatureDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<FeatureDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
   onNoClick(): void {
     this.dialogRef.close();
@@ -48,49 +48,65 @@ export class FeatureDialogComponent {
   selector: 'feature-payapp-example',
   template: `
     <div class="features-new">
-    <div
-      mat-dialog-content
-      class="sa_forms_design new-feature-popup"
-      align="center"
-    >
-      <h4>Payroll deadlines are coming - are you ready?</h4>
-      <p>Direct payments to dentists means juggling multiple accounts, complex reconciliations, and risking manual errors — unless it’s automated. Jeeve Pay takes the admin off your plate, so your clinic can stay focused on patients.</p>
-      <ul>
-        <li>
-          <p>Automated Service Fee calculations</p>
-        </li>
-        <li>
-          <p>Multi Bank Account Support</p>
-        </li>
-        <li>
-          <p>Built-in audit trails</p>
-        </li>
-        <li>
-          <p>Xero integration</p>
-        </li>
-        <li>
-          <p>Peace of mind</p>
-        </li>
-      </ul>
-      <p><i style="color:#f3d633" class="fas fa-hand-point-right"></i> Available now -- streamline your financial workflows in just a few clinics</p>
-      <div style="display: flex;justify-content: space-between;">
-        <div style="display: flex;gap: 10px;justify-content: center;align-items: center;">
-          <a class="mat-raised-button mat-dc" href="https://calendly.com/jeeve/jeeve-pay-demo" target="_blank">Book Your Demo</a>
-          <a href="https://www.jeeve.com.au/jeeve-pay/" target="_blank" rel="noopener" class="mat-stroked-button mat-dc" mat-button> Learn more </a>
+      <div mat-dialog-content class="sa_forms_design new-feature-popup" align="center">
+        <h4>Payroll deadlines are coming - are you ready?</h4>
+        <p>
+          Direct payments to dentists means juggling multiple accounts, complex reconciliations, and
+          risking manual errors — unless it’s automated. Jeeve Pay takes the admin off your plate,
+          so your clinic can stay focused on patients.
+        </p>
+        <ul>
+          <li>
+            <p>Automated Service Fee calculations</p>
+          </li>
+          <li>
+            <p>Multi Bank Account Support</p>
+          </li>
+          <li>
+            <p>Built-in audit trails</p>
+          </li>
+          <li>
+            <p>Xero integration</p>
+          </li>
+          <li>
+            <p>Peace of mind</p>
+          </li>
+        </ul>
+        <p>
+          <i style="color:#f3d633" class="fas fa-hand-point-right"></i> Available now -- streamline
+          your financial workflows in just a few clinics
+        </p>
+        <div style="display: flex;justify-content: space-between;">
+          <div style="display: flex;gap: 10px;justify-content: center;align-items: center;">
+            <a
+              class="mat-raised-button mat-dc"
+              href="https://calendly.com/jeeve/jeeve-pay-demo"
+              target="_blank"
+              >Book Your Demo</a
+            >
+            <a
+              href="https://www.jeeve.com.au/jeeve-pay/"
+              target="_blank"
+              rel="noopener"
+              class="mat-stroked-button mat-dc"
+              mat-button
+            >
+              Learn more
+            </a>
+          </div>
+          <div>
+            <img width="200" alt="Pay" class="" src="assets/jeeve/images/logo-white-pay.png" />
+          </div>
         </div>
-        <div>
-          <img width="200" alt="Pay" class="" src="assets/jeeve/images/logo-white-pay.png" />
-        </div>
+        <span class="new-feature-popup-close" (click)="onNoClick()">X</span>
       </div>
-      <span class="new-feature-popup-close" (click)="onNoClick()">X</span>
     </div>
-  </div>
-  `
+  `,
 })
 export class FeaturePayAppDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<FeaturePayAppDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
   onNoClick(): void {
     this.dialogRef.close();
@@ -102,9 +118,7 @@ export class FeaturePayAppDialogComponent {
   templateUrl: './headerright.component.html',
   styleUrls: [],
 })
-export class AppHeaderrightComponent
-  implements AfterViewInit, OnInit, OnDestroy
-{
+export class AppHeaderrightComponent implements AfterViewInit, OnInit, OnDestroy {
   private _routerSub = Subscription.EMPTY;
   private notifier = new Subject<void>();
   providerIdDentist;
@@ -138,7 +152,7 @@ export class AppHeaderrightComponent
     private userIdle: UserIdleService,
     public constants: AppConstants,
     private toastr: ToastrService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {
     if (this._cookieService.get('user_type')) {
       this.user_type = this._cookieService.get('user_type');
@@ -181,12 +195,12 @@ export class AppHeaderrightComponent
       sessionStorage.getItem('show_pay_promo') &&
       sessionStorage.getItem('show_pay_promo') == '1'
     ) {
-        const dialogRef = this.dialog.open(FeaturePayAppDialogComponent, {
-          width: '700px',
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          sessionStorage.setItem('show_pay_promo', '0');
-        });
+      const dialogRef = this.dialog.open(FeaturePayAppDialogComponent, {
+        width: '700px',
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        sessionStorage.setItem('show_pay_promo', '0');
+      });
     }
     if (this._cookieService.get('userid')) {
       this.userId = Number(this._cookieService.get('userid'));
@@ -208,10 +222,7 @@ export class AppHeaderrightComponent
         }
 
         if (
-          [
-            '/dashboards/cliniciananalysis',
-            '/dashboards/clinicianproceedures',
-          ].includes(this.route)
+          ['/dashboards/cliniciananalysis', '/dashboards/clinicianproceedures'].includes(this.route)
         ) {
           this.showDropDown = true;
         } else {
@@ -247,7 +258,7 @@ export class AppHeaderrightComponent
           disableTimeOut: true,
           enableHtml: true,
           toastClass: 'ngx-toastr new-feature',
-        }
+        },
       );
     }
     /************** New Features **************/
@@ -263,7 +274,7 @@ export class AppHeaderrightComponent
         disableTimeOut: true,
         enableHtml: true,
         toastClass: 'ngx-toastr un-auth',
-      }
+      },
     );
     /************** unAuthorised **************/
   }
@@ -286,7 +297,7 @@ export class AppHeaderrightComponent
       .onTimeout()
       .pipe(
         mergeMap(() => this.headerService.logout()),
-        takeUntil(this.notifier)
+        takeUntil(this.notifier),
       )
       .subscribe(() => {
         this.userIdle.stopTimer();
@@ -306,8 +317,7 @@ export class AppHeaderrightComponent
       this.isToggleDentistChart = this._cookieService.get('dentist_toggle');
     }
     let opts = this.constants.cookieOpt as CookieOptions;
-    this.isToggleDentistChart =
-      this.isToggleDentistChart == 'true' ? 'false' : 'true';
+    this.isToggleDentistChart = this.isToggleDentistChart == 'true' ? 'false' : 'true';
     this._cookieService.put('dentist_toggle', this.isToggleDentistChart, opts);
     $('#clinic_initiate').click();
   }
@@ -330,25 +340,14 @@ export class AppHeaderrightComponent
 
   public get isMultiClinicsVisible(): boolean {
     if (this.userId == 1) {
-      const dash1_multi = parseInt(
-        this._cookieService.get('dash1_multi') ?? '0'
-      );
-      const dash2_multi = parseInt(
-        this._cookieService.get('dash2_multi') ?? '0'
-      );
-      const dash3_multi = parseInt(
-        this._cookieService.get('dash3_multi') ?? '0'
-      );
-      const dash4_multi = parseInt(
-        this._cookieService.get('dash4_multi') ?? '0'
-      );
-      const dash5_multi = parseInt(
-        this._cookieService.get('dash5_multi') ?? '0'
-      );
+      const dash1_multi = parseInt(this._cookieService.get('dash1_multi') ?? '0');
+      const dash2_multi = parseInt(this._cookieService.get('dash2_multi') ?? '0');
+      const dash3_multi = parseInt(this._cookieService.get('dash3_multi') ?? '0');
+      const dash4_multi = parseInt(this._cookieService.get('dash4_multi') ?? '0');
+      const dash5_multi = parseInt(this._cookieService.get('dash5_multi') ?? '0');
       return (
         ((this.route == '/dashboards/cliniciananalysis' && dash1_multi == 1) ||
-          (this.route == '/dashboards/clinicianproceedures' &&
-            dash2_multi == 1) ||
+          (this.route == '/dashboards/clinicianproceedures' && dash2_multi == 1) ||
           (this.route == '/dashboards/frontdesk' && dash3_multi == 1) ||
           (this.route == '/dashboards/marketing' && dash4_multi == 1) ||
           (this.route == '/dashboards/finances' && dash5_multi == 1)) &&
@@ -378,24 +377,16 @@ export class AppHeaderrightComponent
           this.localStorageService.saveObject('clinics', res.body.data);
 
           if (res.body.data.length > 0) {
-            if (
-              this.route == '/dashboards/healthscreen' &&
-              this.user_type != '7'
-            ) {
+            if (this.route == '/dashboards/healthscreen' && this.user_type != '7') {
               if (
                 this._cookieService.get('clinic_dentist') &&
-                [
-                  '/dashboards/cliniciananalysis',
-                  '/dashboards/clinicianproceedures',
-                ].indexOf(this.route) >= 0
+                ['/dashboards/cliniciananalysis', '/dashboards/clinicianproceedures'].indexOf(
+                  this.route,
+                ) >= 0
               ) {
                 if (
-                  this._cookieService
-                    .get('clinic_dentist')
-                    .split('_')[0]
-                    .indexOf(',') < 0 ||
-                  this._cookieService.get('clinic_dentist').split('_')[0] !=
-                    'all'
+                  this._cookieService.get('clinic_dentist').split('_')[0].indexOf(',') < 0 ||
+                  this._cookieService.get('clinic_dentist').split('_')[0] != 'all'
                 ) {
                   this.getAccountConnection(res.body.data[0].id);
                 } else {
@@ -414,14 +405,11 @@ export class AppHeaderrightComponent
             } else {
               if (
                 this._cookieService.get('clinic_dentist') &&
-                [
-                  '/dashboards/cliniciananalysis',
-                  '/dashboards/clinicianproceedures',
-                ].indexOf(this.route) >= 0
+                ['/dashboards/cliniciananalysis', '/dashboards/clinicianproceedures'].indexOf(
+                  this.route,
+                ) >= 0
               ) {
-                let dentistclinic = this._cookieService
-                  .get('clinic_dentist')
-                  .split('_');
+                let dentistclinic = this._cookieService.get('clinic_dentist').split('_');
                 if (dentistclinic[1] == 'all') {
                   // check dentist data from cookie
                   this.selectedDentist = dentistclinic[1];
@@ -466,10 +454,9 @@ export class AppHeaderrightComponent
                     this.selectedClinic[0].toString() != 'NaN' &&
                     this.selectedClinic[0] != 'all' &&
                     this.selectedClinic.length == 1 &&
-                    [
-                      '/dashboards/cliniciananalysis',
-                      '/dashboards/clinicianproceedures',
-                    ].includes(this.route)
+                    ['/dashboards/cliniciananalysis', '/dashboards/clinicianproceedures'].includes(
+                      this.route,
+                    )
                   ) {
                     this.showDropDown = true;
                   } else {
@@ -490,12 +477,9 @@ export class AppHeaderrightComponent
                     this._cookieService.put(
                       'clinic_dentist',
                       this.clinic_id + '_' + dentistclinic[1],
-                      opts
+                      opts,
                     );
-                  } else if (
-                    dentistclinic[0] == 'all' ||
-                    dentistclinic[0] == ''
-                  ) {
+                  } else if (dentistclinic[0] == 'all' || dentistclinic[0] == '') {
                     // check clinic data from cookie
                     this.clinic_id = res.body.data[0].id;
                     this.selectedClinic = res.body.data[0].id;
@@ -518,8 +502,7 @@ export class AppHeaderrightComponent
                   if (this.isMultiClinicsVisible) {
                     if (newAppClinicData.currentMultiClinicIds) {
                       this.selectedClinic =
-                        newAppClinicData.currentMultiClinicIds.length ===
-                        this.clinicsData.length
+                        newAppClinicData.currentMultiClinicIds.length === this.clinicsData.length
                           ? ['all']
                           : newAppClinicData.currentMultiClinicIds;
                     } else t1 = true;
@@ -530,15 +513,10 @@ export class AppHeaderrightComponent
                         newAppClinicData.currentSingleClinicId == 'all'
                       ) {
                         this.selectedClinic = res.body.data[0].id;
-                        newAppClinicData.currentSingleClinicId =
-                          this.selectedClinic;
-                        localStorage.setItem(
-                          'clinic',
-                          JSON.stringify(newAppClinicData)
-                        );
+                        newAppClinicData.currentSingleClinicId = this.selectedClinic;
+                        localStorage.setItem('clinic', JSON.stringify(newAppClinicData));
                       } else {
-                        this.selectedClinic =
-                          newAppClinicData.currentSingleClinicId;
+                        this.selectedClinic = newAppClinicData.currentSingleClinicId;
                       }
                     } else t1 = true;
                   }
@@ -554,8 +532,7 @@ export class AppHeaderrightComponent
                   }
                 }
 
-                if (!Array.isArray(this.selectedClinic))
-                  this.clinic_id = this.selectedClinic;
+                if (!Array.isArray(this.selectedClinic)) this.clinic_id = this.selectedClinic;
               }
             }
             this.title = $('#page_title').val();
@@ -581,9 +558,7 @@ export class AppHeaderrightComponent
 
   get isSingleClinicAllEnabled() {
     return (
-      this.route == '/dashboards/healthscreen' &&
-      this.clinicsData.length > 1 &&
-      this.user_type != 7
+      this.route == '/dashboards/healthscreen' && this.clinicsData.length > 1 && this.user_type != 7
     );
   }
 
@@ -612,9 +587,7 @@ export class AppHeaderrightComponent
             this.dentistCount = this.dentists;
             if (this.route != '/dentist-goals') {
               if (this._cookieService.get('clinic_dentist')) {
-                let dentistclinic = this._cookieService
-                  .get('clinic_dentist')
-                  .split('_');
+                let dentistclinic = this._cookieService.get('clinic_dentist').split('_');
                 if (dentistclinic[1] == 'all') {
                   this.selectedDentist = dentistclinic[1];
                 } else {
@@ -648,7 +621,7 @@ export class AppHeaderrightComponent
               this._cookieService.put(
                 'clinic_dentist',
                 this.clinic_id + '_' + this.selectedDentist,
-                opts
+                opts,
               );
             }
             let opts = this.constants.cookieOpt as CookieOptions;
@@ -660,7 +633,7 @@ export class AppHeaderrightComponent
         },
         error => {
           this.warningMessage = 'Please Provide Valid Inputs!';
-        }
+        },
       );
     return true;
   }
@@ -687,13 +660,11 @@ export class AppHeaderrightComponent
         permissions = (<string>res.data).split(',');
         if (permissions.length > 0 && this.user_type == 7) {
           const permissionByRoute = Object.keys(permission2Route).find(
-            permission => permission2Route[permission] == this.route
+            permission => permission2Route[permission] == this.route,
           );
           if (permissions.includes(permissionByRoute)) {
             this.unAuth = false;
-          } else if (
-            ['/rewards', '/clinic', '/profile-settings'].includes(this.route)
-          ) {
+          } else if (['/rewards', '/clinic', '/profile-settings'].includes(this.route)) {
             this.unAuth = false;
           } else {
             this.unAuth = true;
@@ -701,9 +672,7 @@ export class AppHeaderrightComponent
             $('.settings-table-card').addClass('unauth-hide');
             $('.page-content').addClass('unauth-hide');
           }
-        } else if (
-          ['/rewards', '/clinic', '/profile-settings'].includes(this.route)
-        ) {
+        } else if (['/rewards', '/clinic', '/profile-settings'].includes(this.route)) {
           this.unAuth = false;
         } else {
           this.unAuth = true;
@@ -713,7 +682,7 @@ export class AppHeaderrightComponent
         }
         this.rolesUsersService.setUnAuth(
           this.unAuth,
-          `You do not have permission to access this page for ${cliName}. Please contact the clinic owner.`
+          `You do not have permission to access this page for ${cliName}. Please contact the clinic owner.`,
         );
       },
       error: error => {},
@@ -773,9 +742,7 @@ export class AppHeaderrightComponent
         newValue = newValues;
         if (this.route != '/dashboards/healthscreen') {
           if (newValue == 'all') {
-            const primaryClinicId = _.min(
-              this.clinicsData.map(c => parseInt(c.id))
-            );
+            const primaryClinicId = _.min(this.clinicsData.map(c => parseInt(c.id)));
             // } else {
             this.getAccountConnection(primaryClinicId);
           }
@@ -829,24 +796,19 @@ export class AppHeaderrightComponent
 
       if (this.isMultiClinicsVisible) {
         if (newValue == 'all') {
-          newAppClinicData.currentMultiClinicIds = this.clinicsData.map(
-            v => v.id
-          );
+          newAppClinicData.currentMultiClinicIds = this.clinicsData.map(v => v.id);
           newAppClinicData.currentSingleClinicId = 'all';
         } else {
           newAppClinicData.currentMultiClinicIds = newValue;
         }
       } else {
-        newAppClinicData.currentSingleClinicId =
-          newValue == 'all' ? newValue : parseInt(newValue);
+        newAppClinicData.currentSingleClinicId = newValue == 'all' ? newValue : parseInt(newValue);
 
         if (newValue == 'all') {
           if (this.route == '/dashboards/healthscreen') {
             newAppClinicData.currentMultiClinicIds = [this.clinicsData[0].id];
           } else {
-            newAppClinicData.currentMultiClinicIds = this.clinicsData.map(
-              v => v.id
-            );
+            newAppClinicData.currentMultiClinicIds = this.clinicsData.map(v => v.id);
           }
         } else {
           newAppClinicData.currentMultiClinicIds = [parseInt(newValue)];
@@ -862,9 +824,7 @@ export class AppHeaderrightComponent
 
       if ($('body').find('span#currentClinic').length == 0) {
         $('body').append(
-          '<span id="currentClinic" style="display:none" cid="' +
-            newValue +
-            '"></span>'
+          '<span id="currentClinic" style="display:none" cid="' + newValue + '"></span>',
         );
       } else {
         $('#currentClinic').attr('cid', newValue);
@@ -908,9 +868,7 @@ export class AppHeaderrightComponent
           // }else{
           $('#clinic_initiate').click();
           if (this._cookieService.get('clinic_dentist')) {
-            let dentistclinic = this._cookieService
-              .get('clinic_dentist')
-              .split('_');
+            let dentistclinic = this._cookieService.get('clinic_dentist').split('_');
             if (dentistclinic[0] != newValue) {
               this.selectedDentist = 'all';
             } else {
@@ -937,9 +895,7 @@ export class AppHeaderrightComponent
       } else {
         $('#clinic_initiate').click();
         if (this._cookieService.get('clinic_dentist')) {
-          let dentistclinic = this._cookieService
-            .get('clinic_dentist')
-            .split('_');
+          let dentistclinic = this._cookieService.get('clinic_dentist').split('_');
           if (dentistclinic[0] != newValue) {
             this.selectedDentist = 'all';
           } else {
@@ -990,7 +946,7 @@ export class AppHeaderrightComponent
         },
         error => {
           this.warningMessage = 'Please Provide Valid Inputs!';
-        }
+        },
       );
   }
 
@@ -1009,9 +965,7 @@ export class AppHeaderrightComponent
 
     if ($('body').find('span#currentDentist').length <= 0) {
       $('body').append(
-        '<span id="currentDentist" style="display:none" did="' +
-          newValue +
-          '"></span>'
+        '<span id="currentDentist" style="display:none" did="' + newValue + '"></span>',
       );
     } else {
       $('#currentDentist').attr('did', newValue);
@@ -1027,11 +981,7 @@ export class AppHeaderrightComponent
       ].includes(this.route)
     ) {
       let opts = this.constants.cookieOpt as CookieOptions;
-      this._cookieService.put(
-        'clinic_dentist',
-        this.clinic_id + '_' + this.selectedDentist,
-        opts
-      );
+      this._cookieService.put('clinic_dentist', this.clinic_id + '_' + this.selectedDentist, opts);
     }
     $('.external_dentist').val(newValue);
     $('#dentist_initiate').click();
@@ -1077,10 +1027,7 @@ export class AppHeaderrightComponent
     }
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (
-      !re.test(this.referFriendEmail.trim()) &&
-      this.referFriendEmail.trim() != ''
-    ) {
+    if (!re.test(this.referFriendEmail.trim()) && this.referFriendEmail.trim() != '') {
       this.referFriendEmailPError = true;
     }
 
@@ -1094,11 +1041,7 @@ export class AppHeaderrightComponent
 
     this.clinic_id &&
       this.dentistService
-        .getReferFriend(
-          this.clinic_id,
-          this.referFriendName.trim(),
-          this.referFriendEmail.trim()
-        )
+        .getReferFriend(this.clinic_id, this.referFriendName.trim(), this.referFriendEmail.trim())
         .subscribe(
           res => {
             if (res.status == 200) {
@@ -1112,7 +1055,7 @@ export class AppHeaderrightComponent
           },
           error => {
             this.warningMessage = 'Please Provide Valid Inputs!';
-          }
+          },
         );
     return true;
   }
@@ -1216,11 +1159,7 @@ export class AppHeaderrightComponent
     this.headerService.clinicGetAccountingPlatform(clinic_id).subscribe(res => {
       if (res.status == 200) {
         let opts = this.constants.cookieOpt as CookieOptions;
-        this._cookieService.put(
-          'a_connect',
-          res.body.data?.connectedWith,
-          opts
-        );
+        this._cookieService.put('a_connect', res.body.data?.connectedWith, opts);
       }
     });
   }

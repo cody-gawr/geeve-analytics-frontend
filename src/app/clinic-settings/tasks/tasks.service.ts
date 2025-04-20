@@ -12,7 +12,7 @@ export class TaskService {
 
   constructor(
     private http: HttpClient,
-    private _cookieService: CookieService
+    private _cookieService: CookieService,
   ) {}
 
   getHeaders() {
@@ -36,14 +36,11 @@ export class TaskService {
   getTasks(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/clinics/clinicGetEndDayTasks?clinic_id=' + clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/clinics/clinicGetEndDayTasks?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
   // update tasks
@@ -54,13 +51,11 @@ export class TaskService {
     formData.append('clinic_id', cid);
     formData.append('is_active', event);
     formData.append('is_default', is_default);
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicUpdateEndDayTasks', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicUpdateEndDayTasks', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   addTask(id, task_name, clinic_id): Observable<any> {
@@ -69,12 +64,10 @@ export class TaskService {
     formData.append('id', id);
     formData.append('task_name', task_name);
     formData.append('clinic_id', clinic_id);
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicAddEndDayTasks', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicAddEndDayTasks', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 }

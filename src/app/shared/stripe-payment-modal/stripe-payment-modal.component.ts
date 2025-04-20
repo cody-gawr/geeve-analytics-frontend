@@ -1,10 +1,6 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, Inject } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
   MatLegacyDialogRef as MatDialogRef,
@@ -48,7 +44,7 @@ export class StripePaymentDialog {
     public dialogRef: MatDialogRef<StripePaymentDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private morningHuddle: MorningHuddleService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {
     this.numberOfCreditsFormGroup = this.formBuilder.group({
       credits: [this.selectedCredit, Validators.required],
@@ -56,10 +52,7 @@ export class StripePaymentDialog {
   }
 
   public get subTotalAmount(): number {
-    return (
-      this.data.costPerSMS *
-      <number>this.numberOfCreditsFormGroup.get('credits').value
-    );
+    return this.data.costPerSMS * <number>this.numberOfCreditsFormGroup.get('credits').value;
   }
 
   async initStripeElements() {
@@ -67,7 +60,7 @@ export class StripePaymentDialog {
     this.morningHuddle
       .createPaymentIntent(
         this.numberOfCreditsFormGroup.controls['credits'].value,
-        this.data.clinic_id
+        this.data.clinic_id,
       )
       .subscribe(resData => {
         const { clientSecret, totalAmount, taxAmount } = resData.data;
@@ -85,9 +78,7 @@ export class StripePaymentDialog {
 
         // const stripeType: StripeElementType = 'payment';
 
-        const paymentElement = this.elements.create('payment', <
-          StripePaymentElementOptions
-        >{
+        const paymentElement = this.elements.create('payment', <StripePaymentElementOptions>{
           layout: 'tabs',
           paymentMethodOrder: ['card'],
         });

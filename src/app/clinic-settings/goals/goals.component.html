@@ -10,18 +10,18 @@
         fxFlex="20"
         fxFlex.md="20"
         fxFlex.sm="30"
-        fxFlex.xs="100">
+        fxFlex.xs="100"
+      >
         <mat-form-field floatLabel="never">
           <mat-label class="goals-form-field-label"> Monthly Goals </mat-label>
           <mat-select
             class="external_dentist"
             [ngModel]="selectedGoalCategory$.value"
             (ngModelChange)="handleGoalCategorySelection($event)"
-            *ngIf="selectedTab == 1 || selectedTab == 10">
+            *ngIf="selectedTab == 1 || selectedTab == 10"
+          >
             <mat-option value="">Clinic Total</mat-option>
-            <mat-option
-              *ngFor="let dentist of dentists"
-              [value]="dentist.providerId">
+            <mat-option *ngFor="let dentist of dentists" [value]="dentist.providerId">
               <span *ngIf="dentist.jeeve_name">{{ dentist.jeeve_name }}</span>
               <span *ngIf="!dentist.jeeve_name">{{ dentist.name }}</span>
             </mat-option>
@@ -30,7 +30,8 @@
             class="external_dentist"
             [ngModel]="selectedGoalCategory$.value"
             (ngModelChange)="handleGoalCategorySelection($event)"
-            *ngIf="selectedTab != 1 && selectedTab != 10">
+            *ngIf="selectedTab != 1 && selectedTab != 10"
+          >
             <mat-option value="">Clinic Total</mat-option>
           </mat-select>
         </mat-form-field>
@@ -42,13 +43,15 @@
         fxFlex="20"
         fxFlex.md="20"
         fxFlex.sm="30"
-        fxFlex.xs="100">
+        fxFlex.xs="100"
+      >
         <mat-form-field floatLabel="never">
           <mat-label class="goals-form-field-label"> Dashboard </mat-label>
           <mat-select
             class="external_dentist"
             [(ngModel)]="selectedTab"
-            (ngModelChange)="onTabChanged($event)">
+            (ngModelChange)="onTabChanged($event)"
+          >
             <mat-option *ngFor="let tab of tabs" [value]="tab.d_id"
               >{{ updateName(tab.d_name) }}
             </mat-option>
@@ -62,13 +65,15 @@
         fxFlex="20"
         fxFlex.md="20"
         fxFlex.sm="30"
-        fxFlex.xs="100">
+        fxFlex.xs="100"
+      >
         <mat-form-field floatLabel="never">
           <mat-label class="goals-form-field-label"> Year </mat-label>
           <mat-select
             class="external_dentist"
             [(ngModel)]="selectedYear"
-            (ngModelChange)="onTabYearChanged($event)">
+            (ngModelChange)="onTabYearChanged($event)"
+          >
             <mat-option *ngFor="let yearRange of range" [value]="yearRange"
               >{{ yearRange }}
             </mat-option>
@@ -103,9 +108,7 @@
               <tr *ngFor="let charts of tab.charts">
                 <td>
                   {{ charts.c_name }}
-                  <span class="goalSignFix" *ngIf="charts.sign"
-                    >( {{ charts.sign }} )</span
-                  >
+                  <span class="goalSignFix" *ngIf="charts.sign">( {{ charts.sign }} )</span>
                 </td>
                 <td *ngFor="let goalsD of charts.goals; let sn = index">
                   <div class="goal-value">
@@ -115,23 +118,12 @@
                       type="text"
                       name="goal{{ charts.c_id }}{{ sn }}"
                       value="{{
-                        goalsD != -1
-                          ? (goalsD | number: '1.0-2')
-                              .toString()
-                              .replace(',', '')
-                          : ''
+                        goalsD != -1 ? (goalsD | number: '1.0-2').toString().replace(',', '') : ''
                       }}"
                       (keydown)="keyDown($event)"
-                      (keyup)="
-                        onKeyUp(
-                          charts.c_id,
-                          $event.target.value,
-                          $event,
-                          sn,
-                          tab.d_name
-                        )
-                      "
-                      class="sign{{ charts.sign }}" />
+                      (keyup)="onKeyUp(charts.c_id, $event.target.value, $event, sn, tab.d_name)"
+                      class="sign{{ charts.sign }}"
+                    />
                     <!-- (focusout)="onBlur(charts.c_id, $event.target.value,$event,sn)" -->
                     <!-- <span matSuffix *ngIf=" charts.sign == '%'">%</span> -->
                   </div>

@@ -1,14 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import {
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-  filter,
-} from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, distinctUntilChanged, filter } from 'rxjs';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
 import moment from 'moment';
@@ -42,13 +35,13 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       map(([tips, visibility]) => {
         let tip: ChartTip;
         if (visibility === 'general') {
-            tip = tips[9];
+          tip = tips[9];
         } else {
-            tip = tips[50];
+          tip = tips[50];
         }
-        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        if (tip && tip?.info?.toLowerCase() === 'disabled') return null;
         return tip;
-      })
+      }),
     );
   }
 
@@ -61,15 +54,15 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       map(([tips, visibility]) => {
         let tip: ChartTip;
         if (visibility === 'indirect to large direct fillings') {
-            tip = tips[10];
+          tip = tips[10];
         } else if (visibility === 'rct to extraction') {
-            tip = tips[11];
+          tip = tips[11];
         } else {
-            tip = tips[12];
+          tip = tips[12];
         }
-        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        if (tip && tip?.info?.toLowerCase() === 'disabled') return null;
         return tip;
-      })
+      }),
     );
   }
 
@@ -83,7 +76,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
     private clinicianProcedureFacade: ClinicianProcedureFacade,
     private layoutFacade: LayoutFacade,
     private router: Router,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
   ) {
     this.layoutFacade.setTrend('off');
   }
@@ -93,7 +86,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         filter(v => !!v),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       )
       .subscribe(clinicIds => {
         this.dashbordFacade.loadChartTips(2, clinicIds);
@@ -108,15 +101,13 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe(params => {
         const [clinicId, dateRange, route, trend, dentistId] = params;
         if (clinicId == null) return;
         const providerId =
-          dentistId !== 'all' && typeof clinicId !== 'string'
-            ? dentistId
-            : undefined;
+          dentistId !== 'all' && typeof clinicId !== 'string' ? dentistId : undefined;
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
@@ -132,9 +123,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
           dentistId: providerId,
         };
 
-        const isDentistMode = !(
-          dentistId === 'all' || typeof clinicId == 'string'
-        );
+        const isDentistMode = !(dentistId === 'all' || typeof clinicId == 'string');
         const isTrend = trend !== 'off';
 
         if (isDentistMode && isTrend) {
@@ -146,8 +135,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
           ]) {
             const params = {
               clinicId,
-              mode:
-                trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
+              mode: trend === 'current' ? 'c' : trend === 'historic' ? 'h' : 'w',
               queryWhEnabled,
               dentistId: providerId,
             };
@@ -159,9 +147,7 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
           }
         } else {
           this.clinicianProcedureFacade.loadCpPredictorAnalysis(_params);
-          this.clinicianProcedureFacade.loadCpPredictorSpecialistAnalysis(
-            _params
-          );
+          this.clinicianProcedureFacade.loadCpPredictorSpecialistAnalysis(_params);
           this.clinicianProcedureFacade.loadCpRevPerProcedure(_params);
           this.clinicianProcedureFacade.loadCpPredictorRatio(_params);
           this.clinicianProcedureFacade.loadCpReferrals(_params);
@@ -174,6 +160,6 @@ export class ClinicianProcedureComponent implements OnInit, OnDestroy {
   }
 
   getChartTip(index: number) {
-    return this.dashbordFacade.getChartTip$(index)
+    return this.dashbordFacade.getChartTip$(index);
   }
 }

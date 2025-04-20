@@ -78,7 +78,7 @@ export class FuGetConversionPerUserComponent implements OnInit, OnDestroy {
   constructor(
     private fuFacade: FollowupsFacade,
     private layoutFacade: LayoutFacade,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
   ) {}
 
   ngOnInit(): void {
@@ -145,7 +145,7 @@ export class FuGetConversionPerUserComponent implements OnInit, OnDestroy {
           case 'UTAs':
             return 'No UTA followups were completed in this period';
         }
-      })
+      }),
     );
   }
 

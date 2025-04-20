@@ -8,12 +8,12 @@ const routes: Routes = [
     path: '',
     component: AppLayoutComponent,
     children: [
-        {
-            path: '',
-            component: PracticeInsightPageComponent,
-        },
-      ]
-    },
+      {
+        path: '',
+        component: PracticeInsightPageComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({

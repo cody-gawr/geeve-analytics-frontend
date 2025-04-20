@@ -12,7 +12,7 @@ export class CustomisationsService {
 
   constructor(
     private http: HttpClient,
-    private _cookieService: CookieService
+    private _cookieService: CookieService,
   ) {}
 
   getHeaders() {
@@ -36,14 +36,11 @@ export class CustomisationsService {
   getCustomiseSettings(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/clinics/clinicGetSettings?clinic_id=' + clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/clinics/clinicGetSettings?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -66,15 +63,16 @@ export class CustomisationsService {
     formData.append('lab_code1', data.lab_code1);
     formData.append('lab_code2', data.lab_code2);
     formData.append('max_chart_bars', data.max_chart_bars);
-    formData.append('util_rate_include_inactive_calendar', data.util_rate_include_inactive_calendar);
+    formData.append(
+      'util_rate_include_inactive_calendar',
+      data.util_rate_include_inactive_calendar,
+    );
 
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicSettingsSave', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicSettingsSave', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   clinicHuddleNotificationsSave(data): Observable<any> {
@@ -83,15 +81,11 @@ export class CustomisationsService {
     formData.append('clinic_id', data.clinic_id);
     formData.append(data.type, data.value);
     return this.http
-      .post(
-        this.apiUrl + '/clinics/clinicHuddleNotificationsSave',
-        formData,
-        header
-      )
+      .post(this.apiUrl + '/clinics/clinicHuddleNotificationsSave', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -101,45 +95,33 @@ export class CustomisationsService {
     formData.append('clinic_id', data.clinic_id);
     formData.append(data.type, data.value);
     return this.http
-      .post(
-        this.apiUrl + '/clinics/clinicHuddleNotificationsUpdate',
-        formData,
-        header
-      )
+      .post(this.apiUrl + '/clinics/clinicHuddleNotificationsUpdate', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   getclinicHuddleNotifications(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl +
-          '/clinics/clinicHuddleNotificationsGet?clinic_id=' +
-          clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/clinics/clinicHuddleNotificationsGet?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
   // Get status code list
   getStatusCodeList(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/clinics/getStatusCode?clinic_id=' + clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/clinics/getStatusCode?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
   addStatusColors(clinic_id, statusCode, bgcolour, colour): Observable<any> {
@@ -150,25 +132,21 @@ export class CustomisationsService {
     formData.append('background_colour', bgcolour);
     formData.append('text_colour', colour);
 
-    return this.http
-      .post(this.apiUrl + '/clinics/getAddStatusColors', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/getAddStatusColors', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   deleteStatusCode(clinic_id, statusCode): Observable<any> {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
     formData.append('status_code', statusCode);
-    return this.http
-      .post(this.apiUrl + '/clinics/deleteStatusCode', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/deleteStatusCode', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 }

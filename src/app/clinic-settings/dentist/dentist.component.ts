@@ -43,7 +43,7 @@ export class AddJeeveNameComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
     private router: Router,
-    private dentistService: DentistService
+    private dentistService: DentistService,
   ) {}
   onNoClick(): void {
     this.dialogRef.close();
@@ -62,7 +62,7 @@ export class AddJeeveNameComponent {
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
   }
 }
@@ -130,7 +130,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     private toastr: ToastrService,
     public dialog: MatDialog,
     public constants: AppConstants,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
   ) {
     super();
   }
@@ -212,7 +212,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
 
           var result = res.body.data.map(ele => {
             let disableFlag = dData.find(
-              appBookid => appBookid['app_book_id'] === ele['app_book_id']
+              appBookid => appBookid['app_book_id'] === ele['app_book_id'],
             );
             return { ...ele, ...disableFlag };
           });
@@ -223,7 +223,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
   }
 
@@ -247,9 +247,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
           res.body.data.filter(r => {
             r.is_active == 1 ? activeData.push(r) : inactiveData.push(r);
           });
-          this.dentistList.data = this.isShowInactive
-            ? inactiveData
-            : activeData;
+          this.dentistList.data = this.isShowInactive ? inactiveData : activeData;
           this.setPaginationButtons(this.dentistList.data.length);
           let activeDnt: any = res.body.data.filter(p => p.is_active == 1);
           this.activeDentist = activeDnt.length;
@@ -259,7 +257,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
   }
   public jeeveNames: any = {};
@@ -278,7 +276,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
           this.handleUnAuthorization();
         }
       },
-      error => {}
+      error => {},
     );
   }
 
@@ -317,7 +315,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       if (this.userPlan == 'lite') {
         if (this.activeDentist >= 2 || !event.target.checked) {
           this.toastr.error(
-            'Please contact the Jeeve support team to change your dentist selections'
+            'Please contact the Jeeve support team to change your dentist selections',
           );
           $(event.target).prop('checked', !event.target.checked);
           return false;
@@ -337,7 +335,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         jeeveId,
         updatedColumn,
         appBookId,
-        this.jeeveNames[jeeveId]
+        this.jeeveNames[jeeveId],
       )
       .pipe(takeUntil(this.destroyed$))
       .subscribe(
@@ -350,7 +348,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         },
         error => {
           this.toastr.error('Opps, Error occurs in updating dentist!');
-        }
+        },
       );
     return true;
   }

@@ -1,4 +1,4 @@
 export interface FilterMetadata {
-  value?: any;
-  matchMode?: string;
+    value?: any;
+    matchMode?: string;
 }

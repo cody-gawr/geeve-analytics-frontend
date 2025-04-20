@@ -5,25 +5,14 @@ import { ClinicianAnalysisFacade } from '@/newapp/dashboard/facades/clinician-an
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
-import {
-  formatXLabel,
-  generatingLegend_3,
-  renderTooltipLabel,
-} from '@/newapp/shared/utils';
+import { formatXLabel, generatingLegend_3, renderTooltipLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Chart, ChartOptions, Plugin } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
-import {
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-  Observable,
-} from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, distinctUntilChanged, Observable } from 'rxjs';
 
 @Component({
   selector: 'caNumNewPatients-chart',
@@ -40,37 +29,29 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get showTableView$() {
-    return this.isTableIconVisible$.pipe(map(
-      v => this.showTableInfo && v
-    ))
+    return this.isTableIconVisible$.pipe(map(v => this.showTableInfo && v));
   }
 
   get showMaxBarsAlert$() {
-    return combineLatest([
-      this.showTableView$,
-      this.isTableIconVisible$
-    ]) .pipe(
+    return combineLatest([this.showTableView$, this.isTableIconVisible$]).pipe(
       map(([v, v1]) => {
-        return !v && (this.tableData?.length > this.labels?.length) && v1;
-      })
-    ) 
+        return !v && this.tableData?.length > this.labels?.length && v1;
+      }),
+    );
   }
 
   get showMaxBarsAlertMsg$() {
     return this.authFacade.chartLimitDesc$;
   }
   get isTableIconVisible$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isCompare$,
-      this.hasData$,
-      this.isTrend$
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isCompare$, this.hasData$, this.isTrend$]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
-          (!(isDentistMode && isTrend) || isCompare) && this.tableData.length > 0 && hasData &&
-          !this.isComingSoon
-      )
+          (!(isDentistMode && isTrend) || isCompare) &&
+          this.tableData.length > 0 &&
+          hasData &&
+          !this.isComingSoon,
+      ),
     );
   }
 
@@ -95,7 +76,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -107,7 +88,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     return combineLatest([this.durationTrendLabel$]).pipe(
       map(([durTrendLabel]) => {
         return durTrendLabel + ': ' + this.decimalPipe.transform(this.prev);
-      })
+      }),
     );
   }
 
@@ -116,15 +97,8 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
   }
 
   get isGaugeChartVisible$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
-      map(
-        ([isDentistMode, isTrend, isCompare]) =>
-          isDentistMode && !isTrend && !isCompare
-      )
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
+      map(([isDentistMode, isTrend, isCompare]) => isDentistMode && !isTrend && !isCompare),
     );
   }
 
@@ -175,7 +149,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
         } else {
           return isLoadingDataTrend;
         }
-      })
+      }),
     );
   }
 
@@ -188,7 +162,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
       map(([isTrend, isDentistMode]) => {
         if (!isDentistMode || !isTrend) return this.doughnutChartOptions;
         else return this.barChartOptionsTrend;
-      })
+      }),
     );
   }
 
@@ -197,16 +171,12 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
       map(([isTrend, isDentistMode]) => {
         if (!isDentistMode || !isTrend) return this.beforeDrawChart(this.total);
         else return null;
-      })
+      }),
     );
   }
 
   get hasData$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
       map(([isDentistMode, isTrend, isCompare]) => {
         if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue !== 0;
@@ -214,13 +184,11 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
           return (
             this.datasets?.length > 0 &&
             this.datasets?.some(
-              it =>
-                it?.data?.length > 0 &&
-                _.sumBy(it.data, v => parseFloat(<any>v))
+              it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v)),
             )
           );
         }
-      })
+      }),
     );
   }
 
@@ -248,7 +216,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
         } else {
           return 'bar';
         }
-      })
+      }),
     );
   }
 
@@ -260,7 +228,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
         } else {
           return false;
         }
-      })
+      }),
     );
   }
 
@@ -270,7 +238,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
   ) {}
 
   ngOnInit(): void {
@@ -282,7 +250,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
       .subscribe(([isDentistMode, isTrend, data, trendData]) => {
         if (!isDentistMode || !isTrend) {
@@ -381,8 +349,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
       },
       tooltip: {
         callbacks: {
-          label: tooltipItem =>
-            `${tooltipItem.label}: ${tooltipItem.formattedValue}`,
+          label: tooltipItem => `${tooltipItem.label}: ${tooltipItem.formattedValue}`,
           title: function () {
             return '';
           },

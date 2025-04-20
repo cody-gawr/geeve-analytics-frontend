@@ -176,7 +176,6 @@ export interface FnProdPerDayTrendApiResponse {
   status: string | number;
 }
 
-
 export interface FnTotalDiscountItem {
   clinicId: string | number;
   clinicName: string;

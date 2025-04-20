@@ -4,7 +4,8 @@
     class="layout-sidenav"
     [opened]="isSidenavVisible"
     [mode]="sidenavMode"
-    (openedChange)="onMainNavOpenedChange($event)">
+    (openedChange)="onMainNavOpenedChange($event)"
+  >
     <app-sidebar></app-sidebar>
   </mat-drawer>
   <mat-drawer-content>
@@ -13,7 +14,8 @@
         *ngIf="!!activatedUrl"
         [toggleSideBar]="toggleSideBar"
         [isSidenavVisible]="isSidenavVisible"
-        [activatedUrl]="activatedUrl"></app-topbar>
+        [activatedUrl]="activatedUrl"
+      ></app-topbar>
       <div class="page-container">
         <router-outlet></router-outlet>
       </div>

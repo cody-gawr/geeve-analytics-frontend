@@ -72,7 +72,7 @@ export class ClinicGoalsComponent implements OnInit {
     private clinicGoalsService: ClinicGoalsService,
     private route: ActivatedRoute,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {
     //  this.clinic_id = this.route.snapshot.paramMap.get("id");
     this.options = fb.group({
@@ -155,8 +155,8 @@ export class ClinicGoalsComponent implements OnInit {
     return this.email.hasError('required')
       ? 'You must enter a value'
       : this.email.hasError('email')
-      ? 'Not a valid email'
-      : '';
+        ? 'Not a valid email'
+        : '';
   }
   //get clinic goals for all graphs
   getClinicGoals() {
@@ -212,7 +212,7 @@ export class ClinicGoalsComponent implements OnInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
   //save clinic gaols
@@ -259,23 +259,21 @@ export class ClinicGoalsComponent implements OnInit {
     this.chartData[36] = this.form.value.overdueaccount;
     var myJsonString = JSON.stringify(this.chartData);
     $('.ajax-loader').show();
-    this.clinicGoalsService
-      .updateClinicGoals(myJsonString, this.clinic_id)
-      .subscribe(
-        res => {
-          $('.ajax-loader').hide();
-          if (res.status == 200) {
-            this.toastr.success('Clinic Goals Updated');
-          } else if (res.status == 401) {
-            this._cookieService.put('username', '');
-            this._cookieService.put('email', '');
-            this._cookieService.put('userid', '');
-            this.router.navigateByUrl('/login');
-          }
-        },
-        error => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
+    this.clinicGoalsService.updateClinicGoals(myJsonString, this.clinic_id).subscribe(
+      res => {
+        $('.ajax-loader').hide();
+        if (res.status == 200) {
+          this.toastr.success('Clinic Goals Updated');
+        } else if (res.status == 401) {
+          this._cookieService.put('username', '');
+          this._cookieService.put('email', '');
+          this._cookieService.put('userid', '');
+          this.router.navigateByUrl('/login');
         }
-      );
+      },
+      error => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      },
+    );
   }
 }

@@ -4,68 +4,64 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title">Production & Collection</div>
   <div class="chart-content">
     <div class="prod-col-content">
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
-          <div class="prod-col-ngx-chart">
-            <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
-            <ng-template #chartElem>
-              <canvas
-                #myCanvas
-                *ngIf="!(isLoading$ | async) && labels.length > 0"
-                baseChart
-                [datasets]="datasets"
-                [labels]="labels"
-                [options]="chartOptions$ | async"
-                [legend]="false"
-                type="bar"></canvas>
-              <spin-loader
-                class="empty-placeholder"
-                *ngIf="labels.length <= 0"
-                [disableSpin]="true">
-                You have no production in the selected period
-              </spin-loader>
-            </ng-template>
-          </div>
-          <div class="text-content">
-            <div class="prod-col-text-summary">
-              <div class="prod-col-txt-01">
-                <h3>Production</h3>
-                <div class="sub-txt-01">
-                  <h4>$ {{ totalProdVal$ | async | number: '1.0-0' }}</h4>
-                  <span *ngIf="(duration$ | async) != 'custom'">{{
-                    durationLabel$ | async
-                  }}</span>
-                </div>
-                <div class="sub-txt-02" *ngIf="(duration$ | async) != 'custom'">
-                  <h4>$ {{ totalProdTrendVal$ | async | number: '1.0-0' }}</h4>
-                  <span>{{ durationTrendLabel$ | async }}</span>
-                </div>
+        <div class="prod-col-ngx-chart">
+          <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
+          <ng-template #chartElem>
+            <canvas
+              #myCanvas
+              *ngIf="!(isLoading$ | async) && labels.length > 0"
+              baseChart
+              [datasets]="datasets"
+              [labels]="labels"
+              [options]="chartOptions$ | async"
+              [legend]="false"
+              type="bar"
+            ></canvas>
+            <spin-loader class="empty-placeholder" *ngIf="labels.length <= 0" [disableSpin]="true">
+              You have no production in the selected period
+            </spin-loader>
+          </ng-template>
+        </div>
+        <div class="text-content">
+          <div class="prod-col-text-summary">
+            <div class="prod-col-txt-01">
+              <h3>Production</h3>
+              <div class="sub-txt-01">
+                <h4>$ {{ totalProdVal$ | async | number: '1.0-0' }}</h4>
+                <span *ngIf="(duration$ | async) != 'custom'">{{ durationLabel$ | async }}</span>
               </div>
-              <div class="prod-col-txt-02">
-                <h3>Collection</h3>
-                <div class="sub-txt-01">
-                  <h4>$ {{ collectionVal$ | async | number: '1.0-0' }}</h4>
-                  <span *ngIf="(duration$ | async) != 'custom'">{{
-                    durationLabel$ | async
-                  }}</span>
-                </div>
-                <div class="sub-txt-02" *ngIf="(duration$ | async) != 'custom'">
-                  <h4>$ {{ collectionTrendVal$ | async | number: '1.0-0' }}</h4>
-                  <span>{{ durationTrendLabel$ | async }}</span>
-                </div>
+              <div class="sub-txt-02" *ngIf="(duration$ | async) != 'custom'">
+                <h4>$ {{ totalProdTrendVal$ | async | number: '1.0-0' }}</h4>
+                <span>{{ durationTrendLabel$ | async }}</span>
+              </div>
+            </div>
+            <div class="prod-col-txt-02">
+              <h3>Collection</h3>
+              <div class="sub-txt-01">
+                <h4>$ {{ collectionVal$ | async | number: '1.0-0' }}</h4>
+                <span *ngIf="(duration$ | async) != 'custom'">{{ durationLabel$ | async }}</span>
+              </div>
+              <div class="sub-txt-02" *ngIf="(duration$ | async) != 'custom'">
+                <h4>$ {{ collectionTrendVal$ | async | number: '1.0-0' }}</h4>
+                <span>{{ durationTrendLabel$ | async }}</span>
               </div>
             </div>
           </div>
+        </div>
       </ng-template>
-      </div>
+    </div>
   </div>
 </div>

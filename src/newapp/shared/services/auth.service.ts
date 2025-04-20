@@ -5,10 +5,7 @@ import { Observable, map } from 'rxjs';
 
 import { environment } from '@/environments/environment';
 import { Login, LoginApiResponse, LogoutApiResponse } from '../../models/auth';
-import {
-  RolesIndividualApiResponse,
-  RolesApiResponse,
-} from '../../models/user';
+import { RolesIndividualApiResponse, RolesApiResponse } from '../../models/user';
 import camelcaseKeys from 'camelcase-keys';
 
 @Injectable({
@@ -19,7 +16,7 @@ export class AuthService {
 
   constructor(
     private httpClinet: HttpClient,
-    private cookieService: CookieService
+    private cookieService: CookieService,
   ) {}
 
   // login = (form: Login): Observable<LoginResponse> => {
@@ -64,11 +61,7 @@ export class AuthService {
       .post<LoginApiResponse>(`${this.apiUrl}/users/userLogin`, form, {
         withCredentials: true,
       })
-      .pipe(
-        map(
-          res => <LoginApiResponse>(<unknown>camelcaseKeys(res, { deep: true }))
-        )
-      );
+      .pipe(map(res => <LoginApiResponse>(<unknown>camelcaseKeys(res, { deep: true }))));
   };
 
   logout = (): Observable<LogoutApiResponse> => {
@@ -78,35 +71,21 @@ export class AuthService {
         {},
         {
           withCredentials: true,
-        }
+        },
       )
-      .pipe(
-        map(
-          res =>
-            <LogoutApiResponse>(<unknown>camelcaseKeys(res, { deep: true }))
-        )
-      );
+      .pipe(map(res => <LogoutApiResponse>(<unknown>camelcaseKeys(res, { deep: true }))));
   };
 
-  getRolesIndividual = (
-    clinicId?: number
-  ): Observable<RolesIndividualApiResponse> => {
+  getRolesIndividual = (clinicId?: number): Observable<RolesIndividualApiResponse> => {
     return this.httpClinet
       .get<RolesIndividualApiResponse>(
-        `${this.apiUrl}/Roles/rolesIndividual${
-          clinicId ? `?clinic_id=${clinicId}` : ''
-        }`,
+        `${this.apiUrl}/Roles/rolesIndividual${clinicId ? `?clinic_id=${clinicId}` : ''}`,
         {
           withCredentials: true,
-        }
+        },
       )
       .pipe(
-        map(
-          data =>
-            <RolesIndividualApiResponse>(
-              (<unknown>camelcaseKeys(data, { deep: true }))
-            )
-        )
+        map(data => <RolesIndividualApiResponse>(<unknown>camelcaseKeys(data, { deep: true }))),
       );
   };
 
@@ -116,7 +95,7 @@ export class AuthService {
         withCredentials: true,
       })
       .pipe(
-        map((data) => {
+        map(data => {
           return {
             data: data?.map(item => ({
               created: item.created,
@@ -127,11 +106,11 @@ export class AuthService {
               permisions: item.mapped_permissions.analytics,
               role: item.role,
               role_id: item.role_id,
-              user_id: item.user_id
+              user_id: item.user_id,
             })),
-            message: data.success?'success':'failure'
+            message: data.success ? 'success' : 'failure',
           };
-        })
+        }),
       );
   };
 

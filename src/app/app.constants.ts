@@ -79,8 +79,7 @@ export class AppConstants {
   };
 
   public tipPredictorCrown: ITooltipData = {
-    title:
-      'Conversion Predictor - Indirect Restorations : Large Direct Restorations',
+    title: 'Conversion Predictor - Indirect Restorations : Large Direct Restorations',
     info: 'Ratio of how many indirect restorations were performed compared to large direct restorations',
   };
 

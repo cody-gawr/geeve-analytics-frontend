@@ -29,8 +29,6 @@ export class LocalStorageService {
   }
 
   private decrypt(txtToDecrypt: string) {
-    return CryptoJS.AES.decrypt(txtToDecrypt, this.secretKey).toString(
-      CryptoJS.enc.Utf8
-    );
+    return CryptoJS.AES.decrypt(txtToDecrypt, this.secretKey).toString(CryptoJS.enc.Utf8);
   }
 }

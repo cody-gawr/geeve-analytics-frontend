@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>SMS Template</h1>
 <div mat-dialog-content>
-  <div style="display:flex;gap:4px;">
+  <div style="display: flex; gap: 4px">
     <div class="sa-form-group-wrapper">
       <div class="sa-form-group">
         <select [formControl]="type" class="sa_select mat-form-control">
@@ -16,17 +16,11 @@
     </div>
   </div>
 
-
   <div style="margin: 10px 0">
     <mat-chip-list>
-      <mat-chip
-        ><span #keyClinicName draggable="true">Clinic Name</span></mat-chip
-      >
-      <mat-chip
-        ><span #keyPatientName draggable="true">Patient Name</span></mat-chip
-      >
-      <mat-chip
-        *ngIf="type.value === 'review'"
+      <mat-chip><span #keyClinicName draggable="true">Clinic Name</span></mat-chip>
+      <mat-chip><span #keyPatientName draggable="true">Patient Name</span></mat-chip>
+      <mat-chip *ngIf="type.value === 'review'"
         ><span #keyGoogleLink draggable="true">Google Link</span></mat-chip
       >
     </mat-chip-list>
@@ -34,25 +28,20 @@
   <div class="sa-form-group-wrapper">
     <mat-form-field floatLabel="never">
       <mat-label>SMS Template</mat-label>
-      <textarea
-        matInput
-        [formControl]="msg_template"
-        rows="7"
-        required></textarea>
+      <textarea matInput [formControl]="msg_template" rows="7" required></textarea>
     </mat-form-field>
   </div>
   <br />
 </div>
 <div mat-dialog-actions class="justify-between">
-  <button mat-button class="mat-raised-button mat-gray" (click)="onNoClick()">
-    Cancel
-  </button>
+  <button mat-button class="mat-raised-button mat-gray" (click)="onNoClick()">Cancel</button>
   <button
     class="mat-raised-button mat-dc"
     mat-button
     (click)="onSubmitClick($event)"
     [disabled]="!isValid || isWaitingResponse"
-    cdkFocusInitial>
+    cdkFocusInitial
+  >
     Save
   </button>
 </div>

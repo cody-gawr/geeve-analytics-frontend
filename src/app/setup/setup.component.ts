@@ -14,12 +14,7 @@ import {
 } from '@angular/material/legacy-dialog';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { UntypedFormControl } from '@angular/forms';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-  UntypedFormArray,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormArray } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { PraktikaConnectionDialogComponent } from './praktika-connection-dialog/praktika-connection-dialog.component';
 
@@ -205,7 +200,7 @@ export class SetupComponent implements AfterViewInit {
     private toastr: ToastrService,
     private plansService: PlansService,
     private _location: Location,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   public isCompleted = true;
@@ -278,10 +273,7 @@ export class SetupComponent implements AfterViewInit {
     if (this.showCorePractice)
       this.firstFormGroup
         .get('coreURL')
-        .setValidators([
-          Validators.required,
-          Validators.pattern(this.urlPattern),
-        ]);
+        .setValidators([Validators.required, Validators.pattern(this.urlPattern)]);
     else {
       this.firstFormGroup.get('coreURL').clearValidators();
       this.firstFormGroup.get('coreURL').updateValueAndValidity();
@@ -296,8 +288,7 @@ export class SetupComponent implements AfterViewInit {
           this.rows = res.body.data;
           if (res.body.data.length > 0) {
             this.clinic_id = res.body.data[0]['id'];
-            this.showCorePractice =
-              res.body.data[0]['pms'] == 'core' ? true : false;
+            this.showCorePractice = res.body.data[0]['pms'] == 'core' ? true : false;
             if (this.clinic_id) {
               //this.getClinicSettings();
               this.checkXeroStatus(false);
@@ -318,7 +309,7 @@ export class SetupComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -377,7 +368,7 @@ export class SetupComponent implements AfterViewInit {
       },
       error: () => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     });
   }
 
@@ -396,7 +387,7 @@ export class SetupComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -415,7 +406,7 @@ export class SetupComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -434,7 +425,7 @@ export class SetupComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -463,33 +454,30 @@ export class SetupComponent implements AfterViewInit {
     }, 1000);
   }
   public checkXeroStatus(close) {
-    this.setupService.checkXeroStatus(this.clinic_id).subscribe(
-      {
-        next: res => {
-          if (res.body.success) {
-            if (!res.body.data.error && res.body.data.tenantId) {
-              this.xeroConnect = true;
-              this.xeroOrganization = res.body.data.tenantName;
-              if (close) {
-                this.saveStripe();
-              }
-            } else {
-              this.xeroConnect = false;
-              this.xeroOrganization = '';
-              this.disconnectXero();
+    this.setupService.checkXeroStatus(this.clinic_id).subscribe({
+      next: res => {
+        if (res.body.success) {
+          if (!res.body.data.error && res.body.data.tenantId) {
+            this.xeroConnect = true;
+            this.xeroOrganization = res.body.data.tenantName;
+            if (close) {
+              this.saveStripe();
             }
           } else {
             this.xeroConnect = false;
             this.xeroOrganization = '';
             this.disconnectXero();
           }
-        },
-        error: error => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
+        } else {
+          this.xeroConnect = false;
+          this.xeroOrganization = '';
+          this.disconnectXero();
         }
-      }
-
-    );
+      },
+      error: error => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      },
+    });
   }
 
   //check status of myob connection
@@ -516,27 +504,24 @@ export class SetupComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
   public disconnectXero() {
-    this.setupService.clearSession(this.clinic_id).subscribe(
-      {
-        next: res => {
-          if (res.status == 200) {
-            this.xeroConnect = false;
-            this.xeroOrganization = '';
-            this.getXeroLink();
-          } else {
-            this.xeroConnect = true;
-          }
-        },
-        error: error => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
+    this.setupService.clearSession(this.clinic_id).subscribe({
+      next: res => {
+        if (res.status == 200) {
+          this.xeroConnect = false;
+          this.xeroOrganization = '';
+          this.getXeroLink();
+        } else {
+          this.xeroConnect = true;
         }
-      }
-
-    );
+      },
+      error: error => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      },
+    });
   }
   //disconnect myob connection
   public disconnectMyob() {
@@ -552,7 +537,7 @@ export class SetupComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -585,75 +570,61 @@ export class SetupComponent implements AfterViewInit {
     $('.ajax-loader').show();
     // address,phone_no,clinicEmail,
     const _createClinic = (prak_result?: any) => {
-      this.setupService
-        .addClinic(name, displayName, days, pms, coreURL)
-        .subscribe(
-          res => {
-            $('.ajax-loader').hide();
-            if (res.status == 200) {
-              this.clinic_id = res.body.data.id;
-              this._cookieService.put('display_name', displayName);
-              if (res.body.data.pms == 'core') {
-                this.getConnectCoreLink();
-              } else if (res.body.data.pms == 'dentally') {
-                this.getConnectDentallyLink();
-              }
-              if (res.body.data.pms === 'praktika') {
-                if (
-                  prak_result?.customer_user &&
-                  prak_result?.customer_secret
-                ) {
-                  this.clinicService
-                    .CreatePraktikaConfig(
-                      prak_result?.customer_user,
-                      prak_result?.customer_secret,
-                      res.body.data.id
-                    )
-                    .subscribe({
-                      next: response => {
-                        if (!response.response) {
-                          this.toastr.error(
-                            'Failed to connect Praktika account',
-                            'Praktika Account'
-                          );
-                          return;
-                        }
-                        this.toastr.success(
-                          'Praktika account connected',
-                          'Praktika Account'
-                        );
-                        this.stepVal = 1;
-                        this.updateStepperStatus();
-                      },
-                      error: err =>
-                        this.toastr.error(
-                          'Failed to connect Praktika account',
-                          'Praktika Account'
-                        ),
-                    });
-                } else {
-                  this.toastr.error('Please provide Praktika credentials');
-                }
-                return;
-              } else {
-                this.getXeroLink();
-              }
-              //this.getClinicSettings();
-              this.stepVal = 1;
-              this.updateStepperStatus();
-              //this.getClinic();
-              //this.toastr.success('Clinic Added.');
-            } else if (res.status == 401) {
-              this._cookieService.put('username', '');
-              this._cookieService.put('email', '');
-              this._cookieService.put('userid', '');
-              this.router.navigateByUrl('/login');
+      this.setupService.addClinic(name, displayName, days, pms, coreURL).subscribe(
+        res => {
+          $('.ajax-loader').hide();
+          if (res.status == 200) {
+            this.clinic_id = res.body.data.id;
+            this._cookieService.put('display_name', displayName);
+            if (res.body.data.pms == 'core') {
+              this.getConnectCoreLink();
+            } else if (res.body.data.pms == 'dentally') {
+              this.getConnectDentallyLink();
             }
-          },
-          error => {
-            this.warningMessage = 'Please Provide Valid Inputs!';
+            if (res.body.data.pms === 'praktika') {
+              if (prak_result?.customer_user && prak_result?.customer_secret) {
+                this.clinicService
+                  .CreatePraktikaConfig(
+                    prak_result?.customer_user,
+                    prak_result?.customer_secret,
+                    res.body.data.id,
+                  )
+                  .subscribe({
+                    next: response => {
+                      if (!response.response) {
+                        this.toastr.error('Failed to connect Praktika account', 'Praktika Account');
+                        return;
+                      }
+                      this.toastr.success('Praktika account connected', 'Praktika Account');
+                      this.stepVal = 1;
+                      this.updateStepperStatus();
+                    },
+                    error: err =>
+                      this.toastr.error('Failed to connect Praktika account', 'Praktika Account'),
+                  });
+              } else {
+                this.toastr.error('Please provide Praktika credentials');
+              }
+              return;
+            } else {
+              this.getXeroLink();
+            }
+            //this.getClinicSettings();
+            this.stepVal = 1;
+            this.updateStepperStatus();
+            //this.getClinic();
+            //this.toastr.success('Clinic Added.');
+          } else if (res.status == 401) {
+            this._cookieService.put('username', '');
+            this._cookieService.put('email', '');
+            this._cookieService.put('userid', '');
+            this.router.navigateByUrl('/login');
           }
-        );
+        },
+        error => {
+          this.warningMessage = 'Please Provide Valid Inputs!';
+        },
+      );
     };
     if (pms === 'praktika') {
       const dialogRef = this.dialog.open(PraktikaConnectionDialogComponent, {
@@ -695,13 +666,10 @@ export class SetupComponent implements AfterViewInit {
         if (res.status == 200) {
           let length = 10;
           var randomPassword = '';
-          var characters =
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
+          var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
           var charactersLength = characters.length;
           for (var i = 0; i < length; i++) {
-            randomPassword += characters.charAt(
-              Math.floor(Math.random() * charactersLength)
-            );
+            randomPassword += characters.charAt(Math.floor(Math.random() * charactersLength));
           }
           if (res.body.data <= 0)
             this.add_user(
@@ -710,14 +678,14 @@ export class SetupComponent implements AfterViewInit {
               user_type,
               randomPassword,
               this.clinic_id,
-              this.inviteFormGroup.value.dentist_id
+              this.inviteFormGroup.value.dentist_id,
             );
           else this.toastr.error('Email Already Exists!');
         }
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -725,14 +693,7 @@ export class SetupComponent implements AfterViewInit {
     if (dentist_id == '' || dentist_id == undefined) dentist_id = '';
     $('.ajax-loader').show();
     this.rolesUsersService
-      .addRoleUser(
-        display_name,
-        email,
-        user_type,
-        clinic_id,
-        password,
-        dentist_id
-      )
+      .addRoleUser(display_name, email, user_type, clinic_id, password, dentist_id)
       .subscribe({
         next: res => {
           $('.ajax-loader').hide();
@@ -766,7 +727,7 @@ export class SetupComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -799,11 +760,7 @@ export class SetupComponent implements AfterViewInit {
   }
 
   connectToCore() {
-    var win = window.open(
-      this.connectToCoreLink,
-      'MsgWindow',
-      'width=1000,height=800'
-    );
+    var win = window.open(this.connectToCoreLink, 'MsgWindow', 'width=1000,height=800');
     var self = this;
     var timer = setInterval(function () {
       if (win.closed) {
@@ -815,11 +772,7 @@ export class SetupComponent implements AfterViewInit {
   }
 
   connectToDentally() {
-    var win = window.open(
-      this.connectToDentallyLink,
-      'MsgWindow',
-      'width=1000,height=800'
-    );
+    var win = window.open(this.connectToDentallyLink, 'MsgWindow', 'width=1000,height=800');
     var self = this;
     var timer = setInterval(function () {
       if (win.closed) {
@@ -833,17 +786,13 @@ export class SetupComponent implements AfterViewInit {
     this.setupService.checkCoreStatus(this.clinic_id).subscribe(
       res => {
         if (res.status == 200) {
-          if (
-            res.body.data.refresh_token &&
-            res.body.data.token &&
-            res.body.data.core_user_id
-          )
+          if (res.body.data.refresh_token && res.body.data.token && res.body.data.core_user_id)
             this.getClinicLocation();
         }
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -856,7 +805,7 @@ export class SetupComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -876,17 +825,14 @@ export class SetupComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
   downloadPMS() {
     this.setupService.getPMSLink().subscribe(
       res => {
-        var winP = window.open(
-          this.apiUrl + res.body.data + this.clinic_id,
-          '_blank'
-        );
+        var winP = window.open(this.apiUrl + res.body.data + this.clinic_id, '_blank');
         this.stepVal = 2;
         this.updateStepperStatus();
       },
@@ -896,7 +842,7 @@ export class SetupComponent implements AfterViewInit {
         this._cookieService.put('email', '');
         this._cookieService.put('userid', '');
         this.router.navigateByUrl('/login');
-      }
+      },
     );
   }
   downloadPMSAgain() {
@@ -948,7 +894,7 @@ export class SetupComponent implements AfterViewInit {
         selfO._cookieService.put('email', '');
         selfO._cookieService.put('userid', '');
         selfO.router.navigateByUrl('/login');
-      }
+      },
     );
   }
 
@@ -979,7 +925,7 @@ export class SetupComponent implements AfterViewInit {
         selfO._cookieService.put('email', '');
         selfO._cookieService.put('userid', '');
         selfO.router.navigateByUrl('/login');
-      }
+      },
     );
   }
 
@@ -1009,14 +955,12 @@ export class SetupComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
         let location_id = result;
-        this.setupService
-          .saveClinicLocation(this.clinic_id, location_id)
-          .subscribe(res => {
-            if (res.status == 200) {
-              this.stepVal = 2;
-              this.updateStepperStatus();
-            }
-          });
+        this.setupService.saveClinicLocation(this.clinic_id, location_id).subscribe(res => {
+          if (res.status == 200) {
+            this.stepVal = 2;
+            this.updateStepperStatus();
+          }
+        });
       }
     });
   }
@@ -1045,7 +989,7 @@ export class DialogLocationDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogLocationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    setupService: SetupService
+    setupService: SetupService,
   ) {
     dialogRef.disableClose = true;
   }

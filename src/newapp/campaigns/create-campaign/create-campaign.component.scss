@@ -1,254 +1,252 @@
 .container {
+  display: flex;
+  flex-direction: column;
+
+  input.title {
+    font-size: 18px;
+    border: 1px solid cadetblue;
+    background: transparent;
+    font-family: 'Gilroy-Medium';
+    border-style: dashed;
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
+  .header {
     display: flex;
-    flex-direction: column;
-
-    input.title {
-        font-size: 18px;
-        border: 1px solid cadetblue;
-        background: transparent;
-        font-family: 'Gilroy-Medium';
-        border-style: dashed;
-        border-radius: 5px;
-        padding: 5px 10px;
-    }
-    .header {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #e5e5e7;
-        border-top: 1px solid #e5e5e7;
-        padding: 10px 0;
-        .campaign-name-input {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            mat-label {
-                font-family: 'Gilroy-Medium';
-                font-size: 15px;
-            }
-        }
-        .header-buttons {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            .more-options {
-                padding: 7px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            .more-options:hover {
-                opacity: 0.7;
-            }
-        }
-        
-
-    }
-    
-    .body {
-        display: flex;
-        flex-direction: row;
-
-        .drag-item {
-            display: inline-block;
-            flex: 1 1 40%;
-            height: 120px;
-        }
-
-        .side{
-            display: flex;
-            flex-direction: column;
-            background-color: white;
-            padding:15px;
-            
-            .panel {
-                min-height: 880px;
-                .bottom {
-                    padding: 15px 0;
-                    .filter-form {
-                        width: 100%;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 15px;
-                    }
-                    .bubble {
-                        width: 100%;
-                        font-family: 'Gilroy-Regular';
-                        font-size: 13px;
-                        text-align: left;
-                        line-height: 20px;
-                        background: antiquewhite;
-                        border-radius: 20px;
-                        padding: 20px;
-                        color: darkgoldenrod;
-                        margin-bottom: 15px;
-                        width: 400px;
-                      }
-                      
-                    form {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;
-                        width: 100%;   
-                        padding: 0 5px;
-                        .filter-box {
-                            width: 100%;
-                        }
-                        .patient-age-slider{
-                            display: flex;
-                            flex-direction: column;
-                            width: 100%;
-                            .label {
-                                display: flex;
-                                justify-content: space-between;
-                                width: 100%;
-                                label {
-                                    font-weight: 600;
-                                }
-                            }
-                            
-                        }
-
-                        .multi-selection-form {
-                            display: flex;
-                            flex-direction: column;
-                            width: 100%;
-                            gap: 5px;
-                            .selected-chipsets {
-                                display: flex;
-                                // flex-direction: column;
-                                gap: 10px;
-                                width: 400px;
-                                margin-bottom: 15px;
-                            }
-                        }
-                    }
-                }
-    
-                .divider-wrapper {
-                    display: flex; 
-                    width: 100%; 
-                    justify-content: center; 
-                    align-items: center;    
-                    background-color: #e5e5e7;
-                    height: 2px;
-                    .divider {
-                        width: 40px;
-                        // cursor: row-resize;
-                        background-color: #bbc5c4;
-                        height: 6px;
-                        border-radius: 10px;
-                    }
-                }
-    
-                .drag-container {
-                    display: grid;
-                    grid-template-columns: auto auto auto;
-                    gap: 15px;
-                    min-height: 295px;
-                    padding: 15px;
-                    min-width: 420px;
-                }
-            }
-
-        }
-
-        .drop-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            width: 100%;
-            min-height: 142px;
-            border: 2px solid whitesmoke;
-            padding: 15px;
-            border-style: dashed;
-            background-color: white;
-            border-radius: 10px;
-        }
-
-        .content {
-            display: flex;
-            flex-direction: column;
-            gap:25px;
-            flex: 1;
-            padding: 15px;
-            background-color: #f5f6fb;
-            .c-layout {
-                display: flex;
-                flex-direction: column;
-                gap: 15px;
-                .table-header {
-                    display: flex;
-                    justify-content: space-between;
-                    .table-label {
-                        align-items: flex-end;
-                        display: flex;
-                        gap:7px;
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-.cdk-drag-preview {
-    box-sizing: border-box;
-    border-radius: 4px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-                0 8px 10px 1px rgba(0, 0, 0, 0.14),
-                0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-  
-.cdk-drag-placeholder {
-    opacity: 0;
-}
-
-.cdk-drag-animating {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.drag-container.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.drop-container.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.last-appointment-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    .provider {
-        font-size: 12px;
-    }
-}
-
-ngx-mat-select-search {
-    mat-option {
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e5e7;
+    border-top: 1px solid #e5e5e7;
+    padding: 10px 0;
+    .campaign-name-input {
+      flex: 1;
       display: flex;
+      justify-content: center;
       align-items: center;
+      gap: 10px;
+      mat-label {
+        font-family: 'Gilroy-Medium';
+        font-size: 15px;
+      }
+    }
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      .more-options {
+        padding: 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .more-options:hover {
+        opacity: 0.7;
+      }
     }
   }
 
+  .body {
+    display: flex;
+    flex-direction: row;
+
+    .drag-item {
+      display: inline-block;
+      flex: 1 1 40%;
+      height: 120px;
+    }
+
+    .side {
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      padding: 15px;
+
+      .panel {
+        min-height: 880px;
+        .bottom {
+          padding: 15px 0;
+          .filter-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+          }
+          .bubble {
+            width: 100%;
+            font-family: 'Gilroy-Regular';
+            font-size: 13px;
+            text-align: left;
+            line-height: 20px;
+            background: antiquewhite;
+            border-radius: 20px;
+            padding: 20px;
+            color: darkgoldenrod;
+            margin-bottom: 15px;
+            width: 400px;
+          }
+
+          form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 0 5px;
+            .filter-box {
+              width: 100%;
+            }
+            .patient-age-slider {
+              display: flex;
+              flex-direction: column;
+              width: 100%;
+              .label {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                label {
+                  font-weight: 600;
+                }
+              }
+            }
+
+            .multi-selection-form {
+              display: flex;
+              flex-direction: column;
+              width: 100%;
+              gap: 5px;
+              .selected-chipsets {
+                display: flex;
+                // flex-direction: column;
+                gap: 10px;
+                width: 400px;
+                margin-bottom: 15px;
+              }
+            }
+          }
+        }
+
+        .divider-wrapper {
+          display: flex;
+          width: 100%;
+          justify-content: center;
+          align-items: center;
+          background-color: #e5e5e7;
+          height: 2px;
+          .divider {
+            width: 40px;
+            // cursor: row-resize;
+            background-color: #bbc5c4;
+            height: 6px;
+            border-radius: 10px;
+          }
+        }
+
+        .drag-container {
+          display: grid;
+          grid-template-columns: auto auto auto;
+          gap: 15px;
+          min-height: 295px;
+          padding: 15px;
+          min-width: 420px;
+        }
+      }
+    }
+
+    .drop-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      width: 100%;
+      min-height: 142px;
+      border: 2px solid whitesmoke;
+      padding: 15px;
+      border-style: dashed;
+      background-color: white;
+      border-radius: 10px;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      flex: 1;
+      padding: 15px;
+      background-color: #f5f6fb;
+      .c-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        .table-header {
+          display: flex;
+          justify-content: space-between;
+          .table-label {
+            align-items: flex-end;
+            display: flex;
+            gap: 7px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow:
+    0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drag-container.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drop-container.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.last-appointment-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .provider {
+    font-size: 12px;
+  }
+}
+
+ngx-mat-select-search {
+  mat-option {
+    display: flex;
+    align-items: center;
+  }
+}
+
 ::ng-deep .mat-select-search-inner {
-    background-color: white !important;
+  background-color: white !important;
 }
 
 ::ng-deep .campaign-filter-desc {
-    span {
-        font-weight: 600;
-        font-size: 14px;
-    }
-}
-
-table td, table th, table mat-chip   {
-    font-size: 12px !important;
-}
-
-table th  {
+  span {
     font-weight: 600;
+    font-size: 14px;
+  }
+}
+
+table td,
+table th,
+table mat-chip {
+  font-size: 12px !important;
+}
+
+table th {
+  font-weight: 600;
 }

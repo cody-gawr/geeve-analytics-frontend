@@ -51,7 +51,7 @@ export class UsersComponent implements AfterViewInit {
     private usersService: UsersService,
     public dialog: MatDialog,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {
     this.rows = data;
     this.temp = [...data];
@@ -72,7 +72,7 @@ export class UsersComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
   private deleteUsers(row) {
@@ -87,7 +87,7 @@ export class UsersComponent implements AfterViewInit {
           },
           error => {
             this.warningMessage = 'Please Provide Valid Inputs!';
-          }
+          },
         );
       } else {
         this.rows.splice(row, 1);

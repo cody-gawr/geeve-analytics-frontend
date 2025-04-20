@@ -10,37 +10,37 @@ export const saveDateRange = createAction(
     duration: DATE_RANGE_DURATION;
     goalCount?: number;
     enableGoal?: boolean;
-  }>()
+  }>(),
 );
 
 export const setTrend = createAction(
   '[Layout Pages] Set Trend Mode',
-  props<{ trend: TREND_MODE }>()
+  props<{ trend: TREND_MODE }>(),
 );
 
 export const setAvgMode = createAction(
   '[Layout Pages] Set Chart Average Mode',
-  props<{ cMode: C_AVG_MODE }>()
+  props<{ cMode: C_AVG_MODE }>(),
 );
 
 export const setCompareMode = createAction(
   '[Layout Pages] Set Compare Mode',
-  props<{ cMode: boolean }>()
+  props<{ cMode: boolean }>(),
 );
 
 export const setActivatedRouteTitle = createAction(
   '[Layout Pages] Set Activated Route Title',
-  props<{ title: string }>()
+  props<{ title: string }>(),
 );
 
 export const setHideDatePicker = createAction(
   '[Layout Pages] Set Hide Date Picker',
-  props<{ hide: boolean }>()
+  props<{ hide: boolean }>(),
 );
 
-export const setHideClinicSelectionDropDown= createAction(
+export const setHideClinicSelectionDropDown = createAction(
   '[Layout Pages] Set Hide Clinic Selection Dropdown',
-  props<{ hide: boolean }>()
+  props<{ hide: boolean }>(),
 );
 
 export const setPaths = createAction(
@@ -48,7 +48,7 @@ export const setPaths = createAction(
   props<{
     paths: {
       name: string;
-      path?: string
-    }[]
-  }>()
+      path?: string;
+    }[];
+  }>(),
 );

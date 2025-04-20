@@ -9,7 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class FollowupsEffects {
   constructor(
     private actions$: Actions,
-    private fuService: FollowupsService
+    private fuService: FollowupsService,
   ) {}
 
   // fuGetConversion
@@ -23,18 +23,18 @@ export class FollowupsEffects {
             FollowupsActions.loadFuApiRequestSuccess({
               api,
               resBody: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FollowupsActions.loadFuApiRequestFailure({
                 api,
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -49,18 +49,18 @@ export class FollowupsEffects {
             FollowupsActions.loadFuApiRequestSuccess({
               api,
               resBody: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FollowupsActions.loadFuApiRequestFailure({
                 api,
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -75,18 +75,18 @@ export class FollowupsEffects {
             FollowupsActions.loadFuApiRequestSuccess({
               api,
               resBody: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FollowupsActions.loadFuApiRequestFailure({
                 api,
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -101,18 +101,18 @@ export class FollowupsEffects {
             FollowupsActions.loadFuApiRequestSuccess({
               api,
               resBody: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FollowupsActions.loadFuApiRequestFailure({
                 api,
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -127,18 +127,18 @@ export class FollowupsEffects {
             FollowupsActions.loadFuApiRequestSuccess({
               api,
               resBody: data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FollowupsActions.loadFuApiRequestFailure({
                 api,
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 }

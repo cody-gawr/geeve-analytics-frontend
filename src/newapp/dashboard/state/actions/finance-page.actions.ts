@@ -4,9 +4,8 @@ import { createAction, props } from '@ngrx/store';
 
 export const loadFnChartDescription = createAction(
   '[Fanance Page] Load Finance Chart Description',
-  props<ChartDescParams<FinanceEndpoints>>()
+  props<ChartDescParams<FinanceEndpoints>>(),
 );
-
 
 export const loadFnTotalProduction = createAction(
   '[Fanance Page] Load fnTotalProduction',
@@ -16,7 +15,7 @@ export const loadFnTotalProduction = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFnTotalProductionTrend = createAction(
@@ -25,7 +24,7 @@ export const loadFnTotalProductionTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 export const loadFnTotalCollection = createAction(
   '[Fanance Page] Load fnTotalCollection',
@@ -35,7 +34,7 @@ export const loadFnTotalCollection = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFnTotalCollectionTrend = createAction(
@@ -44,7 +43,7 @@ export const loadFnTotalCollectionTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFnNetProfit = createAction(
@@ -56,7 +55,7 @@ export const loadFnNetProfit = createAction(
     duration: string;
     queryWhEnabled: number;
     connectedWith?: string;
-  }>()
+  }>(),
 );
 
 export const loadFnNetProfitTrend = createAction(
@@ -66,7 +65,7 @@ export const loadFnNetProfitTrend = createAction(
     mode: string;
     connectedWith: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFnNetProfitPercentageTrend = createAction(
@@ -76,7 +75,7 @@ export const loadFnNetProfitPercentageTrend = createAction(
     mode: string;
     queryWhEnabled: number;
     connectedWith?: string;
-  }>()
+  }>(),
 );
 
 export const loadFnNetProfitPercentage = createAction(
@@ -88,7 +87,7 @@ export const loadFnNetProfitPercentage = createAction(
     duration: string;
     queryWhEnabled: number;
     connectedWith?: string;
-  }>()
+  }>(),
 );
 
 export const loadFnExpenses = createAction(
@@ -100,7 +99,7 @@ export const loadFnExpenses = createAction(
     duration: string;
     queryWhEnabled: number;
     connectedWith?: string;
-  }>()
+  }>(),
 );
 
 export const loadFnExpensesTrend = createAction(
@@ -110,7 +109,7 @@ export const loadFnExpensesTrend = createAction(
     mode: string;
     connectedWith: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFnProductionByClinician = createAction(
@@ -121,7 +120,7 @@ export const loadFnProductionByClinician = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFnProdByClinicianTrend = createAction(
@@ -130,15 +129,15 @@ export const loadFnProdByClinicianTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const setProdPerVisitChartName = createAction(
   '[Fanance Page] Set Prod Per Visit Chart Name',
   props<{
     chartName: FN_PROD_PER_VISIT_CHART_NAME;
-  }>()
-)
+  }>(),
+);
 
 export const loadFnProductionPerVisit = createAction(
   '[Fanance Page] load fnProductionPerVisit',
@@ -148,7 +147,7 @@ export const loadFnProductionPerVisit = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFnProdPerVisitTrend = createAction(
@@ -157,7 +156,7 @@ export const loadFnProdPerVisitTrend = createAction(
     clinicId: string | number;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFnProductionPerDay = createAction(
@@ -168,7 +167,7 @@ export const loadFnProductionPerDay = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFnProdPerDayTrend = createAction(
@@ -177,7 +176,7 @@ export const loadFnProdPerDayTrend = createAction(
     clinicId: string | number;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFnTotalDiscounts = createAction(
@@ -188,7 +187,7 @@ export const loadFnTotalDiscounts = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadFnTotalDiscountsTrend = createAction(
@@ -197,19 +196,19 @@ export const loadFnTotalDiscountsTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const setTrendProfitChart = createAction(
   '[Fanance Page] load Trend Profit Chart',
   props<{
     chartName: string;
-  }>()
+  }>(),
 );
 
 export const setErrors = createAction(
   '[Fanance Page] set Errors',
   props<{
     errors: JeeveError[];
-  }>()
+  }>(),
 );

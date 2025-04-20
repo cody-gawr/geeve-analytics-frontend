@@ -4,9 +4,10 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title" style="padding: 10px 30px">
-    <span>{{chartName$ | async}}</span>
+    <span>{{ chartName$ | async }}</span>
     <img width="35px" height="35px" src="assets/jeeve/images/new-release.png" />
   </div>
   <div class="chart-content">
@@ -14,17 +15,19 @@
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
         <div class="chart-header">
           <button
-              *ngFor="let chartName of chartNames"
-              (click)="switchChartName(chartName)"
-              [ngClass]="{ active: chartName == (chartName$ | async) }">
-              {{ chartName }}
-            </button>
+            *ngFor="let chartName of chartNames"
+            (click)="switchChartName(chartName)"
+            [ngClass]="{ active: chartName == (chartName$ | async) }"
+          >
+            {{ chartName }}
+          </button>
         </div>
         <div class="prod-per-visit-graph">
           <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
@@ -36,14 +39,13 @@
               [labels]="labels"
               [options]="labelBarOptionsSingleValue"
               [legend]="false"
-              type="line"></canvas>
+              type="line"
+            ></canvas>
             <spin-loader
               class="empty-placeholder"
-              *ngIf="
-                !(datasets.length > 0 && datasets[0].data.length > 0) &&
-                !(isLoading$ | async)
-              "
-              [disableSpin]="true">
+              *ngIf="!(datasets.length > 0 && datasets[0].data.length > 0) && !(isLoading$ | async)"
+              [disableSpin]="true"
+            >
               You have no data in the selected period
             </spin-loader>
           </ng-template>

@@ -2,18 +2,15 @@
   <date-range-menu class="date-range-container"></date-range-menu>
   <trend-mode-toggle></trend-mode-toggle>
 </div>
-<div
-  *ngIf="(clinicId$ | async) !== null && noPermission"
-  class="dashboard-content-box">
+<div *ngIf="(clinicId$ | async) !== null && noPermission" class="dashboard-content-box">
   <trend-finances
     class="trend-finances-container"
-    *ngIf="isTrend$ | async; else trendSection"></trend-finances>
+    *ngIf="isTrend$ | async; else trendSection"
+  ></trend-finances>
   <ng-template #trendSection>
     <none-trend-finances class="trend-finances-container"></none-trend-finances>
   </ng-template>
 </div>
-<div
-  class="j-flex j-justify-center j-text-error"
-  *ngIf="!noPermission && errMsg">
+<div class="j-flex j-justify-center j-text-error" *ngIf="!noPermission && errMsg">
   {{ errMsg }}
 </div>

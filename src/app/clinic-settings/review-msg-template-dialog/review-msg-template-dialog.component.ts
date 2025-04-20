@@ -31,18 +31,12 @@ export class ReviewMsgTemplateDialog {
     public dialogRef: MatDialogRef<ReviewMsgTemplateDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private toastr: ToastrService,
-    private clinicService: ClinicSettingsService
+    private clinicService: ClinicSettingsService,
   ) {
     if (data.element) {
-      this.name = new UntypedFormControl(data.element.name, [
-        Validators.required,
-      ]);
-      this.type = new UntypedFormControl(data.element.type, [
-        Validators.required
-      ]);
-      this.msg_template = new UntypedFormControl(data.element.msg_template, [
-        Validators.required,
-      ]);
+      this.name = new UntypedFormControl(data.element.name, [Validators.required]);
+      this.type = new UntypedFormControl(data.element.type, [Validators.required]);
+      this.msg_template = new UntypedFormControl(data.element.msg_template, [Validators.required]);
     }
   }
 
@@ -78,7 +72,7 @@ export class ReviewMsgTemplateDialog {
             this.data.clinic_id,
             this.name.value,
             this.msg_template.value,
-            this.type.value
+            this.type.value,
           )
           .subscribe({
             next: v => {
@@ -99,7 +93,7 @@ export class ReviewMsgTemplateDialog {
             this.data.clinic_id,
             this.name.value,
             this.msg_template.value,
-            this.type.value
+            this.type.value,
           )
           .subscribe({
             next: v => {

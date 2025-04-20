@@ -35,7 +35,7 @@ export class AddScriptsComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
     private scriptsService: ScriptsService,
-    private router: Router
+    private router: Router,
   ) {}
   public charLimit: number = 1500;
 
@@ -60,14 +60,7 @@ export class AddScriptsComponent {
       return false;
     }
     this.scriptsService
-      .addUpdateScript(
-        data.id,
-        data.name,
-        data.text,
-        data.type,
-        data.colour,
-        data.clinic_id
-      )
+      .addUpdateScript(data.id, data.name, data.text, data.type, data.colour, data.clinic_id)
       .subscribe(
         res => {
           if (res.status == 200) {
@@ -78,7 +71,7 @@ export class AddScriptsComponent {
         },
         error => {
           console.log('error', error);
-        }
+        },
       );
     return true;
   }
@@ -111,13 +104,7 @@ export class ScriptsComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   scriptList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = [
-    'script_title',
-    'followup_type',
-    'colour',
-    'is_active',
-    'action',
-  ];
+  displayedColumns: string[] = ['script_title', 'followup_type', 'colour', 'is_active', 'action'];
   editing = {};
   clinicData: any = [];
   dailyTaskEnable: boolean = false;
@@ -195,7 +182,7 @@ export class ScriptsComponent extends BaseComponent implements AfterViewInit {
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
   }
 
@@ -226,16 +213,14 @@ export class ScriptsComponent extends BaseComponent implements AfterViewInit {
       cancelButtonText: 'No',
     }).then(result => {
       if (result.value) {
-        this.scriptsService
-          .deleteScript(this.clinic_id$.value, recordId)
-          .subscribe(
-            res => {
-              if (res.status == 200) {
-                this.getScripts(this.clinic_id$.value);
-              }
-            },
-            error => {}
-          );
+        this.scriptsService.deleteScript(this.clinic_id$.value, recordId).subscribe(
+          res => {
+            if (res.status == 200) {
+              this.getScripts(this.clinic_id$.value);
+            }
+          },
+          error => {},
+        );
       }
     });
   }
@@ -253,7 +238,7 @@ export class ScriptsComponent extends BaseComponent implements AfterViewInit {
       .updateSingleColumn(record_id, column, value, this.clinic_id$.value)
       .subscribe(
         res => {},
-        error => {}
+        error => {},
       );
   }
 }

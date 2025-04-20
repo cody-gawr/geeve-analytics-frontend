@@ -17,13 +17,7 @@ import { ChartOptions, LegendOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
-import {
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-} from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'caTxPlanAvgFees-chart',
@@ -37,25 +31,17 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-  chartNames: CA_TX_PLAN_AVG_FEE_CHART_NAME[] = [
-    'Avg. Proposed Fees',
-    'Avg. Completed Fees',
-  ];
+  chartNames: CA_TX_PLAN_AVG_FEE_CHART_NAME[] = ['Avg. Proposed Fees', 'Avg. Completed Fees'];
   get showTableView$() {
-    return this.isTableIconVisible$.pipe(map(
-      v => this.showTableInfo && v
-    ))
+    return this.isTableIconVisible$.pipe(map(v => this.showTableInfo && v));
   }
 
   get showMaxBarsAlert$() {
-    return combineLatest([
-      this.showTableView$,
-      this.isTableIconVisible$,
-    ]).pipe(
+    return combineLatest([this.showTableView$, this.isTableIconVisible$]).pipe(
       map(([v, v1]) => {
-        return !v && (this.tableData?.length > this.labels?.length) && v1;
-      })
-    ) 
+        return !v && this.tableData?.length > this.labels?.length && v1;
+      }),
+    );
   }
 
   get showMaxBarsAlertMsg$() {
@@ -82,7 +68,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -94,7 +80,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     return combineLatest([this.durationTrendLabel$]).pipe(
       map(([durTrendLabel]) => {
         return durTrendLabel + ': $' + this.decimalPipe.transform(this.prev);
-      })
+      }),
     );
   }
 
@@ -103,15 +89,8 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
 
   get isGaugeChartVisible$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
-      map(
-        ([isDentistMode, isTrend, isCompare]) =>
-          isDentistMode && !isTrend && !isCompare
-      )
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
+      map(([isDentistMode, isTrend, isCompare]) => isDentistMode && !isTrend && !isCompare),
     );
   }
 
@@ -141,7 +120,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
       map(([v]) => {
         return typeof v === 'string' ? true : false;
-      })
+      }),
     );
   }
 
@@ -158,21 +137,15 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
 
   get hasData$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
       map(([isDentistMode, isTrend, isCompare]) =>
         isDentistMode && !(isTrend || isCompare)
           ? this.gaugeValue !== 0
           : this.datasets?.length > 0 &&
             this.datasets?.some(
-              it =>
-                it?.data?.length > 0 &&
-                _.sumBy(it.data, v => parseFloat(<any>v))
-            )
-      )
+              it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v)),
+            ),
+      ),
     );
   }
 
@@ -198,7 +171,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
           case 'Avg. Completed Fees':
             return 'You have no completed treatment in the selected period';
         }
-      })
+      }),
     );
   }
 
@@ -207,17 +180,14 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isCompare$,
-      this.hasData$,
-      this.isTrend$
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isCompare$, this.hasData$, this.isTrend$]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
-          (!(isDentistMode && isTrend) || isCompare) && this.tableData.length > 0 && hasData &&
-          !this.isComingSoon
-      )
+          (!(isDentistMode && isTrend) || isCompare) &&
+          this.tableData.length > 0 &&
+          hasData &&
+          !this.isComingSoon,
+      ),
     );
   }
 
@@ -231,7 +201,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
   ) {}
 
   ngOnInit(): void {
@@ -244,7 +214,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
       .subscribe(([avgMode, isDentistMode, isTrend, data, trendData]) => {
         if (!isDentistMode || !isTrend) {
@@ -440,16 +410,12 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
             }
             //let ylable = Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             let ylable = tooltipItem.parsed._custom
-              ? +(
-                  tooltipItem.parsed._custom.max +
-                  tooltipItem.parsed._custom.min
-                ) / 2
+              ? +(tooltipItem.parsed._custom.max + tooltipItem.parsed._custom.min) / 2
               : v;
             var tlab = 0;
             if (typeof tooltipItem.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval =
-                tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
+              const tval = tooltipItem.chart.data.datasets[1].data[tooltipItem.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -477,11 +443,7 @@ export class CaTxPlanAvgFeedsComponent implements OnInit, OnDestroy {
     },
   };
 
-  private setChartOptions(
-    isDentistMode: boolean,
-    isTrend: boolean,
-    avgMode: string
-  ): void {
+  private setChartOptions(isDentistMode: boolean, isTrend: boolean, avgMode: string): void {
     if (!isDentistMode || !isTrend) {
       let options: ChartOptions = { ...this.barChartOptions };
       if (avgMode === 'average') {

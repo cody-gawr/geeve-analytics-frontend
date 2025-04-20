@@ -5,7 +5,8 @@
       <button
         class="sa-pull-right mat-raised-button mat-gray"
         mat-raised-button
-        (click)="openDialog()">
+        (click)="openDialog()"
+      >
         Add Plan
       </button></mat-card-title
     >
@@ -16,7 +17,8 @@
         type="text"
         class="form-control"
         placeholder="Type to filter Plan name..."
-        (keyup)="updateFilter($event)" />
+        (keyup)="updateFilter($event)"
+      />
     </mat-form-field>
     <ngx-datatable
       #table
@@ -27,7 +29,8 @@
       [footerHeight]="50"
       [rowHeight]="'auto'"
       [limit]="10"
-      [rows]="rows">
+      [rows]="rows"
+    >
       <ngx-datatable-column name="Sr">
         <ng-template let-column="column" ngx-datatable-header-template>
           <span>Sr</span>
@@ -36,7 +39,8 @@
           ngx-datatable-cell-template
           let-rowIndex="rowIndex"
           let-value="value"
-          let-row="row">
+          let-row="row"
+        >
           <span>
             {{ value }}
           </span>
@@ -50,14 +54,16 @@
           ngx-datatable-cell-template
           let-rowIndex="rowIndex"
           let-row="row"
-          let-value="value">
+          let-value="value"
+        >
           <span>
             {{ value }}
           </span>
           <span
             title="Double click to edit"
             (dblclick)="enableEditing(rowIndex, 'plan')"
-            *ngIf="!editing[rowIndex + '-plan'] && value == ''">
+            *ngIf="!editing[rowIndex + '-plan'] && value == ''"
+          >
             Enter plan
           </span>
           <input
@@ -65,7 +71,8 @@
             (blur)="updateValue($event, 'plan', rowIndex)"
             *ngIf="editing[rowIndex + '-plan']"
             type="text"
-            [value]="value" />
+            [value]="value"
+          />
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="allowedClinics">
@@ -76,14 +83,16 @@
           ngx-datatable-cell-template
           let-rowIndex="rowIndex"
           let-row="row"
-          let-value="value">
+          let-value="value"
+        >
           <span>
             {{ value }}
           </span>
           <span
             title="Double click to edit"
             (dblclick)="enableEditing(rowIndex, 'allowedClinics')"
-            *ngIf="!editing[rowIndex + '-allowedClinics'] && value == ''">
+            *ngIf="!editing[rowIndex + '-allowedClinics'] && value == ''"
+          >
             Enter plan
           </span>
           <input
@@ -91,7 +100,8 @@
             (blur)="updateValue($event, 'allowedClinics', rowIndex)"
             *ngIf="editing[rowIndex + '-allowedClinics']"
             type="text"
-            [value]="value" />
+            [value]="value"
+          />
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="description">
@@ -102,14 +112,16 @@
           ngx-datatable-cell-template
           let-rowIndex="rowIndex"
           let-row="row"
-          let-value="value">
+          let-value="value"
+        >
           <span>
             {{ value }}
           </span>
           <span
             title="Double click to edit"
             (dblclick)="enableEditing(rowIndex, 'description')"
-            *ngIf="!editing[rowIndex + '-description'] && value == ''">
+            *ngIf="!editing[rowIndex + '-description'] && value == ''"
+          >
             Enter Description
           </span>
           <!--  <input autofocus (blur)="updateValue($event, 'description', rowIndex)" *ngIf="editing[rowIndex+ '-description']" type="text" [value]="value"
@@ -117,7 +129,8 @@
           <textarea
             (blur)="updateValue($event, 'description', rowIndex)"
             *ngIf="editing[rowIndex + '-description']"
-            [value]="value"></textarea>
+            [value]="value"
+          ></textarea>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="amount">
@@ -128,14 +141,16 @@
           ngx-datatable-cell-template
           let-rowIndex="rowIndex"
           let-row="row"
-          let-value="value">
+          let-value="value"
+        >
           <span> $ {{ value }} </span>
           <input
             autofocus
             (blur)="updateValue($event, 'amount', rowIndex)"
             *ngIf="editing[rowIndex + '-amount']"
             type="text"
-            [value]="value" />
+            [value]="value"
+          />
         </ng-template>
       </ngx-datatable-column>
       <!--  <ngx-datatable-column name="discount">
@@ -159,17 +174,12 @@
           let-rowIndex="rowIndex"
           let-row="row"
           let-value="value"
-          style="width: 266px !important">
-          <a
-            (click)="updatePlan(rowIndex)"
-            class="action_btn golden"
-            title="Edit Plan"
+          style="width: 266px !important"
+        >
+          <a (click)="updatePlan(rowIndex)" class="action_btn golden" title="Edit Plan"
             ><i class="ti-pencil m-r-10"></i
           ></a>
-          <button
-            class="action_btn danger"
-            mat-menu-item
-            (click)="deletePlan(rowIndex)">
+          <button class="action_btn danger" mat-menu-item (click)="deletePlan(rowIndex)">
             <i class="ti-trash text-danger m-r-10"></i>
           </button>
         </ng-template>

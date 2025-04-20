@@ -15,10 +15,7 @@ import { BaseComponent } from '../base/base.component';
   templateUrl: './alerts.component.html',
   styleUrls: ['./alerts.component.scss'],
 })
-export class AlertsComponent
-  extends BaseComponent
-  implements OnInit, AfterViewInit
-{
+export class AlertsComponent extends BaseComponent implements OnInit, AfterViewInit {
   clinic_id$ = new BehaviorSubject<any>(null);
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
@@ -26,7 +23,7 @@ export class AlertsComponent
 
   constructor(
     private _cookieService: CookieService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {
     super();
   }

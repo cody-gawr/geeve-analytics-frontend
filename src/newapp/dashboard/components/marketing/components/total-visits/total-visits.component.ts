@@ -3,10 +3,7 @@ import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
-import {
-  externalTooltipHandler,
-  renderTooltipLabel,
-} from '@/newapp/shared/utils';
+import { externalTooltipHandler, renderTooltipLabel } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
@@ -28,15 +25,11 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get trendingIcon() {
-    return this.totalVisitsVal >= this.totalVisitsPrev
-      ? 'trending_up'
-      : 'trending_down';
+    return this.totalVisitsVal >= this.totalVisitsPrev ? 'trending_up' : 'trending_down';
   }
 
   get maxTotalVisitsGoal() {
-    return this.totalVisitsVal > this.totalVisitsGoal
-      ? this.totalVisitsVal
-      : this.totalVisitsGoal;
+    return this.totalVisitsVal > this.totalVisitsGoal ? this.totalVisitsVal : this.totalVisitsGoal;
   }
 
   get isActivePatients$() {
@@ -59,11 +52,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
       this.isTrend$,
       this.marketingFacade.isLoadingTotalVisits$,
       this.marketingFacade.isLoadingTotalVisitsTrend$,
-    ]).pipe(
-      map(([isTrend, isLoading, isTrendLoading]) =>
-        isTrend ? isTrendLoading : isLoading
-      )
-    );
+    ]).pipe(map(([isTrend, isLoading, isTrendLoading]) => (isTrend ? isTrendLoading : isLoading)));
   }
 
   get isMultipleClinic$() {
@@ -93,17 +82,16 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isFullSingle, v]) =>
-          (isFullSingle || (v.duration !== 'custom' && v.enableGoal)) &&
-          this.totalVisitsGoal > 0
-      )
+          (isFullSingle || (v.duration !== 'custom' && v.enableGoal)) && this.totalVisitsGoal > 0,
+      ),
     );
   }
 
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMulti]) =>
-        isTrend || isMulti ? this.labels.length > 0 : this.totalVisitsVal > 0
-      )
+        isTrend || isMulti ? this.labels.length > 0 : this.totalVisitsVal > 0,
+      ),
     );
   }
 
@@ -112,7 +100,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private decimalPipe: DecimalPipe,
-    private dashboardFacade: DashboardFacade
+    private dashboardFacade: DashboardFacade,
   ) {
     combineLatest([
       this.isTrend$,
@@ -143,10 +131,8 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
   get chartOptions$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMultiClinic]) =>
-        isTrend && isMultiClinic
-          ? this.stackedChartOptionsMulti
-          : this.stackedChartOptions
-      )
+        isTrend && isMultiClinic ? this.stackedChartOptionsMulti : this.stackedChartOptions,
+      ),
     );
   }
 
@@ -154,7 +140,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMultiClinic]) => {
         return isTrend && isMultiClinic;
-      })
+      }),
     );
   }
   // = generatingLegend_4
@@ -270,7 +256,7 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
         labels: {
           boxWidth: 8,
           usePointStyle: true,
-        }
+        },
       },
       tooltip: {
         mode: 'x',
@@ -281,19 +267,14 @@ export class MarketingTotalVisitsComponent implements OnInit, OnDestroy {
           label: tooltipItem => renderTooltipLabel(tooltipItem),
           title: tooltipItems => {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
-            return `${tooltipItems[0].label}: ${this.decimalPipe.transform(
-              sumV
-            )}`;
+            return `${tooltipItems[0].label}: ${this.decimalPipe.transform(sumV)}`;
           },
         },
       },
     },
   };
 
-  barChartColors = [
-    { backgroundColor: '#39acac' },
-    { backgroundColor: '#48daba' },
-  ];
+  barChartColors = [{ backgroundColor: '#39acac' }, { backgroundColor: '#48daba' }];
 
   lineChartColors = [
     '#119682',

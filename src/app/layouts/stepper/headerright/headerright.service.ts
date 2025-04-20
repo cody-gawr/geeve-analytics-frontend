@@ -17,7 +17,7 @@ export class StepperHeaderrightService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
   getHeaders() {
     if (
@@ -41,7 +41,7 @@ export class StepperHeaderrightService {
     return this.http.post(this.apiUrl + '/users/userLogout', formData).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
   getClinics(clinic_id): Observable<any> {
@@ -49,7 +49,7 @@ export class StepperHeaderrightService {
     return this.http.get(this.apiUrl + '/clinics/clinicGet', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 }

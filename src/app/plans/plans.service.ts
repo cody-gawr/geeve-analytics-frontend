@@ -17,7 +17,7 @@ export class PlansService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
 
   getHeaders() {
@@ -43,7 +43,7 @@ export class PlansService {
     return this.http.get(this.apiUrl + '/Plans/getPlans', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 
@@ -56,18 +56,12 @@ export class PlansService {
     return this.http.post(this.apiUrl + '/Plans/delete', formData, header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 
   // Update Clinic
-  updatePlan(
-    user_id,
-    plan,
-    allowedClinics,
-    description,
-    amount
-  ): Observable<any> {
+  updatePlan(user_id, plan, allowedClinics, description, amount): Observable<any> {
     const formData = new FormData();
 
     formData.append('id', user_id);
@@ -79,23 +73,15 @@ export class PlansService {
     formData.append('clinic_id', '1');
     var header = this.getHeaders();
 
-    return this.http
-      .post(this.apiUrl + '/Plans/update/', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Plans/update/', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Update Clinic
-  addPlans(
-    plan,
-    allowedClinics,
-    description,
-    amount,
-    discount
-  ): Observable<any> {
+  addPlans(plan, allowedClinics, description, amount, discount): Observable<any> {
     const formData = new FormData();
 
     formData.append('plan', plan);
@@ -107,7 +93,7 @@ export class PlansService {
     return this.http.post(this.apiUrl + '/Plans/add/', formData, header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 }

@@ -1,10 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ControlsOf } from '../../../models';
 import { Login } from '../../../models/auth';
@@ -28,7 +23,7 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder,
     private toastr: ToastrService,
     private authFacade: AuthFacade,
-    private router: Router
+    private router: Router,
   ) {
     this.formGroup = this._formBuilder.group({
       email: new FormControl('demo@jeeve.com.au', {
@@ -44,7 +39,7 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     this.authFacade.success$
       .pipe(
         takeUntil(this.destroy$),
-        filter(s => s)
+        filter(s => s),
       )
       .subscribe(() => {
         this.router.navigateByUrl('/');

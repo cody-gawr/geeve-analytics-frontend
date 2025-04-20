@@ -1,30 +1,25 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { ClinicFacade } from "../clinic/facades/clinic.facade";
-import { LayoutFacade } from "../layout/facades/layout.facade";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ClinicFacade } from '../clinic/facades/clinic.facade';
+import { LayoutFacade } from '../layout/facades/layout.facade';
 
 @Component({
-    selector: 'practice-insights-page',
-    templateUrl: './practice-insights.page.component.html',
-    styleUrls: ['./practice-insights.page.component.scss'],
+  selector: 'practice-insights-page',
+  templateUrl: './practice-insights.page.component.html',
+  styleUrls: ['./practice-insights.page.component.scss'],
 })
 export class PracticeInsightPageComponent implements OnInit, OnDestroy {
+  constructor(
+    private clinicFacade: ClinicFacade,
+    private layoutFacade: LayoutFacade,
+  ) {
+    layoutFacade.setActivatedRouteTitle('Practice Insights');
+  }
 
-    constructor(
-        private clinicFacade: ClinicFacade,
-        private layoutFacade: LayoutFacade
-    ){
-        layoutFacade.setActivatedRouteTitle('Practice Insights');
-    }
+  get clinicId$() {
+    return this.clinicFacade.currentClinicId$;
+  }
 
-    get clinicId$() {
-        return this.clinicFacade.currentClinicId$;
-    }
+  ngOnInit(): void {}
 
-    ngOnInit(): void {
-        
-    }
-
-    ngOnDestroy(): void {
-        
-    }
+  ngOnDestroy(): void {}
 }

@@ -7,7 +7,7 @@ import { take } from 'rxjs';
 @Component({
   selector: 'app-dentally-connection-dialog',
   templateUrl: './dentally-connection-dialog.component.html',
-  styleUrls: ['./dentally-connection-dialog.component.scss']
+  styleUrls: ['./dentally-connection-dialog.component.scss'],
 })
 export class DentallyConnectionDialogComponent {
   public clinic_id!: number;
@@ -15,21 +15,25 @@ export class DentallyConnectionDialogComponent {
     public dialogRef: MatDialogRef<DentallyConnectionDialogComponent>,
     private clinicSvc: ClinicService,
     private toastr: ToastrService,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-  }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-  
+
   onSubmit() {
     this.clinic_id = this.data.id;
-    this.clinicSvc.getDentallyAuthorizeUrl(this.clinic_id).pipe(take(1))
+    this.clinicSvc
+      .getDentallyAuthorizeUrl(this.clinic_id)
+      .pipe(take(1))
       .subscribe({
         next: (response: JeeveResponse<any>) => {
           if (!response.success) {
-            this.toastr.error('Could not retrieve the Dentally Authoriz URL', 'Dentally connection');
+            this.toastr.error(
+              'Could not retrieve the Dentally Authoriz URL',
+              'Dentally connection',
+            );
           } else {
             const responseURL = response.data;
             if (responseURL) {
@@ -50,4 +54,3 @@ export class DentallyConnectionDialogComponent {
       });
   }
 }
-

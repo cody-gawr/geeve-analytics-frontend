@@ -16,10 +16,7 @@ import {
 import { FinanceService } from '../../services/finance.service';
 import { FinanceApiActions, FinancePageActions } from '../actions';
 import { Store } from '@ngrx/store';
-import {
-  FinanceState,
-  selectIsLoadingNetProfit,
-} from '../reducers/finance.reducer';
+import { FinanceState, selectIsLoadingNetProfit } from '../reducers/finance.reducer';
 import { ChartDescParams } from '@/newapp/models/dashboard';
 import { DashboardService } from '../../services/dashboard.service';
 
@@ -29,7 +26,7 @@ export class FinanceEffects {
     private actions$: Actions,
     private financeService: FinanceService,
     private dashboardService: DashboardService,
-    private store: Store<FinanceState>
+    private store: Store<FinanceState>,
   ) {}
 
   destroy = new Subject<void>();
@@ -38,35 +35,31 @@ export class FinanceEffects {
   public readonly loadFnChartDescription$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnChartDescription),
-      groupBy((action) => action.chartDescription), // Group actions by `chart description`
-      mergeMap((grouped$) =>
+      groupBy(action => action.chartDescription), // Group actions by `chart description`
+      mergeMap(grouped$ =>
         grouped$.pipe(
           switchMap((params: ChartDescParams<FinanceEndpoints>) => {
             return this.dashboardService
-              .spChartDescriptionCall<any, FinanceEndpoints>(
-                'Finance',
-                params
-              )
+              .spChartDescriptionCall<any, FinanceEndpoints>('Finance', params)
               .pipe(
                 map(data =>
                   FinanceApiActions.fnChartDescriptionSuccess({
                     chartDesc: params.chartDescription,
                     chartDescData: data,
-                  })
+                  }),
                 ),
                 catchError((error: HttpErrorResponse) =>
                   of(
                     FinanceApiActions.fnChartDescriptionFailure({
                       chartDesc: params.chartDescription,
                       error: error.error ?? error,
-                    })
-                  )
-                )
+                    }),
+                  ),
+                ),
               );
-            }
-          )
-        )
-      )
+          }),
+        ),
+      ),
     );
   });
 
@@ -80,17 +73,17 @@ export class FinanceEffects {
               value: res.total,
               trendVal: res.totalTa,
               prodData: res.data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FinanceApiActions.fnTotalProductionFailure({
                 error: error.error?.jeeveError ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -98,24 +91,22 @@ export class FinanceEffects {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalProductionTrend),
       mergeMap(({ clinicId, mode, queryWhEnabled }) => {
-        return this.financeService
-          .fnTotalProductionTrend(clinicId, mode, queryWhEnabled)
-          .pipe(
-            map(res =>
-              FinanceApiActions.fnTotalProductionTrendSuccess({
-                prodTrendData: res.data,
-              })
+        return this.financeService.fnTotalProductionTrend(clinicId, mode, queryWhEnabled).pipe(
+          map(res =>
+            FinanceApiActions.fnTotalProductionTrendSuccess({
+              prodTrendData: res.data,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FinanceApiActions.fnTotalProductionTrendFailure({
+                error: error.error?.jeeveError ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                FinanceApiActions.fnTotalProductionTrendFailure({
-                  error: error.error?.jeeveError ?? error,
-                })
-              )
-            )
-          );
+          ),
+        );
       }),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   });
 
@@ -129,17 +120,17 @@ export class FinanceEffects {
               value: res.total,
               trendVal: res.totalTa,
               collectionData: res.data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FinanceApiActions.fnTotalCollectionFailure({
                 error: error.error?.jeeveError ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -147,23 +138,21 @@ export class FinanceEffects {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalCollectionTrend),
       mergeMap(({ clinicId, mode, queryWhEnabled }) => {
-        return this.financeService
-          .fnTotalCollectionTrend(clinicId, mode, queryWhEnabled)
-          .pipe(
-            map(res =>
-              FinanceApiActions.fnTotalCollectionTrendSuccess({
-                collectionTrendData: res.data,
-              })
+        return this.financeService.fnTotalCollectionTrend(clinicId, mode, queryWhEnabled).pipe(
+          map(res =>
+            FinanceApiActions.fnTotalCollectionTrendSuccess({
+              collectionTrendData: res.data,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FinanceApiActions.fnTotalCollectionTrendFailure({
+                error: error.error?.jeeveError ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                FinanceApiActions.fnTotalCollectionTrendFailure({
-                  error: error.error?.jeeveError ?? error,
-                })
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
 
@@ -182,11 +171,11 @@ export class FinanceEffects {
             return of(
               FinanceApiActions.fnNetProfitFailure({
                 error: jeeErr,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   });
 
@@ -200,7 +189,7 @@ export class FinanceEffects {
             map(res =>
               FinanceApiActions.fnNetProfitTrendSuccess({
                 netProfitTrendData: res.data,
-              })
+              }),
             ),
             catchError((error: HttpErrorResponse) => {
               const jeeErr = error.error?.jeeveError ?? error;
@@ -209,11 +198,11 @@ export class FinanceEffects {
               return of(
                 FinanceApiActions.fnNetProfitTrendFailure({
                   error: jeeErr,
-                })
+                }),
               );
-            })
+            }),
           );
-      })
+      }),
     );
   });
 
@@ -222,9 +211,7 @@ export class FinanceEffects {
       ofType(FinancePageActions.loadFnNetProfitPercentage),
       mergeMap(params => {
         return this.financeService.fnNetProfitPercentage(params).pipe(
-          map(res =>
-            FinanceApiActions.fnNetProfitPercentageSuccess({ value: res.data })
-          ),
+          map(res => FinanceApiActions.fnNetProfitPercentageSuccess({ value: res.data })),
           catchError((error: HttpErrorResponse) => {
             const jeeErr = error.error?.jeeveError ?? error;
             jeeErr.api = 'fnNetProfitPercentage';
@@ -232,11 +219,11 @@ export class FinanceEffects {
             return of(
               FinanceApiActions.fnNetProfitPercentageFailure({
                 error: jeeErr,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   });
 
@@ -245,17 +232,12 @@ export class FinanceEffects {
       ofType(FinancePageActions.loadFnNetProfitPercentageTrend),
       mergeMap(({ clinicId, mode, connectedWith, queryWhEnabled }) => {
         return this.financeService
-          .fnNetProfitPercentageTrend(
-            clinicId,
-            mode,
-            connectedWith,
-            queryWhEnabled
-          )
+          .fnNetProfitPercentageTrend(clinicId, mode, connectedWith, queryWhEnabled)
           .pipe(
             map(res =>
               FinanceApiActions.fnNetProfitPercentTrendSuccess({
                 netProfitPercentTrendData: res.data,
-              })
+              }),
             ),
             catchError((error: HttpErrorResponse) => {
               const jeeErr = error.error?.jeeveError ?? error;
@@ -264,11 +246,11 @@ export class FinanceEffects {
               return of(
                 FinanceApiActions.fnNetProfitPercentTrendFailure({
                   error: jeeErr,
-                })
+                }),
               );
-            })
+            }),
           );
-      })
+      }),
     );
   });
 
@@ -280,7 +262,7 @@ export class FinanceEffects {
           map(res =>
             FinanceApiActions.fnExpensesSuccess({
               expensesBodyData: res,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) => {
             const jeeErr = error.error?.jeeveError ?? error;
@@ -289,11 +271,11 @@ export class FinanceEffects {
             return of(
               FinanceApiActions.fnExpensesFailure({
                 error: jeeErr,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   });
 
@@ -308,7 +290,7 @@ export class FinanceEffects {
               FinanceApiActions.fnExpensesTrendSuccess({
                 expensesTrendData: res.data,
                 durations: res.durations,
-              })
+              }),
             ),
             catchError((error: HttpErrorResponse) => {
               const jeeErr = error.error?.jeeveError ?? error;
@@ -317,11 +299,11 @@ export class FinanceEffects {
               return of(
                 FinanceApiActions.fnExpensesTrendFailure({
                   error: jeeErr,
-                })
+                }),
               );
-            })
+            }),
           );
-      })
+      }),
     );
   });
 
@@ -334,17 +316,17 @@ export class FinanceEffects {
             FinanceApiActions.fnProductionByClinicianSuccess({
               prodByClinicData: res.data,
               prodByClinicianTotal: res.total,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FinanceApiActions.fnProductionByClinicianFailure({
                 error: error.error?.jeeveError ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -358,17 +340,17 @@ export class FinanceEffects {
             map(res =>
               FinanceApiActions.fnProdByClinicianTrendSuccess({
                 prodByClinicTrendData: res.data,
-              })
+              }),
             ),
             catchError((error: HttpErrorResponse) =>
               of(
                 FinanceApiActions.fnProdByClinicianTrendFailure({
                   error: error.error?.jeeveError ?? error,
-                })
-              )
-            )
+                }),
+              ),
+            ),
           );
-      })
+      }),
     );
   });
 
@@ -382,17 +364,17 @@ export class FinanceEffects {
               prodPerVisitData: res.data,
               prodPerVisitTotal: res.total,
               prodPerVisitTrendTotal: res.totalTa,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FinanceApiActions.fnProductionPerVisitFailure({
                 error: error.error?.jeeveError ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -400,23 +382,21 @@ export class FinanceEffects {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnProdPerVisitTrend),
       mergeMap(({ clinicId, mode, queryWhEnabled }) => {
-        return this.financeService
-          .fnProductionPerVisitTrend(clinicId, mode, queryWhEnabled)
-          .pipe(
-            map(res =>
-              FinanceApiActions.fnProductionPerVisitTrendSuccess({
-                prodPerVisitTrendData: res.data,
-              })
+        return this.financeService.fnProductionPerVisitTrend(clinicId, mode, queryWhEnabled).pipe(
+          map(res =>
+            FinanceApiActions.fnProductionPerVisitTrendSuccess({
+              prodPerVisitTrendData: res.data,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FinanceApiActions.fnProductionPerVisitTrendFailure({
+                error: error.error?.jeeveError ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                FinanceApiActions.fnProductionPerVisitTrendFailure({
-                  error: error.error?.jeeveError ?? error,
-                })
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
 
@@ -430,17 +410,17 @@ export class FinanceEffects {
               prodPerDayData: res.data,
               prodPerDayTotal: res.total,
               prodPerDayTrendTotal: res.totalTa,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FinanceApiActions.fnProductionPerDayFailure({
                 error: error.error?.jeeveError ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -448,23 +428,21 @@ export class FinanceEffects {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnProdPerDayTrend),
       mergeMap(({ clinicId, mode, queryWhEnabled }) => {
-        return this.financeService
-          .fnProductionPerDayTrend(clinicId, mode, queryWhEnabled)
-          .pipe(
-            map(res =>
-              FinanceApiActions.fnProductionPerDayTrendSuccess({
-                prodPerDayTrendData: res.data,
-              })
+        return this.financeService.fnProductionPerDayTrend(clinicId, mode, queryWhEnabled).pipe(
+          map(res =>
+            FinanceApiActions.fnProductionPerDayTrendSuccess({
+              prodPerDayTrendData: res.data,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FinanceApiActions.fnProductionPerDayTrendFailure({
+                error: error.error?.jeeveError ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                FinanceApiActions.fnProductionPerDayTrendFailure({
-                  error: error.error?.jeeveError ?? error,
-                })
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
 
@@ -478,17 +456,17 @@ export class FinanceEffects {
               totalDiscountData: res.data,
               totalDiscountTotal: res.total,
               totalDiscountTrendTotal: res.totalTa,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               FinanceApiActions.fnTotalDiscountsFailure({
                 error: error.error?.jeeveError ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -496,23 +474,21 @@ export class FinanceEffects {
     return this.actions$.pipe(
       ofType(FinancePageActions.loadFnTotalDiscountsTrend),
       mergeMap(({ clinicId, mode, queryWhEnabled }) => {
-        return this.financeService
-          .fnTotalDiscountsTrend(clinicId, mode, queryWhEnabled)
-          .pipe(
-            map(res =>
-              FinanceApiActions.fnTotalDiscountsTrendSuccess({
-                totalDiscountTrendData: res.data,
-              })
+        return this.financeService.fnTotalDiscountsTrend(clinicId, mode, queryWhEnabled).pipe(
+          map(res =>
+            FinanceApiActions.fnTotalDiscountsTrendSuccess({
+              totalDiscountTrendData: res.data,
+            }),
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              FinanceApiActions.fnTotalDiscountsTrendFailure({
+                error: error.error?.jeeveError ?? error,
+              }),
             ),
-            catchError((error: HttpErrorResponse) =>
-              of(
-                FinanceApiActions.fnTotalDiscountsTrendFailure({
-                  error: error.error?.jeeveError ?? error,
-                })
-              )
-            )
-          );
-      })
+          ),
+        );
+      }),
     );
   });
 }

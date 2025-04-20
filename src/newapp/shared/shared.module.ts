@@ -19,7 +19,10 @@ import { AverageModeToggleComponent } from './components/average-mode-toggle/ave
 import { CompareModeToggleComponent } from './components/compare-mode-toggle/compare-mode-toggle.component';
 import { DragDropButtonComponent } from './components/drag-drop-button/drag-drop-button.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-import { CustomTooltipComponent, CustomTooltipDirective } from './directives/custom-tooltip.directive';
+import {
+  CustomTooltipComponent,
+  CustomTooltipDirective,
+} from './directives/custom-tooltip.directive';
 import { SelectMultiSelectComponent } from './components/search-multi-select/search-multi-select.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AppChartComponent } from './components/app-chart/app-chart.component';
@@ -62,19 +65,13 @@ const components = [
   AppChartComponent,
   DateRangePresetComponent,
   AppCustomSelect,
-  StripePaymentDialog
+  StripePaymentDialog,
 ];
 
 @NgModule({
-  declarations: [
-    TooltipComponent,
-    ...components,
-  ],
+  declarations: [TooltipComponent, ...components],
   imports: [CommonModule, ...modules],
-  exports: [
-    ...modules,
-    ...components,
-  ],
+  exports: [...modules, ...components],
   providers: [],
 })
 export class SharedModule {}

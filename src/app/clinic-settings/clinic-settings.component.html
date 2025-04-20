@@ -4,40 +4,42 @@
       <mat-panel-title> Clinic </mat-panel-title>
     </mat-expansion-panel-header>
     <mat-card-content>
-      <form
-        [formGroup]="form"
-        class="basic-form sa_forms_design"
-        (ngSubmit)="onSaveBaseSettings()">
+      <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSaveBaseSettings()">
         <h4 class="clinic-settings-form-title">Clinic Settings</h4>
         <div
           fxLayout="row wrap"
           fxLayoutGap="20px"
           fxLayoutGap.md="0px"
           fxLayoutGap.sm="0px"
-          fxLayoutGap.xs="0">
+          fxLayoutGap.xs="0"
+        >
           <div
             class="clinic-setting-form"
             fxFlex.md="100"
             fxFlex.sm="100"
             fxFlex.xs="100"
-            style="width: 100%">
+            style="width: 100%"
+          >
             <div
               fxLayout="row wrap"
               fxLayoutGap="20px"
               fxLayoutGap.md="20px"
               fxLayoutGap.sm="20px"
-              fxLayoutGap.xs="0">
+              fxLayoutGap.xs="0"
+            >
               <div
                 fxFlex="calc(49% - 10px)"
                 fxFlex.md="calc(49% - 10px)"
                 fxFlex.sm="calc(49% - 10px)"
-                fxFlex.xs="100">
+                fxFlex.xs="100"
+              >
                 <div class="sa-form-group">
                   <label>Clinic Name</label>
                   <input
                     placeholder=""
                     [formControl]="form.controls['clinicName']"
-                    [(ngModel)]="clinicName" />
+                    [(ngModel)]="clinicName"
+                  />
                   <small
                     *ngIf="
                       form.controls['clinicName'].hasError('required') &&
@@ -60,13 +62,15 @@
                 fxFlex="calc(49% - 10px)"
                 fxFlex.md="calc(49% - 10px)"
                 fxFlex.sm="calc(49% - 10px)"
-                fxFlex.xs="100">
+                fxFlex.xs="100"
+              >
                 <div class="sa-form-group">
                   <label>Contact Name</label>
                   <input
                     placeholder=""
                     [formControl]="form.controls['contactName']"
-                    [(ngModel)]="contactName" />
+                    [(ngModel)]="contactName"
+                  />
                 </div>
               </div>
             </div>
@@ -75,51 +79,41 @@
               fxLayoutGap="20px"
               fxLayoutGap.md="20px"
               fxLayoutGap.sm="20px"
-              fxLayoutGap.xs="0">
+              fxLayoutGap.xs="0"
+            >
               <div
                 fxFlex="calc(49% - 10px)"
                 fxFlex.md="calc(49% - 10px)"
                 fxFlex.sm="calc(49% - 10px)"
-                fxFlex.xs="100">
+                fxFlex.xs="100"
+              >
                 <div class="sa-form-group">
                   <label>Address</label>
                   <input
                     placeholder=""
                     [formControl]="form.controls['address']"
-                    [(ngModel)]="address" />
+                    [(ngModel)]="address"
+                  />
                 </div>
               </div>
               <div
                 fxFlex="calc(49% - 10px)"
                 fxFlex.md="calc(49% - 10px)"
                 fxFlex.sm="calc(49% - 10px)"
-                fxFlex.xs="100">
+                fxFlex.xs="100"
+              >
                 <div class="sa-form-group">
                   <label>Timezone</label>
-                  <select
-                    [formControl]="form.controls['timezone']"
-                    [(ngModel)]="timezone">
-                    <option value="Australia/Lord_Howe">
-                      Australia/Lord_Howe
-                    </option>
+                  <select [formControl]="form.controls['timezone']" [(ngModel)]="timezone">
+                    <option value="Australia/Lord_Howe">Australia/Lord_Howe</option>
                     <option value="Australia/Hobart">Australia/Hobart</option>
                     <option value="Australia/Currie">Australia/Currie</option>
-                    <option value="Australia/Melbourne">
-                      Australia/Melbourne
-                    </option>
+                    <option value="Australia/Melbourne">Australia/Melbourne</option>
                     <option value="Australia/Sydney">Australia/Sydney</option>
-                    <option value="Australia/Broken_Hill">
-                      Australia/Broken_Hill
-                    </option>
-                    <option value="Australia/Brisbane">
-                      Australia/Brisbane
-                    </option>
-                    <option value="Australia/Lindeman">
-                      Australia/Lindeman
-                    </option>
-                    <option value="Australia/Adelaide">
-                      Australia/Adelaide
-                    </option>
+                    <option value="Australia/Broken_Hill">Australia/Broken_Hill</option>
+                    <option value="Australia/Brisbane">Australia/Brisbane</option>
+                    <option value="Australia/Lindeman">Australia/Lindeman</option>
+                    <option value="Australia/Adelaide">Australia/Adelaide</option>
                     <option value="Australia/Darwin">Australia/Darwin</option>
                     <option value="Australia/Perth">Australia/Perth</option>
                     <option value="Australia/Eucla">Australia/Eucla</option>
@@ -137,7 +131,8 @@
             fxLayoutGap="20px"
             fxLayoutGap.md="0px"
             fxLayoutGap.sm="0px"
-            fxLayoutGap.xs="0">
+            fxLayoutGap.xs="0"
+          >
             <mat-slide-toggle
               fxFlex.md="30"
               fxFlex.xs="100"
@@ -212,13 +207,15 @@
             fxLayoutGap="20px"
             fxLayoutGap.md="0px"
             fxLayoutGap.sm="0px"
-            fxLayoutGap.xs="0">
+            fxLayoutGap.xs="0"
+          >
             <mat-slide-toggle
               fxFlex.md="30"
               fxFlex.xs="100"
               checked="{{ compareMode }}"
               name="compare_mode"
-              (change)="toggleMH($event, 'CompareMode')">
+              (change)="toggleMH($event, 'CompareMode')"
+            >
               <span *ngIf="compareMode"><strong>Enabled</strong></span>
               <span *ngIf="!compareMode"><strong>Disabled</strong></span>
             </mat-slide-toggle>
@@ -243,43 +240,33 @@
 
         <div class="post-op-codes op-codes" *ngIf="isD4w">
           <h4 class="clinic-settings-form-title">FTA/UTA</h4>
-          <div
-            fxLayout="row wrap fta_uta_setting"
-            style="width: 500px; text-align: center">
-            <div
-              class="sa-form-group clinic-setting-form"
-              style="text-align: left; width: 240px">
-              <span style="padding: 11px 6px; display: inline-block"
-                >Appointment Status</span
-              >
+          <div fxLayout="row wrap fta_uta_setting" style="width: 500px; text-align: center">
+            <div class="sa-form-group clinic-setting-form" style="text-align: left; width: 240px">
+              <span style="padding: 11px 6px; display: inline-block">Appointment Status</span>
               <input
                 style="float: left; width: 25px"
                 type="radio"
                 name="fta_uta"
                 [formControl]="form.controls['fta_uta']"
                 [(ngModel)]="ftaUta"
-                value="status" />
+                value="status"
+              />
             </div>
-            <div
-              class="sa-form-group clinic-setting-form"
-              style="text-align: left; width: 240px">
-              <span style="padding: 11px 6px; display: inline-block"
-                >Item Codes</span
-              >
+            <div class="sa-form-group clinic-setting-form" style="text-align: left; width: 240px">
+              <span style="padding: 11px 6px; display: inline-block">Item Codes</span>
               <input
                 style="float: left; width: 25px"
                 type="radio"
                 name="fta_uta"
                 [formControl]="form.controls['fta_uta']"
                 [(ngModel)]="ftaUta"
-                value="item" />
+                value="item"
+              />
             </div>
           </div>
         </div>
         <div class="sa-form-group-btn">
-          <button class="save-button" type="submit" [disabled]="!form.valid">
-            Save
-          </button>
+          <button class="save-button" type="submit" [disabled]="!form.valid">Save</button>
         </div>
       </form>
     </mat-card-content>
@@ -287,14 +274,13 @@
   <app-customisations-settings
     [clinicId]="id"
     [clinicPMS]="selectedClinicData.pms"
-    *ngIf="!(userType == '7' && isExactOrCore)">
+    *ngIf="!(userType == '7' && isExactOrCore)"
+  >
   </app-customisations-settings>
   <app-charts-settings
     [clinicId]="id"
-    *ngIf="
-      (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
-      userType != '7'
-    ">
+    *ngIf="(apiUrl.includes('test') || apiUrl.includes('staging-')) && userType != '7'"
+  >
   </app-charts-settings>
   <mat-expansion-panel *ngIf="userType != '7'">
     <mat-expansion-panel-header>
@@ -304,7 +290,8 @@
       <form
         [formGroup]="form"
         class="basic-form sa_forms_design"
-        (ngSubmit)="onSaveExtraSettings()">
+        (ngSubmit)="onSaveExtraSettings()"
+      >
         <h4 class="clinic-settings-form-title"></h4>
 
         <div class="gray_area">
@@ -316,7 +303,8 @@
                   [tooltip]="this.constants.tipPostOPCallsFollowUps"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon" />
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
@@ -329,7 +317,8 @@
                   fxFlex.xs="100"
                   checked="{{ postOpEnable }}"
                   name="postOpEnable"
-                  (change)="toggleFlw($event, 'postOp')">
+                  (change)="toggleFlw($event, 'postOp')"
+                >
                   <span *ngIf="postOpEnable">Enabled</span>
                   <span *ngIf="!postOpEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -345,7 +334,8 @@
                   min="0"
                   placeholder=""
                   [formControl]="form.controls['post_op_calls_days']"
-                  [(ngModel)]="postOpCallsMh" />
+                  [(ngModel)]="postOpCallsMh"
+                />
                 <span>Days Later</span>
                 <small
                   *ngIf="
@@ -365,7 +355,8 @@
                 <input
                   placeholder="Post Op Calls Codes"
                   [formControl]="form.controls['post_op_calls']"
-                  [(ngModel)]="post_op_calls" />
+                  [(ngModel)]="post_op_calls"
+                />
               </div>
             </div>
           </div>
@@ -380,7 +371,8 @@
                   [tooltip]="this.constants.tipTickFollowUps"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon" />
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
@@ -393,7 +385,8 @@
                   fxFlex.xs="100"
                   checked="{{ tickEnable }}"
                   name="tickEnable"
-                  (change)="toggleFlw($event, 'tick')">
+                  (change)="toggleFlw($event, 'tick')"
+                >
                   <span *ngIf="tickEnable">Enabled</span>
                   <span *ngIf="!tickEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -409,7 +402,8 @@
                   min="0"
                   placeholder=""
                   [formControl]="form.controls['tick_days']"
-                  [(ngModel)]="tickDays" />
+                  [(ngModel)]="tickDays"
+                />
                 <span>Days Later</span>
                 <small
                   *ngIf="
@@ -433,7 +427,8 @@
                   [tooltip]="this.constants.tipRecallFollowUps"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon" />
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
@@ -446,7 +441,8 @@
                   fxFlex.xs="100"
                   checked="{{ recallEnable }}"
                   name="recallEnable"
-                  (change)="toggleFlw($event, 'recall')">
+                  (change)="toggleFlw($event, 'recall')"
+                >
                   <span *ngIf="recallEnable">Enabled</span>
                   <span *ngIf="!recallEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -462,7 +458,8 @@
                   min="0"
                   placeholder=""
                   [formControl]="form.controls['recall_weeks']"
-                  [(ngModel)]="recallWeeks" />
+                  [(ngModel)]="recallWeeks"
+                />
                 <span>Weeks Later</span>
                 <small
                   *ngIf="
@@ -486,7 +483,8 @@
                   [tooltip]="this.constants.tipFtaFollowUps"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon" />
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
@@ -499,7 +497,8 @@
                   fxFlex.xs="100"
                   checked="{{ ftaEnable }}"
                   name="ftaEnable"
-                  (change)="toggleFlw($event, 'fta')">
+                  (change)="toggleFlw($event, 'fta')"
+                >
                   <span *ngIf="ftaEnable">Enabled</span>
                   <span *ngIf="!ftaEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -515,13 +514,13 @@
                   min="0"
                   placeholder=""
                   [formControl]="form.controls['fta_followup_days_later']"
-                  [(ngModel)]="ftaFollowupDaysLater" />
+                  [(ngModel)]="ftaFollowupDaysLater"
+                />
                 <span>Days Later</span>
                 <small
                   *ngIf="
-                    form.controls['fta_followup_days_later'].hasError(
-                      'required'
-                    ) && form.controls['fta_followup_days_later'].touched
+                    form.controls['fta_followup_days_later'].hasError('required') &&
+                    form.controls['fta_followup_days_later'].touched
                   "
                   class="text-danger support-text"
                   >Field is Required.</small
@@ -538,7 +537,8 @@
                   min="0"
                   placeholder=""
                   [formControl]="form.controls['fta_followup_days']"
-                  [(ngModel)]="ftaFollowupDays" />
+                  [(ngModel)]="ftaFollowupDays"
+                />
                 <span>Days</span>
                 <small
                   *ngIf="
@@ -562,7 +562,8 @@
                   [tooltip]="this.constants.tipUtaFollowUps"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon" />
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
@@ -575,7 +576,8 @@
                   fxFlex.xs="100"
                   checked="{{ utaEnable }}"
                   name="utaEnable"
-                  (change)="toggleFlw($event, 'uta')">
+                  (change)="toggleFlw($event, 'uta')"
+                >
                   <span *ngIf="utaEnable">Enabled</span>
                   <span *ngIf="!utaEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -591,13 +593,13 @@
                   min="0"
                   placeholder=""
                   [formControl]="form.controls['uta_followup_days_later']"
-                  [(ngModel)]="utaFollowupDaysLater" />
+                  [(ngModel)]="utaFollowupDaysLater"
+                />
                 <span>Days Later</span>
                 <small
                   *ngIf="
-                    form.controls['uta_followup_days_later'].hasError(
-                      'required'
-                    ) && form.controls['uta_followup_days_later'].touched
+                    form.controls['uta_followup_days_later'].hasError('required') &&
+                    form.controls['uta_followup_days_later'].touched
                   "
                   class="text-danger support-text"
                   >Field is Required.</small
@@ -614,7 +616,8 @@
                   min="0"
                   placeholder=""
                   [formControl]="form.controls['uta_followup_days']"
-                  [(ngModel)]="utaFollowupDays" />
+                  [(ngModel)]="utaFollowupDays"
+                />
                 <span>Days</span>
                 <small
                   *ngIf="
@@ -628,9 +631,7 @@
             </div>
           </div>
         </div>
-        <div
-          class="gray_area"
-          *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
+        <div class="gray_area" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging-')">
           <h4 class="clinic-settings-form-title">
             Internal Referral Followups
             <div class="info-button">
@@ -639,7 +640,8 @@
                   [tooltip]="this.constants.tipInternalReferralFollowups"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon" />
+                  class="info-icon"
+                />
               </div>
             </div>
           </h4>
@@ -652,7 +654,8 @@
                   fxFlex.xs="100"
                   checked="{{ internalReferralEnable }}"
                   name="internalReferralEnable"
-                  (change)="toggleFlw($event, 'internalReferral')">
+                  (change)="toggleFlw($event, 'internalReferral')"
+                >
                   <span *ngIf="internalReferralEnable">Enabled</span>
                   <span *ngIf="!internalReferralEnable">Disabled</span>
                 </mat-slide-toggle>
@@ -668,7 +671,8 @@
                   min="0"
                   placeholder=""
                   [formControl]="form.controls['referral_weeks']"
-                  [(ngModel)]="referralWeeks" />
+                  [(ngModel)]="referralWeeks"
+                />
                 <span>Weeks Later</span>
                 <small
                   *ngIf="
@@ -700,26 +704,18 @@
           </div> -->
 
         <div class="sa-form-group-btn">
-          <button class="save-button" type="submit" [disabled]="!form.valid">
-            Save
-          </button>
+          <button class="save-button" type="submit" [disabled]="!form.valid">Save</button>
         </div>
       </form>
     </mat-card-content>
   </mat-expansion-panel>
 
-  <app-scripts-settings
-    [clinicId]="id"
-    *ngIf="userType != '7'"></app-scripts-settings>
+  <app-scripts-settings [clinicId]="id" *ngIf="userType != '7'"></app-scripts-settings>
   <app-goals-settings [clinicId]="id"></app-goals-settings>
   <app-dentist-settings [clinicId]="id"></app-dentist-settings>
   <!-- <app-tasks-settings [clinicId]="id"></app-tasks-settings> -->
-  <app-tasklist-settings
-    [clinicId]="id"
-    *ngIf="userType != '7'"></app-tasklist-settings>
-  <app-equipment-settings
-    [clinicId]="id"
-    *ngIf="userType != '7'"></app-equipment-settings>
+  <app-tasklist-settings [clinicId]="id" *ngIf="userType != '7'"></app-tasklist-settings>
+  <app-equipment-settings [clinicId]="id" *ngIf="userType != '7'"></app-equipment-settings>
   <app-alerts-settings *ngIf="false" [clinicId]="id"></app-alerts-settings>
 
   <!-- XERO section start -->
@@ -740,12 +736,10 @@
             <button
               class="save-button"
               *ngIf="myobConnect == false"
-              (click)="xeroConnect ? disconnectXero() : openXero()">
+              (click)="xeroConnect ? disconnectXero() : openXero()"
+            >
               {{ !xeroConnect ? 'Connect to Xero' : 'Disconnect from XERO' }}
-              <img
-                class="fast-forward-icon"
-                src="assets/images/fast_forward_arrows.png"
-                alt="" />
+              <img class="fast-forward-icon" src="assets/images/fast_forward_arrows.png" alt="" />
             </button>
           </div>
           <div class="company-container" *ngIf="xeroOrganization?.length">
@@ -758,23 +752,19 @@
         </div>
       </div>
       <div class="xero-from">
-        <form
-          [formGroup]="form"
-          class="basic-form sa_forms_design"
-          (ngSubmit)="onSubmit(true)">
+        <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit(true)">
           <div class="post-op-codes">
             <h4 class="clinic-settings-form-title">Net Profit Exclusions</h4>
             <div class="sa-form-group clinic-setting-form npe-padding">
               <input
                 placeholder=""
                 [formControl]="form.controls['subtracted_accounts']"
-                [(ngModel)]="subtracted_accounts" />
+                [(ngModel)]="subtracted_accounts"
+              />
             </div>
           </div>
           <div class="sa-form-group-btn">
-            <button class="save-button" type="submit" [disabled]="!form.valid">
-              Save
-            </button>
+            <button class="save-button" type="submit" [disabled]="!form.valid">Save</button>
           </div>
         </form>
       </div>
@@ -799,12 +789,10 @@
           <button
             class="save-button"
             *ngIf="xeroConnect == false"
-            (click)="myobConnect ? disconnectMyob() : openMyob()">
+            (click)="myobConnect ? disconnectMyob() : openMyob()"
+          >
             {{ !myobConnect ? 'Connect to Myob' : 'Disconnect from Myob' }}
-            <img
-              class="fast-forward-icon"
-              src="assets/images/fast_forward_arrows.png"
-              alt="" />
+            <img class="fast-forward-icon" src="assets/images/fast_forward_arrows.png" alt="" />
           </button>
         </div>
         <div class="company-container" *ngIf="myobOrganization?.length">
@@ -830,20 +818,13 @@
               <label>Enter Google Review Link</label>
               <input placeholder="" [formControl]="googleId" />
             </div>
-            <mat-form-field
-              floatLabel="never"
-              style="display: none"
-              [disabled]="true">
+            <mat-form-field floatLabel="never" style="display: none" [disabled]="true">
               <mat-label>Enter FaceBook Review Link</mat-label>
               <input matInput [formControl]="facebookId" />
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayoutAlign="center center">
-            <button
-              mat-raised-button
-              color="dc"
-              type="button"
-              (click)="saveSocialLinks()">
+            <button mat-raised-button color="dc" type="button" (click)="saveSocialLinks()">
               Save
             </button>
           </div>
@@ -853,7 +834,8 @@
             mat-raised-button
             (click)="linkGoogle()"
             [disabled]="googleConnected"
-            class="mat-dc">
+            class="mat-dc"
+          >
             {{ googleConnected ? 'Disconnect To Google' : 'Connect To Google' }}
             <mat-icon>double_arrow</mat-icon>
           </button>
@@ -887,10 +869,7 @@
         <div>
           <!-- <h4 style="margin-bottom: 0px">Message Templates</h4> -->
           <div style="display: flex; justify-content: flex-end">
-            <button
-              mat-raised-button
-              class="mat-dc"
-              (click)="openMsgTemplateDialog()">
+            <button mat-raised-button class="mat-dc" (click)="openMsgTemplateDialog()">
               Add Template
             </button>
           </div>
@@ -903,7 +882,9 @@
 
             <ng-container matColumnDef="type">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
-              <td mat-cell *matCellDef="let element"><span>{{ element.type }}</span></td>
+              <td mat-cell *matCellDef="let element">
+                <span>{{ element.type }}</span>
+              </td>
             </ng-container>
 
             <!-- Weight Column -->
@@ -916,9 +897,7 @@
 
             <!-- Symbol Column -->
             <ng-container matColumnDef="action" stickyEnd>
-              <th mat-header-cell *matHeaderCellDef aria-label="row actions">
-                &nbsp;
-              </th>
+              <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
               <td mat-cell *matCellDef="let element" style="text-align: right">
                 <span class="action">
                   <a
@@ -950,8 +929,7 @@
         <div fxLayout="row" fxLayoutGap="20" style="margin: 30px 0px">
           <div fxLayout="column" fxLayoutAlign="center">
             <span
-              >Available Credits:
-              <strong style="color: #18a689">{{ remainCredits }}</strong></span
+              >Available Credits: <strong style="color: #18a689">{{ remainCredits }}</strong></span
             >
           </div>
 
@@ -960,7 +938,8 @@
             color="dc"
             type="button"
             (click)="openTopUpCredits()"
-            class="add-credits-btn">
+            class="add-credits-btn"
+          >
             Add credits
           </button>
         </div>

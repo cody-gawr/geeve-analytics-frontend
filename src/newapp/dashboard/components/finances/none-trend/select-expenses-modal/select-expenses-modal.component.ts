@@ -36,7 +36,7 @@ export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private dashboardFacade: DashboardFacade,
     private financeFacade: FinanceFacade,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
   ) {
     this.selectedData = data.selectedData;
     this.unSelectedData = data.unSelectedData;
@@ -60,8 +60,7 @@ export class MkSelectExpensesModalComponent implements OnInit, OnDestroy {
       Swal.fire({
         icon: 'error',
         title: 'Oops....',
-        text:
-          'You can select a maximum of ' + 20 + ' expense accounts at a time',
+        text: 'You can select a maximum of ' + 20 + ' expense accounts at a time',
       });
     } else {
       this.selectedData.push(this.unSelectedData[index]);

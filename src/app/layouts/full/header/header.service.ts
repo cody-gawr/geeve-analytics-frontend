@@ -16,7 +16,7 @@ export class HeaderService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
   getHeaders() {
     if (
@@ -38,13 +38,11 @@ export class HeaderService {
   logout(): Observable<any> {
     const formData = new FormData();
     var header = this.getHeaders();
-    return this.http
-      .post(environment.commonApiUrl + '/logout', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(environment.commonApiUrl + '/logout', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   getClinics(): Observable<any> {
     var header = this.getHeaders();
@@ -55,7 +53,7 @@ export class HeaderService {
           this.clinics = response.body['data'];
         }
         return response;
-      })
+      }),
     );
   }
 
@@ -64,33 +62,26 @@ export class HeaderService {
     return this.http.get(this.apiUrl + '/users/getNewFeature', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
   getNewFeatureDisable(): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/users/getNewFeatureDisable', header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/users/getNewFeatureDisable', header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   clinicGetAccountingPlatform(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl +
-          '/clinics/clinicGetAccountingPlatform?clinic_id=' +
-          clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/clinics/clinicGetAccountingPlatform?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 

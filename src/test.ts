@@ -19,9 +19,6 @@ declare const __karma__: any;
 __karma__.loaded = function () {};
 
 // First, initialize the Angular testing environment.
-getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting()
-);
+getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 // Finally, start Karma to run the tests.
 __karma__.start();

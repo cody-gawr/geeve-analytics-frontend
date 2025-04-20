@@ -8,18 +8,18 @@
         (click)="openDialog()"
         disabled="false"
         *ngIf="
-          createdClinicsCount < clinicscount &&
-            userPlan != 'lite' &&
-            user_type != 7;
+          createdClinicsCount < clinicscount && userPlan != 'lite' && user_type != 7;
           else disableAddingClinic
-        ">
+        "
+      >
         Add Clinic
       </button>
       <ng-template #disableAddingClinic>
         <button
           class="sa-pull-right mat-raised-button mat-dc m-l-10"
           mat-raised-button
-          (click)="openLimitDialog()">
+          (click)="openLimitDialog()"
+        >
           Add Clinic
         </button>
       </ng-template>
@@ -31,7 +31,8 @@
         type="text"
         class="form-control"
         placeholder="Type to filter Clinic name..."
-        (keyup)="updateFilter($event)" />
+        (keyup)="updateFilter($event)"
+      />
     </mat-form-field>
     <ngx-datatable
       #table
@@ -43,7 +44,8 @@
       [footerHeight]="50"
       [rowHeight]="'auto'"
       [limit]="10"
-      [rows]="rows">
+      [rows]="rows"
+    >
       <ngx-datatable-column name="clinicName">
         <ng-template let-column="column" ngx-datatable-header-template>
           <span>Clinic Name</span>
@@ -52,11 +54,13 @@
           ngx-datatable-cell-template
           let-rowIndex="rowIndex"
           let-row="row"
-          let-value="value">
+          let-value="value"
+        >
           <span
             title="Double click to edit"
             (dblclick)="enableEditing(rowIndex, 'clinicName')"
-            *ngIf="!editing[rowIndex + '-clinicName']">
+            *ngIf="!editing[rowIndex + '-clinicName']"
+          >
             {{ value }}
           </span>
           <input
@@ -64,7 +68,8 @@
             (blur)="updateValue($event, 'clinicName', rowIndex)"
             *ngIf="editing[rowIndex + '-clinicName']"
             type="text"
-            [value]="value" />
+            [value]="value"
+          />
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="pms">
@@ -75,7 +80,8 @@
           ngx-datatable-cell-template
           let-rowIndex="rowIndex"
           let-row="row"
-          let-value="value">
+          let-value="value"
+        >
           <span>
             {{ value }}
           </span>
@@ -86,11 +92,13 @@
           ngx-datatable-cell-template
           let-rowIndex="rowIndex"
           let-row="row"
-          let-value="value">
+          let-value="value"
+        >
           <span
             title="Double click to edit"
             (dblclick)="enableEditing(rowIndex, 'address')"
-            *ngIf="!editing[rowIndex + '-address']">
+            *ngIf="!editing[rowIndex + '-address']"
+          >
             {{ value }}
           </span>
           <input
@@ -98,7 +106,8 @@
             (blur)="updateValue($event, 'address', rowIndex)"
             *ngIf="editing[rowIndex + '-address']"
             type="text"
-            [value]="value" />
+            [value]="value"
+          />
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="ContactName">
@@ -109,11 +118,13 @@
           ngx-datatable-cell-template
           let-rowIndex="rowIndex"
           let-row="row"
-          let-value="value">
+          let-value="value"
+        >
           <span
             title="Double click to edit"
             (dblclick)="enableEditing(rowIndex, 'contactName')"
-            *ngIf="!editing[rowIndex + '-contactName']">
+            *ngIf="!editing[rowIndex + '-contactName']"
+          >
             {{ value }}
           </span>
           <input
@@ -121,7 +132,8 @@
             (blur)="updateValue($event, 'contactName', rowIndex)"
             *ngIf="editing[rowIndex + '-contactName']"
             type="text"
-            [value]="value" />
+            [value]="value"
+          />
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Created" [sortable]="false">
@@ -129,7 +141,8 @@
           ngx-datatable-cell-template
           let-rowIndex="rowIndex"
           let-row="row"
-          let-value="value">
+          let-value="value"
+        >
           <span>
             {{ value | date }}
           </span>
@@ -144,7 +157,8 @@
           let-rowIndex="rowIndex"
           let-row="row"
           let-value="value"
-          style="width: 266px !important">
+          style="width: 266px !important"
+        >
           <div class="action-box">
             <a
               [routerLink]="['/clinic-settings', value]"
@@ -156,7 +170,8 @@
               *ngIf="row.connected === true"
               mat-button
               (click)="removePmsConnection($event, value)"
-              color="warn">
+              color="warn"
+            >
               DISCONNECT
             </button>
             <button
@@ -164,13 +179,18 @@
               style="color: white"
               *ngIf="row.connected === false"
               mat-button
-              (click)="reconnectPms($event, value)">
+              (click)="reconnectPms($event, value)"
+            >
               RECONNECT
             </button>
             <button
-              *ngIf="row.connected === undefined && ['core', 'dentally', 'praktika', 'xero', 'myob'].indexOf(row.pms) > -1"
+              *ngIf="
+                row.connected === undefined &&
+                ['core', 'dentally', 'praktika', 'xero', 'myob'].indexOf(row.pms) > -1
+              "
               mat-button
-              disabled>
+              disabled
+            >
               checking pms status...
             </button>
           </div>

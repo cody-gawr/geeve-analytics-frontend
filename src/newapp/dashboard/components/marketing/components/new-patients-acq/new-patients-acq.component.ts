@@ -10,10 +10,7 @@ import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
 import { Subject, takeUntil, combineLatest, map, Observable } from 'rxjs';
 import { MkSelectAccountsModalComponent } from '../select-accounts-modal/select-accounts-modal.component';
-import {
-  externalTooltipHandler,
-  generatingLegend_4,
-} from '@/newapp/shared/utils';
+import { externalTooltipHandler, generatingLegend_4 } from '@/newapp/shared/utils';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 
 @Component({
@@ -30,9 +27,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get trendingIcon() {
-    return this.newPatientsAcqVal >= this.newPatientsAcqPrev
-      ? 'trending_up'
-      : 'trending_down';
+    return this.newPatientsAcqVal >= this.newPatientsAcqPrev ? 'trending_up' : 'trending_down';
   }
 
   get maxNewPatientsAcqGoal() {
@@ -48,10 +43,8 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
   get hasData$() {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMulti]) =>
-        isTrend || isMulti
-          ? this.labels.length > 0
-          : this.newPatientsAcqVal != 0
-      )
+        isTrend || isMulti ? this.labels.length > 0 : this.newPatientsAcqVal != 0,
+      ),
     );
   }
 
@@ -74,7 +67,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([isTrend, isLoading, isTrendLoading]) => {
         return isTrend ? isTrendLoading : isLoading;
-      })
+      }),
     );
   }
 
@@ -98,7 +91,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     return this.clinicFacade.connectedWith$.pipe(
       map(v => {
         return v === 'myob' || v === 'xero';
-      })
+      }),
     );
   }
 
@@ -113,7 +106,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -123,7 +116,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private decimalPipe: DecimalPipe,
     private dashboardFacade: DashboardFacade,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -159,7 +152,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     return this.isTrend$.pipe(
       map(isTrend => {
         return isTrend ? this.barChartOptions : this.stackedChartOptions;
-      })
+      }),
     );
   }
 
@@ -204,11 +197,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
         external: externalTooltipHandler,
         callbacks: {
           label: tooltipItems => {
-            return (
-              tooltipItems.label +
-              ': $' +
-              this.decimalPipe.transform(tooltipItems.parsed.y)
-            );
+            return tooltipItems.label + ': $' + this.decimalPipe.transform(tooltipItems.parsed.y);
           },
           title: function () {
             return '';
@@ -261,10 +250,7 @@ export class MarketingNewPatientsAcqComponent implements OnInit, OnDestroy {
     },
   };
 
-  barChartColors = [
-    { backgroundColor: '#39acac' },
-    { backgroundColor: '#48daba' },
-  ];
+  barChartColors = [{ backgroundColor: '#39acac' }, { backgroundColor: '#48daba' }];
 
   lineChartColors = [
     '#119682',

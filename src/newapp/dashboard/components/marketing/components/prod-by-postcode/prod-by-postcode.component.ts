@@ -14,9 +14,7 @@ import { ChartTip } from '@/newapp/models/dashboard/finance';
 @Component({
   selector: 'mk-prod-by-postcode-chart',
   templateUrl: './prod-by-postcode.component.html',
-  styleUrls: [
-    './prod-by-postcode.component.scss',
-  ],
+  styleUrls: ['./prod-by-postcode.component.scss'],
 })
 export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
   @Input() toolTip: ChartTip;
@@ -26,10 +24,7 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
-  chartNames: MK_PROD_BY_POSTCODE_CHART_NAME[] = [
-    'Production By Post Code',
-    'Production By Age',
-  ];
+  chartNames: MK_PROD_BY_POSTCODE_CHART_NAME[] = ['Production By Post Code', 'Production By Age'];
 
   datasets: ChartDataset[] = [];
   labels = [];
@@ -51,27 +46,26 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
       this.mkFacade.isLoadingMkProdByPostCodeTrend$,
       this.mkFacade.isLoadingMkProdByAge$,
       this.mkFacade.isLoadingMkProdByAgeTrend$,
-    ]).pipe(map(([isTrend, chartName, v, v1, v2, v3]) => {
-      if(isTrend) {
-        return chartName === 'Production By Post Code'? v1: v3;
-      }else{
-        return chartName === 'Production By Post Code'? v: v2;
-      }
-    }));
+    ]).pipe(
+      map(([isTrend, chartName, v, v1, v2, v3]) => {
+        if (isTrend) {
+          return chartName === 'Production By Post Code' ? v1 : v3;
+        } else {
+          return chartName === 'Production By Post Code' ? v : v2;
+        }
+      }),
+    );
   }
 
   get enableIcon$() {
-    return combineLatest([
-      this.chartName$,
-      this.isTrend$
-    ]).pipe(map(([chartN, isT]) => {
-      return chartN === 'Production By Post Code' && !isT
-    }));
+    return combineLatest([this.chartName$, this.isTrend$]).pipe(
+      map(([chartN, isT]) => {
+        return chartN === 'Production By Post Code' && !isT;
+      }),
+    );
   }
   get isMultipleClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      map(v => typeof v == 'string')
-    );
+    return this.clinicFacade.currentClinicId$.pipe(map(v => typeof v == 'string'));
   }
 
   get isTrend$() {
@@ -83,19 +77,24 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
   }
 
   get legend$() {
-    return combineLatest([this.isTrend$, this.chartName$]).pipe(map(([trend, chartName]) => !trend && chartName === 'Production By Age'));
+    return combineLatest([this.isTrend$, this.chartName$]).pipe(
+      map(([trend, chartName]) => !trend && chartName === 'Production By Age'),
+    );
   }
 
   get chartType$() {
-    return combineLatest([this.isTrend$, this.chartName$]).pipe(map(
-      ([trend, chartName]) => !trend && chartName === 'Production By Age'? 'doughnut': 'bar'));
+    return combineLatest([this.isTrend$, this.chartName$]).pipe(
+      map(([trend, chartName]) =>
+        !trend && chartName === 'Production By Age' ? 'doughnut' : 'bar',
+      ),
+    );
   }
 
   constructor(
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private mkFacade: MarketingFacade,
-    private numPipe: DecimalPipe
+    private numPipe: DecimalPipe,
   ) {}
 
   ngOnInit(): void {
@@ -105,16 +104,24 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
       this.mkFacade.prodByPostCodeChartData$,
       this.mkFacade.prodByPostCodeTrendChartData$,
       this.mkFacade.prodByAgeChartData$,
-      this.mkFacade.prodByAgeTrendChartData$
+      this.mkFacade.prodByAgeTrendChartData$,
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([chartName, trend, postCodeData, postCodeTrendData, ageData, ageTrendData]) => {
-        if(trend) {
-          this.datasets = chartName === 'Production By Post Code'? postCodeTrendData.datasets: ageTrendData.datasets;
-          this.labels = chartName === 'Production By Post Code'? postCodeTrendData.labels: ageTrendData.labels;
-        }else{
-          this.datasets = chartName === 'Production By Post Code'? postCodeData.datasets: ageData.datasets;
-          this.labels = chartName === 'Production By Post Code'? postCodeData.labels: ageData.labels;
+        if (trend) {
+          this.datasets =
+            chartName === 'Production By Post Code'
+              ? postCodeTrendData.datasets
+              : ageTrendData.datasets;
+          this.labels =
+            chartName === 'Production By Post Code'
+              ? postCodeTrendData.labels
+              : ageTrendData.labels;
+        } else {
+          this.datasets =
+            chartName === 'Production By Post Code' ? postCodeData.datasets : ageData.datasets;
+          this.labels =
+            chartName === 'Production By Post Code' ? postCodeData.labels : ageData.labels;
         }
       });
   }
@@ -133,14 +140,14 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
         if (isTrend) {
           return this.stackedChartOptionsRef;
         } else {
-          if(chartName === 'Production By Age'){
+          if (chartName === 'Production By Age') {
             return this.pieChartOptions;
           }
           return this.showTopValues
-          ? this.prodByPostCodeChartOptions1
-          : this.prodByPostCodeChartOptionsDP;
+            ? this.prodByPostCodeChartOptions1
+            : this.prodByPostCodeChartOptionsDP;
         }
-      })
+      }),
     );
   }
 
@@ -290,9 +297,7 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
           },
           title: tooltipItems => {
             const sumV = _.sumBy(tooltipItems, t => t.parsed.y);
-            return `${tooltipItems[0].label}: $${this.numPipe.transform(
-              sumV
-            )}`;
+            return `${tooltipItems[0].label}: $${this.numPipe.transform(sumV)}`;
           },
         },
       },
@@ -303,7 +308,8 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
     labels: {
       usePointStyle: true,
       padding: 20,
-      sort: (a, b) => Object.values(PROD_AGE_LIST).indexOf(a.text) - Object.values(PROD_AGE_LIST).indexOf(b.text)
+      sort: (a, b) =>
+        Object.values(PROD_AGE_LIST).indexOf(a.text) - Object.values(PROD_AGE_LIST).indexOf(b.text),
     },
     onClick: function (e) {
       e.native.stopPropagation();
@@ -315,7 +321,7 @@ export class MkProdByPostCodeComponent implements OnInit, OnDestroy {
     plugins: {
       tooltip: {
         callbacks: {
-          label: (tooltipItem) => {
+          label: tooltipItem => {
             return `${tooltipItem.label}: $${this.numPipe.transform(Math.round(tooltipItem.parsed))}`;
           },
           title: function () {

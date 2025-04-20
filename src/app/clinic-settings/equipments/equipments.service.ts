@@ -12,7 +12,7 @@ export class EquipmentsService {
 
   constructor(
     private http: HttpClient,
-    private _cookieService: CookieService
+    private _cookieService: CookieService,
   ) {}
 
   getHeaders() {
@@ -36,14 +36,11 @@ export class EquipmentsService {
   getItems(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/clinics/clinicGetEquipmentList?clinic_id=' + clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/clinics/clinicGetEquipmentList?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
   // update tasks
@@ -55,15 +52,11 @@ export class EquipmentsService {
     formData.append('is_active', event);
     formData.append('is_default', is_default);
     return this.http
-      .post(
-        this.apiUrl + '/clinics/clinicUpdateEquipmentList',
-        formData,
-        header
-      )
+      .post(this.apiUrl + '/clinics/clinicUpdateEquipmentList', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -74,12 +67,10 @@ export class EquipmentsService {
     formData.append('equip_item', task_name);
     formData.append('quantity', quantity);
     formData.append('clinic_id', clinic_id);
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicAddEquipmentItem', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicAddEquipmentItem', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 }

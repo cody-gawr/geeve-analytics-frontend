@@ -1,10 +1,7 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
-import {
-  externalTooltipHandler,
-  generatingLegend_4,
-} from '@/newapp/shared/utils';
+import { externalTooltipHandler, generatingLegend_4 } from '@/newapp/shared/utils';
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { ChartOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';

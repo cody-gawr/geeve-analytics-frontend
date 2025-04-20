@@ -5,10 +5,7 @@ import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { DemoMaterialModule } from '../demo-material-module';
 import { PlansService } from './plans.service';
-import {
-  PlansComponent,
-  DialogOverviewExampleDialogComponent,
-} from './plans.component';
+import { PlansComponent, DialogOverviewExampleDialogComponent } from './plans.component';
 import { PlansRoutes } from './plans.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';

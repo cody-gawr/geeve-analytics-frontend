@@ -16,14 +16,7 @@ import { ChartOptions, LegendOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { AnnotationPluginOptions } from 'chartjs-plugin-annotation';
 import _ from 'lodash';
-import {
-  combineLatest,
-  distinctUntilChanged,
-  Subject,
-  takeUntil,
-  map,
-  Observable,
-} from 'rxjs';
+import { combineLatest, distinctUntilChanged, Subject, takeUntil, map, Observable } from 'rxjs';
 
 @Component({
   selector: 'caRecallRate-chart',
@@ -37,25 +30,17 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-  chartNames: CA_RECALL_RATE_CHART_NAME[] = [
-    'Recall Prebook Rate',
-    'Reappointment Rate',
-  ];
+  chartNames: CA_RECALL_RATE_CHART_NAME[] = ['Recall Prebook Rate', 'Reappointment Rate'];
   get showTableView$() {
-    return this.isTableIconVisible$.pipe(map(
-      v => this.showTableInfo && v
-    ))
+    return this.isTableIconVisible$.pipe(map(v => this.showTableInfo && v));
   }
 
   get showMaxBarsAlert$() {
-    return combineLatest([
-      this.showTableView$,
-      this.isTableIconVisible$,
-    ]).pipe(
+    return combineLatest([this.showTableView$, this.isTableIconVisible$]).pipe(
       map(([v, v1]) => {
-        return !v && (this.tableData?.length > this.labels?.length) && v1;
-      })
-    ) 
+        return !v && this.tableData?.length > this.labels?.length && v1;
+      }),
+    );
   }
 
   get showMaxBarsAlertMsg$() {
@@ -83,7 +68,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -93,25 +78,19 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
 
   get getTrendTip$() {
     return combineLatest([this.durationTrendLabel$]).pipe(
-      map(
-        ([durTrendLabel]) =>
-          durTrendLabel + ': ' + this.decimalPipe.transform(this.prev) + '%'
-      )
+      map(([durTrendLabel]) => durTrendLabel + ': ' + this.decimalPipe.transform(this.prev) + '%'),
     );
   }
 
   get isTableIconVisible$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isCompare$,
-      this.hasData$,
-      this.isTrend$
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isCompare$, this.hasData$, this.isTrend$]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
-          (!(isDentistMode && isTrend) || isCompare) && this.tableData.length > 0 && hasData &&
-          !this.isComingSoon
-      )
+          (!(isDentistMode && isTrend) || isCompare) &&
+          this.tableData.length > 0 &&
+          hasData &&
+          !this.isComingSoon,
+      ),
     );
   }
 
@@ -183,8 +162,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
         },
         cornerRadius: 0,
         callbacks: {
-          label: tooltipItem =>
-            tooltipItem.label + ': ' + tooltipItem.formattedValue + '%',
+          label: tooltipItem => tooltipItem.label + ': ' + tooltipItem.formattedValue + '%',
           // remove title
           title: function () {
             return '';
@@ -255,7 +233,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     return combineLatest([this.clinicFacade.currentClinicId$]).pipe(
       map(([v]) => {
         return typeof v === 'string' ? true : false;
-      })
+      }),
     );
   }
 
@@ -272,11 +250,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get hasData$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
       map(([isDentistMode, isTrend, isCompare]) => {
         if (isDentistMode && !(isTrend || isCompare)) {
           return this.gaugeValue !== 0;
@@ -284,13 +258,11 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
           return (
             this.datasets?.length > 0 &&
             this.datasets?.some(
-              it =>
-                it?.data?.length > 0 &&
-                _.sumBy(it.data, v => parseFloat(<any>v))
+              it => it?.data?.length > 0 && _.sumBy(it.data, v => parseFloat(<any>v)),
             )
           );
         }
-      })
+      }),
     );
   }
 
@@ -316,7 +288,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
           case 'Reappointment Rate':
             return 'You have no reappointments in the selected period';
         }
-      })
+      }),
     );
   }
 
@@ -329,15 +301,8 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   }
 
   get isGaugeChartVisible$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$,
-      this.isCompare$,
-    ]).pipe(
-      map(
-        ([isDentistMode, isTrend, isCompare]) =>
-          isDentistMode && !isTrend && !isCompare
-      )
+    return combineLatest([this.isDentistMode$, this.isTrend$, this.isCompare$]).pipe(
+      map(([isDentistMode, isTrend, isCompare]) => isDentistMode && !isTrend && !isCompare),
     );
   }
   get goalCount$(): Observable<number> {
@@ -349,7 +314,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
-    private dentistFacade: DentistFacade
+    private dentistFacade: DentistFacade,
   ) {}
 
   ngOnInit(): void {
@@ -363,29 +328,27 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
-      .subscribe(
-        ([avgMode, isDentistMode, isTrend, data, trendData, goalCount]) => {
-          if (!isDentistMode || !isTrend) {
-            this.datasets = data.datasets ?? [];
-            this.labels = data.labels ?? [];
-          } else {
-            this.datasets = trendData.datasets ?? [];
-            this.labels = trendData.labels ?? [];
-          }
-
-          this.total = data.total;
-          this.prev = data.prev;
-          this.average = data.total;
-          this.goal = data.goal;
-          this.tableData = data.tableData ?? [];
-          this.gaugeLabel = data.gaugeLabel;
-          this.gaugeValue = data.gaugeValue;
-
-          this.setChartOptions(isDentistMode, isTrend, avgMode, goalCount);
+      .subscribe(([avgMode, isDentistMode, isTrend, data, trendData, goalCount]) => {
+        if (!isDentistMode || !isTrend) {
+          this.datasets = data.datasets ?? [];
+          this.labels = data.labels ?? [];
+        } else {
+          this.datasets = trendData.datasets ?? [];
+          this.labels = trendData.labels ?? [];
         }
-      );
+
+        this.total = data.total;
+        this.prev = data.prev;
+        this.average = data.total;
+        this.goal = data.goal;
+        this.tableData = data.tableData ?? [];
+        this.gaugeLabel = data.gaugeLabel;
+        this.gaugeValue = data.gaugeValue;
+
+        this.setChartOptions(isDentistMode, isTrend, avgMode, goalCount);
+      });
   }
 
   ngOnDestroy(): void {
@@ -400,9 +363,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     this.showTableInfo = !this.showTableInfo;
   }
 
-  getAvgPluginOptions(
-    avgVal: number
-  ): _DeepPartialObject<AnnotationPluginOptions> {
+  getAvgPluginOptions(avgVal: number): _DeepPartialObject<AnnotationPluginOptions> {
     return {
       annotations: [
         {
@@ -442,7 +403,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
     isDentistMode: boolean,
     isTrend: boolean,
     avgMode: string,
-    goalCount: number
+    goalCount: number,
   ): void {
     if (!isDentistMode || !isTrend) {
       let options: ChartOptions = { ...this.barChartOptions };

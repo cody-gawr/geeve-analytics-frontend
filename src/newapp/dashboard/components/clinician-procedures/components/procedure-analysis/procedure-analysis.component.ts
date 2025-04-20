@@ -6,13 +6,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions, LegendOptions, ChartDataset } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import _ from 'lodash';
-import {
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-} from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, distinctUntilChanged } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
@@ -31,24 +25,18 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
 
   get isGeneral$() {
-    return this.cpFacade.cpPredictorAnalysisVisibility$.pipe(
-      map(v => v === 'general')
-    );
+    return this.cpFacade.cpPredictorAnalysisVisibility$.pipe(map(v => v === 'general'));
   }
 
   get isSpecialList$() {
-    return this.cpFacade.cpPredictorAnalysisVisibility$.pipe(
-      map(v => v === 'specialist')
-    );
+    return this.cpFacade.cpPredictorAnalysisVisibility$.pipe(map(v => v === 'specialist'));
   }
 
   get showTableView$() {
     return combineLatest([this.isTrend$, this.isDentistMode$]).pipe(
       map(([isTrend, isDentistMode]) => {
-        return (
-          !isTrend && !isDentistMode && this.maxVal > 0 && this.showPaTable
-        );
-      })
+        return !isTrend && !isDentistMode && this.maxVal > 0 && this.showPaTable;
+      }),
     );
   }
 
@@ -76,8 +64,8 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
             isLoadingCpPredictorSpecialistAnalysis ||
             isLoadingCpPredictorAnalysisTrend
           );
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -97,8 +85,8 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(
         ([isTrend, clinics, dentistId]) =>
-          !(isTrend || (clinics.length == 1 && dentistId !== 'all'))
-      )
+          !(isTrend || (clinics.length == 1 && dentistId !== 'all')),
+      ),
     );
   }
 
@@ -112,8 +100,8 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
       map(isGeneral =>
         isGeneral
           ? 'You have no Crowns, Splints, RCTs, Perio, Stainless Steel Crowns, Composite Veneers, Implant Crowns, Whitening or Extractions in this period'
-          : 'You have no specialist items in this period'
-      )
+          : 'You have no specialist items in this period',
+      ),
     );
   }
 
@@ -127,7 +115,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     private dentistFacade: DentistFacade,
     private cpFacade: ClinicianProcedureFacade,
     private sanitized: DomSanitizer,
-    private authFacade: AuthFacade
+    private authFacade: AuthFacade,
   ) {}
 
   ngOnInit(): void {
@@ -142,7 +130,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe(
         ([
@@ -176,7 +164,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
               }
             }
           }
-        }
+        },
       );
   }
 
@@ -189,21 +177,17 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
   }
 
   get isTableIconVisible$() {
-    return combineLatest([
-      this.isDentistMode$,
-      this.isTrend$
-    ]).pipe(map(([v, v1]) => !v && !v1 && this.tableData?.length > 0));
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
+      map(([v, v1]) => !v && !v1 && this.tableData?.length > 0),
+    );
   }
 
   get showMaxBarsAlert$() {
-    return combineLatest([
-      this.showTableView$,
-      this.isTableIconVisible$,
-    ]).pipe(
+    return combineLatest([this.showTableView$, this.isTableIconVisible$]).pipe(
       map(([v, v1]) => {
-        return !v && v1 && (this.tableData?.length > this.labels?.length);
-      })
-    ) 
+        return !v && v1 && this.tableData?.length > this.labels?.length;
+      }),
+    );
   }
 
   get showMaxBarsAlertMsg$() {
@@ -220,7 +204,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
         } else if (clinics.length > 1) {
           return this.stackedChartOptionsmulti;
         } else return this.stackedChartOptions;
-      })
+      }),
     );
   }
 
@@ -290,11 +274,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
               if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
-                return (
-                  tooltipItems.dataset.label +
-                  ': ' +
-                  tooltipItems.formattedValue
-                );
+                return tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue;
               }
             }
             return '';
@@ -372,11 +352,7 @@ export class CpAnalysisComponent implements OnInit, OnDestroy {
               if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
-                return (
-                  tooltipItems.dataset.label +
-                  ': ' +
-                  tooltipItems.formattedValue
-                );
+                return tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue;
               }
             }
             return '';

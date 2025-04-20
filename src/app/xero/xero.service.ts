@@ -18,7 +18,7 @@ export class XeroService {
     return this.http.post(this.apiUrl + '/users/userLogin', formData).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 }

@@ -7,7 +7,8 @@
       [value]="'$' + (netProfitProductionVal$ | async | number: '1.0-0')"
       [toolTip]="getChartTip(31) | async"
       iconColor="#f8ca25"
-      [isLoading]="isLoadingNetProfitProduction$ | async">
+      [isLoading]="isLoadingNetProfitProduction$ | async"
+    >
     </stats-card>
     <stats-card
       *ngIf="getChartTip(26) | async"
@@ -18,7 +19,8 @@
       iconColor="#737eef"
       [isLoading]="isLoadingNetProfit$ | async"
       [isFullMonths]="isFullMonthsDateRange$ | async"
-      [isConnectedWith]="isConnectedWith$ | async">
+      [isConnectedWith]="isConnectedWith$ | async"
+    >
     </stats-card>
     <stats-card
       *ngIf="getChartTip(27) | async"
@@ -28,7 +30,8 @@
       [toolTip]="getChartTip(27) | async"
       [isLoading]="isLoadingNetProfitPercentage$ | async"
       [isFullMonths]="isFullMonthsDateRange$ | async"
-      [isConnectedWith]="isConnectedWith$ | async">
+      [isConnectedWith]="isConnectedWith$ | async"
+    >
     </stats-card>
   </div>
   <div class="chart-list">
@@ -37,18 +40,21 @@
         *ngIf="getChartTip(29) | async"
         class="expenses-chart"
         [toolTip]="getChartTip(29) | async"
-        [isFullMonths]="isFullMonthsDateRange$ | async">
+        [isFullMonths]="isFullMonthsDateRange$ | async"
+      >
       </finance-expense-chart>
       <prod-per-clinic-chart
         *ngIf="toolTipFnProductionPerVisit$ | async"
         class="prod-per-clinic-chart"
-        [toolTip]="toolTipFnProductionPerVisit$ | async"></prod-per-clinic-chart>
+        [toolTip]="toolTipFnProductionPerVisit$ | async"
+      ></prod-per-clinic-chart>
     </div>
     <div class="chart-row">
       <prod-per-visit-chart
         *ngIf="prodPerVisitTip$ | async"
         class="chart33"
-        [toolTip]="prodPerVisitTip$ | async"></prod-per-visit-chart>
+        [toolTip]="prodPerVisitTip$ | async"
+      ></prod-per-visit-chart>
       <fn-hourly-rate-chart
         *ngIf="getChartTip(98) | async"
         [toolTip]="getChartTip(98) | async"
@@ -57,13 +63,15 @@
       <total-discount-chart
         *ngIf="getChartTip(34) | async"
         [toolTip]="getChartTip(34) | async"
-        class="chart33"></total-discount-chart>
+        class="chart33"
+      ></total-discount-chart>
     </div>
     <div class="chart-row">
-        <prod-collection-chart
+      <prod-collection-chart
         *ngIf="getChartTip(33) | async"
         [toolTip]="getChartTip(33) | async"
-        class="prod-collection-chart"></prod-collection-chart>
+        class="prod-collection-chart"
+      ></prod-collection-chart>
     </div>
   </div>
 </div>

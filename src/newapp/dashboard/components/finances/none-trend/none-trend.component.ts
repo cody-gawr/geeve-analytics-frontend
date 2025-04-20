@@ -23,9 +23,7 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
   }
 
   get netProfitPercentageVal$() {
-    return this.financeFacade.netProfitPercentageVal$.pipe(
-      map(c => Math.round(c ?? 0))
-    );
+    return this.financeFacade.netProfitPercentageVal$.pipe(map(c => Math.round(c ?? 0)));
   }
 
   get collectionVal$() {
@@ -56,31 +54,24 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
   }
 
   get isConnectedWith$() {
-    return this.clinicFacade.connectedWith$.pipe(
-      map(v => v === 'xero' || v === 'myob')
-    );
+    return this.clinicFacade.connectedWith$.pipe(map(v => v === 'xero' || v === 'myob'));
   }
 
   get isLoadingProductionPerVisit$() {
     return this.financeFacade.isLoadingFnProdPerVisit$;
   }
   get isMultipleClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      map(v => typeof v == 'string')
-    );
+    return this.clinicFacade.currentClinicId$.pipe(map(v => typeof v == 'string'));
   }
 
   get toolTipFnProductionPerVisit$() {
-    return combineLatest([
-      this.dashboardFacade.chartTips$,
-      this.isMultipleClinic$,
-    ]).pipe(
+    return combineLatest([this.dashboardFacade.chartTips$, this.isMultipleClinic$]).pipe(
       filter(params => !!params[0]),
       map(([c, v]) => {
         let tip = c[v ? 95 : 30];
-        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        if (tip && tip?.info?.toLowerCase() === 'disabled') return null;
         return tip;
-      })
+      }),
     );
   }
 
@@ -88,7 +79,7 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
     private dashboardFacade: DashboardFacade,
     private financeFacade: FinanceFacade,
     private layoutFacade: LayoutFacade,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
   ) {}
 
   ngOnInit(): void {}
@@ -98,7 +89,7 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
   }
 
   getChartTip(index: number) {
-    return this.dashboardFacade.getChartTip$(index)
+    return this.dashboardFacade.getChartTip$(index);
   }
   get prodPerVisitTip$() {
     return combineLatest([
@@ -115,9 +106,9 @@ export class NoneTrendFinanceComponent implements OnInit, OnDestroy {
           case 'Production Per Day':
             tip = tips[99];
         }
-        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        if (tip && tip?.info?.toLowerCase() === 'disabled') return null;
         return tip;
-      })
+      }),
     );
   }
 }

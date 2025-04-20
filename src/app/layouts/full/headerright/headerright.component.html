@@ -1,7 +1,8 @@
 <div
   fxLayout="row wrap"
   [ngClass]="showDropDown == false ? 'singleD' : ''"
-  class="header_filters dynamicDropdown{{ user_type_dentist }} {{ classUrl }}">
+  class="header_filters dynamicDropdown{{ user_type_dentist }} {{ classUrl }}"
+>
   <div fxLayout="row" fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
     <div
       class="header_first_select"
@@ -11,14 +12,13 @@
         !route.includes('/clinic-settings') &&
         route != '/clinic' &&
         !route.includes('/profile-settings')
-      ">
+      "
+    >
       <div class="vertical_center_header_content">
         <div
           class="sa_mat_select_topbar multi-clinic-pro"
-          *ngIf="
-            isMultiClinicsVisible && clinicsData.length > 1;
-            else singleClinicSelection
-          ">
+          *ngIf="isMultiClinicsVisible && clinicsData.length > 1; else singleClinicSelection"
+        >
           <mat-form-field floatLabel="never" class="multi-clinic-dis">
             <mat-select
               id="multi_clinic"
@@ -28,22 +28,20 @@
               [placeholder]="placeHolder"
               [multiple]="true"
               (openedChange)="loadClinicEvent($event)"
-              #multiSelect>
+              #multiSelect
+            >
               <mat-select-trigger *ngIf="allChecked == true">
                 {{ 'All Clinics' }}
               </mat-select-trigger>
-              <mat-option value="all" *ngIf="isAllOptionVisible"
-                >All Clinics</mat-option
-              >
-              <mat-option
-                *ngFor="let clinicData of clinicsData"
-                [value]="clinicData.id">
+              <mat-option value="all" *ngIf="isAllOptionVisible">All Clinics</mat-option>
+              <mat-option *ngFor="let clinicData of clinicsData" [value]="clinicData.id">
                 {{ clinicData.clinicName }}
               </mat-option>
               <button
                 id="cllclinic"
                 class="mat-raised-button mat-dc float-right"
-                (click)="multiSelect.close()">
+                (click)="multiSelect.close()"
+              >
                 OK
               </button>
             </mat-select>
@@ -56,13 +54,10 @@
                 class="external_clinic"
                 [(ngModel)]="selectedClinic"
                 (ngModelChange)="loadClinic($event)"
-                [placeholder]="placeHolder">
-                <mat-option value="all" *ngIf="isSingleClinicAllEnabled"
-                  >All Clinics</mat-option
-                >
-                <mat-option
-                  *ngFor="let clinicData of clinicsData"
-                  [value]="clinicData.id">
+                [placeholder]="placeHolder"
+              >
+                <mat-option value="all" *ngIf="isSingleClinicAllEnabled">All Clinics</mat-option>
+                <mat-option *ngFor="let clinicData of clinicsData" [value]="clinicData.id">
                   {{ clinicData.clinicName }}
                 </mat-option>
               </mat-select>
@@ -85,18 +80,18 @@
           user_type_dentist == '6' ||
           user_type_dentist == '7') &&
         showDropDown
-      ">
+      "
+    >
       <div class="vertical_center_header_content">
         <div class="sa_mat_select_topbar">
           <mat-form-field floatLabel="never">
             <mat-select
               class="external_dentist"
               [(ngModel)]="selectedDentist"
-              (ngModelChange)="loadDentist($event)">
+              (ngModelChange)="loadDentist($event)"
+            >
               <mat-option value="all" *ngIf="showAll">All Dentists</mat-option>
-              <mat-option
-                *ngFor="let dentist of dentists"
-                [value]="dentist.providerId">
+              <mat-option *ngFor="let dentist of dentists" [value]="dentist.providerId">
                 <span *ngIf="dentist.jeeve_name">{{ dentist.jeeve_name }}</span>
                 <span *ngIf="!dentist.jeeve_name">{{ dentist.name }}</span>
               </mat-option>
@@ -111,7 +106,8 @@
       <button
         class="sa_tab_btn compare-button"
         [ngClass]="{ active: isToggleDentistChart }"
-        (click)="toggler()">
+        (click)="toggler()"
+      >
         Compare
       </button>
     </div>

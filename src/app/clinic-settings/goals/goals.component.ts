@@ -17,10 +17,7 @@ import { LocalStorageService } from '@/app/shared/local-storage.service';
   templateUrl: './goals.component.html',
   styleUrls: ['./goals.component.scss'],
 })
-export class GoalsComponent
-  extends BaseComponent
-  implements OnInit, AfterViewInit
-{
+export class GoalsComponent extends BaseComponent implements OnInit, AfterViewInit {
   clinic_id$ = new BehaviorSubject<any>(null);
   clinicAnalysisForm: UntypedFormGroup;
   clinicProcedureForm: UntypedFormGroup;
@@ -52,7 +49,7 @@ export class GoalsComponent
     private toastr: ToastrService,
     private dentistService: DentistService,
     private clinicSettingsService: ClinicSettingsService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
   ) {
     super();
     this.range.push(this.year - 1);
@@ -82,27 +79,25 @@ export class GoalsComponent
       res => {
         if (res.status == 200) {
           this.Cconsultant = res.body.data[0]['consultant'];
-          this.clinicGoalsService
-            .getGoalAllData(id, selectedGoalCategory, selectedYear)
-            .subscribe(
-              res => {
-                if (res.status == 200) {
-                  this.getGoalsForTabsClinic(res.body.data);
-                } else if (res.status == 401) {
-                  this.handleUnAuthorization();
-                }
-              },
-              error => {
-                console.log('error', error);
+          this.clinicGoalsService.getGoalAllData(id, selectedGoalCategory, selectedYear).subscribe(
+            res => {
+              if (res.status == 200) {
+                this.getGoalsForTabsClinic(res.body.data);
+              } else if (res.status == 401) {
+                this.handleUnAuthorization();
               }
-            );
+            },
+            error => {
+              console.log('error', error);
+            },
+          );
         } else if (res.status == 401) {
           this.handleUnAuthorization();
         }
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
   }
 
@@ -117,7 +112,7 @@ export class GoalsComponent
       },
       error => {
         console.log('error', error);
-      }
+      },
     );
   }
 
@@ -146,15 +141,11 @@ export class GoalsComponent
   }
 
   get isExactOrCore(): boolean {
-    return this.localStorageService.isEachClinicPmsExactOrCore(
-      this.clinic_id$.value
-    );
+    return this.localStorageService.isEachClinicPmsExactOrCore(this.clinic_id$.value);
   }
 
   get isExactOrCoreOrPraktika(): boolean {
-    return this.localStorageService.isEachClinicExactOrCoreOrPraktika(
-      this.clinic_id$.value
-    );
+    return this.localStorageService.isEachClinicExactOrCoreOrPraktika(this.clinic_id$.value);
   }
 
   getGoalsForTabsClinic(allGoals) {
@@ -176,11 +167,9 @@ export class GoalsComponent
         if (
           this.isExactOrCore &&
           res.id == 10 &&
-          [
-            'Dentist Days',
-            'Dentist Production Per Hour',
-            'Dentist Production Per Day',
-          ].indexOf(chart.chart) > -1
+          ['Dentist Days', 'Dentist Production Per Hour', 'Dentist Production Per Day'].indexOf(
+            chart.chart,
+          ) > -1
         ) {
           return;
         }
@@ -193,17 +182,13 @@ export class GoalsComponent
         }
         if (
           res.id == 1 &&
-          [
-            'No. New Patients - Items Provider',
-            'Recall Prebook Rate - Status',
-          ].indexOf(chart.chart) > -1
+          ['No. New Patients - Items Provider', 'Recall Prebook Rate - Status'].indexOf(
+            chart.chart,
+          ) > -1
         ) {
           return;
         }
-        if (
-          res.id == 4 &&
-          ['No. New Patients - Items Provider'].indexOf(chart.chart) > -1
-        ) {
+        if (res.id == 4 && ['No. New Patients - Items Provider'].indexOf(chart.chart) > -1) {
           return;
         }
         chartTemp = {
@@ -214,17 +199,11 @@ export class GoalsComponent
           goals: [],
         };
         if (typeof chart['all_dentist_goals'] != 'undefined') {
-          chartTemp['goals'] = this.setGoalsPerMonth(
-            chart['all_dentist_goals']
-          );
-          this.goalsData['goals'][chart.id] = this.setGoalsPerMonth(
-            chart['all_dentist_goals']
-          );
+          chartTemp['goals'] = this.setGoalsPerMonth(chart['all_dentist_goals']);
+          this.goalsData['goals'][chart.id] = this.setGoalsPerMonth(chart['all_dentist_goals']);
         } else {
           chartTemp['goals'] = this.setGoalsPerMonth(chart['all_clinic_goals']);
-          this.goalsData['goals'][chart.id] = this.setGoalsPerMonth(
-            chart['all_clinic_goals']
-          );
+          this.goalsData['goals'][chart.id] = this.setGoalsPerMonth(chart['all_clinic_goals']);
         }
 
         temp['charts'].push(chartTemp);
@@ -232,12 +211,12 @@ export class GoalsComponent
       this.tabs.push(temp);
     });
     const syncCharts = (cId1, cId2, tab1, tab2) => {
-      const kPINoNowPatientsChart = this.tabs[tab1]?this.tabs[tab1]['charts'].find(
-        c => c.c_id == cId1
-      ):[];
-      const marketingNoNewPatientsChart = this.tabs[tab2]?this.tabs[tab2]['charts'].find(
-        c => c.c_id == cId2
-      ):[];
+      const kPINoNowPatientsChart = this.tabs[tab1]
+        ? this.tabs[tab1]['charts'].find(c => c.c_id == cId1)
+        : [];
+      const marketingNoNewPatientsChart = this.tabs[tab2]
+        ? this.tabs[tab2]['charts'].find(c => c.c_id == cId2)
+        : [];
       if (marketingNoNewPatientsChart) {
         marketingNoNewPatientsChart.goals = kPINoNowPatientsChart?.goals;
         marketingNoNewPatientsChart.c_id = cId1;
@@ -252,7 +231,7 @@ export class GoalsComponent
     this.tabs[4]?.charts.sort(function (a, b) {
       return order.indexOf(a.c_id) - order.indexOf(b.c_id);
     });
-    if(this.tabs[4]) this.tabs[4].d_name = 'Prime KPI Report';
+    if (this.tabs[4]) this.tabs[4].d_name = 'Prime KPI Report';
 
     if (this.Cconsultant == 'prime' && !this.tabChanged) {
       this.selectedTab = 10;
@@ -312,36 +291,26 @@ export class GoalsComponent
   }
 
   updateClinicGoals(formData) {
-    this.clinicGoalsService
-      .updateClinicGoals(formData, this.clinic_id$.value)
-      .subscribe(
-        res => {
-          $('.ajax-loader').hide();
-          if (res.status == 200) {
-            this.toastr.success('Clinic Goals Updated');
-            this.getData(
-              this.clinic_id$.value,
-              this.selectedGoalCategory$.value,
-              this.selectedYear
-            );
-          } else if (res.status == 401) {
-            this.handleUnAuthorization();
-          }
-        },
-        error => {
-          console.log('error', error);
-          $('.ajax-loader').hide();
+    this.clinicGoalsService.updateClinicGoals(formData, this.clinic_id$.value).subscribe(
+      res => {
+        $('.ajax-loader').hide();
+        if (res.status == 200) {
+          this.toastr.success('Clinic Goals Updated');
+          this.getData(this.clinic_id$.value, this.selectedGoalCategory$.value, this.selectedYear);
+        } else if (res.status == 401) {
+          this.handleUnAuthorization();
         }
-      );
+      },
+      error => {
+        console.log('error', error);
+        $('.ajax-loader').hide();
+      },
+    );
   }
 
   updateDentistGoals(formData) {
     this.dentistGoalsService
-      .updateDentistGoals(
-        formData,
-        this.clinic_id$.value,
-        this.selectedGoalCategory$.value
-      )
+      .updateDentistGoals(formData, this.clinic_id$.value, this.selectedGoalCategory$.value)
       .subscribe(
         res => {
           $('.ajax-loader').hide();
@@ -350,7 +319,7 @@ export class GoalsComponent
             this.getData(
               this.clinic_id$.value,
               this.selectedGoalCategory$.value,
-              this.selectedYear
+              this.selectedYear,
             );
           } else if (res.status == 401) {
             this.handleUnAuthorization();
@@ -358,7 +327,7 @@ export class GoalsComponent
         },
         error => {
           $('.ajax-loader').hide();
-        }
+        },
       );
   }
 
@@ -390,8 +359,7 @@ export class GoalsComponent
     this.goalsData['goals'][id][sn] = val == 0 ? -1 : val;
     if (tab === 'Prime KPI Report' && !this.isExactOrCore) {
       let product =
-        +$("input[name='goal63" + sn + "']").val() *
-        +$("input[name='goal64" + sn + "']").val();
+        +$("input[name='goal63" + sn + "']").val() * +$("input[name='goal64" + sn + "']").val();
       $("input[name='goal1" + sn + "']").val(product == 0 ? '' : product);
       this.goalsData['goals'][1][sn] = product == 0 ? -1 : product;
     }

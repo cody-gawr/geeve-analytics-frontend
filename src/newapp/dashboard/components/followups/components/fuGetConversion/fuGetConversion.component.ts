@@ -49,7 +49,7 @@ export class FuGetConversionComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -73,16 +73,13 @@ export class FuGetConversionComponent implements OnInit, OnDestroy {
   }
 
   get hasData() {
-    return (
-      this.datasets.length > 0 &&
-      this.datasets?.some(it => it?.data?.length > 0)
-    );
+    return this.datasets.length > 0 && this.datasets?.some(it => it?.data?.length > 0);
   }
 
   constructor(
     private fuFacade: FollowupsFacade,
     private layoutFacade: LayoutFacade,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
   ) {}
 
   ngOnInit(): void {

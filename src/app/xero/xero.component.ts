@@ -3,11 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService, CookieOptions } from 'ngx-cookie';
 import { environment } from '../../environments/environment';
 import { AppConstants } from '../app.constants';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { XeroService } from './xero.service';
 
 @Component({
@@ -28,7 +24,7 @@ export class XeroComponent implements OnInit {
     private router: Router,
     private xeroService: XeroService,
     private _cookieService: CookieService,
-    public constants: AppConstants
+    public constants: AppConstants,
   ) {
     if (this.apiUrl.includes('staging-')) {
       this.xeroVar = 'x30jeevestaging';
@@ -80,7 +76,7 @@ export class XeroComponent implements OnInit {
         {
           scrollTop: '0px',
         },
-        800
+        800,
       );
       return false;
     });
@@ -95,66 +91,55 @@ export class XeroComponent implements OnInit {
   onSubmit() {
     this.errorLogin = false;
 
-    this.xeroService
-      .login(this.form.value.uname, this.form.value.password)
-      .subscribe(
-        res => {
-          if (res.status == 200) {
-            var datares = [];
-            datares['username'] = res.body.data.username;
-            datares['email'] = res.body.data.email;
-            datares['token'] = res.body.data.token;
-            datares['userid'] = res.body.data.id;
-            datares['parentid'] = res.body.data.parent_id;
-            datares['user_type'] = res.body.data.user_type;
-            /*    datares['user_image'] = res.body.data.user_image; */
+    this.xeroService.login(this.form.value.uname, this.form.value.password).subscribe(
+      res => {
+        if (res.status == 200) {
+          var datares = [];
+          datares['username'] = res.body.data.username;
+          datares['email'] = res.body.data.email;
+          datares['token'] = res.body.data.token;
+          datares['userid'] = res.body.data.id;
+          datares['parentid'] = res.body.data.parent_id;
+          datares['user_type'] = res.body.data.user_type;
+          /*    datares['user_image'] = res.body.data.user_image; */
 
-            datares['login_status'] = res.body.data.login_status;
-            datares['display_name'] = res.body.data.display_name;
-            datares['dentistid'] = res.body.data.dentist_id;
+          datares['login_status'] = res.body.data.login_status;
+          datares['display_name'] = res.body.data.display_name;
+          datares['dentistid'] = res.body.data.dentist_id;
 
-            let opts = this.constants.cookieOpt as CookieOptions;
-            this._cookieService.put('userid', '', opts);
-            this._cookieService.put('childid', '', opts);
-            this._cookieService.put('dentistid', '', opts);
+          let opts = this.constants.cookieOpt as CookieOptions;
+          this._cookieService.put('userid', '', opts);
+          this._cookieService.put('childid', '', opts);
+          this._cookieService.put('dentistid', '', opts);
 
-            this._cookieService.put('username', datares['username'], opts);
-            this._cookieService.put('email', datares['email'], opts);
-            //this._cookieService.put("token", datares['token'], opts);
-            this._cookieService.put('user_type', datares['user_type'], opts);
+          this._cookieService.put('username', datares['username'], opts);
+          this._cookieService.put('email', datares['email'], opts);
+          //this._cookieService.put("token", datares['token'], opts);
+          this._cookieService.put('user_type', datares['user_type'], opts);
 
-            this._cookieService.put(
-              'login_status',
-              datares['login_status'],
-              opts
-            );
-            this._cookieService.put(
-              'display_name',
-              datares['display_name'],
-              opts
-            );
-            /*this._cookieService.put("user_image", datares['user_image'], opts);*/
+          this._cookieService.put('login_status', datares['login_status'], opts);
+          this._cookieService.put('display_name', datares['display_name'], opts);
+          /*this._cookieService.put("user_image", datares['user_image'], opts);*/
 
-            if (datares['user_type'] == '1') {
-              this.router.navigate(['/users']);
-              this._cookieService.put('userid', datares['userid'], opts);
-            } else if (datares['user_type'] == '2') {
-              this._cookieService.put('userid', datares['userid'], opts);
+          if (datares['user_type'] == '1') {
+            this.router.navigate(['/users']);
+            this._cookieService.put('userid', datares['userid'], opts);
+          } else if (datares['user_type'] == '2') {
+            this._cookieService.put('userid', datares['userid'], opts);
 
-              if (datares['login_status'] == 0)
-                window.location.href = '/assets/stepper/index.html';
-              else this.router.navigate(['/dashboards/cliniciananalysis/1']);
-            } else {
-              this._cookieService.put('userid', datares['parentid'], opts);
-              this._cookieService.put('childid', datares['userid'], opts);
-              this._cookieService.put('dentistid', datares['dentistid'], opts);
-              this.router.navigate(['/profile-settings/1']);
-            }
-          } else if (res.body.message == 'error') {
-            this.errorLogin = true;
+            if (datares['login_status'] == 0) window.location.href = '/assets/stepper/index.html';
+            else this.router.navigate(['/dashboards/cliniciananalysis/1']);
+          } else {
+            this._cookieService.put('userid', datares['parentid'], opts);
+            this._cookieService.put('childid', datares['userid'], opts);
+            this._cookieService.put('dentistid', datares['dentistid'], opts);
+            this.router.navigate(['/profile-settings/1']);
           }
-        },
-        error => {}
-      );
+        } else if (res.body.message == 'error') {
+          this.errorLogin = true;
+        }
+      },
+      error => {},
+    );
   }
 }

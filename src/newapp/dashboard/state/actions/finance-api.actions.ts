@@ -16,14 +16,15 @@ import { createAction, props } from '@ngrx/store';
 
 export const fnChartDescriptionSuccess = createAction(
   '[Finance API] Load Finance Chart Description Success',
-  props<{ chartDesc: FinanceEndpoints, chartDescData: any }>()
+  props<{ chartDesc: FinanceEndpoints; chartDescData: any }>(),
 );
 
 export const fnChartDescriptionFailure = createAction(
   '[Finance API] Load Finance Chart Description Failure',
   props<{
-    chartDesc: FinanceEndpoints, error: JeeveError;
-  }>()
+    chartDesc: FinanceEndpoints;
+    error: JeeveError;
+  }>(),
 );
 
 export const fnTotalProductionSuccess = createAction(
@@ -32,26 +33,26 @@ export const fnTotalProductionSuccess = createAction(
     value: number;
     trendVal: number;
     prodData: FnTotalProductionItem[];
-  }>()
+  }>(),
 );
 
 export const fnTotalProductionFailure = createAction(
   '[Finance API] Load fnTotalProduction Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnTotalProductionTrendSuccess = createAction(
   '[Finance API] Load fnTotalProductionTrend Success',
-  props<{ prodTrendData: FnTotalProductionItem[] }>()
+  props<{ prodTrendData: FnTotalProductionItem[] }>(),
 );
 
 export const fnTotalProductionTrendFailure = createAction(
   '[Finance API] Load fnTotalProductionTrend Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnTotalCollectionSuccess = createAction(
@@ -60,100 +61,100 @@ export const fnTotalCollectionSuccess = createAction(
     value: number;
     trendVal: number;
     collectionData: FnTotalCollectionItem[];
-  }>()
+  }>(),
 );
 
 export const fnTotalCollectionFailure = createAction(
   '[Finance API] Load fnTotalCollection Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnTotalCollectionTrendSuccess = createAction(
   '[Finance API] Load fnTotalCollectionTrend Success',
   props<{
     collectionTrendData: FnTotalCollectionItem[];
-  }>()
+  }>(),
 );
 
 export const fnTotalCollectionTrendFailure = createAction(
   '[Finance API] Load fnTotalCollectionTrend Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnNetProfitSuccess = createAction(
   '[Finance API] Load fnNetProfit Success',
-  props<{ value: number }>()
+  props<{ value: number }>(),
 );
 
 export const fnNetProfitFailure = createAction(
   '[Finance API] Load fnNetProfit Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnNetProfitTrendSuccess = createAction(
   '[Finance API] Load fnNetProfitTrend Success',
-  props<{ netProfitTrendData: FnNetProfitTrendItem[] }>()
+  props<{ netProfitTrendData: FnNetProfitTrendItem[] }>(),
 );
 
 export const fnNetProfitTrendFailure = createAction(
   '[Finance API] Load fnNetProfitTrend Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnNetProfitPercentTrendSuccess = createAction(
   '[Finance API] Load fnNetProfitPercentageTrend Success',
-  props<{ netProfitPercentTrendData: FnNetProfitPercentTrendItem[] }>()
+  props<{ netProfitPercentTrendData: FnNetProfitPercentTrendItem[] }>(),
 );
 
 export const fnNetProfitPercentTrendFailure = createAction(
   '[Finance API] Load fnNetProfitPercentageTrend Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnNetProfitPercentageSuccess = createAction(
   '[Finance API] Load fnNetProfitPercentage Success',
-  props<{ value: number }>()
+  props<{ value: number }>(),
 );
 
 export const fnNetProfitPercentageFailure = createAction(
   '[Finance API] Load fnNetProfitPercentage Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnExpensesSuccess = createAction(
   '[Finance API] Load fnExpenses Success',
-  props<{ expensesBodyData: FnExpensesApiResponse }>()
+  props<{ expensesBodyData: FnExpensesApiResponse }>(),
 );
 
 export const fnExpensesFailure = createAction(
   '[Finance API] Load fnExpenses Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnExpensesTrendSuccess = createAction(
   '[Finance API] Load fnExpensesTrend Success',
-  props<{ expensesTrendData: FnExpensesDataItem[]; durations: string[] }>()
+  props<{ expensesTrendData: FnExpensesDataItem[]; durations: string[] }>(),
 );
 
 export const fnExpensesTrendFailure = createAction(
   '[Finance API] Load fnExpensesTrend Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnProductionByClinicianSuccess = createAction(
@@ -161,28 +162,28 @@ export const fnProductionByClinicianSuccess = createAction(
   props<{
     prodByClinicData: FnProductionByClinicianItem[];
     prodByClinicianTotal: number;
-  }>()
+  }>(),
 );
 
 export const fnProductionByClinicianFailure = createAction(
   '[Finance API] Load fnProductionByClinician Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnProdByClinicianTrendSuccess = createAction(
   '[Finance API] Load fnProductionByClinicianTrend Success',
   props<{
     prodByClinicTrendData: FnProdByClinicianTrendItem[];
-  }>()
+  }>(),
 );
 
 export const fnProdByClinicianTrendFailure = createAction(
   '[Finance API] Load fnProductionByClinicianTrend Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnProductionPerVisitSuccess = createAction(
@@ -191,26 +192,26 @@ export const fnProductionPerVisitSuccess = createAction(
     prodPerVisitData: FnProductionPerVisitItem[];
     prodPerVisitTotal: number;
     prodPerVisitTrendTotal: number;
-  }>()
+  }>(),
 );
 
 export const fnProductionPerVisitFailure = createAction(
   '[Finance API] Load fnProductionPerVisit Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnProductionPerVisitTrendSuccess = createAction(
   '[Finance API] Load fnProductionPerVisitTrend Success',
-  props<{ prodPerVisitTrendData: FnProductionPerVisitItem[] }>()
+  props<{ prodPerVisitTrendData: FnProductionPerVisitItem[] }>(),
 );
 
 export const fnProductionPerVisitTrendFailure = createAction(
   '[Finance API] Load fnProductionPerVisitTrend Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 // fnProductionPerDay
@@ -220,26 +221,26 @@ export const fnProductionPerDaySuccess = createAction(
     prodPerDayData: FnProductionPerDayItem[];
     prodPerDayTotal: number;
     prodPerDayTrendTotal: number;
-  }>()
+  }>(),
 );
 
 export const fnProductionPerDayFailure = createAction(
   '[Finance API] Load fnProductionPerDay Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnProductionPerDayTrendSuccess = createAction(
   '[Finance API] Load fnProductionPerDayTrend Success',
-  props<{ prodPerDayTrendData: FnProductionPerDayItem[] }>()
+  props<{ prodPerDayTrendData: FnProductionPerDayItem[] }>(),
 );
 
 export const fnProductionPerDayTrendFailure = createAction(
   '[Finance API] Load fnProductionPerDayTrend Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnTotalDiscountsSuccess = createAction(
@@ -248,26 +249,26 @@ export const fnTotalDiscountsSuccess = createAction(
     totalDiscountData: FnTotalDiscountItem[];
     totalDiscountTotal: number;
     totalDiscountTrendTotal: number;
-  }>()
+  }>(),
 );
 
 export const fnTotalDiscountsFailure = createAction(
   '[Finance API] Load fnTotalDiscounts Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );
 
 export const fnTotalDiscountsTrendSuccess = createAction(
   '[Finance API] Load fnTotalDiscountsTrend Success',
   props<{
     totalDiscountTrendData: FnTotalDiscountItem[];
-  }>()
+  }>(),
 );
 
 export const fnTotalDiscountsTrendFailure = createAction(
   '[Finance API] Load fnTotalDiscountsTrend Failure',
   props<{
     error: JeeveError;
-  }>()
+  }>(),
 );

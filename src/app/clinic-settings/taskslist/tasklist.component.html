@@ -3,30 +3,27 @@
     <mat-panel-title> Daily Tasks </mat-panel-title>
   </mat-expansion-panel-header>
   <div class="tasksCon">
-    <mat-form-field
-      floatLabel="never"
-      class="denstist-search-form-field denstist-search-width">
+    <mat-form-field floatLabel="never" class="denstist-search-form-field denstist-search-width">
       <mat-icon matPrefix>search</mat-icon>
       <input
         matInput
         type="search"
         placeholder="Search here..."
         class="search-input"
-        (keyup)="doFilter($event.target.value)" />
+        (keyup)="doFilter($event.target.value)"
+      />
     </mat-form-field>
     <mat-slide-toggle
       fxFlex.md="30"
       fxFlex.xs="100"
       checked="{{ dailyTaskEnable }}"
       name="daily_task_enable"
-      (change)="toggleMH($event)">
+      (change)="toggleMH($event)"
+    >
       <span *ngIf="dailyTaskEnable">Enabled</span>
       <span *ngIf="!dailyTaskEnable">Disabled</span>
     </mat-slide-toggle>
-    <button
-      class="mat-raised-button mat-green addTaskBtn"
-      mat-raised-button
-      (click)="openDialog()">
+    <button class="mat-raised-button mat-green addTaskBtn" mat-raised-button (click)="openDialog()">
       Add Task List
     </button>
   </div>
@@ -35,11 +32,7 @@
       <img class="tableLoader" src="../../assets/images/loader.gif" />
     </div>
     <div class="respopnsive-table-set">
-      <table
-        mat-table
-        [dataSource]="tasksList"
-        class="mat-elevation-z8 tasksList"
-        matSort>
+      <table mat-table [dataSource]="tasksList" class="mat-elevation-z8 tasksList" matSort>
         <ng-container matColumnDef="list_name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>List Name</th>
           <td mat-cell *matCellDef="let element; let i = index">
@@ -53,9 +46,8 @@
               <mat-slide-toggle
                 [checked]="element.is_active == 0 ? false : true"
                 name="status"
-                (change)="
-                  updateStatus($event, element.list_id, 0)
-                "></mat-slide-toggle>
+                (change)="updateStatus($event, element.list_id, 0)"
+              ></mat-slide-toggle>
             </span>
           </td>
         </ng-container>
@@ -66,13 +58,7 @@
               <a
                 title="Edit"
                 class="action_btn golden ng-star-inserted"
-                (click)="
-                  openDialog(
-                    element.list_id,
-                    element.list_name,
-                    element.assigned_roles
-                  )
-                "
+                (click)="openDialog(element.list_id, element.list_name, element.assigned_roles)"
                 ><i class="ti-pencil m-r-10"></i
               ></a>
             </span>
@@ -92,16 +78,16 @@
       <mat-paginator
         hidePageSize
         [pageSize]="dentistPageSize"
-        [style.display]="'none'"></mat-paginator>
+        [style.display]="'none'"
+      ></mat-paginator>
     </div>
 
-    <ul
-      class="main_pagination settings-table-pagination"
-      *ngIf="dentistTablePages.length > 1">
+    <ul class="main_pagination settings-table-pagination" *ngIf="dentistTablePages.length > 1">
       <li *ngFor="let page of dentistTablePages">
         <button
           [ngClass]="{ active: page === currentPage, page: true }"
-          (click)="handlePageChange(page)">
+          (click)="handlePageChange(page)"
+        >
           {{ page }}
         </button>
       </li>
@@ -110,16 +96,14 @@
     <div class="data-loading-main">
       <div
         class="no-data"
-        [ngClass]="
-          tasksList.data.length == 0 && !apiCompleteGet ? 'show' : 'hide'
-        ">
+        [ngClass]="tasksList.data.length == 0 && !apiCompleteGet ? 'show' : 'hide'"
+      >
         You have no list yet
       </div>
       <div
         class="loader"
-        [ngClass]="
-          tasksList.data.length == 0 && apiCompleteGet ? 'show' : 'hide'
-        ">
+        [ngClass]="tasksList.data.length == 0 && apiCompleteGet ? 'show' : 'hide'"
+      >
         <img class="tableLoader" src="../../../assets/images/loader.gif" />
       </div>
     </div>

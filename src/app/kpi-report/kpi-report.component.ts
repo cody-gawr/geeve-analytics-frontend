@@ -54,7 +54,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
             'Hours Available',
             'Hours Worked',
             'Dentist Production Per Hr',
-          ].indexOf(v.kpi_type) < 0
+          ].indexOf(v.kpi_type) < 0,
       );
     } else {
       return this.reportData;
@@ -70,7 +70,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private router: Router,
     public constants: AppConstants,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
   ) {
     $('#title').html('Prime KPI Report');
     // this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM-yyyy');
@@ -151,7 +151,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
         },
         error => {
           console.log('error', error);
-        }
+        },
       );
     }
   }
@@ -216,10 +216,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
     this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
     // this.endDate = this.datepipe.transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd');
     this.endDate = this.datepipe
-      .transform(
-        new Date(this.selectedYear, this.selectedMonth, 0),
-        'yyyy-MM-dd 00:00:00'
-      )
+      .transform(new Date(this.selectedYear, this.selectedMonth, 0), 'yyyy-MM-dd 00:00:00')
       .replace(/\s/, 'T');
 
     let currentdate = new Date(this.endDate);
@@ -227,16 +224,11 @@ export class KpiReportComponent implements OnInit, OnDestroy {
     // let sDate = new Date(currentdate.setMonth(currentdate.getMonth() - subMonths)).toISOString().slice(0, 10);
     // let sMonth: any = this.datepipe.transform(sDate, 'M');
     // let sYear: any = this.datepipe.transform(sDate, 'yyyy');
-    let selectedMonthYear = this.datepipe.transform(
-      this.selectedMonthYear,
-      'M'
-    );
+    let selectedMonthYear = this.datepipe.transform(this.selectedMonthYear, 'M');
     let currenteMonth = this.datepipe.transform(new Date(), 'M');
     if (selectedMonthYear == currenteMonth) {
       // this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
-      this.endDate = this.datepipe
-        .transform(new Date(), 'yyyy-MM-dd 00:00:00')
-        .replace(/\s/, 'T');
+      this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd 00:00:00').replace(/\s/, 'T');
     }
     currentdate.setDate(1);
     currentdate.setMonth(currentdate.getMonth() + 1 - subMonths);
@@ -277,24 +269,18 @@ export class KpiReportComponent implements OnInit, OnDestroy {
     this.selectedYear = this.datepipe.transform(event, 'yyyy');
     this.endDate = this.datepipe.transform(
       new Date(this.selectedYear, this.selectedMonth, 0),
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     let currentdate = new Date(this.endDate);
     let subMonths = this.selectedMonthRange + 1;
-    let selectedMonthYear = this.datepipe.transform(
-      this.selectedMonthYear,
-      'M'
-    );
+    let selectedMonthYear = this.datepipe.transform(this.selectedMonthYear, 'M');
     let currenteMonth = this.datepipe.transform(new Date(), 'M');
     if (selectedMonthYear == currenteMonth) {
       this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     }
     currentdate.setDate(1);
     currentdate.setMonth(currentdate.getMonth() + 1 - subMonths);
-    this.startDate = this.datepipe.transform(
-      new Date(currentdate),
-      'yyyy-MM-dd'
-    );
+    this.startDate = this.datepipe.transform(new Date(currentdate), 'yyyy-MM-dd');
     this.getKpiReport();
   }
   onMonthRangeChange(event) {
@@ -303,15 +289,12 @@ export class KpiReportComponent implements OnInit, OnDestroy {
     this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
     this.endDate = this.datepipe.transform(
       new Date(this.selectedYear, this.selectedMonth, 0),
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     let subMonths = this.selectedMonthRange + 1;
     let currentdate = new Date(this.endDate);
     // compair the current month with the selected tabmonth
-    let selectedMonthYear = this.datepipe.transform(
-      this.selectedMonthYear,
-      'M'
-    );
+    let selectedMonthYear = this.datepipe.transform(this.selectedMonthYear, 'M');
     let currenteMonth = this.datepipe.transform(new Date(), 'M');
     if (selectedMonthYear == currenteMonth) {
       this.endDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
@@ -319,10 +302,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
     // -------------------------------------------------
     currentdate.setDate(1);
     currentdate.setMonth(currentdate.getMonth() + 1 - subMonths);
-    this.startDate = this.datepipe.transform(
-      new Date(currentdate),
-      'yyyy-MM-dd'
-    );
+    this.startDate = this.datepipe.transform(new Date(currentdate), 'yyyy-MM-dd');
     this.getKpiReport();
   }
   // setDate(type) {
@@ -346,87 +326,79 @@ export class KpiReportComponent implements OnInit, OnDestroy {
   private getKpiReport() {
     this.reportloader = true;
 
-    this.startDate = this.datepipe.transform(
-      new Date(this.startDate),
-      'yyyy-MM-dd'
-    );
-    this.endDate = this.datepipe.transform(
-      new Date(this.endDate),
-      'yyyy-MM-dd'
-    );
+    this.startDate = this.datepipe.transform(new Date(this.startDate), 'yyyy-MM-dd');
+    this.endDate = this.datepipe.transform(new Date(this.endDate), 'yyyy-MM-dd');
 
     this.KpiReportService.getKpiReport(
       this.clinic_id,
       this.startDate,
       this.endDate,
-      this.selectedDentist
-    ).subscribe(
-      {
-        next: (res: any) => {
-          if (res.status == 200) {
-            this.reportloader = false;
-            this.reportData = res.body.data;
-            this.reportData.forEach(element => {
-              if (element.kpi_type == 'Production') {
-                element.val.forEach(ele => {
-                  if (ele.clinic_id == undefined) {
-                    this.totalProductionActual = ele.actual;
-                  }
-                });
-              }
-              if (element.kpi_type == 'Dentist Days') {
-                element.val.forEach(ele => {
-                  if (ele.clinic_id == undefined) {
-                    this.totalDaysActual = ele.actual;
-                  }
-                });
-              }
-              if (element.kpi_type == 'Utilisation Rate') {
-                element.val.forEach(ele => {
-                  if (ele.clinic_id == undefined) {
-                    this.totalHoursAvailable = ele.available_hours;
-                  }
-                });
-              }
-            });
-            this.totalDentistProductionPerDayActual =
-              this.totalProductionActual / this.totalDaysActual;
-            this.totalDentistProductionPerHrActual =
-              this.totalProductionActual / this.totalHoursAvailable;
-  
-            this.reportData.forEach(element => {
-              if (element.kpi_type == 'Dentist Production Per Day') {
-                element.val.forEach(ele => {
-                  if (ele.clinic_id == undefined) {
-                    ele.actual = this.totalDentistProductionPerDayActual;
-                  }
-                });
-              }
-              if (element.kpi_type == 'Hourly Rate') {
-                element.kpi_type = 'Dentist Production Per Hr';
-                element.val.forEach(ele => {
-                  if (ele.clinic_id == undefined) {
-                    ele.actual = this.totalDentistProductionPerHrActual;
-                  }
-                });
-              }
-  
-              if (element.kpi_type == 'Discount') {
-                element.kpi_type = 'Discounts';
-              }
-            });
-            // this.reportData[8]['kpi_type'] = 'Discount';
-            // this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
-            this.reportMonths = res.body.months;
-          }
-        },
-        error: error => {
+      this.selectedDentist,
+    ).subscribe({
+      next: (res: any) => {
+        if (res.status == 200) {
           this.reportloader = false;
-          // this.warningMessage = "Please Provide Valid Inputs!";
-          // this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+          this.reportData = res.body.data;
+          this.reportData.forEach(element => {
+            if (element.kpi_type == 'Production') {
+              element.val.forEach(ele => {
+                if (ele.clinic_id == undefined) {
+                  this.totalProductionActual = ele.actual;
+                }
+              });
+            }
+            if (element.kpi_type == 'Dentist Days') {
+              element.val.forEach(ele => {
+                if (ele.clinic_id == undefined) {
+                  this.totalDaysActual = ele.actual;
+                }
+              });
+            }
+            if (element.kpi_type == 'Utilisation Rate') {
+              element.val.forEach(ele => {
+                if (ele.clinic_id == undefined) {
+                  this.totalHoursAvailable = ele.available_hours;
+                }
+              });
+            }
+          });
+          this.totalDentistProductionPerDayActual =
+            this.totalProductionActual / this.totalDaysActual;
+          this.totalDentistProductionPerHrActual =
+            this.totalProductionActual / this.totalHoursAvailable;
+
+          this.reportData.forEach(element => {
+            if (element.kpi_type == 'Dentist Production Per Day') {
+              element.val.forEach(ele => {
+                if (ele.clinic_id == undefined) {
+                  ele.actual = this.totalDentistProductionPerDayActual;
+                }
+              });
+            }
+            if (element.kpi_type == 'Hourly Rate') {
+              element.kpi_type = 'Dentist Production Per Hr';
+              element.val.forEach(ele => {
+                if (ele.clinic_id == undefined) {
+                  ele.actual = this.totalDentistProductionPerHrActual;
+                }
+              });
+            }
+
+            if (element.kpi_type == 'Discount') {
+              element.kpi_type = 'Discounts';
+            }
+          });
+          // this.reportData[8]['kpi_type'] = 'Discount';
+          // this.reportData[5]['kpi_type'] = 'Dentist Production Per Hr';
+          this.reportMonths = res.body.months;
         }
-      }
-    );
+      },
+      error: error => {
+        this.reportloader = false;
+        // this.warningMessage = "Please Provide Valid Inputs!";
+        // this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      },
+    });
   }
 
   // Get Dentist
@@ -445,7 +417,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
     // this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
     // 	if (res.status == 200) {

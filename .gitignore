@@ -1,8 +1,42 @@
-.idea
-/node_modules/*
-/dist/*
-/*.log
-/.angular/*
-.prettier*
+# Node modules
+node_modules/
+
+# Compiled output
+dist/
+tmp/
+out-tsc/
+
+# Environment files (never commit secrets!)
+src/environments/environment*.ts
+
+# IDEs
 .vscode/
+.idea/
+
+# Mac OS
 .DS_Store
+
+# System Files
+Thumbs.db
+
+# Logs
+*.log
+
+# Angular Cache
+.angular/cache/
+
+# Build artifacts
+coverage/
+*.tgz
+
+# NPM & Yarn
+package-lock.json
+yarn.lock
+
+# Compiled source maps
+*.js.map
+
+# Misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

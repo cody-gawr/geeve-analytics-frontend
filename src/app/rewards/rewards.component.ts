@@ -18,7 +18,7 @@ export class RewardsComponent implements OnInit, OnDestroy {
     private titleService: Title,
     public rewardsService: RewardsService,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {
     $('#title').html('Rewards');
     this.dentistProduction();
@@ -43,7 +43,7 @@ export class RewardsComponent implements OnInit, OnDestroy {
       error => {
         this._cookieService.removeAll();
         this.router.navigateByUrl('/login');
-      }
+      },
     );
   }
 

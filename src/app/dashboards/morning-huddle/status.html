@@ -1,6 +1,4 @@
-<div
-  class="AddUserPopup center"
-  *ngIf="data.event == 'Wants another follow-up'">
+<div class="AddUserPopup center" *ngIf="data.event == 'Wants another follow-up'">
   <h1 mat-dialog-title>
     Schedule new follow-up for:
     <strong>{{ data.firstname }} {{ data.surname }}</strong>
@@ -10,22 +8,15 @@
     [showDropdowns]="true"
     [autoApply]="true"
     [locale]="{displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
-    (choosedDate)="updateNext($event)">
+    (choosedDate)="updateNext($event)"
+  >
   </ngx-daterangepicker-material>
 
   <div class="sa-form-group-btn mh-status-schedule">
-    <button
-      class="save-button mh-status-schedule-btn"
-      type="submit"
-      (click)="onNoClick()">
+    <button class="save-button mh-status-schedule-btn" type="submit" (click)="onNoClick()">
       Cancel
     </button>
-    <button
-      class="save-button"
-      type="submit"
-      (click)="updateNextfollowUp(data)">
-      Save
-    </button>
+    <button class="save-button" type="submit" (click)="updateNextfollowUp(data)">Save</button>
   </div>
 </div>
 
@@ -39,27 +30,20 @@
     <button
       class="save-button mh-nxt-btn"
       type="submit"
-      (click)="updateNextReached(data,'next-business')">
-      NEXT BUSINESS DAY<br /><span
-        >{{ data.nextBussinessDay | date:'E d MMMM': '+1000'}}</span
-      >
+      (click)="updateNextReached(data,'next-business')"
+    >
+      NEXT BUSINESS DAY<br /><span>{{ data.nextBussinessDay | date:'E d MMMM': '+1000'}}</span>
     </button>
-    <button
-      class="save-button mh-chose-date-btn"
-      type="submit"
-      (click)="showCalender()">
+    <button class="save-button mh-chose-date-btn" type="submit" (click)="showCalender()">
       CHOOSE DATE
     </button>
-    <button
-      class="save-button mh-no-btn"
-      type="submit"
-      (click)="updateNextReached(data,'no')">
+    <button class="save-button mh-no-btn" type="submit" (click)="updateNextReached(data,'no')">
       No
     </button>
   </div>
   <span *ngIf="nextFollowupHave" class="alreadyHaveFol"
-    ><strong>{{ data.firstname }} {{ data.surname }}</strong> already has a
-    followup scheduled on {{ nextDate | date:'E d MMMM': '+1000'}}</span
+    ><strong>{{ data.firstname }} {{ data.surname }}</strong> already has a followup scheduled on {{
+    nextDate | date:'E d MMMM': '+1000'}}</span
   >
   <div *ngIf="nextCustomFollowup" class="mh-nextCustomFollowup">
     <ngx-daterangepicker-material
@@ -67,13 +51,11 @@
       [showDropdowns]="true"
       [autoApply]="true"
       [locale]="{displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
-      (choosedDate)="updateNext($event)">
+      (choosedDate)="updateNext($event)"
+    >
     </ngx-daterangepicker-material>
     <div class="sa-form-group-btn mh-nextCustomFollowup-btn">
-      <button
-        class="save-button"
-        type="submit"
-        (click)="updateNextReached(data,'yes')">
+      <button class="save-button" type="submit" (click)="updateNextReached(data,'yes')">
         Save
       </button>
     </div>

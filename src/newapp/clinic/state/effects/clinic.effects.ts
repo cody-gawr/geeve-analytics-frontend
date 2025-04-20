@@ -9,7 +9,7 @@ import { ClinicApiActions, ClinicPageActions } from '../actions';
 export class ClinicEffects {
   constructor(
     private actions$: Actions,
-    private clinicService: ClinicService
+    private clinicService: ClinicService,
   ) {}
 
   public readonly loadClinics$ = createEffect(() => {
@@ -21,13 +21,13 @@ export class ClinicEffects {
             ClinicApiActions.loadClinicsSuccess({
               clinics: res.data,
               hasPrimeClinics: res.hasPrimeClinics,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
-            of(ClinicApiActions.loadClinicsFailure({ error: error.message }))
-          )
+            of(ClinicApiActions.loadClinicsFailure({ error: error.message })),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -39,13 +39,13 @@ export class ClinicEffects {
           map(res =>
             ClinicApiActions.loadUserClinicsSuccess({
               clinics: res.data,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
-            of(ClinicApiActions.loadUserClinicsFailure({ error: error.error ?? error }))
-          )
+            of(ClinicApiActions.loadUserClinicsFailure({ error: error.error ?? error })),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -58,14 +58,14 @@ export class ClinicEffects {
             ClinicApiActions.checkCoreSyncSuccess({
               clinicId,
               hasCoreSync: res.data.refresh_token && res.data.token && res.data.core_user_id,
-              numberOfSuccess: res.data.sync_successes
-            })
+              numberOfSuccess: res.data.sync_successes,
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
-            of(ClinicApiActions.checkCoreSyncFailure({ clinicId, error: error.error ?? error }))
-          )
+            of(ClinicApiActions.checkCoreSyncFailure({ clinicId, error: error.error ?? error })),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -78,14 +78,16 @@ export class ClinicEffects {
             ClinicApiActions.checkDentallySyncSuccess({
               clinicId,
               hasDentallySync: !!res.data.site_id,
-              numberOfSuccess: res.data.sync_successes
-            })
+              numberOfSuccess: res.data.sync_successes,
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
-            of(ClinicApiActions.checkDentallySyncFailure({ clinicId, error: error.error ?? error }))
-          )
+            of(
+              ClinicApiActions.checkDentallySyncFailure({ clinicId, error: error.error ?? error }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -98,14 +100,16 @@ export class ClinicEffects {
             ClinicApiActions.checkPraktikaSyncSuccess({
               clinicId,
               hasPraktikaSync: true,
-              numberOfSuccess: res.data.sync_successes
-            })
+              numberOfSuccess: res.data.sync_successes,
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
-            of(ClinicApiActions.checkPraktikaSyncFailure({ clinicId, error: error.error ?? error }))
-          )
+            of(
+              ClinicApiActions.checkPraktikaSyncFailure({ clinicId, error: error.error ?? error }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -117,14 +121,14 @@ export class ClinicEffects {
           map(res =>
             ClinicApiActions.loadCampaignsSuccess({
               campaigns: res.data?.campaigns ?? [],
-              clinicId
-            })
+              clinicId,
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
-            of(ClinicApiActions.loadCampaignsFailure({ error: error.error ?? error, clinicId }))
-          )
+            of(ClinicApiActions.loadCampaignsFailure({ error: error.error ?? error, clinicId })),
+          ),
         );
-      })
+      }),
     );
   });
 
@@ -132,21 +136,21 @@ export class ClinicEffects {
     return this.actions$.pipe(
       ofType(ClinicPageActions.loadClinicAccountingPlatform),
       switchMap(({ clinicId, connectedWith }) => {
-        if(connectedWith?.toLowerCase() === 'xero'){
+        if (connectedWith?.toLowerCase() === 'xero') {
           return this.clinicService.checkXeroStatus(clinicId).pipe(
-            map(res => 
-                ClinicApiActions.clinicAccountingPlatformSuccess({
-                  connectWith: res.success && res.data.tenantId? 'xero': null,
-                  clinicId,
-                })
-              ),
+            map(res =>
+              ClinicApiActions.clinicAccountingPlatformSuccess({
+                connectWith: res.success && res.data.tenantId ? 'xero' : null,
+                clinicId,
+              }),
+            ),
             catchError((error: HttpErrorResponse) =>
               of(
                 ClinicApiActions.clinicAccountingPlatformFailure({
                   error: error.error ?? error,
-                })
-              )
-            )
+                }),
+              ),
+            ),
           );
         }
         return this.clinicService.getClinicAccountingPlatform(clinicId).pipe(
@@ -154,17 +158,17 @@ export class ClinicEffects {
             ClinicApiActions.clinicAccountingPlatformSuccess({
               connectWith: res.data?.connectedWith ?? null,
               clinicId,
-            })
+            }),
           ),
           catchError((error: HttpErrorResponse) =>
             of(
               ClinicApiActions.clinicAccountingPlatformFailure({
                 error: error.error ?? error,
-              })
-            )
-          )
+              }),
+            ),
+          ),
         );
-      })
+      }),
     );
   });
 }

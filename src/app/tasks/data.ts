@@ -57,8 +57,7 @@ export let kanbanData: Object[] = [
   {
     Id: 6,
     Status: 'Close',
-    Summary:
-      'Arrange a web meeting with the customer to get the login page requirements.',
+    Summary: 'Arrange a web meeting with the customer to get the login page requirements.',
     Type: 'Others',
     Priority: 'Low',
     Tags: 'Meeting',

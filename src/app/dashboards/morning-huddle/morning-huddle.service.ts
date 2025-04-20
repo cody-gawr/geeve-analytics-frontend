@@ -19,7 +19,7 @@ export class MorningHuddleService {
     private http: HttpClient,
     private _cookieService: CookieService,
     private router: Router,
-  ) { }
+  ) {}
 
   getHeaders() {
     if (
@@ -39,12 +39,7 @@ export class MorningHuddleService {
   }
 
   // clinic Production Service
-  dentistProduction(
-    clinic_id,
-    previousDays,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
+  dentistProduction(clinic_id, previousDays, user_type, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     const urlParams = new URLSearchParams(window.location.search);
@@ -53,220 +48,199 @@ export class MorningHuddleService {
       return this.http
         .get(
           this.apiUrl +
+            '/MorningHuddle/mhProductionCard?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays +
+            (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
+          header,
+        )
+        .pipe(
+          map((response: HttpResponse<Object>) => {
+            return response;
+          }),
+        );
+    }
+    return this.http
+      .get(
+        this.apiUrl +
           '/MorningHuddle/mhProductionCard?clinic_id=' +
           clinic_id +
           '&date=' +
           previousDays +
+          '&clinician=' +
+          clinician +
           (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
-    return this.http
-      .get(
-        this.apiUrl +
-        '/MorningHuddle/mhProductionCard?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&clinician=' +
-        clinician +
-        (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   // clinic recallRate
-  recallRate(
-    clinic_id,
-    previousDays,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
+  recallRate(clinic_id, previousDays, user_type, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = urlParams.get('wh') ? parseInt(urlParams.get('wh')) : -1;;
+    const isWhEnabled = urlParams.get('wh') ? parseInt(urlParams.get('wh')) : -1;
     if (clinician == '') {
       return this.http
         .get(
           this.apiUrl +
+            '/MorningHuddle/mhRecallRateCard?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays +
+            (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
+          header,
+        )
+        .pipe(
+          map((response: HttpResponse<Object>) => {
+            return response;
+          }),
+        );
+    }
+    return this.http
+      .get(
+        this.apiUrl +
           '/MorningHuddle/mhRecallRateCard?clinic_id=' +
           clinic_id +
           '&date=' +
           previousDays +
+          '&clinician=' +
+          clinician +
           (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
-          header
+        header,
+      )
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        }),
+      );
+  }
+
+  reappointRate(clinic_id, previousDays, user_type, clinician = ''): Observable<any> {
+    var header = this.getHeaders();
+    previousDays = previousDays.slice(0, 10);
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWhEnabled = urlParams.get('wh') ? parseInt(urlParams.get('wh')) : -1;
+    if (clinician == '') {
+      return this.http
+        .get(
+          this.apiUrl +
+            '/MorningHuddle/mhReappointRateCard?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays +
+            (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhRecallRateCard?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&clinician=' +
-        clinician +
-        (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
-        header
-      )
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
-  }
-
-  reappointRate(
-    clinic_id,
-    previousDays,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
-    var header = this.getHeaders();
-    previousDays = previousDays.slice(0, 10);
-    const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = urlParams.get('wh') ? parseInt(urlParams.get('wh')) : -1;;
-    if (clinician == '') {
-      return this.http
-        .get(
-          this.apiUrl +
           '/MorningHuddle/mhReappointRateCard?clinic_id=' +
           clinic_id +
           '&date=' +
           previousDays +
+          '&clinician=' +
+          clinician +
           (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
-          header
+        header,
+      )
+      .pipe(
+        map((response: HttpResponse<Object>) => {
+          return response;
+        }),
+      );
+  }
+
+  dentistList(clinic_id, previousDays, user_type, clinician = ''): Observable<any> {
+    var header = this.getHeaders();
+    previousDays = previousDays.slice(0, 10);
+    const urlParams = new URLSearchParams(window.location.search);
+    const isWhEnabled = urlParams.get('wh') ? parseInt(urlParams.get('wh')) : -1;
+    if (clinician == '') {
+      return this.http
+        .get(
+          this.apiUrl +
+            '/MorningHuddle/mhDentistTable?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays +
+            (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhReappointRateCard?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&clinician=' +
-        clinician +
-        (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
-        header
-      )
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
-  }
-
-  dentistList(
-    clinic_id,
-    previousDays,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
-    var header = this.getHeaders();
-    previousDays = previousDays.slice(0, 10);
-    const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = urlParams.get('wh') ? parseInt(urlParams.get('wh')) : -1;;
-    if (clinician == '') {
-      return this.http
-        .get(
-          this.apiUrl +
           '/MorningHuddle/mhDentistTable?clinic_id=' +
           clinic_id +
           '&date=' +
           previousDays +
+          '&clinician=' +
+          clinician +
           (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
-    return this.http
-      .get(
-        this.apiUrl +
-        '/MorningHuddle/mhDentistTable?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&clinician=' +
-        clinician +
-        (isWhEnabled > -1 ? '&wh=' + isWhEnabled : ''),
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  getPatients(
-    clinic_id,
-    currentDentist,
-    previousDay,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
+  getPatients(clinic_id, currentDentist, previousDay, user_type, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     if (clinician == '') {
       return this.http
         .get(
           this.apiUrl +
+            '/MorningHuddle/mhPatientsCard?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDay +
+            '&provider_id=' +
+            currentDentist,
+          header,
+        )
+        .pipe(
+          map((response: HttpResponse<Object>) => {
+            return response;
+          }),
+        );
+    }
+    return this.http
+      .get(
+        this.apiUrl +
           '/MorningHuddle/mhPatientsCard?clinic_id=' +
           clinic_id +
           '&date=' +
           previousDay +
           '&provider_id=' +
-          currentDentist,
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
-    return this.http
-      .get(
-        this.apiUrl +
-        '/MorningHuddle/mhPatientsCard?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDay +
-        '&provider_id=' +
-        currentDentist +
-        '&clinician=' +
-        clinician,
-        header
+          currentDentist +
+          '&clinician=' +
+          clinician,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -275,7 +249,7 @@ export class MorningHuddleService {
     currentDentist,
     previousDay,
     user_type,
-    clinician = ''
+    clinician = '',
   ): Observable<any> {
     var header = this.getHeaders();
     previousDay = previousDay.slice(0, 10);
@@ -283,37 +257,37 @@ export class MorningHuddleService {
       return this.http
         .get(
           this.apiUrl +
-          '/MorningHuddle/mhNewPatCard?clinic_id=' +
-          clinic_id +
-          '&date=' +
-          previousDay +
-          '&provider_id=' +
-          currentDentist,
-          header
+            '/MorningHuddle/mhNewPatCard?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDay +
+            '&provider_id=' +
+            currentDentist,
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhNewPatCard?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDay +
-        '&provider_id=' +
-        currentDentist +
-        '&clinician=' +
-        clinician,
-        header
+          '/MorningHuddle/mhNewPatCard?clinic_id=' +
+          clinic_id +
+          '&date=' +
+          previousDay +
+          '&provider_id=' +
+          currentDentist +
+          '&clinician=' +
+          clinician,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -322,7 +296,7 @@ export class MorningHuddleService {
     currentDentist,
     previousDay,
     user_type,
-    clinician = ''
+    clinician = '',
   ): Observable<any> {
     var header = this.getHeaders();
     previousDay = previousDay.slice(0, 10);
@@ -330,37 +304,37 @@ export class MorningHuddleService {
       return this.http
         .get(
           this.apiUrl +
-          '/MorningHuddle/mhSchedHoursCard?clinic_id=' +
-          clinic_id +
-          '&date=' +
-          previousDay +
-          '&provider_id=' +
-          currentDentist,
-          header
+            '/MorningHuddle/mhSchedHoursCard?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDay +
+            '&provider_id=' +
+            currentDentist,
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhSchedHoursCard?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDay +
-        '&provider_id=' +
-        currentDentist +
-        '&clinician=' +
-        clinician,
-        header
+          '/MorningHuddle/mhSchedHoursCard?clinic_id=' +
+          clinic_id +
+          '&date=' +
+          previousDay +
+          '&provider_id=' +
+          currentDentist +
+          '&clinician=' +
+          clinician,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -369,7 +343,7 @@ export class MorningHuddleService {
     currentDentist,
     previousDay,
     user_type,
-    clinician = ''
+    clinician = '',
   ): Observable<any> {
     var header = this.getHeaders();
     previousDay = previousDay.slice(0, 10);
@@ -377,37 +351,37 @@ export class MorningHuddleService {
       return this.http
         .get(
           this.apiUrl +
-          '/MorningHuddle/mhUnschedBalCard?clinic_id=' +
-          clinic_id +
-          '&date=' +
-          previousDay +
-          '&provider_id=' +
-          currentDentist,
-          header
+            '/MorningHuddle/mhUnschedBalCard?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDay +
+            '&provider_id=' +
+            currentDentist,
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhUnschedBalCard?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDay +
-        '&provider_id=' +
-        currentDentist +
-        '&clinician=' +
-        clinician,
-        header
+          '/MorningHuddle/mhUnschedBalCard?clinic_id=' +
+          clinic_id +
+          '&date=' +
+          previousDay +
+          '&provider_id=' +
+          currentDentist +
+          '&clinician=' +
+          clinician,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -416,319 +390,284 @@ export class MorningHuddleService {
     currentDentist,
     previousDays,
     user_type,
-    clinician = ''
+    clinician = '',
   ): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = urlParams.get('wh') ? parseInt(urlParams.get('wh')) : -1;;
+    const isWhEnabled = urlParams.get('wh') ? parseInt(urlParams.get('wh')) : -1;
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhApptTable?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&provider_id=' +
-        currentDentist,
-        header
+          '/MorningHuddle/mhApptTable?clinic_id=' +
+          clinic_id +
+          '&date=' +
+          previousDays +
+          '&provider_id=' +
+          currentDentist,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  getUnscheduledValues(
-    clinic_id,
-    previousDays,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
+  getUnscheduledValues(clinic_id, previousDays, user_type, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     if (clinician == '') {
       return this.http
         .get(
           this.apiUrl +
+            '/MorningHuddle/mhUnschedBalPrev?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays,
+          header,
+        )
+        .pipe(
+          map((response: HttpResponse<Object>) => {
+            return response;
+          }),
+        );
+    }
+    return this.http
+      .get(
+        this.apiUrl +
           '/MorningHuddle/mhUnschedBalPrev?clinic_id=' +
           clinic_id +
           '&date=' +
-          previousDays,
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
-    return this.http
-      .get(
-        this.apiUrl +
-        '/MorningHuddle/mhUnschedBalPrev?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&clinician=' +
-        clinician,
-        header
+          previousDays +
+          '&clinician=' +
+          clinician,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  getTodayPatients(
-    clinic_id,
-    previousDays,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
+  getTodayPatients(clinic_id, previousDays, user_type, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     if (clinician == '') {
       return this.http
         .get(
           this.apiUrl +
+            '/MorningHuddle/mhPatientsCurrent?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays,
+          header,
+        )
+        .pipe(
+          map((response: HttpResponse<Object>) => {
+            return response;
+          }),
+        );
+    }
+    return this.http
+      .get(
+        this.apiUrl +
           '/MorningHuddle/mhPatientsCurrent?clinic_id=' +
           clinic_id +
           '&date=' +
-          previousDays,
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
-    return this.http
-      .get(
-        this.apiUrl +
-        '/MorningHuddle/mhPatientsCurrent?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&clinician=' +
-        clinician,
-        header
+          previousDays +
+          '&clinician=' +
+          clinician,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  getTodayUnscheduledHours(
-    clinic_id,
-    previousDays,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
+  getTodayUnscheduledHours(clinic_id, previousDays, user_type, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     const urlParams = new URLSearchParams(window.location.search);
-    const isWhEnabled = urlParams.get('wh') ? parseInt(urlParams.get('wh')) : -1;;
+    const isWhEnabled = urlParams.get('wh') ? parseInt(urlParams.get('wh')) : -1;
     if (clinician == '') {
       return this.http
         .get(
           this.apiUrl +
+            '/MorningHuddle/mhUnschedHoursCurrent?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays,
+          header,
+        )
+        .pipe(
+          map((response: HttpResponse<Object>) => {
+            return response;
+          }),
+        );
+    }
+    return this.http
+      .get(
+        this.apiUrl +
           '/MorningHuddle/mhUnschedHoursCurrent?clinic_id=' +
           clinic_id +
           '&date=' +
-          previousDays,
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
-    return this.http
-      .get(
-        this.apiUrl +
-        '/MorningHuddle/mhUnschedHoursCurrent?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&clinician=' +
-        clinician,
-        header
+          previousDays +
+          '&clinician=' +
+          clinician,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  getChairUtilisationRate(
-    clinic_id,
-    previousDays,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
+  getChairUtilisationRate(clinic_id, previousDays, user_type, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     if (clinician == '') {
       return this.http
         .get(
           this.apiUrl +
+            '/MorningHuddle/mhChairUtilRate?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays,
+          header,
+        )
+        .pipe(
+          map((response: HttpResponse<Object>) => {
+            return response;
+          }),
+        );
+    }
+    return this.http
+      .get(
+        this.apiUrl +
           '/MorningHuddle/mhChairUtilRate?clinic_id=' +
           clinic_id +
           '&date=' +
-          previousDays,
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
-    return this.http
-      .get(
-        this.apiUrl +
-        '/MorningHuddle/mhChairUtilRate?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&clinician=' +
-        clinician,
-        header
+          previousDays +
+          '&clinician=' +
+          clinician,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  getTodayUnscheduledBal(
-    clinic_id,
-    previousDays,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
+  getTodayUnscheduledBal(clinic_id, previousDays, user_type, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     if (clinician == '') {
       return this.http
         .get(
           this.apiUrl +
+            '/MorningHuddle/mhOverdueBalCurrent?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays,
+          header,
+        )
+        .pipe(
+          map((response: HttpResponse<Object>) => {
+            return response;
+          }),
+        );
+    }
+    return this.http
+      .get(
+        this.apiUrl +
           '/MorningHuddle/mhOverdueBalCurrent?clinic_id=' +
           clinic_id +
           '&date=' +
-          previousDays,
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
-    return this.http
-      .get(
-        this.apiUrl +
-        '/MorningHuddle/mhOverdueBalCurrent?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&clinician=' +
-        clinician,
-        header
+          previousDays +
+          '&clinician=' +
+          clinician,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  getNoShow(
-    clinic_id,
-    previousDays,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
+  getNoShow(clinic_id, previousDays, user_type, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     if (clinician == '') {
       return this.http
         .get(
           this.apiUrl +
+            '/MorningHuddle/mhNoShowPrev?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays,
+          header,
+        )
+        .pipe(
+          map((response: HttpResponse<Object>) => {
+            return response;
+          }),
+        );
+    }
+    return this.http
+      .get(
+        this.apiUrl +
           '/MorningHuddle/mhNoShowPrev?clinic_id=' +
           clinic_id +
           '&date=' +
-          previousDays,
-          header
-        )
-        .pipe(
-          map((response: HttpResponse<Object>) => {
-            return response;
-          })
-        );
-    }
-    return this.http
-      .get(
-        this.apiUrl +
-        '/MorningHuddle/mhNoShowPrev?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&clinician=' +
-        clinician,
-        header
+          previousDays +
+          '&clinician=' +
+          clinician,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  getTodayPostopCalls(
-    clinic_id,
-    previousDays,
-    user_type,
-    clinician = ''
-  ): Observable<any> {
+  getTodayPostopCalls(clinic_id, previousDays, user_type, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     if (clinician == '') {
       return this.http
         .get(
           this.apiUrl +
-          '/MorningHuddle/mhPostOpPrev?clinic_id=' +
-          clinic_id +
-          '&date=' +
-          previousDays,
-          header
+            '/MorningHuddle/mhPostOpPrev?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays,
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhPostOpPrev?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays +
-        '&clinician=' +
-        clinician,
-        header
+          '/MorningHuddle/mhPostOpPrev?clinic_id=' +
+          clinic_id +
+          '&date=' +
+          previousDays +
+          '&clinician=' +
+          clinician,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -736,7 +675,7 @@ export class MorningHuddleService {
     clinic_id,
     previousDays,
     // user_type,
-    clinician = ''
+    clinician = '',
   ): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
@@ -746,35 +685,30 @@ export class MorningHuddleService {
       return this.http
         .get(
           this.apiUrl +
-          '/MorningHuddle/mhReminders?clinic_id=' +
-          clinic_id +
-          '&date=' +
-          previousDays +
-          '&clinician=' +
-          clinician,
-          header
+            '/MorningHuddle/mhReminders?clinic_id=' +
+            clinic_id +
+            '&date=' +
+            previousDays +
+            '&clinician=' +
+            clinician,
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
 
-
     return this.http
       .get(
-        this.apiUrl +
-        '/MorningHuddle/mhReminders?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays,
-        header
+        this.apiUrl + '/MorningHuddle/mhReminders?clinic_id=' + clinic_id + '&date=' + previousDays,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
   /*
@@ -786,51 +720,41 @@ export class MorningHuddleService {
                         })
             );
         }*/
-  followupPostOpCalls(
-    clinic_id,
-    previousDays,
-    days,
-    clinician = ''
-  ): Observable<any> {
+  followupPostOpCalls(clinic_id, previousDays, days, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhPostOpTable?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays,
-        header
+          '/MorningHuddle/mhPostOpTable?clinic_id=' +
+          clinic_id +
+          '&date=' +
+          previousDays,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  followupTickFollowups(
-    clinic_id,
-    previousDays,
-    days,
-    clinician = ''
-  ): Observable<any> {
+  followupTickFollowups(clinic_id, previousDays, days, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhTickFollowupsTable?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays,
-        header
+          '/MorningHuddle/mhTickFollowupsTable?clinic_id=' +
+          clinic_id +
+          '&date=' +
+          previousDays,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -840,16 +764,16 @@ export class MorningHuddleService {
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhFtaFollowupsTable?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays,
-        header
+          '/MorningHuddle/mhFtaFollowupsTable?clinic_id=' +
+          clinic_id +
+          '&date=' +
+          previousDays,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -859,62 +783,48 @@ export class MorningHuddleService {
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhUtaFollowupsTable?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays,
-        header
+          '/MorningHuddle/mhUtaFollowupsTable?clinic_id=' +
+          clinic_id +
+          '&date=' +
+          previousDays,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  followupOverdueRecalls(
-    clinic_id,
-    previousDays,
-    days,
-    clinician = ''
-  ): Observable<any> {
+  followupOverdueRecalls(clinic_id, previousDays, days, clinician = ''): Observable<any> {
     var header = this.getHeaders();
     previousDays = previousDays.slice(0, 10);
     return this.http
       .get(
         this.apiUrl +
-        '/MorningHuddle/mhOverdueRecallsTable?clinic_id=' +
-        clinic_id +
-        '&date=' +
-        previousDays,
-        header
+          '/MorningHuddle/mhOverdueRecallsTable?clinic_id=' +
+          clinic_id +
+          '&date=' +
+          previousDays,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   getDentists(clinic_id): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/Dentists/dentGet?clinic_id=' + clinic_id, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/Dentists/dentGet?clinic_id=' + clinic_id, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
-  updateFollowUpStatus(
-    event,
-    pid,
-    cid,
-    type,
-    previousDays,
-    fdate
-  ): Observable<any> {
+  updateFollowUpStatus(event, pid, cid, type, previousDays, fdate): Observable<any> {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('event', event);
@@ -924,15 +834,11 @@ export class MorningHuddleService {
     formData.append('fdate', fdate);
     formData.append('type', type);
     return this.http
-      .post(
-        this.apiUrl + '/MorningHuddle/mhUpdateFollowupStatus',
-        formData,
-        header
-      )
+      .post(this.apiUrl + '/MorningHuddle/mhUpdateFollowupStatus', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -941,17 +847,13 @@ export class MorningHuddleService {
     previousDays = previousDays.slice(0, 10);
     return this.http
       .get(
-        this.apiUrl +
-        '/MorningHuddle/mhEndDayTasks?clinic_id=' +
-        cid +
-        '&date=' +
-        previousDays,
-        header
+        this.apiUrl + '/MorningHuddle/mhEndDayTasks?clinic_id=' + cid + '&date=' + previousDays,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -960,29 +862,23 @@ export class MorningHuddleService {
     previousDays = previousDays.slice(0, 10);
     return this.http
       .get(
-        this.apiUrl +
-        '/MorningHuddle/mhEquipmentList?clinic_id=' +
-        cid +
-        '&date=' +
-        previousDays,
-        header
+        this.apiUrl + '/MorningHuddle/mhEquipmentList?clinic_id=' + cid + '&date=' + previousDays,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   getScripts(cid): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/MorningHuddle/mhGetScripts?clinic_id=' + cid, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/MorningHuddle/mhGetScripts?clinic_id=' + cid, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   updateStatus(event, pid, cid, type, previousDays, fdate): Observable<any> {
@@ -994,13 +890,11 @@ export class MorningHuddleService {
     formData.append('date', previousDays);
     formData.append('fdate', fdate);
     formData.append('type', type);
-    return this.http
-      .post(this.apiUrl + '/MorningHuddle/mhUpdateStatus', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/MorningHuddle/mhUpdateStatus', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   updateEndStatus(event, tid, thid, cid, date): Observable<any> {
@@ -1013,15 +907,11 @@ export class MorningHuddleService {
     formData.append('clinic_id', cid);
     formData.append('date', date);
     return this.http
-      .post(
-        this.apiUrl + '/MorningHuddle/mhUpdateEndDayTasks',
-        formData,
-        header
-      )
+      .post(this.apiUrl + '/MorningHuddle/mhUpdateEndDayTasks', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -1035,13 +925,11 @@ export class MorningHuddleService {
     formData.append('date', date);
     formData.append('fdate', fdate);
     formData.append('type', type);
-    return this.http
-      .post(this.apiUrl + '/MorningHuddle/mhUpdateStatus', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/MorningHuddle/mhUpdateStatus', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Updae tick notes add/update
@@ -1052,13 +940,11 @@ export class MorningHuddleService {
     formData.append('data', data);
     formData.append('clinic_id', clinic_id);
     formData.append('date', date);
-    return this.http
-      .post(this.apiUrl + '/MorningHuddle/mhUpdateEqulist', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/MorningHuddle/mhUpdateEqulist', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   cloneRecord(
@@ -1068,7 +954,7 @@ export class MorningHuddleService {
     followup_date,
     newFollowupDate,
     original_appt_date,
-    nextReach = ''
+    nextReach = '',
   ): Observable<{
     status: boolean;
     message: 'success' | 'already';
@@ -1083,18 +969,16 @@ export class MorningHuddleService {
     formData.append('followup_date', followup_date);
     formData.append('type', type);
     formData.append('next_reach', nextReach);
-    return this.http
-      .post(this.apiUrl + '/MorningHuddle/mhCloneStatus', formData, header)
-      .pipe(
-        map((response: HttpResponse<any>) => {
-          return response.body;
-        })
-      );
+    return this.http.post(this.apiUrl + '/MorningHuddle/mhCloneStatus', formData, header).pipe(
+      map((response: HttpResponse<any>) => {
+        return response.body;
+      }),
+    );
   }
   // Users api
   createPaymentIntent(
     creditAmount: number,
-    clinic_id: number
+    clinic_id: number,
   ): Observable<{
     data: {
       totalAmount: number;
@@ -1110,12 +994,12 @@ export class MorningHuddleService {
           amount: creditAmount,
           clinic_id,
         },
-        header
+        header,
       )
       .pipe(
         map((res: HttpResponse<any>) => {
           return res.body;
-        })
+        }),
       );
   }
 
@@ -1125,7 +1009,7 @@ export class MorningHuddleService {
       appiont_id: string;
       phone_number: string;
     }[] = [],
-    date = ''
+    date = '',
   ): Observable<{
     status: boolean;
     data: {
@@ -1145,12 +1029,12 @@ export class MorningHuddleService {
           appts: appt_ids,
           date: date,
         },
-        header
+        header,
       )
       .pipe(
         map((res: HttpResponse<any>) => {
           return res.body;
-        })
+        }),
       );
   }
 
@@ -1160,7 +1044,7 @@ export class MorningHuddleService {
     patient_name: string,
     review_msg: string,
     phone_number: string,
-    appoint_id: string
+    appoint_id: string,
   ): Observable<{ status: string; sid: string }> {
     const header = this.getHeaders();
     return this.http
@@ -1174,58 +1058,77 @@ export class MorningHuddleService {
           phone_number,
           appoint_id,
         },
-        header
+        header,
       )
       .pipe(
         map((res: HttpResponse<any>) => {
           return res.body;
-        })
+        }),
       );
   }
 
-  initiateCall(callType: string, callId: number, phoneNumber: string, patientName: string, doctorName: string, procedure: string, clinicName: string, clinicId: number, treatmentId: number, patientId: number, originalAppointmentDate: string) {
+  initiateCall(
+    callType: string,
+    callId: number,
+    phoneNumber: string,
+    patientName: string,
+    doctorName: string,
+    procedure: string,
+    clinicName: string,
+    clinicId: number,
+    treatmentId: number,
+    patientId: number,
+    originalAppointmentDate: string,
+  ) {
     const header = this.getHeaders();
-    return this.http.post(`${environment.baseApiUrl}/v1/voice/initiate`, {
-      phoneNumber: phoneNumber,
-      callType: callType,
-      callId: callId,
-      treatmentId: treatmentId,
-      clinicId: clinicId,
-      patientData: {
-        patientId: patientId,
-        name: patientName,
-        doctorName: doctorName,
-        procedure: procedure,
-        clinicName: clinicName,
-        callerName: 'Emma',
-        originalAppointmentDate: originalAppointmentDate
-      }
-    }, header)
+    return this.http
+      .post(
+        `${environment.baseApiUrl}/v1/voice/initiate`,
+        {
+          phoneNumber: phoneNumber,
+          callType: callType,
+          callId: callId,
+          treatmentId: treatmentId,
+          clinicId: clinicId,
+          patientData: {
+            patientId: patientId,
+            name: patientName,
+            doctorName: doctorName,
+            procedure: procedure,
+            clinicName: clinicName,
+            callerName: 'Emma',
+            originalAppointmentDate: originalAppointmentDate,
+          },
+        },
+        header,
+      )
       .pipe(
         map((res: HttpResponse<any>) => {
           return res.body;
-        })
+        }),
       );
   }
 
-  scheduleBulkCall(calls: Array<{
-    recordId: number;
-    phoneNumber: string;
-    callType: string;
-    clinicId: number;
-    treatmentId: number;
-    followUpDate: string;
-    payload: {
-      name: string;
-      doctorName: string;
-      procedure: string;
-      clinicName: string;
-      callerName: string;
-      originalAppointmentDate: string;
+  scheduleBulkCall(
+    calls: Array<{
+      recordId: number;
+      phoneNumber: string;
+      callType: string;
+      clinicId: number;
       treatmentId: number;
-      patientId: number;
-    };
-  }>) {
+      followUpDate: string;
+      payload: {
+        name: string;
+        doctorName: string;
+        procedure: string;
+        clinicName: string;
+        callerName: string;
+        originalAppointmentDate: string;
+        treatmentId: number;
+        patientId: number;
+      };
+    }>,
+  ) {
     return this.http.post(`${environment.baseApiUrl}/v1/voice/schedules`, { calls });
   }
 
@@ -1233,8 +1136,8 @@ export class MorningHuddleService {
     return this.http.get(`${environment.baseApiUrl}/v1/voice/call-logs`, {
       params: {
         callId: recordId,
-        callType: 'postop'
-      }
+        callType: 'postop',
+      },
     });
   }
 }

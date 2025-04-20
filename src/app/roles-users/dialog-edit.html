@@ -9,7 +9,8 @@
         (keyup)="display_name_error = $event.target.value == ''"
         class="mat-form-control"
         required="true"
-        placeholder="" />
+        placeholder=""
+      />
       <mat-error class="none-zero-error" *ngIf="display_name_error">
         Please enter display name.
       </mat-error>
@@ -21,18 +22,11 @@
         class="sa_select mat-form-control"
         name="user_type"
         [(ngModel)]="userData.user_type"
-        (ngModelChange)="loadDentist($event)">
-        <option
-          value="6"
-          *ngIf="loginUserType == '2' && userData.user_type != '7'">
-          Owner
-        </option>
-        <option value="7" *ngIf=" userData.user_type == '7' ">
-          Consultant
-        </option>
-        <option value="3" *ngIf=" userData.user_type != '7'">
-          Practice Manager
-        </option>
+        (ngModelChange)="loadDentist($event)"
+      >
+        <option value="6" *ngIf="loginUserType == '2' && userData.user_type != '7'">Owner</option>
+        <option value="7" *ngIf=" userData.user_type == '7' ">Consultant</option>
+        <option value="3" *ngIf=" userData.user_type != '7'">Practice Manager</option>
         <option value="4" *ngIf=" userData.user_type != '7'">Clinician</option>
         <option value="5" *ngIf=" userData.user_type != '7'">Staff</option>
       </select>
@@ -43,13 +37,15 @@
         #matSelect
         [formControl]="selectedClinics"
         multiple
-        (openedChange)="clinicSelect($event)">
+        (openedChange)="clinicSelect($event)"
+      >
         <mat-option *ngFor="let clinics of data.clinics" [value]="clinics.id"
           >{{clinics.clinicName}}</mat-option
         >
         <button
           class="mat-raised-button mat-dc float-right addUserSelectClinicBtn"
-          (click)="matSelect.close()">
+          (click)="matSelect.close()"
+        >
           OK
         </button>
       </mat-select>
@@ -67,18 +63,18 @@
             class="sa_select sa_select_set_roles mat-form-control sa_selectDentist"
             name="dentist_id"
             required="true"
-            *ngIf="clinicProviders.config_dentists.length>0">
+            *ngIf="clinicProviders.config_dentists.length>0"
+          >
             <option value="0">Select Dentist</option>
             <option
               *ngFor="let dentist of clinicProviders.config_dentists"
               [selected]=" selectedDentistList.includes('clinic'+clinicProviders.id+'-'+dentist.providerId)"
-              value="{{dentist.providerId}}">
+              value="{{dentist.providerId}}"
+            >
               {{dentist.name}}
             </option>
           </select>
-          <span *ngIf="clinicProviders.config_dentists.length<=0">
-            No Dentist Found</span
-          >
+          <span *ngIf="clinicProviders.config_dentists.length<=0"> No Dentist Found</span>
         </span>
       </div>
       <mat-error class="none-zero-error" *ngIf="select_dentist_error">
@@ -89,24 +85,17 @@
       <mat-checkbox
         class="example-margin"
         [checked]="userData.status == 1"
-        (change)="changeStatus($event.checked)">
+        (change)="changeStatus($event.checked)"
+      >
         {{ userData.status == 1 ? "Active":"Active"}}
       </mat-checkbox>
     </div>
   </div>
   <div mat-dialog-actions>
-    <button
-      mat-button
-      (click)="onNoClick()"
-      tabindex="-1"
-      class="mat-raised-button mat-gray">
+    <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">
       Cancel
     </button>
-    <button
-      mat-button
-      (click)="save(userData)"
-      tabindex="2"
-      class="mat-raised-button mat-dc">
+    <button mat-button (click)="save(userData)" tabindex="2" class="mat-raised-button mat-dc">
       Save
     </button>
   </div>

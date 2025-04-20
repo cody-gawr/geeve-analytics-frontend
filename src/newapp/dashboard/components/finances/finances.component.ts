@@ -1,14 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import {
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-  filter,
-} from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, distinctUntilChanged, filter } from 'rxjs';
 import { FinanceFacade } from '../../facades/finance.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
@@ -43,7 +36,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
     private financeFacade: FinanceFacade,
     private layoutFacade: LayoutFacade,
     private router: Router,
-    private authFacade: AuthFacade
+    private authFacade: AuthFacade,
   ) {
     this.layoutFacade.setTrend('off');
   }
@@ -53,7 +46,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         filter(v => !!v),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       )
       .subscribe(clinicIds => {
         this.dashboardFacade.loadChartTips(5, clinicIds);
@@ -69,22 +62,13 @@ export class FinancesComponent implements OnInit, OnDestroy {
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
       .subscribe(params => {
-        const [
-          clinicId,
-          dateRange,
-          connectedWith,
-          route,
-          trend,
-          connectedClinicId,
-        ] = params;
+        const [clinicId, dateRange, connectedWith, route, trend, connectedClinicId] = params;
         if (clinicId == null) return;
         const newConnectedId =
-          typeof clinicId == 'string'
-            ? _.min(clinicId.split(',').map(c => parseInt(c)))
-            : clinicId;
+          typeof clinicId == 'string' ? _.min(clinicId.split(',').map(c => parseInt(c))) : clinicId;
         if (newConnectedId !== connectedClinicId) {
           return;
         }
@@ -118,71 +102,74 @@ export class FinancesComponent implements OnInit, OnDestroy {
             this.financeFacade.loadFnProductionPerDay(params);
             this.financeFacade.loadFnTotalDiscounts(params);
             this.financeFacade.loadFnTotalCollection(params);
-            for(const endpoint of ['fnHourlyRate']){
+            for (const endpoint of ['fnHourlyRate']) {
               this.financeFacade.loadChartDescription(<FinanceEndpoints>endpoint, <any>params);
             }
             break;
           case 'current':
           case 'historic':
-            for(const endpoint of ['fnHourlyRateTrend']){
-              this.financeFacade.loadChartDescription(<FinanceEndpoints>endpoint, <any>{
-                chartDescription: endpoint,
-                clinicId,
-                mode: trend === 'current' ? 'c' : 'h',
-                connectedWith,
-                queryWhEnabled
-              });
+            for (const endpoint of ['fnHourlyRateTrend']) {
+              this.financeFacade.loadChartDescription(
+                <FinanceEndpoints>endpoint,
+                <any>{
+                  chartDescription: endpoint,
+                  clinicId,
+                  mode: trend === 'current' ? 'c' : 'h',
+                  connectedWith,
+                  queryWhEnabled,
+                },
+              );
             }
             if (connectedWith && connectedWith != 'none') {
               this.financeFacade.loadFnExpensesTrend(
                 clinicId,
                 trend === 'current' ? 'c' : 'h',
                 connectedWith,
-                queryWhEnabled
+                queryWhEnabled,
               );
               this.financeFacade.loadFnNetProfitTrend(
                 clinicId,
                 trend === 'current' ? 'c' : 'h',
                 connectedWith,
-                queryWhEnabled
+                queryWhEnabled,
               );
               this.financeFacade.loadFnNetProfitPercentageTrend(
                 clinicId,
                 trend === 'current' ? 'c' : 'h',
                 connectedWith,
-                queryWhEnabled
+                queryWhEnabled,
               );
             }
             this.financeFacade.loadFnTotalProductionTrend(
               clinicId,
               trend === 'current' ? 'c' : 'h',
-              queryWhEnabled
+              queryWhEnabled,
             );
             this.financeFacade.loadFnTotalCollectionTrend(
               clinicId,
               trend === 'current' ? 'c' : 'h',
-              queryWhEnabled
+              queryWhEnabled,
             );
             this.financeFacade.loadFnProductionPerVisitTrend(
               clinicId,
               trend === 'current' ? 'c' : 'h',
-              queryWhEnabled
+              queryWhEnabled,
             );
             this.financeFacade.loadFnProductionPerDayTrend(
               clinicId,
               trend === 'current' ? 'c' : 'h',
-              queryWhEnabled
+              queryWhEnabled,
             );
 
             this.financeFacade.loadFnTotalDiscountsTrend(
               clinicId,
               trend === 'current' ? 'c' : 'h',
-              queryWhEnabled
+              queryWhEnabled,
             );
             this.financeFacade.loadFnProductionByClinicianTrend(
               clinicId,
               trend === 'current' ? 'c' : 'h',
-              queryWhEnabled
+              queryWhEnabled,
             );
             break;
         }
@@ -203,7 +190,7 @@ export class FinancesComponent implements OnInit, OnDestroy {
                   (e.status == 403 || e.status == 502 || e.status == 401) &&
                   (trendMode && trendMode !== 'off'
                     ? e.api.includes('Trend')
-                    : !e.api.includes('Trend'))
+                    : !e.api.includes('Trend')),
               )
             ) {
               this.errMsg = errs[0].message;

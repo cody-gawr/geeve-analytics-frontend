@@ -25,7 +25,7 @@ export class ClinicService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
   getHeaders() {
     if (
@@ -50,7 +50,7 @@ export class ClinicService {
     return this.http.get(this.apiUrl + '/clinics/clinicGet', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 
@@ -60,13 +60,11 @@ export class ClinicService {
 
     formData.append('id', clinic_id);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicDelete', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicDelete', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   removeClinic(clinicId: string): Observable<any> {
@@ -75,15 +73,11 @@ export class ClinicService {
     formData.append('clinic_id', clinicId);
     var header = this.getHeaders();
     return this.http
-      .post(
-        environment.baseApiUrl + '/v1/common/corepractice/disconnect',
-        formData,
-        header
-      )
+      .post(environment.baseApiUrl + '/v1/common/corepractice/disconnect', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -93,15 +87,11 @@ export class ClinicService {
     formData.append('clinic_id', clinicId);
     var header = this.getHeaders();
     return this.http
-      .post(
-        environment.baseApiUrl + '/v1/common/dentally/disconnect',
-        formData,
-        header
-      )
+      .post(environment.baseApiUrl + '/v1/common/dentally/disconnect', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -111,15 +101,11 @@ export class ClinicService {
     formData.append('clinic_id', clinicId);
     var header = this.getHeaders();
     return this.http
-      .post(
-        environment.baseApiUrl + '/v1/common/praktika/disconnect',
-        formData,
-        header
-      )
+      .post(environment.baseApiUrl + '/v1/common/praktika/disconnect', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -129,13 +115,11 @@ export class ClinicService {
     formData.append(column, value);
     formData.append('clinic_id', '1');
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicUpdate', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicUpdate', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Update Clinic
@@ -150,24 +134,22 @@ export class ClinicService {
     formData.append('product', 'jeeve_analytics');
 
     var header = this.getHeaders();
-    return this.http
-      .post(environment.baseApiUrl + '/v1/common/clinics', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(environment.baseApiUrl + '/v1/common/clinics', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Get Clinics
-  listClinics(product: string = 'jeeve_analytics', all=false): Observable<any> {
+  listClinics(product: string = 'jeeve_analytics', all = false): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(environment.baseApiUrl + '/v1/common/clinics?product='+product + '&all=' + all, header)
+      .get(environment.baseApiUrl + '/v1/common/clinics?product=' + product + '&all=' + all, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -176,47 +158,40 @@ export class ClinicService {
     return this.http.get(this.apiUrl + '/users/userInfo', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
   // Get Dentist
   getClinicProviders(selectedClinics): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl +
-          '/clinics/clinicGetProviders?clinic_id=' +
-          selectedClinics,
-        header
-      )
+      .get(this.apiUrl + '/clinics/clinicGetProviders?clinic_id=' + selectedClinics, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   checkMappedLocations(): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/corepractice/checkMappedLocations', header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/corepractice/checkMappedLocations', header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   public CreatePraktikaConfig(
     customer_user: string,
     customer_secret: string,
     clinicID: number,
-    customer_id?: number
+    customer_id?: number,
   ) {
     const body = {
       customer_user: customer_user,
       customer_secret: customer_secret,
-      customer_id
+      customer_id,
     };
     return this.http
       .post<
@@ -226,13 +201,11 @@ export class ClinicService {
         take(1),
         map((response: IApiResponse<any>) => {
           return { response };
-        })
+        }),
       );
   }
 
-  public checkPraktikaStatus(
-    clinicId: number
-  ){
+  public checkPraktikaStatus(clinicId: number) {
     return this.http.get<IApiResponse<null>>(
       `${environment.baseApiUrl}/v1/common/praktika/checkStatus?clinic_id=${clinicId}`,
       { withCredentials: true },
@@ -252,7 +225,7 @@ export class ClinicService {
         take(1),
         map((response: IApiResponse<any>) => {
           return { response };
-        })
+        }),
       );
   }
 

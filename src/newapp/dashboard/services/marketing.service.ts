@@ -31,7 +31,7 @@ export class MarketingService {
     startDate: string,
     endDate: string,
     duration: string,
-    queryWhEnabled: number
+    queryWhEnabled: number,
   ) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkNumPatientsByReferral`, {
@@ -40,43 +40,30 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
       .pipe(
-        map(
-          resBody =>
-            <MkNewPatientsByReferralApiResponse>(
-              camelcaseKeys(resBody, { deep: true })
-            )
-        )
+        map(resBody => <MkNewPatientsByReferralApiResponse>camelcaseKeys(resBody, { deep: true })),
       );
   }
 
-  mkNewPatientsByReferralTrend(
-    clinicId: number | string,
-    mode: string,
-    queryWhEnabled: number
-  ) {
+  mkNewPatientsByReferralTrend(clinicId: number | string, mode: string, queryWhEnabled: number) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkNumPatientsByReferralTrend`, {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
       .pipe(
         map(
           resBody =>
-            <MkNewPatientsByReferralTrendApiResponse>(
-              camelcaseKeys(resBody, { deep: true })
-            )
-        )
+            <MkNewPatientsByReferralTrendApiResponse>camelcaseKeys(resBody, { deep: true }),
+        ),
       );
   }
 
@@ -85,7 +72,7 @@ export class MarketingService {
     startDate: string,
     endDate: string,
     duration: string,
-    queryWhEnabled: number
+    queryWhEnabled: number,
   ) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkRevByReferral`, {
@@ -94,43 +81,25 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <MkRevenueByReferralApiResponse>(
-              camelcaseKeys(resBody, { deep: true })
-            )
-        )
-      );
+      .pipe(map(resBody => <MkRevenueByReferralApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
-  mkRevByReferralTrend(
-    clinicId: number | string,
-    mode: string,
-    queryWhEnabled: number
-  ) {
+  mkRevByReferralTrend(clinicId: number | string, mode: string, queryWhEnabled: number) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkRevByReferralTrend`, {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
       .pipe(
-        map(
-          resBody =>
-            <MkRevByReferralTrendApiResponse>(
-              camelcaseKeys(resBody, { deep: true })
-            )
-        )
+        map(resBody => <MkRevByReferralTrendApiResponse>camelcaseKeys(resBody, { deep: true })),
       );
   }
 
@@ -139,7 +108,7 @@ export class MarketingService {
     startDate: string,
     endDate: string,
     duration: string,
-    queryWhEnabled: number
+    queryWhEnabled: number,
   ) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkNumNewPatients`, {
@@ -148,43 +117,27 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
           dashboard_id: 4,
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <MkNumNewPatientsApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <MkNumNewPatientsApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
-  mkNumNewPatientsTrend(
-    clinicId: number | string,
-    mode: string,
-    queryWhEnabled: number
-  ) {
+  mkNumNewPatientsTrend(clinicId: number | string, mode: string, queryWhEnabled: number) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkNumNewPatientsTrend`, {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
           dashboard_id: 4,
         },
         withCredentials: true,
       })
       .pipe(
-        map(
-          resBody =>
-            <MkNumNewPatientsTrendApiResponse>(
-              camelcaseKeys(resBody, { deep: true })
-            )
-        )
+        map(resBody => <MkNumNewPatientsTrendApiResponse>camelcaseKeys(resBody, { deep: true })),
       );
   }
 
@@ -194,7 +147,7 @@ export class MarketingService {
     endDate: string,
     duration: string,
     connectedWith: string,
-    queryWhEnabled: number
+    queryWhEnabled: number,
   ) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkNewPatientAcq`, {
@@ -203,41 +156,29 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <MkNewPatientAcqApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <MkNewPatientAcqApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
   mkNewPatientAcqTrend(
     clinicId: number | string,
     mode: string,
     connectedWith: string,
-    queryWhEnabled: number
+    queryWhEnabled: number,
   ) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkNewPatientAcqTrend`, {
         params: {
           clinic_id: clinicId,
           mode: mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <MkNewPatientAcqApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <MkNewPatientAcqApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
   mkTotalVisits(
@@ -245,7 +186,7 @@ export class MarketingService {
     startDate: string,
     endDate: string,
     duration: string,
-    queryWhEnabled: number
+    queryWhEnabled: number,
   ) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkTotalVisits`, {
@@ -254,42 +195,24 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <MkTotalVisitsApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <MkTotalVisitsApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
-  mkTotalVisitsTrend(
-    clinicId: number | string,
-    mode: string,
-    queryWhEnabled: number
-  ) {
+  mkTotalVisitsTrend(clinicId: number | string, mode: string, queryWhEnabled: number) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkTotalVisitsTrend`, {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <MkTotalVisitsTrendApiResponse>(
-              camelcaseKeys(resBody, { deep: true })
-            )
-        )
-      );
+      .pipe(map(resBody => <MkTotalVisitsTrendApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
   mkActivePatients(
@@ -297,7 +220,7 @@ export class MarketingService {
     startDate: string,
     endDate: string,
     duration: string,
-    queryWhEnabled: number
+    queryWhEnabled: number,
   ) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkActivePatients`, {
@@ -306,40 +229,24 @@ export class MarketingService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <MkActivePatientsApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <MkActivePatientsApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
-  mkActivePatientsTrend(
-    clinicId: number | string,
-    mode: string,
-    queryWhEnabled: number
-  ) {
+  mkActivePatientsTrend(clinicId: number | string, mode: string, queryWhEnabled: number) {
     return this.http
       .get(`${this.apiUrl}/Marketing/mkActivePatientsTrend`, {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-,
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <MkActivePatientsApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <MkActivePatientsApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
   mkGetXeroAcct(clinicId: number | string, userId: number) {
@@ -352,12 +259,7 @@ export class MarketingService {
         withCredentials: true,
       })
       .pipe(
-        map(
-          resBody =>
-            <MkXeroOrMyobAccountsApiResponse>(
-              camelcaseKeys(resBody, { deep: true })
-            )
-        )
+        map(resBody => <MkXeroOrMyobAccountsApiResponse>camelcaseKeys(resBody, { deep: true })),
       );
   }
 
@@ -371,12 +273,7 @@ export class MarketingService {
         withCredentials: true,
       })
       .pipe(
-        map(
-          resBody =>
-            <MkXeroOrMyobAccountsApiResponse>(
-              camelcaseKeys(resBody, { deep: true })
-            )
-        )
+        map(resBody => <MkXeroOrMyobAccountsApiResponse>camelcaseKeys(resBody, { deep: true })),
       );
   }
 

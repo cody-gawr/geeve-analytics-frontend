@@ -19,7 +19,8 @@
           [formControl]="form.controls['customer_user']"
           class="form-control-dialog"
           placeholder=""
-          required />
+          required
+        />
         <small
           *ngIf="
             form.controls['customer_user'].hasError('required') &&
@@ -46,7 +47,8 @@
           [formControl]="form.controls['customer_secret']"
           class="form-control-dialog"
           placeholder=""
-          required />
+          required
+        />
         <small
           *ngIf="
             form.controls['customer_secret'].hasError('required') &&
@@ -67,26 +69,19 @@
       <div lass="sa-form-group" *ngIf="customers.length > 0">
         <label>Select Customer</label>
         <select formControlName="customer_id">
-            <option *ngFor="let option of customers" [value]="option.id">
-                {{option.name}}</option>
+          <option *ngFor="let option of customers" [value]="option.id">
+            {{ option.name }}
+          </option>
         </select>
       </div>
     </mat-card-content>
   </form>
 </div>
 <div mat-dialog-actions>
-  <button
-    [mat-dialog-close]="true"
-    mat-button
-    tabindex="-1"
-    class="mat-raised-button mat-gray">
+  <button [mat-dialog-close]="true" mat-button tabindex="-1" class="mat-raised-button mat-gray">
     Cancel
   </button>
-  <button
-    mat-button
-    class="mat-raised-button mat-dc"
-    (click)="onSubmit()"
-    [disabled]="!form.valid">
-    {{customers.length > 0? 'Submit': 'Next'}}
+  <button mat-button class="mat-raised-button mat-dc" (click)="onSubmit()" [disabled]="!form.valid">
+    {{ customers.length > 0 ? 'Submit' : 'Next' }}
   </button>
 </div>

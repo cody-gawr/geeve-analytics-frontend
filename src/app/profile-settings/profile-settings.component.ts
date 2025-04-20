@@ -24,7 +24,7 @@ const passwordValidation = new UntypedFormControl('', [
 ]);
 const confirmPasswordValidation = new UntypedFormControl(
   '',
-  CustomValidators.equalTo(passwordValidation)
+  CustomValidators.equalTo(passwordValidation),
 );
 
 @Component({
@@ -168,7 +168,7 @@ export class ProfileSettingsComponent implements OnInit {
     private rolesUsersService: RolesUsersService,
     public constants: AppConstants,
     private notifyService: NotificationService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {
     this.options = fb.group({
       hideRequired: false,
@@ -187,10 +187,7 @@ export class ProfileSettingsComponent implements OnInit {
       email: [null, Validators.compose([Validators.required])],
       displayName: [
         null,
-        Validators.compose([
-          Validators.required,
-          Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),
-        ]),
+        Validators.compose([Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]),
       ],
     });
     this.healthSettings = new UntypedFormGroup({
@@ -224,18 +221,18 @@ export class ProfileSettingsComponent implements OnInit {
   onSubmit() {
     // this.formSubmitted = true;
     const ref = this.dialog.open(OtpConfirmDialog, {
-        data: {
-            MfaEnabled: this.mfaEnabled
-        }
+      data: {
+        MfaEnabled: this.mfaEnabled,
+      },
     });
 
     ref.afterClosed().subscribe({
-        next: (res: any) => {
-          if(res !== undefined){
-            this.mfaEnabled = res;
-            this._cookieService.put('mfa_enabled', res.toString());
-          }
+      next: (res: any) => {
+        if (res !== undefined) {
+          this.mfaEnabled = res;
+          this._cookieService.put('mfa_enabled', res.toString());
         }
+      },
     });
   }
   // enable2FA() {
@@ -257,7 +254,7 @@ export class ProfileSettingsComponent implements OnInit {
   //   if(this.verifyCode){
   //     this.profileSettingsService.verifyCode(this.verifyCode).subscribe({
   //       next: res => {
-  //         const result = res.body; 
+  //         const result = res.body;
   //         if(result.status){
   //           this._cookieService.put('mfa_enabled', 'true');
   //           this.mfaEnabled = true;
@@ -323,19 +320,15 @@ export class ProfileSettingsComponent implements OnInit {
     this.rolesUsersService.getRoles().subscribe({
       next: res => {
         let permisions = [];
-          res.data.forEach(result => {
-            if (result.role_id.toString() == this._cookieService.get('user_type'))
-              permisions = result.permisions;
-          });
+        res.data.forEach(result => {
+          if (result.role_id.toString() == this._cookieService.get('user_type'))
+            permisions = result.permisions;
+        });
 
-          if (
-            (permisions &&
-            permisions.indexOf('profilesettings') >= 0 &&
-              this.userType != '7')
-          ) {
-            this.showCard = true;
-            this.getPaymentDetails();
-          }
+        if (permisions && permisions.indexOf('profilesettings') >= 0 && this.userType != '7') {
+          this.showCard = true;
+          this.getPaymentDetails();
+        }
       },
       error: error => {},
     });
@@ -352,11 +345,7 @@ export class ProfileSettingsComponent implements OnInit {
         this.token = obj.token.id;
         $('.ajax-loader').show();
         this.profileSettingsService
-          .updateCardRetryPayment(
-            this.token,
-            this.customer_id,
-            this.last_invoic_id
-          )
+          .updateCardRetryPayment(this.token, this.customer_id, this.last_invoic_id)
           .subscribe(
             res => {
               $('.ajax-loader').hide();
@@ -368,14 +357,10 @@ export class ProfileSettingsComponent implements OnInit {
                   Swal.fire('', 'Card Updated Successfully!', 'success');
                 }
               } else if (res.body.message == 'error') {
-                Swal.fire(
-                  '',
-                  'Some issue with your card, Please try again!',
-                  'error'
-                );
+                Swal.fire('', 'Some issue with your card, Please try again!', 'error');
               }
             },
-            error => {}
+            error => {},
           );
       } else {
         console.log('Error comes ');
@@ -385,24 +370,18 @@ export class ProfileSettingsComponent implements OnInit {
 
   retryPayment() {
     $('.ajax-loader').show();
-    this.profileSettingsService
-      .retryPayment(this.customer_id, this.last_invoic_id)
-      .subscribe(
-        res => {
-          $('.ajax-loader').hide();
-          if (res.status == 200) {
-            this.getPaymentDetails();
-            Swal.fire('', 'Payment Generated Succesfully!', 'success');
-          } else if (res.body.message == 'error') {
-            Swal.fire(
-              '',
-              'Your card is declined, Please change your card Details.',
-              'error'
-            );
-          }
-        },
-        error => {}
-      );
+    this.profileSettingsService.retryPayment(this.customer_id, this.last_invoic_id).subscribe(
+      res => {
+        $('.ajax-loader').hide();
+        if (res.status == 200) {
+          this.getPaymentDetails();
+          Swal.fire('', 'Payment Generated Succesfully!', 'success');
+        } else if (res.body.message == 'error') {
+          Swal.fire('', 'Your card is declined, Please change your card Details.', 'error');
+        }
+      },
+      error => {},
+    );
   }
   public subscription_id = '';
   getPaymentDetails() {
@@ -426,7 +405,7 @@ export class ProfileSettingsComponent implements OnInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
   public last4;
@@ -448,7 +427,7 @@ export class ProfileSettingsComponent implements OnInit {
       res => {
         this.last4 = res.last4;
       },
-      error => {}
+      error => {},
     );
   }
 
@@ -457,67 +436,60 @@ export class ProfileSettingsComponent implements OnInit {
     this.stripeService.createToken(this.cardNumber, { name }).subscribe(obj => {
       if (obj.token) {
         $('.ajax-loader').show();
-        this.profileSettingsService
-          .createSetupIntent(this.customer_id)
-          .subscribe(res => {
-            if (res.status == 200) {
-              this.stripeService
-                .confirmCardSetup(res.body.data.client_secret, {
-                  payment_method: {
-                    card: this.cardNumber,
-                    billing_details: {
-                      name: 'dsf',
-                    },
+        this.profileSettingsService.createSetupIntent(this.customer_id).subscribe(res => {
+          if (res.status == 200) {
+            this.stripeService
+              .confirmCardSetup(res.body.data.client_secret, {
+                payment_method: {
+                  card: this.cardNumber,
+                  billing_details: {
+                    name: 'dsf',
                   },
-                })
-                .subscribe(result => {
+                },
+              })
+              .subscribe(result => {
+                this.cardNumber.clear();
+                this.cardCvc.clear();
+                this.cardExpiry.clear();
+                if (result.setupIntent && result.setupIntent.status == 'succeeded') {
+                  this.updateCustomerCard();
+                } else {
+                  $('.ajax-loader').hide();
                   this.cardNumber.clear();
                   this.cardCvc.clear();
                   this.cardExpiry.clear();
-                  if (
-                    result.setupIntent &&
-                    result.setupIntent.status == 'succeeded'
-                  ) {
-                    this.updateCustomerCard();
-                  } else {
-                    $('.ajax-loader').hide();
-                    this.cardNumber.clear();
-                    this.cardCvc.clear();
-                    this.cardExpiry.clear();
-                    Swal.fire(
-                      '',
-                      'There was an issue updating your card details - please contact Jeeve support',
-                      'error'
-                    );
-                  }
-                });
-            } else if (res.body.message == 'error') {
-              $('.ajax-loader').hide();
-              this.cardNumber.clear();
-              this.cardCvc.clear();
-              this.cardExpiry.clear();
-              Swal.fire(
-                '',
-                'There was an issue updating your card details - please contact Jeeve support',
-                'error'
-              );
-            }
-          });
+                  Swal.fire(
+                    '',
+                    'There was an issue updating your card details - please contact Jeeve support',
+                    'error',
+                  );
+                }
+              });
+          } else if (res.body.message == 'error') {
+            $('.ajax-loader').hide();
+            this.cardNumber.clear();
+            this.cardCvc.clear();
+            this.cardExpiry.clear();
+            Swal.fire(
+              '',
+              'There was an issue updating your card details - please contact Jeeve support',
+              'error',
+            );
+          }
+        });
       } else {
         console.log('Error comes ');
       }
     });
   }
   updateCustomerCard() {
-    this.profileSettingsService
-      .updateCustomerCard(this.customer_id)
-      .subscribe(res => {
-        if (res.status == 200) {
-          this.getCardDetails();
-          $('.ajax-loader').hide();
-          Swal.fire('', 'Card Updated Successfully!', 'success');
-        }
-      });
+    this.profileSettingsService.updateCustomerCard(this.customer_id).subscribe(res => {
+      if (res.status == 200) {
+        this.getCardDetails();
+        $('.ajax-loader').hide();
+        Swal.fire('', 'Card Updated Successfully!', 'success');
+      }
+    });
   }
 
   public displayName;
@@ -533,28 +505,26 @@ export class ProfileSettingsComponent implements OnInit {
       var imageObj = this.imageURL.split('/profile_');
       image = 'profile_' + imageObj[1];
     }
-    this.profileSettingsService
-      .updateprofileSettings(this.displayName, this.email)
-      .subscribe(
-        res => {
-          $('.ajax-loader').hide();
-          if (res.status == 200) {
-            let opts = this.constants.cookieOpt as CookieOptions;
-            this.displayName = res.body.data.display_name;
-            this._cookieService.put('display_name', this.displayName, opts);
+    this.profileSettingsService.updateprofileSettings(this.displayName, this.email).subscribe(
+      res => {
+        $('.ajax-loader').hide();
+        if (res.status == 200) {
+          let opts = this.constants.cookieOpt as CookieOptions;
+          this.displayName = res.body.data.display_name;
+          this._cookieService.put('display_name', this.displayName, opts);
+          /*this._cookieService.put("user_image", this.imageURL, opts);*/
+          if (this.imageURL) {
+            $('.suer_image_sidebar img').attr('src', this.imageURL);
             /*this._cookieService.put("user_image", this.imageURL, opts);*/
-            if (this.imageURL) {
-              $('.suer_image_sidebar img').attr('src', this.imageURL);
-              /*this._cookieService.put("user_image", this.imageURL, opts);*/
-            }
-            $('.suer_text_sidebar').html(this.displayName.toUpperCase());
-            this.toastr.success('Profile Settings Updated .');
           }
-        },
-        error => {
-          this.warningMessage = 'Please Provide Valid Inputs!';
+          $('.suer_text_sidebar').html(this.displayName.toUpperCase());
+          this.toastr.success('Profile Settings Updated .');
         }
-      );
+      },
+      error => {
+        this.warningMessage = 'Please Provide Valid Inputs!';
+      },
+    );
   }
 
   onSubmitHealthScreen() {
@@ -565,19 +535,13 @@ export class ProfileSettingsComponent implements OnInit {
       .subscribe({
         next: res => {
           if (res.status == 200) {
-            this._cookieService.put(
-              'health_screen_mtd',
-              this.health_screen_mtd
-            );
-            
-            this._cookieService.put(
-              'max_chart_bars',
-              this.max_chart_bars.toString()
-            );
+            this._cookieService.put('health_screen_mtd', this.health_screen_mtd);
+
+            this._cookieService.put('max_chart_bars', this.max_chart_bars.toString());
 
             updateUserData({
               healthScreenMtd: this.health_screen_mtd,
-              maxChartBars: this.max_chart_bars
+              maxChartBars: this.max_chart_bars,
             });
             this.toastr.success('Profile Settings Updated .');
           }
@@ -640,21 +604,19 @@ export class ProfileSettingsComponent implements OnInit {
     this.newPassword = this.form.value.newPassword;
     this.repeatPassword = this.form.value.repeatPassword;
     if (this.newPassword == this.repeatPassword) {
-      this.profileSettingsService
-        .updatePassword(this.currentPassword, this.newPassword)
-        .subscribe(
-          res => {
-            if (res.status == 200) {
-              this.toastr.success(res.body.data);
-              this.form.reset();
-            } else {
-              this.toastr.error(res.body.data);
-            }
-          },
-          error => {
-            this.toastr.error('Please Provide Valid Inputs!');
+      this.profileSettingsService.updatePassword(this.currentPassword, this.newPassword).subscribe(
+        res => {
+          if (res.status == 200) {
+            this.toastr.success(res.body.data);
+            this.form.reset();
+          } else {
+            this.toastr.error(res.body.data);
           }
-        );
+        },
+        error => {
+          this.toastr.error('Please Provide Valid Inputs!');
+        },
+      );
     } else {
       this.errorLogin = true;
       this.toastr.error("Password and Confirm Password doesn't Match!");
@@ -691,16 +653,14 @@ export class ProfileSettingsComponent implements OnInit {
               chart_id: tip.chart_id,
               title: tip.title,
               tip_title: tip.tip_title ? tip.tip_title : tip.title,
-              description: tip.tip_description
-                ? tip.tip_description
-                : tip.description,
+              description: tip.tip_description ? tip.tip_description : tip.description,
               dashboard_id: tip.dashboard_id,
             };
             this.chartsTips[tip.dashboard_id].push(temp);
           });
         }
       },
-      error => {}
+      error => {},
     );
   }
   /******** GET CHARTS TIPS*****/
@@ -716,7 +676,7 @@ export class ProfileSettingsComponent implements OnInit {
           Swal.fire('', 'Chart Tips have been updated successfully', 'success');
         }
       },
-      error => {}
+      error => {},
     );
   }
   /******** SAVE CHARTS TIPS*****/

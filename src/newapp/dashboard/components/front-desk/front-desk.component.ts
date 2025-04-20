@@ -1,14 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import {
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  filter,
-  distinctUntilChanged,
-} from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, filter, distinctUntilChanged } from 'rxjs';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Router } from '@angular/router';
 import moment from 'moment';
@@ -24,7 +17,7 @@ import { FD_CHART_ID } from '@/newapp/models/dashboard/front-desk';
 })
 export class FrontDeskComponent implements OnInit, OnDestroy {
   FrontDeskChartIDs = FD_CHART_ID;
-  
+
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
@@ -43,11 +36,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
   }
 
   get authUserId$() {
-    return this.authFacade.authUserData$.pipe(
-      map(
-        authUserData => authUserData?.id
-      )
-    );
+    return this.authFacade.authUserData$.pipe(map(authUserData => authUserData?.id));
   }
 
   get clinicId$() {
@@ -55,14 +44,11 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
   }
 
   getChartTip(index: number) {
-    return this.dashbordFacade.getChartTip$(index)
+    return this.dashbordFacade.getChartTip$(index);
   }
 
   get utilisationRateChartTip$() {
-    return combineLatest([
-      this.dashbordFacade.chartTips$,
-      this.frontDeskFacade.isByDayData$,
-    ]).pipe(
+    return combineLatest([this.dashbordFacade.chartTips$, this.frontDeskFacade.isByDayData$]).pipe(
       filter(params => !!params[0]),
       map(([chartTips, v]) => {
         let tip;
@@ -71,9 +57,9 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
         } else {
           tip = chartTips[this.FrontDeskChartIDs.utilisation];
         }
-        if(tip && tip?.info?.toLowerCase() === 'disabled') return null;
+        if (tip && tip?.info?.toLowerCase() === 'disabled') return null;
         return tip;
-      })
+      }),
     );
   }
   constructor(
@@ -82,7 +68,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
     private frontDeskFacade: FrontDeskFacade,
     private layoutFacade: LayoutFacade,
     private authFacade: AuthFacade,
-    private router: Router
+    private router: Router,
   ) {
     this.layoutFacade.setTrend('off');
   }
@@ -92,7 +78,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         filter(v => !!v),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       )
       .subscribe(clinicIds => {
         this.dashbordFacade.loadChartTips(3, clinicIds);
@@ -105,24 +91,17 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
       this.router.routerState.root.queryParams,
       this.layoutFacade.trend$,
       this.clinicFacade.connectedClinicId$,
-      this.dashbordFacade.chartTips$
+      this.dashbordFacade.chartTips$,
     ])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
       .subscribe(params => {
-        const [
-          clinics,
-          dateRange,
-          connectedWith,
-          route,
-          trend,
-          connectedClinicId,
-          chartTips
-        ] = params;
+        const [clinics, dateRange, connectedWith, route, trend, connectedClinicId, chartTips] =
+          params;
 
-        if(!chartTips) return;
+        if (!chartTips) return;
 
         const clinicId =
           clinics.length > 0
@@ -134,9 +113,7 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
         if (clinicId == null) return;
 
         const newConnectedId =
-          typeof clinicId == 'string'
-            ? _.min(clinicId.split(',').map(c => parseInt(c)))
-            : clinicId;
+          typeof clinicId == 'string' ? _.min(clinicId.split(',').map(c => parseInt(c))) : clinicId;
         if (newConnectedId !== connectedClinicId) {
           return;
         }
@@ -149,29 +126,41 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
         this.frontDeskFacade.setErrors([]);
 
         const spCallApis = {
-          [this.FrontDeskChartIDs.ftaRatio]: [(a) => this.frontDeskFacade.loadFdFtaRatio(a)],
-          [this.FrontDeskChartIDs.numberTicks]: [(a) => this.frontDeskFacade.loadFdNumTicks(a)],
-          [this.FrontDeskChartIDs.reappointRate]: [(a) => this.frontDeskFacade.loadFdReappointRate(a)],
-          [this.FrontDeskChartIDs.recallRate]: [(a) => this.frontDeskFacade.loadFdRecallRate(a)],
-          [this.FrontDeskChartIDs.utaRatio]: [(a) => this.frontDeskFacade.loadFdUtaRatio(a)],
+          [this.FrontDeskChartIDs.ftaRatio]: [a => this.frontDeskFacade.loadFdFtaRatio(a)],
+          [this.FrontDeskChartIDs.numberTicks]: [a => this.frontDeskFacade.loadFdNumTicks(a)],
+          [this.FrontDeskChartIDs.reappointRate]: [
+            a => this.frontDeskFacade.loadFdReappointRate(a),
+          ],
+          [this.FrontDeskChartIDs.recallRate]: [a => this.frontDeskFacade.loadFdRecallRate(a)],
+          [this.FrontDeskChartIDs.utaRatio]: [a => this.frontDeskFacade.loadFdUtaRatio(a)],
           [this.FrontDeskChartIDs.utilisation]: [
-            (a) => this.frontDeskFacade.loadFdUtilisationRate(a),
+            a => this.frontDeskFacade.loadFdUtilisationRate(a),
           ],
           [this.FrontDeskChartIDs.utilisationByDay]: [
-            (a) => this.frontDeskFacade.loadFdUtilisationRateByDay(a)
-          ]
-        }
+            a => this.frontDeskFacade.loadFdUtilisationRateByDay(a),
+          ],
+        };
 
         const spCallApisTrend = {
           [this.FrontDeskChartIDs.ftaRatio]: [
-            (a, b, c) => this.frontDeskFacade.loadFdFtaRatioTrend(a, b, c)
+            (a, b, c) => this.frontDeskFacade.loadFdFtaRatioTrend(a, b, c),
           ],
-          [this.FrontDeskChartIDs.numberTicks]: [(a, b, c) => this.frontDeskFacade.loadFdNumTicksTrend(a, b, c)],
-          [this.FrontDeskChartIDs.reappointRate]: [(a, b, c) => this.frontDeskFacade.loadFdReappointRateTrend(a, b, c)],
-          [this.FrontDeskChartIDs.recallRate]: [(a, b, c) => this.frontDeskFacade.loadFdRecallRateTrend(a, b, c)],
-          [this.FrontDeskChartIDs.utaRatio]: [(a, b, c) => this.frontDeskFacade.loadFdUtaRatioTrend(a, b, c)],
-          [this.FrontDeskChartIDs.utilisation]: [(a, b, c) => this.frontDeskFacade.loadFdUtilisationRateTrend(a, b, c)]
-        }
+          [this.FrontDeskChartIDs.numberTicks]: [
+            (a, b, c) => this.frontDeskFacade.loadFdNumTicksTrend(a, b, c),
+          ],
+          [this.FrontDeskChartIDs.reappointRate]: [
+            (a, b, c) => this.frontDeskFacade.loadFdReappointRateTrend(a, b, c),
+          ],
+          [this.FrontDeskChartIDs.recallRate]: [
+            (a, b, c) => this.frontDeskFacade.loadFdRecallRateTrend(a, b, c),
+          ],
+          [this.FrontDeskChartIDs.utaRatio]: [
+            (a, b, c) => this.frontDeskFacade.loadFdUtaRatioTrend(a, b, c),
+          ],
+          [this.FrontDeskChartIDs.utilisation]: [
+            (a, b, c) => this.frontDeskFacade.loadFdUtilisationRateTrend(a, b, c),
+          ],
+        };
 
         switch (trend) {
           case 'off':
@@ -184,15 +173,14 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
               connectedWith: connectedWith,
             };
             Object.keys(spCallApis).map(key => {
-                const intkey = parseInt(key);
-                const info = chartTips[intkey]?.info;
-                if(info?.toLowerCase() === 'disabled'){
-
-                }else{
-                  spCallApis[intkey].map(spCallFn => {
-                    spCallFn(params);
-                  });
-                }
+              const intkey = parseInt(key);
+              const info = chartTips[intkey]?.info;
+              if (info?.toLowerCase() === 'disabled') {
+              } else {
+                spCallApis[intkey].map(spCallFn => {
+                  spCallFn(params);
+                });
+              }
             });
             break;
           case 'current':
@@ -200,19 +188,13 @@ export class FrontDeskComponent implements OnInit, OnDestroy {
             Object.keys(spCallApisTrend).map(key => {
               const intkey = parseInt(key);
               const info = chartTips[key]?.info;
-              if(info?.toLowerCase() === 'disabled'){
-
-              }
-              else{
+              if (info?.toLowerCase() === 'disabled') {
+              } else {
                 spCallApisTrend[key].map(spCallFn => {
-                  spCallFn(
-                    clinicId,
-                    trend === 'current' ? 'c' : 'h',
-                    this.queryWhEnabled
-                  );
-                })
+                  spCallFn(clinicId, trend === 'current' ? 'c' : 'h', this.queryWhEnabled);
+                });
               }
-          });
+            });
             break;
         }
       });

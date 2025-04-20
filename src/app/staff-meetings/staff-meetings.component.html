@@ -1,19 +1,17 @@
-<input
-  type="button"
-  id="clinic_initiate"
-  (click)="initiate_clinic()"
-  [style.display]="'none'" />
+<input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'" />
 <mat-drawer-container
   *ngIf="!agendaTab && !boardMeetingPage"
   class="example-container staff-meeting"
-  autosize>
+  autosize
+>
   <div
     fxFlex="calc(39% - 10px)"
     fxFlex.lg="calc(39% - 10px)"
     fxFlex.md="900"
     fxFlex.sm="900"
     fxFlex.xs="900"
-    class="sa_flexbg last">
+    class="sa_flexbg last"
+  >
     <!-- <span class="top_buttons">
             <button mat-raised-button [ngClass]="(!showCompletedMeetingTab) ? 'btn_active' : ''" (click)="changeCompleteTab('Upcoming')" >Upcoming</button>
             <button mat-raised-button [ngClass]="(showCompletedMeetingTab) ? 'btn_active' : ''" (click)="changeCompleteTab('Completed')" >Completed</button>
@@ -23,18 +21,15 @@
       mat-raised-button
       color="green"
       (click)="createMeeting()"
-      class="float-right create-meeting-btn">
+      class="float-right create-meeting-btn"
+    >
       <i class="fas fa-plus"></i> Create New Meeting
     </button>
 
-    <mat-tab-group
-      [selectedIndex]="currentTab"
-      (selectedIndexChange)="changeTab($event)">
+    <mat-tab-group [selectedIndex]="currentTab" (selectedIndexChange)="changeTab($event)">
       <mat-tab [disabled]="!hasPermission" label="Drafts">
         <div *ngIf="meetingCards.length > 0">
-          <div
-            class="card_meeting_card"
-            *ngFor="let meeting of meetingCards; let i = index">
+          <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index">
             <mat-card class="meeting_card">
               <div #card (click)="draftDrawerToggle(card, meeting)">
                 <mat-card-title class="header">
@@ -55,14 +50,13 @@
               </div>
             </mat-card>
           </div>
-          <ul
-            *ngIf="data.length > itemsPerPage"
-            class="main_pagination settings-table-pagination">
+          <ul *ngIf="data.length > itemsPerPage" class="main_pagination settings-table-pagination">
             <li *ngFor="let page of pages">
               <button
                 class="page"
                 [ngClass]="page === currentPage ? 'active' : ''"
-                (click)="pagination(page)">
+                (click)="pagination(page)"
+              >
                 {{ page }}
               </button>
             </li>
@@ -74,28 +68,23 @@
         </div>
         <div *ngIf="meetingCards.length <= 0">
           <mat-card class="meeting_card">
-            <mat-card-content class="meeting_card_content">
-              No Draft Available.
-            </mat-card-content>
+            <mat-card-content class="meeting_card_content"> No Draft Available. </mat-card-content>
           </mat-card>
         </div>
       </mat-tab>
       <mat-tab label="Scheduled">
         <div *ngIf="meetingCards.length > 0">
-          <div
-            class="card_meeting_card"
-            *ngFor="let meeting of meetingCards; let i = index">
+          <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index">
             <mat-card class="meeting_card">
               <div #card (click)="scheduleDrawerToggle(card, meeting)">
                 <mat-card-title class="header">
                   <div class="meeting_card_header">
                     {{ meeting.meeting_topic }}
-                    <span
-                      *ngIf="meeting.showAlert"
-                      class="float-right info-icon-container"
+                    <span *ngIf="meeting.showAlert" class="float-right info-icon-container"
                       ><i
                         [tooltip]="tipPendingCompleteMarkStaffMeeting"
-                        class="fa fa-exclamation-triangle"></i
+                        class="fa fa-exclamation-triangle"
+                      ></i
                     ></span>
                   </div>
                 </mat-card-title>
@@ -112,14 +101,13 @@
               </div>
             </mat-card>
           </div>
-          <ul
-            *ngIf="data.length > itemsPerPage"
-            class="main_pagination settings-table-pagination">
+          <ul *ngIf="data.length > itemsPerPage" class="main_pagination settings-table-pagination">
             <li *ngFor="let page of pages">
               <button
                 class="page"
                 [ngClass]="page === currentPage ? 'active' : ''"
-                (click)="pagination(page)">
+                (click)="pagination(page)"
+              >
                 {{ page }}
               </button>
             </li>
@@ -139,20 +127,17 @@
       </mat-tab>
       <mat-tab label="Completed">
         <div *ngIf="meetingCards.length > 0">
-          <div
-            class="card_meeting_card"
-            *ngFor="let meeting of meetingCards; let i = index">
+          <div class="card_meeting_card" *ngFor="let meeting of meetingCards; let i = index">
             <mat-card class="meeting_card">
               <div (click)="boardMeeting(meeting.id)">
                 <mat-card-title class="header">
                   <div class="meeting_card_header">
                     {{ meeting.meeting_topic }}
-                    <span
-                      *ngIf="meeting.attended == 0"
-                      class="float-right info-icon-container"
+                    <span *ngIf="meeting.attended == 0" class="float-right info-icon-container"
                       ><i
                         [tooltip]="tipPendingReviewStaffMeeting"
-                        class="fa fa-exclamation-triangle"></i
+                        class="fa fa-exclamation-triangle"
+                      ></i
                     ></span>
                   </div>
                 </mat-card-title>
@@ -169,14 +154,13 @@
               </div>
             </mat-card>
           </div>
-          <ul
-            *ngIf="data.length > itemsPerPage"
-            class="main_pagination settings-table-pagination">
+          <ul *ngIf="data.length > itemsPerPage" class="main_pagination settings-table-pagination">
             <li *ngFor="let page of pages">
               <button
                 class="page"
                 [ngClass]="page === currentPage ? 'active' : ''"
-                (click)="pagination(page)">
+                (click)="pagination(page)"
+              >
                 {{ page }}
               </button>
             </li>
@@ -220,25 +204,21 @@
         </p>
       </mat-card-subtitle>
       <hr />
-      <form
-        (keydown.enter)="$event.preventDefault()"
-        [formGroup]="invites_form"
-        #invite>
+      <form (keydown.enter)="$event.preventDefault()" [formGroup]="invites_form" #invite>
         <mat-card-content>
-          <mat-form-field
-            floatLabel="never"
-            class="example-chip-list"
-            appearance="outline">
+          <mat-form-field floatLabel="never" class="example-chip-list" appearance="outline">
             <mat-label>Invites</mat-label>
             <mat-chip-list
               #invitesChipList
               required
-              [formControl]="invites_form.controls['invites']">
+              [formControl]="invites_form.controls['invites']"
+            >
               <mat-chip
                 *ngFor="let users of invited_users"
                 [selectable]="true"
                 [removable]="true"
-                (removed)="removeInvites(users.id)">
+                (removed)="removeInvites(users.id)"
+              >
                 {{ users.name }}
                 <mat-icon matChipRemove>cancel</mat-icon>
               </mat-chip>
@@ -251,11 +231,10 @@
                 [matChipInputFor]="invitesChipList"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                 [disabled]="allSelected"
-                (keyup)="findStaff($event)" />
+                (keyup)="findStaff($event)"
+              />
             </mat-chip-list>
-            <mat-autocomplete
-              #auto="matAutocomplete"
-              (optionSelected)="selectedInvites($event)">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedInvites($event)">
               <mat-option *ngFor="let user of staffTemp" [value]="user.id">
                 {{ user.name }}
               </mat-option>
@@ -268,35 +247,26 @@
           <hr />
         </mat-card-content>
         <mat-card-footer>
-          <div
-            fxLayout="row wrap"
-            class="sa_tabs_main_sec"
-            fxLayoutAlign="center">
-            <div
-              fxFlex.gt-sm="43.33%"
-              fxFlex.gt-xs="43%"
-              fxFlex="100"
-              class="btn-group">
+          <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+            <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
               <button
                 type="submit"
                 class="sa_tab_btn"
                 mat-raised-button
                 color="green"
-                (click)="save_invites(meeting_detail.id, invites_form)">
+                (click)="save_invites(meeting_detail.id, invites_form)"
+              >
                 Publish Meeting
               </button>
             </div>
-            <div
-              fxFlex.gt-sm="43.33%"
-              fxFlex.gt-xs="43%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="43.33%" fxFlex.gt-xs="43%" fxFlex="100" class="btn-group">
               <button
                 type="button"
                 class="sa_tab_btn"
                 mat-raised-button
                 color="green"
-                (click)="openAgenda(meeting_detail.id)">
+                (click)="openAgenda(meeting_detail.id)"
+              >
                 Open Agenda
               </button>
             </div>
@@ -308,11 +278,7 @@
 </mat-drawer-container>
 
 <mat-drawer-container autosize>
-  <mat-drawer
-    #scheduleDrawer
-    class="example-sidenav"
-    mode="side"
-    position="end">
+  <mat-drawer #scheduleDrawer class="example-sidenav" mode="side" position="end">
     <div class="card-loading" *ngIf="loader">
       <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
     </div>
@@ -336,20 +302,14 @@
       </mat-card-subtitle>
       <hr />
       <mat-card-footer>
-        <div
-          fxLayout="row wrap"
-          class="sa_tabs_main_sec"
-          fxLayoutAlign="center">
-          <div
-            fxFlex.gt-sm="40%"
-            fxFlex.gt-xs="40%"
-            fxFlex="100"
-            class="btn-group">
+        <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+          <div fxFlex.gt-sm="40%" fxFlex.gt-xs="40%" fxFlex="100" class="btn-group">
             <button
               class="sa_tab_btn"
               mat-raised-button
               color="green"
-              (click)="boardMeeting(meeting_detail.id)">
+              (click)="boardMeeting(meeting_detail.id)"
+            >
               view meeting
             </button>
           </div>
@@ -358,12 +318,14 @@
             fxFlex.gt-sm="40%"
             fxFlex.gt-xs="40%"
             fxFlex="100"
-            class="btn-group">
+            class="btn-group"
+          >
             <button
               class="sa_tab_btn"
               mat-raised-button
               color="green"
-              (click)="openAgenda(meeting_detail.id)">
+              (click)="openAgenda(meeting_detail.id)"
+            >
               Open Agenda
             </button>
           </div>
@@ -373,12 +335,14 @@
             fxFlex.gt-xs="15%"
             fxFlex="100"
             class="btn-group"
-            title="send reminder">
+            title="send reminder"
+          >
             <button
               class="sa_tab_btn"
               mat-raised-button
               color="green"
-              (click)="sendMeetingReminder(meeting_detail.id)">
+              (click)="sendMeetingReminder(meeting_detail.id)"
+            >
               <i class="fa fa-envelope" aria-hidden="true"></i>
             </button>
           </div>
@@ -389,18 +353,12 @@
 </mat-drawer-container>
 
 <mat-drawer-container autosize>
-  <mat-drawer
-    #create_meeting
-    class="example-sidenav-create"
-    mode="side"
-    position="end">
+  <mat-drawer #create_meeting class="example-sidenav-create" mode="side" position="end">
     <div class="card-loading" *ngIf="loader">
       <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
     </div>
     <mat-card class="meeting_content">
-      <span
-        class="close-icon float-right"
-        (click)="close(create_meeting, meeting_form)"
+      <span class="close-icon float-right" (click)="close(create_meeting, meeting_form)"
         ><i class="ti-close"></i
       ></span>
       <hr />
@@ -408,58 +366,40 @@
         (keydown.enter)="$event.preventDefault()"
         [formGroup]="create_meeting_form"
         #meeting_form
-        class="create-meeting-form">
+        class="create-meeting-form"
+      >
         <mat-card-content>
-          <div
-            fxLayout="row wrap"
-            class="sa_tabs_main_sec"
-            fxLayoutAlign="center">
-            <div
-              fxFlex.gt-sm="30%"
-              fxFlex.gt-xs="30%"
-              fxFlex="100"
-              class="btn-group">
+          <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+            <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
               <label>Meeting Topic</label>
             </div>
-            <div
-              fxFlex.gt-sm="70%"
-              fxFlex.gt-xs="70%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
               <mat-form-field
                 floatLabel="never"
                 class="example-full-width create-meeting-form"
-                appearance="outline">
+                appearance="outline"
+              >
                 <input
                   type="text"
                   matInput
                   autocomplete="off"
                   [formControl]="create_meeting_form.controls['meeting_topic']"
-                  required />
+                  required
+                />
                 <mat-error> Please Enter meeting topic </mat-error>
               </mat-form-field>
             </div>
           </div>
-          <div
-            fxLayout="row wrap"
-            class="sa_tabs_main_sec"
-            fxLayoutAlign="center">
-            <div
-              fxFlex.gt-sm="30%"
-              fxFlex.gt-xs="30%"
-              fxFlex="100"
-              class="btn-group">
+          <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+            <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
               <mat-label>Select Date</mat-label>
             </div>
-            <div
-              fxFlex.gt-sm="70%"
-              fxFlex.gt-xs="70%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
               <mat-form-field
                 floatLabel="never"
                 class="example-full-width create-meeting-form"
-                appearance="outline">
+                appearance="outline"
+              >
                 <input
                   (click)="picker.open()"
                   matInput
@@ -469,41 +409,34 @@
                   type="text"
                   [formControl]="create_meeting_form.controls['start_date']"
                   required
-                  readonly />
+                  readonly
+                />
                 <mat-datepicker-toggle
                   matSuffix
                   [for]="picker"
-                  class="create-meeting-form"></mat-datepicker-toggle>
+                  class="create-meeting-form"
+                ></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-error> Please Enter Meeting Start Date </mat-error>
               </mat-form-field>
             </div>
           </div>
 
-          <div
-            fxLayout="row wrap"
-            class="sa_tabs_main_sec"
-            fxLayoutAlign="center">
-            <div
-              fxFlex.gt-sm="30%"
-              fxFlex.gt-xs="30%"
-              fxFlex="100"
-              class="btn-group">
+          <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+            <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
               <mat-label>Start Time</mat-label>
             </div>
-            <div
-              fxFlex.gt-sm="50%"
-              fxFlex.gt-xs="50%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
               <mat-form-field
                 floatLabel="never"
                 class="example-full-width create-meeting-form"
-                appearance="outline">
+                appearance="outline"
+              >
                 <mat-select
                   [ngModel]="'09:00'"
                   [formControl]="create_meeting_form.controls['start_time']"
-                  required>
+                  required
+                >
                   <mat-option *ngFor="let t of time" [value]="t">
                     {{ t }}
                   </mat-option>
@@ -511,18 +444,16 @@
                 <mat-error> Please Enter Start Time </mat-error>
               </mat-form-field>
             </div>
-            <div
-              fxFlex.gt-sm="20%"
-              fxFlex.gt-xs="20%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="20%" fxFlex.gt-xs="20%" fxFlex="100" class="btn-group">
               <mat-form-field
                 floatLabel="never"
                 class="example-full-width create-meeting-form"
-                appearance="outline">
+                appearance="outline"
+              >
                 <mat-select
                   [ngModel]="'AM'"
-                  [formControl]="create_meeting_form.controls['day_time']">
+                  [formControl]="create_meeting_form.controls['day_time']"
+                >
                   <mat-option [value]="'AM'">AM</mat-option>
                   <mat-option [value]="'PM'">PM</mat-option>
                 </mat-select>
@@ -530,64 +461,41 @@
             </div>
           </div>
 
-          <div
-            fxLayout="row wrap"
-            class="sa_tabs_main_sec"
-            fxLayoutAlign="center">
-            <div
-              fxFlex.gt-sm="30%"
-              fxFlex.gt-xs="30%"
-              fxFlex="100"
-              class="btn-group">
+          <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+            <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
               <mat-label>Duration</mat-label>
             </div>
-            <div
-              fxFlex.gt-sm="25%"
-              fxFlex.gt-xs="25%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="25%" fxFlex.gt-xs="25%" fxFlex="100" class="btn-group">
               <mat-form-field
                 floatLabel="never"
                 class="example-full-width create-meeting-form"
-                appearance="outline">
-                <mat-select
-                  [formControl]="create_meeting_form.controls['duration_hr']"
-                  required>
+                appearance="outline"
+              >
+                <mat-select [formControl]="create_meeting_form.controls['duration_hr']" required>
                   <mat-option *ngFor="let hr of hrs" [value]="hr">
                     {{ hr }}
                   </mat-option>
                 </mat-select>
                 <!-- <span class="duration" matSuffix>Hours</span> -->
-                <mat-error
-                  *ngIf="
-                    !create_meeting_form.controls['duration_hr'].hasError(
-                      'notZero'
-                    )
-                  ">
+                <mat-error *ngIf="!create_meeting_form.controls['duration_hr'].hasError('notZero')">
                   Please Select duration (hr)
                 </mat-error>
               </mat-form-field>
             </div>
-            <div
-              fxFlex.gt-sm="12.5%"
-              fxFlex.gt-xs="12.5%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="12.5%" fxFlex.gt-xs="12.5%" fxFlex="100" class="btn-group">
               <mat-label>hours</mat-label>
             </div>
-            <div
-              fxFlex.gt-sm="20%"
-              fxFlex.gt-xs="20%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="20%" fxFlex.gt-xs="20%" fxFlex="100" class="btn-group">
               <mat-form-field
                 floatLabel="never"
                 class="example-full-width create-meeting-form"
-                appearance="outline">
+                appearance="outline"
+              >
                 <mat-select
                   [ngModel]="0"
                   [formControl]="create_meeting_form.controls['duration_mins']"
-                  required>
+                  required
+                >
                   <mat-option *ngFor="let min of mins" [value]="min">
                     {{ min }}
                   </mat-option>
@@ -596,46 +504,27 @@
                 <mat-error> Please Select duration(mins) </mat-error>
               </mat-form-field>
             </div>
-            <div
-              fxFlex.gt-sm="12.5%"
-              fxFlex.gt-xs="12.5%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="12.5%" fxFlex.gt-xs="12.5%" fxFlex="100" class="btn-group">
               <mat-label>mins</mat-label>
             </div>
-            <mat-error
-              class="none-zero-error"
-              *ngIf="create_meeting_form.errors?.notZero">
+            <mat-error class="none-zero-error" *ngIf="create_meeting_form.errors?.notZero">
               Meeting duration must be more than 0 minutes
             </mat-error>
           </div>
 
           <!-- mat input for the get time zone  -->
-          <div
-            fxLayout="row wrap"
-            class="sa_tabs_main_sec"
-            fxLayoutAlign="center">
-            <div
-              fxFlex.gt-sm="30%"
-              fxFlex.gt-xs="30%"
-              fxFlex="100"
-              class="btn-group">
+          <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+            <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
               <mat-label>Timezone</mat-label>
             </div>
-            <div
-              fxFlex.gt-sm="70%"
-              fxFlex.gt-xs="70%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
               <mat-form-field
                 floatLabel="never"
                 class="example-full-width create-meeting-form"
-                appearance="outline">
-                <mat-select
-                  [formControl]="create_meeting_form.controls['timezone']">
-                  <mat-option
-                    *ngFor="let timezone of timezones"
-                    [value]="timezone.id">
+                appearance="outline"
+              >
+                <mat-select [formControl]="create_meeting_form.controls['timezone']">
+                  <mat-option *ngFor="let timezone of timezones" [value]="timezone.id">
                     {{ timezone.timezone }}
                   </mat-option>
                 </mat-select>
@@ -644,32 +533,18 @@
             </div>
           </div>
 
-          <div
-            fxLayout="row wrap"
-            class="sa_tabs_main_sec"
-            fxLayoutAlign="center">
-            <div
-              fxFlex.gt-sm="30%"
-              fxFlex.gt-xs="30%"
-              fxFlex="100"
-              class="btn-group">
+          <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+            <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
               <mat-label>Agenda template</mat-label>
             </div>
-            <div
-              fxFlex.gt-sm="70%"
-              fxFlex.gt-xs="70%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
               <mat-form-field
                 floatLabel="never"
                 class="example-full-width create-meeting-form"
-                appearance="outline">
-                <mat-select
-                  [ngModel]="0"
-                  [formControl]="create_meeting_form.controls['template']">
-                  <mat-option
-                    *ngFor="let template of templates"
-                    [value]="template.id">
+                appearance="outline"
+              >
+                <mat-select [ngModel]="0" [formControl]="create_meeting_form.controls['template']">
+                  <mat-option *ngFor="let template of templates" [value]="template.id">
                     {{ template.template_name }}
                   </mat-option>
                 </mat-select>
@@ -679,34 +554,25 @@
           </div>
         </mat-card-content>
         <mat-card-footer>
-          <div
-            fxLayout="row wrap"
-            class="sa_tabs_main_sec"
-            fxLayoutAlign="center">
-            <div
-              fxFlex.gt-sm="20.33%"
-              fxFlex.gt-xs="20%"
-              fxFlex="100"
-              class="btn-group">
+          <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+            <div fxFlex.gt-sm="20.33%" fxFlex.gt-xs="20%" fxFlex="100" class="btn-group">
               <button
                 type="button"
                 mat-button
                 (click)="close(create_meeting, meeting_form)"
-                class="mat-raised-button mat-gray">
+                class="mat-raised-button mat-gray"
+              >
                 Cancel
               </button>
             </div>
-            <div
-              fxFlex.gt-sm="40%"
-              fxFlex.gt-xs="40%"
-              fxFlex="100"
-              class="btn-group">
+            <div fxFlex.gt-sm="40%" fxFlex.gt-xs="40%" fxFlex="100" class="btn-group">
               <button
                 type="submit"
                 class="sa_tab_btn"
                 mat-raised-button
                 color="green"
-                (click)="save_meeting(create_meeting_form)">
+                (click)="save_meeting(create_meeting_form)"
+              >
                 Create meeting
               </button>
             </div>
@@ -725,7 +591,8 @@
     fxFlex.md="900"
     fxFlex.sm="900"
     fxFlex.xs="900"
-    class="sa_flexbg last headding_meetings">
+    class="sa_flexbg last headding_meetings"
+  >
     <div class="create_meeting_header">
       {{ agenda_heading }}
       <span class="float-right">
@@ -733,7 +600,8 @@
           class="sa_tab_btn"
           mat-raised-button
           color="green"
-          (click)="back_page('agenda_add')">
+          (click)="back_page('agenda_add')"
+        >
           Back
         </button>
       </span>
@@ -743,34 +611,28 @@
       <mat-card-title class="header">
         <div class="meeting_card_header"></div>
       </mat-card-title>
-      <mat-card-content
-        *ngIf="agendaList.length > 0"
-        class="meeting_card_content">
+      <mat-card-content *ngIf="agendaList.length > 0" class="meeting_card_content">
         <div class="agenda">
           <div *ngFor="let agenda of agendaList; let i = index">
             <p>
               &nbsp;&nbsp; <strong>{{ agenda.category }}</strong>
               <i
                 (click)="deleteAgenda(agenda, i)"
-                class="agenda-delete ti-trash text-danger m-r-10"></i>
+                class="agenda-delete ti-trash text-danger m-r-10"
+              ></i>
             </p>
-            <ol
-              cdkDropList
-              (cdkDropListDropped)="moveAgendaItems($event, agenda)">
-              <li
-                cdkDrag
-                cdkDragBoundary="ol"
-                *ngFor="let item of agenda.agenda_item">
+            <ol cdkDropList (cdkDropListDropped)="moveAgendaItems($event, agenda)">
+              <li cdkDrag cdkDragBoundary="ol" *ngFor="let item of agenda.agenda_item">
                 {{ item.agenda_item }} &nbsp;&nbsp;
                 <i
                   (click)="openAgendaDrawer(agenda_drawer, item, 'edit')"
-                  class="agenda-edit ti-pencil m-r-10"></i>
-                <i
-                  (click)="deleteAgendaItem(item)"
-                  class="ti-trash text-danger m-r-10"></i>
+                  class="agenda-edit ti-pencil m-r-10"
+                ></i>
+                <i (click)="deleteAgendaItem(item)" class="ti-trash text-danger m-r-10"></i>
                 <span
                   class="margintime"
-                  *ngIf="item.staff_member != 'null' && item.duration != '0'">
+                  *ngIf="item.staff_member != 'null' && item.duration != '0'"
+                >
                   {{ item.staff_member && item.staff_member + ' -' }}
                   {{ item.duration }} Mins
                 </span>
@@ -785,20 +647,14 @@
         </div>
       </mat-card-content>
       <mat-card-footer>
-        <div
-          fxLayout="row wrap"
-          class="sa_tabs_main_sec"
-          fxLayoutAlign="center">
-          <div
-            fxFlex.gt-sm="53.33%"
-            fxFlex.gt-xs="53%"
-            fxFlex="100"
-            class="btn-group">
+        <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+          <div fxFlex.gt-sm="53.33%" fxFlex.gt-xs="53%" fxFlex="100" class="btn-group">
             <button
               class="sa_tab_btn"
               mat-raised-button
               color="green"
-              (click)="addAgendaHeading(agenda_drawer)">
+              (click)="addAgendaHeading(agenda_drawer)"
+            >
               Add New Heading
             </button>
           </div>
@@ -814,7 +670,8 @@
     fxFlex.md="900"
     fxFlex.sm="900"
     fxFlex.xs="900"
-    class="sa_flexbg last headding_meetings">
+    class="sa_flexbg last headding_meetings"
+  >
     <div class="create_meeting_header">
       {{ agenda_heading }}
       <span class="float-right">
@@ -822,7 +679,8 @@
           class="sa_tab_btn"
           mat-raised-button
           color="green"
-          (click)="back_page('agenda_view')">
+          (click)="back_page('agenda_view')"
+        >
           Back
         </button>
       </span>
@@ -841,9 +699,7 @@
             <ol>
               <li *ngFor="let item of agenda.agenda_item">
                 {{ item.agenda_item }} &nbsp;&nbsp;
-                <span
-                  class="margintime"
-                  *ngIf="item.staff_member != 'null' && item.duration != '0'"
+                <span class="margintime" *ngIf="item.staff_member != 'null' && item.duration != '0'"
                   >{{ item.staff_member }} - {{ item.duration }} Mins</span
                 >
               </li>
@@ -855,18 +711,12 @@
   </div>
 
   <mat-drawer-container autosize>
-    <mat-drawer
-      #agenda_drawer
-      class="example-sidenav-create"
-      mode="side"
-      position="end">
+    <mat-drawer #agenda_drawer class="example-sidenav-create" mode="side" position="end">
       <div class="card-loading" *ngIf="loader">
         <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
       </div>
       <mat-card class="meeting_card">
-        <span
-          class="close-icon float-right"
-          (click)="close(agenda_drawer, agenda_form)"
+        <span class="close-icon float-right" (click)="close(agenda_drawer, agenda_form)"
           ><i class="ti-close"></i
         ></span>
         <hr />
@@ -874,16 +724,10 @@
           <form
             (keydown.enter)="$event.preventDefault()"
             [formGroup]="create_agenda_form"
-            #agenda_form>
-            <div
-              fxLayout="row wrap"
-              class="sa_tabs_main_sec"
-              fxLayoutAlign="center">
-              <div
-                fxFlex.gt-sm="30%"
-                fxFlex.gt-xs="30%"
-                fxFlex="100"
-                class="btn-group">
+            #agenda_form
+          >
+            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+              <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
                 <label>Category</label>
               </div>
               <div
@@ -891,11 +735,13 @@
                 fxFlex.gt-xs="70%"
                 fxFlex="100"
                 class="btn-group"
-                [ngClass]="hasDisable ? 'input-disabled' : ''">
+                [ngClass]="hasDisable ? 'input-disabled' : ''"
+              >
                 <mat-form-field
                   floatLabel="never"
                   class="example-full-width create-meeting-form"
-                  appearance="outline">
+                  appearance="outline"
+                >
                   <input
                     type="text"
                     matInput
@@ -903,68 +749,51 @@
                     [disabled]="hasDisable"
                     [readonly]="hasDisable"
                     [formControl]="create_agenda_form.controls['category']"
-                    required />
+                    required
+                  />
                   <mat-error> Please Enter category </mat-error>
                 </mat-form-field>
               </div>
             </div>
 
-            <div
-              fxLayout="row wrap"
-              class="sa_tabs_main_sec"
-              fxLayoutAlign="center">
-              <div
-                fxFlex.gt-sm="30%"
-                fxFlex.gt-xs="30%"
-                fxFlex="100"
-                class="btn-group">
+            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+              <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
                 <label>Agenda Item</label>
               </div>
-              <div
-                fxFlex.gt-sm="70%"
-                fxFlex.gt-xs="70%"
-                fxFlex="100"
-                class="btn-group">
+              <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
                 <mat-form-field
                   floatLabel="never"
                   class="example-full-width create-meeting-form"
-                  appearance="outline">
+                  appearance="outline"
+                >
                   <input
                     type="text"
                     matInput
                     [(ngModel)]="agenda_item"
                     [formControl]="create_agenda_form.controls['item']"
-                    required />
+                    required
+                  />
                   <mat-error> Please Enter agenda item </mat-error>
                 </mat-form-field>
               </div>
             </div>
 
-            <div
-              fxLayout="row wrap"
-              class="sa_tabs_main_sec"
-              fxLayoutAlign="center">
-              <div
-                fxFlex.gt-sm="30%"
-                fxFlex.gt-xs="30%"
-                fxFlex="100"
-                class="btn-group">
+            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+              <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
                 <mat-label>Select Chart</mat-label>
               </div>
-              <div
-                fxFlex.gt-sm="70%"
-                fxFlex.gt-xs="70%"
-                fxFlex="100"
-                class="btn-group">
+              <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
                 <mat-form-field
                   floatLabel="never"
                   class="example-full-width create-meeting-form"
-                  appearance="outline">
+                  appearance="outline"
+                >
                   <mat-select
                     #select
                     [(ngModel)]="chart_id"
                     (ngModelChange)="openDateRangePicker()"
-                    [formControl]="create_agenda_form.controls['chart']">
+                    [formControl]="create_agenda_form.controls['chart']"
+                  >
                     <mat-option *ngFor="let chart of charts" [value]="chart.id">
                       {{ chart.chart_name }}
                     </mat-option>
@@ -977,36 +806,27 @@
               *ngIf="show_date_picker"
               fxLayout="row wrap"
               class="sa_tabs_main_sec"
-              fxLayoutAlign="center">
-              <div
-                fxFlex.gt-sm="30%"
-                fxFlex.gt-xs="30%"
-                fxFlex="100"
-                class="btn-group">
+              fxLayoutAlign="center"
+            >
+              <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
                 <mat-label>Choose clinic</mat-label>
               </div>
-              <div
-                fxFlex.gt-sm="70%"
-                fxFlex.gt-xs="70%"
-                fxFlex="100"
-                class="btn-group">
+              <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
                 <mat-form-field
                   floatLabel="never"
                   class="example-full-width create-meeting-form"
-                  appearance="outline">
+                  appearance="outline"
+                >
                   <mat-select
                     #select
                     [(ngModel)]="chart_clinic_id"
-                    [formControl]="create_agenda_form.controls['clinic']">
-                    <mat-option
-                      *ngFor="let clinic of clinics"
-                      [value]="clinic.id">
+                    [formControl]="create_agenda_form.controls['clinic']"
+                  >
+                    <mat-option *ngFor="let clinic of clinics" [value]="clinic.id">
                       {{ clinic.clinicName }}
                     </mat-option>
                   </mat-select>
-                  <mat-error>
-                    Please Select clinic for selected chart.
-                  </mat-error>
+                  <mat-error> Please Select clinic for selected chart. </mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -1015,158 +835,116 @@
               *ngIf="show_date_picker"
               fxLayout="row wrap"
               class="sa_tabs_main_sec"
-              fxLayoutAlign="center">
-              <div
-                fxFlex.gt-sm="30%"
-                fxFlex.gt-xs="30%"
-                fxFlex="100"
-                class="btn-group">
+              fxLayoutAlign="center"
+            >
+              <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
                 <mat-label>Start & End Date</mat-label>
               </div>
-              <div
-                fxFlex.gt-sm="70%"
-                fxFlex.gt-xs="70%"
-                fxFlex="100"
-                class="btn-group">
+              <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
                 <mat-form-field
                   floatLabel="never"
                   class="example-full-width create-meeting-form"
-                  appearance="outline">
+                  appearance="outline"
+                >
                   <mat-date-range-input [rangePicker]="picker_range">
                     <input
                       [(ngModel)]="chart_start_date"
                       [formControl]="create_agenda_form.controls['start_date']"
-                      matStartDate />
+                      matStartDate
+                    />
                     <input
                       [(ngModel)]="chart_end_date"
                       [formControl]="create_agenda_form.controls['end_date']"
-                      matEndDate />
+                      matEndDate
+                    />
                   </mat-date-range-input>
-                  <mat-datepicker-toggle
-                    matSuffix
-                    [for]="picker_range"></mat-datepicker-toggle>
+                  <mat-datepicker-toggle matSuffix [for]="picker_range"></mat-datepicker-toggle>
                   <mat-date-range-picker #picker_range></mat-date-range-picker>
                   <mat-error> Please Select start Date & End Date </mat-error>
                 </mat-form-field>
               </div>
             </div>
 
-            <div
-              fxLayout="row wrap"
-              class="sa_tabs_main_sec"
-              fxLayoutAlign="center">
-              <div
-                fxFlex.gt-sm="30%"
-                fxFlex.gt-xs="30%"
-                fxFlex="100"
-                class="btn-group">
+            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+              <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
                 <label>Staff Member</label>
               </div>
-              <div
-                fxFlex.gt-sm="70%"
-                fxFlex.gt-xs="70%"
-                fxFlex="100"
-                class="btn-group">
+              <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
                 <mat-form-field
                   floatLabel="never"
                   class="example-full-width create-meeting-form"
-                  appearance="outline">
+                  appearance="outline"
+                >
                   <input
                     type="text"
                     [(ngModel)]="agenda_staff_member"
                     matInput
-                    [formControl]="create_agenda_form.controls['person']" />
+                    [formControl]="create_agenda_form.controls['person']"
+                  />
                 </mat-form-field>
               </div>
             </div>
-            <div
-              fxLayout="row wrap"
-              class="sa_tabs_main_sec"
-              fxLayoutAlign="center">
-              <div
-                fxFlex.gt-sm="30%"
-                fxFlex.gt-xs="30%"
-                fxFlex="100"
-                class="btn-group">
+            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+              <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
                 <label>Duration (mins)</label>
               </div>
-              <div
-                fxFlex.gt-sm="70%"
-                fxFlex.gt-xs="70%"
-                fxFlex="100"
-                class="btn-group">
+              <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
                 <mat-form-field
                   floatLabel="never"
                   class="example-full-width create-meeting-form"
-                  appearance="outline">
+                  appearance="outline"
+                >
                   <input
                     type="number"
                     [(ngModel)]="agenda_duration"
                     min="1"
                     matInput
-                    [formControl]="create_agenda_form.controls['duration']" />
+                    [formControl]="create_agenda_form.controls['duration']"
+                  />
                 </mat-form-field>
               </div>
             </div>
-            <div
-              fxLayout="row wrap"
-              class="sa_tabs_main_sec"
-              fxLayoutAlign="center">
-              <div
-                fxFlex.gt-sm="30%"
-                fxFlex.gt-xs="30%"
-                fxFlex="100"
-                class="btn-group">
+            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+              <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="btn-group">
                 <label>Add a description</label>
               </div>
-              <div
-                fxFlex.gt-sm="70%"
-                fxFlex.gt-xs="70%"
-                fxFlex="100"
-                class="btn-group">
+              <div fxFlex.gt-sm="70%" fxFlex.gt-xs="70%" fxFlex="100" class="btn-group">
                 <mat-form-field
                   floatLabel="never"
                   class="example-full-width create-meeting-form"
-                  appearance="outline">
+                  appearance="outline"
+                >
                   <textarea
                     matInput
                     placeholder="..."
                     [(ngModel)]="agenda_description"
                     [formControl]="create_agenda_form.controls['description']"
-                    required></textarea>
+                    required
+                  ></textarea>
                   <mat-error> Please Enter Description </mat-error>
                 </mat-form-field>
               </div>
             </div>
 
-            <div
-              fxLayout="row wrap"
-              class="sa_tabs_main_sec"
-              fxLayoutAlign="center">
-              <div
-                fxFlex.gt-sm="23.33%"
-                fxFlex.gt-xs="23%"
-                fxFlex="100"
-                class="btn-group">
+            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+              <div fxFlex.gt-sm="23.33%" fxFlex.gt-xs="23%" fxFlex="100" class="btn-group">
                 <button
                   type="button"
                   mat-button
                   (click)="close(agenda_drawer, agenda_form)"
-                  class="mat-raised-button mat-gray">
+                  class="mat-raised-button mat-gray"
+                >
                   Cancel
                 </button>
               </div>
-              <div
-                fxFlex.gt-sm="33.33%"
-                fxFlex.gt-xs="33%"
-                fxFlex="100"
-                class="btn-group">
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
                 <button
                   type="submit"
                   class="sa_tab_btn"
                   mat-raised-button
                   color="green"
-                  (click)="save_agenda(create_agenda_form)">
+                  (click)="save_agenda(create_agenda_form)"
+                >
                   Save
                 </button>
               </div>
@@ -1185,7 +963,8 @@
     fxFlex.md="900"
     fxFlex.sm="900"
     fxFlex.xs="900"
-    class="sa_flexbg last headding_meetings">
+    class="sa_flexbg last headding_meetings"
+  >
     <div class="create_meeting_header">
       {{ agenda_heading }}
       <span class="float-right">
@@ -1193,7 +972,8 @@
           class="sa_tab_btn"
           mat-raised-button
           color="green"
-          (click)="back_page('board_meeting')">
+          (click)="back_page('board_meeting')"
+        >
           Back
         </button>
       </span>
@@ -1227,22 +1007,19 @@
             </ol>
           </div>
         </div>
-        <mat-card
-          *ngIf="showAttendees && meeting_attendees.length > 0"
-          class="meeting_card">
+        <mat-card *ngIf="showAttendees && meeting_attendees.length > 0" class="meeting_card">
           <mat-card-title class="header">
             <div class="meeting_card_header">Attendees</div>
           </mat-card-title>
           <hr />
           <mat-card-content>
             <div>
-              <mat-chip-list
-                class="example-chip"
-                cdkDropListOrientation="horizontal">
+              <mat-chip-list class="example-chip" cdkDropListOrientation="horizontal">
                 <mat-chip
                   class="example-box"
                   *ngFor="let attendees of meeting_attendees"
-                  [selected]="attendees.attended == 1">
+                  [selected]="attendees.attended == 1"
+                >
                   {{ attendees.user_name }}
                 </mat-chip>
               </mat-chip-list>
@@ -1251,21 +1028,9 @@
         </mat-card>
       </mat-card-content>
     </mat-card>
-    <div
-      *ngIf="notAttended"
-      fxLayout="row wrap"
-      class="sa_tabs_main_sec"
-      fxLayoutAlign="center">
-      <div
-        fxFlex.gt-sm="33.33%"
-        fxFlex.gt-xs="33%"
-        fxFlex="100"
-        class="btn-group">
-        <button
-          class="sa_tab_btn"
-          mat-raised-button
-          color="green"
-          (click)="confirmMeetingAttend()">
+    <div *ngIf="notAttended" fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+      <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+        <button class="sa_tab_btn" mat-raised-button color="green" (click)="confirmMeetingAttend()">
           Confirm Meeting Review
         </button>
       </div>
@@ -1275,17 +1040,10 @@
       *ngIf="isMeetingCreator"
       fxLayout="row wrap"
       class="sa_tabs_main_sec"
-      fxLayoutAlign="center">
-      <div
-        fxFlex.gt-sm="33.33%"
-        fxFlex.gt-xs="33%"
-        fxFlex="100"
-        class="btn-group">
-        <button
-          class="sa_tab_btn"
-          mat-raised-button
-          color="green"
-          (click)="markCompleteMeeting()">
+      fxLayoutAlign="center"
+    >
+      <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33%" fxFlex="100" class="btn-group">
+        <button class="sa_tab_btn" mat-raised-button color="green" (click)="markCompleteMeeting()">
           mark complete
         </button>
       </div>

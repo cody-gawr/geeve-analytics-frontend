@@ -30,16 +30,10 @@ const components = [
   SetupLayoutComponent,
   AppSidebarComponent,
   AppMenuComponent,
-  AppSwitchMenu
+  AppSwitchMenu,
 ];
 
-const services = [
-  AuthFacade,
-  AppLayoutService,
-  ClinicFacade,
-  LayoutFacade,
-  DentistFacade,
-];
+const services = [AuthFacade, AppLayoutService, ClinicFacade, LayoutFacade, DentistFacade];
 
 @NgModule({
   imports: [

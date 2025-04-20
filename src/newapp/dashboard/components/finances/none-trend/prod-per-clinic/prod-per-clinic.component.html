@@ -4,20 +4,18 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title">
-    {{
-      (isMultipleClinic$ | async)
-        ? 'Production % Per Clinic'
-        : 'Production % Per Clinician'
-    }}
+    {{ (isMultipleClinic$ | async) ? 'Production % Per Clinic' : 'Production % Per Clinician' }}
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper prod-per-clinic-pie-chart">
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
@@ -29,16 +27,13 @@
             [datasets]="datasets"
             [labels]="labels"
             type="doughnut"
-            [options]="pieChartOptions"></canvas>
-          <spin-loader
-            class="empty-placeholder"
-            *ngIf="labels.length <= 0"
-            [disableSpin]="true">
+            [options]="pieChartOptions"
+          ></canvas>
+          <spin-loader class="empty-placeholder" *ngIf="labels.length <= 0" [disableSpin]="true">
             You have no production in the selected period
           </spin-loader>
         </ng-template>
       </ng-template>
-
     </div>
   </div>
 </div>

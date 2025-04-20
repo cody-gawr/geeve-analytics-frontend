@@ -7,7 +7,8 @@
         (mouseover)="showtooltip=true"
         src="../assets/images/info-icon.png"
         alt="info-icon"
-        class="info-icon" />
+        class="info-icon"
+      />
     </div>
   </h1>
 
@@ -18,7 +19,8 @@
         <h2>{{ rl.role }}</h2>
         <h5
           *ngFor="let prms of rl.permisions"
-          [style.display]="rolesAll[prms] != undefined ? 'inline' : 'none'">
+          [style.display]="rolesAll[prms] != undefined ? 'inline' : 'none'"
+        >
           {{ rolesAll[prms] }}
         </h5>
       </div>
@@ -33,7 +35,8 @@
         (keyup)="display_name_error = $event.target.value == ''"
         class="mat-form-control"
         required="true"
-        placeholder="" />
+        placeholder=""
+      />
       <mat-error class="none-zero-error" *ngIf="display_name_error">
         Please enter display name.
       </mat-error>
@@ -47,10 +50,9 @@
         (keyup)="checkEmail($event.target.value)"
         class="mat-form-control"
         required="true"
-        placeholder="" />
-      <mat-error class="none-zero-error" *ngIf="email_error">
-        please enter email.
-      </mat-error>
+        placeholder=""
+      />
+      <mat-error class="none-zero-error" *ngIf="email_error"> please enter email. </mat-error>
       <mat-error class="none-zero-error" *ngIf="validMailError">
         please enter valid email.
       </mat-error>
@@ -62,7 +64,8 @@
         class="sa_select mat-form-control"
         name="user_type"
         [(ngModel)]="data.user_type"
-        (ngModelChange)="loadDentist($event)">
+        (ngModelChange)="loadDentist($event)"
+      >
         <option value="6" *ngIf="loginUserType == '2'">Owner</option>
         <!-- <option value ="7" *ngIf="data.hasPrimeClinics == 'yes'" >Consultant</option> -->
         <option value="7">Consultant</option>
@@ -78,13 +81,15 @@
         [formControl]="selectedClinics"
         multiple
         (openedChange)="clinicSelect($event)"
-        class="user_add">
+        class="user_add"
+      >
         <mat-option *ngFor="let clinics of data.clinics" [value]="clinics.id"
           >{{clinics.clinicName}}</mat-option
         >
         <button
           class="mat-raised-button mat-dc float-right addUserSelectClinicBtn"
-          (click)="matSelect.close()">
+          (click)="matSelect.close()"
+        >
           OK
         </button>
       </mat-select>
@@ -96,7 +101,8 @@
       <div
         class="selectedClinicProviders"
         *ngFor="let clinicProviders of selectedClinicProviders; let i=index"
-        [ngClass]="checkColumn(i)">
+        [ngClass]="checkColumn(i)"
+      >
         <label>{{clinicProviders.clinicName}}</label>
         <span>
           <select
@@ -104,17 +110,17 @@
             class="sa_select sa_select_set_roles mat-form-control"
             name="dentist_id"
             required="true"
-            *ngIf="clinicProviders.config_dentists.length>0">
+            *ngIf="clinicProviders.config_dentists.length>0"
+          >
             <option value="0">Select Dentist</option>
             <option
               *ngFor="let dentist of clinicProviders.config_dentists"
-              value="{{dentist.providerId}}">
+              value="{{dentist.providerId}}"
+            >
               {{dentist.name}}
             </option>
           </select>
-          <span *ngIf="clinicProviders.config_dentists.length <= 0">
-            - No Dentist</span
-          >
+          <span *ngIf="clinicProviders.config_dentists.length <= 0"> - No Dentist</span>
         </span>
       </div>
       <mat-error class="none-zero-error" *ngIf="select_dentist_error">
@@ -123,18 +129,11 @@
     </div>
   </div>
   <div mat-dialog-actions class="justify-between">
-    <button
-      mat-button
-      (click)="onNoClick()"
-      tabindex="-1"
-      class="mat-raised-button mat-gray">
+    <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">
       Cancel
     </button>
     <!-- <button *ngIf="data.user_type == 4" (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc float-right">Add</button> -->
-    <button
-      (click)="save(data)"
-      tabindex="2"
-      class="mat-raised-button mat-dc float-right">
+    <button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc float-right">
       Add
     </button>
   </div>

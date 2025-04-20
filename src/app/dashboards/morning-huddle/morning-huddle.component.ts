@@ -70,7 +70,7 @@ export class DialogOverviewExampleDialogComponent {
     private _cookieService: CookieService,
     private router: Router,
     private morningHuddleService: MorningHuddleService,
-  ) { }
+  ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -82,14 +82,7 @@ export class DialogOverviewExampleDialogComponent {
     }
 
     this.morningHuddleService
-      .notes(
-        data.notes,
-        data.patientId,
-        data.date,
-        data.clinic_id,
-        data.followup_date,
-        data.type
-      )
+      .notes(data.notes, data.patientId, data.date, data.clinic_id, data.followup_date, data.type)
       .subscribe({
         next: res => {
           if (res.status == 200) {
@@ -130,8 +123,8 @@ export class StatusDialogMHComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
     private router: Router,
-    private morningHuddle: MorningHuddleService
-  ) { }
+    private morningHuddle: MorningHuddleService,
+  ) {}
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -144,7 +137,7 @@ export class StatusDialogMHComponent {
         data.cid,
         data.type,
         data.original_appt_date,
-        data.followup_date
+        data.followup_date,
       )
       .subscribe((update: any) => {
         this.onNoClick();
@@ -156,7 +149,7 @@ export class StatusDialogMHComponent {
               data.type,
               data.followup_date,
               this.nextDate,
-              data.original_appt_date
+              data.original_appt_date,
             )
             .subscribe(update => {
               if (update.message === 'already') {
@@ -184,7 +177,7 @@ export class StatusDialogMHComponent {
         data.cid,
         data.type,
         data.original_appt_date,
-        data.followup_date
+        data.followup_date,
       )
       .subscribe((update: any) => {
         if (update.status && event != 'no') {
@@ -196,7 +189,7 @@ export class StatusDialogMHComponent {
               data.followup_date,
               this.nextDate,
               data.original_appt_date,
-              event
+              event,
             )
             .subscribe(clone => {
               if (clone.message === 'already') {
@@ -356,9 +349,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public get isHygienist(): boolean {
     return (
       this.isExact &&
-      this.appointmentCards.data.findIndex(
-        (a: any) => a.hyg_id && !!a.hyg_id.trim()
-      ) >= 0
+      this.appointmentCards.data.findIndex((a: any) => a.hyg_id && !!a.hyg_id.trim()) >= 0
     );
   }
 
@@ -367,9 +358,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   public get isExactOrCoreOrPraktika(): boolean {
-    return this.localStorageService.isEachClinicExactOrCoreOrPraktika(
-      this.clinic_id
-    );
+    return this.localStorageService.isEachClinicExactOrCoreOrPraktika(this.clinic_id);
   }
 
   public get isExact(): boolean {
@@ -385,33 +374,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   displayedColumns2: string[] = ['start', 'name', 'code'];
   displayedColumns3: string[] = ['start', 'name', 'outstanding'];
   displayedColumns4: string[] = ['name', 'phone', 'code', 'status'];
-  displayedColumns5: string[] = [
-    'name',
-    'phone',
-    'code',
-    'dentist',
-    'date',
-    'status'
-  ];
+  displayedColumns5: string[] = ['name', 'phone', 'code', 'dentist', 'date', 'status'];
   displayedColumns6: string[] = ['start', 'dentist', 'name', 'card'];
-  displayedColumns7: string[] = [
-    'name',
-    'phone',
-    'code',
-    'provider',
-    'note',
-    'book',
-    'status',
-  ];
-  displayedColumns8: string[] = [
-    'name',
-    'phone',
-    'code',
-    'dentist',
-    'note',
-    'book',
-    'status',
-  ];
+  displayedColumns7: string[] = ['name', 'phone', 'code', 'provider', 'note', 'book', 'status'];
+  displayedColumns8: string[] = ['name', 'phone', 'code', 'dentist', 'note', 'book', 'status'];
   displayedColumns9: string[] = ['name', 'completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity', 'am', 'pm'];
   //displayedColumns11: string[] = ['start', 'dentist', 'name', 'statuscode', 'card', 'rebooked'];
@@ -429,41 +395,17 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           'rebooked',
         ];
       }
-      return [
-        'start',
-        'dentist',
-        'name',
-        'statuscode',
-        'card',
-        'sendReview',
-        'rebooked',
-      ];
+      return ['start', 'dentist', 'name', 'statuscode', 'card', 'sendReview', 'rebooked'];
     } else {
       if (this.isHygienist) {
-        return [
-          'start',
-          'dentist',
-          'hygienist',
-          'name',
-          'statuscode',
-          'card',
-          'rebooked',
-        ];
+        return ['start', 'dentist', 'hygienist', 'name', 'statuscode', 'card', 'rebooked'];
       }
       return ['start', 'dentist', 'name', 'statuscode', 'card', 'rebooked'];
     }
   }
   get displayedColumns12() {
     if (this.isHygienist) {
-      return [
-        'start',
-        'dentist',
-        'hygienist',
-        'name',
-        'statuscode',
-        'card',
-        'rebooked',
-      ];
+      return ['start', 'dentist', 'hygienist', 'name', 'statuscode', 'card', 'rebooked'];
     }
     return ['start', 'dentist', 'name', 'statuscode', 'card', 'rebooked'];
   }
@@ -502,7 +444,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public chartstipsService: ChartstipsService,
     public clinicianAnalysisService: ClinicianAnalysisService,
-    private callStatusService: CallStatusService
+    private callStatusService: CallStatusService,
   ) {
     // this.getChartsTips();
     this.selected = { start: moment() };
@@ -564,24 +506,14 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       };
     });
     this.morningHuddleService
-      .getCreditStatus(
-        this.clinic_id,
-        remindersData,
-        this.previousDays.split('T')[0]
-      )
+      .getCreditStatus(this.clinic_id, remindersData, this.previousDays.split('T')[0])
       .subscribe(res => {
         if (res.status) {
           this.remainCredits = res.data.remain_credits;
           this.costPerSMS = res.data.cost_per_sms;
           const statusList = res.data.sms_status_list;
-          this.remindersRecallsOverdue = _.merge(
-            this.remindersRecallsOverdue,
-            statusList
-          );
-          this.remindersRecallsOverdueTemp = _.merge(
-            this.remindersRecallsOverdueTemp,
-            statusList
-          );
+          this.remindersRecallsOverdue = _.merge(this.remindersRecallsOverdue, statusList);
+          this.remindersRecallsOverdueTemp = _.merge(this.remindersRecallsOverdueTemp, statusList);
         }
       });
   }
@@ -622,38 +554,35 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       }
 
       if (this.creditStatusTimer) clearInterval(this.creditStatusTimer);
-      this.clinicianAnalysisService
-        .getClinicFollowUpSettings(this.clinic_id)
-        .subscribe({
-          next: v => {
-            // if (res.status == 200) {
-            this.isEnablePO = v.data.post_op_enable == 1 ? true : false;
-            this.isEnableOR = v.data.recall_enable == 1 ? true : false;
-            this.isEnableTH = v.data.tick_enable == 1 ? true : false;
-            this.isEnableFT = v.data.fta_enable == 1 ? true : false;
-            this.isEnableUT = v.data.uta_enable == 1 ? true : false;
-            this.isEnabletasks = v.data.daily_task_enable == 1 ? true : false;
-            this.isEnableEquipList =
-              v.data.equip_list_enable == 1 ? true : false;
-            if (v.data.sms_enabled != undefined)
-              this.isSMSEnabled =
-                !!v.data.sms_enabled &&
-                parseInt(this.user_type) != 4 &&
-                parseInt(this.user_type) != 7;
-            if (v.data.accepted_sms_terms != undefined)
-              this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
-            if (this.isSMSEnabled) {
-              // this.updateCreditStatus();
-              this.creditStatusTimer = setInterval(() => {
-                this.updateCreditStatus();
-              }, 30000);
-            }
-            //}
-          },
-          error: e => {
-            console.error(e);
-          },
-        });
+      this.clinicianAnalysisService.getClinicFollowUpSettings(this.clinic_id).subscribe({
+        next: v => {
+          // if (res.status == 200) {
+          this.isEnablePO = v.data.post_op_enable == 1 ? true : false;
+          this.isEnableOR = v.data.recall_enable == 1 ? true : false;
+          this.isEnableTH = v.data.tick_enable == 1 ? true : false;
+          this.isEnableFT = v.data.fta_enable == 1 ? true : false;
+          this.isEnableUT = v.data.uta_enable == 1 ? true : false;
+          this.isEnabletasks = v.data.daily_task_enable == 1 ? true : false;
+          this.isEnableEquipList = v.data.equip_list_enable == 1 ? true : false;
+          if (v.data.sms_enabled != undefined)
+            this.isSMSEnabled =
+              !!v.data.sms_enabled &&
+              parseInt(this.user_type) != 4 &&
+              parseInt(this.user_type) != 7;
+          if (v.data.accepted_sms_terms != undefined)
+            this.isAcceptedSMSTerms = !!v.data.accepted_sms_terms;
+          if (this.isSMSEnabled) {
+            // this.updateCreditStatus();
+            this.creditStatusTimer = setInterval(() => {
+              this.updateCreditStatus();
+            }, 30000);
+          }
+          //}
+        },
+        error: e => {
+          console.error(e);
+        },
+      });
 
       this.dentist_id = this._cookieService.get('dentistid');
       if (this.user_type != '5') {
@@ -743,10 +672,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     if (this.currentDentist != 0) {
       var temp = [];
       this.appointmentCardsTemp.forEach(val => {
-        if (
-          val.provider_id == this.currentDentist ||
-          val.hyg_id == this.currentDentist
-        ) {
+        if (val.provider_id == this.currentDentist || val.hyg_id == this.currentDentist) {
           temp.push(val);
         }
       });
@@ -756,19 +682,19 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.appointmentCards.data = this.appointmentCardsTemp;
     }
     this.scheduleNewPatient = this.appointmentCards.data.filter(
-      (item: any) => item.is_new_patient == 'Yes'
+      (item: any) => item.is_new_patient == 'Yes',
     ).length;
     this.schedulehours = _.round(
       _.chain(this.appointmentCards.data)
         .sumBy((item: any) => parseInt(item.duration))
         .value() / 60,
-      2
+      2,
     );
     this.unSchedulehours = _.round(
       _.chain(this.appointmentCards.data)
         .sumBy((item: any) => Math.round(item.outstanding_item_value))
         .value(),
-      0
+      0,
     );
     this.appointmentCardsLoaders = false;
     this.scheduleNewPatientsLoader = false;
@@ -802,10 +728,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.todayUnscheduledBal = _.round(
       _.chain(this.remindersRecallsOverdue)
         .sumBy((item: any) => parseInt(item.due_balance))
-        .value()
+        .value(),
     );
     this.scheduleNewPatient = this.remindersRecallsOverdue.filter(
-      (item: any) => item.is_new_patient == 'Yes'
+      (item: any) => item.is_new_patient == 'Yes',
     ).length;
     this.remindersRecallsOverdueLoader = false;
     this.scheduleNewPatientsLoader = false;
@@ -826,186 +752,165 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
     this.clinicDentistsReminders = [];
 
-    this.morningHuddleService
-      .getReminders(this.clinic_id, this.previousDays, null)
-      .subscribe({
-        next: res => {
-          this.remindersRecallsOverdueLoader = false;
-          if (res.status == 200) {
-            this.apiSuccessCount += 1;
-            this.showXrayOverdue = false;
-            this.OPGOverdue = false;
-            this.OverdueRecalls = false;
-            this.LabNeeded = false;
-            this.showStatusCode = false;
-            if (res.body.status_codes_enable == 1) {
-              this.showStatusCode = true;
-            }
-            if (res.body.xray_overdue_enable == 1) {
-              this.showXrayOverdue = true;
-            }
-            if (res.body.opg_overdue_enable == 1) {
-              this.OPGOverdue = true;
-            }
-            if (res.body.recall_overdue_enable == 1) {
-              this.OverdueRecalls = true;
-            }
-            if (res.body.lab_needed_enable == 1) {
-              this.LabNeeded = true;
-            }
-            this.remindersTotal = res.body.total;
-            if (this.isSMSEnabled) {
-              const remindersData = res.body.data.map(d => {
-                return {
-                  appoint_id: d.appoint_id,
-                  phone_number: d.mobile,
-                  patient_id: d.patient_id,
-                };
-              });
-              this.morningHuddleService
-                .getCreditStatus(
-                  this.clinic_id,
-                  remindersData,
-                  this.previousDays.split('T')[0]
-                )
-                .subscribe(v2 => {
-                  if (v2.status) {
-                    this.remainCredits = v2.data.remain_credits;
-                    this.costPerSMS = v2.data.cost_per_sms;
-                    const statusList = v2.data.sms_status_list;
-
-                    const reminderList = _.merge(res.body.data, statusList);
-                    this.remindersRecallsOverdueTemp = reminderList;
-                    this.remindersRecallsOverdue = reminderList;
-                    this.remindersRecallsOverdueDate = this.datepipe
-                      .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
-                      .replace(/\s/, 'T');
-                    if (this.user_type == '4') {
-                      this.dentistid = this._cookieService.get('dentistid');
-                      this.refreshReminderTab(this.dentistid);
-                    } else {
-                      res.body.data.forEach(val => {
-                        var isExsist = this.clinicDentistsReminders.filter(
-                          function (person) {
-                            return person.provider_id == val.provider_id;
-                          }
-                        );
-                        if (isExsist.length <= 0) {
-                          var nm =
-                            val.jeeve_name != '' && val.jeeve_name
-                              ? val.jeeve_name
-                              : val.provider_name;
-                          var temp = {
-                            provider_id: val.provider_id,
-                            provider_name: nm,
-                          };
-                          if (temp.provider_name != null)
-                            this.clinicDentistsReminders.push(temp);
-                        }
-
-                        if (
-                          this.isExact &&
-                          this.remindersRecallsOverdue.findIndex(
-                            (a: any) => a.hyg_id && !!a.hyg_id.trim()
-                          ) >= 0
-                        ) {
-                          const hyg_id = parseInt(val.hyg_id);
-                          if (hyg_id > 0) {
-                            var isExsist1 = this.clinicDentistsReminders.filter(
-                              function (person) {
-                                return person.hyg_id == hyg_id;
-                              }
-                            );
-                            if (isExsist1.length <= 0) {
-                              var temp1 = {
-                                hyg_id: hyg_id,
-                                provider_id: null,
-                                provider_name: val.hyg_name,
-                              };
-                              if (temp1.provider_name != null)
-                                this.clinicDentistsReminders.push(temp1);
-                            }
-                          }
-                        }
-                      });
-                      this.clinicDentistsReminders.sort(function (x, y) {
-                        let a = x.provider_name.toUpperCase(),
-                          b = y.provider_name.toUpperCase();
-                        return a == b ? 0 : a > b ? 1 : -1;
-                      });
-                    }
-                    this.refreshReminderTab(this.selectDentist);
-                  }
-                });
-            } else {
-              this.remindersRecallsOverdueTemp = res.body.data;
-              this.remindersRecallsOverdue = res.body.data;
-              this.remindersRecallsOverdueDate = this.datepipe
-                .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
-                .replace(/\s/, 'T');
-              if (this.user_type == '4') {
-                this.dentistid = this._cookieService.get('dentistid');
-                this.refreshReminderTab(this.dentistid);
-              } else {
-                res.body.data.forEach(val => {
-                  var isExsist = this.clinicDentistsReminders.filter(
-                    function (person) {
-                      return person.provider_id == val.provider_id;
-                    }
-                  );
-                  if (isExsist.length <= 0) {
-                    var nm =
-                      val.jeeve_name != '' && val.jeeve_name
-                        ? val.jeeve_name
-                        : val.provider_name;
-                    var temp = {
-                      provider_id: val.provider_id,
-                      provider_name: nm,
-                    };
-                    if (temp.provider_name != null)
-                      this.clinicDentistsReminders.push(temp);
-                  }
-                  if (
-                    this.isExact &&
-                    this.remindersRecallsOverdue.findIndex(
-                      (a: any) => a.hyg_id && !!a.hyg_id.trim()
-                    ) >= 0
-                  ) {
-                    const hyg_id = parseInt(val.hyg_id);
-                    var isExsist1 = this.clinicDentistsReminders.filter(
-                      function (person) {
-                        return person.hyg_id == hyg_id;
-                      }
-                    );
-                    if (isExsist1.length <= 0) {
-                      var temp1 = {
-                        hyg_id: hyg_id,
-                        provider_id: null,
-                        provider_name: val.hyg_name,
-                      };
-                      if (temp1.provider_name != null)
-                        this.clinicDentistsReminders.push(temp1);
-                    }
-                  }
-                });
-                this.clinicDentistsReminders.sort(function (x, y) {
-                  let a = x.provider_name.toUpperCase(),
-                    b = y.provider_name.toUpperCase();
-                  return a == b ? 0 : a > b ? 1 : -1;
-                });
-              }
-              this.refreshReminderTab(this.selectDentist);
-            }
-          } else if (res.status == 401) {
-            this.handleUnAuthorization();
+    this.morningHuddleService.getReminders(this.clinic_id, this.previousDays, null).subscribe({
+      next: res => {
+        this.remindersRecallsOverdueLoader = false;
+        if (res.status == 200) {
+          this.apiSuccessCount += 1;
+          this.showXrayOverdue = false;
+          this.OPGOverdue = false;
+          this.OverdueRecalls = false;
+          this.LabNeeded = false;
+          this.showStatusCode = false;
+          if (res.body.status_codes_enable == 1) {
+            this.showStatusCode = true;
           }
-        },
-        error: e => {
+          if (res.body.xray_overdue_enable == 1) {
+            this.showXrayOverdue = true;
+          }
+          if (res.body.opg_overdue_enable == 1) {
+            this.OPGOverdue = true;
+          }
+          if (res.body.recall_overdue_enable == 1) {
+            this.OverdueRecalls = true;
+          }
+          if (res.body.lab_needed_enable == 1) {
+            this.LabNeeded = true;
+          }
+          this.remindersTotal = res.body.total;
+          if (this.isSMSEnabled) {
+            const remindersData = res.body.data.map(d => {
+              return {
+                appoint_id: d.appoint_id,
+                phone_number: d.mobile,
+                patient_id: d.patient_id,
+              };
+            });
+            this.morningHuddleService
+              .getCreditStatus(this.clinic_id, remindersData, this.previousDays.split('T')[0])
+              .subscribe(v2 => {
+                if (v2.status) {
+                  this.remainCredits = v2.data.remain_credits;
+                  this.costPerSMS = v2.data.cost_per_sms;
+                  const statusList = v2.data.sms_status_list;
+
+                  const reminderList = _.merge(res.body.data, statusList);
+                  this.remindersRecallsOverdueTemp = reminderList;
+                  this.remindersRecallsOverdue = reminderList;
+                  this.remindersRecallsOverdueDate = this.datepipe
+                    .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
+                    .replace(/\s/, 'T');
+                  if (this.user_type == '4') {
+                    this.dentistid = this._cookieService.get('dentistid');
+                    this.refreshReminderTab(this.dentistid);
+                  } else {
+                    res.body.data.forEach(val => {
+                      var isExsist = this.clinicDentistsReminders.filter(function (person) {
+                        return person.provider_id == val.provider_id;
+                      });
+                      if (isExsist.length <= 0) {
+                        var nm =
+                          val.jeeve_name != '' && val.jeeve_name
+                            ? val.jeeve_name
+                            : val.provider_name;
+                        var temp = {
+                          provider_id: val.provider_id,
+                          provider_name: nm,
+                        };
+                        if (temp.provider_name != null) this.clinicDentistsReminders.push(temp);
+                      }
+
+                      if (
+                        this.isExact &&
+                        this.remindersRecallsOverdue.findIndex(
+                          (a: any) => a.hyg_id && !!a.hyg_id.trim(),
+                        ) >= 0
+                      ) {
+                        const hyg_id = parseInt(val.hyg_id);
+                        if (hyg_id > 0) {
+                          var isExsist1 = this.clinicDentistsReminders.filter(function (person) {
+                            return person.hyg_id == hyg_id;
+                          });
+                          if (isExsist1.length <= 0) {
+                            var temp1 = {
+                              hyg_id: hyg_id,
+                              provider_id: null,
+                              provider_name: val.hyg_name,
+                            };
+                            if (temp1.provider_name != null)
+                              this.clinicDentistsReminders.push(temp1);
+                          }
+                        }
+                      }
+                    });
+                    this.clinicDentistsReminders.sort(function (x, y) {
+                      let a = x.provider_name.toUpperCase(),
+                        b = y.provider_name.toUpperCase();
+                      return a == b ? 0 : a > b ? 1 : -1;
+                    });
+                  }
+                  this.refreshReminderTab(this.selectDentist);
+                }
+              });
+          } else {
+            this.remindersRecallsOverdueTemp = res.body.data;
+            this.remindersRecallsOverdue = res.body.data;
+            this.remindersRecallsOverdueDate = this.datepipe
+              .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
+              .replace(/\s/, 'T');
+            if (this.user_type == '4') {
+              this.dentistid = this._cookieService.get('dentistid');
+              this.refreshReminderTab(this.dentistid);
+            } else {
+              res.body.data.forEach(val => {
+                var isExsist = this.clinicDentistsReminders.filter(function (person) {
+                  return person.provider_id == val.provider_id;
+                });
+                if (isExsist.length <= 0) {
+                  var nm =
+                    val.jeeve_name != '' && val.jeeve_name ? val.jeeve_name : val.provider_name;
+                  var temp = {
+                    provider_id: val.provider_id,
+                    provider_name: nm,
+                  };
+                  if (temp.provider_name != null) this.clinicDentistsReminders.push(temp);
+                }
+                if (
+                  this.isExact &&
+                  this.remindersRecallsOverdue.findIndex(
+                    (a: any) => a.hyg_id && !!a.hyg_id.trim(),
+                  ) >= 0
+                ) {
+                  const hyg_id = parseInt(val.hyg_id);
+                  var isExsist1 = this.clinicDentistsReminders.filter(function (person) {
+                    return person.hyg_id == hyg_id;
+                  });
+                  if (isExsist1.length <= 0) {
+                    var temp1 = {
+                      hyg_id: hyg_id,
+                      provider_id: null,
+                      provider_name: val.hyg_name,
+                    };
+                    if (temp1.provider_name != null) this.clinicDentistsReminders.push(temp1);
+                  }
+                }
+              });
+              this.clinicDentistsReminders.sort(function (x, y) {
+                let a = x.provider_name.toUpperCase(),
+                  b = y.provider_name.toUpperCase();
+                return a == b ? 0 : a > b ? 1 : -1;
+              });
+            }
+            this.refreshReminderTab(this.selectDentist);
+          }
+        } else if (res.status == 401) {
           this.handleUnAuthorization();
-        },
-      });
-
-
+        }
+      },
+      error: e => {
+        this.handleUnAuthorization();
+      },
+    });
   }
 
   /*  getFollowupsUnscheduledPatients(){
@@ -1035,11 +940,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.poLoadingLoading = true;
     this.futureDateOP = '';
     this.morningHuddleService
-      .followupPostOpCalls(
-        this.clinic_id,
-        this.previousDays,
-        this.postOpCallsDays
-      )
+      .followupPostOpCalls(this.clinic_id, this.previousDays, this.postOpCallsDays)
       .subscribe({
         next: (res: any) => {
           this.followupPostOpCallsInComp = [];
@@ -1060,8 +961,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               if (this.postopCallsPostOp) {
                 this.followupPostOpCallsInComp = this.followupPostOpCalls;
               } else {
-                this.followupPostOpCallsInComp =
-                  this.followupPostOpCalls.filter(p => !p.is_complete);
+                this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
+                  p => !p.is_complete,
+                );
               }
             }
 
@@ -1082,11 +984,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
     this.futureDateOR = '';
     this.morningHuddleService
-      .followupOverdueRecalls(
-        this.clinic_id,
-        this.previousDays,
-        this.postOpCallsDays
-      )
+      .followupOverdueRecalls(this.clinic_id, this.previousDays, this.postOpCallsDays)
       .subscribe({
         next: (res: any) => {
           this.followupOverDueRecallInCMP = [];
@@ -1107,8 +1005,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               if (this.showCompleteOverdue) {
                 this.followupOverDueRecallInCMP = this.followupOverDueRecall;
               } else {
-                this.followupOverDueRecallInCMP =
-                  this.followupOverDueRecall.filter(p => !p.is_complete);
+                this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
+                  p => !p.is_complete,
+                );
               }
             }
 
@@ -1175,11 +1074,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
     this.futureDateTH = '';
     this.morningHuddleService
-      .followupTickFollowups(
-        this.clinic_id,
-        this.previousDays,
-        this.postOpCallsDays
-      )
+      .followupTickFollowups(this.clinic_id, this.previousDays, this.postOpCallsDays)
       .subscribe((res: any) => {
         this.followupTickFollowupsInCMP = [];
         var diffTime: any = this.getDataDiffrences();
@@ -1199,8 +1094,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             if (this.showCompleteTick) {
               this.followupTickFollowupsInCMP = this.followupTickFollowups;
             } else {
-              this.followupTickFollowupsInCMP =
-                this.followupTickFollowups.filter(p => !p.is_complete);
+              this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
+                p => !p.is_complete,
+              );
             }
 
             this.followupTickFollowupsInCMP.forEach(tool => {
@@ -1208,10 +1104,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
                 title: 'Outstanding Treatments',
                 info: tool.code,
               };
-              var date = this.datepipe.transform(
-                tool.future_appt_date,
-                'MMM d, y'
-              );
+              var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
               this.tipFutureDate[tool.patient_id] = {
                 title: 'Future Appointment',
                 info: date,
@@ -1238,11 +1131,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.ftaTaksLoadingLoading = true;
     }
     this.morningHuddleService
-      .followupFtaFollowups(
-        this.clinic_id,
-        this.previousDays,
-        this.postOpCallsDays
-      )
+      .followupFtaFollowups(this.clinic_id, this.previousDays, this.postOpCallsDays)
       .subscribe(
         (res: any) => {
           this.ftaTaksLoadingLoading = false;
@@ -1264,18 +1153,16 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               if (this.showCompleteFta) {
                 this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
               } else {
-                this.followupFtaFollowupsInCMP =
-                  this.followupFtaFollowups.filter(p => !p.is_complete);
+                this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(
+                  p => !p.is_complete,
+                );
               }
               this.followupFtaFollowups.forEach(tool => {
                 this.tipFtaDoneCode[tool.patient_id] = {
                   title: 'Outstanding Treatments',
                   info: tool.code,
                 };
-                var date = this.datepipe.transform(
-                  tool.future_appt_date,
-                  'MMM d, y'
-                );
+                var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
                 this.tipFtaFutureDate[tool.patient_id] = {
                   title: 'Future Appointment',
                   info: date,
@@ -1288,7 +1175,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         },
         error => {
           this.handleUnAuthorization();
-        }
+        },
       );
   }
 
@@ -1304,11 +1191,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.utaTaksLoadingLoading = true;
     }
     this.morningHuddleService
-      .followupUtaFollowups(
-        this.clinic_id,
-        this.previousDays,
-        this.postOpCallsDays
-      )
+      .followupUtaFollowups(this.clinic_id, this.previousDays, this.postOpCallsDays)
       .subscribe(
         (res: any) => {
           this.utaTaksLoadingLoading = false;
@@ -1330,20 +1213,16 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               if (this.showCompleteUta) {
                 this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
               } else {
-                this.followupUtaFollowupsInCMP =
-                  this.followupUtaFollowups.filter(
-                    (p: any) => p.is_complete != 1
-                  );
+                this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(
+                  (p: any) => p.is_complete != 1,
+                );
               }
               this.followupUtaFollowups.forEach(tool => {
                 this.tipUtaDoneCode[tool.patient_id] = {
                   title: 'Outstanding Treatments',
                   info: tool.code,
                 };
-                var date = this.datepipe.transform(
-                  tool.future_appt_date,
-                  'MMM d, y'
-                );
+                var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
                 this.tipUtaFutureDate[tool.patient_id] = {
                   title: 'Future Appointment',
                   info: date,
@@ -1356,7 +1235,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         },
         error => {
           this.handleUnAuthorization();
-        }
+        },
       );
   }
 
@@ -1367,96 +1246,88 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.endTaksLoading = true;
     this.futureDateDT = '';
     this.tasklistArray = [];
-    this.morningHuddleService
-      .getEndOfDays(this.clinic_id, this.previousDays)
-      .subscribe(
-        (res: any) => {
-          this.endOfDaysTasksInComp = new MatTableDataSource([]);
-          var diffTime: any = this.getDataDiffrences();
-          if (diffTime < 0) {
-            this.futureDateDT = this.datepipe
-              .transform(this.previousDays, 'yyyy-MM-dd 00:00:00')
+    this.morningHuddleService.getEndOfDays(this.clinic_id, this.previousDays).subscribe(
+      (res: any) => {
+        this.endOfDaysTasksInComp = new MatTableDataSource([]);
+        var diffTime: any = this.getDataDiffrences();
+        if (diffTime < 0) {
+          this.futureDateDT = this.datepipe
+            .transform(this.previousDays, 'yyyy-MM-dd 00:00:00')
+            .replace(/\s/, 'T');
+        }
+        this.endTaksLoading = false;
+        this.tasklistArray = [];
+        this.endOfDaysTasksInComp.data = [];
+        if (res.status == 200) {
+          this.apiSuccessCount += 1;
+          if (res.body.data == '204') {
+            //this.isEnabletasks = false;
+          } else {
+            //this.isEnabletasks = true;
+            this.endOfDaysTasks = res.body.data;
+            this.endOfDaysTasksDate = this.datepipe
+              .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
               .replace(/\s/, 'T');
-          }
-          this.endTaksLoading = false;
-          this.tasklistArray = [];
-          this.endOfDaysTasksInComp.data = [];
-          if (res.status == 200) {
-            this.apiSuccessCount += 1;
-            if (res.body.data == '204') {
-              //this.isEnabletasks = false;
+            if (this.showComplete) {
+              this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
             } else {
-              //this.isEnabletasks = true;
-              this.endOfDaysTasks = res.body.data;
-              this.endOfDaysTasksDate = this.datepipe
-                .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
-                .replace(/\s/, 'T');
-              if (this.showComplete) {
-                this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
-              } else {
-                this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(
-                  p => p.is_complete != 1
-                );
-              }
-              // this.endOfDaysTasksInComp.sort = this.sort1;
+              this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);
             }
-            res.body.data.forEach(data => {
-              if (data.type == 'list') {
-                this.tasklistArray.push(data);
-              }
-            });
-          } else if (res.status == 401) {
-            this.handleUnAuthorization();
+            // this.endOfDaysTasksInComp.sort = this.sort1;
           }
-        },
-        error => {
+          res.body.data.forEach(data => {
+            if (data.type == 'list') {
+              this.tasklistArray.push(data);
+            }
+          });
+        } else if (res.status == 401) {
           this.handleUnAuthorization();
         }
-      );
+      },
+      error => {
+        this.handleUnAuthorization();
+      },
+    );
   }
 
   getEndOfDaysUpdatelist() {
     this.endTaksLoading = true;
     this.futureDateDT = '';
-    this.morningHuddleService
-      .getEndOfDays(this.clinic_id, this.previousDays)
-      .subscribe(
-        (res: any) => {
-          var diffTime: any = this.getDataDiffrences();
-          if (diffTime < 0) {
-            this.futureDateDT = this.datepipe
-              .transform(this.previousDays, 'yyyy-MM-dd 00:00:00')
+    this.morningHuddleService.getEndOfDays(this.clinic_id, this.previousDays).subscribe(
+      (res: any) => {
+        var diffTime: any = this.getDataDiffrences();
+        if (diffTime < 0) {
+          this.futureDateDT = this.datepipe
+            .transform(this.previousDays, 'yyyy-MM-dd 00:00:00')
+            .replace(/\s/, 'T');
+        }
+        this.endTaksLoading = false;
+        if (res.status == 200) {
+          this.endOfDaysTasks = [];
+          this.endOfDaysTasksInComp.data = [];
+          this.apiSuccessCount += 1;
+          if (res.body.data == '204') {
+            //this.isEnabletasks = false;
+          } else {
+            this.endOfDaysTasks = res.body.data;
+            this.endOfDaysTasksDate = this.datepipe
+              .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
               .replace(/\s/, 'T');
-          }
-          this.endTaksLoading = false;
-          if (res.status == 200) {
-            this.endOfDaysTasks = [];
-            this.endOfDaysTasksInComp.data = [];
-            this.apiSuccessCount += 1;
-            if (res.body.data == '204') {
-              //this.isEnabletasks = false;
+            if (this.showComplete) {
+              this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
             } else {
-              this.endOfDaysTasks = res.body.data;
-              this.endOfDaysTasksDate = this.datepipe
-                .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
-                .replace(/\s/, 'T');
-              if (this.showComplete) {
-                this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
-              } else {
-                this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(
-                  p => p.is_complete != 1
-                );
-              }
-              // this.endOfDaysTasksInComp.sort = this.sort1;
+              this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);
             }
-          } else if (res.status == 401) {
-            this.handleUnAuthorization();
+            // this.endOfDaysTasksInComp.sort = this.sort1;
           }
-        },
-        error => {
+        } else if (res.status == 401) {
           this.handleUnAuthorization();
         }
-      );
+      },
+      error => {
+        this.handleUnAuthorization();
+      },
+    );
   }
 
   public isEnableEquipList: boolean = false;
@@ -1464,52 +1335,50 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   getEquipmentList() {
     this.equipmentListLoading = true;
     this.futureDateEL = '';
-    this.morningHuddleService
-      .getEquipmentList(this.clinic_id, this.previousDays)
-      .subscribe(
-        (res: any) => {
-          this.lquipmentList = new MatTableDataSource([]);
-          var diffTime: any = this.getDataDiffrences();
-          if (diffTime < 0) {
-            this.futureDateEL = this.datepipe
-              .transform(this.previousDays, 'yyyy-MM-dd 00:00:00')
-              .replace(/\s/, 'T');
+    this.morningHuddleService.getEquipmentList(this.clinic_id, this.previousDays).subscribe(
+      (res: any) => {
+        this.lquipmentList = new MatTableDataSource([]);
+        var diffTime: any = this.getDataDiffrences();
+        if (diffTime < 0) {
+          this.futureDateEL = this.datepipe
+            .transform(this.previousDays, 'yyyy-MM-dd 00:00:00')
+            .replace(/\s/, 'T');
+        }
+        this.equipmentListLoading = false;
+        //  this.lquipmentList.data = [];
+        this.amButton = true;
+        this.pmButton = true;
+        if (res.status == 200) {
+          this.apiSuccessCount += 1;
+          if (res.body.data == '204') {
+            //this.isEnableEquipList = false;
+          } else {
+            //this.isEnableEquipList = true;
+            this.lquipmentList.data = res.body.data;
+            this.lquipmentList.sort = this.sort2;
+            var i = 0;
+            res.body.data.forEach(list => {
+              if (this.amButton && list.am_complete == 1) {
+                this.amButton = false;
+              }
+              if (this.pmButton && list.pm_complete == 1) {
+                this.pmButton = false;
+              }
+              var temp = { am: list.equip_qty_am, pm: list.equip_qty_pm };
+              if (typeof this.lquipmentListAm[list.id] == 'undefined') {
+                this.lquipmentListAm[list.id] = [];
+              }
+              this.lquipmentListAm[list.id] = temp;
+            });
           }
-          this.equipmentListLoading = false;
-          //  this.lquipmentList.data = [];
-          this.amButton = true;
-          this.pmButton = true;
-          if (res.status == 200) {
-            this.apiSuccessCount += 1;
-            if (res.body.data == '204') {
-              //this.isEnableEquipList = false;
-            } else {
-              //this.isEnableEquipList = true;
-              this.lquipmentList.data = res.body.data;
-              this.lquipmentList.sort = this.sort2;
-              var i = 0;
-              res.body.data.forEach(list => {
-                if (this.amButton && list.am_complete == 1) {
-                  this.amButton = false;
-                }
-                if (this.pmButton && list.pm_complete == 1) {
-                  this.pmButton = false;
-                }
-                var temp = { am: list.equip_qty_am, pm: list.equip_qty_pm };
-                if (typeof this.lquipmentListAm[list.id] == 'undefined') {
-                  this.lquipmentListAm[list.id] = [];
-                }
-                this.lquipmentListAm[list.id] = temp;
-              });
-            }
-          } else if (res.status == 401) {
-            this.handleUnAuthorization();
-          }
-        },
-        error => {
+        } else if (res.status == 401) {
           this.handleUnAuthorization();
         }
-      );
+      },
+      error => {
+        this.handleUnAuthorization();
+      },
+    );
   }
 
   getTodayUnscheduledHours(refsh = '') {
@@ -1518,11 +1387,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.todayUnscheduledHoursLoader = true;
     }
     this.morningHuddleService
-      .getTodayUnscheduledHours(
-        this.clinic_id,
-        this.previousDays,
-        this.user_type
-      )
+      .getTodayUnscheduledHours(this.clinic_id, this.previousDays, this.user_type)
       .subscribe(
         (res: any) => {
           this.todayUnscheduledHoursLoader = false;
@@ -1536,17 +1401,13 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         },
         error => {
           this.handleUnAuthorization();
-        }
+        },
       );
   }
 
   getChairUtilisationRate() {
     this.morningHuddleService
-      .getChairUtilisationRate(
-        this.clinic_id,
-        this.previousDays,
-        this.user_type
-      )
+      .getChairUtilisationRate(this.clinic_id, this.previousDays, this.user_type)
       .subscribe((res: any) => {
         if (res.status == 200) {
           this.todayChairUtilisationRate = Math.round(res.body.data);
@@ -1578,7 +1439,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         },
         error => {
           this.handleUnAuthorization();
-        }
+        },
       );
   }
 
@@ -1620,12 +1481,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.appointmentCards = new MatTableDataSource();
     }
     this.morningHuddleService
-      .getAppointmentCards(
-        this.clinic_id,
-        dentist,
-        this.previousDays,
-        this.user_type
-      )
+      .getAppointmentCards(this.clinic_id, dentist, this.previousDays, this.user_type)
       .subscribe(
         (res: any) => {
           this.clinicDentists = [];
@@ -1633,7 +1489,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           if (this.currentDentist) {
             const c_dentist = res.body.dentists?.find(d => d.providerId == this.currentDentist);
             if (c_dentist)
-              this.currentDentistSchedule = c_dentist?.has_jeeve_id === 1 ? c_dentist.jeeve_id : c_dentist.providerId;
+              this.currentDentistSchedule =
+                c_dentist?.has_jeeve_id === 1 ? c_dentist.jeeve_id : c_dentist.providerId;
             else this.currentDentistSchedule = this.currentDentist;
           } else {
             this.currentDentistSchedule = 0;
@@ -1698,7 +1555,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
               // if (dentist) {
               // var nm = val.provider_name;
               const dentists = this.clinicDentists.filter(
-                person => person.provider_id == val.provider_id
+                person => person.provider_id == val.provider_id,
               );
               if (dentists.length === 0) {
                 const temp = {
@@ -1712,23 +1569,18 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
               if (
                 this.isExact &&
-                this.appointmentCards.data.findIndex(
-                  (a: any) => a.hyg_id && !!a.hyg_id.trim()
-                ) >= 0
+                this.appointmentCards.data.findIndex((a: any) => a.hyg_id && !!a.hyg_id.trim()) >= 0
               ) {
                 const hyg_id = parseInt(val.hyg_id);
                 if (hyg_id > 0) {
-                  const dentists = this.clinicDentists.filter(
-                    person => person.hyg_id == hyg_id
-                  );
+                  const dentists = this.clinicDentists.filter(person => person.hyg_id == hyg_id);
                   if (dentists.length == 0) {
                     const temp1 = {
                       hyg_id: hyg_id,
                       provider_id: null,
                       provider_name: val.hyg_name,
                     };
-                    if (temp1.provider_name != null)
-                      this.clinicDentists.push(temp1);
+                    if (temp1.provider_name != null) this.clinicDentists.push(temp1);
                   }
                 }
               }
@@ -1745,7 +1597,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         },
         error => {
           this.handleUnAuthorization();
-        }
+        },
       );
   }
 
@@ -1755,12 +1607,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   async getDentistPerformance() {
     this.dentistperformanceLoader = true;
     this.morningHuddleService
-      .dentistProduction(
-        this.clinic_id,
-        this.previousDays,
-        this.user_type,
-        this.dentist_id
-      )
+      .dentistProduction(this.clinic_id, this.previousDays, this.user_type, this.dentist_id)
       .subscribe(
         (res: any) => {
           this.dentistperformanceLoader = false;
@@ -1776,19 +1623,14 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         },
         error => {
           this.handleUnAuthorization();
-        }
+        },
       );
   }
 
   async getRecallRate() {
     this.dentistrecallRateLoader = true;
     this.morningHuddleService
-      .recallRate(
-        this.clinic_id,
-        this.previousDays,
-        this.user_type,
-        this.dentist_id
-      )
+      .recallRate(this.clinic_id, this.previousDays, this.user_type, this.dentist_id)
       .subscribe(
         (res: any) => {
           this.dentistrecallRateLoader = false;
@@ -1801,19 +1643,14 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         },
         error => {
           this.handleUnAuthorization();
-        }
+        },
       );
   }
 
   async getTreatmentRate() {
     this.dentistTreatmentRateLoader = true;
     this.morningHuddleService
-      .reappointRate(
-        this.clinic_id,
-        this.previousDays,
-        this.user_type,
-        this.dentist_id
-      )
+      .reappointRate(this.clinic_id, this.previousDays, this.user_type, this.dentist_id)
       .subscribe(
         (res: any) => {
           this.dentistTreatmentRateLoader = false;
@@ -1826,7 +1663,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         },
         error => {
           this.handleUnAuthorization();
-        }
+        },
       );
   }
 
@@ -1848,14 +1685,13 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         },
         error => {
           this.handleUnAuthorization();
-        }
+        },
       );
   }
 
   getdifference(a, b) {
     let difference: any = Math.abs(a - b);
-    difference =
-      difference > 0 ? difference : difference.toString().split('-').join();
+    difference = difference > 0 ? difference : difference.toString().split('-').join();
     return difference;
   }
 
@@ -1909,7 +1745,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     original_appt_date,
     followup_date,
     type,
-    nextBussinessDay
+    nextBussinessDay,
   ) {
     if (
       event == 'Wants another follow-up' ||
@@ -1917,10 +1753,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       event == "Can't be reached - left voicemail"
     ) {
       let width = '450px';
-      if (
-        event == "Can't be reached" ||
-        event == "Can't be reached - left voicemail"
-      )
+      if (event == "Can't be reached" || event == "Can't be reached - left voicemail")
         width = '650px';
 
       const dialogRef = this.dialog.open(StatusDialogMHComponent, {
@@ -1968,9 +1801,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   endTime(app_date, start, duration) {
     var date = app_date + ' ' + start;
     var currentDate = new Date(date);
-    return new Date(currentDate.getTime() + duration * 60000)
-      .toUTCString()
-      .replace(/,/g, '');
+    return new Date(currentDate.getTime() + duration * 60000).toUTCString().replace(/,/g, '');
   }
 
   startDate(app_date) {
@@ -2027,9 +1858,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     if (checked) {
       this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
     } else {
-      this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(
-        p => !p.is_complete
-      );
+      this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => !p.is_complete);
     }
     // this.endOfDaysTasksInComp.sort = this.sort1;
   }
@@ -2039,9 +1868,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     if (event.checked) {
       this.followupPostOpCallsInComp = this.followupPostOpCalls;
     } else {
-      this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(
-        p => !p.is_complete
-      );
+      this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => !p.is_complete);
     }
   }
   updateToCompleteOR(event) {
@@ -2049,9 +1876,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     if (event.checked) {
       this.followupOverDueRecallInCMP = this.followupOverDueRecall;
     } else {
-      this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
-        p => !p.is_complete
-      );
+      this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => !p.is_complete);
     }
   }
   updateToCompleteTF(event) {
@@ -2059,9 +1884,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     if (event.checked) {
       this.followupTickFollowupsInCMP = this.followupTickFollowups;
     } else {
-      this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
-        p => !p.is_complete
-      );
+      this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => !p.is_complete);
     }
   }
 
@@ -2071,7 +1894,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
     } else {
       this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(
-        (p: any) => p.is_complete != 1
+        (p: any) => p.is_complete != 1,
       );
     }
   }
@@ -2082,7 +1905,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
     } else {
       this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(
-        (p: any) => p.is_complete != 1
+        (p: any) => p.is_complete != 1,
       );
     }
   }
@@ -2143,10 +1966,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   listUpdate(type, id) {
-    if (
-      type == 'am' &&
-      (this.lquipmentListAm[id].am < 0 || this.lquipmentListAm[id].am == null)
-    ) {
+    if (type == 'am' && (this.lquipmentListAm[id].am < 0 || this.lquipmentListAm[id].am == null)) {
       this.lquipmentListAm[id].am = 0;
     } else if (
       (type == 'pm' && this.lquipmentListAm[id].pm < 0) ||
@@ -2192,10 +2012,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         return;
       }
       this.dateRangeFired = true;
-      this.previousDays = this.datepipe.transform(
-        event.startDate.toDate(),
-        'yyyy-MM-dd'
-      );
+      this.previousDays = this.datepipe.transform(event.startDate.toDate(), 'yyyy-MM-dd');
       this.refreshPerformanceTab();
     }
   }
@@ -2222,7 +2039,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       res => {
         this.charTips = res.data;
       },
-      error => { }
+      error => {},
     );
   }
 
@@ -2234,30 +2051,15 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       'Cant be reached - left': "Can't be reached - left voicemail",
     };
     history.forEach(tip => {
-      let date = this.datepipe.transform(
-        new Date(tip.followup_date),
-        'MMM dd, yyyy'
-      );
+      let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM dd, yyyy');
       if (typeof statusSpe[tip.status] != 'undefined') {
         html +=
-          '<tr><td width="28%">' +
-          date +
-          ':</td><td> ' +
-          statusSpe[tip.status] +
-          '</td></tr>';
+          '<tr><td width="28%">' + date + ':</td><td> ' + statusSpe[tip.status] + '</td></tr>';
       } else {
-        html +=
-          '<tr><td width="28%">' +
-          date +
-          ':</td><td> ' +
-          tip.status +
-          '</td></tr>';
+        html += '<tr><td width="28%">' + date + ':</td><td> ' + tip.status + '</td></tr>';
       }
       if (tip.notes && tip.notes != 'null' && tip.notes != '') {
-        html +=
-          '<tr><td  class="notes" width="28%">Notes:</td><td> ' +
-          tip.notes +
-          '</td></tr>';
+        html += '<tr><td  class="notes" width="28%">Notes:</td><td> ' + tip.notes + '</td></tr>';
       }
     });
     html += '</table>';
@@ -2393,8 +2195,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           if (this.remainCredits <= 10) {
             this.toastr.warning(
               `${this.remainCredits} review credits remaining ` +
-              '- to add more ask your account owner to top up under ' +
-              'Settings -> Clinics -> Google Reviews'
+                '- to add more ask your account owner to top up under ' +
+                'Settings -> Clinics -> Google Reviews',
             );
           }
           element.sms_status = result.status;
@@ -2412,7 +2214,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     switch (paymentIntent.status) {
       case 'succeeded':
         this.toastr.success(
-          'Payment succeeded. If the number of Credits were not updated, Please retry refreshing page aftger few mins!'
+          'Payment succeeded. If the number of Credits were not updated, Please retry refreshing page aftger few mins!',
         );
         break;
       case 'processing':
@@ -2441,8 +2243,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     newWin.document.open();
     newWin.document.write(
       '<html><head><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"><style>#p-bttom{opacity:0}.info-icon-container.mhRebook{display: none;}.DentistListSecRow.mh-table.patient_data-table_responsive {margin-top: 50px;} .DentistListSecRow .mat-row:nth-child(even) {background-color: #f5f5fb;}span.timeFTA {width: 55px;margin-left: 8px;font-size: 12px;text-align: center;border-radius: 1px;border: 1px solid #000000;box-shadow: 0px 1px 3px;padding: 1px 9px;display: inline-block;background: #e8b06b;color: #000000;} .icon {max-width: 80px;flex: 0 0 80px;height: 80px;text-align: center;border-radius: 100%;margin-right: 30px;} .icon span {line-height: 80px;font-size: 32px;} .icon.orange { background-color: #fff6ef;}.icon.red {background-color: #ffecec;}.icon.orange i{color: #f3a062;} .icon.red i{color: #f35d5e;}.icon i{line-height: 80px;font-size: 32px;}.fas {font-family: "Font Awesome 5 Free";font-weight: 900;} #mat-tab-content-0-1 .mh-table .mat-row:nth-child(even) .appointment {background-color: #fff !important;} #mat-tab-content-0-1 .appointment {width: -webkit-max-content;width: -moz-max-content;width: max-content;background-color: #f6f7f9;padding: 5px 10px;margin: 5px 5px;border-radius: 2px;font-size: 12px;float: left;}table.mat-table {border-spacing: 2px px;}mat-footer-cell.mat-footer-cell.cdk-footer-cell.cdk-column-isDataAvailable.mat-column-isDataAvailable.ng-star-inserted {display: none;}.mh-table th.mat-header-cell {font-weight: bold;text-align: left;}.morning-huddle-date {text-align: center;display: grid;margin-bottom: 50px;}.mh-fa-check.gray {color: #bfbfbf;}.mh-fa-check {color: green;}.fa-check {color: #18A689;font-size: 18px;margin-right: 10px;}.fa, .fas {font-weight: 900;}.mat-column-start {word-wrap: break-word !important; white-space: unset !important;flex: 0 0 175px !important;width: 160px !important;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;hyphens: auto;}.DentistListSecRow .appointment {width: -webkit-max-content;width: -moz-max-content;width: max-content;background-color: #f6f7f9; padding: 5px 10px;margin: 5px 5px;border-radius: 2px;font-size: 13px;float: left;}.fa, .fas, .far, .fal, .fab {-moz-osx-font-smoothing: grayscale;-webkit-font-smoothing: antialiased;display: inline-block;font-style: normal; font-variant: normal; text-rendering: auto;line-height: 1;}.hide {display: none;}</style></head><body >' +
-      divToPrint.innerHTML +
-      '</body></html>'
+        divToPrint.innerHTML +
+        '</body></html>',
     );
     newWin.document.close();
     setTimeout(function () {
@@ -2464,8 +2266,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     newWin.document.open();
     newWin.document.write(
       '<html></head><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"><style>#p-bttom{opacity:0}.info-icon-container.mhRebook{display: none;}.DentistListSecRow.mh-table.patient_data-table_responsive {margin-top: 50px;} .DentistListSecRow .mat-row:nth-child(even) {background-color: #f5f5fb;}span.timeFTA {width: 55px;margin-left: 8px;font-size: 12px;text-align: center;border-radius: 1px;border: 1px solid #000000;box-shadow: 0px 1px 3px;padding: 1px 9px;display: inline-block;background: #e8b06b;color: #000000;} .icon {max-width: 80px;flex: 0 0 80px;height: 80px;text-align: center;border-radius: 100%;margin-right: 30px;} .icon span {line-height: 80px;font-size: 32px;} .icon.orange { background-color: #fff6ef;}.icon.red {background-color: #ffecec;}.icon.orange i{color: #f3a062;} .icon.red i{color: #f35d5e;}.icon i{line-height: 80px;font-size: 32px;}.fas {font-family: "Font Awesome 5 Free";font-weight: 900;} #mat-tab-content-0-1 .mh-table .mat-row:nth-child(even) .appointment {background-color: #fff !important;} #mat-tab-content-0-1 .appointment {width: -webkit-max-content;width: -moz-max-content;width: max-content;background-color: #f6f7f9;padding: 5px 10px;margin: 5px 5px;border-radius: 2px;font-size: 12px;float: left;}table.mat-table {border-spacing: 2px px;}mat-footer-cell.mat-footer-cell.cdk-footer-cell.cdk-column-isDataAvailable.mat-column-isDataAvailable.ng-star-inserted {display: none;}.mh-table th.mat-header-cell {font-weight: bold;text-align: left;}.morning-huddle-date {text-align: center;display: grid;margin-bottom: 50px;}.mh-fa-check.gray {color: #bfbfbf;}.mh-fa-check {color: green;}.fa-check {color: #18A689;font-size: 18px;margin-right: 10px;}.fa, .fas {font-weight: 900;}.mat-column-start {word-wrap: break-word !important; white-space: unset !important;flex: 0 0 175px !important;width: 160px !important;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;hyphens: auto;}.DentistListSecRow .appointment {width: -webkit-max-content;width: -moz-max-content;width: max-content;background-color: #f6f7f9; padding: 5px 10px;margin: 5px 5px;border-radius: 2px;font-size: 13px;float: left;}.hide {display: none;}</style></head><body >' +
-      divToPrint.innerHTML +
-      '</body></html>'
+        divToPrint.innerHTML +
+        '</body></html>',
     );
     newWin.document.close();
     setTimeout(function () {
@@ -2479,47 +2281,49 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     PENDING: 'pending',
     IN_PROGRESS: 'in-progress',
     COMPLETED: 'completed',
-    FAILED: 'failed'
+    FAILED: 'failed',
   };
 
   async initiateAICall(element: any) {
     console.log(element);
     let callStatusSubscription: Subscription;
     try {
-      this.morningHuddleService.initiateCall(
-        'post-op-calls',
-        element.post_op_codes,
-        element.patients.mobile,
-        `${element.patients.firstname} ${element.patients.surname}`,
-        element.dentists.name,
-        element.post_op_codes,
-        'ABC Dental',
-        this.clinic_id,
-        element.post_op_codes,
-        element.patients.patient_id,
-        element.original_appt_date
-      ).subscribe(res => {
-        console.log(res);
-        this.callStatusService.connect(res.callSid);
-        callStatusSubscription = this.callStatusService.status$.subscribe(status => {
-          element.aiCallStatus = status;
-          if (status === this.aiCallStatus.COMPLETED) {
-            // Store the call log data
-            element.callLog = {
-              callSid: res.callSid,
-              patientName: `${element.patients.firstname} ${element.patients.surname}`,
-              phoneNumber: element.patients.mobile,
-              providerName: element.dentists.name,
-              treatment: element.post_op_codes,
-              duration: 0, // This should be updated with actual duration from the call service
-              status: 'Completed',
-              conversationLog: [] // This should be populated with actual conversation data from the call service
-            };
-            this.callStatusService.disconnect();
-            callStatusSubscription.unsubscribe();
-          }
+      this.morningHuddleService
+        .initiateCall(
+          'post-op-calls',
+          element.post_op_codes,
+          element.patients.mobile,
+          `${element.patients.firstname} ${element.patients.surname}`,
+          element.dentists.name,
+          element.post_op_codes,
+          'ABC Dental',
+          this.clinic_id,
+          element.post_op_codes,
+          element.patients.patient_id,
+          element.original_appt_date,
+        )
+        .subscribe(res => {
+          console.log(res);
+          this.callStatusService.connect(res.callSid);
+          callStatusSubscription = this.callStatusService.status$.subscribe(status => {
+            element.aiCallStatus = status;
+            if (status === this.aiCallStatus.COMPLETED) {
+              // Store the call log data
+              element.callLog = {
+                callSid: res.callSid,
+                patientName: `${element.patients.firstname} ${element.patients.surname}`,
+                phoneNumber: element.patients.mobile,
+                providerName: element.dentists.name,
+                treatment: element.post_op_codes,
+                duration: 0, // This should be updated with actual duration from the call service
+                status: 'Completed',
+                conversationLog: [], // This should be populated with actual conversation data from the call service
+              };
+              this.callStatusService.disconnect();
+              callStatusSubscription.unsubscribe();
+            }
+          });
         });
-      });
     } catch (error) {
       console.error('AI Call failed:', error);
       element.aiCallStatus = this.aiCallStatus.FAILED;
@@ -2531,10 +2335,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     this.toastr.info('Fetching call logs...');
 
     // Fetch call logs from API
-    this.morningHuddleService.getCallLogs(
-      element.record_id,
-      this.clinic_id
-    ).subscribe({
+    this.morningHuddleService.getCallLogs(element.record_id, this.clinic_id).subscribe({
       next: (response: any) => {
         const dialogRef = this.dialog.open(CallLogPanelComponent, {
           width: '600px',
@@ -2546,25 +2347,28 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             phoneNumber: element.patients.mobile,
             providerName: element.dentists.name,
             treatment: element.post_op_codes,
-            ...response.data // This should contain duration, status, and conversationLog from the API
-          }
+            ...response.data, // This should contain duration, status, and conversationLog from the API
+          },
         });
 
         dialogRef.afterClosed().subscribe(result => {
           console.log('Call log panel closed');
         });
       },
-      error: (error) => {
+      error: error => {
         console.error('Failed to fetch call logs:', error);
         this.toastr.error('Failed to fetch call logs. Please try again.');
-      }
+      },
     });
   }
 
   followUpAll() {
     // Get all incomplete post-op calls
     const eligibleCalls = this.followupPostOpCalls
-      .filter(call => !call.is_complete && call.patients.patient_id === 12 || call.patients.patient_id === 11)
+      .filter(
+        call =>
+          (!call.is_complete && call.patients.patient_id === 12) || call.patients.patient_id === 11,
+      )
       .map((call, index) => ({
         recordId: call.record_id,
         phoneNumber: call.patients.mobile,
@@ -2580,8 +2384,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           callerName: 'Emma', // TODO: Get actual caller name
           originalAppointmentDate: call.original_appt_date,
           treatmentId: call.post_op_codes,
-          patientId: call.patients.patient_id
-        }
+          patientId: call.patients.patient_id,
+        },
       }));
 
     if (eligibleCalls.length === 0) {
@@ -2590,7 +2394,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
 
     eligibleCalls.forEach(call => {
-      const followupPostOpCallsInCompElement = this.followupPostOpCallsInComp.find(call => call.record_id === call.recordId);
+      const followupPostOpCallsInCompElement = this.followupPostOpCallsInComp.find(
+        call => call.record_id === call.recordId,
+      );
       if (followupPostOpCallsInCompElement) {
         followupPostOpCallsInCompElement.aiCallStatus = this.aiCallStatus.PENDING;
       }
@@ -2604,48 +2410,52 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         this.bulkCallScheduleInProgress = true;
 
         // Subscribe to bulk status updates
-        const statusSubscription = this.callStatusService.bulkStatus$.subscribe((status: BulkSSEMessage) => {
-          console.log('Bulk status update:', status);
+        const statusSubscription = this.callStatusService.bulkStatus$.subscribe(
+          (status: BulkSSEMessage) => {
+            console.log('Bulk status update:', status);
 
-          const followupPostOpCallsInCompElement = this.followupPostOpCallsInComp.find(call => call.record_id === status.recordId);
+            const followupPostOpCallsInCompElement = this.followupPostOpCallsInComp.find(
+              call => call.record_id === status.recordId,
+            );
 
-          if (followupPostOpCallsInCompElement) {
-            followupPostOpCallsInCompElement.aiCallStatus = status.status;
+            if (followupPostOpCallsInCompElement) {
+              followupPostOpCallsInCompElement.aiCallStatus = status.status;
 
-            if (status.status === 'completed') {
-              this.toggleUpdate(
-                null,
-                followupPostOpCallsInCompElement.patients.patient_id,
-                followupPostOpCallsInCompElement.original_appt_date,
-                followupPostOpCallsInCompElement.followup_date,
-                followupPostOpCallsInCompElement.patients.clinic_id,
-                'post-op-calls'
-              )
+              if (status.status === 'completed') {
+                this.toggleUpdate(
+                  null,
+                  followupPostOpCallsInCompElement.patients.patient_id,
+                  followupPostOpCallsInCompElement.original_appt_date,
+                  followupPostOpCallsInCompElement.followup_date,
+                  followupPostOpCallsInCompElement.patients.clinic_id,
+                  'post-op-calls',
+                );
+              }
             }
-          }
 
-          // Close dialog and show success message
-          if (status.status === 'schedule-done') {
-            console.log('schedule_complete');
-            this.bulkCallScheduleInProgress = false;
             // Close dialog and show success message
-            this.toastr.success(`Successfully scheduled ${eligibleCalls.length} calls`);
-            statusSubscription.unsubscribe();
-            this.getFollowupPostOpCalls();
-          } else if (status.status === 'schedule_failed') {
-            this.bulkCallScheduleInProgress = false;
-            console.log('schedule_failed');
-            // Close dialog and show error message
-            this.toastr.error('Failed to schedule some calls. Please try again.');
-            statusSubscription.unsubscribe();
-            this.getFollowupPostOpCalls();
-          }
-        });
+            if (status.status === 'schedule-done') {
+              console.log('schedule_complete');
+              this.bulkCallScheduleInProgress = false;
+              // Close dialog and show success message
+              this.toastr.success(`Successfully scheduled ${eligibleCalls.length} calls`);
+              statusSubscription.unsubscribe();
+              this.getFollowupPostOpCalls();
+            } else if (status.status === 'schedule_failed') {
+              this.bulkCallScheduleInProgress = false;
+              console.log('schedule_failed');
+              // Close dialog and show error message
+              this.toastr.error('Failed to schedule some calls. Please try again.');
+              statusSubscription.unsubscribe();
+              this.getFollowupPostOpCalls();
+            }
+          },
+        );
       },
-      error: (error) => {
+      error: error => {
         console.error('Failed to schedule bulk calls:', error);
         this.toastr.error('Failed to schedule bulk calls. Please try again.');
-      }
+      },
     });
   }
 
@@ -2656,10 +2466,10 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         this.toastr.success('Schedule cancelled successfully');
         this.bulkCallScheduleInProgress = false;
       },
-      error: (error) => {
+      error: error => {
         console.error('Failed to cancel bulk schedule:', error);
         this.toastr.error('Failed to cancel schedule. Please try again.');
-      }
+      },
     });
   }
 }

@@ -14,7 +14,7 @@ export class AppHeaderComponent {
   constructor(
     private _cookieService: CookieService,
     private headerService: HeaderService,
-    private router: Router
+    private router: Router,
   ) {}
 
   public config: PerfectScrollbarConfigInterface = {};

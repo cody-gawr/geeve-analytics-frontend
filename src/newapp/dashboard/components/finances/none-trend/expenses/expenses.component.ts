@@ -1,9 +1,6 @@
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
-import {
-  JeeveLineFillOptions,
-  externalTooltipHandler,
-} from '@/newapp/shared/utils';
+import { JeeveLineFillOptions, externalTooltipHandler } from '@/newapp/shared/utils';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ChartOptions } from 'chart.js';
 import _ from 'lodash';
@@ -13,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DashboardFacade } from '@/newapp/dashboard/facades/dashboard.facade';
 import { ChartTip } from '@/newapp/models/dashboard/finance';
 import { COLORS } from '@/newapp/constants';
-  
+
 @Component({
   selector: 'finance-expense-chart',
   templateUrl: './expenses.component.html',
@@ -23,7 +20,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
   @Input() toolTip: ChartTip;
   get isComingSoon() {
     return this.toolTip?.info?.toLowerCase() === 'coming-soon';
-  }  
+  }
   @Input() isFullMonths = false;
   get isLoading$() {
     return this.financeFacade.isLoadingFnExpenses$;
@@ -54,20 +51,16 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
         } else {
           return this.selectedData.length > 0;
         }
-      })
+      }),
     );
   }
 
   get isMultipleClinic$() {
-    return this.clinicFacade.currentClinicId$.pipe(
-      map(v => typeof v == 'string')
-    );
+    return this.clinicFacade.currentClinicId$.pipe(map(v => typeof v == 'string'));
   }
 
   get isConnectedWith$() {
-    return this.clinicFacade.connectedWith$.pipe(
-      map(v => v === 'xero' || v === 'myob')
-    );
+    return this.clinicFacade.connectedWith$.pipe(map(v => v === 'xero' || v === 'myob'));
   }
 
   colorScheme = {
@@ -87,19 +80,16 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
     public dialog: MatDialog,
-    private dashboardFacade: DashboardFacade
+    private dashboardFacade: DashboardFacade,
   ) {
-    combineLatest([
-      this.financeFacade.fnExpensesData$,
-      this.clinicFacade.currentClinicId$,
-    ])
+    combineLatest([this.financeFacade.fnExpensesData$, this.clinicFacade.currentClinicId$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([resBody, clinicId]) => {
         if (resBody === null) {
           this.datasets = [];
           this.selectedData = [];
           return;
-        };
+        }
         const expenses = resBody.data,
           production = resBody.production;
         if (typeof clinicId === 'string') {
@@ -120,10 +110,7 @@ export class FinanceExpensesComponent implements OnInit, OnDestroy {
               this.datasets.push({
                 data: finalRow.accItems.map(item => {
                   const clinicProd = parseFloat(
-                    <string>(
-                      resBody.productions.find(p => p.clinicId == item.clinicId)
-                        ?.production
-                    )
+                    <string>resBody.productions.find(p => p.clinicId == item.clinicId)?.production,
                   );
                   return {
                     x: item.clinicName,

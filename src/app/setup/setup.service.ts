@@ -16,7 +16,7 @@ export class SetupService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
 
   getHeaders() {
@@ -37,23 +37,21 @@ export class SetupService {
   }
 
   // Get ClinicSettings
-  getXeroLink(clinic_id): Observable<HttpResponse<{
-    success: boolean,
-    data: {
-      url:string
-    }
-  }>> {
+  getXeroLink(clinic_id): Observable<
+    HttpResponse<{
+      success: boolean;
+      data: {
+        url: string;
+      };
+    }>
+  > {
     var header = this.getHeaders();
     return this.http
-      .get(
-        environment.commonApiUrl +
-          `/connect/xero/oauth-url/?clinics=[${clinic_id}]`,
-        header
-      ) 
+      .get(environment.commonApiUrl + `/connect/xero/oauth-url/?clinics=[${clinic_id}]`, header)
       .pipe(
         map((response: HttpResponse<any>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -62,13 +60,13 @@ export class SetupService {
     var header = this.getHeaders();
     return this.http
       .get(
-         environment.baseApiUrl + '/v1/common/corepractice/getAuthorizeUrl?clinic_id=' + clinic_id,
-        header
+        environment.baseApiUrl + '/v1/common/corepractice/getAuthorizeUrl?clinic_id=' + clinic_id,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -76,15 +74,13 @@ export class SetupService {
     var header = this.getHeaders();
     return this.http
       .get(
-        environment.baseApiUrl +
-          '/v1/common/dentally/getAuthorizeUrl?clinic_id=' +
-          clinic_id,
-        header
+        environment.baseApiUrl + '/v1/common/dentally/getAuthorizeUrl?clinic_id=' + clinic_id,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -93,63 +89,57 @@ export class SetupService {
     return this.http.get(this.apiUrl + '/users/userGetPMS/token', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 
-  checkXeroStatus(clinic_id): Observable<HttpResponse<
-  {
-    success: boolean,
-    data: {
-      tenantId: string | null,
-      tenantName: string | null,
-      error: string | undefined // Present if there was an error
-    }
-  }>> {
+  checkXeroStatus(clinic_id): Observable<
+    HttpResponse<{
+      success: boolean;
+      data: {
+        tenantId: string | null;
+        tenantName: string | null;
+        error: string | undefined; // Present if there was an error
+      };
+    }>
+  > {
     var header = this.getHeaders();
     return this.http
-      .get(
-        environment.commonApiUrl +
-          `/connect/xero/status?clinics=[${clinic_id}]`,
-        header
-      )
+      .get(environment.commonApiUrl + `/connect/xero/status?clinics=[${clinic_id}]`, header)
       .pipe(
         map((response: HttpResponse<any>) => {
           return response;
-        })
+        }),
       );
   }
 
   getMyobLink(clinic_id): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/Myob/getAuthorizeUrl?clinic_id=' + clinic_id, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/Myob/getAuthorizeUrl?clinic_id=' + clinic_id, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   checkMyobStatus(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
-        this.apiUrl +
-          `/clinics/clinicGetAccountingPlatform?clinic_id=${clinic_id}&platform=myob`,
-        header
+        this.apiUrl + `/clinics/clinicGetAccountingPlatform?clinic_id=${clinic_id}&platform=myob`,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
-  clearSession(clinic_id): Observable<HttpResponse<
-  {
-    success: boolean,
-    data: {}
-  }
-  >> {
+  clearSession(clinic_id): Observable<
+    HttpResponse<{
+      success: boolean;
+      data: {};
+    }>
+  > {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
@@ -158,52 +148,38 @@ export class SetupService {
       .pipe(
         map((response: HttpResponse<any>) => {
           return response;
-        })
+        }),
       );
   }
   clearSessionMyob(clinic_id): Observable<any> {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
-    return this.http
-      .post(this.apiUrl + '/Myob/disconnectMyob/', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Myob/disconnectMyob/', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
-  checkReportsStatus(
-    clinicId,
-    userId = this._cookieService.get('userid')
-  ): Observable<any> {
+  checkReportsStatus(clinicId, userId = this._cookieService.get('userid')): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/users/userCheckStatus/' + userId + '/' + clinicId,
-        header
-      )
+      .get(this.apiUrl + '/users/userCheckStatus/' + userId + '/' + clinicId, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  checkExactRepotrStatus(
-    clinicId,
-    userId = this._cookieService.get('userid')
-  ): Observable<any> {
+  checkExactRepotrStatus(clinicId, userId = this._cookieService.get('userid')): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/users/userExactCheckStatus/' + userId + '/' + clinicId,
-        header
-      )
+      .get(this.apiUrl + '/users/userExactCheckStatus/' + userId + '/' + clinicId, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -211,13 +187,11 @@ export class SetupService {
     const formData = new FormData();
     formData.append('stepper_status', this._cookieService.get('stepper'));
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/users/userUpdateStepper', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/users/userUpdateStepper', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   addClinic(name, displayName, days, pms, coreURL): Observable<any> {
@@ -230,26 +204,21 @@ export class SetupService {
     formData.append('product', 'jeeve_analytics');
     var header = this.getHeaders();
 
-    return this.http
-      .post(this.baseApiUrl + '/v1/common/clinics', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.baseApiUrl + '/v1/common/clinics', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   getClinicLocation(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/corepractice/getLocations?clinic_id=' + clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/corepractice/getLocations?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -262,12 +231,12 @@ export class SetupService {
           clinic_id +
           '&location_id=' +
           location_id,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -275,14 +244,13 @@ export class SetupService {
     var header = this.getHeaders();
     return this.http
       .get(
-        environment.baseApiUrl +
-          '/v1/common/corepractice/checkStatus?clinic_id=' + clinic_id,
-        header
+        environment.baseApiUrl + '/v1/common/corepractice/checkStatus?clinic_id=' + clinic_id,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -290,31 +258,24 @@ export class SetupService {
     var header = this.getHeaders();
     return this.http
       .get(
-        environment.baseApiUrl +
-          '/v1/common/dentally/checkStatus?clinic_id=' +
-          clinic_id,
-        header
+        environment.baseApiUrl + '/v1/common/dentally/checkStatus?clinic_id=' + clinic_id,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   checkCoreSyncStatus(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl +
-          '/corepractice/checkCoreSyncStatus?clinic_id=' +
-          clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/corepractice/checkCoreSyncStatus?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 }

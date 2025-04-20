@@ -17,7 +17,7 @@ export class UsersService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
   getHeaders() {
     if (
@@ -39,13 +39,11 @@ export class UsersService {
   // Get Dentist
   getUsers(): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/Users/userGetPracticeOwners', header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/Users/userGetPracticeOwners', header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Delete Clinic
@@ -54,13 +52,11 @@ export class UsersService {
     formData.append('id', userId);
     var header = this.getHeaders();
 
-    return this.http
-      .post(this.apiUrl + '/Users/userDelete', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userDelete', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Update Clinic
@@ -88,12 +84,10 @@ export class UsersService {
     formData.append('product', 'jeeve_analytics');
     var header = this.getHeaders();
 
-    return this.http
-      .post(environment.baseApiUrl + '/v1/common/clinics', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(environment.baseApiUrl + '/v1/common/clinics', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 }

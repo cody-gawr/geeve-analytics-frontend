@@ -1,14 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import {
-  Subject,
-  takeUntil,
-  combineLatest,
-  map,
-  distinctUntilChanged,
-  filter,
-} from 'rxjs';
+import { Subject, takeUntil, combineLatest, map, distinctUntilChanged, filter } from 'rxjs';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import moment from 'moment';
 import _ from 'lodash';
@@ -30,7 +23,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     private dashbordFacade: DashboardFacade,
     private clinicFacade: ClinicFacade,
     private fuFacadee: FollowupsFacade,
-    private layoutFacade: LayoutFacade
+    private layoutFacade: LayoutFacade,
   ) {
     this.layoutFacade.setTrend('off');
   }
@@ -40,19 +33,16 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         filter(v => !!v),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       )
       .subscribe(clinicIds => {
         this.dashbordFacade.loadChartTips(9, clinicIds);
       });
 
-    combineLatest([
-      this.clinicFacade.currentClinicId$,
-      this.layoutFacade.dateRange$,
-    ])
+    combineLatest([this.clinicFacade.currentClinicId$, this.layoutFacade.dateRange$])
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       )
       .subscribe(params => {
         const [clinicId, dateRange] = params;
@@ -81,6 +71,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
   getChartTip(index: number) {
-    return this.dashbordFacade.getChartTip$(index)
+    return this.dashbordFacade.getChartTip$(index);
   }
 }

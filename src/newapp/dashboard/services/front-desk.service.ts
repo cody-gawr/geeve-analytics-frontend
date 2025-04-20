@@ -26,13 +26,7 @@ export class FrontDeskService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
-  fdUtilisationRate({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  fdUtilisationRate({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     return this.http
       .get(`${this.apiUrl}/FrontDesk/fdUtilisationRate`, {
         params: {
@@ -40,50 +34,29 @@ export class FrontDeskService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <FdUtilisationRateApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <FdUtilisationRateApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
-  fdUtilisationRateTrend(
-    clinicId: number | string,
-    mode: string,
-    queryWhEnabled: number
-  ) {
+  fdUtilisationRateTrend(clinicId: number | string, mode: string, queryWhEnabled: number) {
     return this.http
       .get(`${this.apiUrl}/FrontDesk/fdUtilisationRateTrend`, {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
       .pipe(
-        map(
-          resBody =>
-            <FdUtilisationRateTrendApiResponse>(
-              camelcaseKeys(resBody, { deep: true })
-            )
-        )
+        map(resBody => <FdUtilisationRateTrendApiResponse>camelcaseKeys(resBody, { deep: true })),
       );
   }
 
-  fdUtilisationRateByDay({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  fdUtilisationRateByDay({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     return this.http
       .get(`${this.apiUrl}/FrontDesk/fdUtilisationRateByDay`, {
         params: {
@@ -91,18 +64,12 @@ export class FrontDeskService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
       .pipe(
-        map(
-          resBody =>
-            <FdUtilisationRateByDayApiResponse>(
-              camelcaseKeys(resBody, { deep: true })
-            )
-        )
+        map(resBody => <FdUtilisationRateByDayApiResponse>camelcaseKeys(resBody, { deep: true })),
       );
   }
 
@@ -114,42 +81,28 @@ export class FrontDeskService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
 
           dashboard_id: 3,
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <FdRecallRateApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <FdRecallRateApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
-  fdRecallRateTrend(
-    clinicId: number | string,
-    mode: string,
-    queryWhEnabled: number
-  ) {
+  fdRecallRateTrend(clinicId: number | string, mode: string, queryWhEnabled: number) {
     return this.http
       .get(`${this.apiUrl}/FrontDesk/fdRecallRateTrend`, {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
 
           dashboard_id: 3,
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <FdRecallRateTrendApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <FdRecallRateTrendApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
   fdReappointRate({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
@@ -160,42 +113,28 @@ export class FrontDeskService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
 
           dashboard_id: 3,
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <FdReappointRateApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <FdReappointRateApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
-  fdReappointRateTrend(
-    clinicId: number | string,
-    mode,
-    queryWhEnabled: number
-  ) {
+  fdReappointRateTrend(clinicId: number | string, mode, queryWhEnabled: number) {
     return this.http
       .get(`${this.apiUrl}/FrontDesk/fdReappointRateTrend`, {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {}),
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
           dashboard_id: 3,
         },
         withCredentials: true,
       })
       .pipe(
-        map(
-          resBody =>
-            <FdReappointRateTrendApiResponse>(
-              camelcaseKeys(resBody, { deep: true })
-            )
-        )
+        map(resBody => <FdReappointRateTrendApiResponse>camelcaseKeys(resBody, { deep: true })),
       );
   }
 
@@ -207,17 +146,11 @@ export class FrontDeskService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <FdNumTicksApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <FdNumTicksApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
   fdNumTicksTrend(clinicId: number | string, mode, queryWhEnabled: number) {
@@ -226,17 +159,11 @@ export class FrontDeskService {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <FdNumTicksTrendApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <FdNumTicksTrendApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
   fdFtaRatio({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
@@ -247,40 +174,24 @@ export class FrontDeskService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <FdFtaRatioApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <FdFtaRatioApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
-  fdFtaRatioTrend(
-    clinicId: number | string,
-    mode: string,
-    queryWhEnabled: number
-  ) {
+  fdFtaRatioTrend(clinicId: number | string, mode: string, queryWhEnabled: number) {
     return this.http
       .get(`${this.apiUrl}/FrontDesk/fdFtaRatioTrend`, {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <FdFtaRatioTrendApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <FdFtaRatioTrendApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
   fdUtaRatio({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
@@ -291,49 +202,27 @@ export class FrontDeskService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <FdUtaRatioApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <FdUtaRatioApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
-  fdUtaRatioTrend(
-    clinicId: number | string,
-    mode: string,
-    queryWhEnabled: number
-  ) {
+  fdUtaRatioTrend(clinicId: number | string, mode: string, queryWhEnabled: number) {
     return this.http
       .get(`${this.apiUrl}/FrontDesk/fdUtaRatioTrend`, {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
-      .pipe(
-        map(
-          resBody =>
-            <FdUtaRatioTrendApiResponse>camelcaseKeys(resBody, { deep: true })
-        )
-      );
+      .pipe(map(resBody => <FdUtaRatioTrendApiResponse>camelcaseKeys(resBody, { deep: true })));
   }
 
-  fdCancellationRatio({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  fdCancellationRatio({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     return this.http
       .get(`${this.apiUrl}/FrontDesk/fdCancellationRatio`, {
         params: {
@@ -341,26 +230,20 @@ export class FrontDeskService {
           start_date: startDate,
           end_date: endDate,
           duration: duration,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })
       .pipe(map(resBody => <any>camelcaseKeys(resBody, { deep: true })));
   }
 
-  fdCancellationRatioTrend(
-    clinicId: number | string,
-    mode: string,
-    queryWhEnabled: number
-  ) {
+  fdCancellationRatioTrend(clinicId: number | string, mode: string, queryWhEnabled: number) {
     return this.http
       .get(`${this.apiUrl}/FrontDesk/fdCancellationRatioTrend`, {
         params: {
           clinic_id: clinicId,
           mode,
-          ...([0, 1].indexOf(queryWhEnabled) > -1? {wh: queryWhEnabled}: {})
-
+          ...([0, 1].indexOf(queryWhEnabled) > -1 ? { wh: queryWhEnabled } : {}),
         },
         withCredentials: true,
       })

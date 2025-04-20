@@ -26,7 +26,7 @@ export class TooltipDirective {
   constructor(
     private element: ElementRef,
     private resolver: ComponentFactoryResolver,
-    private vcr: ViewContainerRef
+    private vcr: ViewContainerRef,
   ) {}
 
   @HostListener('mouseenter')

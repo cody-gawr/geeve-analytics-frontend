@@ -37,7 +37,7 @@ import { CoreConnectionDialogComponent } from './core-connection-dialog/core-con
     DentallyConnectionDialogComponent,
     MyobConnectionDialogComponent,
     XeroConnectionDialogComponent,
-    CoreConnectionDialogComponent
+    CoreConnectionDialogComponent,
   ],
 })
 export class ClinicModule {}

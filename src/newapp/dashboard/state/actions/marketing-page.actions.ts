@@ -9,7 +9,7 @@ export const loadMkNewPatientsByReferral = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkNewPatientsByReferralTrend = createAction(
@@ -18,7 +18,7 @@ export const loadMkNewPatientsByReferralTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkRevenueByReferral = createAction(
@@ -29,7 +29,7 @@ export const loadMkRevenueByReferral = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkRevByReferralTrend = createAction(
@@ -38,7 +38,7 @@ export const loadMkRevByReferralTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkNumNewPatients = createAction(
@@ -49,7 +49,7 @@ export const loadMkNumNewPatients = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkActivePatients = createAction(
@@ -60,7 +60,7 @@ export const loadMkActivePatients = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkActivePatientsTrend = createAction(
@@ -69,7 +69,7 @@ export const loadMkActivePatientsTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkNumNewPatientsTrend = createAction(
@@ -78,7 +78,7 @@ export const loadMkNumNewPatientsTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkNewPatientAcq = createAction(
@@ -90,7 +90,7 @@ export const loadMkNewPatientAcq = createAction(
     duration: string;
     connectedWith: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkNewPatientAcqTrend = createAction(
@@ -100,7 +100,7 @@ export const loadMkNewPatientAcqTrend = createAction(
     mode: string;
     connectedWith: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkTotalVisits = createAction(
@@ -111,7 +111,7 @@ export const loadMkTotalVisits = createAction(
     endDate: string;
     duration: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkTotalVisitsTrend = createAction(
@@ -120,19 +120,19 @@ export const loadMkTotalVisitsTrend = createAction(
     clinicId: number | string;
     mode: string;
     queryWhEnabled: number;
-  }>()
+  }>(),
 );
 
 export const loadMkChartDescription = createAction(
   '[Marketing Page] Load Market Chart Description',
-  props<ChartDescParams<MarketingEndpoints>>()
+  props<ChartDescParams<MarketingEndpoints>>(),
 );
 
 export const setIsActivePatients = createAction(
   '[Marketing Page] Set setIsActivePatients',
   props<{
     isActive: boolean;
-  }>()
+  }>(),
 );
 
 export const loadMkGetXeroAccounts = createAction(
@@ -140,7 +140,7 @@ export const loadMkGetXeroAccounts = createAction(
   props<{
     clinicId: number | string;
     userId: number;
-  }>()
+  }>(),
 );
 
 export const loadMkGetMyobAccounts = createAction(
@@ -148,7 +148,7 @@ export const loadMkGetMyobAccounts = createAction(
   props<{
     clinicId: number | string;
     userId: number;
-  }>()
+  }>(),
 );
 
 export const saveAcctMyob = createAction(
@@ -156,7 +156,7 @@ export const saveAcctMyob = createAction(
   props<{
     clinicId: number | string;
     categories: string[];
-  }>()
+  }>(),
 );
 
 export const saveAcctXero = createAction(
@@ -164,19 +164,19 @@ export const saveAcctXero = createAction(
   props<{
     clinicId: number | string;
     categories: string[];
-  }>()
+  }>(),
 );
 
 export const setErrors = createAction(
   '[Marketing Page] Set errors',
   props<{
     errors: JeeveError[];
-  }>()
+  }>(),
 );
 
 export const setProdByPostCodeChartName = createAction(
   '[Marketing Page] Set Prod By Post Code',
   props<{
     chartName: MK_PROD_BY_POSTCODE_CHART_NAME;
-  }>()
+  }>(),
 );

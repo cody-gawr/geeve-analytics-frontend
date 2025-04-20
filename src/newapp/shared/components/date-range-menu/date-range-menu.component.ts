@@ -34,13 +34,13 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private dentistFacade: DentistFacade,
     private clinicFacade: ClinicFacade,
-    private router: Router
+    private router: Router,
   ) {}
 
   get duration$() {
     return this.layoutFacade.dateRange$.pipe(
       takeUntil(this.destroy$),
-      map(v => v.duration)
+      map(v => v.duration),
     );
   }
 
@@ -51,7 +51,7 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
   get isTrend$() {
     return this.layoutFacade.trend$.pipe(
       takeUntil(this.destroy$),
-      map(v => v && v !== 'off')
+      map(v => v && v !== 'off'),
     );
   }
 
@@ -63,13 +63,11 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([dentistIds, clinicIds, trend]) => {
         if (this.activedUrl === '/newapp/dashboard/cliniciananalysis') {
-          return (
-            dentistIds === 'all' || trend === 'off' || clinicIds.length > 1
-          );
+          return dentistIds === 'all' || trend === 'off' || clinicIds.length > 1;
         } else {
           return trend === 'off';
         }
-      })
+      }),
     );
   }
 
@@ -82,7 +80,7 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         map((event: any) => event.routerEvent ?? event),
-        filter(event => event instanceof NavigationEnd)
+        filter(event => event instanceof NavigationEnd),
       )
       .subscribe(event => {
         const { url } = <NavigationEnd>event;
@@ -97,22 +95,10 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
   setDuration(duration: DATE_RANGE_DURATION) {
     switch (duration) {
       case 'w':
-        this.layoutFacade.saveDateRange(
-          moment().startOf('week'),
-          moment(),
-          'w',
-          1,
-          false
-        );
+        this.layoutFacade.saveDateRange(moment().startOf('week'), moment(), 'w', 1, false);
         break;
       case 'm':
-        this.layoutFacade.saveDateRange(
-          moment().startOf('month'),
-          moment(),
-          'm',
-          1,
-          true
-        );
+        this.layoutFacade.saveDateRange(moment().startOf('month'), moment(), 'm', 1, true);
         break;
       case 'lm':
         this.layoutFacade.saveDateRange(
@@ -120,17 +106,11 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
           moment().subtract(1, 'months').endOf('month'),
           duration,
           1,
-          true
+          true,
         );
         break;
       case 'q':
-        this.layoutFacade.saveDateRange(
-          moment().startOf('quarter'),
-          moment(),
-          duration,
-          3,
-          false
-        );
+        this.layoutFacade.saveDateRange(moment().startOf('quarter'), moment(), duration, 3, false);
         break;
       case 'lq':
         this.layoutFacade.saveDateRange(
@@ -138,7 +118,7 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
           moment().subtract(1, 'quarters').endOf('quarter'),
           duration,
           3,
-          false
+          false,
         );
         break;
       case 'cytd':
@@ -147,7 +127,7 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
           moment(),
           duration,
           moment().diff(moment().startOf('year'), 'months', false),
-          false
+          false,
         );
         break;
       case 'lcytd':
@@ -156,7 +136,7 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
           moment().subtract(1, 'years').endOf('year'),
           duration,
           12,
-          false
+          false,
         );
         break;
       case 'fytd':
@@ -166,19 +146,15 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
             moment(),
             duration,
             moment().diff(moment().month(6).date(1), 'months', false),
-            false
+            false,
           );
         } else {
           this.layoutFacade.saveDateRange(
             moment().subtract(1, 'years').month(6).date(1),
             moment(),
             duration,
-            moment().diff(
-              moment().subtract(1, 'years').month(6).date(1),
-              'months',
-              false
-            ),
-            false
+            moment().diff(moment().subtract(1, 'years').month(6).date(1), 'months', false),
+            false,
           );
         }
         break;
@@ -192,21 +168,21 @@ export class DateRangeMenuComponent implements OnInit, OnDestroy {
         //     false
         //   );
         // } else {
-        if(moment().month() < 6){
+        if (moment().month() < 6) {
           this.layoutFacade.saveDateRange(
             moment().subtract(2, 'years').month(6).date(1),
             moment().subtract(1, 'years').month(5).date(30),
             duration,
             12,
-            false
+            false,
           );
-        }else{
+        } else {
           this.layoutFacade.saveDateRange(
             moment().subtract(1, 'years').month(6).date(1),
             moment().subtract(0, 'years').month(5).date(30),
             duration,
             12,
-            false
+            false,
           );
         }
 

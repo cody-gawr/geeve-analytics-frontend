@@ -84,5 +84,5 @@ export enum CA_CHART_ID {
   recallPrebookRate = 4,
   recallReappointmentRate = 5,
   discounts = 103,
-  numComplaints= 6
+  numComplaints = 6,
 }

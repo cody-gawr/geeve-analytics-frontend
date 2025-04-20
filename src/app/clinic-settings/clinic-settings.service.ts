@@ -15,7 +15,7 @@ export class ClinicSettingsService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
   getHeaders() {
     if (
@@ -74,13 +74,11 @@ export class ClinicSettingsService {
     httpRes: HttpResponse<any>;
   }> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/clinics/clinicGet?clinic_id=' + clinic_id, header)
-      .pipe(
-        map((response: HttpResponse<any>) => {
-          return { ...response.body, httpRes: response };
-        })
-      );
+    return this.http.get(this.apiUrl + '/clinics/clinicGet?clinic_id=' + clinic_id, header).pipe(
+      map((response: HttpResponse<any>) => {
+        return { ...response.body, httpRes: response };
+      }),
+    );
   }
   // Get ClinicSettings
   getClinicFollowUPSettings(clinic_id): Observable<{
@@ -130,17 +128,14 @@ export class ClinicSettingsService {
   }> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/clinics/clinicGetSettings?clinic_id=' + clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/clinics/clinicGetSettings?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<any>) => {
           return {
             ...response.body,
             httpRes: response,
           };
-        })
+        }),
       );
   }
 
@@ -154,7 +149,7 @@ export class ClinicSettingsService {
     ftaUta,
     timezone,
     subtractedAccounts,
-    compareMode
+    compareMode,
   ): Observable<any> {
     compareMode = compareMode == true ? 1 : 0;
     const formData = new FormData();
@@ -169,67 +164,58 @@ export class ClinicSettingsService {
     formData.append('compare_mode', compareMode);
 
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicUpdate', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicUpdate', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   // Get ClinicSettings
-  getXeroLink(clinic_id): Observable<HttpResponse<{
-    data: {
-      url: string
-    },
-    success: boolean
-  }>> {
+  getXeroLink(clinic_id): Observable<
+    HttpResponse<{
+      data: {
+        url: string;
+      };
+      success: boolean;
+    }>
+  > {
     var header = this.getHeaders();
     return this.http
-      .get(
-        environment.commonApiUrl +
-          `/connect/xero/oauth-url?clinics=[${clinic_id}]`,
-        header
-      )
+      .get(environment.commonApiUrl + `/connect/xero/oauth-url?clinics=[${clinic_id}]`, header)
       .pipe(
         map((response: HttpResponse<any>) => {
           return response;
-        })
+        }),
       );
   }
 
-  checkXeroStatus(clinic_id): Observable<HttpResponse<
-  {
-    success: boolean,
-    data: {
-      tenantId: string | null,
-      tenantName: string | null,
-      error: string | undefined // Present if there was an error
-    }
-  }>> {
+  checkXeroStatus(clinic_id): Observable<
+    HttpResponse<{
+      success: boolean;
+      data: {
+        tenantId: string | null;
+        tenantName: string | null;
+        error: string | undefined; // Present if there was an error
+      };
+    }>
+  > {
     var header = this.getHeaders();
     return this.http
-      .get(
-        environment.commonApiUrl +
-          `/connect/xero/status?clinics=[${clinic_id}]`,
-        header
-      )
+      .get(environment.commonApiUrl + `/connect/xero/status?clinics=[${clinic_id}]`, header)
       .pipe(
         map((response: HttpResponse<any>) => {
           return response;
-        })
+        }),
       );
   }
 
   getMyobLink(clinic_id): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/Myob/getAuthorizeUrl?clinic_id=' + clinic_id, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/Myob/getAuthorizeUrl?clinic_id=' + clinic_id, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   checkMyobStatus(clinic_id): Observable<any> {
     var header = this.getHeaders();
@@ -242,39 +228,33 @@ export class ClinicSettingsService {
     //   );
     return this.http
       .get(
-        this.apiUrl +
-          `/clinics/clinicGetAccountingPlatform?clinic_id=${clinic_id}&platform=myob`,
-        header
+        this.apiUrl + `/clinics/clinicGetAccountingPlatform?clinic_id=${clinic_id}&platform=myob`,
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   clinicGetAccountingPlatform(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl +
-          '/clinics/clinicGetAccountingPlatform?clinic_id=' +
-          clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/clinics/clinicGetAccountingPlatform?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  clearSession(clinic_id): Observable<HttpResponse<
-  {
-    success: boolean,
-    data: {}
-  }
-  >> {
+  clearSession(clinic_id): Observable<
+    HttpResponse<{
+      success: boolean;
+      data: {};
+    }>
+  > {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
@@ -283,7 +263,7 @@ export class ClinicSettingsService {
       .pipe(
         map((response: HttpResponse<any>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -291,13 +271,11 @@ export class ClinicSettingsService {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
-    return this.http
-      .post(this.apiUrl + '/Myob/disconnectMyob/', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Myob/disconnectMyob/', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   updatePartialSetting(clinic_id, value, column): Observable<any> {
@@ -305,13 +283,11 @@ export class ClinicSettingsService {
     formData.append('clinic_id', clinic_id);
     formData.append(column, value);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicUpdate', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicUpdate', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   updatePartialClinicSetting(clinic_id, value, column): Observable<any> {
@@ -319,13 +295,11 @@ export class ClinicSettingsService {
     formData.append('clinic_id', clinic_id);
     formData.append(column, value);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicSettingsSave', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicSettingsSave', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   deleteDailyTask(clinic_id, task_id): Observable<any> {
@@ -333,13 +307,11 @@ export class ClinicSettingsService {
     formData.append('clinic_id', clinic_id);
     formData.append('id', task_id);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicDeleteEndDayTasks', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicDeleteEndDayTasks', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   deleteEqupList(clinic_id, task_id): Observable<any> {
@@ -348,15 +320,11 @@ export class ClinicSettingsService {
     formData.append('id', task_id);
     var header = this.getHeaders();
     return this.http
-      .post(
-        this.apiUrl + '/clinics/clinicDeleteEquipmentItem',
-        formData,
-        header
-      )
+      .post(this.apiUrl + '/clinics/clinicDeleteEquipmentItem', formData, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -364,14 +332,11 @@ export class ClinicSettingsService {
   getFollowUpSettings(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/clinics/clinicGetSettings?clinic_id=' + clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/clinics/clinicGetSettings?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -398,7 +363,7 @@ export class ClinicSettingsService {
       post_op_days: any;
       equip_list_enable: any;
       daily_task_enable: any;
-    } = null
+    } = null,
   ): Observable<any> {
     var header = this.getHeaders();
     const formData = new FormData();
@@ -426,13 +391,11 @@ export class ClinicSettingsService {
       formData.append('daily_task_enable', data.daily_task_enable);
     }
 
-    return this.http
-      .post(this.apiUrl + '/clinics/clinicSettingsSave', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/clinics/clinicSettingsSave', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   private data = {
@@ -480,7 +443,7 @@ export class ClinicSettingsService {
         connectedwith: '',
         consultant: '',
         max_chart_bars: 20,
-        util_rate_include_inactive_calendar: 0
+        util_rate_include_inactive_calendar: 0,
       },
     },
     status: 0,
@@ -519,20 +482,17 @@ export class ClinicSettingsService {
   }> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        environment.commonApiUrl + '/sms/getSocialLinks?clinic_id=' + clinic_id,
-        header
-      )
+      .get(environment.commonApiUrl + '/sms/getSocialLinks?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<any>) => {
           return response.body;
-        })
+        }),
       );
   }
 
   updateReviewSettings(
     clinic_id: number,
-    { sms_enabled = undefined, accepted_sms_terms = undefined }
+    { sms_enabled = undefined, accepted_sms_terms = undefined },
   ): Observable<{ status: boolean }> {
     const header = this.getHeaders();
     return this.http
@@ -543,34 +503,27 @@ export class ClinicSettingsService {
           sms_enabled,
           accepted_sms_terms,
         },
-        header
+        header,
       )
       .pipe(
         map((res: HttpResponse<any>) => {
           return res.body;
-        })
+        }),
       );
   }
 
   getGoogleAuthUrl(clinic_id: number): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        environment.commonApiUrl + '/sms/getGoogleAuthUrl?clinic_id=' + clinic_id,
-        header
-      )
+      .get(environment.commonApiUrl + '/sms/getGoogleAuthUrl?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
-  updateSocialLinks(
-    clinic_id: number,
-    facebookId: string,
-    googleId: string
-  ): Observable<any> {
+  updateSocialLinks(clinic_id: number, facebookId: string, googleId: string): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .post(
@@ -580,12 +533,12 @@ export class ClinicSettingsService {
           facebook_id: facebookId,
           google_id: googleId,
         },
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -598,12 +551,12 @@ export class ClinicSettingsService {
         environment.commonApiUrl +
           '/sms/getReviewMsgTemplateList' +
           (clinic_id ? '?clinic_id=' + clinic_id : ''),
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<any>) => {
           return response.body;
-        })
+        }),
       );
   }
 
@@ -623,12 +576,12 @@ export class ClinicSettingsService {
           msg_template: msgTemplate,
           type,
         },
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -637,34 +590,30 @@ export class ClinicSettingsService {
     clinic_id: number,
     name: string,
     msgTemplate: string,
-    type: 'review' | 'campaign'
+    type: 'review' | 'campaign',
   ): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .post(
         environment.commonApiUrl + '/sms/updateReviewMsgTemplate',
         { id, clinic_id, name: name, msg_template: msgTemplate, type },
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   removeReviewMsgTemplate(id: number, clinic_id: number): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .post(
-        environment.commonApiUrl + '/sms/removeReviewMsgTemplate',
-        { id, clinic_id },
-        header
-      )
+      .post(environment.commonApiUrl + '/sms/removeReviewMsgTemplate', { id, clinic_id }, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -678,14 +627,11 @@ export class ClinicSettingsService {
   }> {
     const header = this.getHeaders();
     return this.http
-      .get(
-        environment.commonApiUrl + '/sms/getCreditData?clinic_id=' + clinic_id,
-        header
-      )
+      .get(environment.commonApiUrl + '/sms/getCreditData?clinic_id=' + clinic_id, header)
       .pipe(
         map((res: HttpResponse<any>) => {
           return res.body;
-        })
+        }),
       );
   }
 }

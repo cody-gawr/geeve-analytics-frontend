@@ -33,7 +33,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
 
   get isConnectedWith$() {
     return this.clinicFacade.connectedWith$.pipe(
-      map(connectWith => connectWith === 'xero' || connectWith === 'myob')
+      map(connectWith => connectWith === 'xero' || connectWith === 'myob'),
     );
   }
 
@@ -41,7 +41,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
     private decimalPipe: DecimalPipe,
     private financeFacade: FinanceFacade,
     private clinicFacade: ClinicFacade,
-    private layoutFacade: LayoutFacade
+    private layoutFacade: LayoutFacade,
   ) {}
 
   ngOnInit(): void {
@@ -54,7 +54,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         filter(([chartData, durations, trendMode]) => {
           return chartData.length > 0 && durations.length > 0;
-        })
+        }),
       )
       .subscribe(([chartData, durations, trendMode]) => {
         this.datasets = [];
@@ -105,10 +105,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
           callback: function (label: number, index, labels) {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              let currency =
-                label < 0
-                  ? label.toString().split('-').join('')
-                  : label.toString();
+              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
               currency = currency.split(/(?=(?:...)*$)/).join(',');
               return `${label < 0 ? '- $' : '$'}${currency}`;
             }
@@ -139,7 +136,7 @@ export class FinanceExpenseTrendComponent implements OnInit, OnDestroy {
           },
           title: tooltipItems => {
             return `${tooltipItems[0].label}: $${this.decimalPipe.transform(
-              _.sumBy(tooltipItems, t => t.parsed.y)
+              _.sumBy(tooltipItems, t => t.parsed.y),
             )}`;
           },
         },

@@ -1,10 +1,4 @@
-import {
-  Directive,
-  Input,
-  Renderer2,
-  ElementRef,
-  HostListener,
-} from '@angular/core';
+import { Directive, Input, Renderer2, ElementRef, HostListener } from '@angular/core';
 
 import { Sort } from '../util/sort';
 
@@ -16,7 +10,7 @@ export class SortDirective {
 
   constructor(
     private renderer: Renderer2,
-    private targetElement: ElementRef
+    private targetElement: ElementRef,
   ) {}
 
   @HostListener('click')

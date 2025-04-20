@@ -12,26 +12,24 @@ export class SignupService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {
     this.headers = new HttpHeaders();
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Access-Control-Allow-Origin', '*');
     this.headers.append(
       'Access-Control-Allow-Headers',
-      'Origin, Authorization, Content-Type, Accept'
+      'Origin, Authorization, Content-Type, Accept',
     );
   }
 
   private apiUrl = environment.apiUrl;
   getUrl(): Observable<any> {
-    return this.http
-      .get(this.apiUrl + '/XeroSignup/getUrl', { headers: this.headers })
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/XeroSignup/getUrl', { headers: this.headers }).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   getInfo(token): Observable<any> {
@@ -44,7 +42,7 @@ export class SignupService {
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 }

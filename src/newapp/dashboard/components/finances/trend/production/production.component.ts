@@ -125,10 +125,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
           callback: function (label: number, index, labels) {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              let currency =
-                label < 0
-                  ? label.toString().split('-').join('')
-                  : label.toString();
+              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
               currency = currency.split(/(?=(?:...)*$)/).join(',');
               return `${label < 0 ? '- $' : '$'}${currency}`;
             }
@@ -170,15 +167,12 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
         mode: 'x',
         callbacks: {
           label: tooltipItems => {
-            return `${tooltipItems.dataset.label} : ${new Intl.NumberFormat(
-              'en-US',
-              {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-              }
-            ).format(tooltipItems.parsed.y)}`;
+            return `${tooltipItems.dataset.label} : ${new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(tooltipItems.parsed.y)}`;
           },
           title: () => '',
         },
@@ -264,7 +258,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
             return this.labelBarOptionsSingleValue1;
         }
         return {};
-      })
+      }),
     );
   }
 
@@ -274,10 +268,9 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       this.financeFacade.profitTrendChartName$,
     ]).pipe(
       map(([v, chartName]) => {
-        if (['Net Profit %', 'Net Profit'].indexOf(chartName) >= 0)
-          return false;
+        if (['Net Profit %', 'Net Profit'].indexOf(chartName) >= 0) return false;
         return typeof v === 'string' ? true : false;
-      })
+      }),
     );
   }
 
@@ -290,13 +283,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
       this.financeFacade.isLoadingNetProfitPercentageTrend$,
     ]).pipe(
       map(
-        ([
-          t,
-          isLoadingProdTrend,
-          isLoadingColTrend,
-          isNetProfitTrend,
-          isNetProfitPercentTrend,
-        ]) => {
+        ([t, isLoadingProdTrend, isLoadingColTrend, isNetProfitTrend, isNetProfitPercentTrend]) => {
           switch (t) {
             case 'Production':
               return isLoadingProdTrend;
@@ -308,8 +295,8 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
               return isNetProfitPercentTrend;
           }
           return false;
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -320,7 +307,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
   constructor(
     private financeFacade: FinanceFacade,
     private layoutFacade: LayoutFacade,
-    private clinicFacade: ClinicFacade
+    private clinicFacade: ClinicFacade,
   ) {}
 
   get chartType$() {
@@ -340,7 +327,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
             return 'line';
         }
         return 'line';
-      })
+      }),
     );
   }
 
@@ -354,7 +341,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
           return !(connectWith === 'xero' || connectWith === 'myob');
         }
         return false;
-      })
+      }),
     );
   }
 
@@ -396,7 +383,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
                     (data: { label: string; value: number } & any, index) => {
                       chartDataset[0].data.push(data.value);
                       chartLabels.push(data.label);
-                    }
+                    },
                   );
                 }
               }
@@ -411,7 +398,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
                   (data: { label: string; value: number } & any, index) => {
                     chartDataset[0].data.push(data.value);
                     chartLabels.push(data.label);
-                  }
+                  },
                 );
               }
 
@@ -426,7 +413,7 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
                   (data: { label: string; value: number } & any, index) => {
                     chartDataset[0].data.push(data.value);
                     chartLabels.push(data.label);
-                  }
+                  },
                 );
               }
               break;
@@ -436,13 +423,13 @@ export class FinanceProdTrendComponent implements OnInit, OnDestroy {
                 (data: { label: string; value: number } & any, index) => {
                   chartDataset[0].data.push(data.value);
                   chartLabels.push(data.label);
-                }
+                },
               );
           }
 
           this.datasets = chartDataset;
           this.labels = chartLabels;
-        }
+        },
       );
   }
 

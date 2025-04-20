@@ -1,16 +1,16 @@
 .list-box {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 .select-all {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    font-family: 'Gilroy-Medium';
-    margin-right: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-family: 'Gilroy-Medium';
+  margin-right: 15px;
 }

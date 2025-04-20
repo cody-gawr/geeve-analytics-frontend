@@ -4,7 +4,8 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title">
     <span> Conversion Predictor Ratio </span>
   </div>
@@ -13,19 +14,18 @@
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
         <div class="active-toggle">
           <button
             mat-flat-button
-            *ngIf="
-              (visibility$ | async) === 'indirect to large direct fillings';
-              else elem1
-            "
+            *ngIf="(visibility$ | async) === 'indirect to large direct fillings'; else elem1"
             (click)="setVisibility('indirect to large direct fillings')"
-            color="primary">
+            color="primary"
+          >
             {{
               (isLargeOrSmall$ | async)
                 ? 'Indirect to Large Direct'
@@ -33,9 +33,7 @@
             }}
           </button>
           <ng-template #elem1>
-            <button
-              mat-stroked-button
-              (click)="setVisibility('indirect to large direct fillings')">
+            <button mat-stroked-button (click)="setVisibility('indirect to large direct fillings')">
               {{
                 (isLargeOrSmall$ | async)
                   ? 'Indirect to Large Direct'
@@ -43,27 +41,27 @@
               }}
             </button>
           </ng-template>
-  
+
           <button
             (click)="setVisibility('rct to extraction')"
             *ngIf="(visibility$ | async) === 'rct to extraction'; else elem2"
             color="primary"
-            mat-flat-button>
+            mat-flat-button
+          >
             RCT to Extraction
           </button>
           <ng-template #elem2>
-            <button
-              (click)="setVisibility('rct to extraction')"
-              mat-stroked-button>
+            <button (click)="setVisibility('rct to extraction')" mat-stroked-button>
               RCT to Extraction
             </button>
           </ng-template>
-  
+
           <button
             (click)="setVisibility('rct conversion')"
             *ngIf="(visibility$ | async) === 'rct conversion'; else elem3"
             color="primary"
-            mat-flat-button>
+            mat-flat-button
+          >
             RCT Conversion
           </button>
           <ng-template #elem3>
@@ -75,7 +73,8 @@
         <div class="chart-gauge predictor-ratio-gauge">
           <spin-loader
             *ngIf="isLoading$ | async; else chartElem"
-            [disableSpin]="false"></spin-loader>
+            [disableSpin]="false"
+          ></spin-loader>
           <ng-template #chartElem>
             <canvas
               *ngIf="hasData; else chartElem01"
@@ -84,7 +83,8 @@
               [labels]="labels"
               [legend]="true"
               type="bar"
-              [options]="chartOptions$ | async">
+              [options]="chartOptions$ | async"
+            >
             </canvas>
             <ng-template #chartElem01>
               <spin-loader class="empty-placeholder" [disableSpin]="true">
@@ -93,9 +93,7 @@
             </ng-template>
           </ng-template>
         </div>
-        <div
-          class="chart-foot"
-          *ngIf="!((isTrend$ | async) && (isDentistMode$ | async))">
+        <div class="chart-foot" *ngIf="!((isTrend$ | async) && (isDentistMode$ | async))">
           <div *ngIf="!(isMultipleClinic$ | async); else otherEl">
             <h3>{{ predictorRatioValue }}</h3>
             <span>{{ durationLabel$ | async }} Average</span>

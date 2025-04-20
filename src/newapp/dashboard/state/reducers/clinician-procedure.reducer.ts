@@ -1,10 +1,7 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import _ from 'lodash';
 import { JeeveError } from '@/newapp/models';
-import {
-  ClinicianProcedureApiActions,
-  ClinicianProcedurePageActions,
-} from '../actions';
+import { ClinicianProcedureApiActions, ClinicianProcedurePageActions } from '../actions';
 import {
   CpPredictorAnalysisApiResponse,
   CpPredictorAnalysisDataItem,
@@ -90,10 +87,7 @@ const specialistPropertyToDescription: Record<string, string> = {
 };
 
 const cpPredictorRatioVisibilityToLabel: Record<string, string[]> = {
-  'indirect to large direct fillings': [
-    'Indirect Restorations',
-    'Large Direct Restorations',
-  ],
+  'indirect to large direct fillings': ['Indirect Restorations', 'Large Direct Restorations'],
   'rct to extraction': ['RCT', 'Extractions'],
   'rct conversion': ["RCT's Started", "RCT's Completed"],
 };
@@ -120,18 +114,15 @@ export const clinicianProcedureFeature = createFeature({
   name: 'clinician-procedure',
   reducer: createReducer(
     initialState,
-    on(
-      ClinicianProcedurePageActions.loadCpPredictorAnalysis,
-      (state): ClinicianProcedureState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'cpPredictorAnalysis'),
-          cpPredictorAnalysisData: null,
-          isLoadingData: _.union(isLoadingData, ['cpPredictorAnalysis']),
-        };
-      }
-    ),
+    on(ClinicianProcedurePageActions.loadCpPredictorAnalysis, (state): ClinicianProcedureState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'cpPredictorAnalysis'),
+        cpPredictorAnalysisData: null,
+        isLoadingData: _.union(isLoadingData, ['cpPredictorAnalysis']),
+      };
+    }),
     on(
       ClinicianProcedureApiActions.loadCpPredictorAnalysisSuccess,
       (state, { cpPredictorAnalysisData }): ClinicianProcedureState => {
@@ -140,12 +131,9 @@ export const clinicianProcedureFeature = createFeature({
           ...state,
           errors: _.filter(errors, n => n.api != 'cpPredictorAnalysis'),
           cpPredictorAnalysisData,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'cpPredictorAnalysis'
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'cpPredictorAnalysis'),
         };
-      }
+      },
     ),
     on(
       ClinicianProcedureApiActions.loadCpPredictorAnalysisFailure,
@@ -154,13 +142,10 @@ export const clinicianProcedureFeature = createFeature({
         return {
           ...state,
           cpPredictorAnalysisData: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'cpPredictorAnalysis'
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'cpPredictorAnalysis'),
           errors: [...errors, { ...error, api: 'cpPredictorAnalysis' }],
         };
-      }
+      },
     ),
     // cpPredictorSpecialistAnalysis
     on(
@@ -169,37 +154,23 @@ export const clinicianProcedureFeature = createFeature({
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(
-            errors,
-            n => n.api != 'cpPredictorSpecialistAnalysis'
-          ),
+          errors: _.filter(errors, n => n.api != 'cpPredictorSpecialistAnalysis'),
           cpPredictorAnalysisData: null,
-          isLoadingData: _.union(isLoadingData, [
-            'cpPredictorSpecialistAnalysis',
-          ]),
+          isLoadingData: _.union(isLoadingData, ['cpPredictorSpecialistAnalysis']),
         };
-      }
+      },
     ),
     on(
       ClinicianProcedureApiActions.loadCpPredictorSpecialistAnalysisSuccess,
-      (
-        state,
-        { cpPredictorSpecialistAnalysisData }
-      ): ClinicianProcedureState => {
+      (state, { cpPredictorSpecialistAnalysisData }): ClinicianProcedureState => {
         const { isLoadingData, errors } = state;
         return {
           ...state,
-          errors: _.filter(
-            errors,
-            n => n.api != 'cpPredictorSpecialistAnalysis'
-          ),
+          errors: _.filter(errors, n => n.api != 'cpPredictorSpecialistAnalysis'),
           cpPredictorSpecialistAnalysisData,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'cpPredictorSpecialistAnalysis'
-          ),
+          isLoadingData: _.filter(isLoadingData, n => n != 'cpPredictorSpecialistAnalysis'),
         };
-      }
+      },
     ),
     on(
       ClinicianProcedureApiActions.loadCpPredictorSpecialistAnalysisFailure,
@@ -208,30 +179,21 @@ export const clinicianProcedureFeature = createFeature({
         return {
           ...state,
           cpPredictorSpecialistAnalysisData: null,
-          isLoadingData: _.filter(
-            isLoadingData,
-            n => n != 'cpPredictorSpecialistAnalysis'
-          ),
-          errors: [
-            ...errors,
-            { ...error, api: 'cpPredictorSpecialistAnalysis' },
-          ],
+          isLoadingData: _.filter(isLoadingData, n => n != 'cpPredictorSpecialistAnalysis'),
+          errors: [...errors, { ...error, api: 'cpPredictorSpecialistAnalysis' }],
         };
-      }
+      },
     ),
     // cpRevPerProcedure
-    on(
-      ClinicianProcedurePageActions.loadCpRevPerProcedure,
-      (state): ClinicianProcedureState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'cpRevPerProcedure'),
-          cpRevPerProcedureData: null,
-          isLoadingData: _.union(isLoadingData, ['cpRevPerProcedure']),
-        };
-      }
-    ),
+    on(ClinicianProcedurePageActions.loadCpRevPerProcedure, (state): ClinicianProcedureState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'cpRevPerProcedure'),
+        cpRevPerProcedureData: null,
+        isLoadingData: _.union(isLoadingData, ['cpRevPerProcedure']),
+      };
+    }),
     on(
       ClinicianProcedureApiActions.loadCpRevPerProcedureSuccess,
       (state, { cpRevPerProcedureData }): ClinicianProcedureState => {
@@ -242,7 +204,7 @@ export const clinicianProcedureFeature = createFeature({
           cpRevPerProcedureData,
           isLoadingData: _.filter(isLoadingData, n => n != 'cpRevPerProcedure'),
         };
-      }
+      },
     ),
     on(
       ClinicianProcedureApiActions.loadCpRevPerProcedureFailure,
@@ -254,21 +216,18 @@ export const clinicianProcedureFeature = createFeature({
           isLoadingData: _.filter(isLoadingData, n => n != 'cpRevPerProcedure'),
           errors: [...errors, { ...error, api: 'cpRevPerProcedure' }],
         };
-      }
+      },
     ),
     // cpPredictorRatio
-    on(
-      ClinicianProcedurePageActions.loadCpPredictorRatio,
-      (state): ClinicianProcedureState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'cpPredictorRatio'),
-          cpPredictorRatioData: null,
-          isLoadingData: _.union(isLoadingData, ['cpPredictorRatio']),
-        };
-      }
-    ),
+    on(ClinicianProcedurePageActions.loadCpPredictorRatio, (state): ClinicianProcedureState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'cpPredictorRatio'),
+        cpPredictorRatioData: null,
+        isLoadingData: _.union(isLoadingData, ['cpPredictorRatio']),
+      };
+    }),
     on(
       ClinicianProcedureApiActions.loadCpPredictorRatioSuccess,
       (state, { cpPredictorRatioData }): ClinicianProcedureState => {
@@ -279,7 +238,7 @@ export const clinicianProcedureFeature = createFeature({
           cpPredictorRatioData,
           isLoadingData: _.filter(isLoadingData, n => n != 'cpPredictorRatio'),
         };
-      }
+      },
     ),
     on(
       ClinicianProcedureApiActions.loadCpPredictorRatioFailure,
@@ -291,21 +250,18 @@ export const clinicianProcedureFeature = createFeature({
           isLoadingData: _.filter(isLoadingData, n => n != 'cpPredictorRatio'),
           errors: [...errors, { ...error, api: 'cpPredictorRatio' }],
         };
-      }
+      },
     ),
     // cpReferrals
-    on(
-      ClinicianProcedurePageActions.loadCpReferrals,
-      (state): ClinicianProcedureState => {
-        const { isLoadingData, errors } = state;
-        return {
-          ...state,
-          errors: _.filter(errors, n => n.api != 'cpReferrals'),
-          cpReferralsData: null,
-          isLoadingData: _.union(isLoadingData, ['cpReferrals']),
-        };
-      }
-    ),
+    on(ClinicianProcedurePageActions.loadCpReferrals, (state): ClinicianProcedureState => {
+      const { isLoadingData, errors } = state;
+      return {
+        ...state,
+        errors: _.filter(errors, n => n.api != 'cpReferrals'),
+        cpReferralsData: null,
+        isLoadingData: _.union(isLoadingData, ['cpReferrals']),
+      };
+    }),
     on(
       ClinicianProcedureApiActions.loadCpReferralsSuccess,
       (state, { cpReferralsData }): ClinicianProcedureState => {
@@ -316,7 +272,7 @@ export const clinicianProcedureFeature = createFeature({
           cpReferralsData,
           isLoadingData: _.filter(isLoadingData, n => n != 'cpReferrals'),
         };
-      }
+      },
     ),
     on(
       ClinicianProcedureApiActions.loadCpReferralsFailure,
@@ -328,7 +284,7 @@ export const clinicianProcedureFeature = createFeature({
           isLoadingData: _.filter(isLoadingData, n => n != 'cpReferrals'),
           errors: [...errors, { ...error, api: 'cpReferrals' }],
         };
-      }
+      },
     ),
     // cpPredictorAnalysisVisibility
     on(
@@ -338,7 +294,7 @@ export const clinicianProcedureFeature = createFeature({
           ...state,
           cpPredictorAnalysisVisibility: value,
         };
-      }
+      },
     ),
     // cpPredictorRatioVisibility
     on(
@@ -348,7 +304,7 @@ export const clinicianProcedureFeature = createFeature({
           ...state,
           cpPredictorRatioVisibility: value,
         };
-      }
+      },
     ),
     // cpReferralsVisibility
     on(
@@ -358,7 +314,7 @@ export const clinicianProcedureFeature = createFeature({
           ...state,
           cpReferralsVisibility: value,
         };
-      }
+      },
     ),
     on(
       ClinicianProcedurePageActions.loadTrendApiRequest,
@@ -369,7 +325,7 @@ export const clinicianProcedureFeature = createFeature({
           isLoadingData: _.union(state.isLoadingData, [api]),
           resBodyListTrend: { ...state.resBodyListTrend, [api]: {} },
         };
-      }
+      },
     ),
     on(
       ClinicianProcedurePageActions.loadCpNoneTrendApiRequestSuccess,
@@ -381,7 +337,7 @@ export const clinicianProcedureFeature = createFeature({
           resBodyList: { ...state.resBodyList, [api]: resBody },
           isLoadingData: _.filter(isLoadingData, n => n != api),
         };
-      }
+      },
     ),
     on(
       ClinicianProcedurePageActions.loadCpNoneTrendApiRequestFailure,
@@ -393,7 +349,7 @@ export const clinicianProcedureFeature = createFeature({
           isLoadingData: _.filter(isLoadingData, n => n != api),
           errors: [...errors, { ...error, api: api }],
         };
-      }
+      },
     ),
     on(
       ClinicianProcedurePageActions.loadCpTrendApiRequestSuccess,
@@ -405,7 +361,7 @@ export const clinicianProcedureFeature = createFeature({
           isLoadingData: _.filter(isLoadingData, n => n != api),
           resBodyListTrend: { ...state.resBodyListTrend, [api]: resBody },
         };
-      }
+      },
     ),
     on(
       ClinicianProcedurePageActions.loadCpTrendApiRequestFailure,
@@ -417,8 +373,8 @@ export const clinicianProcedureFeature = createFeature({
           isLoadingData: _.filter(isLoadingData, n => n != api),
           errors: [...errors, { ...error, api: api }],
         };
-      }
-    )
+      },
+    ),
   ),
 });
 
@@ -439,52 +395,49 @@ export const {
 
 export const selectCpPredictorAnalysisError = createSelector(
   selectErrors,
-  (errors): JeeveError | undefined =>
-    _.find(errors, e => e.api == 'cpPredictorAnalysis')
+  (errors): JeeveError | undefined => _.find(errors, e => e.api == 'cpPredictorAnalysis'),
 );
 
 export const selectIsLoadingCpPredictorAnalysis = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorAnalysis') != -1
+  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorAnalysis') != -1,
 );
 
 export const selectIsLoadingCpPredictorAnalysisTrend = createSelector(
   selectIsLoadingData,
   loadingData => {
     return _.findIndex(loadingData, l => l == 'cpPredictorAnalysisTrend') != -1;
-  }
+  },
 );
 
 export const selectIsLoadingCpPredictorSpecialistAnalysis = createSelector(
   selectIsLoadingData,
-  loadingData =>
-    _.findIndex(loadingData, l => l == 'cpPredictorSpecialistAnalysis') != -1
+  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorSpecialistAnalysis') != -1,
 );
 
 export const selectIsLoadingCpRevPerProcedure = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'cpRevPerProcedure') != -1
+  loadingData => _.findIndex(loadingData, l => l == 'cpRevPerProcedure') != -1,
 );
 
 export const selectIsLoadingCpPredictorRatio = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorRatio') != -1
+  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorRatio') != -1,
 );
 
 export const selectIsLoadingCpPredictorRatioTrend = createSelector(
   selectIsLoadingData,
-  loadingData =>
-    _.findIndex(loadingData, l => l == 'cpPredictorRatioTrend') != -1
+  loadingData => _.findIndex(loadingData, l => l == 'cpPredictorRatioTrend') != -1,
 );
 
 export const selectIsLoadingCpReferrals = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'cpReferrals') != -1
+  loadingData => _.findIndex(loadingData, l => l == 'cpReferrals') != -1,
 );
 
 export const selectIsLoadingCpReferralsTrend = createSelector(
   selectIsLoadingData,
-  loadingData => _.findIndex(loadingData, l => l == 'cpReferralsTrend') != -1
+  loadingData => _.findIndex(loadingData, l => l == 'cpReferralsTrend') != -1,
 );
 
 export const selectCpPredictorAnalysisChartData = createSelector(
@@ -516,33 +469,15 @@ export const selectCpPredictorAnalysisChartData = createSelector(
         .map(items => {
           return {
             ...items[0],
-            whitening: _.sumBy(items, item =>
-              Math.round(parseFloat(<string>item.whitening))
-            ),
-            imp_crowns: _.sumBy(items, item =>
-              Math.round(parseFloat(<string>item.impCrowns))
-            ),
-            crowns: _.sumBy(items, item =>
-              Math.round(parseFloat(<string>item.crowns))
-            ),
-            splints: _.sumBy(items, item =>
-              Math.round(parseFloat(<string>item.splints))
-            ),
-            rct: _.sumBy(items, item =>
-              Math.round(parseFloat(<string>item.rct))
-            ),
-            perio: _.sumBy(items, item =>
-              Math.round(parseFloat(<string>item.perio))
-            ),
-            extract: _.sumBy(items, item =>
-              Math.round(parseFloat(<string>item.extract))
-            ),
-            ss_crowns: _.sumBy(items, item =>
-              Math.round(parseFloat(<string>item.ssCrowns))
-            ),
-            comp_veneers: _.sumBy(items, item =>
-              Math.round(parseFloat(<string>item.compVeneers))
-            ),
+            whitening: _.sumBy(items, item => Math.round(parseFloat(<string>item.whitening))),
+            imp_crowns: _.sumBy(items, item => Math.round(parseFloat(<string>item.impCrowns))),
+            crowns: _.sumBy(items, item => Math.round(parseFloat(<string>item.crowns))),
+            splints: _.sumBy(items, item => Math.round(parseFloat(<string>item.splints))),
+            rct: _.sumBy(items, item => Math.round(parseFloat(<string>item.rct))),
+            perio: _.sumBy(items, item => Math.round(parseFloat(<string>item.perio))),
+            extract: _.sumBy(items, item => Math.round(parseFloat(<string>item.extract))),
+            ss_crowns: _.sumBy(items, item => Math.round(parseFloat(<string>item.ssCrowns))),
+            comp_veneers: _.sumBy(items, item => Math.round(parseFloat(<string>item.compVeneers))),
           };
         })
         .value()
@@ -635,48 +570,53 @@ export const selectCpPredictorAnalysisChartData = createSelector(
         stackedChartData9 = [],
         paTableData = [];
 
-      resData.data.filter(item => Math.round(parseFloat(<string>item.crowns)) +
-      Math.round(parseFloat(<string>item.splints)) +
-      Math.round(parseFloat(<string>item.rct)) +
-      Math.round(parseFloat(<string>item.perio)) +
-      Math.round(parseFloat(<string>item.extract)) +
-      Math.round(parseFloat(<string>item.ssCrowns)) +
-      Math.round(parseFloat(<string>item.compVeneers)) +
-      Math.round(parseFloat(<string>item.impCrowns)) >
-    0 && item.providerId).forEach((item, index) => {
-        // let ipKey = null;
-        if (index < authUserData.maxChartBars) {
-          stackedChartData1.push(item.crowns);
-          stackedChartData2.push(item.splints);
-          stackedChartData3.push(item.rct);
-          stackedChartData4.push(item.perio);
-          stackedChartData5.push(item.extract);
-          stackedChartData6.push(item.ssCrowns);
-          stackedChartData7.push(item.compVeneers);
-          stackedChartData8.push(item.impCrowns);
-          stackedChartData9.push(item.whitening);
-          chartLabels.push(item.providerName);
-          console.log(item.providerName)
-        }
+      resData.data
+        .filter(
+          item =>
+            Math.round(parseFloat(<string>item.crowns)) +
+              Math.round(parseFloat(<string>item.splints)) +
+              Math.round(parseFloat(<string>item.rct)) +
+              Math.round(parseFloat(<string>item.perio)) +
+              Math.round(parseFloat(<string>item.extract)) +
+              Math.round(parseFloat(<string>item.ssCrowns)) +
+              Math.round(parseFloat(<string>item.compVeneers)) +
+              Math.round(parseFloat(<string>item.impCrowns)) >
+              0 && item.providerId,
+        )
+        .forEach((item, index) => {
+          // let ipKey = null;
+          if (index < authUserData.maxChartBars) {
+            stackedChartData1.push(item.crowns);
+            stackedChartData2.push(item.splints);
+            stackedChartData3.push(item.rct);
+            stackedChartData4.push(item.perio);
+            stackedChartData5.push(item.extract);
+            stackedChartData6.push(item.ssCrowns);
+            stackedChartData7.push(item.compVeneers);
+            stackedChartData8.push(item.impCrowns);
+            stackedChartData9.push(item.whitening);
+            chartLabels.push(item.providerName);
+            console.log(item.providerName);
+          }
 
-        let temp = {
-          name: item.providerName,
-          Crowns_Onlays: Math.round(parseFloat(<string>item.crowns)),
-          Splints: Math.round(parseFloat(<string>item.splints)),
-          RCT: Math.round(parseFloat(<string>item.rct)),
-          Perio: Math.round(parseFloat(<string>item.perio)),
-          Surg_Ext: Math.round(parseFloat(<string>item.extract)),
-          Imp_Crowns: Math.round(parseFloat(<string>item.impCrowns)),
-          SS_Crowns: Math.round(parseFloat(<string>item.ssCrowns)),
-          Comp_Veneers: Math.round(parseFloat(<string>item.compVeneers)),
-          Whitening: Math.round(parseFloat(<string>item.whitening)),
-        };
-        console.log(temp)
-        paTableData.push(temp);
-        // if (item.providerName != 'Anonymous') {
-        //   ipKey = index;
-        // }
-      });
+          let temp = {
+            name: item.providerName,
+            Crowns_Onlays: Math.round(parseFloat(<string>item.crowns)),
+            Splints: Math.round(parseFloat(<string>item.splints)),
+            RCT: Math.round(parseFloat(<string>item.rct)),
+            Perio: Math.round(parseFloat(<string>item.perio)),
+            Surg_Ext: Math.round(parseFloat(<string>item.extract)),
+            Imp_Crowns: Math.round(parseFloat(<string>item.impCrowns)),
+            SS_Crowns: Math.round(parseFloat(<string>item.ssCrowns)),
+            Comp_Veneers: Math.round(parseFloat(<string>item.compVeneers)),
+            Whitening: Math.round(parseFloat(<string>item.whitening)),
+          };
+          console.log(temp);
+          paTableData.push(temp);
+          // if (item.providerName != 'Anonymous') {
+          //   ipKey = index;
+          // }
+        });
 
       chartDatasets[0]['data'] = stackedChartData1;
       chartDatasets[1]['data'] = stackedChartData2;
@@ -715,7 +655,7 @@ export const selectCpPredictorAnalysisChartData = createSelector(
         paTableData,
       };
     }
-  }
+  },
 );
 
 export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
@@ -747,25 +687,23 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
         endoRetreat: 'Endo Re-treat',
         veneersInd: 'Veneers (indirect)',
       };
-      Object.entries(descriptionMap).forEach(
-        ([property, description], index) => {
-          const data: number[] = _.chain(resData.data)
-            .groupBy('clinicId')
-            .sortBy((items, clinicId) => clinicId)
-            .map((items, clinicId) => {
-              return _.chain(items)
-                .sumBy(item => Number(item[property]) || 0)
-                .value();
-            })
-            .value();
-          chartDatasets.push({
-            data,
-            label: description,
-            backgroundColor: COLORS.presetColors[index % COLORS.presetColors.length],
-            hoverBackgroundColor: COLORS.presetColors[index % COLORS.presetColors.length],
-          });
-        }
-      );
+      Object.entries(descriptionMap).forEach(([property, description], index) => {
+        const data: number[] = _.chain(resData.data)
+          .groupBy('clinicId')
+          .sortBy((items, clinicId) => clinicId)
+          .map((items, clinicId) => {
+            return _.chain(items)
+              .sumBy(item => Number(item[property]) || 0)
+              .value();
+          })
+          .value();
+        chartDatasets.push({
+          data,
+          label: description,
+          backgroundColor: COLORS.presetColors[index % COLORS.presetColors.length],
+          hoverBackgroundColor: COLORS.presetColors[index % COLORS.presetColors.length],
+        });
+      });
 
       return {
         datasets: chartDatasets,
@@ -839,41 +777,46 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
         stackedChartData7 = [],
         paSpecialTableData = [];
 
-      resData.data.filter(item => Math.round(parseFloat(<string>item.impSurg)) +
-      Math.round(parseFloat(<string>item.orthoFix)) +
-      Math.round(parseFloat(<string>item.sleep)) +
-      Math.round(parseFloat(<string>item.orthoAlign)) +
-      Math.round(parseFloat(<string>item.perioSurg)) +
-      Math.round(parseFloat(<string>item.veneersInd)) >
-    0 && item.providerId).forEach((item, index) => {
-        // let ipKey = null;
-        if (index < authUserData.maxChartBars) {
-          stackedChartData1.push(item.impSurg);
-          stackedChartData2.push(item.orthoFix);
-          stackedChartData3.push(item.orthoAlign);
-          stackedChartData4.push(item.sleep);
-          stackedChartData5.push(item.perioSurg);
-          stackedChartData6.push(item.endoRetreat);
-          stackedChartData7.push(item.veneersInd);
-          chartLabels.push(item.providerName);
-          // if (item.providerName != 'Anonymous') {
-          //   ipKey = index;
-          // }
-        }
+      resData.data
+        .filter(
+          item =>
+            Math.round(parseFloat(<string>item.impSurg)) +
+              Math.round(parseFloat(<string>item.orthoFix)) +
+              Math.round(parseFloat(<string>item.sleep)) +
+              Math.round(parseFloat(<string>item.orthoAlign)) +
+              Math.round(parseFloat(<string>item.perioSurg)) +
+              Math.round(parseFloat(<string>item.veneersInd)) >
+              0 && item.providerId,
+        )
+        .forEach((item, index) => {
+          // let ipKey = null;
+          if (index < authUserData.maxChartBars) {
+            stackedChartData1.push(item.impSurg);
+            stackedChartData2.push(item.orthoFix);
+            stackedChartData3.push(item.orthoAlign);
+            stackedChartData4.push(item.sleep);
+            stackedChartData5.push(item.perioSurg);
+            stackedChartData6.push(item.endoRetreat);
+            stackedChartData7.push(item.veneersInd);
+            chartLabels.push(item.providerName);
+            // if (item.providerName != 'Anonymous') {
+            //   ipKey = index;
+            // }
+          }
 
-        let temp = {
-          name: item.providerName,
-          Implant_Surg: Math.round(parseFloat(<string>item.impSurg)),
-          Braces: Math.round(parseFloat(<string>item.orthoFix)),
-          Aligners: Math.round(parseFloat(<string>item.orthoAlign)),
-          MAS: Math.round(parseFloat(<string>item.sleep)),
-          Perio_Surg: Math.round(parseFloat(<string>item.perioSurg)),
-          Endo_Re_treat: Math.round(parseFloat(<string>item.endoRetreat)),
-          Veneers_ind: Math.round(parseFloat(<string>item.veneersInd)),
-        };
+          let temp = {
+            name: item.providerName,
+            Implant_Surg: Math.round(parseFloat(<string>item.impSurg)),
+            Braces: Math.round(parseFloat(<string>item.orthoFix)),
+            Aligners: Math.round(parseFloat(<string>item.orthoAlign)),
+            MAS: Math.round(parseFloat(<string>item.sleep)),
+            Perio_Surg: Math.round(parseFloat(<string>item.perioSurg)),
+            Endo_Re_treat: Math.round(parseFloat(<string>item.endoRetreat)),
+            Veneers_ind: Math.round(parseFloat(<string>item.veneersInd)),
+          };
 
-        paSpecialTableData.push(temp);
-      });
+          paSpecialTableData.push(temp);
+        });
       chartDatasets[0]['data'] = stackedChartData1;
       chartDatasets[1]['data'] = stackedChartData2;
       chartDatasets[2]['data'] = stackedChartData3;
@@ -909,7 +852,7 @@ export const selectCpPredictorSpecialistAnalysisChartData = createSelector(
         paSpecialTableData: paSpecialTableData,
       };
     }
-  }
+  },
 );
 
 export const selectCpRevPerProcedureChartData = createSelector(
@@ -966,7 +909,7 @@ export const selectCpRevPerProcedureChartData = createSelector(
       datasets: chartDatasets,
       labels: chartLabels,
     };
-  }
+  },
 );
 
 export const selectCpPredictorRatioChartData = createSelector(
@@ -988,14 +931,8 @@ export const selectCpPredictorRatioChartData = createSelector(
       chartLabels2 = [],
       chartLabels3 = [];
 
-
-
     if (clinics.length > 1) {
-      const types = [
-        'crown-largefilling',
-        'rct-extraction',
-        'rctstarted-rctcompleted',
-      ];
+      const types = ['crown-largefilling', 'rct-extraction', 'rctstarted-rctcompleted'];
       chartDatasets1 = [
         { data: [], label: '' },
         { data: [], label: '' },
@@ -1018,10 +955,10 @@ export const selectCpPredictorRatioChartData = createSelector(
         multifulratio2 = '',
         multifulratio3 = '';
 
-        let cpPredictorRatioPrev1 = [0, 0];
-  
-      let cpPredictorRatioPrev2 =[0, 0];
-  
+      let cpPredictorRatioPrev1 = [0, 0];
+
+      let cpPredictorRatioPrev2 = [0, 0];
+
       let cpPredictorRatioPrev3 = [0, 0];
 
       types.forEach(type => {
@@ -1100,15 +1037,13 @@ export const selectCpPredictorRatioChartData = createSelector(
       }
     } else {
       const cpPredictorRatioPrev1 =
-      resData.data.find(item => item.type == 'crown-largefilling')?.totalTa ||
-      '';
+        resData.data.find(item => item.type == 'crown-largefilling')?.totalTa || '';
 
       const cpPredictorRatioPrev2 =
         resData.data.find(item => item.type == 'rct-extraction')?.totalTa || '';
 
       const cpPredictorRatioPrev3 =
-        resData.data.find(item => item.type == 'rctstarted-rctcompleted')
-        ?.totalTa || '';
+        resData.data.find(item => item.type == 'rctstarted-rctcompleted')?.totalTa || '';
       (chartDatasets1 = [
         { data: [], label: 'Indirect Restorations' },
         { data: [], label: 'Large Direct Restorations' },
@@ -1140,12 +1075,8 @@ export const selectCpPredictorRatioChartData = createSelector(
             chartLabels2.push(provider);
             break;
           case 'rctstarted-rctcompleted':
-            chartDatasets3[0]['data'].push(
-              Math.round(parseFloat(<string>item.firstValue))
-            );
-            chartDatasets3[1]['data'].push(
-              Math.round(parseFloat(<string>item.secondValue))
-            );
+            chartDatasets3[0]['data'].push(Math.round(parseFloat(<string>item.firstValue)));
+            chartDatasets3[1]['data'].push(Math.round(parseFloat(<string>item.secondValue)));
             cpPredictorRatioAvr3 = item.ratio;
             chartLabels3.push(provider);
             break;
@@ -1178,7 +1109,7 @@ export const selectCpPredictorRatioChartData = createSelector(
       }
     }
     //changeDentistPredictorMain('1');
-  }
+  },
 );
 
 export const selectCpReferralsChartData = createSelector(
@@ -1218,15 +1149,9 @@ export const selectCpReferralsChartData = createSelector(
             total: _.sumBy(items, item => Number(item.total)),
           };
         });
-      const data1 = data
-        .orderBy(item => item.internal, 'desc')
-        .filter(item => item.internal > 0);
-      const data2 = data
-        .orderBy(item => item.external, 'desc')
-        .filter(item => item.external > 0);
-      const data3 = data
-        .orderBy(item => item.total, 'desc')
-        .filter(item => item.total > 0);
+      const data1 = data.orderBy(item => item.internal, 'desc').filter(item => item.internal > 0);
+      const data2 = data.orderBy(item => item.external, 'desc').filter(item => item.external > 0);
+      const data3 = data.orderBy(item => item.total, 'desc').filter(item => item.total > 0);
       chartData1 = data1.map(v => v.internal).value();
       chartLabels1 = data1.map(v => v.treatItemName).value();
       pieChartInternalTotal = data1.sumBy(item => item.internal).value();
@@ -1254,25 +1179,20 @@ export const selectCpReferralsChartData = createSelector(
           chartLabels3.push(item.treatItemName);
 
           pieChartInternalTotal =
-            pieChartInternalTotal +
-            Math.round(parseFloat(<string>item.internal));
+            pieChartInternalTotal + Math.round(parseFloat(<string>item.internal));
           pieChartExternalTotal =
-            pieChartExternalTotal +
-            Math.round(parseFloat(<string>item.external));
+            pieChartExternalTotal + Math.round(parseFloat(<string>item.external));
           pieChartCombinedTotal =
             pieChartCombinedTotal + Math.round(parseFloat(<string>item.total));
         }
       });
 
       pieChartInternalPrev =
-        pieChartInternalPrev +
-        Math.round(parseFloat(<string>resData.totalTa.internal));
+        pieChartInternalPrev + Math.round(parseFloat(<string>resData.totalTa.internal));
       pieChartExternalPrev =
-        pieChartExternalPrev +
-        Math.round(parseFloat(<string>resData.totalTa.external));
+        pieChartExternalPrev + Math.round(parseFloat(<string>resData.totalTa.external));
       pieChartCombinedPrev =
-        pieChartCombinedPrev +
-        Math.round(parseFloat(<string>resData.totalTa.total));
+        pieChartCombinedPrev + Math.round(parseFloat(<string>resData.totalTa.total));
     }
 
     if (visibility === 'internal') {
@@ -1312,7 +1232,7 @@ export const selectCpReferralsChartData = createSelector(
         maxVal: Math.max(...chartData3),
       };
     }
-  }
+  },
 );
 
 export const selectCpPredictorAnalysisTrendChartData = createSelector(
@@ -1320,13 +1240,9 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
   selectTrend,
   selectCpPredictorAnalysisVisibility,
   (resBodyList, trendMode, visibility) => {
-    const resBody:
-      | CpPredictorAnalysisApiResponse
-      | CpPredictorSpecialistAnalysisApiResponse =
+    const resBody: CpPredictorAnalysisApiResponse | CpPredictorSpecialistAnalysisApiResponse =
       visibility == 'general'
-        ? <CpPredictorAnalysisApiResponse>(
-            resBodyList['cpPredictorAnalysisTrend']
-          )
+        ? <CpPredictorAnalysisApiResponse>resBodyList['cpPredictorAnalysisTrend']
         : <CpPredictorSpecialistAnalysisApiResponse>(
             resBodyList['cpPredictorSpecialistAnalysisTrend']
           );
@@ -1339,18 +1255,14 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
       const trendItems = resBody.data;
 
       const keys = Object.keys(
-        visibility == 'general'
-          ? generalPropertyToDescription
-          : specialistPropertyToDescription
+        visibility == 'general' ? generalPropertyToDescription : specialistPropertyToDescription,
       );
 
       data = {
         datasets: _.map(
           _.zipObject(
             keys,
-            _.map(keys, key =>
-              _(trendItems).map(_.camelCase(key)).compact().value()
-            )
+            _.map(keys, key => _(trendItems).map(_.camelCase(key)).compact().value()),
           ),
           (values: number[], key: string) => ({
             label:
@@ -1358,20 +1270,20 @@ export const selectCpPredictorAnalysisTrendChartData = createSelector(
                 ? generalPropertyToDescription[key]
                 : specialistPropertyToDescription[key],
             data: values,
-          })
+          }),
         ),
         labels: _(trendItems)
           .map((trendItem: CpPredictorAnalysisDataItem) =>
             trendMode == 'current'
               ? moment(trendItem.yearMonth).format('MMM YYYY')
-              : trendItem.year
+              : trendItem.year,
           )
           .value(),
       };
     }
 
     return data;
-  }
+  },
 );
 
 export const selectCpPredictorRatioTrendChartData = createSelector(
@@ -1379,9 +1291,7 @@ export const selectCpPredictorRatioTrendChartData = createSelector(
   selectTrend,
   selectCpPredictorRatioVisibility,
   (resBodyList, trendMode, visibility) => {
-    const resBody = <CpPredictorRatioTrendApiResponse>(
-      resBodyList['cpPredictorRatioTrend']
-    );
+    const resBody = <CpPredictorRatioTrendApiResponse>resBodyList['cpPredictorRatioTrend'];
 
     let data: ChartData = {
       datasets: [],
@@ -1391,24 +1301,22 @@ export const selectCpPredictorRatioTrendChartData = createSelector(
     if (!_.isEmpty(resBody) && trendMode != 'off') {
       const trendItems = resBody.data;
       const values: string[][] = _.unzip(
-        _(trendItems)
-          .map(cpPredictorRatioVisibilityToProperty[visibility])
-          .value()
+        _(trendItems).map(cpPredictorRatioVisibilityToProperty[visibility]).value(),
       );
 
       if (!_.isEmpty(values)) {
         data = {
-          datasets: (<string[]>(
-            cpPredictorRatioVisibilityToLabel[visibility]
-          )).map((label: string, index: number) => ({
-            label,
-            data: values[index].map(v => parseInt(v)),
-          })),
+          datasets: (<string[]>cpPredictorRatioVisibilityToLabel[visibility]).map(
+            (label: string, index: number) => ({
+              label,
+              data: values[index].map(v => parseInt(v)),
+            }),
+          ),
           labels: _(trendItems)
             .map((trendItem: CpPredictorRatioTrendDataItem) =>
               trendMode == 'current'
                 ? moment(trendItem.duration).format('MMM YYYY')
-                : trendItem.duration
+                : trendItem.duration,
             )
             .value(),
         };
@@ -1416,7 +1324,7 @@ export const selectCpPredictorRatioTrendChartData = createSelector(
     }
 
     return data;
-  }
+  },
 );
 
 export const selectCpReferralsTrendChartData = createSelector(
@@ -1424,9 +1332,7 @@ export const selectCpReferralsTrendChartData = createSelector(
   selectTrend,
   selectCpReferralsVisibility,
   (resBodyList, trendMode, visibility) => {
-    const resBody = <CpReferralsTrendApiResponse>(
-      resBodyList['cpReferralsTrend']
-    );
+    const resBody = <CpReferralsTrendApiResponse>resBodyList['cpReferralsTrend'];
 
     let data: ChartData = {
       datasets: [],
@@ -1438,17 +1344,15 @@ export const selectCpReferralsTrendChartData = createSelector(
       const values: string[][] = _.unzip(_(trendItems).map('val').value());
       if (!_.isEmpty(values)) {
         data = {
-          datasets: cpReferralsTrendChartLabels.map(
-            (label: string, index: number) => ({
-              label,
-              data: values[index].map(v => parseInt(v)),
-            })
-          ),
+          datasets: cpReferralsTrendChartLabels.map((label: string, index: number) => ({
+            label,
+            data: values[index].map(v => parseInt(v)),
+          })),
           labels: _(trendItems)
             .map((trendItem: CpReferralsTrendDataItem) =>
               trendMode == 'current'
                 ? moment(trendItem.duration).format('MMM YYYY')
-                : trendItem.duration
+                : trendItem.duration,
             )
             .value(),
         };
@@ -1456,5 +1360,5 @@ export const selectCpReferralsTrendChartData = createSelector(
     }
 
     return data;
-  }
+  },
 );

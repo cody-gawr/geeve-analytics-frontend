@@ -7,11 +7,13 @@
     <new-patient-by-referral-chart
       *ngIf="getChartTip(23) | async"
       [toolTip]="getChartTip(23) | async"
-      class="dashboard-chart33"></new-patient-by-referral-chart>
+      class="dashboard-chart33"
+    ></new-patient-by-referral-chart>
     <revenue-by-referral-chart
       *ngIf="getChartTip(24) | async"
       [toolTip]="getChartTip(24) | async"
-      class="dashboard-chart33"></revenue-by-referral-chart>
+      class="dashboard-chart33"
+    ></revenue-by-referral-chart>
     <mk-prod-by-postcode-chart
       *ngIf="postCodeChartTip$ | async"
       [toolTip]="postCodeChartTip$ | async"
@@ -22,14 +24,17 @@
     <num-new-patients-chart
       *ngIf="getNumNewPatientsTip$ | async"
       [toolTip]="getNumNewPatientsTip$ | async"
-      class="dashboard-chart33"></num-new-patients-chart>
+      class="dashboard-chart33"
+    ></num-new-patients-chart>
     <new-patients-acq-chart
       *ngIf="getChartTip(37) | async"
       [toolTip]="getChartTip(37) | async"
-      class="dashboard-chart33"></new-patients-acq-chart>
+      class="dashboard-chart33"
+    ></new-patients-acq-chart>
     <mk-total-visits-chart
       *ngIf="getChartTip(25) | async"
       [toolTip]="getChartTip(25) | async"
-      class="dashboard-chart33"></mk-total-visits-chart>
+      class="dashboard-chart33"
+    ></mk-total-visits-chart>
   </div>
 </div>

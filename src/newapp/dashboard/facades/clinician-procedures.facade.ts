@@ -31,84 +31,76 @@ import { ClinicianProcedurePageActions } from '../state/actions';
 export class ClinicianProcedureFacade {
   constructor(private store: Store<ClinicianProcedureState>) {}
 
-  public readonly errors$: Observable<JeeveError[]> = this.store.pipe(
-    select(selectErrors)
-  );
+  public readonly errors$: Observable<JeeveError[]> = this.store.pipe(select(selectErrors));
 
   public readonly isLoadingCpPredictorAnalysis$ = this.store.pipe(
-    select(selectIsLoadingCpPredictorAnalysis)
+    select(selectIsLoadingCpPredictorAnalysis),
   );
 
   public readonly isLoadingCpPredictorAnalysisTrend$ = this.store.pipe(
-    select(selectIsLoadingCpPredictorAnalysisTrend)
+    select(selectIsLoadingCpPredictorAnalysisTrend),
   );
 
   public readonly isLoadingCpPredictorSpecialistAnalysis$ = this.store.pipe(
-    select(selectIsLoadingCpPredictorSpecialistAnalysis)
+    select(selectIsLoadingCpPredictorSpecialistAnalysis),
   );
 
   public readonly isLoadingCpRevPerProcedure$ = this.store.pipe(
-    select(selectIsLoadingCpRevPerProcedure)
+    select(selectIsLoadingCpRevPerProcedure),
   );
 
   public readonly isLoadingCpPredictorRatio$ = this.store.pipe(
-    select(selectIsLoadingCpPredictorRatio)
+    select(selectIsLoadingCpPredictorRatio),
   );
 
   public readonly isLoadingCpPredictorRatioTrend$ = this.store.pipe(
-    select(selectIsLoadingCpPredictorRatioTrend)
+    select(selectIsLoadingCpPredictorRatioTrend),
   );
 
-  public readonly isLoadingCpReferrals$ = this.store.pipe(
-    select(selectIsLoadingCpReferrals)
-  );
+  public readonly isLoadingCpReferrals$ = this.store.pipe(select(selectIsLoadingCpReferrals));
 
   public readonly isLoadingCpReferralsTrend$ = this.store.pipe(
-    select(selectIsLoadingCpReferralsTrend)
+    select(selectIsLoadingCpReferralsTrend),
   );
 
   public readonly cpPredictorAnalysisChartData$ = this.store.pipe(
-    select(selectCpPredictorAnalysisChartData)
+    select(selectCpPredictorAnalysisChartData),
   );
 
   public readonly cpPredictorSpecialistAnalysisChartData$ = this.store.pipe(
-    select(selectCpPredictorSpecialistAnalysisChartData)
+    select(selectCpPredictorSpecialistAnalysisChartData),
   );
 
   public readonly cpRevPerProcedureChartData$ = this.store.pipe(
-    select(selectCpRevPerProcedureChartData)
+    select(selectCpRevPerProcedureChartData),
   );
 
   public readonly cpPredictorRatioChartData$ = this.store.pipe(
-    select(selectCpPredictorRatioChartData)
+    select(selectCpPredictorRatioChartData),
   );
 
   public readonly cpPredictorRatioTrendChartData$ = this.store.pipe(
-    select(selectCpPredictorRatioTrendChartData)
+    select(selectCpPredictorRatioTrendChartData),
   );
 
-  public readonly cpReferralsChartData$ = this.store.pipe(
-    select(selectCpReferralsChartData)
-  );
+  public readonly cpReferralsChartData$ = this.store.pipe(select(selectCpReferralsChartData));
 
   public readonly cpReferralsTrendChartData$ = this.store.pipe(
-    select(selectCpReferralsTrendChartData)
+    select(selectCpReferralsTrendChartData),
   );
 
   public readonly cpPredictorAnalysisVisibility$ = this.store.pipe(
-    select(selectCpPredictorAnalysisVisibility)
+    select(selectCpPredictorAnalysisVisibility),
   );
 
   public readonly cpPredictorRatioVisibility$ = this.store.pipe(
-    select(selectCpPredictorRatioVisibility)
+    select(selectCpPredictorRatioVisibility),
   );
 
-  public readonly cpReferralsVisibility$ = this.store.pipe(
-    select(selectCpReferralsVisibility)
-  );
+  public readonly cpReferralsVisibility$ = this.store.pipe(select(selectCpReferralsVisibility));
 
   public readonly cpPredictorAnalysisTrendChartData = this.store.pipe(
-    select(selectCpPredictorAnalysisTrendChartData)
+    select(selectCpPredictorAnalysisTrendChartData),
   );
 
   public loadCpPredictorAnalysis({
@@ -125,7 +117,7 @@ export class ClinicianProcedureFacade {
         endDate,
         queryWhEnabled,
         dentistId,
-      })
+      }),
     );
   }
 
@@ -143,7 +135,7 @@ export class ClinicianProcedureFacade {
         endDate,
         queryWhEnabled,
         dentistId,
-      })
+      }),
     );
   }
 
@@ -161,7 +153,7 @@ export class ClinicianProcedureFacade {
         endDate,
         queryWhEnabled,
         dentistId,
-      })
+      }),
     );
   }
 
@@ -181,7 +173,7 @@ export class ClinicianProcedureFacade {
         duration,
         queryWhEnabled,
         dentistId,
-      })
+      }),
     );
   }
 
@@ -201,40 +193,25 @@ export class ClinicianProcedureFacade {
         duration,
         queryWhEnabled,
         dentistId,
-      })
+      }),
     );
   }
 
   public setCpPredictorAnalysisVisibility(value: 'general' | 'specialist') {
-    this.store.dispatch(
-      ClinicianProcedurePageActions.setCpPredictorAnalysisVisibility({ value })
-    );
+    this.store.dispatch(ClinicianProcedurePageActions.setCpPredictorAnalysisVisibility({ value }));
   }
 
   public setCpPredictorRatioVisibility(
-    value:
-      | 'indirect to large direct fillings'
-      | 'rct to extraction'
-      | 'rct conversion'
+    value: 'indirect to large direct fillings' | 'rct to extraction' | 'rct conversion',
   ) {
-    this.store.dispatch(
-      ClinicianProcedurePageActions.setCpPredictorRatioVisibility({ value })
-    );
+    this.store.dispatch(ClinicianProcedurePageActions.setCpPredictorRatioVisibility({ value }));
   }
 
   public setCpReferralsVisibility(value: 'combined' | 'internal' | 'external') {
-    this.store.dispatch(
-      ClinicianProcedurePageActions.setCpReferralsVisibility({ value })
-    );
+    this.store.dispatch(ClinicianProcedurePageActions.setCpReferralsVisibility({ value }));
   }
 
-  public loadTrendApiRequest({
-    api,
-    clinicId,
-    mode,
-    queryWhEnabled,
-    dentistId = undefined,
-  }) {
+  public loadTrendApiRequest({ api, clinicId, mode, queryWhEnabled, dentistId = undefined }) {
     this.store.dispatch(
       ClinicianProcedurePageActions.loadTrendApiRequest({
         api: api,
@@ -244,7 +221,7 @@ export class ClinicianProcedureFacade {
           mode,
           queryWhEnabled,
         },
-      })
+      }),
     );
   }
 }

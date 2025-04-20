@@ -14,7 +14,7 @@ export class RolesService {
 
   constructor(
     private http: HttpClient,
-    private _cookieService: CookieService
+    private _cookieService: CookieService,
   ) {}
   getHeaders() {
     if (
@@ -36,13 +36,11 @@ export class RolesService {
   // Get profileSettings
   getprofileSettings(clinic_id): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/Users/getPractices?clinic_id=' + clinic_id, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/Users/getPractices?clinic_id=' + clinic_id, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   // Get updateprofileSettings
   updateprofileSettings(displayName, email): Observable<any> {
@@ -52,13 +50,11 @@ export class RolesService {
     formData.append('id', this._cookieService.get('userid'));
     var header = this.getHeaders();
 
-    return this.http
-      .post(this.apiUrl + '/Users/userUpdateProfile', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userUpdateProfile', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   // Get updatePassword
   updatePassword(currentPassword, newPassword): Observable<any> {
@@ -69,21 +65,19 @@ export class RolesService {
     formData.append('id', this._cookieService.get('userid'));
     var header = this.getHeaders();
 
-    return this.http
-      .post(this.apiUrl + '/Users/userChangePassword', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userChangePassword', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
-  clearSession(clinic_id): Observable<HttpResponse<
-  {
-    success: boolean,
-    data: {}
-  }
-  >> {
+  clearSession(clinic_id): Observable<
+    HttpResponse<{
+      success: boolean;
+      data: {};
+    }>
+  > {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
@@ -92,7 +86,7 @@ export class RolesService {
       .pipe(
         map((response: HttpResponse<any>) => {
           return response;
-        })
+        }),
       );
   }
 }

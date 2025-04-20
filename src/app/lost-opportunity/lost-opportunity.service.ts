@@ -17,7 +17,7 @@ export class LostOpportunityService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
 
   getHeaders() {
@@ -37,22 +37,14 @@ export class LostOpportunityService {
     return headers;
   }
   // clinic Production Service
-  dentistProduction(
-    clinic_id,
-    user_type = this._cookieService.get('user_type')
-  ): Observable<any> {
+  dentistProduction(clinic_id, user_type = this._cookieService.get('user_type')): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl +
-          '/LostOpportunity/loLostOpportunity?clinic_id=' +
-          clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/LostOpportunity/loLostOpportunity?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 }

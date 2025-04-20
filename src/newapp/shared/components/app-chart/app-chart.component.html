@@ -1,139 +1,144 @@
 <div class="chart-container">
+  <mat-icon
+    *ngIf="showMaxBarsAlert"
+    class="warn-icon"
+    fontIcon="warning"
+    [appTooltip]="maxBarsAlertMsg"
+  ></mat-icon>
+  <mat-icon
+    *ngIf="!!toolTip"
+    [tooltip]="toolTip"
+    matTooltipPosition="below"
+    color="primary"
+    class="help-tip"
+    fontIcon="help"
+  ></mat-icon>
+  <mat-icon
+    *ngIf="enablePaTableView && !isComingSoon"
+    [ngClass]="showPaTableView ? 'active' : ''"
+    (click)="toggleShowOfPaTableView()"
+    class="table-info-icon"
+    fontIcon="table_rows_narrow"
+  />
+  <div class="chart-title" [ngStyle]="newLogo ? { padding: '10px 30px' } : {}">
     <mat-icon
-      *ngIf="showMaxBarsAlert"
-      class="warn-icon"
-      fontIcon="warning"
-      [appTooltip]="maxBarsAlertMsg"
+      *ngIf="!!trendTipIcon"
+      [color]="trendTipIconColor || 'primary'"
+      [fontIcon]="trendTipIcon"
+      [matTooltip]="trendTipText"
     ></mat-icon>
-    <mat-icon
-      *ngIf="!!toolTip"
-      [tooltip]="toolTip"
-      matTooltipPosition="below"
-      color="primary"
-      class="help-tip"
-      fontIcon="help"></mat-icon>
-    <mat-icon
-      *ngIf="enablePaTableView && !isComingSoon"
-      [ngClass]="showPaTableView ? 'active' : ''"
-      (click)="toggleShowOfPaTableView()"
-      class="table-info-icon"
-      fontIcon="table_rows_narrow" />
-    <div class="chart-title" [ngStyle]="newLogo?{padding: '10px 30px'}:{}">
-      <mat-icon
-        *ngIf="!!trendTipIcon"
-        [color]="trendTipIconColor || 'primary'"
-        [fontIcon]="trendTipIcon"
-        [matTooltip]="trendTipText"></mat-icon>
-  
-      <span>{{chartTitle}}</span>
-      <img *ngIf="newLogo" width="35px" height="35px" src="assets/jeeve/images/new-release.png" />
-    </div>
-    <div class="chart-content">
-      <div class="canvas-wrapper chart-box gap-15px" [ngStyle]="{maxheight: chartBoxHeight}">
-        <spin-loader
-          class="empty-placeholder"
-          *ngIf="isComingSoon; else enabledChart"
-          [disableSpin]="true">
-          Coming Soon...
-        </spin-loader>
-        <ng-template #enabledChart>
-          <div class="chart-header">
-            <button
-              *ngFor="let tab of chartTabs"
-              (click)="switchActiveTab && switchActiveTab(tab)"
-              [ngClass]="{ active: tab === activeTab }">
-              {{ tab }}
-            </button>
-          </div>
-  
-          <div class="chart-elements" *ngIf="datePicker">
-              <span>Original Appointment In</span>
-              <mat-form-field appearance="outline" subscriptSizing="dynamic">
-                  <input matInput [matDatepicker]="dp" [formControl]="datePicker">
-                  <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-                  <mat-datepicker #dp startView="year"></mat-datepicker>
-              </mat-form-field>
-          </div>
-    
-          <div
-            class="pa-table"
-            *ngIf="showPaTableView && enablePaTableView; else graphElem">
-            <table>
-              <thead>
-                <tr>
-                  <th *ngFor="let hkey of Object.keys(paTableData[0])">{{hkey}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let protbl of paTableData">
-                  <td *ngFor="let value of Object.values(protbl)">{{ value }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <ng-template #graphElem>
-            <div class="chart-gauge graph-box">
-              <spin-loader *ngIf="isLoading; else chartElem"></spin-loader>
-              <ng-template #chartElem>
-                <spin-loader
-                  class="empty-placeholder"
-                  *ngIf="!readyToDrawChart; else drawChartElem"
-                  [disableSpin]="true">
-                  {{ noDataAlertMessage }}
-                </spin-loader>
-                <ng-template #drawChartElem>
-                  <ngx-gauge
-                    *ngIf="chartType === 'arch' && gaugeValue; else canvasElem"
+
+    <span>{{ chartTitle }}</span>
+    <img *ngIf="newLogo" width="35px" height="35px" src="assets/jeeve/images/new-release.png" />
+  </div>
+  <div class="chart-content">
+    <div class="canvas-wrapper chart-box gap-15px" [ngStyle]="{ maxheight: chartBoxHeight }">
+      <spin-loader
+        class="empty-placeholder"
+        *ngIf="isComingSoon; else enabledChart"
+        [disableSpin]="true"
+      >
+        Coming Soon...
+      </spin-loader>
+      <ng-template #enabledChart>
+        <div class="chart-header">
+          <button
+            *ngFor="let tab of chartTabs"
+            (click)="switchActiveTab && switchActiveTab(tab)"
+            [ngClass]="{ active: tab === activeTab }"
+          >
+            {{ tab }}
+          </button>
+        </div>
+
+        <div class="chart-elements" *ngIf="datePicker">
+          <span>Original Appointment In</span>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <input matInput [matDatepicker]="dp" [formControl]="datePicker" />
+            <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp startView="year"></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="pa-table" *ngIf="showPaTableView && enablePaTableView; else graphElem">
+          <table>
+            <thead>
+              <tr>
+                <th *ngFor="let hkey of Object.keys(paTableData[0])">{{ hkey }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let protbl of paTableData">
+                <td *ngFor="let value of Object.values(protbl)">{{ value }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #graphElem>
+          <div class="chart-gauge graph-box">
+            <spin-loader *ngIf="isLoading; else chartElem"></spin-loader>
+            <ng-template #chartElem>
+              <spin-loader
+                class="empty-placeholder"
+                *ngIf="!readyToDrawChart; else drawChartElem"
+                [disableSpin]="true"
+              >
+                {{ noDataAlertMessage }}
+              </spin-loader>
+              <ng-template #drawChartElem>
+                <ngx-gauge
+                  *ngIf="chartType === 'arch' && gaugeValue; else canvasElem"
+                  [type]="chartType"
+                  [value]="gaugeValue"
+                  [thick]="20"
+                  backgroundColor="#f4f0fa"
+                  foregroundColor="#4ccfae"
+                  cap="round"
+                  [label]="gaugeLabel"
+                  [duration]="gaugeDur"
+                  [max]="gaugeMax"
+                  [append]="appendCurrency ? currency : ''"
+                  [prepend]="!appendCurrency ? currency : ''"
+                  [size]="gaugeSize"
+                >
+                </ngx-gauge>
+                <ng-template #canvasElem>
+                  <canvas
+                    baseChart
+                    [datasets]="datasets"
+                    [labels]="labels"
+                    [legend]="enableLegend"
                     [type]="chartType"
-                    [value]="gaugeValue"
-                    
-                    [thick]="20"
-                    backgroundColor="#f4f0fa"
-                    foregroundColor="#4ccfae"
-                    cap="round"
-  
-                    [label]="gaugeLabel"
-                    [duration]="gaugeDur"
-                    [max]="gaugeMax"
-                    [append]="appendCurrency?currency:''"
-                    [prepend]="!appendCurrency?currency:''"
-                    [size]="gaugeSize">
-                  </ngx-gauge>
-                  <ng-template #canvasElem>
-                    <canvas
-                      baseChart
-                      [datasets]="datasets"
-                      [labels]="labels"
-                      [legend]="enableLegend"
-                      [type]="chartType"
-                      [options]="chartOptions">
-                    </canvas>
-                  </ng-template>
+                    [options]="chartOptions"
+                  >
+                  </canvas>
                 </ng-template>
               </ng-template>
-            </div>
-          </ng-template>
-    
-          <div class="chart-foot" *ngIf="durationCurrLabel || durationPrevLabel || enableGoal; else emptyEle">
-            <div *ngIf="!!durationCurrLabel">
-              <h3>{{formatValue(curr)}}</h3>
-              <span>{{ durationCurrLabel }}</span>
-            </div>
-            <div *ngIf="duration !== 'custom' && !!durationPrevLabel">
-              <h3>{{ formatValue(prev) }}</h3>
-              <span>{{ durationPrevLabel }}</span>
-            </div>
-            <div
-              *ngIf="goal >= 0 && enableGoal && goalCount">
-              <h3>{{ formatValue(goal * goalCount) }}</h3>
-              <span>Goal</span>
-            </div>
+            </ng-template>
           </div>
-          <ng-template #emptyEle>
-            <div></div>
-          </ng-template>
         </ng-template>
-      </div>
+
+        <div
+          class="chart-foot"
+          *ngIf="durationCurrLabel || durationPrevLabel || enableGoal; else emptyEle"
+        >
+          <div *ngIf="!!durationCurrLabel">
+            <h3>{{ formatValue(curr) }}</h3>
+            <span>{{ durationCurrLabel }}</span>
+          </div>
+          <div *ngIf="duration !== 'custom' && !!durationPrevLabel">
+            <h3>{{ formatValue(prev) }}</h3>
+            <span>{{ durationPrevLabel }}</span>
+          </div>
+          <div *ngIf="goal >= 0 && enableGoal && goalCount">
+            <h3>{{ formatValue(goal * goalCount) }}</h3>
+            <span>Goal</span>
+          </div>
+        </div>
+        <ng-template #emptyEle>
+          <div></div>
+        </ng-template>
+      </ng-template>
     </div>
   </div>
-  
+</div>

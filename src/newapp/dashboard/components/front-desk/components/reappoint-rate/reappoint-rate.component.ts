@@ -47,7 +47,7 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([v, isFullSingle]) => {
         return (v.duration !== 'custom' && v.enableGoal) || isFullSingle;
-      })
+      }),
     );
   }
 
@@ -66,7 +66,7 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([isTrend, isLoading, isTrendLoading]) => {
         return isTrend ? isTrendLoading : isLoading;
-      })
+      }),
     );
   }
 
@@ -98,7 +98,7 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
         } else {
           return this.fdReappointRateVal > 0;
         }
-      })
+      }),
     );
   }
 
@@ -111,7 +111,7 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private layoutFacade: LayoutFacade,
     private decimalPipe: DecimalPipe,
-    private dashboardFacade: DashboardFacade
+    private dashboardFacade: DashboardFacade,
   ) {}
 
   ngOnInit(): void {
@@ -143,13 +143,11 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
     return combineLatest([this.isTrend$, this.isMultipleClinic$]).pipe(
       map(([isTrend, isMultiClinic]) => {
         if (isTrend) {
-          return isMultiClinic
-            ? this.stackedChartOptionsTC
-            : this.stackedChartOptions;
+          return isMultiClinic ? this.stackedChartOptionsTC : this.stackedChartOptions;
         } else {
           return this.stackedChartOptionsUti;
         }
-      })
+      }),
     );
   }
 
@@ -320,10 +318,7 @@ export class FrontDeskReappointRateComponent implements OnInit, OnDestroy {
           afterLabel: function (tooltipItems) {
             let hour = 0;
             let phour = 0;
-            if (
-              tooltipItems.label.indexOf('--') >= 0 &&
-              tooltipItems.datasetIndex == 0
-            ) {
+            if (tooltipItems.label.indexOf('--') >= 0 && tooltipItems.datasetIndex == 0) {
               let lbl = tooltipItems.label.split('--');
               hour = Number(lbl[1]);
               phour = Number(lbl[2]);

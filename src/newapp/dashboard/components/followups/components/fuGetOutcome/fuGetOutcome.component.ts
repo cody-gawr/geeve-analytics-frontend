@@ -62,10 +62,7 @@ export class FuGetOutcomeComponent implements OnInit, OnDestroy {
   constructor(private fuFacade: FollowupsFacade) {}
 
   ngOnInit(): void {
-    combineLatest([
-      this.fuFacade.fuGetOutcomeChartData$,
-      this.fuFacade.fuGetOutcomeChartName$,
-    ])
+    combineLatest([this.fuFacade.fuGetOutcomeChartData$, this.fuFacade.fuGetOutcomeChartName$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([chartData, chartName]) => {
         switch (chartName) {
@@ -107,7 +104,7 @@ export class FuGetOutcomeComponent implements OnInit, OnDestroy {
           case 'UTAs':
             return 'No UTA followups were completed in this period';
         }
-      })
+      }),
     );
   }
 

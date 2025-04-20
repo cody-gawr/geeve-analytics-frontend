@@ -16,7 +16,7 @@ export class DentistService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
   getHeaders() {
     if (
@@ -39,43 +39,31 @@ export class DentistService {
   getDentists(clinic_id, all = 0): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl +
-          '/Dentists/dentGet?clinic_id=' +
-          clinic_id +
-          '&all=' +
-          all,
-        header
-      )
+      .get(this.apiUrl + '/Dentists/dentGet?clinic_id=' + clinic_id + '&all=' + all, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   } // Get Dentist
   getJeeveNames(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/Dentists/getJeeveNames?clinic_id=' + clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/Dentists/getJeeveNames?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
   // get Appbook
   getAppbook(clinic_id): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/Dentists/getAppbook?clinic_id=' + clinic_id, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/Dentists/getAppbook?clinic_id=' + clinic_id, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Delete Dentist
@@ -85,13 +73,11 @@ export class DentistService {
     formData.append('id', dentist_id);
     var header = this.getHeaders();
 
-    return this.http
-      .post(this.apiUrl + '/Dentists/delete', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Dentists/delete', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Update Dentist
@@ -103,7 +89,7 @@ export class DentistService {
     jeeveId = '',
     updatedColumn = '',
     appBookId = '',
-    jeeve_name = ''
+    jeeve_name = '',
   ): Observable<any> {
     const formData = new FormData();
 
@@ -115,7 +101,7 @@ export class DentistService {
       formData.append('jeeve_id', jeeveId);
     }
     if (appBookId != '') {
-      formData.append('app_book_id', appBookId == 'null'? null:appBookId);
+      formData.append('app_book_id', appBookId == 'null' ? null : appBookId);
     }
     if (updatedColumn != '') {
       formData.append(updatedColumn, value);
@@ -130,13 +116,11 @@ export class DentistService {
       formData.append('is_active', isActive);
     }
     var header = this.getHeaders();
-    return this.http
-      .post(environment.apiUrl + '/Dentists/dentUpdate', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(environment.apiUrl + '/Dentists/dentUpdate', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Add Dentist
@@ -151,21 +135,18 @@ export class DentistService {
     return this.http.post(this.apiUrl + '/Dentists/add', formData, header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
   // Get ChildDentist
   getChildID(clinic_id): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl + '/Users/userGetChildDentist?clinic_id=' + clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/Users/userGetChildDentist?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -174,44 +155,34 @@ export class DentistService {
     formData.append('clinic_id', clinic_id);
     formData.append('jeeve_name', jeeve_name);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/Dentists/updateJeeveName', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Dentists/updateJeeveName', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
-  getReferFriend(
-    clinic_id,
-    referFriendName,
-    referFriendEmail
-  ): Observable<any> {
+  getReferFriend(clinic_id, referFriendName, referFriendEmail): Observable<any> {
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
     formData.append('recipient_name', referFriendName);
     formData.append('recipient_email', referFriendEmail);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/users/userReferFriend', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/users/userReferFriend', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Get ClinicSettings
   getClinicSettings(clinic_id): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/clinics/clinicGet?clinic_id=' + clinic_id, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/clinics/clinicGet?clinic_id=' + clinic_id, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   private dentistList = new BehaviorSubject({

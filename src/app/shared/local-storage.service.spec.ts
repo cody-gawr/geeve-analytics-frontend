@@ -10,10 +10,7 @@ describe('Service: LocalStorage', () => {
     });
   });
 
-  it('should ...', inject(
-    [LocalStorageService],
-    (service: LocalStorageService) => {
-      expect(service).toBeTruthy();
-    }
-  ));
+  it('should ...', inject([LocalStorageService], (service: LocalStorageService) => {
+    expect(service).toBeTruthy();
+  }));
 });

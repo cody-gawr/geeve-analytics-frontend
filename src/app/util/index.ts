@@ -26,18 +26,16 @@ export function formatXLabel(label: string | number) {
 }
 
 export function formatXTooltipLabel(tooltipItem: TooltipItem<any>) {
-  return tooltipItem.parsed.y < 0
-    ? '- $'
-    : `${tooltipItem.label}: $${tooltipItem.formattedValue}`;
+  return tooltipItem.parsed.y < 0 ? '- $' : `${tooltipItem.label}: $${tooltipItem.formattedValue}`;
 }
 
 export function updateUserData(newUserData: any) {
   const rawAuthData = localStorage.getItem('auth');
-  const userData = rawAuthData?JSON.parse(rawAuthData): {authUserData: {}};
+  const userData = rawAuthData ? JSON.parse(rawAuthData) : { authUserData: {} };
   localStorage.setItem(
     'auth',
     JSON.stringify(
-      camelcaseKeys({ authUserData: {...userData.authUserData, ...newUserData}}, { deep: true })
-    )
+      camelcaseKeys({ authUserData: { ...userData.authUserData, ...newUserData } }, { deep: true }),
+    ),
   );
 }

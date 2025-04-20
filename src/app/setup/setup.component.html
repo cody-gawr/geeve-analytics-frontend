@@ -12,24 +12,22 @@
   <ng-template matStepperIcon="last">
     <mat-icon>done_all</mat-icon>
   </ng-template>
-  <mat-step
-    id="datata"
-    state="home"
-    [completed]="step1Completed"
-    [editable]="step1editable">
+  <mat-step id="datata" state="home" [completed]="step1Completed" [editable]="step1editable">
     <div
       fxLayout="row wrap"
       fxLayoutGap="20px"
       fxLayoutGap.md="20px"
       fxLayoutGap.sm="0px"
       fxLayoutGap.xs="0px"
-      id="step2">
+      id="step2"
+    >
       <div
         fxFlex="calc(35% - 10px)"
         fxFlex.md="calc(35% - 15px)"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="order1 setup-form-box">
+        class="order1 setup-form-box"
+      >
         <div class="intro_title">
           <h2>Welcome To <span>Jeeve Analytics !</span></h2>
           <h3>Tell Us about your practice</h3>
@@ -41,24 +39,26 @@
               fxLayoutGap="30px"
               fxLayoutGap.md="0px"
               fxLayoutGap.sm="30px"
-              fxLayoutGap.xs="0px">
+              fxLayoutGap.xs="0px"
+            >
               <div
                 fxFlex="calc(48% - 15px)"
                 fxFlex.md="50"
                 fxFlex.sm="calc(48% - 15px)"
                 fxFlex.xs="100"
-                class="sa-form-group">
+                class="sa-form-group"
+              >
                 <input
                   tabindex="1"
                   [(ngModel)]="displayName"
                   placeholder="Your Name"
                   class="form-control-dialog"
-                  [formControl]="firstFormGroup.controls['displayName']" />
+                  [formControl]="firstFormGroup.controls['displayName']"
+                />
                 <small
                   *ngIf="
-                    firstFormGroup.controls['displayName'].hasError(
-                      'required'
-                    ) && firstFormGroup.controls['displayName'].touched
+                    firstFormGroup.controls['displayName'].hasError('required') &&
+                    firstFormGroup.controls['displayName'].touched
                   "
                   class="text-danger support-text"
                   >Display Name is Required.</small
@@ -69,14 +69,16 @@
                 fxFlex.md="100"
                 fxFlex.sm="calc(48% - 15px)"
                 fxFlex.xs="100"
-                class="sa-form-group">
+                class="sa-form-group"
+              >
                 <input
                   tabindex="1"
                   [(ngModel)]="name"
                   placeholder="Clinic Name"
                   class="form-control-dialog"
                   (keypress)="omit_special_char($event)"
-                  [formControl]="firstFormGroup.controls['name']" />
+                  [formControl]="firstFormGroup.controls['name']"
+                />
                 <small
                   *ngIf="
                     firstFormGroup.controls['name'].hasError('required') &&
@@ -93,13 +95,15 @@
               fxLayoutGap="30px"
               fxLayoutGap.md="0px"
               fxLayoutGap.sm="30px"
-              fxLayoutGap.xs="0px">
+              fxLayoutGap.xs="0px"
+            >
               <div
                 fxFlex="calc(48% - 15px)"
                 fxFlex.md="100"
                 fxFlex.sm="calc(48% - 15px)"
                 fxFlex.xs="100"
-                class="sa-form-group">
+                class="sa-form-group"
+              >
                 <label>Select PMS</label>
                 <select
                   class="form-control"
@@ -108,14 +112,13 @@
                   [formControl]="firstFormGroup.controls['pms']"
                   required="true"
                   class="sa_select form-control"
-                  name="pms">
+                  name="pms"
+                >
                   <option value="d4w">D4w</option>
                   <option value="core">Core Practice</option>
                   <option value="exact">Exact</option>
                   <option value="praktika">Praktika</option>
-                  <option value="dentally" *ngIf="apiUrl.includes('test')">
-                    Dentally
-                  </option>
+                  <option value="dentally" *ngIf="apiUrl.includes('test')">Dentally</option>
                 </select>
                 <small
                   *ngIf="
@@ -132,26 +135,27 @@
               fxLayoutGap="30px"
               fxLayoutGap.md="0px"
               fxLayoutGap.sm="30px"
-              fxLayoutGap.xs="0px">
+              fxLayoutGap.xs="0px"
+            >
               <div
                 *ngIf="showCorePractice"
                 fxFlex="calc(48% - 15px)"
                 fxFlex.md="100"
                 fxFlex.sm="calc(48% - 15px)"
                 fxFlex.xs="100"
-                class="sa-form-group">
+                class="sa-form-group"
+              >
                 <input
                   tabindex="1"
                   name="coreURL"
                   placeholder="Your Core URL"
                   class="form-control-dialog"
                   [formControl]="firstFormGroup.controls['coreURL']"
-                  required />
+                  required
+                />
                 <small class="support-text"
                   >eg.&nbsp;
-                  <span style="color: blue"
-                    >https://abcdental.corepractice.is</span
-                  ></small
+                  <span style="color: blue">https://abcdental.corepractice.is</span></small
                 >
                 <small
                   *ngIf="
@@ -176,13 +180,15 @@
               fxLayoutGap="30px"
               fxLayoutGap.md="0px"
               fxLayoutGap.sm="30px"
-              fxLayoutGap.xs="0px">
+              fxLayoutGap.xs="0px"
+            >
               <div
                 class="working-days"
                 fxFlex="calc(48% - 10px)"
                 fxFlex.md="100"
                 fxFlex.sm="100"
-                fxFlex.xs="100">
+                fxFlex.xs="100"
+              >
                 <h4>Clinic Working Days</h4>
                 <mat-slide-toggle
                   checked="{{ workingDays.sunday }}"
@@ -247,7 +253,8 @@
         fxFlex.sm="100"
         fxFlex.xs="100"
         class="order3"
-        fxFlexAlign="center">
+        fxFlexAlign="center"
+      >
         <div class="right-img">
           <img src="assets/stepper/Gif1.gif" />
         </div>
@@ -263,23 +270,22 @@
       fxlayoutgap.md="30px"
       fxlayoutgap.sm="0px"
       fxlayoutgap.xs="0px"
-      class="download-sync">
+      class="download-sync"
+    >
       <div
         fxFlex="calc(49% - 15px)"
         fxFlex.md="calc(49% - 15px)"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="order1 setup-form-box">
+        class="order1 setup-form-box"
+      >
         <div class="intro_title">
           <h2>Download PMS to <span>sync</span></h2>
         </div>
         <ul class="download-sync-list">
           <li><span>Download Sync Utility.</span></li>
           <li>
-            <span
-              >Login to the desktop application using analytics
-              credentials.</span
-            >
+            <span>Login to the desktop application using analytics credentials.</span>
           </li>
           <li><span>Map your clinics.</span></li>
           <li><span>Start Sync</span></li>
@@ -290,11 +296,7 @@
             <button class="setup-stepper-button" (click)="downloadPMS()">
               <i class="fas fa-cloud-download-alt"></i> Download Sync Utility
             </button>
-            <button
-              class="setup-stepper-button-skip"
-              (click)="skipPMSDownload()">
-              Skip
-            </button>
+            <button class="setup-stepper-button-skip" (click)="skipPMSDownload()">Skip</button>
           </div>
         </div>
       </div>
@@ -303,7 +305,8 @@
         fxFlex.md="calc(49% - 15px)"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="order2">
+        class="order2"
+      >
         <div class="right-img download-sync-img">
           <img src="assets/stepper/sync_downloading.gif" />
         </div>
@@ -317,13 +320,15 @@
       fxlayoutgap.md="30px"
       fxlayoutgap.sm="0px"
       fxlayoutgap.xs="0px"
-      class="download-sync">
+      class="download-sync"
+    >
       <div
         fxFlex="calc(49% - 15px)"
         fxFlex.md="calc(49% - 15px)"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="order1 setup-form-box">
+        class="order1 setup-form-box"
+      >
         <div class="intro_title">
           <h2>Login to your <span>Core Practice </span>account</h2>
           <h3>to connect to Jeeve</h3>
@@ -343,7 +348,8 @@
         fxFlex.md="calc(49% - 15px)"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="order2">
+        class="order2"
+      >
         <div class="right-img download-sync-img">
           <img src="assets/stepper/sync_downloading.gif" />
         </div>
@@ -357,13 +363,15 @@
       fxlayoutgap.md="30px"
       fxlayoutgap.sm="0px"
       fxlayoutgap.xs="0px"
-      class="download-sync">
+      class="download-sync"
+    >
       <div
         fxFlex="calc(49% - 15px)"
         fxFlex.md="calc(49% - 15px)"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="order1 setup-form-box">
+        class="order1 setup-form-box"
+      >
         <div class="intro_title">
           <h2>Login to your <span>Dentally </span>account</h2>
           <h3>to connect to Jeeve</h3>
@@ -383,7 +391,8 @@
         fxFlex.md="calc(49% - 15px)"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="order2">
+        class="order2"
+      >
         <div class="right-img download-sync-img">
           <img src="assets/stepper/sync_downloading.gif" />
         </div>
@@ -398,13 +407,15 @@
       fxlayoutgap.md="30px"
       fxlayoutgap.sm="0px"
       fxlayoutgap.xs="0px"
-      class="">
+      class=""
+    >
       <div
         fxFlex="calc(49% - 15px)"
         fxFlex.md="calc(49% - 15px)"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="order1 setup-form-box">
+        class="order1 setup-form-box"
+      >
         <div fxLayout="column" fxLayoutAlign="center center" class="h-full">
           <div class="downloading-wrap">
             <div class="intro_title">
@@ -423,23 +434,17 @@
               </h2>
             </div>
             <ul>
-              <li class="not-start" *ngIf="!reportsStatusInfo">
-                We are collecting data.
-              </li>
-              <li
-                class="not-start"
-                *ngIf="reportsStatus.length <= 0 && reportsStatusInfo">
-                Sync not yet started - Please download and install the Sync
-                Utility on your Dental 4 Windows server to continue
+              <li class="not-start" *ngIf="!reportsStatusInfo">We are collecting data.</li>
+              <li class="not-start" *ngIf="reportsStatus.length <= 0 && reportsStatusInfo">
+                Sync not yet started - Please download and install the Sync Utility on your Dental 4
+                Windows server to continue
               </li>
               <li *ngFor="let itemrow of reportsStatus; let i = index">
                 <span *ngIf="itemrow.status == 'Pending'">
                   <!-- <i class="fas fa-check" ></i>   -->
                   {{ itemrow.report }}
                 </span>
-                <span
-                  *ngIf="itemrow.status == 'In Process'"
-                  class="in-progress">
+                <span *ngIf="itemrow.status == 'In Process'" class="in-progress">
                   <i class="fas fa-spinner fa-pulse"></i>
                   {{ itemrow.report }}
                 </span>
@@ -457,7 +462,8 @@
         fxFlex.md="calc(49% - 15px)"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="order2">
+        class="order2"
+      >
         <div class="right-img">
           <img src="assets/stepper/sync_downloading.gif" />
         </div>
@@ -472,19 +478,19 @@
       fxlayoutgap.md="30px"
       fxlayoutgap.sm="0px"
       fxlayoutgap.xs="0px"
-      class="you_are_set_sec">
+      class="you_are_set_sec"
+    >
       <div
         fxFlex="calc(49% - 15px)"
         fxFlex.md="calc(49% - 15px)"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="order1">
+        class="order1"
+      >
         <div class="you-are-set">
           <h2>You're <span>All Set.</span></h2>
           <br />
-          <button mat-raised-button color="green" (click)="finish()">
-            Finish
-          </button>
+          <button mat-raised-button color="green" (click)="finish()">Finish</button>
         </div>
       </div>
       <div
@@ -492,7 +498,8 @@
         fxFlex.md="calc(49% - 15px)"
         fxFlex.sm="100"
         fxFlex.xs="100"
-        class="order2">
+        class="order2"
+      >
         <div class="right-img">
           <img src="assets/stepper/Gif5.gif" />
         </div>

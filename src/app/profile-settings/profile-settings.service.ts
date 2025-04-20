@@ -16,7 +16,7 @@ export class ProfileSettingsService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
   getHeaders() {
     if (
@@ -38,27 +38,23 @@ export class ProfileSettingsService {
   // Get profileSettings
   getprofileSettings(clinic_id): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/Users/getPractices?clinic_id=' + clinic_id, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/Users/getPractices?clinic_id=' + clinic_id, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   verifyCode(code: string, remove = false): Observable<any> {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('otp', code);
-    if(remove) formData.append('remove', 'yes');
-    return this.http
-      .post(environment.commonApiUrl + '/verifyOTP', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    if (remove) formData.append('remove', 'yes');
+    return this.http.post(environment.commonApiUrl + '/verifyOTP', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Get updateprofileSettings
@@ -70,32 +66,24 @@ export class ProfileSettingsService {
 
     var header = this.getHeaders();
 
-    return this.http
-      .post(this.apiUrl + '/Users/userUpdateProfile', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userUpdateProfile', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   // Get updateprofileSettingsHealthScreen
-  updateprofileSettingsHealthScreen(
-    health_screen_mtd,
-    max_chart_bars
-  ): Observable<any> {
+  updateprofileSettingsHealthScreen(health_screen_mtd, max_chart_bars): Observable<any> {
     const formData = new FormData();
     formData.append('health_screen_mtd', health_screen_mtd);
     formData.append('max_chart_bars', max_chart_bars);
     var header = this.getHeaders();
 
-    return this.http
-      .post(this.apiUrl + '/Users/userUpdateProfile', 
-        formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userUpdateProfile', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   // Get updatePassword
   updatePassword(currentPassword, newPassword): Observable<any> {
@@ -105,21 +93,19 @@ export class ProfileSettingsService {
     formData.append('confirm_password', newPassword);
 
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/Users/userChangePassword', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userChangePassword', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
-  clearSession(clinic_id): Observable<HttpResponse<
-  {
-    success: boolean,
-    data: {}
-  }
-  >> {
+  clearSession(clinic_id): Observable<
+    HttpResponse<{
+      success: boolean;
+      data: {};
+    }>
+  > {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
@@ -128,27 +114,21 @@ export class ProfileSettingsService {
       .pipe(
         map((response: HttpResponse<any>) => {
           return response;
-        })
+        }),
       );
   }
 
-  updateCardRetryPayment(
-    token: any,
-    customer_id,
-    last_invoic_id
-  ): Observable<any> {
+  updateCardRetryPayment(token: any, customer_id, last_invoic_id): Observable<any> {
     const formData = new FormData();
 
     formData.append('customer_id', customer_id);
     formData.append('last_invoic_id', last_invoic_id);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/Users/userUpdateCard', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userUpdateCard', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   retryPayment(customer_id, last_invoic_id): Observable<any> {
@@ -156,13 +136,11 @@ export class ProfileSettingsService {
     formData.append('customer_id', customer_id);
     formData.append('last_invoic_id', last_invoic_id);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/Users/userRetryPayment', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userRetryPayment', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   getPaymentDetails(): Observable<any> {
@@ -170,51 +148,43 @@ export class ProfileSettingsService {
     /* formData.append('type', "analytics");
         formData.append('user_id', this._cookieService.get("userid"));*/
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/users/getUserPaymentData', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/users/getUserPaymentData', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   getCardDetails(customer_id): Observable<any> {
     const formData = new FormData();
     formData.append('customer_id', customer_id);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/users/userGetCard', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/users/userGetCard', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   createSetupIntent(customer): Observable<any> {
     const formData = new FormData();
     formData.append('customer', customer);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/users/userCreateSetupIntent', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/users/userCreateSetupIntent', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   updateCustomerCard(customer): Observable<any> {
     const formData = new FormData();
     formData.append('customer', customer);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/users/userUpdateCustomerCard', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/users/userUpdateCustomerCard', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
   // GET CHARTS TIPS
   getChartsTips(): Observable<any> {
@@ -222,7 +192,7 @@ export class ProfileSettingsService {
     return this.http.get(this.apiUrl + '/ChartsTips/ctGetTips', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
   // GET CHARTS TIPS
@@ -231,7 +201,7 @@ export class ProfileSettingsService {
     return this.http.get(this.apiUrl + '/users/getPublishableKey', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
   // save CHARTS TIPS
@@ -239,12 +209,10 @@ export class ProfileSettingsService {
     var header = this.getHeaders();
     const formData = new FormData();
     formData.append('chart_tips', data);
-    return this.http
-      .post(this.apiUrl + '/ChartsTips/ctSaveTips', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/ChartsTips/ctSaveTips', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 }

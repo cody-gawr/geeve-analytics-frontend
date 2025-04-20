@@ -1,13 +1,19 @@
 <div class="setup-layout-main-container">
-    <div class="setup-layout-topbar">
-        <div class="setup-page-logo"><img class="logo" src="assets/layout/images/logo.png" /></div>    
-        <div>
-            <button [disabled]="isLoading$ | async" (click)="logout()" mat-flat-button color="primary" aria-label="logout button">
-                <mat-icon>logout</mat-icon>Logout
-            </button>
-        </div>
+  <div class="setup-layout-topbar">
+    <div class="setup-page-logo"><img class="logo" src="assets/layout/images/logo.png" /></div>
+    <div>
+      <button
+        [disabled]="isLoading$ | async"
+        (click)="logout()"
+        mat-flat-button
+        color="primary"
+        aria-label="logout button"
+      >
+        <mat-icon>logout</mat-icon>Logout
+      </button>
     </div>
-    <div class="setup-page-container">
-      <router-outlet></router-outlet>
-    </div>
+  </div>
+  <div class="setup-page-container">
+    <router-outlet></router-outlet>
+  </div>
 </div>

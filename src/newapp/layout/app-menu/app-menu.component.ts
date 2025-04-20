@@ -2,10 +2,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { Observable, Subject, combineLatest, distinctUntilChanged } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  MatTreeFlatDataSource,
-  MatTreeFlattener,
-} from '@angular/material/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthFacade } from '../../auth/facades/auth.facade';
 import { environment } from '@/environments/environment';
@@ -23,7 +20,6 @@ import {
   faHandshake,
   faIdCard,
   faQuestion,
-
   faCaretRight,
   faCaretDown,
   faPhoneFlip,
@@ -57,7 +53,9 @@ interface MenuValidatorParams {
 }
 
 function validatePermission(permissions: string[] | string, per: string) {
-  return typeof permissions === 'string'? (permissions === 'all' || permissions.includes(per)): permissions?.indexOf(per) >= 0
+  return typeof permissions === 'string'
+    ? permissions === 'all' || permissions.includes(per)
+    : permissions?.indexOf(per) >= 0;
 }
 
 const MENU_DATA: MenuNode[] = [
@@ -105,9 +103,10 @@ const MENU_DATA: MenuNode[] = [
     badgeText: 'New',
     badgeStyle: 'yellow-bg',
     validatorFn: ({ permissions, userType, userId }: MenuValidatorParams) => {
-      return (        
+      return (
         (validatePermission(permissions, 'campaigns') ||
-        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) && userId == 1
+          [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
+        userId == 1
       );
     },
   },
@@ -118,8 +117,7 @@ const MENU_DATA: MenuNode[] = [
     icon: faPhoneFlip,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions?.indexOf('followups') >= 0 ||
-        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
+        permissions?.indexOf('followups') >= 0 || [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
   },
@@ -130,8 +128,7 @@ const MENU_DATA: MenuNode[] = [
     icon: faChartArea,
     validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
       return (
-        permissions?.indexOf('dashboard') >= 0 ||
-        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
+        permissions?.indexOf('dashboard') >= 0 || [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
     children: [
@@ -185,11 +182,7 @@ const MENU_DATA: MenuNode[] = [
         path: '/newapp/dashboard/marketing',
         badgeText: 'Updated',
         badgeStyle: 'yellow-bg',
-        validatorFn: ({
-          permissions,
-          userType,
-          userPlan,
-        }: MenuValidatorParams) => {
+        validatorFn: ({ permissions, userType, userPlan }: MenuValidatorParams) => {
           return (
             (permissions?.indexOf('dashboard4') >= 0 ||
               [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
@@ -230,27 +223,18 @@ const MENU_DATA: MenuNode[] = [
     title: 'Practice Insights',
     path: '/newapp/practice-insights',
     icon: faFile,
-    validatorFn: ({
-      permissions,
-      userType,
-      hasPrimeClinics,
-    }: MenuValidatorParams) => {
+    validatorFn: ({ permissions, userType, hasPrimeClinics }: MenuValidatorParams) => {
       return (
-        (userType == 2) ||
-        (permissions?.indexOf('practiceinsights') >= 0) ||
-        userType == 7
-      ) && !environment.apiUrl.includes('//api.jeeve.com.au');
+        (userType == 2 || permissions?.indexOf('practiceinsights') >= 0 || userType == 7) &&
+        !environment.apiUrl.includes('//api.jeeve.com.au')
+      );
     },
   },
   {
     title: 'Prime KPI Report',
     path: 'kpi-report',
     icon: faFile,
-    validatorFn: ({
-      permissions,
-      userType,
-      hasPrimeClinics,
-    }: MenuValidatorParams) => {
+    validatorFn: ({ permissions, userType, hasPrimeClinics }: MenuValidatorParams) => {
       return (
         (userType == 2 && hasPrimeClinics == 'yes') ||
         (permissions?.indexOf('kpireport') >= 0 && hasPrimeClinics == 'yes') ||
@@ -318,10 +302,7 @@ const MENU_DATA: MenuNode[] = [
         title: 'Users',
         path: 'roles-users',
         validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
-          return (
-            (permissions?.indexOf('profilesettings') >= 0 || userType == 2) &&
-            userType != 7
-          );
+          return (permissions?.indexOf('profilesettings') >= 0 || userType == 2) && userType != 7;
         },
       },
       {
@@ -371,14 +352,14 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   treeControl = new FlatTreeControl<MenuFlatNode>(
     node => node.level,
-    node => node.expandable
+    node => node.expandable,
   );
 
   treeFlattener = new MatTreeFlattener(
     this._transformer,
     node => node.level,
     node => node.expandable,
-    node => node.children
+    node => node.children,
   );
 
   activedTitle: string = '';
@@ -389,9 +370,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   get isLoadingRolesIndividual$() {
-    return this.authFacade.isLoadingRolesIndividual$.pipe(
-      takeUntil(this.destroy$)
-    );
+    return this.authFacade.isLoadingRolesIndividual$.pipe(takeUntil(this.destroy$));
   }
   public userType: number = 0;
 
@@ -399,16 +378,13 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private authFacade: AuthFacade,
     private clinicFacade: ClinicFacade,
-    private layoutFacade: LayoutFacade
+    private layoutFacade: LayoutFacade,
   ) {
     this.dataSource.data = [];
     this.authFacade.getRolesIndividual();
     this.clinicFacade.loadClinics();
 
-    combineLatest([
-      this.authFacade.authUserData$,
-      this.authFacade.rolesIndividualAndClinics$
-    ])
+    combineLatest([this.authFacade.authUserData$, this.authFacade.rolesIndividualAndClinics$])
       .pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe(([user, result]) => {
         const params: MenuValidatorParams = {
@@ -416,18 +392,16 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
           userType: Number(result.type),
           userPlan: result.plan,
           hasPrimeClinics: result.hasPrimeClinics,
-          userId: user?.id || user?.parentId
+          userId: user?.id || user?.parentId,
         };
         this.userType = Number(result.type);
         const menuData: MenuNode[] = [];
 
         MENU_DATA.forEach(item => {
-          const mainMenuValid = item.validatorFn
-            ? item.validatorFn(params)
-            : null;
+          const mainMenuValid = item.validatorFn ? item.validatorFn(params) : null;
           if (item.children) {
             const children = item.children.filter(c =>
-              c.validatorFn ? c.validatorFn(params) : true
+              c.validatorFn ? c.validatorFn(params) : true,
             );
             menuData.push({ ...item, ...{ children } });
             return;
@@ -438,7 +412,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.dataSource.data = menuData;
         const treeNode = this.treeControl.dataNodes.find(
-          node => this.activedUrl.includes(node.path) && node.level == 0
+          node => this.activedUrl.includes(node.path) && node.level == 0,
         );
         if (treeNode) this.treeControl.expand(treeNode);
       });
@@ -447,7 +421,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         map((event: any) => event.routerEvent ?? event),
-        filter(event => event instanceof NavigationEnd)
+        filter(event => event instanceof NavigationEnd),
       )
       .subscribe(event => {
         const { url } = <NavigationEnd>event;

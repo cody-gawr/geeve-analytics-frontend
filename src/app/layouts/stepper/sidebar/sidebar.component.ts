@@ -1,9 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  AfterViewInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
 // import { MenuItems } from '../../../shared/menu-items/menu-items';
@@ -40,7 +35,7 @@ export class StepperSidebarComponent implements OnDestroy, AfterViewInit {
     private headerService: StepperHeaderService,
     private _cookieService: CookieService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -58,8 +53,7 @@ export class StepperSidebarComponent implements OnDestroy, AfterViewInit {
 
     this.display_name = this._cookieService.get('display_name');
     /*this.user_image = this._cookieService.get("user_image");*/
-    if (!this._cookieService.get('user_image'))
-      this.user_image = 'assets/images/gPZwCbdS.jpg';
+    if (!this._cookieService.get('user_image')) this.user_image = 'assets/images/gPZwCbdS.jpg';
 
     // This is for the megamenu
   }
@@ -76,7 +70,7 @@ export class StepperSidebarComponent implements OnDestroy, AfterViewInit {
           this.router.navigate(['/login']);
         }
       },
-      error => {}
+      error => {},
     );
   }
   private getClinics() {

@@ -4,10 +4,7 @@
 </div>
 <div mat-dialog-content>
   <div style="min-width: 450px; padding-right: 24px">
-    <mat-stepper
-      [linear]="true"
-      #stepper
-      (selectionChange)="selectionChange($event)">
+    <mat-stepper [linear]="true" #stepper (selectionChange)="selectionChange($event)">
       <mat-step>
         <form [formGroup]="numberOfCreditsFormGroup">
           <ng-template matStepLabel>Number of Credits</ng-template>
@@ -18,12 +15,7 @@
             <mat-form-field floatLabel="never">
               <mat-label>Enter number of Review credits to purchase</mat-label>
               <input matInput type="number" formControlName="credits" />
-              <mat-error
-                *ngIf="
-                  numberOfCreditsFormGroup.controls['credits'].hasError(
-                    'required'
-                  )
-                ">
+              <mat-error *ngIf="numberOfCreditsFormGroup.controls['credits'].hasError('required')">
                 Please enter a valid number of Review credits to purchase
               </mat-error>
             </mat-form-field>
@@ -68,10 +60,9 @@
     class="mat-dc"
     mat-button
     *ngIf="isReadyToPay; else submitPaymentButton"
-    [disabled]="
-      numberOfCreditsFormGroup.controls['credits'].hasError('required')
-    "
-    (click)="nextPaymentForm(stepper)">
+    [disabled]="numberOfCreditsFormGroup.controls['credits'].hasError('required')"
+    (click)="nextPaymentForm(stepper)"
+  >
     Go to payment
   </button>
   <ng-template #submitPaymentButton>
@@ -82,7 +73,8 @@
       *ngIf="submitPaymentButton"
       [disabled]="disabledSubmit"
       (click)="onSubmitClick($event)"
-      cdkFocusInitial>
+      cdkFocusInitial
+    >
       Submit Payment
     </button>
   </ng-template>

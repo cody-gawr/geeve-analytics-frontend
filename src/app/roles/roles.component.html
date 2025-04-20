@@ -15,10 +15,7 @@
           <div fxFlex.gt-sm="100%" fxFlex="100">
             <h5>Change Password</h5>
 
-            <form
-              [formGroup]="form"
-              class="basic-form"
-              (ngSubmit)="onSubmitPassword()">
+            <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmitPassword()">
               <div fxLayout="row wrap">
                 <!-- column -->
                 <div fxFlex.gt-md="100" fxFlex="100">
@@ -29,7 +26,8 @@
                       type="password"
                       placeholder=""
                       [formControl]="form.controls['currentPassword']"
-                      [(ngModel)]="currentPassword" />
+                      [(ngModel)]="currentPassword"
+                    />
                   </mat-form-field>
                 </div>
                 <div fxFlex.gt-md="100" fxFlex="100">
@@ -40,7 +38,8 @@
                       type="password"
                       placeholder=""
                       [formControl]="form.controls['newPassword']"
-                      [(ngModel)]="newPassword" />
+                      [(ngModel)]="newPassword"
+                    />
                   </mat-form-field>
                 </div>
                 <div fxFlex.gt-md="100" fxFlex="100">
@@ -51,18 +50,15 @@
                       type="password"
                       placeholder=""
                       [formControl]="form.controls['repeatPassword']"
-                      [(ngModel)]="repeatPassword" />
+                      [(ngModel)]="repeatPassword"
+                    />
                   </mat-form-field>
                 </div>
               </div>
               <mat-card-actions>
-                <button mat-raised-button color="primary" type="submit">
-                  Submit
-                </button>
+                <button mat-raised-button color="primary" type="submit">Submit</button>
               </mat-card-actions>
-              <small *ngIf="errorLogin" class="text-danger support-text">{{
-                errortext
-              }}</small>
+              <small *ngIf="errorLogin" class="text-danger support-text">{{ errortext }}</small>
               <small class="text-success support-text">{{ successtext }}</small>
 
               <!-- column -->

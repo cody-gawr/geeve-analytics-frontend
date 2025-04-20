@@ -18,7 +18,7 @@ export class RolesUsersService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
   getHeaders() {
     if (
@@ -42,7 +42,7 @@ export class RolesUsersService {
     return this.http.get(this.apiUrl + '/Users/userGetRoles', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 
@@ -61,11 +61,11 @@ export class RolesUsersService {
             permisions: item.mapped_permissions.analytics,
             role: item.role,
             role_id: item.role_id,
-            user_id: item.user_id
+            user_id: item.user_id,
           })),
-          message: response.body.success?'success':'failure'
+          message: response.body.success ? 'success' : 'failure',
         };
-      })
+      }),
     );
   }
 
@@ -81,63 +81,46 @@ export class RolesUsersService {
         map((response: HttpResponse<any>) => {
           this.setRoleIndividual(response);
           return response.body;
-        })
+        }),
       );
     }
     return this.http
-      .get(
-        this.apiUrl + '/Roles/rolesIndividual?clinic_id=' + clinic_id,
-        header
-      )
+      .get(this.apiUrl + '/Roles/rolesIndividual?clinic_id=' + clinic_id, header)
       .pipe(
         map((response: HttpResponse<any>) => {
           return response.body;
-        })
+        }),
       );
   }
 
   getUserDetail(product: string = 'jeeve_analytics') {
     var header = this.getHeaders();
-    return this.http
-    .get(
-      environment.commonApiUrl + '/users?product='+product,
-      header
-    )
-    .pipe(
+    return this.http.get(environment.commonApiUrl + '/users?product=' + product, header).pipe(
       map((response: HttpResponse<any>) => {
         return response.body;
-      })
+      }),
     );
   }
 
   // Get Dentist
   getRoleUserDetails(role_id): Observable<any> {
     var header = this.getHeaders();
-    return this.http
-      .get(this.apiUrl + '/Users/userGetRoleDetails?role_id=' + role_id, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.get(this.apiUrl + '/Users/userGetRoleDetails?role_id=' + role_id, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // checkUserEmail
   checkUserEmail(email, user_roll = ''): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(
-        this.apiUrl +
-          '/Users/userCheckEmail?email=' +
-          email +
-          '&user_roll=' +
-          user_roll,
-        header
-      )
+      .get(this.apiUrl + '/Users/userCheckEmail?email=' + email + '&user_roll=' + user_roll, header)
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -147,13 +130,11 @@ export class RolesUsersService {
     formData.append('id', userId);
     formData.append('del_user_type', usertype);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/Users/userDelete', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userDelete', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Update Clinic
@@ -163,12 +144,16 @@ export class RolesUsersService {
     // formData.append('permisions', checkedRoles);
     var header = this.getHeaders();
     return this.http
-      .patch(environment.commonApiUrl + `/user-roles/${role_id}`, {permissions: checkedRoles?.split(','), product: 'jeeve_analytics'}, header)
+      .patch(
+        environment.commonApiUrl + `/user-roles/${role_id}`,
+        { permissions: checkedRoles?.split(','), product: 'jeeve_analytics' },
+        header,
+      )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
-    );
+        }),
+      );
   }
 
   // Update Clinic
@@ -178,7 +163,7 @@ export class RolesUsersService {
     user_type,
     selectedClinic,
     password,
-    selected_dentist
+    selected_dentist,
   ): Observable<any> {
     const formData = new FormData();
     var dentist = JSON.stringify(selected_dentist);
@@ -189,34 +174,25 @@ export class RolesUsersService {
     formData.append('selected_dentist', dentist);
     formData.append('clinic_id', selectedClinic);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/Users/userAdd', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userAdd', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
-  addUserClinicConsultantMap(
-    usrId,
-    selectedClinics,
-    display_name,
-    email
-  ): Observable<any> {
+  addUserClinicConsultantMap(usrId, selectedClinics, display_name, email): Observable<any> {
     const formData = new FormData();
     formData.append('id', usrId);
     formData.append('clinic_id', selectedClinics);
     formData.append('display_name', display_name);
     formData.append('email', email);
     var header = this.getHeaders();
-    return this.http
-      .post(this.apiUrl + '/Users/userClinicConsultantMap', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userClinicConsultantMap', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   // Update Clinic
@@ -228,7 +204,7 @@ export class RolesUsersService {
     selectedClinic,
     selected_dentist,
     removedClinics,
-    status
+    status,
   ): Observable<any> {
     const formData = new FormData();
     var dentist = JSON.stringify(selected_dentist);
@@ -243,13 +219,11 @@ export class RolesUsersService {
 
     var header = this.getHeaders();
 
-    return this.http
-      .post(this.apiUrl + '/Users/userUpdate', formData, header)
-      .pipe(
-        map((response: HttpResponse<Object>) => {
-          return response;
-        })
-      );
+    return this.http.post(this.apiUrl + '/Users/userUpdate', formData, header).pipe(
+      map((response: HttpResponse<Object>) => {
+        return response;
+      }),
+    );
   }
 
   getClinics(): Observable<any> {
@@ -257,7 +231,7 @@ export class RolesUsersService {
     return this.http.get(this.apiUrl + '/clinics/clinicGet', header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
-      })
+      }),
     );
   }
 

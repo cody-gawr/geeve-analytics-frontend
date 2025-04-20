@@ -10,14 +10,16 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <mat-icon
     *ngIf="isTableIconVisible$ | async"
     matTooltipPosition="below"
     [ngClass]="showPaTable ? 'active' : ''"
     class="table-info-icon"
     (click)="toggleShowPaTable()"
-    fontIcon="table_rows"></mat-icon>
+    fontIcon="table_rows"
+  ></mat-icon>
 
   <div class="chart-title">
     <span> Procedure Analysis </span>
@@ -27,7 +29,8 @@
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
@@ -36,34 +39,31 @@
             mat-flat-button
             *ngIf="isGeneral$ | async; else elem1"
             (click)="setVisibility('general')"
-            color="primary">
+            color="primary"
+          >
             General
           </button>
           <ng-template #elem1>
-            <button mat-stroked-button (click)="setVisibility('general')">
-              General
-            </button>
+            <button mat-stroked-button (click)="setVisibility('general')">General</button>
           </ng-template>
-  
+
           <button
             (click)="setVisibility('specialist')"
             *ngIf="isSpecialList$ | async; else elem2"
             color="primary"
-            mat-flat-button>
+            mat-flat-button
+          >
             Specialist
           </button>
           <ng-template #elem2>
-            <button (click)="setVisibility('specialist')" mat-stroked-button>
-              Specialist
-            </button>
+            <button (click)="setVisibility('specialist')" mat-stroked-button>Specialist</button>
           </ng-template>
         </div>
-        <div
-          class="chart-gauge procedure-analysis-gauge"
-          *ngIf="!(showTableView$ | async)">
+        <div class="chart-gauge procedure-analysis-gauge" *ngIf="!(showTableView$ | async)">
           <spin-loader
             *ngIf="isLoading$ | async; else chartElem"
-            [disableSpin]="false"></spin-loader>
+            [disableSpin]="false"
+          ></spin-loader>
           <ng-template #chartElem>
             <canvas
               *ngIf="hasData; else chartElem01"
@@ -72,7 +72,8 @@
               [labels]="labels"
               [legend]="legend$ | async"
               type="bar"
-              [options]="chartOptions$ | async">
+              [options]="chartOptions$ | async"
+            >
             </canvas>
             <ng-template #chartElem01>
               <spin-loader class="empty-placeholder" [disableSpin]="true">
@@ -110,9 +111,7 @@
                 <td>{{ paInfo.Comp_Veneers }}</td>
                 <td>{{ paInfo.Whitening }}</td>
               </tr>
-              <tr
-                class="patable-total"
-                [innerHTML]="generatePaGeneralTotal(tableData)"></tr>
+              <tr class="patable-total" [innerHTML]="generatePaGeneralTotal(tableData)"></tr>
             </tbody>
           </table>
           <ng-template #specialTableElem>
@@ -140,9 +139,7 @@
                   <td>{{ paInfo.Endo_Re_treat }}</td>
                   <td>{{ paInfo.Veneers_ind }}</td>
                 </tr>
-                <tr
-                  class="patable-total"
-                  [innerHTML]="generatePaSpecialTotal(tableData)"></tr>
+                <tr class="patable-total" [innerHTML]="generatePaSpecialTotal(tableData)"></tr>
               </tbody>
             </table>
           </ng-template>

@@ -17,7 +17,7 @@ export class GraphsService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
 
   getHeaders() {
@@ -37,12 +37,7 @@ export class GraphsService {
     return headers;
   }
 
-  getFollowupsPerUser(
-    clinic_id,
-    startDate,
-    endDate,
-    duration = ''
-  ): Observable<any> {
+  getFollowupsPerUser(clinic_id, startDate, endDate, duration = ''): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -55,12 +50,12 @@ export class GraphsService {
           endDate +
           '&duration=' +
           duration,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -71,7 +66,7 @@ export class GraphsService {
     endDate = '',
     duration = '',
     user_type = '',
-    clinician = ''
+    clinician = '',
   ): Observable<any> {
     var header = this.getHeaders();
     if (clinician == '') {
@@ -86,12 +81,12 @@ export class GraphsService {
             endDate +
             '&duration=' +
             duration,
-          header
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
     return this.http
@@ -107,12 +102,12 @@ export class GraphsService {
           duration +
           '&clinician=' +
           clinician,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -122,7 +117,7 @@ export class GraphsService {
     endDate = '',
     duration = '',
     user_type = '',
-    clinician = ''
+    clinician = '',
   ): Observable<any> {
     var header = this.getHeaders();
     if (clinician == '') {
@@ -137,12 +132,12 @@ export class GraphsService {
             endDate +
             '&duration=' +
             duration,
-          header
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
     return this.http
@@ -158,12 +153,12 @@ export class GraphsService {
           duration +
           '&clinician=' +
           clinician,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -174,7 +169,7 @@ export class GraphsService {
     endDate = '',
     duration = '',
     user_type = '',
-    clinician = ''
+    clinician = '',
   ): Observable<any> {
     var header = this.getHeaders();
     if (clinician == '') {
@@ -189,12 +184,12 @@ export class GraphsService {
             endDate +
             '&duration=' +
             duration,
-          header
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
     return this.http
@@ -210,12 +205,12 @@ export class GraphsService {
           duration +
           '&clinician=' +
           clinician,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
@@ -226,7 +221,7 @@ export class GraphsService {
     endDate = '',
     duration = '',
     user_type = '',
-    clinician = ''
+    clinician = '',
   ): Observable<any> {
     var header = this.getHeaders();
     if (clinician == '') {
@@ -241,12 +236,12 @@ export class GraphsService {
             endDate +
             '&duration=' +
             duration,
-          header
+          header,
         )
         .pipe(
           map((response: HttpResponse<Object>) => {
             return response;
-          })
+          }),
         );
     }
     return this.http
@@ -262,22 +257,17 @@ export class GraphsService {
           duration +
           '&clinician=' +
           clinician,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   // Items Predictor Analysis
-  fdWorkTimeAnalysis(
-    clinic_id,
-    startDate = '',
-    endDate = '',
-    duration = ''
-  ): Observable<any> {
+  fdWorkTimeAnalysis(clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -290,22 +280,17 @@ export class GraphsService {
           endDate +
           '&duration=' +
           duration,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   // Items Predictor Analysis
-  fdvisitsRatio(
-    clinic_id,
-    startDate = '',
-    endDate = '',
-    duration = ''
-  ): Observable<any> {
+  fdvisitsRatio(clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -318,22 +303,17 @@ export class GraphsService {
           endDate +
           '&duration=' +
           duration,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   // Items Predictor Analysis
-  fdReappointRate(
-    clinic_id,
-    startDate = '',
-    endDate = '',
-    duration = ''
-  ): Observable<any> {
+  fdReappointRate(clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -346,22 +326,17 @@ export class GraphsService {
           endDate +
           '&duration=' +
           duration,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 
   // Items Predictor Analysis
-  fdRecallPrebookRate(
-    clinic_id,
-    startDate = '',
-    endDate = '',
-    duration = ''
-  ): Observable<any> {
+  fdRecallPrebookRate(clinic_id, startDate = '', endDate = '', duration = ''): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
@@ -374,12 +349,12 @@ export class GraphsService {
           endDate +
           '&duration=' +
           duration,
-        header
+        header,
       )
       .pipe(
         map((response: HttpResponse<Object>) => {
           return response;
-        })
+        }),
       );
   }
 }

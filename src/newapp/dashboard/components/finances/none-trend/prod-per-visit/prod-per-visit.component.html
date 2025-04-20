@@ -4,14 +4,16 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <div class="chart-title" style="padding: 10px 30px">
     <mat-icon
       *ngIf="(duration$ | async) != 'custom'"
       [color]="trendingIcon == 'trending_up' ? 'primary' : 'warn'"
       [fontIcon]="trendingIcon"
-      [matTooltip]="getTrendTip$ | async"></mat-icon>
-    <span> {{chartName$ | async}} </span>
+      [matTooltip]="getTrendTip$ | async"
+    ></mat-icon>
+    <span> {{ chartName$ | async }} </span>
     <img width="35px" height="35px" src="assets/jeeve/images/new-release.png" />
   </div>
   <div class="chart-content">
@@ -19,27 +21,25 @@
       <spin-loader
         class="empty-placeholder"
         *ngIf="isComingSoon; else enabledChart"
-        [disableSpin]="true">
+        [disableSpin]="true"
+      >
         Coming Soon...
       </spin-loader>
       <ng-template #enabledChart>
         <div class="chart-header">
           <button
-              *ngFor="let chartName of chartNames"
-              (click)="switchChartName(chartName)"
-              [ngClass]="{ active: chartName == (chartName$ | async) }">
-              {{ chartName }}
-            </button>
+            *ngFor="let chartName of chartNames"
+            (click)="switchChartName(chartName)"
+            [ngClass]="{ active: chartName == (chartName$ | async) }"
+          >
+            {{ chartName }}
+          </button>
         </div>
         <div class="chart-gauge prod-per-visit-gauge">
           <spin-loader *ngIf="isLoading$ | async; else chartElem"></spin-loader>
           <ng-template #chartElem>
             <ngx-gauge
-              *ngIf="
-                !(isLoading$ | async) &&
-                !(isMultipleClinic$ | async) &&
-                (hasData$ | async)
-              "
+              *ngIf="!(isLoading$ | async) && !(isMultipleClinic$ | async) && (hasData$ | async)"
               type="arch"
               [value]="productionVisitVal"
               [thick]="20"
@@ -47,25 +47,20 @@
               foregroundColor="#4ccfae"
               backgroundColor="#f4f0fa"
               cap="round"
-              [size]="250">
+              [size]="250"
+            >
             </ngx-gauge>
             <canvas
-              *ngIf="
-                !(isLoading$ | async) &&
-                (isMultipleClinic$ | async) &&
-                (hasData$ | async)
-              "
+              *ngIf="!(isLoading$ | async) && (isMultipleClinic$ | async) && (hasData$ | async)"
               baseChart
               [datasets]="datasets"
               [labels]="labels"
               [legend]="false"
               type="bar"
-              [options]="barChartOptions">
+              [options]="barChartOptions"
+            >
             </canvas>
-            <spin-loader
-              class="empty-placeholder"
-              *ngIf="!(hasData$ | async)"
-              [disableSpin]="true">
+            <spin-loader class="empty-placeholder" *ngIf="!(hasData$ | async)" [disableSpin]="true">
               You have no production in the selected period
             </spin-loader>
           </ng-template>

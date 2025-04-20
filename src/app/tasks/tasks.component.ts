@@ -112,10 +112,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
   /**** Data Manager Setting ***/
   getDatamanger() {
     this.dataManager = new DataManager({
-      url:
-        environment.apiUrl +
-        '/KanbanTasks/ktGetTasks?clinic_id=' +
-        this.clinic_id,
+      url: environment.apiUrl + '/KanbanTasks/ktGetTasks?clinic_id=' + this.clinic_id,
       insertUrl: environment.apiUrl + '/KanbanTasks/ktSaveTasks',
       updateUrl: environment.apiUrl + '/KanbanTasks/ktSaveTasks',
       removeUrl: environment.apiUrl + '/KanbanTasks/ktDelete',
@@ -160,7 +157,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
   constructor(
     private tasksService: TasksService,
     private _cookieService: CookieService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
   ) {
     this.getUsers();
     this.getClinics();
@@ -263,16 +260,9 @@ export class TasksComponent implements AfterViewInit, OnInit {
 
   dialogOpen(args: DialogEventArgs): void {
     $('.e-dlg-closeicon-btn').hide();
-    $('.e-dialog-cancel, .e-dialog-add, .e-dialog-edit, .e-dialog-delete').on(
-      'click',
-      () => {
-        this.isIndividual =
-          this.isClinic =
-          this.isGroup =
-          this.isRecurring =
-            false;
-      }
-    );
+    $('.e-dialog-cancel, .e-dialog-add, .e-dialog-edit, .e-dialog-delete').on('click', () => {
+      this.isIndividual = this.isClinic = this.isGroup = this.isRecurring = false;
+    });
 
     var d = document.getElementsByClassName('e-dialog-cancel');
     $(d).addClass('mat-focus-indicator mat-raised-button mat-gray');
@@ -292,11 +282,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
         this.isClinic = true;
       } else {
         // this.assignTo = 2;
-        this.isClinic =
-          this.isIndividual =
-          this.isGroup =
-          this.isRecurring =
-            false;
+        this.isClinic = this.isIndividual = this.isGroup = this.isRecurring = false;
       }
     } else if (args.requestType === 'Add') {
       $('.e-dlg-header').text('Who is this task for?');
@@ -339,7 +325,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
           });
         }
       },
-      error => {}
+      error => {},
     );
   }
 
@@ -350,7 +336,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
           this.clinicsData = res.body.data;
         }
       },
-      error => {}
+      error => {},
     );
     // this.tasksService.getClinics().subscribe(
     //   (res) => {

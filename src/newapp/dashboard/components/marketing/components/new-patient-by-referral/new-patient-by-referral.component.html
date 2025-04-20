@@ -4,44 +4,43 @@
     matTooltipPosition="below"
     color="primary"
     class="help-tip"
-    fontIcon="help"></mat-icon>
+    fontIcon="help"
+  ></mat-icon>
   <mat-icon
     *ngIf="isTableIconVisible$ | async"
     [ngClass]="showTableInfo ? 'active' : ''"
     (click)="toggleTableInfo()"
     class="table-info-icon"
-    fontIcon="table_rows_narrow" />    
+    fontIcon="table_rows_narrow"
+  />
   <div class="chart-title">New Patients By Referral</div>
   <div class="chart-content">
     <spin-loader
       class="empty-placeholder"
       *ngIf="isComingSoon; else enabledChart"
-      [disableSpin]="true">
+      [disableSpin]="true"
+    >
       Coming Soon...
     </spin-loader>
     <ng-template #enabledChart>
       <div
         [ngClass]="
           (chartType$ | async) == 'doughnut'
-            ? [
-                'canvas-wrapper',
-                'chart-box',
-                
-                'j-items-center'
-              ]
+            ? ['canvas-wrapper', 'chart-box', 'j-items-center']
             : ['canvas-wrapper', 'chart-box']
-        ">
+        "
+      >
         <div
           class="pa-table adjust-pa-table"
-          *ngIf="(isChartClicked && (pmsName$ | async) === 'praktika') || isChartClicked === 2; else pa01">
+          *ngIf="
+            (isChartClicked && (pmsName$ | async) === 'praktika') || isChartClicked === 2;
+            else pa01
+          "
+        >
           <div>
-            <button
-                *ngIf="isChartClicked"
-                (click)="loadData()"
-                mat-flat-button
-                color="primary">
-                Back
-          </button>
+            <button *ngIf="isChartClicked" (click)="loadData()" mat-flat-button color="primary">
+              Back
+            </button>
           </div>
 
           <table>
@@ -77,22 +76,19 @@
           <ng-template #graphEle>
             <div
               class="chart-gauge new-patient-by-referral-chart"
-              [ngClass]="(chartType$ | async) == 'doughnut' ? ['j-padding-20'] : []">
+              [ngClass]="(chartType$ | async) == 'doughnut' ? ['j-padding-20'] : []"
+            >
               <spin-loader *ngIf="isLoading$ | async; else mainElem"></spin-loader>
               <ng-template #mainElem>
-                <button
-                  *ngIf="isChartClicked"
-                  (click)="loadData()"
-                  mat-flat-button
-                  color="primary">
+                <button *ngIf="isChartClicked" (click)="loadData()" mat-flat-button color="primary">
                   Back
                 </button>
                 <spin-loader
                   class="empty-placeholder"
                   *ngIf="!hasData; else chartElem1"
-                  [disableSpin]="true">
-                  You have no new patients from referral sources in the selected
-                  period
+                  [disableSpin]="true"
+                >
+                  You have no new patients from referral sources in the selected period
                 </spin-loader>
                 <ng-template #chartElem1>
                   <canvas
@@ -103,7 +99,8 @@
                     [labels]="labels"
                     [type]="chartType$ | async"
                     [legend]="legend$ | async"
-                    [options]="chartOptions$ | async"></canvas>
+                    [options]="chartOptions$ | async"
+                  ></canvas>
                   <ng-template #cE02>
                     <canvas
                       #mkNewPatientsByReferralCanvas
@@ -113,16 +110,15 @@
                       [type]="chartType$ | async"
                       [legend]="legend$ | async"
                       [options]="chartOptions$ | async"
-                      (chartClick)="chartClicked($event)"></canvas>
+                      (chartClick)="chartClicked($event)"
+                    ></canvas>
                   </ng-template>
                 </ng-template>
               </ng-template>
             </div>
           </ng-template>
         </ng-template>
-        <div
-          class="chart-foot"
-          *ngIf="!(isTrend$ | async) && (isMultipleClinic$ | async)">
+        <div class="chart-foot" *ngIf="!(isTrend$ | async) && (isMultipleClinic$ | async)">
           <div class="w-100">
             <h3>{{ newPatientsByReferralVal | number: '1.0-0' }}</h3>
             <span>Total</span>

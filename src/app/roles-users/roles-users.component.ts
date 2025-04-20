@@ -16,12 +16,7 @@ import { EventEmitter, Output } from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
 import { ClinicService } from '../clinic/clinic.service';
 import { ToastrService } from 'ngx-toastr';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie';
 import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 import { HeaderService } from '../layouts/full/header/header.service';
@@ -62,7 +57,7 @@ export class DialogOverviewExampleDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private clinicService: ClinicService,
     private _cookieService: CookieService,
-    private router: Router
+    private router: Router,
   ) {}
 
   onNoClick(): void {
@@ -88,14 +83,12 @@ export class DialogOverviewExampleDialogComponent {
 
   save(data) {
     $('.mat-form-control').click();
-    this.display_name_error =
-      data.display_name == undefined || data.display_name == '';
+    this.display_name_error = data.display_name == undefined || data.display_name == '';
     this.email_error = data.email == undefined || data.email == '';
     this.select_clinic_error =
       this.selectedClinics.value == '' || this.selectedClinics.value == null;
     this.select_dentist_error =
-      this.objectsize(this.dentistList) !=
-      this.objectsize(this.selected_dentist);
+      this.objectsize(this.dentistList) != this.objectsize(this.selected_dentist);
     if (
       data.display_name != undefined &&
       data.display_name != '' &&
@@ -162,7 +155,7 @@ export class DialogOverviewExampleDialogComponent {
         } else if (res.status == 401) {
         }
       },
-      error => {}
+      error => {},
     );
   }
 
@@ -202,7 +195,7 @@ export class EditDialogComponent {
     private clinicService: ClinicService,
     private _cookieService: CookieService,
     private router: Router,
-    private rolesUsersService: RolesUsersService
+    private rolesUsersService: RolesUsersService,
   ) {
     this.loadUserData();
   }
@@ -217,9 +210,7 @@ export class EditDialogComponent {
           this.userData = res.body.data;
           this.userData.config_users_clinics.forEach(res => {
             this.selClinics.push(res.clinic_id);
-            this.selectedDentistList.push(
-              'clinic' + res.clinic_id + '-' + res.dentist_id
-            );
+            this.selectedDentistList.push('clinic' + res.clinic_id + '-' + res.dentist_id);
             this.selected_dentist['clinic' + res.clinic_id] = res.dentist_id;
           });
           this.selectedClinics.setValue(this.selClinics);
@@ -228,7 +219,7 @@ export class EditDialogComponent {
         } else if (res.status == 401) {
         }
       },
-      error => {}
+      error => {},
     );
   }
 
@@ -304,7 +295,7 @@ export class EditDialogComponent {
         } else if (res.status == 401) {
         }
       },
-      error => {}
+      error => {},
     );
   }
 
@@ -324,7 +315,7 @@ export class RolesOverviewExampleDialogComponent {
   constructor(
     public rolesRef: MatDialogRef<RolesOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _cookieService: CookieService
+    private _cookieService: CookieService,
   ) {
     this.userPlan = this._cookieService.get('user_plan');
   }
@@ -363,10 +354,7 @@ export class RolesUsersComponent implements AfterViewInit {
   public taskVisible: boolean = false;
   initiate_clinic() {
     this.taskVisible = false;
-    if (
-      window.location.href.includes('test-') ||
-      window.location.href.includes('localhost')
-    ) {
+    if (window.location.href.includes('test-') || window.location.href.includes('localhost')) {
       this.taskVisible = true;
     }
     var val = $('#currentClinic').attr('cid');
@@ -415,7 +403,7 @@ export class RolesUsersComponent implements AfterViewInit {
     private route: ActivatedRoute,
     private dentistService: DentistService,
     private clinicService: ClinicService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
   ) {
     // this.getClinics();
     this.temp = [...data];
@@ -445,59 +433,51 @@ export class RolesUsersComponent implements AfterViewInit {
       if (result != undefined) {
         /* Generate Default Password*/
         var password = '';
-        var characters =
-          'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
         var charactersLength = characters.length;
         for (var i = 0; i < 15; i++) {
-          password += characters.charAt(
-            Math.floor(Math.random() * charactersLength)
-          );
+          password += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
         /* Generate Default Password*/
 
-        this.rolesUsersService
-          .checkUserEmail(result.email, result.user_type)
-          .subscribe(
-            res => {
-              if (res.status == 200) {
-                if (res.body.data <= 0 && res.body.consultant == null) {
-                  this.add_user(
-                    result.display_name,
-                    result.email,
-                    result.user_type,
-                    result.selectedClinics,
-                    password,
-                    result.selected_dentist
-                  );
-                } else if (
-                  res.body.data > 0 &&
-                  res.body.consultant != null &&
-                  res.body.consultant != 'another_role'
-                ) {
-                  this.add_clinic_consultant(
-                    res.body.consultant,
-                    result.selectedClinics,
-                    result.display_name,
-                    result.email
-                  );
-                } else if (
-                  res.body.data > 0 &&
-                  res.body.consultant == 'another_role'
-                ) {
-                  this.toastr.error(
-                    'Cannot add consultant user with email address ' +
-                      result.email +
-                      ' - please contact the Jeeve support team for further information'
-                  );
-                } else {
-                  this.toastr.error('Email Already Exists!');
-                }
+        this.rolesUsersService.checkUserEmail(result.email, result.user_type).subscribe(
+          res => {
+            if (res.status == 200) {
+              if (res.body.data <= 0 && res.body.consultant == null) {
+                this.add_user(
+                  result.display_name,
+                  result.email,
+                  result.user_type,
+                  result.selectedClinics,
+                  password,
+                  result.selected_dentist,
+                );
+              } else if (
+                res.body.data > 0 &&
+                res.body.consultant != null &&
+                res.body.consultant != 'another_role'
+              ) {
+                this.add_clinic_consultant(
+                  res.body.consultant,
+                  result.selectedClinics,
+                  result.display_name,
+                  result.email,
+                );
+              } else if (res.body.data > 0 && res.body.consultant == 'another_role') {
+                this.toastr.error(
+                  'Cannot add consultant user with email address ' +
+                    result.email +
+                    ' - please contact the Jeeve support team for further information',
+                );
+              } else {
+                this.toastr.error('Email Already Exists!');
               }
-            },
-            error => {
-              this.warningMessage = 'Please Provide Valid Inputs!';
             }
-          );
+          },
+          error => {
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          },
+        );
       }
     });
   }
@@ -525,44 +505,28 @@ export class RolesUsersComponent implements AfterViewInit {
         this.roles.forEach(res1 => {
           var checkedRoles1 = '';
           var checkedRoles = [];
-          if (result.selectedRole['dashboard1_' + res1.id])
-            checkedRoles.push('dashboard1');
-          if (result.selectedRole['dashboard2_' + res1.id])
-            checkedRoles.push('dashboard2');
-          if (result.selectedRole['dashboard3_' + res1.id])
-            checkedRoles.push('dashboard3');
-          if (result.selectedRole['dashboard4_' + res1.id])
-            checkedRoles.push('dashboard4');
-          if (result.selectedRole['dashboard5_' + res1.id])
-            checkedRoles.push('dashboard5');
-          if (result.selectedRole['dashboard6_' + res1.id])
-            checkedRoles.push('dashboard6');
-          if (result.selectedRole['healthscreen_' + res1.id])
-            checkedRoles.push('healthscreen');
-          if (result.selectedRole['morninghuddle_' + res1.id])
-            checkedRoles.push('morninghuddle');
-          if (result.selectedRole['followups_' + res1.id])
-            checkedRoles.push('followups');
+          if (result.selectedRole['dashboard1_' + res1.id]) checkedRoles.push('dashboard1');
+          if (result.selectedRole['dashboard2_' + res1.id]) checkedRoles.push('dashboard2');
+          if (result.selectedRole['dashboard3_' + res1.id]) checkedRoles.push('dashboard3');
+          if (result.selectedRole['dashboard4_' + res1.id]) checkedRoles.push('dashboard4');
+          if (result.selectedRole['dashboard5_' + res1.id]) checkedRoles.push('dashboard5');
+          if (result.selectedRole['dashboard6_' + res1.id]) checkedRoles.push('dashboard6');
+          if (result.selectedRole['healthscreen_' + res1.id]) checkedRoles.push('healthscreen');
+          if (result.selectedRole['morninghuddle_' + res1.id]) checkedRoles.push('morninghuddle');
+          if (result.selectedRole['followups_' + res1.id]) checkedRoles.push('followups');
           if (result.selectedRole['lostopportunity_' + res1.id])
             checkedRoles.push('lostopportunity');
-          if (result.selectedRole['tasks_' + res1.id])
-            checkedRoles.push('tasks');
-          if (result.selectedRole['clinics_' + res1.id])
-            checkedRoles.push('clinics');
-          if (result.selectedRole['users_' + res1.id])
-            checkedRoles.push('users');
+          if (result.selectedRole['tasks_' + res1.id]) checkedRoles.push('tasks');
+          if (result.selectedRole['clinics_' + res1.id]) checkedRoles.push('clinics');
+          if (result.selectedRole['users_' + res1.id]) checkedRoles.push('users');
           if (result.selectedRole['profilesettings_' + res1.id])
             checkedRoles.push('profilesettings');
           if (result.selectedRole['managepermissions_' + res1.id])
             checkedRoles.push('managepermissions');
-          if (result.selectedRole['kpireport_' + res1.id])
-            checkedRoles.push('kpireport');
-          if (result.selectedRole['staffmeeting_' + res1.id])
-            checkedRoles.push('staffmeeting');
-          if (result.selectedRole['createmeeting_' + res1.id])
-            checkedRoles.push('createmeeting');
-          if (result.selectedRole['campaigns_' + res1.id])
-            checkedRoles.push('campaigns');
+          if (result.selectedRole['kpireport_' + res1.id]) checkedRoles.push('kpireport');
+          if (result.selectedRole['staffmeeting_' + res1.id]) checkedRoles.push('staffmeeting');
+          if (result.selectedRole['createmeeting_' + res1.id]) checkedRoles.push('createmeeting');
+          if (result.selectedRole['campaigns_' + res1.id]) checkedRoles.push('campaigns');
 
           var checkedRoles1 = checkedRoles.join();
           this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe(
@@ -574,7 +538,7 @@ export class RolesUsersComponent implements AfterViewInit {
             },
             error => {
               this.warningMessage = 'Please Provide Valid Inputs!';
-            }
+            },
           );
         });
       }
@@ -608,7 +572,7 @@ export class RolesUsersComponent implements AfterViewInit {
           result.selectedClinics,
           result.selected_dentist,
           removedClinics,
-          result.status
+          result.status,
         );
       }
     });
@@ -632,7 +596,7 @@ export class RolesUsersComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -652,7 +616,7 @@ export class RolesUsersComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
     // this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
     //   this.dentists=[];
@@ -688,28 +652,14 @@ export class RolesUsersComponent implements AfterViewInit {
         error => {
           $('.ajax-loader').hide();
           this.toastr.error('Please Provide Valid Inputs!');
-        }
+        },
       );
   }
 
-  add_user(
-    display_name,
-    email,
-    user_type,
-    selectedClinic,
-    password,
-    selected_dentist
-  ) {
+  add_user(display_name, email, user_type, selectedClinic, password, selected_dentist) {
     $('.ajax-loader').show();
     this.rolesUsersService
-      .addRoleUser(
-        display_name,
-        email,
-        user_type,
-        selectedClinic,
-        password,
-        selected_dentist
-      )
+      .addRoleUser(display_name, email, user_type, selectedClinic, password, selected_dentist)
       .subscribe(
         res => {
           $('.ajax-loader').hide();
@@ -723,7 +673,7 @@ export class RolesUsersComponent implements AfterViewInit {
         error => {
           $('.ajax-loader').hide();
           this.toastr.error('Please Provide Valid Inputs!');
-        }
+        },
       );
   }
 
@@ -735,7 +685,7 @@ export class RolesUsersComponent implements AfterViewInit {
     selectedClinic,
     selected_dentist,
     removedClinics,
-    status
+    status,
   ) {
     $('.ajax-loader').show();
     this.rolesUsersService
@@ -747,7 +697,7 @@ export class RolesUsersComponent implements AfterViewInit {
         selectedClinic,
         selected_dentist,
         removedClinics,
-        status
+        status,
       )
       .subscribe(
         res => {
@@ -762,7 +712,7 @@ export class RolesUsersComponent implements AfterViewInit {
         error => {
           $('.ajax-loader').hide();
           this.toastr.error('Please Provide Valid Inputs!');
-        }
+        },
       );
   }
   public activeData = [];
@@ -804,7 +754,7 @@ export class RolesUsersComponent implements AfterViewInit {
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -819,40 +769,39 @@ export class RolesUsersComponent implements AfterViewInit {
     this.showRolesButton = false;
     this.rolesUsersService.getRoles().subscribe(
       res => {
-          this.roles = [];
-          var title = 'Roles permissions';
-          var tipDiscription = [];
-          res.data.forEach(result => {
-            if (this.user_type.toString() == result.role_id.toString()) {
-              if (result.permisions.indexOf('healthscreen') >= 0) {
-              }
+        this.roles = [];
+        var title = 'Roles permissions';
+        var tipDiscription = [];
+        res.data.forEach(result => {
+          if (this.user_type.toString() == result.role_id.toString()) {
+            if (result.permisions.indexOf('healthscreen') >= 0) {
             }
+          }
 
-            var dashboards = result.permisions;
-            var rr = { role: result.role, permisions: dashboards };
-            tipDiscription.push(rr);
+          var dashboards = result.permisions;
+          var rr = { role: result.role, permisions: dashboards };
+          tipDiscription.push(rr);
 
-            this.selectedRole['dashboard1_' + result.role_id] = false;
-            this.selectedRole['dashboard2_' + result.role_id] = false;
-            this.selectedRole['dashboard3_' + result.role_id] = false;
-            this.selectedRole['dashboard4_' + result.role_id] = false;
-            this.selectedRole['dashboard5_' + result.role_id] = false;
-            this.selectedRole['dashboard6_' + result.role_id] = false;
-            var temp = [];
-            temp['id'] = result.role_id;
-            temp['role'] = result.role;
-            temp['permisions'] = result.permisions;
-            this.roles.push(temp);
-            dashboards.forEach(results => {
-              this.selectedRole[results + '_' + result.role_id] = true;
-            });
+          this.selectedRole['dashboard1_' + result.role_id] = false;
+          this.selectedRole['dashboard2_' + result.role_id] = false;
+          this.selectedRole['dashboard3_' + result.role_id] = false;
+          this.selectedRole['dashboard4_' + result.role_id] = false;
+          this.selectedRole['dashboard5_' + result.role_id] = false;
+          this.selectedRole['dashboard6_' + result.role_id] = false;
+          var temp = [];
+          temp['id'] = result.role_id;
+          temp['role'] = result.role;
+          temp['permisions'] = result.permisions;
+          this.roles.push(temp);
+          dashboards.forEach(results => {
+            this.selectedRole[results + '_' + result.role_id] = true;
           });
-          this.allPermissonTip = { title: title, info: tipDiscription };
-        
+        });
+        this.allPermissonTip = { title: title, info: tipDiscription };
       },
       error => {
         this.warningMessage = 'Please Provide Valid Inputs!';
-      }
+      },
     );
   }
 
@@ -868,20 +817,18 @@ export class RolesUsersComponent implements AfterViewInit {
       if (result.value) {
         $('.ajax-loader').show();
         if (rowData.id) {
-          this.rolesUsersService
-            .deleteUser(rowData.id, rowData.usertype)
-            .subscribe(
-              res => {
-                $('.ajax-loader').hide();
-                if (res.status == 200) {
-                  this.toastr.success('User Removed');
-                  this.getUsers();
-                }
-              },
-              error => {
-                this.warningMessage = 'Please Provide Valid Inputs!';
+          this.rolesUsersService.deleteUser(rowData.id, rowData.usertype).subscribe(
+            res => {
+              $('.ajax-loader').hide();
+              if (res.status == 200) {
+                this.toastr.success('User Removed');
+                this.getUsers();
               }
-            );
+            },
+            error => {
+              this.warningMessage = 'Please Provide Valid Inputs!';
+            },
+          );
         } else {
           this.rows.splice(rowData.sr - 1, 1);
           this.rows = [...this.rows];

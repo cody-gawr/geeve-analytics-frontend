@@ -4,15 +4,15 @@
   </mat-expansion-panel-header>
   <div
     class="loader"
-    [ngClass]="
-      dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'
-    ">
+    [ngClass]="dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'"
+  >
     <!-- <img class="tableLoader" src="../../../assets/images/loader.gif" /> -->
     No data available
   </div>
   <div
     *ngIf="dentistList.data.length != 0"
-    class="DentistListSecRow mh-table patient_data-table_responsive">
+    class="DentistListSecRow mh-table patient_data-table_responsive"
+  >
     <div class="card-loading d-none">
       <img class="tableLoader" src="../../assets/images/loader.gif" />
     </div>
@@ -23,7 +23,8 @@
         mat-table
         [dataSource]="dash1List"
         class="mat-elevation-z8 settingCharts"
-        matSort>
+        matSort
+      >
         <!-- ProviderID Column -->
         <!-- <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>Chart Id</th>
@@ -48,7 +49,8 @@
                   }"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon" />
+                  class="info-icon"
+                />
               </div>
             </div>
           </td>
@@ -88,16 +90,16 @@
       <mat-paginator
         hidePageSize
         [pageSize]="dentistPageSize"
-        [style.display]="'none'"></mat-paginator>
+        [style.display]="'none'"
+      ></mat-paginator>
     </div>
 
-    <ul
-      class="main_pagination settings-table-pagination"
-      *ngIf="dentistTablePages.length">
+    <ul class="main_pagination settings-table-pagination" *ngIf="dentistTablePages.length">
       <li *ngFor="let page of dentistTablePages">
         <button
           [ngClass]="{ active: page === currentPage, page: true }"
-          (click)="handlePageChange(page)">
+          (click)="handlePageChange(page)"
+        >
           {{ page }}
         </button>
       </li>
@@ -106,16 +108,14 @@
     <div class="data-loading-main">
       <div
         class="no-data"
-        [ngClass]="
-          dentistList.data.length == 0 && dentistListLoading ? 'show' : 'hide'
-        ">
+        [ngClass]="dentistList.data.length == 0 && dentistListLoading ? 'show' : 'hide'"
+      >
         No Data found
       </div>
       <div
         class="loader"
-        [ngClass]="
-          dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'
-        ">
+        [ngClass]="dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'"
+      >
         <!-- <img class="tableLoader" src="../../../assets/images/loader.gif" /> -->
         No Data Available
       </div>
@@ -124,7 +124,8 @@
 
   <div
     *ngIf="dentistList.data.length != 0"
-    class="DentistListSecRow mh-table patient_data-table_responsive dashmargin">
+    class="DentistListSecRow mh-table patient_data-table_responsive dashmargin"
+  >
     <div class="card-loading d-none">
       <img class="tableLoader" src="../../assets/images/loader.gif" />
     </div>
@@ -135,7 +136,8 @@
         mat-table
         [dataSource]="dash2List"
         class="mat-elevation-z8 settingCharts"
-        matSort>
+        matSort
+      >
         <!-- ProviderID Column -->
         <!-- <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>Chart Id</th>
@@ -160,7 +162,8 @@
                   }"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon" />
+                  class="info-icon"
+                />
               </div>
             </div>
           </td>
@@ -187,7 +190,8 @@
             <a
               (click)="openSetJeeveName(element.id, element.chart)"
               class="action_btn golden"
-              title="Chart Configurations">
+              title="Chart Configurations"
+            >
               <i class="ti-settings m-r-10"></i
             ></a>
           </td>
@@ -199,16 +203,16 @@
       <mat-paginator
         hidePageSize
         [pageSize]="dentistPageSize"
-        [style.display]="'none'"></mat-paginator>
+        [style.display]="'none'"
+      ></mat-paginator>
     </div>
 
-    <ul
-      class="main_pagination settings-table-pagination"
-      *ngIf="dentistTablePages.length">
+    <ul class="main_pagination settings-table-pagination" *ngIf="dentistTablePages.length">
       <li *ngFor="let page of dentistTablePages">
         <button
           [ngClass]="{ active: page === currentPage, page: true }"
-          (click)="handlePageChange(page)">
+          (click)="handlePageChange(page)"
+        >
           {{ page }}
         </button>
       </li>
@@ -217,16 +221,14 @@
     <div class="data-loading-main">
       <div
         class="no-data"
-        [ngClass]="
-          dentistList.data.length == 0 && dentistListLoading ? 'show' : 'hide'
-        ">
+        [ngClass]="dentistList.data.length == 0 && dentistListLoading ? 'show' : 'hide'"
+      >
         No Data found
       </div>
       <div
         class="loader"
-        [ngClass]="
-          dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'
-        ">
+        [ngClass]="dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'"
+      >
         <!-- <img class="tableLoader" src="../../../assets/images/loader.gif" /> -->
         No Data Available
       </div>
@@ -235,7 +237,8 @@
 
   <div
     *ngIf="dentistList.data.length != 0"
-    class="DentistListSecRow mh-table patient_data-table_responsive dashmargin">
+    class="DentistListSecRow mh-table patient_data-table_responsive dashmargin"
+  >
     <div class="card-loading d-none">
       <img class="tableLoader" src="../../assets/images/loader.gif" />
     </div>
@@ -246,7 +249,8 @@
         mat-table
         [dataSource]="dash3List"
         class="mat-elevation-z8 settingCharts"
-        matSort>
+        matSort
+      >
         <!-- ProviderID Column -->
         <!-- <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>Chart Id</th>
@@ -271,7 +275,8 @@
                   }"
                   src="../assets/images/info-icon.png"
                   alt="info-icon"
-                  class="info-icon" />
+                  class="info-icon"
+                />
               </div>
             </div>
           </td>
@@ -298,7 +303,8 @@
             <a
               (click)="openSetJeeveName(element.id, element.chart)"
               class="action_btn golden"
-              title="Chart Configurations">
+              title="Chart Configurations"
+            >
               <i class="ti-settings m-r-10"></i
             ></a>
           </td>
@@ -310,16 +316,16 @@
       <mat-paginator
         hidePageSize
         [pageSize]="dentistPageSize"
-        [style.display]="'none'"></mat-paginator>
+        [style.display]="'none'"
+      ></mat-paginator>
     </div>
 
-    <ul
-      class="main_pagination settings-table-pagination"
-      *ngIf="dentistTablePages.length">
+    <ul class="main_pagination settings-table-pagination" *ngIf="dentistTablePages.length">
       <li *ngFor="let page of dentistTablePages">
         <button
           [ngClass]="{ active: page === currentPage, page: true }"
-          (click)="handlePageChange(page)">
+          (click)="handlePageChange(page)"
+        >
           {{ page }}
         </button>
       </li>
@@ -328,16 +334,14 @@
     <div class="data-loading-main">
       <div
         class="no-data"
-        [ngClass]="
-          dentistList.data.length == 0 && dentistListLoading ? 'show' : 'hide'
-        ">
+        [ngClass]="dentistList.data.length == 0 && dentistListLoading ? 'show' : 'hide'"
+      >
         No Data found
       </div>
       <div
         class="loader"
-        [ngClass]="
-          dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'
-        ">
+        [ngClass]="dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'"
+      >
         <!-- <img class="tableLoader" src="../../../assets/images/loader.gif" /> -->
         No Data Available
       </div>

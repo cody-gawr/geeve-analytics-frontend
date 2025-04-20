@@ -35,81 +35,49 @@ import { ICampaign } from '@/newapp/models/clinic/campaign';
 export class ClinicFacade {
   constructor(private store: Store<ClinicState>) {}
 
-  public readonly success$: Observable<boolean> = this.store.pipe(
-    select(selectSuccess)
-  );
+  public readonly success$: Observable<boolean> = this.store.pipe(select(selectSuccess));
 
   public readonly isLoadingSyncStatus$: Observable<boolean> = this.store.pipe(
-    select(selectIsLoadingSyncStatus)
+    select(selectIsLoadingSyncStatus),
   );
 
   public readonly userClinicsSuccess$: Observable<boolean> = this.store.pipe(
-    select(selectUserClinicsSuccess)
+    select(selectUserClinicsSuccess),
   );
 
-  public readonly error$: Observable<string> = this.store.pipe(
-    select(selectError)
-  );
+  public readonly error$: Observable<string> = this.store.pipe(select(selectError));
 
-  public readonly clinics$: Observable<Clinic[]> = this.store.pipe(
-    select(selectClinics)
-  );
+  public readonly clinics$: Observable<Clinic[]> = this.store.pipe(select(selectClinics));
 
-  public readonly campaigns$: Observable<ICampaign[]> = this.store.pipe(
-    select(selectCampaigns)
-  )
+  public readonly campaigns$: Observable<ICampaign[]> = this.store.pipe(select(selectCampaigns));
 
   public readonly userClinics$: Observable<IClinicDTO[]> = this.store.pipe(
-    select(selectUserClinics)
+    select(selectUserClinics),
   );
 
-  public readonly currentMultiClinicIDs$ = this.store.pipe(
-    select(selectCurrentMultiClinicIds)
-  );
+  public readonly currentMultiClinicIDs$ = this.store.pipe(select(selectCurrentMultiClinicIds));
 
-  public readonly currentClinicId$ = this.store.pipe(
-    select(selectCurrentClinicId)
-  );
+  public readonly currentClinicId$ = this.store.pipe(select(selectCurrentClinicId));
 
-  public readonly currentClinics$ = this.store.pipe(
-    select(selectCurrentClinics)
-  );
+  public readonly currentClinics$ = this.store.pipe(select(selectCurrentClinics));
 
-  public readonly isEachClinicExact$ = this.store.pipe(
-    select(selectIsEachClinicExact)
-  );
+  public readonly isEachClinicExact$ = this.store.pipe(select(selectIsEachClinicExact));
 
-  public readonly isEachClinicCore$ = this.store.pipe(
-    select(selectIsEachClinicCore)
-  );
+  public readonly isEachClinicCore$ = this.store.pipe(select(selectIsEachClinicCore));
 
-  public readonly isEachClinicPraktika$ = this.store.pipe(
-    select(selectIsEachClinicPraktika)
-  );
+  public readonly isEachClinicPraktika$ = this.store.pipe(select(selectIsEachClinicPraktika));
 
-  public readonly isEachClinicD4w$ = this.store.pipe(
-    select(selectIsEachClinicD4w)
-  );
+  public readonly isEachClinicD4w$ = this.store.pipe(select(selectIsEachClinicD4w));
 
-  public readonly isAnyClinicHasD4w$ = this.store.pipe(
-    select(selectIsAnyClinicHasD4w)
-  );
+  public readonly isAnyClinicHasD4w$ = this.store.pipe(select(selectIsAnyClinicHasD4w));
 
-  public readonly currentSingleClinicId$ = this.store.pipe(
-    select(selectCurrentSingleClinicId)
-  );
+  public readonly currentSingleClinicId$ = this.store.pipe(select(selectCurrentSingleClinicId));
 
-  public readonly currentMultiClinicIds$ = this.store.pipe(
-    select(selectCurrentMultiClinicIds)
-  );
+  public readonly currentMultiClinicIds$ = this.store.pipe(select(selectCurrentMultiClinicIds));
 
-  public readonly isMultiSelection$ = this.store.pipe(
-    select(selectIsMultiSelection)
-  );
+  public readonly isMultiSelection$ = this.store.pipe(select(selectIsMultiSelection));
 
-  public readonly isMultiClinicsSelected$ = this.store.pipe(
-    select(selectIsMultiClinicsSelected)
-  );
+  public readonly isMultiClinicsSelected$ = this.store.pipe(select(selectIsMultiClinicsSelected));
 
   public loadClinics() {
     this.store.dispatch(ClinicPageActions.loadClinics());
@@ -124,15 +92,11 @@ export class ClinicFacade {
   }
 
   public setCurrentSingleClinicId(clinicId: 'all' | number | null) {
-    this.store.dispatch(
-      ClinicPageActions.setCurrentSingleClinicId({ clinicId })
-    );
+    this.store.dispatch(ClinicPageActions.setCurrentSingleClinicId({ clinicId }));
   }
 
   public setCurrentMultiClinicIDs(clinicIDs: Array<number>) {
-    this.store.dispatch(
-      ClinicPageActions.setCurrentMultiClinicIDs({ clinicIDs })
-    );
+    this.store.dispatch(ClinicPageActions.setCurrentMultiClinicIDs({ clinicIDs }));
   }
 
   public getCurrentClinics$(isMulti: boolean, isString = false) {
@@ -145,14 +109,12 @@ export class ClinicFacade {
         if (isMulti) {
           return clinics.filter(c => multiIds.includes(c.id));
         } else {
-          return singleId === 'all'
-            ? clinics
-            : [clinics.find(c => c.id == <number>singleId)];
+          return singleId === 'all' ? clinics : [clinics.find(c => c.id == <number>singleId)];
         }
       }),
       map(v => {
         return isString ? v.join(',') : v;
-      })
+      }),
     );
   }
 
@@ -173,25 +135,19 @@ export class ClinicFacade {
   }
 
   public readonly isLoadingClinicAccounting$ = this.store.pipe(
-    select(selectIsLoadingClinicAccountingPlatform)
+    select(selectIsLoadingClinicAccountingPlatform),
   );
   public readonly connectedWith$ = this.store.pipe(select(selectConnectedWith));
-  public readonly isConnectedWith$ = this.store.pipe(
-    select(selectIsConnectedWith)
-  );
-  public readonly connectedClinicId$ = this.store.pipe(
-    select(selectConnectedClinicId)
-  );
+  public readonly isConnectedWith$ = this.store.pipe(select(selectIsConnectedWith));
+  public readonly connectedClinicId$ = this.store.pipe(select(selectConnectedClinicId));
 
   public loadClinicAccountingPlatform(clinicId: number, connectedWith: string) {
     this.store.dispatch(
-      ClinicPageActions.loadClinicAccountingPlatform({ clinicId, connectedWith })
+      ClinicPageActions.loadClinicAccountingPlatform({ clinicId, connectedWith }),
     );
   }
 
   public setConnectedClinicId(clinicId: number) {
-    this.store.dispatch(
-      ClinicPageActions.setConnectedClinicId({ clinicId })
-    );
+    this.store.dispatch(ClinicPageActions.setConnectedClinicId({ clinicId }));
   }
 }

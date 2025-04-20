@@ -38,110 +38,92 @@ import { FrontDeskPageActions } from '../state/actions';
 export class FrontDeskFacade {
   constructor(private store: Store<FrontDeskState>) {}
 
-  public readonly errors$: Observable<JeeveError[]> = this.store.pipe(
-    select(selectErrors)
-  );
+  public readonly errors$: Observable<JeeveError[]> = this.store.pipe(select(selectErrors));
 
   public readonly isLoadingFdUtilRateData$ = this.store.pipe(
-    select(selectIsLoadingFdUtilisationRateData)
+    select(selectIsLoadingFdUtilisationRateData),
   );
 
   public readonly isLoadingFdUtilRateTrendData$ = this.store.pipe(
-    select(selectIsLoadingFdUtilisationRateTrendData)
+    select(selectIsLoadingFdUtilisationRateTrendData),
   );
 
   public readonly isLoadingFdRecallRateData$ = this.store.pipe(
-    select(selectIsLoadingFdRecallRateData)
+    select(selectIsLoadingFdRecallRateData),
   );
 
   public readonly isLoadingFdRecallRateTrendData$ = this.store.pipe(
-    select(selectIsLoadingFdRecallRateTrendData)
+    select(selectIsLoadingFdRecallRateTrendData),
   );
 
-  public readonly isLoadingFdFtaRatioData$ = this.store.pipe(
-    select(selectIsLoadingFdFtaRatioData)
-  );
+  public readonly isLoadingFdFtaRatioData$ = this.store.pipe(select(selectIsLoadingFdFtaRatioData));
 
   public readonly isLoadingFdFtaRatioTrendData$ = this.store.pipe(
-    select(selectIsLoadingFdFtaRatioTrendData)
+    select(selectIsLoadingFdFtaRatioTrendData),
   );
 
-  public readonly isLoadingFdUtaRatioData$ = this.store.pipe(
-    select(selectIsLoadingFdUtaRatioData)
-  );
+  public readonly isLoadingFdUtaRatioData$ = this.store.pipe(select(selectIsLoadingFdUtaRatioData));
 
   public readonly isLoadingFdUtaRatioTrendData$ = this.store.pipe(
-    select(selectIsLoadingFdUtaRatioTrendData)
+    select(selectIsLoadingFdUtaRatioTrendData),
   );
 
-  public readonly fdUtilRateChartData$ = this.store.pipe(
-    select(selectFdUtilRateChartData)
-  );
+  public readonly fdUtilRateChartData$ = this.store.pipe(select(selectFdUtilRateChartData));
 
   public readonly fdUtilRateTrendChartData$ = this.store.pipe(
-    select(selectFdUtilRateTrendChartData)
+    select(selectFdUtilRateTrendChartData),
   );
 
   public readonly fdUtilRateByDayChartData$ = this.store.pipe(
-    select(selectFdUtilRateByDayChartData)
+    select(selectFdUtilRateByDayChartData),
   );
 
-  public readonly fdRecallRateChartData$ = this.store.pipe(
-    select(selectFdRecallRateChartData)
-  );
+  public readonly fdRecallRateChartData$ = this.store.pipe(select(selectFdRecallRateChartData));
 
   public readonly fdRecallRateTrendChartData$ = this.store.pipe(
-    select(selectFdRecallRateTrendChartData)
+    select(selectFdRecallRateTrendChartData),
   );
 
   public readonly fdReappointRateChartData$ = this.store.pipe(
-    select(selectFdReappointRateChartData)
+    select(selectFdReappointRateChartData),
   );
 
   public readonly fdReappointRateTrendChartData$ = this.store.pipe(
-    select(selectFdReappointRateTrendChartData)
+    select(selectFdReappointRateTrendChartData),
   );
 
-  public readonly fdNumTicksChartData$ = this.store.pipe(
-    select(selectFdNumTicksChartData)
-  );
+  public readonly fdNumTicksChartData$ = this.store.pipe(select(selectFdNumTicksChartData));
 
   public readonly fdNumTicksTrendChartData$ = this.store.pipe(
-    select(selectFdNumTicksTrendChartData)
+    select(selectFdNumTicksTrendChartData),
   );
 
-  public readonly fdFtaRatioChartData$ = this.store.pipe(
-    select(selectFdFtaRatioChartData)
-  );
+  public readonly fdFtaRatioChartData$ = this.store.pipe(select(selectFdFtaRatioChartData));
 
   public readonly fdFtaRatioTrendChartData$ = this.store.pipe(
-    select(selectFdFtaRatioTrendChartData)
+    select(selectFdFtaRatioTrendChartData),
   );
 
-  public readonly fdUtaRatioChartData$ = this.store.pipe(
-    select(selectFdUtaRatioChartData)
-  );
+  public readonly fdUtaRatioChartData$ = this.store.pipe(select(selectFdUtaRatioChartData));
 
   public readonly fdUtaRatioTrendChartData$ = this.store.pipe(
-    select(selectFdUtaRatioTrendChartData)
+    select(selectFdUtaRatioTrendChartData),
   );
 
   public readonly isByDayData$ = this.store.pipe(select(selectIsByDayData));
 
   public readonly isLoadingFdReappointRateData$ = this.store.pipe(
-    select(selectIsLoadingFdReappointRateData)
+    select(selectIsLoadingFdReappointRateData),
   );
 
   public readonly isLoadingFdReappointRateTrendData$ = this.store.pipe(
-    select(selectIsLoadingFdReappointRateTrendData)
+    select(selectIsLoadingFdReappointRateTrendData),
   );
 
-  public readonly isLoadingFdNumTicksData$ = this.store.pipe(
-    select(selectIsLoadingFdNumTicksData)
-  );
+  public readonly isLoadingFdNumTicksData$ = this.store.pipe(select(selectIsLoadingFdNumTicksData));
 
   public readonly isLoadingFdNumTicksTrendData$ = this.store.pipe(
-    select(selectIsLoadingFdNumTicksTrendData)
+    select(selectIsLoadingFdNumTicksTrendData),
   );
 
   public setIsByDayData(value: boolean) {
@@ -152,13 +134,7 @@ export class FrontDeskFacade {
     this.store.dispatch(FrontDeskPageActions.setErrors({ errors }));
   }
 
-  public loadFdUtilisationRate({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadFdUtilisationRate({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdUtilisationRate({
         clinicId,
@@ -166,17 +142,11 @@ export class FrontDeskFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdUtilisationRateByDay({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadFdUtilisationRateByDay({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdUtilisationRateByDay({
         clinicId,
@@ -184,31 +154,21 @@ export class FrontDeskFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdUtilisationRateTrend(
-    clinicId: string | number,
-    mode = '',
-    queryWhEnabled = 0
-  ) {
+  public loadFdUtilisationRateTrend(clinicId: string | number, mode = '', queryWhEnabled = 0) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdUtilisationRateTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdRecallRate({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadFdRecallRate({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdRecallRate({
         clinicId,
@@ -216,31 +176,21 @@ export class FrontDeskFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdRecallRateTrend(
-    clinicId: string | number,
-    mode = '',
-    queryWhEnabled = 0
-  ) {
+  public loadFdRecallRateTrend(clinicId: string | number, mode = '', queryWhEnabled = 0) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdRecallRateTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdReappointRate({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadFdReappointRate({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdReappointRate({
         clinicId,
@@ -248,31 +198,21 @@ export class FrontDeskFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdReappointRateTrend(
-    clinicId: string | number,
-    mode = '',
-    queryWhEnabled = 0
-  ) {
+  public loadFdReappointRateTrend(clinicId: string | number, mode = '', queryWhEnabled = 0) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdReappointRateTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdNumTicks({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadFdNumTicks({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdNumTicks({
         clinicId,
@@ -280,31 +220,21 @@ export class FrontDeskFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdNumTicksTrend(
-    clinicId: string | number,
-    mode = '',
-    queryWhEnabled = 0
-  ) {
+  public loadFdNumTicksTrend(clinicId: string | number, mode = '', queryWhEnabled = 0) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdNumTicksTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdFtaRatio({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadFdFtaRatio({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdFtaRatio({
         clinicId,
@@ -312,31 +242,21 @@ export class FrontDeskFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdFtaRatioTrend(
-    clinicId: string | number,
-    mode = '',
-    queryWhEnabled = 0
-  ) {
+  public loadFdFtaRatioTrend(clinicId: string | number, mode = '', queryWhEnabled = 0) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdFtaRatioTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdUtaRatio({
-    clinicId,
-    startDate,
-    endDate,
-    duration,
-    queryWhEnabled,
-  }) {
+  public loadFdUtaRatio({ clinicId, startDate, endDate, duration, queryWhEnabled }) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdUtaRatio({
         clinicId,
@@ -344,21 +264,17 @@ export class FrontDeskFacade {
         endDate,
         duration,
         queryWhEnabled,
-      })
+      }),
     );
   }
 
-  public loadFdUtaRatioTrend(
-    clinicId: string | number,
-    mode = '',
-    queryWhEnabled = 0
-  ) {
+  public loadFdUtaRatioTrend(clinicId: string | number, mode = '', queryWhEnabled = 0) {
     this.store.dispatch(
       FrontDeskPageActions.loadFdUtaRatioTrend({
         clinicId,
         mode,
         queryWhEnabled,
-      })
+      }),
     );
   }
 }

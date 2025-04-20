@@ -1,289 +1,402 @@
 <div class="container">
-    <div class="header">
-        <div class="campaign-name-input">
-            <mat-label>Campaign Name:</mat-label>
-            <input matInput class="title" placeholder="Enter Description" [formControl]="description" />
-            <mat-error *ngIf="description.invalid">You must enter a name</mat-error>
-        </div>
-        <div class="header-buttons">
-            <mat-spinner *ngIf="isSendingSms" style="width: 20px;height: 20px;"></mat-spinner>
-            <button color="primary" [disabled]="!this.selection.selected?.length || description.invalid" (click)="startCampaign(true)" mat-stroked-button>
-                Save Draft
-            </button>
-            <button [disabled]="!this.selection.selected?.length || isSendingSms || description.invalid" (click)="startCampaign();"
-                mat-flat-button color="primary">
-                Start Campaign
-            </button>
-        </div>
+  <div class="header">
+    <div class="campaign-name-input">
+      <mat-label>Campaign Name:</mat-label>
+      <input matInput class="title" placeholder="Enter Description" [formControl]="description" />
+      <mat-error *ngIf="description.invalid">You must enter a name</mat-error>
     </div>
-    <div class="body">
-        <div class="side">
-            <div class="panel">
-                <div class="top">
-                    <span class="title">Select Filters</span>
-                    <div style="min-width: 420px; min-height: 420px; display: flex; justify-content: center;align-items: center;" *ngIf="loadingData && todo?.length === 0">
-                        <spin-loader></spin-loader>
-                    </div>
-                    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
-                        [cdkDropListConnectedTo]="[doneList]" (cdkDropListDropped)="drop($event)"
-                        cdkDropListSortingDisabled cdkDropListOrientation="vertical" class="drag-container">
-                        <drag-drop-button 
-                            class="drag-item" 
-                            cdkDragPreviewClass="drag-preview"
-                            *ngFor="let item of getTodoList" cdkDrag
-                            [cdkDragDisabled]="!isValidForm(item)" 
-                            [disabled]="item.disabled" 
-                            [iconName]="item.iconName"
-                            [iconUrlWhite]="item.iconUrlWhite" 
-                            [iconUrl]="item.iconUrl" 
-                            [title]="item.title"
-                            [isDone]="false" [filterName]="item.filterName"
-                            [isOpen]="item.filterName === selectedFilterName">
-                        </drag-drop-button>
-                    </div>
-                </div>
-                <div class="divider-wrapper">
-                    <div class="divider"></div>
-                </div>
-
-                <div class="bottom">
-                    <form [formGroup]="filterFormGroup">
-                        <div *ngIf="!!selectedFilterName" class="bubble bubble-bottom-left">{{getHelperTip()}}</div>
-                        <div *ngIf="isSelected('patient_age')" class="patient-age-slider">
-                            <div class="label">
-                                <label>{{this.filterFormGroup.controls.patientAgeMin.value}}</label>
-                                <label>{{this.filterFormGroup.controls.patientAgeMax.value}}</label>
-                            </div>
-                            <mat-slider min="1" max="100">
-                                <input formControlName="patientAgeMin" matSliderStartThumb>
-                                <input formControlName="patientAgeMax" matSliderEndThumb>
-                            </mat-slider>
-                        </div>
-
-                        <div *ngIf="isSelected('patient_status')" class="patient-age-slider">
-                            <mat-form-field appearance="outline" >
-                                <mat-select [formControl]="patientStatus">
-                                  <mat-option *ngFor="let status of patientStatusList" [value]="status">
-                                    {{status | uppercase}}
-                                  </mat-option>
-                                </mat-select>
-                              </mat-form-field>
-                        </div>
-
-                        <div class="filter-form" *ngIf="isSelected('overdues')">
-                            <mat-form-field appearance="outline" style="width:150px;margin-left:10px;">
-                                <mat-label>Days Overdue</mat-label>
-                                <input [formControl]="overdueDays" matInput placeholder="Days Overdue" type="number">
-                            </mat-form-field>
-                        </div>
-
-                        <div class="filter-form" *ngIf="isSelected('treatment')">
-                            <app-daterange-preset 
-                                class="filter-box"
-                                [filterFormControlStart]="filterFormGroup.controls.treatmentStart"
-                                [filterFormControlEnd]="filterFormGroup.controls.treatmentEnd" ></app-daterange-preset>
-    
-                            <div class="multi-selection-form" >
-                                <mat-checkbox [formControl]="itemCodesAllCheckBox" (change)="toggleAllSelectedItemCodes($event)">All Item Codes</mat-checkbox>
-                                <search-multi-select [label]="'All Item Codes'" [controlData]="selectedItemCodes"
-                                    [items]="itemCodes"></search-multi-select>
-                                <div class="selected-chipsets">
-                                    <app-custom-select 
-                                    *ngIf="selectedItemCodes.value.length > 0"
-                                    [formControl]="treatmentItemCodesMode" 
-                                    [options]="[{label: 'Any Of', value: 'anyof'}, {label: 'All Of', value: 'allof'}]"
-                                    ></app-custom-select>
-                                    <mat-chip-set  aria-label="Selected Treatments">
-                                        <mat-chip *ngFor="let item of selectedItemCodes.value">{{item}}</mat-chip>
-                                    </mat-chip-set>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="filter-form" *ngIf="isSelected('no_treatment')">
-                            <app-daterange-preset 
-                                class="filter-box"
-                                [filterFormControlStart]="filterFormGroup.controls.no_treatmentStart"
-                                [filterFormControlEnd]="filterFormGroup.controls.no_treatmentEnd" ></app-daterange-preset>
-                            <div class="multi-selection-form" >
-                                <mat-checkbox [formControl]="itemCodesAllCheckBoxForNoTreatment" (change)="toggleAllSelectedItemCodesForNoTreatment($event)">All Item Codes</mat-checkbox>
-                                <search-multi-select [label]="'All Item Codes'" [controlData]="selectedItemCodesForNoTreatment"
-                                    [items]="itemCodes"></search-multi-select>
-                                <div class="selected-chipsets">
-                                    <app-custom-select 
-                                    *ngIf="selectedItemCodesForNoTreatment.value.length > 0"
-                                    [formControl]="noTreatmentItemCodesMode" 
-                                    [options]="[{label: 'Any Of', value: 'anyof'}, {label: 'All Of', value: 'allof'}]"
-                                    ></app-custom-select>
-                                    <mat-chip-set  aria-label="Selected Treatments">
-                                        <mat-chip *ngFor="let item of selectedItemCodesForNoTreatment.value">{{item}}</mat-chip>
-                                    </mat-chip-set>
-                                </div>
-                            </div>
-                        </div>
-
-                        <app-daterange-preset 
-                        *ngIf="isSelected('incomplete_tx_plan')"
-                        class="filter-box"
-                        [filterFormControlStart]="filterFormGroup.controls.incomplete_tx_planStart"
-                        [filterFormControlEnd]="filterFormGroup.controls.incomplete_tx_planEnd" ></app-daterange-preset>
-
-                        <app-daterange-preset 
-                        *ngIf="isSelected('no_appointment')"
-                        class="filter-box"
-                        [filterFormControlStart]="filterFormGroup.controls.no_appointmentStart"
-                        [filterFormControlEnd]="filterFormGroup.controls.no_appointmentEnd" ></app-daterange-preset>
-
-                        <app-daterange-preset 
-                        *ngIf="isSelected('appointment')"
-                        class="filter-box"
-                        [filterFormControlStart]="filterFormGroup.controls.appointmentStart"
-                        [filterFormControlEnd]="filterFormGroup.controls.appointmentEnd" ></app-daterange-preset>
-
-                        <div class="filter-form" *ngIf="isSelected('health_insurance')">
-                            <mat-checkbox [formControl]="healthFundIncludeNoneCheckBox" class="health-fund-checkbox">Patients Without Health Insurance</mat-checkbox>
-                            <mat-checkbox [formControl]="healthFundIncludeCheckBox" (change)="toggleHealthFundInclude($event)" >Patients with Health Insurance</mat-checkbox>                                    
-                            <div class="multi-selection-form" >
-                                
-                                <search-multi-select [label]="'All Health Insurance Providers'" [controlData]="selectedHealthInsurances"
-                                    [items]="healthFunds"></search-multi-select>
-                            
-                                <mat-chip-set class="selected-chipsets" aria-label="Selected Health Insurances">
-                                    <mat-chip *ngFor="let item of selectedHealthInsurances.value">{{item}}</mat-chip>
-                                </mat-chip-set>
-                            </div>
-                        </div>
-                        <br/>
-                        <button *ngIf="!isDoneFilter() && !!this.selectedFilterName"
-                            [disabled]="!isValidForm(selectedFilterName)" mat-flat-button color="primary"
-                            (click)="applyFilter(selectedFilterName)">Apply Filter</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="content">
-            <div class="c-layout">
-                <span class="title">Applied Filters</span>
-                <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="[todoList]"
-                    (cdkDropListDropped)="drop($event, 'done')" cdkDropListSortingDisabled
-                    cdkDropListOrientation="horizontal" class="drop-container">
-                    <drag-drop-button class="drag-item" 
-                        *ngFor="let item of done" 
-                        cdkDrag 
-                        cdkDragPreviewClass="drag-preview"
-                        [desc]="getDesc(item.filterName)" [iconName]="item.iconName"
-                        [iconUrlWhite]="item.iconUrlWhite" [iconUrl]="item.iconUrl" [isDone]="true"
-                        [closeEvent]="closeEvent" [filterName]="item.filterName" [title]="item.title"
-                        [isOpen]="item.filterName === selectedFilterName"></drag-drop-button>
-                </div>
-            </div>
-            <div class="c-layout">
-                <div class="table-header">
-                    <div class="title table-label">
-                        <span class="title">Campaign Members ({{selection.selected.length}} selected)</span>
-                        <mat-spinner style="width: 20px;height: 20px;" *ngIf="loadingData"></mat-spinner>
-                    </div>
-                    <button type="button" mat-flat-button color="primary" [disabled]="!(selection.selected?.length > 0)"
-                        (click)="downloadCampaignList()">Export List</button>
-                </div>
-
-
-                <div class="table">
-                    <table mat-table [dataSource]="dataSource">
-
-                        <ng-container matColumnDef="select">
-                            <th mat-header-cell *matHeaderCellDef>
-                                <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                                    [checked]="selection.hasValue() && isAllSelected()"
-                                    [indeterminate]="selection.hasValue() && !isAllSelected()">
-                                </mat-checkbox>
-                            </th>
-                            <td mat-cell *matCellDef="let row">
-                                <mat-checkbox (click)="$event.stopPropagation()"
-                                    (change)="$event ? selection.toggle(row) : null"
-                                    [checked]="selection.isSelected(row)">
-                                </mat-checkbox>
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="patientName">
-                            <th mat-header-cell *matHeaderCellDef> Patient Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="previousCampaigns">
-                            <th mat-header-cell *matHeaderCellDef> Previous Campaigns </th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-chip-set aria-label="Previous Campaigns">
-                                    <mat-chip class="chip-style"
-                                        *ngFor="let campaign of element.prev_campaigns_desc?.slice(0,1)">{{campaign}}</mat-chip>
-                                    <mat-chip class="chip-style" [matMenuTriggerFor]="menu"
-                                        *ngIf="element.prev_campaigns_desc?.slice(1)?.length > 0">
-                                        <mat-icon inline style="margin-top:5px">more_horiz</mat-icon>
-                                    </mat-chip>
-                                    <mat-menu #menu="matMenu">
-                                        <mat-chip class="chip-style" style="margin: 5px;"
-                                            *ngFor="let campaign of element.prev_campaigns_desc?.slice(1)">
-                                            {{campaign}}</mat-chip>
-                                    </mat-menu>
-                                </mat-chip-set>
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="lastAppointment">
-                            <th mat-header-cell *matHeaderCellDef> Last Appointment </th>
-                            <td mat-cell *matCellDef="let element">
-                                <div class="last-appointment-column">
-                                    <span>{{element.last_appointment}}</span>
-                                    <span class="provider">{{element.last_provider}}</span>
-                                </div>
-                            </td>
-                        </ng-container>
-
-
-                        <ng-container matColumnDef="nextAppointment">
-                            <th mat-header-cell *matHeaderCellDef> Next Appointment </th>
-                            <td mat-cell *matCellDef="let element">
-                                <div class="last-appointment-column">
-                                    <span>{{element.next_appointment}}</span>
-                                    <span class="provider">{{element.next_provider}}</span>
-                                </div>
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="mobile">
-                            <th mat-header-cell *matHeaderCellDef> Ph Number </th>
-                            <td mat-cell *matCellDef="let element"> {{element.mobile}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="email">
-                            <th mat-header-cell *matHeaderCellDef> Email </th>
-                            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="days_overdue">
-                            <th mat-header-cell *matHeaderCellDef> Days Overdue </th>
-                            <td mat-cell *matCellDef="let element"> {{element.days_overdue}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="amount">
-                            <th mat-header-cell *matHeaderCellDef> Amount </th>
-                            <td mat-cell *matCellDef="let element"> {{element.amount | currency}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="health_fund">
-                            <th mat-header-cell *matHeaderCellDef> Health Fund </th>
-                            <td mat-cell *matCellDef="let element"> {{element.health_fund}} </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
-                    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"
-                        aria-label="Select page of patients"></mat-paginator>
-                </div>
-            </div>
-
-        </div>
+    <div class="header-buttons">
+      <mat-spinner *ngIf="isSendingSms" style="width: 20px; height: 20px"></mat-spinner>
+      <button
+        color="primary"
+        [disabled]="!this.selection.selected?.length || description.invalid"
+        (click)="startCampaign(true)"
+        mat-stroked-button
+      >
+        Save Draft
+      </button>
+      <button
+        [disabled]="!this.selection.selected?.length || isSendingSms || description.invalid"
+        (click)="startCampaign()"
+        mat-flat-button
+        color="primary"
+      >
+        Start Campaign
+      </button>
     </div>
+  </div>
+  <div class="body">
+    <div class="side">
+      <div class="panel">
+        <div class="top">
+          <span class="title">Select Filters</span>
+          <div
+            style="
+              min-width: 420px;
+              min-height: 420px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            *ngIf="loadingData && todo?.length === 0"
+          >
+            <spin-loader></spin-loader>
+          </div>
+          <div
+            cdkDropList
+            #todoList="cdkDropList"
+            [cdkDropListData]="todo"
+            [cdkDropListConnectedTo]="[doneList]"
+            (cdkDropListDropped)="drop($event)"
+            cdkDropListSortingDisabled
+            cdkDropListOrientation="vertical"
+            class="drag-container"
+          >
+            <drag-drop-button
+              class="drag-item"
+              cdkDragPreviewClass="drag-preview"
+              *ngFor="let item of getTodoList"
+              cdkDrag
+              [cdkDragDisabled]="!isValidForm(item)"
+              [disabled]="item.disabled"
+              [iconName]="item.iconName"
+              [iconUrlWhite]="item.iconUrlWhite"
+              [iconUrl]="item.iconUrl"
+              [title]="item.title"
+              [isDone]="false"
+              [filterName]="item.filterName"
+              [isOpen]="item.filterName === selectedFilterName"
+            >
+            </drag-drop-button>
+          </div>
+        </div>
+        <div class="divider-wrapper">
+          <div class="divider"></div>
+        </div>
+
+        <div class="bottom">
+          <form [formGroup]="filterFormGroup">
+            <div *ngIf="!!selectedFilterName" class="bubble bubble-bottom-left">
+              {{ getHelperTip() }}
+            </div>
+            <div *ngIf="isSelected('patient_age')" class="patient-age-slider">
+              <div class="label">
+                <label>{{ this.filterFormGroup.controls.patientAgeMin.value }}</label>
+                <label>{{ this.filterFormGroup.controls.patientAgeMax.value }}</label>
+              </div>
+              <mat-slider min="1" max="100">
+                <input formControlName="patientAgeMin" matSliderStartThumb />
+                <input formControlName="patientAgeMax" matSliderEndThumb />
+              </mat-slider>
+            </div>
+
+            <div *ngIf="isSelected('patient_status')" class="patient-age-slider">
+              <mat-form-field appearance="outline">
+                <mat-select [formControl]="patientStatus">
+                  <mat-option *ngFor="let status of patientStatusList" [value]="status">
+                    {{ status | uppercase }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="filter-form" *ngIf="isSelected('overdues')">
+              <mat-form-field appearance="outline" style="width: 150px; margin-left: 10px">
+                <mat-label>Days Overdue</mat-label>
+                <input
+                  [formControl]="overdueDays"
+                  matInput
+                  placeholder="Days Overdue"
+                  type="number"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="filter-form" *ngIf="isSelected('treatment')">
+              <app-daterange-preset
+                class="filter-box"
+                [filterFormControlStart]="filterFormGroup.controls.treatmentStart"
+                [filterFormControlEnd]="filterFormGroup.controls.treatmentEnd"
+              ></app-daterange-preset>
+
+              <div class="multi-selection-form">
+                <mat-checkbox
+                  [formControl]="itemCodesAllCheckBox"
+                  (change)="toggleAllSelectedItemCodes($event)"
+                  >All Item Codes</mat-checkbox
+                >
+                <search-multi-select
+                  [label]="'All Item Codes'"
+                  [controlData]="selectedItemCodes"
+                  [items]="itemCodes"
+                ></search-multi-select>
+                <div class="selected-chipsets">
+                  <app-custom-select
+                    *ngIf="selectedItemCodes.value.length > 0"
+                    [formControl]="treatmentItemCodesMode"
+                    [options]="[
+                      { label: 'Any Of', value: 'anyof' },
+                      { label: 'All Of', value: 'allof' }
+                    ]"
+                  ></app-custom-select>
+                  <mat-chip-set aria-label="Selected Treatments">
+                    <mat-chip *ngFor="let item of selectedItemCodes.value">{{ item }}</mat-chip>
+                  </mat-chip-set>
+                </div>
+              </div>
+            </div>
+
+            <div class="filter-form" *ngIf="isSelected('no_treatment')">
+              <app-daterange-preset
+                class="filter-box"
+                [filterFormControlStart]="filterFormGroup.controls.no_treatmentStart"
+                [filterFormControlEnd]="filterFormGroup.controls.no_treatmentEnd"
+              ></app-daterange-preset>
+              <div class="multi-selection-form">
+                <mat-checkbox
+                  [formControl]="itemCodesAllCheckBoxForNoTreatment"
+                  (change)="toggleAllSelectedItemCodesForNoTreatment($event)"
+                  >All Item Codes</mat-checkbox
+                >
+                <search-multi-select
+                  [label]="'All Item Codes'"
+                  [controlData]="selectedItemCodesForNoTreatment"
+                  [items]="itemCodes"
+                ></search-multi-select>
+                <div class="selected-chipsets">
+                  <app-custom-select
+                    *ngIf="selectedItemCodesForNoTreatment.value.length > 0"
+                    [formControl]="noTreatmentItemCodesMode"
+                    [options]="[
+                      { label: 'Any Of', value: 'anyof' },
+                      { label: 'All Of', value: 'allof' }
+                    ]"
+                  ></app-custom-select>
+                  <mat-chip-set aria-label="Selected Treatments">
+                    <mat-chip *ngFor="let item of selectedItemCodesForNoTreatment.value">{{
+                      item
+                    }}</mat-chip>
+                  </mat-chip-set>
+                </div>
+              </div>
+            </div>
+
+            <app-daterange-preset
+              *ngIf="isSelected('incomplete_tx_plan')"
+              class="filter-box"
+              [filterFormControlStart]="filterFormGroup.controls.incomplete_tx_planStart"
+              [filterFormControlEnd]="filterFormGroup.controls.incomplete_tx_planEnd"
+            ></app-daterange-preset>
+
+            <app-daterange-preset
+              *ngIf="isSelected('no_appointment')"
+              class="filter-box"
+              [filterFormControlStart]="filterFormGroup.controls.no_appointmentStart"
+              [filterFormControlEnd]="filterFormGroup.controls.no_appointmentEnd"
+            ></app-daterange-preset>
+
+            <app-daterange-preset
+              *ngIf="isSelected('appointment')"
+              class="filter-box"
+              [filterFormControlStart]="filterFormGroup.controls.appointmentStart"
+              [filterFormControlEnd]="filterFormGroup.controls.appointmentEnd"
+            ></app-daterange-preset>
+
+            <div class="filter-form" *ngIf="isSelected('health_insurance')">
+              <mat-checkbox
+                [formControl]="healthFundIncludeNoneCheckBox"
+                class="health-fund-checkbox"
+                >Patients Without Health Insurance</mat-checkbox
+              >
+              <mat-checkbox
+                [formControl]="healthFundIncludeCheckBox"
+                (change)="toggleHealthFundInclude($event)"
+                >Patients with Health Insurance</mat-checkbox
+              >
+              <div class="multi-selection-form">
+                <search-multi-select
+                  [label]="'All Health Insurance Providers'"
+                  [controlData]="selectedHealthInsurances"
+                  [items]="healthFunds"
+                ></search-multi-select>
+
+                <mat-chip-set class="selected-chipsets" aria-label="Selected Health Insurances">
+                  <mat-chip *ngFor="let item of selectedHealthInsurances.value">{{
+                    item
+                  }}</mat-chip>
+                </mat-chip-set>
+              </div>
+            </div>
+            <br />
+            <button
+              *ngIf="!isDoneFilter() && !!this.selectedFilterName"
+              [disabled]="!isValidForm(selectedFilterName)"
+              mat-flat-button
+              color="primary"
+              (click)="applyFilter(selectedFilterName)"
+            >
+              Apply Filter
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="c-layout">
+        <span class="title">Applied Filters</span>
+        <div
+          cdkDropList
+          #doneList="cdkDropList"
+          [cdkDropListData]="done"
+          [cdkDropListConnectedTo]="[todoList]"
+          (cdkDropListDropped)="drop($event, 'done')"
+          cdkDropListSortingDisabled
+          cdkDropListOrientation="horizontal"
+          class="drop-container"
+        >
+          <drag-drop-button
+            class="drag-item"
+            *ngFor="let item of done"
+            cdkDrag
+            cdkDragPreviewClass="drag-preview"
+            [desc]="getDesc(item.filterName)"
+            [iconName]="item.iconName"
+            [iconUrlWhite]="item.iconUrlWhite"
+            [iconUrl]="item.iconUrl"
+            [isDone]="true"
+            [closeEvent]="closeEvent"
+            [filterName]="item.filterName"
+            [title]="item.title"
+            [isOpen]="item.filterName === selectedFilterName"
+          ></drag-drop-button>
+        </div>
+      </div>
+      <div class="c-layout">
+        <div class="table-header">
+          <div class="title table-label">
+            <span class="title">Campaign Members ({{ selection.selected.length }} selected)</span>
+            <mat-spinner style="width: 20px; height: 20px" *ngIf="loadingData"></mat-spinner>
+          </div>
+          <button
+            type="button"
+            mat-flat-button
+            color="primary"
+            [disabled]="!(selection.selected?.length > 0)"
+            (click)="downloadCampaignList()"
+          >
+            Export List
+          </button>
+        </div>
+
+        <div class="table">
+          <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox
+                  (change)="$event ? toggleAllRows() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                >
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(row) : null"
+                  [checked]="selection.isSelected(row)"
+                >
+                </mat-checkbox>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="patientName">
+              <th mat-header-cell *matHeaderCellDef>Patient Name</th>
+              <td mat-cell *matCellDef="let element">{{ element.patient_name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="previousCampaigns">
+              <th mat-header-cell *matHeaderCellDef>Previous Campaigns</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-chip-set aria-label="Previous Campaigns">
+                  <mat-chip
+                    class="chip-style"
+                    *ngFor="let campaign of element.prev_campaigns_desc?.slice(0, 1)"
+                    >{{ campaign }}</mat-chip
+                  >
+                  <mat-chip
+                    class="chip-style"
+                    [matMenuTriggerFor]="menu"
+                    *ngIf="element.prev_campaigns_desc?.slice(1)?.length > 0"
+                  >
+                    <mat-icon inline style="margin-top: 5px">more_horiz</mat-icon>
+                  </mat-chip>
+                  <mat-menu #menu="matMenu">
+                    <mat-chip
+                      class="chip-style"
+                      style="margin: 5px"
+                      *ngFor="let campaign of element.prev_campaigns_desc?.slice(1)"
+                    >
+                      {{ campaign }}</mat-chip
+                    >
+                  </mat-menu>
+                </mat-chip-set>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="lastAppointment">
+              <th mat-header-cell *matHeaderCellDef>Last Appointment</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="last-appointment-column">
+                  <span>{{ element.last_appointment }}</span>
+                  <span class="provider">{{ element.last_provider }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nextAppointment">
+              <th mat-header-cell *matHeaderCellDef>Next Appointment</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="last-appointment-column">
+                  <span>{{ element.next_appointment }}</span>
+                  <span class="provider">{{ element.next_provider }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="mobile">
+              <th mat-header-cell *matHeaderCellDef>Ph Number</th>
+              <td mat-cell *matCellDef="let element">{{ element.mobile }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="days_overdue">
+              <th mat-header-cell *matHeaderCellDef>Days Overdue</th>
+              <td mat-cell *matCellDef="let element">{{ element.days_overdue }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef>Amount</th>
+              <td mat-cell *matCellDef="let element">{{ element.amount | currency }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="health_fund">
+              <th mat-header-cell *matHeaderCellDef>Health Fund</th>
+              <td mat-cell *matCellDef="let element">{{ element.health_fund }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          <mat-paginator
+            [pageSizeOptions]="[10, 25, 50, 100]"
+            aria-label="Select page of patients"
+          ></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

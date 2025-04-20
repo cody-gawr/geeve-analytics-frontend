@@ -1,12 +1,5 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { ChartService } from '../dashboards/chart.service';
 import { CookieService } from 'ngx-cookie';
@@ -65,36 +58,23 @@ export class GraphsComponent {
     private decimalPipe: DecimalPipe,
     private _cookieService: CookieService,
     private router: Router,
-    private graphsService: GraphsService
+    private graphsService: GraphsService,
   ) {}
 
   ngAfterViewInit() {
     this.clinic_id = this.item.chart_clinic_id;
-    this.startDate = this.datepipe.transform(
-      this.item.agenda_chart_start_date,
-      'yyyy-MM-dd'
-    );
-    this.endDate = this.datepipe.transform(
-      this.item.agenda_chart_end_date,
-      'yyyy-MM-dd'
-    );
+    this.startDate = this.datepipe.transform(this.item.agenda_chart_start_date, 'yyyy-MM-dd');
+    this.endDate = this.datepipe.transform(this.item.agenda_chart_end_date, 'yyyy-MM-dd');
 
-    this.showStartDate = this.datepipe.transform(
-      this.item.agenda_chart_start_date,
-      'dd MMM yyyy'
-    );
-    this.showEndDate = this.datepipe.transform(
-      this.item.agenda_chart_end_date,
-      'dd MMM yyyy'
-    );
+    this.showStartDate = this.datepipe.transform(this.item.agenda_chart_start_date, 'dd MMM yyyy');
+    this.showEndDate = this.datepipe.transform(this.item.agenda_chart_end_date, 'dd MMM yyyy');
     this.clinicName = this.item.chart_clinic_name;
     switch (this.item.agenda_chart_id) {
       case 16: {
         // Recall Rate chart gauge
         this.chart_heading = 'Recall Rate';
         this.fdRecallPrebookRate();
-        this.noDataText =
-          'You have no recall prebookings in the selected period';
+        this.noDataText = 'You have no recall prebookings in the selected period';
         break;
       }
       case 17: {
@@ -134,8 +114,7 @@ export class GraphsComponent {
         this.chart_heading = 'Recall Prebook Rate';
         this.barOptions = this.barChartOptionsPercent;
         this.recallPrebook();
-        this.noDataText =
-          'You have no recall prebookings in the selected period';
+        this.noDataText = 'You have no recall prebookings in the selected period';
         break;
       }
       case 5: {
@@ -173,12 +152,7 @@ export class GraphsComponent {
   // gauge chart for Recall Rate
   private fdRecallPrebookRate() {
     this.graphsService
-      .fdRecallPrebookRate(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        this.duration
-      )
+      .fdRecallPrebookRate(this.clinic_id, this.startDate, this.endDate, this.duration)
       .subscribe(
         res => {
           if (res.status == 200) {
@@ -187,19 +161,14 @@ export class GraphsComponent {
         },
         error => {
           this.handleUnAuthorization(error);
-        }
+        },
       );
   }
 
   // gauge chart for Reappointment Rate
   private fdtreatmentPrebookRate() {
     this.graphsService
-      .fdReappointRate(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        this.duration
-      )
+      .fdReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration)
       .subscribe(
         res => {
           if (res.status == 200) {
@@ -208,19 +177,14 @@ export class GraphsComponent {
         },
         error => {
           this.handleUnAuthorization(error);
-        }
+        },
       );
   }
 
   // gauge chart for total visits
   private fdvisitsRatio() {
     this.graphsService
-      .fdvisitsRatio(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        this.duration
-      )
+      .fdvisitsRatio(this.clinic_id, this.startDate, this.endDate, this.duration)
       .subscribe(
         res => {
           if (res.status == 200) {
@@ -229,7 +193,7 @@ export class GraphsComponent {
         },
         error => {
           this.handleUnAuthorization(error);
-        }
+        },
       );
   }
 
@@ -239,8 +203,7 @@ export class GraphsComponent {
     this.gaugeGraphsGoal = data.goals;
     this.gaugeGraphsTotal = 0;
     this.gaugeGraphsTotal = Math.round(data.total);
-    if (this.maxGaugeGraphGoal <= 0)
-      this.maxGaugeGraphGoal = this.gaugeGraphsTotal;
+    if (this.maxGaugeGraphGoal <= 0) this.maxGaugeGraphGoal = this.gaugeGraphsTotal;
   }
 
   // -------------- bar charts -------------------------
@@ -372,9 +335,7 @@ export class GraphsComponent {
           label: tooltipItem => {
             if (tooltipItem.label != '') {
               return (
-                tooltipItem.label +
-                ': $' +
-                this.decimalPipe.transform(tooltipItem.formattedValue)
+                tooltipItem.label + ': $' + this.decimalPipe.transform(tooltipItem.formattedValue)
               );
             }
             return '';
@@ -437,10 +398,7 @@ export class GraphsComponent {
         },
         callbacks: {
           label: function (tooltipItems) {
-            let total =
-              parseInt(tooltipItems.label) > 100
-                ? 100
-                : tooltipItems.formattedValue;
+            let total = parseInt(tooltipItems.label) > 100 ? 100 : tooltipItems.formattedValue;
             if (tooltipItems.label.indexOf('--') >= 0) {
               let lbl = tooltipItems.label.split('--');
               if (typeof lbl[3] === 'undefined') {
@@ -461,18 +419,12 @@ export class GraphsComponent {
 
             //let ylable =  Array.isArray(v) ? +(v[1] + v[0]) / 2 : v;
             let ylable = tooltipItems.parsed._custom
-              ? +(
-                  tooltipItems.parsed._custom.max +
-                  tooltipItems.parsed._custom.min
-                ) / 2
+              ? +(tooltipItems.parsed._custom.max + tooltipItems.parsed._custom.min) / 2
               : v;
             var tlab = 0;
             if (typeof tooltipItems.chart.data.datasets[1] === 'undefined') {
             } else {
-              const tval =
-                tooltipItems.chart.data.datasets[1].data[
-                  tooltipItems.dataIndex
-                ];
+              const tval = tooltipItems.chart.data.datasets[1].data[tooltipItems.dataIndex];
               if (Array.isArray(tval)) {
                 tlab = Array.isArray(tval) ? +(tval[1] + tval[0]) / 2 : tval;
                 if (tlab == 0) {
@@ -489,10 +441,7 @@ export class GraphsComponent {
           afterLabel: function (tooltipItems) {
             let hour = 0;
             let phour = 0;
-            if (
-              tooltipItems.label.indexOf('--') >= 0 &&
-              tooltipItems.datasetIndex == 0
-            ) {
+            if (tooltipItems.label.indexOf('--') >= 0 && tooltipItems.datasetIndex == 0) {
               let lbl = tooltipItems.label.split('--');
               hour = parseInt(lbl[1]);
               phour = parseInt(lbl[2]);
@@ -584,11 +533,7 @@ export class GraphsComponent {
               if (tooltipItems.dataset.label.indexOf('DentistMode-') >= 0) {
                 return tooltipItems.label + ': ' + tooltipItems.formattedValue;
               } else {
-                return (
-                  tooltipItems.dataset.label +
-                  ': ' +
-                  tooltipItems.formattedValue
-                );
+                return tooltipItems.dataset.label + ': ' + tooltipItems.formattedValue;
               }
             }
             return '';
@@ -631,7 +576,7 @@ export class GraphsComponent {
         this.endDate,
         this.duration,
         this.user_type,
-        this.childid
+        this.childid,
       )
       .subscribe(
         (data: any) => {
@@ -639,7 +584,7 @@ export class GraphsComponent {
         },
         error => {
           this.handleUnAuthorization(error);
-        }
+        },
       );
   }
 
@@ -651,7 +596,7 @@ export class GraphsComponent {
         this.endDate,
         this.duration,
         this.user_type,
-        this.childid
+        this.childid,
       )
       .subscribe(
         (data: any) => {
@@ -659,7 +604,7 @@ export class GraphsComponent {
         },
         error => {
           this.handleUnAuthorization(error);
-        }
+        },
       );
   }
 
@@ -671,7 +616,7 @@ export class GraphsComponent {
         this.endDate,
         this.duration,
         this.user_type,
-        this.childid
+        this.childid,
       )
       .subscribe(
         (data: any) => {
@@ -679,7 +624,7 @@ export class GraphsComponent {
         },
         error => {
           this.handleUnAuthorization(error);
-        }
+        },
       );
   }
 
@@ -691,7 +636,7 @@ export class GraphsComponent {
         this.endDate,
         this.duration,
         this.user_type,
-        this.childid
+        this.childid,
       )
       .subscribe(
         (data: any) => {
@@ -699,25 +644,20 @@ export class GraphsComponent {
         },
         error => {
           this.handleUnAuthorization(error);
-        }
+        },
       );
   }
 
   private fdWorkTimeAnalysis() {
     this.graphsService
-      .fdWorkTimeAnalysis(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        this.duration
-      )
+      .fdWorkTimeAnalysis(this.clinic_id, this.startDate, this.endDate, this.duration)
       .subscribe(
         res => {
           this.calculateDataForBarCharts(res.body.data);
         },
         error => {
           this.handleUnAuthorization(error);
-        }
+        },
       );
   }
 
@@ -736,12 +676,7 @@ export class GraphsComponent {
   public perUserLabels = [];
   private getFollowupsPerUser() {
     this.graphsService
-      .getFollowupsPerUser(
-        this.clinic_id,
-        this.startDate,
-        this.endDate,
-        this.duration
-      )
+      .getFollowupsPerUser(this.clinic_id, this.startDate, this.endDate, this.duration)
       .subscribe(
         res => {
           this.perUserData = [
@@ -774,7 +709,7 @@ export class GraphsComponent {
         },
         error => {
           this.handleUnAuthorization(error);
-        }
+        },
       );
   }
 
@@ -824,7 +759,7 @@ export class GraphsComponent {
               '--' +
               res.planned_hour +
               '--' +
-              res.clinic_name
+              res.clinic_name,
           );
         });
       }
@@ -834,9 +769,7 @@ export class GraphsComponent {
       let dynamicColors = [];
       this.barChartLabels1.forEach((label, labelIndex) => {
         dynamicColors.push(
-          labelIndex % 2 === 0
-            ? this.chartService.colors.odd
-            : this.chartService.colors.even
+          labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even,
         );
       });
 
@@ -849,8 +782,7 @@ export class GraphsComponent {
   handleUnAuthorization(error) {
     this.hasError = true;
     if (error.status == 401) {
-      this.errorText =
-        'You do not have permission to clinic ' + this.clinicName;
+      this.errorText = 'You do not have permission to clinic ' + this.clinicName;
     } else {
       this.errorText = 'Something went wrong';
     }
