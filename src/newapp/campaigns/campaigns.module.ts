@@ -11,9 +11,19 @@ import { StartCampaignDialog } from './start-campaign-dialog/start-campaign-dial
 import { CommonDataService } from '../shared/services/common-data.service';
 import { ViewCampaignComponent } from './view-campaign/view-campaign.component';
 import { CsvColumnSelectDialog } from './create-campaign/csv-column-select-dialog/csv-column-select-dialog.component';
+import { StoreModule } from '@ngrx/store';
+import { campaignFeature } from './state/reducers/campaign.reducer';
+import { CampaignFacade } from './facades/campaign.facade';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, AppLayoutModule, CampaignsRoutingModule, DragDropModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    AppLayoutModule,
+    CampaignsRoutingModule,
+    DragDropModule,
+    StoreModule.forFeature(campaignFeature),
+  ],
   declarations: [
     CampaignsComponent,
     CreateCampaignComponent,
@@ -21,6 +31,6 @@ import { CsvColumnSelectDialog } from './create-campaign/csv-column-select-dialo
     ViewCampaignComponent,
     CsvColumnSelectDialog,
   ],
-  providers: [CampaignService, CommonDataService],
+  providers: [CampaignService, CommonDataService, CampaignFacade],
 })
 export class CampaignsModule {}

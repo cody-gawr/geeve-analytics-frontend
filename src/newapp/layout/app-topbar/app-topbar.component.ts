@@ -31,6 +31,8 @@ import _ from 'lodash';
 import { MatSelectChange } from '@angular/material/select';
 import { Clinic } from '@/newapp/models/clinic';
 import { Router } from '@angular/router';
+import { CampaignFacade } from '@/newapp/campaigns/facades/campaign.facade';
+import { ICampaign } from '@/newapp/campaigns/services/campaign.service';
 
 @Component({
   selector: 'app-topbar',
@@ -113,6 +115,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return this.clinicFacade.isMultiSelection$;
   }
 
+  // Following variables should be public.
   selectedClinic: Clinic | null = null;
   selectedClinicId: 'all' | number | null = null;
   selectedMultiClinics: Array<'all' | number> = [];
@@ -135,13 +138,18 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return this.layoutFacade.hideClinicSelectionDropdown$;
   }
 
+  get campaignName$(): Observable<string> {
+    return this.campaignFacade.campaign$.pipe(map(campaign => campaign.description));
+  }
+
   paths$ = this.layoutFacade.paths$;
 
   constructor(
-    private layoutFacade: LayoutFacade,
-    private clinicFacade: ClinicFacade,
+    private readonly layoutFacade: LayoutFacade,
+    private readonly clinicFacade: ClinicFacade,
     private authFacade: AuthFacade,
     private dentistFacade: DentistFacade,
+    private readonly campaignFacade: CampaignFacade,
     private toastr: ToastrService,
     private cookieService: CookieService,
     private router: Router,
@@ -303,6 +311,8 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     this.dentistFacade.currentDentistId$.pipe(takeUntil(this.destroy$)).subscribe(dentistId => {
       this.selectedDentist = dentistId;
     });
+
+    this.paths$.subscribe(path => console.log(path));
   }
 
   ngOnChanges(changes: SimpleChanges): void {

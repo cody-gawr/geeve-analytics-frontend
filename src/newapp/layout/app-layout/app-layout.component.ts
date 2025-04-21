@@ -23,7 +23,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private router: Router,
     private layoutFacade: LayoutFacade,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.router.events
       .pipe(
         takeUntil(this.destroy$),
@@ -38,32 +40,31 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
           this.activatedUrl.includes('unsubscribed') ||
           this.activatedUrl.includes('practice-insights')
         ) {
-          layoutFacade.setHideDatePicker(true);
+          this.layoutFacade.setHideDatePicker(true);
         } else {
-          layoutFacade.setHideDatePicker(false);
+          this.layoutFacade.setHideDatePicker(false);
         }
+
         if (
           this.activatedUrl.includes('campaigns/create') ||
           this.activatedUrl.includes('campaigns/view')
         ) {
-          layoutFacade.savePaths([
+          this.layoutFacade.savePaths([
             { name: 'Campaigns', path: '/newapp/campaigns' },
-            { name: '[ClinicName]' },
+            { name: '[Campaign]' },
           ]);
 
           if (
             url.includes('campaigns/create?campaign_id=') ||
             this.activatedUrl.includes('campaigns/view')
           )
-            layoutFacade.setHideClinicSelectionDropDown(true);
+            this.layoutFacade.setHideClinicSelectionDropDown(true);
         } else {
-          layoutFacade.savePaths([]);
-          layoutFacade.setHideClinicSelectionDropDown(false);
+          this.layoutFacade.savePaths([]);
+          this.layoutFacade.setHideClinicSelectionDropDown(false);
         }
       });
-  }
 
-  ngOnInit(): void {
     this.breakpointObserver
       .observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium])
       .pipe(takeUntil(this.destroy$))

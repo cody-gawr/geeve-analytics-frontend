@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
-import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import moment, { Moment } from 'moment';
 import { ClinicService } from '../clinic/services/clinic.service';
@@ -13,6 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { NotificationService } from '../shared/services/notification.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
+import { CampaignFacade } from './facades/campaign.facade';
 
 @Component({
   selector: 'app-campaigns',
@@ -33,7 +34,10 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     'actions',
   ];
   dataSource = new MatTableDataSource<ICampaign>([]);
-  clinicId: number = 0;
+  private _campaignsSubject = new BehaviorSubject<ICampaign[]>([]);
+  public readonly campaigns$ = this._campaignsSubject.asObservable();
+
+  private clinicId: number = 0;
 
   range = new FormGroup({
     start: new FormControl<Moment | null>(moment().startOf('month')),
@@ -44,16 +48,19 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    private clinicFacade: ClinicFacade,
-    private clinicService: ClinicService,
+    private readonly clinicFacade: ClinicFacade,
+    private readonly clinicService: ClinicService,
+    private readonly campaignFacade: CampaignFacade,
+    private readonly campaignService: CampaignService,
     public dialog: MatDialog,
     private route: Router,
-    private campaignService: CampaignService,
-    public nofifyService: NotificationService,
+    private readonly nofifyService: NotificationService,
   ) {
     this.range = this.campaignService.range;
+  }
 
-    clinicFacade.currentSingleClinicId$
+  ngOnInit(): void {
+    this.clinicFacade.currentSingleClinicId$
       .pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe(clinicId => {
         if (typeof clinicId === 'number') {
@@ -64,9 +71,11 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
     this.range.controls.end.valueChanges
       .pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe(value => {
+      .subscribe(_ => {
         this.loadCampaigns();
       });
+
+    this.campaigns$.subscribe(campaigns => (this.dataSource.data = campaigns));
   }
 
   choseColor(element: ICampaign) {
@@ -107,7 +116,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
           this.range.controls.end.value?.format('YYYY-MM-DD'),
         )
         .subscribe(result => {
-          this.dataSource.data = result.data;
+          this._campaignsSubject.next(result.data);
         });
     }
   }
@@ -121,12 +130,14 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  goViewPage(row: ICampaign) {
-    this.route.navigateByUrl('/newapp/campaigns/view?campaign_id=' + row.id);
+  goViewPage(campaign: ICampaign) {
+    this.campaignFacade.setCampaign(campaign);
+    this.route.navigateByUrl('/newapp/campaigns/view?campaign_id=' + campaign.id);
   }
 
-  goEditPage(row: ICampaign) {
-    this.route.navigateByUrl('/newapp/campaigns/create?campaign_id=' + row.id);
+  goEditPage(campaign: ICampaign) {
+    this.campaignFacade.setCampaign(campaign);
+    this.route.navigateByUrl('/newapp/campaigns/create?campaign_id=' + campaign.id);
   }
 
   Campaigns: any[] = [];

@@ -3,7 +3,7 @@
     <button mat-icon-button color="primary" (click)="toggleSideBar()">
       <mat-icon>menu</mat-icon>
     </button>
-    <img class="logo" src="assets/layout/images/logo.png" />
+    <img class="logo" src="assets/layout/images/logo.png" alt="Company Logo" />
   </div>
   <div class="menu-wrapper gt-sm">
     <div class="hide-lt__sm">
@@ -14,7 +14,7 @@
         <ng-container *ngFor="let breadcrumb of paths$ | async; let last = last">
           <a mat-button [routerLink]="breadcrumb.path" *ngIf="!last">{{ breadcrumb.name }}</a>
           <span *ngIf="last">{{
-            breadcrumb.name == '[ClinicName]' ? selectedClinic?.clinicName || '' : breadcrumb.name
+            breadcrumb.name == '[Campaign]' ? (campaignName$ | async) || '' : breadcrumb.name
           }}</span>
           <mat-icon inline *ngIf="!last" class="breadcrumb-separator">chevron_right</mat-icon>
         </ng-container>

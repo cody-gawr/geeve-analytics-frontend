@@ -31,9 +31,7 @@
               "clone-deep",
               "chartjs-plugin-annotation"
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": ["node_modules/jquery/dist/jquery.min.js"]
           },
           "configurations": {
@@ -116,16 +114,9 @@
                   "maximumWarning": "256kb"
                 }
               ],
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                },
-                "fonts": true
-              },
+              "optimization": false,
+              "sourceMap": true,
               "outputHashing": "all",
-              "sourceMap": false,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -228,9 +219,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": ["node_modules/jquery/dist/jquery.min.js"],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "assets": ["src/assets", "src/favicon.ico"]
           }
         },
