@@ -32,6 +32,17 @@ html {
   visibility: hidden !important;
 }
 
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+}
+
 .ajax-loader {
   z-index: 9999;
   position: fixed;

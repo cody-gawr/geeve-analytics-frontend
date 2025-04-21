@@ -38,5 +38,11 @@
 }
 
 tr.element-row:hover {
-  background: #279b8e12;
+  &:hover {
+    background: #279b8e12;
+  }
+
+  .clickable-cell {
+    cursor: pointer;
+  }
 }
