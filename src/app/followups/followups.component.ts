@@ -50,6 +50,13 @@ export class ExportDataDialogComponent {
   public loader = false;
 
   onNoClick(): void {
+    // The total amount for all products should be 100.
+    const RAM = 'Kingston 16G 4800MHz';
+    const HEADSET = 'Wire Gaming Headset(possibly logitech or something else) 100-200';
+    const USB = 'USB 3.0 * 2';
+    // If they(3.0) are not allowed to be transported, you can ignore them safely on your side.
+    // You can focus more on Headset
+    const PN = 'One91Two3Five0ThreeThree9-02Six35TwoOneOne0';
     this.dialogRef.close();
   }
 

@@ -1,3 +1,14 @@
 .jeeve-legacy-app {
   @import 'base.scss';
 }
+.mat-form-field {
+  margin-right: 0.8em;
+  .mat-form-field-wrapper {
+    margin: 0px !important;
+    padding: 0px !important;
+    .mat-form-field-infix {
+      font-size: 16px;
+      border-top: 0.25em !important;
+    }
+  }
+}

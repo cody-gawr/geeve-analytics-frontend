@@ -1,4 +1,10 @@
-<input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'" />
+<input
+  type="button"
+  id="clinic_initiate"
+  value="Initiate Clinic"
+  (click)="initiate_clinic()"
+  [style.display]="'none'"
+/>
 <div class="sa_dashboard_inner_content morning-huddle side">
   <div class="morning-huddle-date topModel followuppage">
     <mat-icon
@@ -22,7 +28,7 @@
     <!-- Patient Schedule Tab start -->
     <mat-tab label="Overdue Recalls">
       <div class="follow-up">
-        <mat-card-title>
+        <mat-card-title fxLayout="row" fxLayoutAlign="space-between">
           <div class="title-follow-up d-inline-block">
             Overdue Recalls
             <div class="info-icon-container">
@@ -34,22 +40,29 @@
               />
             </div>
           </div>
-          <div
-            class="showExport"
-            *ngIf="
-              (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
-              followupOverDueRecall.length > 0
-            "
-          >
-            <i class="fas fa-file-export" (click)="exportreport('overdue_recalls')"> Export</i>
-          </div>
-          <div class="showComplete" *ngIf="followupOverDueRecall.length > 0">
-            <mat-checkbox
-              name="status"
-              [checked]="showCompleteOverdue"
-              (change)="updateToCompleteOR($event)"
-              >Show Complete</mat-checkbox
+          <div fxLayout="row" fxLayoutAlign="center center">
+            <mat-form-field appearance="outline" class="search-box">
+              <mat-label>Search</mat-label>
+              <input matInput placeholder="Search by patient name" />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+            <div class="showComplete" *ngIf="followupOverDueRecall.length > 0">
+              <mat-checkbox
+                name="status"
+                [checked]="showCompleteOverdue"
+                (change)="updateToCompleteOR($event)"
+                >Show Complete</mat-checkbox
+              >
+            </div>
+            <div
+              class="showExport"
+              *ngIf="
+                (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
+                followupOverDueRecall.length > 0
+              "
             >
+              <i class="fas fa-file-export" (click)="exportreport('overdue_recalls')"> Export</i>
+            </div>
           </div>
 
           <div class="chipSets" *ngIf="overdueRecallsScrps.length > 0">
@@ -71,7 +84,11 @@
         </mat-card-title>
 
         <div class="card-loading" *ngIf="recallLoadingLoading">
-          <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+          <img
+            class="tableLoader"
+            src="../../assets/images/logo-icon.gif"
+            alt="Loading animation"
+          />
         </div>
         <div class="follow-ups-table table-responsive">
           <table
@@ -425,7 +442,11 @@
         </mat-card-title>
 
         <div class="card-loading" *ngIf="endTaksLoadingLoading">
-          <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+          <img
+            class="tableLoader"
+            src="../../assets/images/logo-icon.gif"
+            alt="Loading animation"
+          />
         </div>
         <div class="follow-ups-table table-responsive">
           <table

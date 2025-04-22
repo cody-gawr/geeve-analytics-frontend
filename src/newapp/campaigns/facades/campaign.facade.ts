@@ -5,7 +5,7 @@ import { CampaignState, selectCampaign } from '../state/reducers/campaign.reduce
 import { ICampaign } from '../services/campaign.service';
 import { campaignsPageActions } from '../state/actions';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CampaignFacade {
   constructor(private store: Store<CampaignState>) {}
 
