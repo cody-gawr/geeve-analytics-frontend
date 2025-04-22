@@ -1,7 +1,6 @@
 <div class="dialog-header">
   <div class="header-title">
     <h1 mat-dialog-title>Start Campaign</h1>
-    <span>({{ remainCredits }} remaining)</span>
   </div>
 
   <mat-icon class="close-icon" (click)="onNoClick()">close</mat-icon>
@@ -67,7 +66,8 @@
   <div></div>
 
   <p class="patient-info">Total Patients: {{ data.patients.length }}</p>
-  <p class="patient-info">Total Credits: {{ numTotalMessage }}</p>
+  <p class="patient-info">Required Credits: {{ numTotalMessage }}</p>
+  <p class="patient-info">Availalbe Credits: {{ remainCredits }}</p>
   <p *ngIf="this.remainCredits < this.numTotalMessage" style="color: orange">
     You have insufficient credits to run this campaign.
     <a (click)="openTopUp()" style="color: #0378d5; cursor: pointer">Add more credits</a>
