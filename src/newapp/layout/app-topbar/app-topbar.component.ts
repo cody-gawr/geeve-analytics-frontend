@@ -138,8 +138,10 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return this.layoutFacade.hideClinicSelectionDropdown$;
   }
 
-  get campaignName$(): Observable<string> {
-    return this.campaignFacade.campaign$.pipe(map(campaign => campaign.description));
+  get campaignName$(): Observable<string | null> {
+    return this.campaignFacade.campaign$.pipe(
+      map(campaign => (campaign ? campaign.description : null)),
+    );
   }
 
   paths$ = this.layoutFacade.paths$;

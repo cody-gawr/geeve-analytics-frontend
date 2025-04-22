@@ -17,6 +17,7 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
         auth: ['authUserData'],
       },
       { layout: ['dateRange', 'trend', 'average', 'compare'] },
+      { campaign: ['campaign'] },
     ],
     rehydrate: true,
   })(reducer);
