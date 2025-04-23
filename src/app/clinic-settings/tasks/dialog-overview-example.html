@@ -15,7 +15,7 @@
       *ngIf="!data.id"
       (click)="save(data)"
       [disabled]="data.task_name == '' "
-      tabindex="2"
+      tabindex="0"
       class="mat-raised-button mat-dc float-right"
     >
       Save
@@ -23,7 +23,7 @@
     <button
       *ngIf="data.id"
       (click)="save(data)"
-      tabindex="2"
+      tabindex="0"
       class="mat-raised-button mat-dc float-right"
     >
       Update

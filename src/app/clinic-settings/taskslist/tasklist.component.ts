@@ -35,13 +35,7 @@ export class DialogOverviewTasklistDialogComponent {
   addTaskInput: boolean = false;
   taskAddErr: boolean = false;
   @ViewChild('task') task: ElementRef;
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewTasklistDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private _cookieService: CookieService,
-    private taskService: TaskService,
-    private router: Router,
-  ) {}
+
   public assigneeData: { [key: string]: Object }[] = [
     { id: '3', name: 'Practice Manager' },
     { id: '4', name: 'Clinician' },
@@ -54,6 +48,28 @@ export class DialogOverviewTasklistDialogComponent {
     nextLabel: '',
   };
   public showAddItem = false;
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewTasklistDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _cookieService: CookieService,
+    private taskService: TaskService,
+    private router: Router,
+  ) {}
+
+  ngOnInit() {
+    console.log(this.data.tasksListItems);
+    // this.data.assigned_roles = this.data.assigned_roles || [];
+    // if (this.data.assigned_roles.length == 0) {
+    //   this.data.assigned_roles.push('0');
+    // }
+    // this.data.tasksListItems.forEach(e => {
+    //   e.readOnly = true;
+    //   e.clinic_id = this.data.clinic_id;
+    // });
+    // this.data.tasksListItems.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }

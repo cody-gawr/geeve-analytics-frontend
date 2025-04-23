@@ -29,7 +29,7 @@
   </div>
   <div class="DentistListSecRow mh-table patient_data-table_responsive">
     <div class="card-loading d-none">
-      <img class="tableLoader" src="../../assets/images/loader.gif" />
+      <img class="tableLoader" src="../../assets/images/loader.gif" alt="Loading..." />
     </div>
     <div class="respopnsive-table-set">
       <table mat-table [dataSource]="tasksList" class="mat-elevation-z8" matSort>
@@ -105,7 +105,7 @@
         class="loader"
         [ngClass]="tasksList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'"
       >
-        <img class="tableLoader" src="../../../assets/images/loader.gif" />
+        <img class="tableLoader" src="../../../assets/images/loader.gif" alt="Loading data" />
       </div>
     </div>
   </div>
