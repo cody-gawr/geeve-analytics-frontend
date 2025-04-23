@@ -48,6 +48,7 @@ export class DialogOverviewTasklistDialogComponent {
     nextLabel: '',
   };
   public showAddItem = false;
+  public sortDirection = 'asc';
 
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewTasklistDialogComponent>,
@@ -57,17 +58,15 @@ export class DialogOverviewTasklistDialogComponent {
     private router: Router,
   ) {}
 
-  ngOnInit() {
-    console.log(this.data.tasksListItems);
-    // this.data.assigned_roles = this.data.assigned_roles || [];
-    // if (this.data.assigned_roles.length == 0) {
-    //   this.data.assigned_roles.push('0');
-    // }
-    // this.data.tasksListItems.forEach(e => {
-    //   e.readOnly = true;
-    //   e.clinic_id = this.data.clinic_id;
-    // });
-    // this.data.tasksListItems.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+  ngOnInit() {}
+
+  public sort(sortDirection: 'asc' | 'desc') {
+    this.sortDirection = sortDirection == 'asc' ? 'desc' : 'asc';
+    this.data.tasksListItems.sort((a, b) => {
+      return sortDirection == 'asc'
+        ? a.task_name.localeCompare(b.task_name)
+        : b.task_name.localeCompare(a.task_name);
+    });
   }
 
   onNoClick(): void {

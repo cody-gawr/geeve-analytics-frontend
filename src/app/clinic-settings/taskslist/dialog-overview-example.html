@@ -44,8 +44,17 @@
     <div>
       <table class="editTaskList">
         <tr>
-          <th (click)="sortTasks('task_name')" style="cursor: pointer">
-            Item <i class="ti-arrow-up-down"></i>
+          <th fxLayout="row" fxLayoutAlign="start center">
+            <span>Item</span>
+            <mat-icon
+              *ngIf="sortDirection == 'asc'; else sortDesc"
+              style="cursor: pointer"
+              (click)="sort('asc')"
+              >arrow_downward</mat-icon
+            >
+            <ng-template #sortDesc>
+              <mat-icon style="cursor: pointer" (click)="sort('desc')">arrow_upward</mat-icon>
+            </ng-template>
           </th>
           <th>Action</th>
         </tr>
