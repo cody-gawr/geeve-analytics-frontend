@@ -1,3 +1,4 @@
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import {
   Component,
   HostListener,
@@ -30,6 +31,7 @@ import { environment } from '../../environments/environment';
 import * as moment from 'moment';
 import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 import { LocalStorageService } from '../shared/local-storage.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'export-data-dialog',
@@ -50,13 +52,6 @@ export class ExportDataDialogComponent {
   public loader = false;
 
   onNoClick(): void {
-    // The total amount for all products should be 100.
-    const RAM = 'Kingston 16G 4800MHz';
-    const HEADSET = 'Wire Gaming Headset(possibly logitech or something else) 100-200';
-    const USB = 'USB 3.0 * 2';
-    // If they(3.0) are not allowed to be transported, you can ignore them safely on your side.
-    // You can focus more on Headset
-    const PN = 'One91Two3Five0ThreeThree9-02Six35TwoOneOne0';
     this.dialogRef.close();
   }
 
@@ -210,6 +205,7 @@ export class StatusDialogComponent {
   public nextFollowupHave: boolean = false;
   @ViewChild(DaterangepickerComponent, { static: false })
   datePicker: DaterangepickerComponent;
+
   constructor(
     public dialogRef: MatDialogRef<StatusDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -333,7 +329,13 @@ export class StatusDialogComponent {
   encapsulation: ViewEncapsulation.None,
 })
 export class FollowupsComponent implements OnInit, OnDestroy {
-  selectedTab = 0;
+  public selectedTab = 0;
+  public overdueRecallsSearchControl = new FormControl('');
+  public tickSearchControl = new FormControl('');
+  public postOpCallsSearchControl = new FormControl('');
+  public ftaSearchControl = new FormControl('');
+  public utaSearchControl = new FormControl('');
+
   public id: any = '';
   public apiUrl = environment.apiUrl;
   public clinic_id: any = '';
@@ -350,27 +352,27 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public dentistList = new MatTableDataSource([]);
   dentistListTemp: any = [];
 
-  public followupPostOpCalls: any = [];
-  public followupPostOpCallsInComp: any = [];
-  public followupOverDueRecall: any = [];
-  public internalReferrals: any = [];
-  public followupOverDueRecallInCMP: any = [];
-  public internalReferralRecallInCMP: any = [];
+  public followupPostOpCalls: any[] = [];
+  public followupPostOpCallsInComp: any[] = [];
+  public followupOverDueRecall: any[] = [];
+  public internalReferrals: any[] = [];
+  public followupOverDueRecallInCMP: any[] = [];
+  public internalReferralRecallInCMP: any[] = [];
   public followupsOverDueRecallDate: any = '';
   public followupsTickFollowupsDate: any = '';
   public TickFollowupsDays: any = '';
   public OverDueRecallDays: any = '';
-  public followupTickFollowups: any = [];
-  public followupTickFollowupsInCMP: any = [];
+  public followupTickFollowups: any[] = [];
+  public followupTickFollowupsInCMP: any[] = [];
   public ftaFollowupsInComp: any = [];
 
-  public endOfDaysTasks: any = [];
-  public endOfDaysTasksInComp: any = [];
-  public endOfDaysTasksComp: any = [];
+  public endOfDaysTasks: any[] = [];
+  public endOfDaysTasksInComp: any[] = [];
+  public endOfDaysTasksComp: any[] = [];
   public endOfDaysTasksDate: any = '';
   public endTaksLoading: boolean = true;
   public showComplete: boolean = false;
-  public clinicDentists: any = [];
+  public clinicDentists: any[] = [];
   public currentDentist: any = 0;
   public currentDentistSchedule: any = 0;
 
@@ -509,6 +511,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.matTabGroup.realignInkBar();
     }, 500);
+
     this.selectedMonthYear = this.datepipe
       .transform(new Date(), 'yyyy-MM-dd 00:00:00')
       .replace(/\s/, 'T');
@@ -517,6 +520,102 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.autoCall = setInterval(function () {
       self.refreshDataAuto();
     }, 1000 * 60);
+
+    this.overdueRecallsSearchControl.valueChanges
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
+      )
+      .subscribe(keyword => {
+        this.followupOverDueRecallInCMP = this.filterFollowups(
+          this.followupOverDueRecall,
+          keyword,
+          this.showCompleteOverdue,
+        );
+
+        this.setPaginationButtons(this.followupOverDueRecallInCMP, 'OR');
+        this.followupOverDueRecallInCMP = this.setPaginationData(
+          this.followupOverDueRecallInCMP,
+          'OR',
+        );
+      });
+
+    this.tickSearchControl.valueChanges
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
+      )
+      .subscribe(keyword => {
+        console.log(keyword);
+        this.followupTickFollowupsInCMP = this.filterFollowups(
+          this.followupTickFollowups,
+          keyword,
+          this.showCompleteTick,
+        );
+
+        this.setPaginationButtons(this.followupTickFollowupsInCMP, 'TH');
+        this.followupTickFollowupsInCMP = this.setPaginationData(
+          this.followupTickFollowupsInCMP,
+          'TH',
+        );
+      });
+
+    this.postOpCallsSearchControl.valueChanges
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
+      )
+      .subscribe(keyword => {
+        this.followupPostOpCallsInComp = this.filterFollowups(
+          this.followupPostOpCalls,
+          keyword,
+          this.postopCallsPostOp,
+        );
+
+        this.setPaginationButtons(this.followupPostOpCallsInComp, 'OP');
+        this.followupPostOpCallsInComp = this.setPaginationData(
+          this.followupPostOpCallsInComp,
+          'OP',
+        );
+      });
+
+    this.ftaSearchControl.valueChanges
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
+      )
+      .subscribe(keyword => {
+        this.followupFtaFollowupsInCMP = this.filterFollowups(
+          this.followupFtaFollowups,
+          keyword,
+          this.showCompleteFta,
+        );
+
+        this.setPaginationButtons(this.followupFtaFollowupsInCMP, 'FT');
+        this.followupFtaFollowupsInCMP = this.setPaginationData(
+          this.followupFtaFollowupsInCMP,
+          'FT',
+        );
+      });
+
+    this.utaSearchControl.valueChanges
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
+      )
+      .subscribe(keyword => {
+        this.followupUtaFollowupsInCMP = this.filterFollowups(
+          this.followupUtaFollowups,
+          keyword,
+          this.showCompleteFta,
+        );
+
+        this.setPaginationButtons(this.followupUtaFollowupsInCMP, 'UT');
+        this.followupUtaFollowupsInCMP = this.setPaginationData(
+          this.followupUtaFollowupsInCMP,
+          'UT',
+        );
+      });
   }
   ngAfterViewInit(): void {
     this.dentistList.paginator = this.paginator;
@@ -1032,25 +1131,43 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
   updateToCompleteOP(event) {
     this.postopCallsPostOp = event.checked;
-    if (event.checked == true) {
-      this.followupPostOpCallsInComp = this.followupPostOpCalls;
-    } else {
-      this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);
-    }
+    this.followupPostOpCallsInComp = this.filterFollowups(
+      this.followupPostOpCalls,
+      this.postOpCallsSearchControl.value,
+      this.postopCallsPostOp,
+    );
+
     this.currentOpPage = 1;
     this.setPaginationButtons(this.followupPostOpCallsInComp, 'OP');
     this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp, 'OP');
   }
 
+  private filterFollowups(followups: any[], keyword: string, isComplete: boolean): any[] {
+    let filteredFollowups: any[] = followups;
+    if (!isComplete) {
+      filteredFollowups = followups.filter(p => !p.is_complete);
+    }
+
+    if (keyword != '') {
+      filteredFollowups = filteredFollowups.filter((tickFollowup: any) => {
+        return (
+          tickFollowup.patients.firstname.toLowerCase().includes(keyword.toLowerCase()) ||
+          tickFollowup.patients.surname.toLowerCase().includes(keyword.toLowerCase())
+        );
+      });
+    }
+
+    return filteredFollowups;
+  }
+
   updateToCompleteOR(event) {
     this.showCompleteOverdue = event.checked;
-    if (event.checked == true) {
-      this.followupOverDueRecallInCMP = this.followupOverDueRecall;
-    } else {
-      this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
-        p => p.is_complete != true,
-      );
-    }
+    this.followupOverDueRecallInCMP = this.filterFollowups(
+      this.followupOverDueRecall,
+      this.overdueRecallsSearchControl.value,
+      this.showCompleteOverdue,
+    );
+
     this.currentORPage = 1;
     this.setPaginationButtons(this.followupOverDueRecallInCMP, 'OR');
     this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP, 'OR');
@@ -1058,13 +1175,11 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
   updateToCompleteTF(event) {
     this.showCompleteTick = event.checked;
-    if (event.checked == true) {
-      this.followupTickFollowupsInCMP = this.followupTickFollowups;
-    } else {
-      this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
-        p => p.is_complete != true,
-      );
-    }
+    this.followupTickFollowupsInCMP = this.filterFollowups(
+      this.followupTickFollowups,
+      this.tickSearchControl.value,
+      this.showCompleteTick,
+    );
     this.currentThickPage = 1;
     this.setPaginationButtons(this.followupTickFollowupsInCMP, 'TH');
     this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP, 'TH');
@@ -1072,11 +1187,12 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
   updateToCompleteFT(event) {
     this.showCompleteFta = event.checked;
-    if (event.checked == true) {
-      this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
-    } else {
-      this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);
-    }
+    this.filterFollowups(
+      this.followupFtaFollowups,
+      this.ftaSearchControl.value,
+      this.showCompleteFta,
+    );
+
     this.currentFTPage = 1;
     this.setPaginationButtons(this.followupFtaFollowupsInCMP, 'FT');
     this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP, 'FT');
@@ -1084,11 +1200,12 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
   updateToCompleteUT(event) {
     this.showCompleteUta = event.checked;
-    if (event.checked == true) {
-      this.followupUtaFollowupsInCMP = this.followupUtaFollowups;
-    } else {
-      this.followupUtaFollowupsInCMP = this.followupUtaFollowups.filter(p => p.is_complete != true);
-    }
+
+    this.followupUtaFollowupsInCMP = this.filterFollowups(
+      this.followupUtaFollowups,
+      this.utaSearchControl.value,
+      this.showCompleteUta,
+    );
     this.currentUTPage = 1;
     this.setPaginationButtons(this.followupUtaFollowupsInCMP, 'UT');
     this.followupUtaFollowupsInCMP = this.setPaginationData(this.followupUtaFollowupsInCMP, 'UT');
