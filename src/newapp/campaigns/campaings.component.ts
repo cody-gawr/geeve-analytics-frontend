@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
-import { BehaviorSubject, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, Subject, take, takeUntil } from 'rxjs';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import moment, { Moment } from 'moment';
 import { ClinicService } from '../clinic/services/clinic.service';
@@ -21,8 +21,8 @@ import { CampaignFacade } from './facades/campaign.facade';
   styleUrls: ['./campaigns.component.scss'],
 })
 export class CampaignsComponent implements OnDestroy, AfterViewInit {
-  destroy = new Subject<void>();
-  destroy$ = this.destroy.asObservable();
+  private destroy = new Subject<void>();
+  private readonly destroy$ = this.destroy.asObservable();
   displayedColumns: string[] = [
     'description',
     'created',
@@ -34,8 +34,8 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     'actions',
   ];
   dataSource = new MatTableDataSource<ICampaign>([]);
-  private _campaignsSubject = new BehaviorSubject<ICampaign[]>([]);
-  public readonly campaigns$ = this._campaignsSubject.asObservable();
+  private campaignsSubject = new BehaviorSubject<ICampaign[]>([]);
+  public readonly campaigns$ = this.campaignsSubject.asObservable();
 
   private clinicId: number = 0;
 
@@ -75,7 +75,9 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         this.loadCampaigns();
       });
 
-    this.campaigns$.subscribe(campaigns => (this.dataSource.data = campaigns));
+    this.campaigns$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(campaigns => (this.dataSource.data = campaigns));
   }
 
   choseColor(element: ICampaign) {
@@ -115,14 +117,16 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
           this.range.controls.start.value?.format('YYYY-MM-DD'),
           this.range.controls.end.value?.format('YYYY-MM-DD'),
         )
+        .pipe(takeUntil(this.destroy$))
         .subscribe(result => {
-          this._campaignsSubject.next(result.data);
+          this.campaignsSubject.next(result.data);
         });
     }
   }
 
   ngOnDestroy(): void {
     this.destroy.next();
+    this.destroy.complete();
   }
 
   ngAfterViewInit() {
@@ -159,13 +163,19 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         buttonColor: 'warn',
       },
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.campaignService.deleteCampaign(this.clinicId, row.id).subscribe(res => {
-          this.loadCampaigns();
-        });
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe(result => {
+        if (result) {
+          this.campaignService
+            .deleteCampaign(this.clinicId, row.id)
+            .pipe(take(1))
+            .subscribe(res => {
+              this.loadCampaigns();
+            });
+        }
+      });
   }
 
   openCreateCampaignDialog() {

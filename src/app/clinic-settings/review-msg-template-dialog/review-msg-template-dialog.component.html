@@ -18,9 +18,6 @@
 
   <div style="margin: 10px 0">
     <mat-chip-list>
-      <!-- <mat-chip *ngFor="let placeholder of placeholders" class="draggable-chip">{{
-        placeholder
-      }}</mat-chip> -->
       <mat-chip><span #keyClinicName draggable="true">Clinic Name</span></mat-chip>
       <mat-chip><span #keyPatientName draggable="true">Patient Name</span></mat-chip>
       <mat-chip *ngIf="type.value === 'review'"
@@ -37,8 +34,13 @@
         [formControl]="msgTemplate"
         rows="7"
         (drop)="onDragChip($event)"
+        [maxlength]="800"
         required
       ></textarea>
+      <mat-hint align="end"
+        >{{ msgTemplate.value.length }} / 800, {{ messageCount }}
+        {{ messageCount == 0 || messageCount > 1 ? 'messages' : 'message' }}</mat-hint
+      >
     </mat-form-field>
   </div>
   <br />

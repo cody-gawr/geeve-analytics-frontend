@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import {
   Component,
   HostListener,
@@ -32,6 +32,7 @@ import * as moment from 'moment';
 import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 import { LocalStorageService } from '../shared/local-storage.service';
 import { FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'export-data-dialog',
@@ -329,6 +330,8 @@ export class StatusDialogComponent {
   encapsulation: ViewEncapsulation.None,
 })
 export class FollowupsComponent implements OnInit, OnDestroy {
+  public destroy = new Subject<void>();
+  private destroy$ = this.destroy.asObservable();
   public selectedTab = 0;
   public overdueRecallsSearchControl = new FormControl('');
   public tickSearchControl = new FormControl('');
@@ -525,6 +528,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(200),
         distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
+        takeUntil(this.destroy$),
       )
       .subscribe(keyword => {
         this.followupOverDueRecallInCMP = this.filterFollowups(
@@ -544,6 +548,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(200),
         distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
+        takeUntil(this.destroy$),
       )
       .subscribe(keyword => {
         console.log(keyword);
@@ -564,6 +569,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(200),
         distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
+        takeUntil(this.destroy$),
       )
       .subscribe(keyword => {
         this.followupPostOpCallsInComp = this.filterFollowups(
@@ -583,6 +589,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(200),
         distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
+        takeUntil(this.destroy$),
       )
       .subscribe(keyword => {
         this.followupFtaFollowupsInCMP = this.filterFollowups(
@@ -602,6 +609,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(200),
         distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
+        takeUntil(this.destroy$),
       )
       .subscribe(keyword => {
         this.followupUtaFollowupsInCMP = this.filterFollowups(
@@ -626,6 +634,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     //$('.dentist_dropdown').parent().show(); // added
     $('.sa_heading_bar').removeClass('filter_single'); // added
     clearInterval(this.autoCall);
+    this.destroy.next();
+    this.destroy.complete();
   }
 
   initiate_clinic() {

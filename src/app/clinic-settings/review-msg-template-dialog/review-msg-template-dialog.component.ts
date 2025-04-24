@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
@@ -21,6 +21,8 @@ export interface DialogData {
   styleUrls: ['./review-msg-template-dialog.component.scss'],
 })
 export class ReviewMsgTemplateDialog {
+  private destroy = new Subject<void>();
+  private destroy$ = this.destroy.asObservable();
   private typeSubject = new BehaviorSubject<string>('review');
   public type$ = this.typeSubject.asObservable();
   public name = new UntypedFormControl('', [Validators.required]);
@@ -28,6 +30,7 @@ export class ReviewMsgTemplateDialog {
   public type = new UntypedFormControl('review', [Validators.required]);
   public isWaitingResponse: boolean = false;
   public placeholders: string[] = [];
+  public messageCount: number = 0;
 
   @ViewChild('textareaMsgTemplate') textareaMsgTemplate!: ElementRef<HTMLTextAreaElement>;
   @ViewChild('keyClinicName') clinicNameElem: ElementRef<HTMLElement>;
@@ -58,7 +61,10 @@ export class ReviewMsgTemplateDialog {
         this.placeholders = ['Clinic Name', 'Patient Name'];
       }
     });
-    this.type.valueChanges.subscribe(v => this.typeSubject.next(v));
+    this.type.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(v => this.typeSubject.next(v));
+    this.msgTemplate.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(v => {
+      this.messageCount = Math.ceil(v.length / 160);
+    });
   }
 
   ngAfterViewInit() {
@@ -68,6 +74,11 @@ export class ReviewMsgTemplateDialog {
       this.setupDrag(this.googleLinkElem);
     }
     // this.facebookLinklem.nativeElement.ondragstart = this.onDragChip;
+  }
+
+  ngOnDestroy() {
+    this.destroy.next();
+    this.destroy.complete();
   }
 
   private setupDrag(elem: ElementRef<HTMLElement>) {
@@ -110,6 +121,7 @@ export class ReviewMsgTemplateDialog {
             this.msgTemplate.value,
             this.type.value,
           )
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: v => {
               this.toastr.success('Updated a template successfully!');
@@ -131,6 +143,7 @@ export class ReviewMsgTemplateDialog {
             this.msgTemplate.value,
             this.type.value,
           )
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: v => {
               this.toastr.success('Added new template successfully!');
