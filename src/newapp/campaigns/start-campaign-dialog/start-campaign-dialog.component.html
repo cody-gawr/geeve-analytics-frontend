@@ -67,7 +67,7 @@
 
   <p class="patient-info">Total Patients: {{ data.patients.length }}</p>
   <p class="patient-info">Required Credits: {{ numTotalMessage }}</p>
-  <p class="patient-info">Availalbe Credits: {{ remainCredits }}</p>
+  <p class="patient-info">Available Credits: {{ remainCredits }}</p>
   <p *ngIf="this.remainCredits < this.numTotalMessage" style="color: orange">
     You have insufficient credits to run this campaign.
     <a (click)="openTopUp()" style="color: #0378d5; cursor: pointer">Add more credits</a>
