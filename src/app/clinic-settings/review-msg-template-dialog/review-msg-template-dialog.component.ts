@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { ReviewMsgTemplateObject } from '../clinic-settings.component';
 import { ClinicSettingsService } from '../clinic-settings.service';
-import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+// import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 export interface DialogData {
   element?: ReviewMsgTemplateObject;
@@ -28,9 +28,8 @@ export class ReviewMsgTemplateDialog {
   public type = new UntypedFormControl('review', [Validators.required]);
   public isWaitingResponse: boolean = false;
   public placeholders: string[] = [];
-  public message: string = '';
 
-  @ViewChild('textareaMsgTemplate') textareaMsgTemplate!: ElementRef<HTMLElement>;
+  @ViewChild('textareaMsgTemplate') textareaMsgTemplate!: ElementRef<HTMLTextAreaElement>;
   @ViewChild('keyClinicName') clinicNameElem: ElementRef<HTMLElement>;
   @ViewChild('keyPatientName') patientNameElem: ElementRef<HTMLElement>;
   // @ViewChild('keyFacebookLink') facebookLinklem: ElementRef<HTMLElement>
@@ -49,6 +48,9 @@ export class ReviewMsgTemplateDialog {
         Validators.required,
       ]);
     }
+  }
+
+  ngOnInit() {
     this.type$.subscribe(v => {
       if (v === 'review') {
         this.placeholders = ['Clinic Name', 'Patient Name', 'Google Link'];
@@ -59,41 +61,36 @@ export class ReviewMsgTemplateDialog {
     this.type.valueChanges.subscribe(v => this.typeSubject.next(v));
   }
 
-  ngOnInit() {}
-
-  onDragChip(event: any) {
-    // var dataToCopy = event.target.innerText;
-    // event.dataTransfer.setData('Text', `[${dataToCopy}]`);
-    // return true;
+  ngAfterViewInit() {
+    this.setupDrag(this.clinicNameElem);
+    this.setupDrag(this.patientNameElem);
+    if (this.googleLinkElem) {
+      this.setupDrag(this.googleLinkElem);
+    }
+    // this.facebookLinklem.nativeElement.ondragstart = this.onDragChip;
   }
 
-  ngAfterViewInit() {
-    // this.clinicNameElem.nativeElement.ondragstart = this.onDragChip;
-    // this.patientNameElem.nativeElement.ondragstart = this.onDragChip;
-    // // this.facebookLinklem.nativeElement.ondragstart = this.onDragChip;
-    // this.googleLinkElem.nativeElement.ondragstart = this.onDragChip;
+  private setupDrag(elem: ElementRef<HTMLElement>) {
+    elem.nativeElement.ondragstart = e => this.onDragChip(e);
+  }
+
+  onDragChip(event: DragEvent) {
+    const textareaEl = this.textareaMsgTemplate.nativeElement;
+    const placeholder = (<HTMLSpanElement>event.target).innerText;
+    const start = textareaEl.selectionStart || 0;
+    const end = textareaEl.selectionEnd || 0;
+    const message = this.msgTemplate.value;
+    this.msgTemplate.setValue(message.slice(0, start) + `[${placeholder}]` + message.slice(end));
+
+    setTimeout(() => {
+      textareaEl.focus();
+      const cursorPosition = start + placeholder.length + 2; // 4 for '{{' and '}}'
+      textareaEl.selectionStart = textareaEl.selectionEnd = cursorPosition;
+    }, 0);
   }
 
   onNoClick(): void {
     this.dialogRef.close({ status: false });
-  }
-
-  onPlaceholderDrop(event: CdkDragDrop<string[]>) {
-    console.log({ event });
-    // const placeholder = event.item.data;
-    // const textareaEl = <HTMLTextAreaElement>this.textareaMsgTemplate.nativeElement;
-    // const start = textareaEl.selectionStart || 0;
-    // const end = textareaEl.selectionEnd || 0;
-    // console.log({ start, end, placeholder });
-    // // Insert placeholder at current cursor position
-    // this.message = this.message.slice(0, start) + `{{${placeholder}}}` + this.message.slice(end);
-    // console.log({ message: this.message });
-    // // Restore cursor position after update
-    // setTimeout(() => {
-    //   textareaEl.focus();
-    //   const cursorPosition = start + placeholder.length + 4; // 4 for '{{' and '}}'
-    //   textareaEl.selectionStart = textareaEl.selectionEnd = cursorPosition;
-    // }, 0);
   }
 
   get isValid() {

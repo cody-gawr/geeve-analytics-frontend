@@ -4,8 +4,8 @@
     <div class="sa-form-group-wrapper">
       <div class="sa-form-group">
         <select [formControl]="type" class="sa_select mat-form-control">
-          <option value="review">Review1</option>
-          <option value="campaign">Campaign1</option>
+          <option value="review">Review</option>
+          <option value="campaign">Campaign</option>
         </select>
       </div>
     </div>
@@ -18,30 +18,25 @@
 
   <div style="margin: 10px 0">
     <mat-chip-list>
-      <mat-chip *ngFor="let placeholder of placeholders" class="draggable-chip">{{
+      <!-- <mat-chip *ngFor="let placeholder of placeholders" class="draggable-chip">{{
         placeholder
-      }}</mat-chip>
-      <!-- <mat-chip><span #keyClinicName draggable="true">Clinic Name</span></mat-chip>
+      }}</mat-chip> -->
+      <mat-chip><span #keyClinicName draggable="true">Clinic Name</span></mat-chip>
       <mat-chip><span #keyPatientName draggable="true">Patient Name</span></mat-chip>
       <mat-chip *ngIf="type.value === 'review'"
         ><span #keyGoogleLink draggable="true">Google Link</span></mat-chip
-      cdkDrag
-        cdkDropList
-      (cdkDropListDropped)="onPlaceholderDrop($event)"
-      > -->
+      >
     </mat-chip-list>
   </div>
   <div class="sa-form-group-wrapper">
-    <mat-form-field floatLabel="never" class="drop-zone">
+    <mat-form-field floatLabel="never">
       <mat-label>SMS Template</mat-label>
       <textarea
+        #textareaMsgTemplate
         matInput
         [formControl]="msgTemplate"
-        #textAreaMsgTemplate
-        [(ngModel)]="message"
-        cdkDropList
-        (cdkDropListDropped)="onPlaceholderDrop($event)"
         rows="7"
+        (drop)="onDragChip($event)"
         required
       ></textarea>
     </mat-form-field>
