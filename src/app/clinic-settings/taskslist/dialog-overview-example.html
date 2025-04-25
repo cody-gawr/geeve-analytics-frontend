@@ -49,7 +49,6 @@
         class="drag-container"
       >
         <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
-          <!-- Column Definitions -->
           <ng-container matColumnDef="position">
             <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
             <mat-cell *matCellDef="let element">
@@ -78,10 +77,8 @@
             <mat-cell *matCellDef="let element"> {{ element.quantity }} </mat-cell>
           </ng-container>
 
-          <!-- Header Row -->
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-          <!-- ✅ ONLY ONE default mat-row with drag directive -->
           <mat-row
             *matRowDef="let row; columns: displayedColumns"
             cdkDrag
