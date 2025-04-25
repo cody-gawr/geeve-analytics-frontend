@@ -8400,7 +8400,6 @@ td.clslist {
   text-decoration: underline;
 }
 .showExport {
-  float: right;
   margin-left: 38px;
   font-size: 14px;
   color: #0e3459 !important;
@@ -8498,6 +8497,7 @@ h1.mat-dialog-title span {
   float: left;
 }
 .showExport i {
+  display: flex;
   border: 1px solid #18a689;
   padding: 6px 15px;
   background-image: linear-gradient(14deg, #17a5aa, #18a689);
