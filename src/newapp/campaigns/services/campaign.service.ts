@@ -278,18 +278,15 @@ export class CampaignService {
   }
 
   public getCampaignSmsMessages(clinicId: number, campaignId: number) {
-    return this.http
-      .get<JeeveResponse<{ filters: IGetPatientsFilterJson[]; messages: ICampaignMessage[] }>>(
-        `${this.commonUrl}/campaign/sms-messages`,
-        {
-          withCredentials: true,
-          params: {
-            clinic_id: clinicId,
-            campaign_id: campaignId,
-          },
-        },
-      )
-      .pipe(body => body);
+    return this.http.get<
+      JeeveResponse<{ filters: IGetPatientsFilterJson[]; messages: ICampaignMessage[] }>
+    >(`${this.commonUrl}/campaign/sms-messages`, {
+      withCredentials: true,
+      params: {
+        clinic_id: clinicId,
+        campaign_id: campaignId,
+      },
+    });
   }
 
   public resendCampaign(clinicId: number, campaignId: number) {

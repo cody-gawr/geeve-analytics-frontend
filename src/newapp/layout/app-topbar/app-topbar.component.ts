@@ -313,8 +313,6 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     this.dentistFacade.currentDentistId$.pipe(takeUntil(this.destroy$)).subscribe(dentistId => {
       this.selectedDentist = dentistId;
     });
-
-    this.paths$.subscribe(path => console.log(path));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
