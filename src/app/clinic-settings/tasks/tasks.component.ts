@@ -24,6 +24,8 @@ import { ClinicSettingsService } from '../clinic-settings.service';
 //import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
 import Swal from 'sweetalert2';
 import { MatSort } from '@angular/material/sort';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatTable } from '@angular/material/table';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -80,6 +82,7 @@ export class DialogOverviewExampleDialogComponent {
 export class TasksComponent extends BaseComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
   clinic_id$ = new BehaviorSubject<any>(null);
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
