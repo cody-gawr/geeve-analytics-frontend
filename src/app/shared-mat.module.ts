@@ -19,6 +19,7 @@ import { DentistService } from './dentist/dentist.service';
 import { DentistGoalsService } from './dentist-goals/dentist-goals.service';
 import { ClinicGoalsService } from './clinic-goals/clinic-goals.service';
 import { ToastrService } from 'ngx-toastr';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -41,6 +42,7 @@ import { ToastrService } from 'ngx-toastr';
     MatExpansionModule,
     MatTreeModule,
     MatDatepickerModule,
+    DragDropModule
   ],
   exports: [
     CommonModule,
@@ -59,6 +61,7 @@ import { ToastrService } from 'ngx-toastr';
     MatExpansionModule,
     MatTreeModule,
     MatDatepickerModule,
+    DragDropModule
   ],
 })
 export class SharedMatModule {
