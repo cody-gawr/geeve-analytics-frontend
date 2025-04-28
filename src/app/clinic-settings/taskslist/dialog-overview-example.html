@@ -41,53 +41,103 @@
     </div>
   </div>
   <div mat-dialog-content class="sa_forms_design" *ngIf="data.list_id">
-    <div>
-      <div
-        cdkDropList
-        [cdkDropListData]="dataSource"
-        (cdkDropListDropped)="drop($event)"
-        class="drag-container"
-      >
-        <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
-          <ng-container matColumnDef="position">
-            <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-            <mat-cell *matCellDef="let element">
-              <div cdkDragHandle class="drag-handle">
-                <mat-icon class="example-drag-cursor">reorder</mat-icon>
+    <div
+      class="table-wrapper"
+      cdkDropList
+      [cdkDropListAutoScrollDisabled]="false"
+      [cdkDropListAutoScrollStep]="10"
+      [cdkDropListAutoScrollThreshold]="80"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <table class="editTaskList">
+        <tr>
+          <th fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
+            <span>Item</span>
+            <mat-icon
+              *ngIf="sortDirection == 'asc'; else sortDesc"
+              style="cursor: pointer"
+              (click)="sort('asc')"
+              >arrow_downward</mat-icon
+            >
+            <ng-template #sortDesc>
+              <mat-icon style="cursor: pointer" (click)="sort('desc')">arrow_upward</mat-icon>
+            </ng-template>
+          </th>
+          <th>Action</th>
+        </tr>
+        <ng-container *ngIf="addTaskInput">
+          <tr>
+            <td>
+              <input
+                (keydown.enter)="addTaskIn(data)"
+                type="text"
+                #task
+                required
+                autofocus
+                placeholder="New Task"
+              />
+              <div class="alert alert-danger task-add-error">
+                <small *ngIf="taskAddErr">Task name required.</small>
               </div>
-              {{ element.position }}
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="weight">
-            <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.weight }} </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="symbol">
-            <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.symbol }} </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="quantity">
-            <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.quantity }} </mat-cell>
-          </ng-container>
-
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
-          <mat-row
-            *matRowDef="let row; columns: displayedColumns"
+            </td>
+            <td>
+              <span class="action">
+                <a (click)="addTaskIn(data)" class="action_btn golden ng-star-inserted"
+                  ><i class="ti-save m-r-10"></i
+                ></a>
+                <a (click)="addTaskInput = false" class="action_btn danger ng-star-inserted"
+                  ><i class="ti-trash m-r-10"></i
+                ></a>
+              </span>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="data.tasksListItems.length>0">
+          <tr
+            *ngFor="let item of data.tasksListItems; let i = index;"
+            class="drag-cursor"
+            (cdkDragStarted)="onDragStarted($event)"
+            (cdkDragEnded)="onDragEnded($event)"
             cdkDrag
-            [cdkDragData]="row"
-          ></mat-row>
-        </mat-table>
-      </div>
+          >
+            <td>
+              <!-- {{item.task_name}} -->
+              <input
+                type="text"
+                autofocus
+                placeholder="New Task"
+                [readonly]="item.readOnly || dragging"
+                [(ngModel)]="item.task_name"
+              />
+            </td>
+            <td>
+              <span class="action">
+                <a
+                  *ngIf="item.readOnly"
+                  (click)="markRead(i, data.itemsPerPage, data.currPage)"
+                  class="action_btn golden ng-star-inserted"
+                  ><i class="ti-pencil m-r-10"></i
+                ></a>
+                <a
+                  *ngIf="!item.readOnly"
+                  (window:keypress)="onKeyPress($event, i, data.itemsPerPage, data.currPage)"
+                  (click)="updateItem(i, data.itemsPerPage, data.currPage)"
+                  class="action_btn golden ng-star-inserted"
+                  ><i class="ti-save m-r-10"></i
+                ></a>
+              </span>
+              <span class="action" (click)="removeItem(i, data.itemsPerPage, data.currPage)">
+                <a title="Delete" class="action_btn danger ng-star-inserted"
+                  ><i class="ti-trash m-r-10"></i
+                ></a>
+              </span>
+            </td>
+          </tr>
+        </ng-container>
+        <tr *ngIf="!data.tasksListItems.length">
+          <td colspan="2" align="center">No task list items added yet</td>
+        </tr>
+      </table>
       <div *ngIf="data.totalRecords > 10">
         <pagination-controls
           [maxSize]="maxSize"
@@ -124,7 +174,7 @@
       *ngIf="!data.list_id"
       (click)="save(data)"
       [disabled]="data.list_name == '' || data.assigned_roles == '' "
-      tabindex="0"
+      tabindex="2"
       class="mat-raised-button mat-dc float-right"
     >
       Save
@@ -133,7 +183,7 @@
       *ngIf="data.list_id"
       [disabled]="data.list_name == '' || data.assigned_roles == ''"
       (click)="update(data)"
-      tabindex="0"
+      tabindex="2"
       class="mat-raised-button mat-dc float-right"
     >
       Update

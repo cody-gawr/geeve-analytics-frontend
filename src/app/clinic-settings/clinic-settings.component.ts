@@ -240,9 +240,9 @@ export class ClinicSettingsComponent implements OnInit {
           v.data[0].net_profit_exclusions === 'null' ? '' : v.data[0].net_profit_exclusions;
         this.ftaUta = v.data[0].fta_uta;
         this.timezone = v.data[0].timezone;
-        this.equipmentList = v.data[0].equip_list_enable == 1 ? true : false;
-        this.dailyTasks = v.data[0].daily_task_enable == 1 ? true : false;
-        this.compareMode = v.data[0].compare_mode == 1 ? true : false;
+        this.equipmentList = v.data[0].equip_list_enable == 1;
+        this.dailyTasks = v.data[0].daily_task_enable == 1;
+        this.compareMode = v.data[0].compare_mode == 1;
 
         if (this.ftaUta == '') this.ftaUta = 'status';
 

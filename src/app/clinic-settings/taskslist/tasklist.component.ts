@@ -1,3 +1,4 @@
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import {
   AfterViewInit,
   Inject,
@@ -6,14 +7,13 @@ import {
   ViewChild,
   ViewEncapsulation,
   ElementRef,
+  Renderer2,
 } from '@angular/core';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { TasklistService as TaskService } from './tasklist.service';
 import { BaseComponent } from '../base/base.component';
 import {
@@ -21,33 +21,13 @@ import {
   MatLegacyDialogRef as MatDialogRef,
   MatLegacyDialog as MatDialog,
 } from '@angular/material/legacy-dialog';
+
 import { ClinicSettingsService } from '../clinic-settings.service';
 import Swal from 'sweetalert2';
 import { MatSort } from '@angular/material/sort';
-import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatTable, MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-  quantity: number;
-}
-
-export const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', quantity: 100 },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He', quantity: 100 },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li', quantity: 100 },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be', quantity: 100 },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B', quantity: 100 },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C', quantity: 100 },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N', quantity: 100 },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O', quantity: 100 },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F', quantity: 100 },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne', quantity: 100 },
-];
+import { CdkDragDrop, CdkDragEnd, CdkDragStart, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'app-dialog-overview-example-dialog',
@@ -56,10 +36,10 @@ export const ELEMENT_DATA: PeriodicElement[] = [
   encapsulation: ViewEncapsulation.None,
 })
 export class DialogOverviewTasklistDialogComponent {
-  @ViewChild('allSelected') private allSelected;
   addTaskInput: boolean = false;
   taskAddErr: boolean = false;
-  @ViewChild('task') task: ElementRef;
+  @ViewChild('allSelected') private allSelected: MatOption;
+  @ViewChild('task') task: ElementRef<HTMLInputElement>;
 
   public assigneeData: { [key: string]: Object }[] = [
     { id: '3', name: 'Practice Manager' },
@@ -75,13 +55,9 @@ export class DialogOverviewTasklistDialogComponent {
   public showAddItem = false;
   public sortDirection = 'asc';
 
-  @ViewChild('table', { static: true }) table: MatTable<PeriodicElement>;
-
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'quantity'];
-  dataSource = ELEMENT_DATA;
-
   constructor(
-    public dialogRef: MatDialogRef<DialogOverviewTasklistDialogComponent>,
+    private renderer: Renderer2,
+    private dialogRef: MatDialogRef<DialogOverviewTasklistDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
     private taskService: TaskService,
@@ -233,23 +209,20 @@ export class DialogOverviewTasklistDialogComponent {
     }
   }
 
-  // drop(event: CdkDragDrop<string>) {
-  //   const previousIndex = this.dataSource.findIndex(d => d === event.item.data);
+  public onDragStarted(_: CdkDragStart) {
+    this.renderer.addClass(document.body, 'no-select');
+  }
 
-  //   moveItemInArray(this.dataSource, previousIndex, event.currentIndex);
-  //   this.table.renderRows();
-  // }
+  public onDragEnded(_: CdkDragEnd) {
+    this.renderer.removeClass(document.body, 'no-select');
+  }
 
-  drop(event: CdkDragDrop<any[]>) {
-    moveItemInArray(this.dataSource, event.previousIndex, event.currentIndex);
-    this.table.renderRows();
-
-    // if (event.previousIndex !== event.currentIndex) {
-    //   const previousIndex = event.previousIndex;
-    //   const currentIndex = event.currentIndex;
-    //   moveItemInArray(this.dataSource, previousIndex, currentIndex);
-    //   this.dataSource = [...this.dataSource]; // Trigger change detection
-    // }
+  public drop(event: CdkDragDrop<any[]>) {
+    if (event.previousIndex !== event.currentIndex) {
+      const previousIndex = event.previousIndex;
+      const currentIndex = event.currentIndex;
+      moveItemInArray(this.data.tasksListItems, previousIndex, currentIndex);
+    }
   }
 
   additem() {
@@ -273,7 +246,9 @@ export class DialogOverviewTasklistDialogComponent {
         }
       });
       this.taskAddErr = false;
-    } else this.taskAddErr = true;
+    } else {
+      this.taskAddErr = true;
+    }
   }
 
   additemNew(data) {
@@ -426,42 +401,60 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
 
   openDialog(id = '', name = '', assigned_roles = ''): void {
     if (id) {
-      this.taskService.getTasksList(this.clinic_id$.value, id).subscribe(
-        res => {
-          if (res.status == 200) {
-            res.body.data.end_of_day_tasks.forEach(e => {
-              e.readOnly = true;
-              e.clinic_id = this.clinic_id$.value;
-            });
-            this.dataTaskArray = res.body.data.end_of_day_tasks;
-            this.totalRecords = this.dataTaskArray.length;
-            res.body.data.end_of_day_tasks.sort((a, b) => parseInt(b.id) - parseInt(a.id));
-            const dialogRef = this.dialog.open(DialogOverviewTasklistDialogComponent, {
-              width: '500px',
-              data: {
-                list_id: id,
-                tasksListItems: res.body.data.end_of_day_tasks,
-                list_name: name,
-                assigned_roles: assigned_roles.split(','),
-                clinic_id: this.clinic_id$.value,
-                old: name,
-                old_assigned_roles: assigned_roles,
-                totalRecords: this.totalRecords,
-                currPage: this.currPage,
-                itemsPerPage: this.itemsPerPage,
-              },
-            });
-            dialogRef.afterClosed().subscribe(result => {
-              this.getTasks(this.clinic_id$.value);
-            });
-          } else if (res.status == 401) {
-            this.handleUnAuthorization();
-          }
-        },
-        error => {
-          console.log('error', error);
-        },
-      );
+      this.taskService
+        .getTasksList(this.clinic_id$.value, id)
+        .pipe(take(1))
+        .subscribe({
+          next: res => {
+            if (res.status == 200) {
+              const data: {
+                end_of_day_tasks: {
+                  id: string;
+                  task_name: string;
+                  readOnly: boolean;
+                  is_active: boolean;
+                  list_id: number;
+                  clinic_id: any;
+                }[];
+              } = res.body.data;
+              console.log(res.body.data);
+              data.end_of_day_tasks.forEach(e => {
+                e.readOnly = true;
+                e.clinic_id = this.clinic_id$.value;
+              });
+              this.dataTaskArray = res.body.data.end_of_day_tasks;
+              this.totalRecords = this.dataTaskArray.length;
+              data.end_of_day_tasks.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+              console.log(data.end_of_day_tasks);
+              const dialogRef = this.dialog.open(DialogOverviewTasklistDialogComponent, {
+                width: '500px',
+                data: {
+                  list_id: id,
+                  tasksListItems: data.end_of_day_tasks,
+                  list_name: name,
+                  assigned_roles: assigned_roles.split(','),
+                  clinic_id: this.clinic_id$.value,
+                  old: name,
+                  old_assigned_roles: assigned_roles,
+                  totalRecords: this.totalRecords,
+                  currPage: this.currPage,
+                  itemsPerPage: this.itemsPerPage,
+                },
+              });
+              dialogRef
+                .afterClosed()
+                .pipe(take(1))
+                .subscribe(_ => {
+                  this.getTasks(this.clinic_id$.value);
+                });
+            } else if (res.status == 401) {
+              this.handleUnAuthorization();
+            }
+          },
+          error: error => {
+            console.log('error', error);
+          },
+        });
     } else {
       const dialogRef = this.dialog.open(DialogOverviewTasklistDialogComponent, {
         width: '500px',
@@ -475,9 +468,12 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
           old_assigned_roles: assigned_roles,
         },
       });
-      dialogRef.afterClosed().subscribe(result => {
-        this.getTasks(this.clinic_id$.value);
-      });
+      dialogRef
+        .afterClosed()
+        .pipe(take(1))
+        .subscribe(_ => {
+          this.getTasks(this.clinic_id$.value);
+        });
     }
   }
 

@@ -58,6 +58,22 @@
                 >Show Complete</mat-checkbox
               >
             </div>
+            <div class="chipSets" *ngIf="overdueRecallsScrps.length > 0">
+              <mat-chip-list class="example-chip">
+                <mat-chip
+                  [tooltip]="{
+                    title: chips.script_title,
+                    info: chips.script_text
+                  }"
+                  (mouseover)="historyPosChips($event, chips.colour)"
+                  class="example-box"
+                  *ngFor="let chips of overdueRecallsScrps"
+                  [color]="chips.colour"
+                >
+                  <span class="chipText">{{ chips.script_title }}</span>
+                </mat-chip>
+              </mat-chip-list>
+            </div>
             <div
               class="showExport"
               *ngIf="
@@ -67,23 +83,6 @@
             >
               <i class="fas fa-file-export" (click)="exportreport('overdue_recalls')"> Export</i>
             </div>
-          </div>
-
-          <div class="chipSets" *ngIf="overdueRecallsScrps.length > 0">
-            <mat-chip-list class="example-chip">
-              <mat-chip
-                [tooltip]="{
-                  title: chips.script_title,
-                  info: chips.script_text
-                }"
-                (mouseover)="historyPosChips($event, chips.colour)"
-                class="example-box"
-                *ngFor="let chips of overdueRecallsScrps"
-                [color]="chips.colour"
-              >
-                <span class="chipText">{{ chips.script_title }}</span>
-              </mat-chip>
-            </mat-chip-list>
           </div>
         </mat-card-title>
 
@@ -424,16 +423,6 @@
                 >Show Complete</mat-checkbox
               >
             </div>
-            <div
-              class="showExport"
-              *ngIf="
-                (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
-                followupOverDueRecall.length > 0
-              "
-            >
-              <i class="fas fa-file-export" (click)="exportreport('tick_followups')"> Export</i>
-            </div>
-
             <div class="chipSets" *ngIf="tickFollowupsScrps.length > 0">
               <mat-chip-list class="example-chip">
                 <mat-chip
@@ -449,6 +438,15 @@
                   <span class="chipText">{{ chips.script_title }}</span>
                 </mat-chip>
               </mat-chip-list>
+            </div>
+            <div
+              class="showExport"
+              *ngIf="
+                (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
+                followupOverDueRecall.length > 0
+              "
+            >
+              <i class="fas fa-file-export" (click)="exportreport('tick_followups')"> Export</i>
             </div>
           </div>
           <!-- <div
@@ -868,17 +866,6 @@
                 Show Complete</mat-checkbox
               >
             </div>
-
-            <div
-              class="showExport"
-              *ngIf="
-                (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
-                followupPostOpCalls.length > 0
-              "
-            >
-              <i class="fas fa-file-export" (click)="exportreport('post_op')"> Export</i>
-            </div>
-
             <div class="chipSets" *ngIf="postOpCallsScrps.length > 0">
               <mat-chip-list class="example-chip">
                 <mat-chip
@@ -894,6 +881,15 @@
                   <span class="chipText">{{ chips.script_title }}</span>
                 </mat-chip>
               </mat-chip-list>
+            </div>
+            <div
+              class="showExport"
+              *ngIf="
+                (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
+                followupPostOpCalls.length > 0
+              "
+            >
+              <i class="fas fa-file-export" (click)="exportreport('post_op')"> Export</i>
             </div>
           </div>
         </mat-card-title>

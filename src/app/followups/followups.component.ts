@@ -525,11 +525,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     }, 1000 * 60);
 
     this.overdueRecallsSearchControl.valueChanges
-      .pipe(
-        debounceTime(200),
-        distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
-        takeUntil(this.destroy$),
-      )
+      .pipe(debounceTime(200), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe(keyword => {
         this.followupOverDueRecallInCMP = this.filterFollowups(
           this.followupOverDueRecall,
@@ -545,11 +541,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       });
 
     this.tickSearchControl.valueChanges
-      .pipe(
-        debounceTime(200),
-        distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
-        takeUntil(this.destroy$),
-      )
+      .pipe(debounceTime(200), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe(keyword => {
         console.log(keyword);
         this.followupTickFollowupsInCMP = this.filterFollowups(
@@ -566,11 +558,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       });
 
     this.postOpCallsSearchControl.valueChanges
-      .pipe(
-        debounceTime(200),
-        distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
-        takeUntil(this.destroy$),
-      )
+      .pipe(debounceTime(200), takeUntil(this.destroy$))
       .subscribe(keyword => {
         this.followupPostOpCallsInComp = this.filterFollowups(
           this.followupPostOpCalls,
@@ -586,11 +574,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       });
 
     this.ftaSearchControl.valueChanges
-      .pipe(
-        debounceTime(200),
-        distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
-        takeUntil(this.destroy$),
-      )
+      .pipe(debounceTime(200), takeUntil(this.destroy$))
       .subscribe(keyword => {
         this.followupFtaFollowupsInCMP = this.filterFollowups(
           this.followupFtaFollowups,
@@ -606,11 +590,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       });
 
     this.utaSearchControl.valueChanges
-      .pipe(
-        debounceTime(200),
-        distinctUntilChanged((prev, curr) => prev.trim() === curr.trim()),
-        takeUntil(this.destroy$),
-      )
+      .pipe(debounceTime(200), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe(keyword => {
         this.followupUtaFollowupsInCMP = this.filterFollowups(
           this.followupUtaFollowups,
@@ -1162,7 +1142,10 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       filteredFollowups = filteredFollowups.filter((tickFollowup: any) => {
         return (
           tickFollowup.patients.firstname.toLowerCase().includes(keyword.toLowerCase()) ||
-          tickFollowup.patients.surname.toLowerCase().includes(keyword.toLowerCase())
+          tickFollowup.patients.surname.toLowerCase().includes(keyword.toLowerCase()) ||
+          `${tickFollowup.patients.firstname} ${tickFollowup.patients.surname}`
+            .toLowerCase()
+            .includes(keyword.toLowerCase())
         );
       });
     }
