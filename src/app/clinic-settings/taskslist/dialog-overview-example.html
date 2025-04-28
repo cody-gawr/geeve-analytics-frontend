@@ -52,7 +52,9 @@
           <ng-container matColumnDef="position">
             <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
             <mat-cell *matCellDef="let element">
-              <mat-icon class="example-drag-cursor">reorder</mat-icon>
+              <div cdkDragHandle class="drag-handle">
+                <mat-icon class="example-drag-cursor">reorder</mat-icon>
+              </div>
               {{ element.position }}
             </mat-cell>
           </ng-container>
