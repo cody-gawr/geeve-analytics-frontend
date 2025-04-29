@@ -83,7 +83,7 @@ export class TasklistService {
       formData.append(`tasks[${index}].sort_order`, item.sort_order.toString());
     });
     return this.http
-      .patch<{
+      .post<{
         status: number;
         message: string;
       }>(
