@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 export class TasklistService {
   private headers: HttpHeaders;
   private apiUrl = environment.apiUrl;
+  private apiNodeUrl = environment.apiNodeUrl;
   public token_id;
 
   constructor(
@@ -83,11 +84,11 @@ export class TasklistService {
       formData.append(`tasks[${index}].sort_order`, item.sort_order.toString());
     });
     return this.http
-      .post<{
+      .patch<{
         status: number;
         message: string;
       }>(
-        this.apiUrl + '/clinics/task-list/sort-order',
+        this.apiNodeUrl + '/clinics/task-list/sort-order',
         { clinic_id, tasks: sortOrderPayload },
         header,
       )
