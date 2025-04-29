@@ -193,8 +193,7 @@
 
       <div class="DentistListSecRow mh-table" *ngIf="user_type != '4'">
         <div class="card-loading card d-none">
-          <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
-          <!-- <div class="loader-text">Calculating...</div> -->
+          <img class="tableLoader" src="../../assets/images/logo-icon.gif" alt="Loading icon" />
         </div>
         <div class="respopnsive-table-set">
           <table fxHide fxShow.gt-sm mat-table [dataSource]="dentistList" class="mat-elevation-z8">
@@ -588,7 +587,11 @@
         </div>
         <div class="DentistListSecRow mh-table patient_data-table_responsive">
           <div class="card-loading" *ngIf="appointmentCardsLoaders">
-            <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+            <img
+              class="tableLoader"
+              src="../../assets/images/logo-icon.gif"
+              alt="Loading animation"
+            />
           </div>
           <table
             fxHide
@@ -3332,7 +3335,7 @@
         </strong>
       </div>
       <div class="loader_container mainloader" *ngIf="equipmentListLoading && endTaksLoading">
-        <img src="../../assets/images/logo-icon.gif" />
+        <img src="../../assets/images/logo-icon.gif" alt="Loading icon" />
       </div>
       <div class="showComplete dailytsk" *ngIf="isEnabletasks && endOfDaysTasks.length > 0">
         <mat-checkbox
@@ -3357,7 +3360,6 @@
             >
               <div class="card-loading" *ngIf="endTaksLoading">
                 <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
-                <!-- <div class="loader-text">Calculating...</div> -->
               </div>
               <table
                 #sort1="matSort"
@@ -3370,7 +3372,7 @@
                 [ngClass]="endOfDaysTasksInComp.length == 0 ? 'noDataTableClass' : ''"
               >
                 <ng-container matColumnDef="name">
-                  <th mat-header-cell mat-sort-header *matHeaderCellDef>Task Name</th>
+                  <th mat-header-cell *matHeaderCellDef>Task Name</th>
                   <ng-container *matCellDef="let element">
                     <td mat-cell *ngIf="list.list_id == element.list_id && element.type == 'task'">
                       {{ element.name }}

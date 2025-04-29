@@ -122,11 +122,9 @@ export class DialogOverviewTasklistDialogComponent {
       this.data.tasksListItems.forEach((item, index) => {
         item.sort_order = index + 1;
       });
-
-      this.data.tasksListItems.sort((a, b) => a.sort_order - b.sort_order);
     }
-
     console.log(this.data.tasksListItems);
+    this.data.tasksListItems.sort((a, b) => a.sort_order - b.sort_order);
   }
 
   update(data) {
@@ -150,41 +148,31 @@ export class DialogOverviewTasklistDialogComponent {
           return { id: item.id, sort_order: item.sort_order };
         }),
       )
+      .pipe(
+        concatMap(_ =>
+          this.taskService.updateTasklist(data.list_id, data.clinic_id, data.list_name, roles),
+        ),
+        takeUntil(this.destroy$),
+      )
       .subscribe(res => {
-        console.log(res.body);
+        if (res.status == 200) {
+          this.dialogRef.close();
+        } else if (res.status == 401) {
+          this.handleUnAuthorization();
+        }
       });
-    // this.taskService
-    //   .updateTaskListSortOrder(
-    //     data.clinic_id,
-    //     data.tasksListItems.map(item => {
-    //       return { id: item.id, sort_order: item.sort_order };
-    //     }),
-    //   )
-    //   .pipe(
-    //     concatMap(_ =>
-    //       this.taskService.updateTasklist(data.list_id, data.clinic_id, data.list_name, roles),
-    //     ),
-    //     takeUntil(this.destroy$),
-    //   )
-    //   .subscribe(res => {
-    //     if (res.status == 200) {
-    //       this.dialogRef.close();
-    //     } else if (res.status == 401) {
-    //       this.handleUnAuthorization();
-    //     }
-    //   });
-    // this.taskService.updateTasklist(data.list_id, data.clinic_id, data.list_name, roles).subscribe(
-    //   res => {
-    //     if (res.status == 200) {
-    //       this.dialogRef.close();
-    //     } else if (res.status == 401) {
-    //       this.handleUnAuthorization();
-    //     }
-    //   },
-    //   error => {
-    //     console.log('error', error);
-    //   },
-    // );
+    this.taskService.updateTasklist(data.list_id, data.clinic_id, data.list_name, roles).subscribe(
+      res => {
+        if (res.status == 200) {
+          this.dialogRef.close();
+        } else if (res.status == 401) {
+          this.handleUnAuthorization();
+        }
+      },
+      error => {
+        console.log('error', error);
+      },
+    );
     return true;
   }
 
@@ -470,14 +458,12 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
                   clinic_id: any;
                 }[];
               } = res.body.data;
-              console.log(res.body.data);
               data.end_of_day_tasks.forEach(e => {
                 e.readOnly = true;
                 e.clinic_id = this.clinic_id$.value;
               });
               this.dataTaskArray = res.body.data.end_of_day_tasks;
               this.totalRecords = this.dataTaskArray.length;
-              console.log(data.end_of_day_tasks);
               const dialogRef = this.dialog.open(DialogOverviewTasklistDialogComponent, {
                 width: '500px',
                 data: {

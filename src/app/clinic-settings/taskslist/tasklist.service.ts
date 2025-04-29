@@ -78,8 +78,8 @@ export class TasklistService {
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
     sortOrderPayload.forEach((item, index) => {
-      formData.append(`tasks[${index}].id`, item.id.toString());
-      formData.append(`tasks[${index}].sort_order`, item.sort_order.toString());
+      formData.append(`tasks[${index}][id]`, item.id.toString());
+      formData.append(`tasks[${index}][sort_order]`, item.sort_order.toString());
     });
     return this.http
       .patch<{
