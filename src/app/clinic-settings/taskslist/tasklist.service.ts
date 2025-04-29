@@ -74,8 +74,6 @@ export class TasklistService {
     sortOrderPayload: { id: number; sort_order: number }[],
   ): Observable<HttpResponse<{ status: number; message: string }>> {
     var header = this.getHeaders();
-    console.log({ header });
-
     // return new Subject<HttpResponse<{ status: number; message: string }>>().asObservable();
     const formData = new FormData();
     formData.append('clinic_id', clinic_id);
@@ -87,11 +85,7 @@ export class TasklistService {
       .patch<{
         status: number;
         message: string;
-      }>(
-        this.apiNodeUrl + '/clinics/task-list/sort-order',
-        { clinic_id, tasks: sortOrderPayload },
-        header,
-      )
+      }>(this.apiNodeUrl + '/clinics/task-list/sort-order', formData, header)
       .pipe(map(response => response));
   }
 
