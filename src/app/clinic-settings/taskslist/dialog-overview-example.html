@@ -53,15 +53,6 @@
         <tr>
           <th fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
             <span>Item</span>
-            <mat-icon
-              *ngIf="sortDirection == 'asc'; else sortDesc"
-              style="cursor: pointer"
-              (click)="sort('asc')"
-              >arrow_downward</mat-icon
-            >
-            <ng-template #sortDesc>
-              <mat-icon style="cursor: pointer" (click)="sort('desc')">arrow_upward</mat-icon>
-            </ng-template>
           </th>
           <th>Action</th>
         </tr>
@@ -138,14 +129,14 @@
           <td colspan="2" align="center">No task list items added yet</td>
         </tr>
       </table>
-      <div *ngIf="data.totalRecords > 10">
+      <!-- <div *ngIf="data.totalRecords > 10">
         <pagination-controls
           [maxSize]="maxSize"
           [autoHide]="autoHide"
           (pageChange)="pageChanged($event)"
         >
         </pagination-controls>
-      </div>
+      </div> -->
     </div>
   </div>
   <div mat-dialog-actions class="justify-between list">
@@ -174,7 +165,7 @@
       *ngIf="!data.list_id"
       (click)="save(data)"
       [disabled]="data.list_name == '' || data.assigned_roles == '' "
-      tabindex="2"
+      tabindex="0"
       class="mat-raised-button mat-dc float-right"
     >
       Save
@@ -183,7 +174,7 @@
       *ngIf="data.list_id"
       [disabled]="data.list_name == '' || data.assigned_roles == ''"
       (click)="update(data)"
-      tabindex="2"
+      tabindex="0"
       class="mat-raised-button mat-dc float-right"
     >
       Update

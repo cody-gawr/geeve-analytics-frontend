@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { environment } from '../../../environments/environment';
 @Injectable()
@@ -66,6 +66,32 @@ export class TasklistService {
         return response;
       }),
     );
+  }
+
+  updateTaskListSortOrder(
+    clinic_id,
+    sortOrderPayload: { id: number; sort_order: number }[],
+  ): Observable<HttpResponse<{ status: number; message: string }>> {
+    var header = this.getHeaders();
+    console.log({ header });
+
+    // return new Subject<HttpResponse<{ status: number; message: string }>>().asObservable();
+    const formData = new FormData();
+    formData.append('clinic_id', clinic_id);
+    sortOrderPayload.forEach((item, index) => {
+      formData.append(`tasks[${index}].id`, item.id.toString());
+      formData.append(`tasks[${index}].sort_order`, item.sort_order.toString());
+    });
+    return this.http
+      .patch<{
+        status: number;
+        message: string;
+      }>(
+        this.apiUrl + '/clinics/task-list/sort-order',
+        { clinic_id, tasks: sortOrderPayload },
+        header,
+      )
+      .pipe(map(response => response));
   }
 
   // Get tasks item

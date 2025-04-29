@@ -12,8 +12,8 @@ import {
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { concatMap, take, takeUntil } from 'rxjs/operators';
 import { TasklistService as TaskService } from './tasklist.service';
 import { BaseComponent } from '../base/base.component';
 import {
@@ -36,6 +36,8 @@ import { MatOption } from '@angular/material/core';
   encapsulation: ViewEncapsulation.None,
 })
 export class DialogOverviewTasklistDialogComponent {
+  private destroy = new Subject<void>();
+  private destroy$ = this.destroy.asObservable();
   addTaskInput: boolean = false;
   taskAddErr: boolean = false;
   @ViewChild('allSelected') private allSelected: MatOption;
@@ -64,25 +66,25 @@ export class DialogOverviewTasklistDialogComponent {
     private router: Router,
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.initializeSortOrder();
+  }
 
-  public sort(sortDirection: 'asc' | 'desc') {
-    this.sortDirection = sortDirection == 'asc' ? 'desc' : 'asc';
-    this.data.tasksListItems.sort((a, b) => {
-      return sortDirection == 'asc'
-        ? a.task_name.localeCompare(b.task_name)
-        : b.task_name.localeCompare(a.task_name);
-    });
+  ngAfterViewInit() {
+    this.destroy.next();
+    this.destroy.complete();
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
+
   onKeyPress(event, index, itemsPerPage, currPage) {
     if (event.keyCode === 13 || event.charCode === 13) {
       this.updateItem(index, itemsPerPage, currPage);
     }
   }
+
   pageChanged(event) {
     this.dialogRef.componentInstance.data.currPage = event;
   }
@@ -115,6 +117,18 @@ export class DialogOverviewTasklistDialogComponent {
     return true;
   }
 
+  private initializeSortOrder() {
+    if (this.data.tasksListItems.every(item => item.sort_order === 0)) {
+      this.data.tasksListItems.forEach((item, index) => {
+        item.sort_order = index + 1;
+      });
+
+      this.data.tasksListItems.sort((a, b) => a.sort_order - b.sort_order);
+    }
+
+    console.log(this.data.tasksListItems);
+  }
+
   update(data) {
     if (
       data.list_name == '' ||
@@ -123,23 +137,54 @@ export class DialogOverviewTasklistDialogComponent {
     ) {
       return false;
     }
-    var index = data.assigned_roles.indexOf('0');
+    const index = data.assigned_roles.indexOf('0');
     if (index !== -1) {
       data.assigned_roles.splice(index, 1);
     }
     let roles = data.assigned_roles.toString();
-    this.taskService.updateTasklist(data.list_id, data.clinic_id, data.list_name, roles).subscribe(
-      res => {
-        if (res.status == 200) {
-          this.dialogRef.close();
-        } else if (res.status == 401) {
-          this.handleUnAuthorization();
-        }
-      },
-      error => {
-        console.log('error', error);
-      },
-    );
+
+    this.taskService
+      .updateTaskListSortOrder(
+        data.clinic_id,
+        data.tasksListItems.map(item => {
+          return { id: item.id, sort_order: item.sort_order };
+        }),
+      )
+      .subscribe(res => {
+        console.log(res.body);
+      });
+    // this.taskService
+    //   .updateTaskListSortOrder(
+    //     data.clinic_id,
+    //     data.tasksListItems.map(item => {
+    //       return { id: item.id, sort_order: item.sort_order };
+    //     }),
+    //   )
+    //   .pipe(
+    //     concatMap(_ =>
+    //       this.taskService.updateTasklist(data.list_id, data.clinic_id, data.list_name, roles),
+    //     ),
+    //     takeUntil(this.destroy$),
+    //   )
+    //   .subscribe(res => {
+    //     if (res.status == 200) {
+    //       this.dialogRef.close();
+    //     } else if (res.status == 401) {
+    //       this.handleUnAuthorization();
+    //     }
+    //   });
+    // this.taskService.updateTasklist(data.list_id, data.clinic_id, data.list_name, roles).subscribe(
+    //   res => {
+    //     if (res.status == 200) {
+    //       this.dialogRef.close();
+    //     } else if (res.status == 401) {
+    //       this.handleUnAuthorization();
+    //     }
+    //   },
+    //   error => {
+    //     console.log('error', error);
+    //   },
+    // );
     return true;
   }
 
@@ -222,7 +267,14 @@ export class DialogOverviewTasklistDialogComponent {
       const previousIndex = event.previousIndex;
       const currentIndex = event.currentIndex;
       moveItemInArray(this.data.tasksListItems, previousIndex, currentIndex);
+      this.updateSortOrder();
     }
+  }
+
+  public updateSortOrder() {
+    this.data.tasksListItems.forEach((item, index) => {
+      item.sort_order = index + 1;
+    });
   }
 
   additem() {
@@ -240,7 +292,7 @@ export class DialogOverviewTasklistDialogComponent {
           newData.readOnly = true;
           newData.task_name = task_name;
           this.dialogRef.componentInstance.data.tasksListItems.push(newData);
-          data.tasksListItems.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+          this.initializeSortOrder();
           this.dialogRef.componentInstance.data.totalRecords =
             this.dialogRef.componentInstance.data.tasksListItems.length;
         }
@@ -261,7 +313,7 @@ export class DialogOverviewTasklistDialogComponent {
           newData.readOnly = false;
           newData.task_name = '';
           this.dialogRef.componentInstance.data.tasksListItems.push(newData);
-          data.tasksListItems.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+          // data.tasksListItems.sort((a, b) => parseInt(b.id) - parseInt(a.id));
           this.dialogRef.componentInstance.data.totalRecords =
             this.dialogRef.componentInstance.data.tasksListItems.length;
         } else if (res.status == 401) {
@@ -409,7 +461,8 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
             if (res.status == 200) {
               const data: {
                 end_of_day_tasks: {
-                  id: string;
+                  id: number;
+                  sort_order: number;
                   task_name: string;
                   readOnly: boolean;
                   is_active: boolean;
@@ -424,7 +477,6 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
               });
               this.dataTaskArray = res.body.data.end_of_day_tasks;
               this.totalRecords = this.dataTaskArray.length;
-              data.end_of_day_tasks.sort((a, b) => parseInt(b.id) - parseInt(a.id));
               console.log(data.end_of_day_tasks);
               const dialogRef = this.dialog.open(DialogOverviewTasklistDialogComponent, {
                 width: '500px',
