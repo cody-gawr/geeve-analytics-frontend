@@ -85,7 +85,7 @@ export class TasklistService {
       .patch<{
         status: number;
         message: string;
-      }>(this.apiNodeUrl + '/clinics/task-list/sort-order', formData, header)
+      }>(this.apiUrl + '/clinics/task-list/sort-order', formData, header)
       .pipe(map(response => response));
   }
 

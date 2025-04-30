@@ -11,7 +11,7 @@
 
   <div class="sa_sidebar_usersec">
     <div class="suer_image_sidebar">
-      <span><img src="{{ user_image }}" /></span>
+      <span><img src="{{ user_image }}" alt="User profile image" /></span>
     </div>
     <div class="suer_text_sidebar">{{ display_name | uppercase }}</div>
   </div>
@@ -47,7 +47,8 @@
     routerLinkActive="selected"
     group="string"
     *ngIf="
-      (user_type == 2 || permisions.indexOf('campaigns') >= 0 || user_type == 7) && userId == 1
+      (user_type == 2 || permisions.indexOf('campaigns') >= 0 || user_type == 7) &&
+      (userId == 1 || userId == 30)
     "
   >
     <a appAccordionToggle [routerLink]="['/newapp/campaigns']">

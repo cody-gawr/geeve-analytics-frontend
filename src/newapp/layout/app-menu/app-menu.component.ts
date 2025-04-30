@@ -106,7 +106,7 @@ const MENU_DATA: MenuNode[] = [
       return (
         (validatePermission(permissions, 'campaigns') ||
           [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
-        userId == 1
+        (userId == 1 || userId == 30)
       );
     },
   },

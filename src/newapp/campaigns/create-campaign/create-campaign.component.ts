@@ -89,6 +89,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
   });
   overdueDays = new FormControl<number>(30);
   patientStatus = new FormControl<string>('all');
+  selection = new SelectionModel<CampaignElement>(true, []);
 
   clinicId = 0;
   clinicName = '';
@@ -119,6 +120,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
   noTreatmentItemCodesMode = new FormControl<'anyof' | 'allof'>('anyof');
 
   patientStatusList = ['all', 'active', 'inactive'];
+
   constructor(
     private clinicFacade: ClinicFacade,
     private campaignService: CampaignService,
@@ -145,11 +147,12 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
             this.campaignService.getFilterElements(),
             this.commonDataservice.getCampaignHealthFunds(this.clinicId),
             this.commonDataservice.getCampaignItemCodes(this.clinicId),
-          ]).subscribe(([filterElems, result1, result2]) => {
+          ]).subscribe(([filterElems, healthFundsPayload, itemCodesPayload]) => {
             if (!filterElems.success) {
               this.nofifyService.showError('Failed to load filter elements');
               return;
             }
+            console.log({ filterElems, healthFundsPayload, itemCodesPayload });
             this.filterElements = filterElems.data
               .filter(fe => {
                 if (fe && fe[pms]) {
@@ -176,8 +179,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
                     clinics[0].utilityVer < '1.42.0.0',
                 };
               });
-            this.healthFunds = result1.data.map(v => ({ value: v }));
-            this.itemCodes = result2.data.map(d => ({
+            this.healthFunds = healthFundsPayload.data.map(v => ({ value: v }));
+            this.itemCodes = itemCodesPayload.data.map(d => ({
               label: d.item_display_name,
               value: d.item_code,
             }));
@@ -454,14 +457,15 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       this.selectedFilterName = v;
     });
   }
+
   ngOnInit(): void {}
 
-  selection = new SelectionModel<CampaignElement>(true, []);
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
+
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
@@ -470,13 +474,17 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
 
     this.selection.select(...this.dataSource.data);
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
   ngOnDestroy(): void {
     this.destroy.next();
+    this.destroy.complete();
   }
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 

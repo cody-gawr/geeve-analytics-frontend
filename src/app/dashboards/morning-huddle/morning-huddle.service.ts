@@ -848,7 +848,7 @@ export class MorningHuddleService {
     previousDays = previousDays.slice(0, 10);
     return this.http
       .get(
-        this.apiNodeUrl + '/MorningHuddle/mhEndDayTasks?clinic_id=' + cid + '&date=' + previousDays,
+        this.apiUrl + '/MorningHuddle/mhEndDayTasks?clinic_id=' + cid + '&date=' + previousDays,
         header,
       )
       .pipe(
