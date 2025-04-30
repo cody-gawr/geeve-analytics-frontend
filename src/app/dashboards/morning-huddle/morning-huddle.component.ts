@@ -37,7 +37,7 @@ import _ from 'lodash';
 import { LocalStorageService } from '../../shared/local-storage.service';
 import { TermsConditionsDialog } from './terms-conditions-dialog/terms-conditions-dialog.component';
 import { BulkSSEMessage, CallStatusService } from './call-status.service';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, Subject, Subscription, tap } from 'rxjs';
 import { CallLogPanelComponent } from './call-log-panel/call-log-panel.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
@@ -345,6 +345,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   public LabNeeded: boolean = false;
   public selectDentist = 0;
   public bulkCallScheduleInProgress: boolean = false;
+  private destroy = new Subject<void>();
+  private destroy$ = this.destroy.asObservable();
+  public dailyTasksMap = new Map<string, any[]>();
 
   public get isHygienist(): boolean {
     return (
@@ -427,10 +430,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   // @ViewChild('sort1') sort1: MatSort;
   sortList: QueryList<MatSort>;
   creditStatusTimer = null;
-  @ViewChildren('sort1') set matSort(ms: QueryList<MatSort>) {
-    this.sortList = ms;
-    this.endOfDaysTasksInComp.sort = this.sortList.toArray()[0];
-  }
   @ViewChild('sort2') sort2: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
@@ -531,6 +530,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     $('.sa_heading_bar').removeClass('filter_single'); // added
     clearInterval(this.autoCall);
     if (this.creditStatusTimer) clearInterval(this.creditStatusTimer);
+    this.destroy.next();
+    this.destroy.complete();
   }
 
   initiate_clinic() {
@@ -1239,8 +1240,14 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       );
   }
 
+  public getDailyTasks(listId: number): any[] {
+    return this.endOfDaysTasksInComp.data
+      .filter(item => item.list_id == listId && item.type == 'task')
+      .sort((a, b) => a.sort_order - b.sort_order);
+  }
+
   public isEnabletasks: boolean = false;
-  public tasklistArray: any = [];
+  public tasklistArray: any[] = [];
 
   getEndOfDays() {
     this.endTaksLoading = true;
@@ -1268,17 +1275,21 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             this.endOfDaysTasksDate = this.datepipe
               .transform(res.body.date, 'yyyy-MM-dd 00:00:00')
               .replace(/\s/, 'T');
+
             if (this.showComplete) {
               this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
             } else {
               this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);
             }
-            // this.endOfDaysTasksInComp.sort = this.sort1;
           }
           res.body.data.forEach(data => {
             if (data.type == 'list') {
               this.tasklistArray.push(data);
             }
+          });
+
+          this.tasklistArray.forEach((list: any) => {
+            this.dailyTasksMap.set(list.list_id, this.getDailyTasks(list.list_id));
           });
         } else if (res.status == 401) {
           this.handleUnAuthorization();
@@ -1318,7 +1329,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             } else {
               this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);
             }
-            // this.endOfDaysTasksInComp.sort = this.sort1;
           }
         } else if (res.status == 401) {
           this.handleUnAuthorization();
@@ -1860,7 +1870,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     } else {
       this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => !p.is_complete);
     }
-    // this.endOfDaysTasksInComp.sort = this.sort1;
   }
 
   updateToCompleteOP(event) {

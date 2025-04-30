@@ -1,4 +1,10 @@
-<input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'" />
+<input
+  type="button"
+  id="clinic_initiate"
+  (click)="initiate_clinic()"
+  [style.display]="'none'"
+  aria-label="Initiate Clinic"
+/>
 <div class="sa_dashboard_inner_content morning-huddle">
   <div class="morning-huddle-subhead">
     <div class="morning-huddle-date topModel custom_date morning-huddle-datepicker">
@@ -1130,7 +1136,11 @@
 
         <div class="DentistListSecRow mh-table patient_data-table_responsive">
           <div class="card-loading" *ngIf="remindersRecallsOverdueLoader">
-            <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+            <img
+              class="tableLoader"
+              src="../../assets/images/logo-icon.gif"
+              alt="Loading animation"
+            />
           </div>
           <table
             fxHide
@@ -1630,7 +1640,11 @@
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive mh-fd-followups">
             <div class="card-loading" *ngIf="poLoadingLoading">
-              <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+              <img
+                class="tableLoader"
+                src="../../assets/images/logo-icon.gif"
+                alt="Loading animation"
+              />
               <!-- <div class="loader-text">Calculating...</div> -->
             </div>
 
@@ -1914,7 +1928,11 @@
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive mh-fd-followups">
             <div class="card-loading" *ngIf="recallLoadingLoading">
-              <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+              <img
+                class="tableLoader"
+                src="../../assets/images/logo-icon.gif"
+                alt="Loading animation"
+              />
               <!-- <div class="loader-text">Calculating...</div> -->
             </div>
             <table
@@ -2245,7 +2263,11 @@
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive mh-fd-followups">
             <div class="card-loading" *ngIf="endTaksLoadingLoading">
-              <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+              <img
+                class="tableLoader"
+                src="../../assets/images/logo-icon.gif"
+                alt="Loading animation"
+              />
               <!-- <div class="loader-text">Calculating...</div> -->
             </div>
             <table
@@ -2620,7 +2642,7 @@
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive mh-fd-followups">
             <div class="card-loading" *ngIf="ftaTaksLoadingLoading">
-              <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+              <img class="tableLoader" src="../../assets/images/logo-icon.gif" alt="Loading icon" />
             </div>
             <table
               fxHide
@@ -2999,7 +3021,11 @@
             style="overflow: auto"
           >
             <div class="card-loading" *ngIf="ftaTaksLoadingLoading">
-              <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+              <img
+                class="tableLoader"
+                src="../../assets/images/logo-icon.gif"
+                alt="Loading animation"
+              />
             </div>
             <table
               fxHide
@@ -3359,15 +3385,15 @@
               class="DentistListSecRow mh-table patient_data-table_responsive DentistListSecRow-task"
             >
               <div class="card-loading" *ngIf="endTaksLoading">
-                <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+                <img
+                  class="tableLoader"
+                  src="../../assets/images/logo-icon.gif"
+                  alt="Loading animation"
+                />
               </div>
               <table
-                #sort1="matSort"
                 mat-table
-                matSort
-                matSortActive="name"
-                matSortDirection="asc"
-                [dataSource]="endOfDaysTasksInComp"
+                [dataSource]="dailyTasksMap.get(list.list_id)"
                 class="mat-elevation-z8 daily-task"
                 [ngClass]="endOfDaysTasksInComp.length == 0 ? 'noDataTableClass' : ''"
               >
@@ -3496,7 +3522,11 @@
               class="DentistListSecRow mh-table patient_data-table_responsive DentistListSecRow-equipment-list"
             >
               <div class="card-loading" *ngIf="equipmentListLoading">
-                <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+                <img
+                  class="tableLoader"
+                  src="../../assets/images/logo-icon.gif"
+                  alt="Loading animation"
+                />
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
               <table
@@ -3637,14 +3667,15 @@
                 class="DentistListSecRow mh-table patient_data-table_responsive DentistListSecRow-task"
               >
                 <div class="card-loading" *ngIf="endTaksLoading">
-                  <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+                  <img
+                    class="tableLoader"
+                    src="../../assets/images/logo-icon.gif"
+                    alt="Loading animation"
+                  />
                   <!-- <div class="loader-text">Calculating...</div> -->
                 </div>
                 <table
-                  #sort1="matSort"
-                  mat-table
-                  matSort
-                  [dataSource]="endOfDaysTasksInComp"
+                  [dataSource]="dailyTasksMap.get(list.list_id)"
                   class="mat-elevation-z8 daily-task"
                   [ngClass]="endOfDaysTasksInComp.length == 0 ? 'noDataTableClass' : ''"
                   matSortDisableClear
@@ -3764,7 +3795,7 @@
           </mat-card>
         </div>
       </div>
-      <div *ngIf="endTaksLoading == false && tasklistArray.length <= 0">
+      <div *ngIf="!endTaksLoading && tasklistArray.length <= 0">
         <mat-card class="table-card post_call_responsive_border">
           <mat-card-title class="morngHuddle">
             <span>No Tasks Assigned</span>
