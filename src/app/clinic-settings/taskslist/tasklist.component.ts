@@ -123,7 +123,6 @@ export class DialogOverviewTasklistDialogComponent {
         item.sort_order = index + 1;
       });
     }
-    console.log(this.data.tasksListItems);
     this.data.tasksListItems.sort((a, b) => a.sort_order - b.sort_order);
   }
 

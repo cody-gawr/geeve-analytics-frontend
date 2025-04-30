@@ -26,25 +26,24 @@ export class ServerErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       retry(1),
       catchError((error: HttpErrorResponse) => {
-        console.log({ error });
-        // if (error.status === 401) {
-        //   // refresh token
-        //   this.store.dispatch(AuthApiActions.loginFailure({ error: error.message }));
-        //   if (!(error.url && error.url.includes('/login'))) {
-        //     //this.router.navigateByUrl('/login', );
-        //     this.router.navigate(['/login'], {
-        //       // queryParams: this.router.url.includes('/login')
-        //       //   ? {}
-        //       //   : { returnUrl: this.router.url },
-        //     });
-        //   }
-        // } else if ([403, 400].indexOf(error.status) > -1) {
-        //   // const errMsg = getApiErrorMesssage(error);
-        //   // this.toastr.warning(``, getApiErrorMesssage(error));
-        //   // this.router.navigateByUrl("/dashboards/healthscreen");
-        // } else {
-        //   this.toastr.error(getApiErrorMesssage(error));
-        // }
+        if (error.status === 401) {
+          // refresh token
+          this.store.dispatch(AuthApiActions.loginFailure({ error: error.message }));
+          if (!(error.url && error.url.includes('/login'))) {
+            //this.router.navigateByUrl('/login', );
+            this.router.navigate(['/login'], {
+              // queryParams: this.router.url.includes('/login')
+              //   ? {}
+              //   : { returnUrl: this.router.url },
+            });
+          }
+        } else if ([403, 400].indexOf(error.status) > -1) {
+          // const errMsg = getApiErrorMesssage(error);
+          // this.toastr.warning(``, getApiErrorMesssage(error));
+          // this.router.navigateByUrl("/dashboards/healthscreen");
+        } else {
+          this.toastr.error(getApiErrorMesssage(error));
+        }
         return throwError(() => error);
       }),
     );
