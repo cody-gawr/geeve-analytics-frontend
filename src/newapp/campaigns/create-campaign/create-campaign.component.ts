@@ -837,7 +837,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
               },
             });
         } else if (result.cost > 0) {
-          const stripePaymentDialog = this.dialog.open(StripePaymentDialog, {
+          this.dialog.open(StripePaymentDialog, {
             data: { costPerSMS: result.cost, clinic_id: this.clinicId },
           });
         }

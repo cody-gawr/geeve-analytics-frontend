@@ -291,7 +291,7 @@
         <div class="table">
           <table mat-table [dataSource]="dataSource">
             <ng-container matColumnDef="select">
-              <th mat-header-cell *matHeaderCellDef>
+              <th mat-header-cell *matHeaderCellDef aria-hidden="true">
                 <mat-checkbox
                   (change)="$event ? toggleAllRows() : null"
                   [checked]="selection.hasValue() && isAllSelected()"
@@ -391,10 +391,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
-          <mat-paginator
-            [pageSizeOptions]="[10, 25, 50, 100]"
-            aria-label="Select page of patients"
-          ></mat-paginator>
+          <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
         </div>
       </div>
     </div>

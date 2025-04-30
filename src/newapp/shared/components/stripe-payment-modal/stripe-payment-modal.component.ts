@@ -31,7 +31,7 @@ export class StripePaymentDialog {
   numberOfCreditsFormGroup: UntypedFormGroup;
   elements: StripeElements;
   stripe: Stripe;
-  selectedCredit = 100;
+  selectedCredit = 500;
   isReadyToPay = true;
   disabledSubmit = true;
   totalAmount = 0;
