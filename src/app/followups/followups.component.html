@@ -28,61 +28,64 @@
     <!-- Patient Schedule Tab start -->
     <mat-tab label="Overdue Recalls">
       <div class="follow-up">
-        <mat-card-title fxLayout="row" fxLayoutAlign="space-between">
-          <div class="title-follow-up d-inline-block">
-            Overdue Recalls
-            <div class="info-icon-container">
-              <img
-                [tooltip]="charTips['44']"
-                src="../assets/images/info-icon.png"
-                alt="info-icon"
-                class="info-icon"
-              />
+        <mat-card-title fxLayout="column" fxLayoutGap="16px">
+          <div fxLayout="row" fxLayoutAlign="space-between">
+            <div class="title-follow-up d-inline-block">
+              Overdue Recalls
+              <div class="info-icon-container">
+                <img
+                  [tooltip]="charTips['44']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <mat-form-field appearance="outline" class="search-box">
+                <mat-label>Search</mat-label>
+                <input
+                  matInput
+                  [formControl]="overdueRecallsSearchControl"
+                  placeholder="Search by patient name"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+              <div class="showComplete" *ngIf="followupOverDueRecall.length > 0">
+                <mat-checkbox
+                  name="status"
+                  [checked]="showCompleteOverdue"
+                  (change)="updateToCompleteOR($event)"
+                  >Show Complete</mat-checkbox
+                >
+              </div>
+
+              <div
+                class="showExport"
+                *ngIf="
+                  (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
+                  followupOverDueRecall.length > 0
+                "
+              >
+                <i class="fas fa-file-export" (click)="exportreport('overdue_recalls')"> Export</i>
+              </div>
             </div>
           </div>
-          <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-form-field appearance="outline" class="search-box">
-              <mat-label>Search</mat-label>
-              <input
-                matInput
-                [formControl]="overdueRecallsSearchControl"
-                placeholder="Search by patient name"
-              />
-              <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
-            <div class="showComplete" *ngIf="followupOverDueRecall.length > 0">
-              <mat-checkbox
-                name="status"
-                [checked]="showCompleteOverdue"
-                (change)="updateToCompleteOR($event)"
-                >Show Complete</mat-checkbox
+          <div class="chipSets" *ngIf="overdueRecallsScrps.length > 0">
+            <mat-chip-list class="example-chip">
+              <mat-chip
+                [tooltip]="{
+                  title: chips.script_title,
+                  info: chips.script_text
+                }"
+                (mouseover)="historyPosChips($event, chips.colour)"
+                class="example-box"
+                *ngFor="let chips of overdueRecallsScrps"
+                [color]="chips.colour"
               >
-            </div>
-            <div class="chipSets" *ngIf="overdueRecallsScrps.length > 0">
-              <mat-chip-list class="example-chip">
-                <mat-chip
-                  [tooltip]="{
-                    title: chips.script_title,
-                    info: chips.script_text
-                  }"
-                  (mouseover)="historyPosChips($event, chips.colour)"
-                  class="example-box"
-                  *ngFor="let chips of overdueRecallsScrps"
-                  [color]="chips.colour"
-                >
-                  <span class="chipText">{{ chips.script_title }}</span>
-                </mat-chip>
-              </mat-chip-list>
-            </div>
-            <div
-              class="showExport"
-              *ngIf="
-                (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
-                followupOverDueRecall.length > 0
-              "
-            >
-              <i class="fas fa-file-export" (click)="exportreport('overdue_recalls')"> Export</i>
-            </div>
+                <span class="chipText">{{ chips.script_title }}</span>
+              </mat-chip>
+            </mat-chip-list>
           </div>
         </mat-card-title>
 
@@ -393,81 +396,64 @@
     <!-- Reminders Tab start -->
     <mat-tab label="Tick">
       <div class="follow-up">
-        <mat-card-title fxLayout="row" fxLayoutAlign="space-between">
-          <div class="title-follow-up d-inline-block">
-            Tick
-            <div class="info-icon-container">
-              <img
-                [tooltip]="charTips['45']"
-                src="../assets/images/info-icon.png"
-                alt="info-icon"
-                class="info-icon"
-              />
+        <mat-card-title fxLayout="column" fxLayoutGap="16px">
+          <div fxLayout="row" fxLayoutAlign="space-between">
+            <div class="title-follow-up d-inline-block">
+              Tick
+              <div class="info-icon-container">
+                <img
+                  [tooltip]="charTips['45']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
             </div>
-          </div>
-          <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-form-field appearance="outline" class="search-box">
-              <mat-label>Search</mat-label>
-              <input
-                matInput
-                [formControl]="tickSearchControl"
-                placeholder="Search by patient name"
-              />
-              <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
-            <div class="showComplete" *ngIf="followupTickFollowups.length > 0">
-              <mat-checkbox
-                name="status"
-                [checked]="showCompleteTick"
-                (change)="updateToCompleteTF($event)"
-                >Show Complete</mat-checkbox
-              >
-            </div>
-            <div class="chipSets" *ngIf="tickFollowupsScrps.length > 0">
-              <mat-chip-list class="example-chip">
-                <mat-chip
-                  [tooltip]="{
-                    title: chips.script_title,
-                    info: chips.script_text
-                  }"
-                  (mouseover)="historyPosChips($event, chips.colour)"
-                  class="example-box"
-                  *ngFor="let chips of tickFollowupsScrps"
-                  [color]="chips.colour"
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <mat-form-field appearance="outline" class="search-box">
+                <mat-label>Search</mat-label>
+                <input
+                  matInput
+                  [formControl]="tickSearchControl"
+                  placeholder="Search by patient name"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+              <div class="showComplete" *ngIf="followupTickFollowups.length > 0">
+                <mat-checkbox
+                  name="status"
+                  [checked]="showCompleteTick"
+                  (change)="updateToCompleteTF($event)"
+                  >Show Complete</mat-checkbox
                 >
-                  <span class="chipText">{{ chips.script_title }}</span>
-                </mat-chip>
-              </mat-chip-list>
-            </div>
-            <div
-              class="showExport"
-              *ngIf="
-                (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
-                followupOverDueRecall.length > 0
-              "
-            >
-              <i class="fas fa-file-export" (click)="exportreport('tick_followups')"> Export</i>
+              </div>
+              <div
+                class="showExport"
+                *ngIf="
+                  (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
+                  followupOverDueRecall.length > 0
+                "
+              >
+                <i class="fas fa-file-export" (click)="exportreport('tick_followups')"> Export</i>
+              </div>
             </div>
           </div>
-          <!-- <div
-            class="showExport"
-            *ngIf="
-              (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
-              followupTickFollowups.length > 0
-            "
-          >
-            <i class="fas fa-file-export" (click)="exportreport('tick_followups')"> Export</i>
-          </div> -->
-
-          <!-- <div class="showComplete" *ngIf="followupTickFollowups.length > 0">
-            <mat-checkbox
-              name="status"
-              [checked]="showCompleteTick"
-              (change)="updateToCompleteTF($event)"
-            >
-              Show Complete
-            </mat-checkbox>
-          </div> -->
+          <div class="chipSets" *ngIf="tickFollowupsScrps.length > 0">
+            <mat-chip-list class="example-chip">
+              <mat-chip
+                [tooltip]="{
+                  title: chips.script_title,
+                  info: chips.script_text
+                }"
+                (mouseover)="historyPosChips($event, chips.colour)"
+                class="example-box"
+                *ngFor="let chips of tickFollowupsScrps"
+                [color]="chips.colour"
+              >
+                <span class="chipText">{{ chips.script_title }}</span>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
         </mat-card-title>
 
         <div class="card-loading" *ngIf="endTaksLoadingLoading">
@@ -834,63 +820,66 @@
     <!-- Dentist Performance Tab -->
     <mat-tab label="Post op Calls">
       <div class="follow-up">
-        <mat-card-title fxLayout="row" fxLayoutAlign="space-between">
-          <div class="title-follow-up d-inline-block">
-            Post op Calls
-            <div class="info-icon-container">
-              <img
-                [tooltip]="charTips['43']"
-                src="../assets/images/info-icon.png"
-                alt="info-icon"
-                class="info-icon"
-              />
+        <mat-card-title fxLayout="column" fxLayoutGap="16px">
+          <div fxLayout="row" fxLayoutAlign="space-between">
+            <div class="title-follow-up d-inline-block">
+              Post op Calls
+              <div class="info-icon-container">
+                <img
+                  [tooltip]="charTips['43']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <mat-form-field appearance="outline" class="search-box">
+                <mat-label>Search</mat-label>
+                <input
+                  matInput
+                  [formControl]="postOpCallsSearchControl"
+                  placeholder="Search by patient name"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+
+              <div class="showComplete" *ngIf="followupPostOpCalls.length > 0">
+                <mat-checkbox
+                  name="status"
+                  [checked]="postopCallsPostOp"
+                  (change)="updateToCompleteOP($event)"
+                >
+                  Show Complete</mat-checkbox
+                >
+              </div>
+
+              <div
+                class="showExport"
+                *ngIf="
+                  (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
+                  followupPostOpCalls.length > 0
+                "
+              >
+                <i class="fas fa-file-export" (click)="exportreport('post_op')"> Export</i>
+              </div>
             </div>
           </div>
-          <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-form-field appearance="outline" class="search-box">
-              <mat-label>Search</mat-label>
-              <input
-                matInput
-                [formControl]="postOpCallsSearchControl"
-                placeholder="Search by patient name"
-              />
-              <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
-
-            <div class="showComplete" *ngIf="followupPostOpCalls.length > 0">
-              <mat-checkbox
-                name="status"
-                [checked]="postopCallsPostOp"
-                (change)="updateToCompleteOP($event)"
+          <div class="chipSets" *ngIf="postOpCallsScrps.length > 0">
+            <mat-chip-list class="example-chip">
+              <mat-chip
+                [tooltip]="{
+                  title: chips.script_title,
+                  info: chips.script_text
+                }"
+                (mouseover)="historyPosChips($event, chips.colour)"
+                class="example-box"
+                *ngFor="let chips of postOpCallsScrps"
+                [color]="chips.colour"
               >
-                Show Complete</mat-checkbox
-              >
-            </div>
-            <div class="chipSets" *ngIf="postOpCallsScrps.length > 0">
-              <mat-chip-list class="example-chip">
-                <mat-chip
-                  [tooltip]="{
-                    title: chips.script_title,
-                    info: chips.script_text
-                  }"
-                  (mouseover)="historyPosChips($event, chips.colour)"
-                  class="example-box"
-                  *ngFor="let chips of postOpCallsScrps"
-                  [color]="chips.colour"
-                >
-                  <span class="chipText">{{ chips.script_title }}</span>
-                </mat-chip>
-              </mat-chip-list>
-            </div>
-            <div
-              class="showExport"
-              *ngIf="
-                (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
-                followupPostOpCalls.length > 0
-              "
-            >
-              <i class="fas fa-file-export" (click)="exportreport('post_op')"> Export</i>
-            </div>
+                <span class="chipText">{{ chips.script_title }}</span>
+              </mat-chip>
+            </mat-chip-list>
           </div>
         </mat-card-title>
 
@@ -1091,62 +1080,64 @@
     <!-- Dentist Performance Tab -->
     <mat-tab [label]="isExactOrCoreOrPraktika ? 'FTA' : 'FTA / UTA'">
       <div class="follow-up">
-        <mat-card-title fxLayout="row" fxLayoutAlign="space-between">
-          <div class="title-follow-up d-inline-block">
-            FTA
-            <div class="info-icon-container">
-              <img
-                [tooltip]="charTips['52']"
-                src="../assets/images/info-icon.png"
-                alt="info-icon"
-                class="info-icon"
-              />
+        <mat-card-title fxLayout="column" fxLayoutGap="16px">
+          <div fxLayout="row" fxLayoutAlign="space-between">
+            <div class="title-follow-up d-inline-block">
+              FTA
+              <div class="info-icon-container">
+                <img
+                  [tooltip]="charTips['52']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="12px">
+              <mat-form-field appearance="outline" class="search-box">
+                <mat-label>Search</mat-label>
+                <input
+                  matInput
+                  [formControl]="ftaSearchControl"
+                  placeholder="Search by patient name"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+              <div class="showComplete" *ngIf="followupFtaFollowups.length > 0">
+                <mat-checkbox
+                  name="status"
+                  [checked]="showCompleteFta"
+                  (change)="updateToCompleteFT($event)"
+                >
+                  Show Complete
+                </mat-checkbox>
+              </div>
+              <div
+                class="showExport"
+                *ngIf="
+                  (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
+                  followupFtaFollowups.length > 0
+                "
+              >
+                <i class="fas fa-file-export" (click)="exportreport('fta_followups')"> Export</i>
+              </div>
             </div>
           </div>
-          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="12px">
-            <mat-form-field appearance="outline" class="search-box">
-              <mat-label>Search</mat-label>
-              <input
-                matInput
-                [formControl]="ftaSearchControl"
-                placeholder="Search by patient name"
-              />
-              <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
-            <div class="chipSets" *ngIf="ftaFollowupsScrps.length > 0">
-              <mat-chip-list class="example-chip">
-                <mat-chip
-                  [tooltip]="{
-                    title: chips.script_title,
-                    info: chips.script_text
-                  }"
-                  (mouseover)="historyPosChips($event, chips.colour)"
-                  class="example-box"
-                  *ngFor="let chips of ftaFollowupsScrps"
-                  [color]="chips.colour"
-                >
-                  <span class="chipText">{{ chips.script_title }}</span>
-                </mat-chip>
-              </mat-chip-list>
-            </div>
-            <div class="showComplete" *ngIf="followupFtaFollowups.length > 0">
-              <mat-checkbox
-                name="status"
-                [checked]="showCompleteFta"
-                (change)="updateToCompleteFT($event)"
+          <div class="chipSets" *ngIf="ftaFollowupsScrps.length > 0">
+            <mat-chip-list class="example-chip">
+              <mat-chip
+                [tooltip]="{
+                  title: chips.script_title,
+                  info: chips.script_text
+                }"
+                (mouseover)="historyPosChips($event, chips.colour)"
+                class="example-box"
+                *ngFor="let chips of ftaFollowupsScrps"
+                [color]="chips.colour"
               >
-                Show Complete
-              </mat-checkbox>
-            </div>
-            <div
-              class="showExport"
-              *ngIf="
-                (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
-                followupFtaFollowups.length > 0
-              "
-            >
-              <i class="fas fa-file-export" (click)="exportreport('fta_followups')"> Export</i>
-            </div>
+                <span class="chipText">{{ chips.script_title }}</span>
+              </mat-chip>
+            </mat-chip-list>
           </div>
         </mat-card-title>
 
@@ -1506,63 +1497,66 @@
         <!-- follow-ups-card view-end--->
       </div>
       <div *ngIf="!isExactOrCore" class="follow-up">
-        <mat-card-title fxLayout="row" fxLayoutAlign="space-between">
-          <div class="title-follow-up d-inline-block">
-            UTA
-            <div class="info-icon-container">
-              <img
-                [tooltip]="charTips['60']"
-                src="../assets/images/info-icon.png"
-                alt="info-icon"
-                class="info-icon"
-              />
+        <mat-card-title fxLayout="column" fxLayoutGap="16px">
+          <div fxLayout="row" fxLayoutAlign="space-between">
+            <div class="title-follow-up d-inline-block">
+              UTA
+              <div class="info-icon-container">
+                <img
+                  [tooltip]="charTips['60']"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <mat-form-field appearance="outline" class="search-box">
+                <mat-label>Search</mat-label>
+                <input
+                  matInput
+                  [formControl]="utaSearchControl"
+                  placeholder="Search by patient name"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+
+              <div class="showComplete" *ngIf="followupUtaFollowups.length > 0">
+                <mat-checkbox
+                  name="status"
+                  [checked]="showCompleteUta"
+                  (change)="updateToCompleteUT($event)"
+                >
+                  Show Complete
+                </mat-checkbox>
+              </div>
+
+              <div
+                class="showExport"
+                *ngIf="
+                  (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
+                  followupUtaFollowups.length > 0
+                "
+              >
+                <i class="fas fa-file-export" (click)="exportreport('uta_followups')"> Export</i>
+              </div>
             </div>
           </div>
-          <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-form-field appearance="outline" class="search-box">
-              <mat-label>Search</mat-label>
-              <input
-                matInput
-                [formControl]="utaSearchControl"
-                placeholder="Search by patient name"
-              />
-              <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
-
-            <div class="showComplete" *ngIf="followupUtaFollowups.length > 0">
-              <mat-checkbox
-                name="status"
-                [checked]="showCompleteUta"
-                (change)="updateToCompleteUT($event)"
+          <div class="chipSets" *ngIf="utaFollowupsScrps.length > 0">
+            <mat-chip-list class="example-chip">
+              <mat-chip
+                [tooltip]="{
+                  title: chips.script_title,
+                  info: chips.script_text
+                }"
+                (mouseover)="historyPosChips($event, chips.colour)"
+                class="example-box"
+                *ngFor="let chips of utaFollowupsScrps"
+                [color]="chips.colour"
               >
-                Show Complete
-              </mat-checkbox>
-            </div>
-            <div class="chipSets" *ngIf="utaFollowupsScrps.length > 0">
-              <mat-chip-list class="example-chip">
-                <mat-chip
-                  [tooltip]="{
-                    title: chips.script_title,
-                    info: chips.script_text
-                  }"
-                  (mouseover)="historyPosChips($event, chips.colour)"
-                  class="example-box"
-                  *ngFor="let chips of utaFollowupsScrps"
-                  [color]="chips.colour"
-                >
-                  <span class="chipText">{{ chips.script_title }}</span>
-                </mat-chip>
-              </mat-chip-list>
-            </div>
-            <div
-              class="showExport"
-              *ngIf="
-                (apiUrl.includes('test') || apiUrl.includes('staging-')) &&
-                followupUtaFollowups.length > 0
-              "
-            >
-              <i class="fas fa-file-export" (click)="exportreport('uta_followups')"> Export</i>
-            </div>
+                <span class="chipText">{{ chips.script_title }}</span>
+              </mat-chip>
+            </mat-chip-list>
           </div>
         </mat-card-title>
 
