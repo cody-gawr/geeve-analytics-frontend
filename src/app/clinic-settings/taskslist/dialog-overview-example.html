@@ -54,11 +54,13 @@
           <th fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
             <span>Item</span>
           </th>
+          <th><span class="ng-hide">Active</span></th>
+          <th>Order</th>
           <th>Action</th>
         </tr>
         <ng-container *ngIf="addTaskInput">
           <tr>
-            <td>
+            <td colspan="3">
               <input
                 (keydown.enter)="addTaskIn(data)"
                 type="text"
@@ -71,6 +73,7 @@
                 <small *ngIf="taskAddErr">Task name required.</small>
               </div>
             </td>
+
             <td>
               <span class="action">
                 <a (click)="addTaskIn(data)" class="action_btn golden ng-star-inserted"
@@ -102,22 +105,32 @@
               />
             </td>
             <td>
+              <span>
+                <mat-slide-toggle
+                  [checked]="item.is_active != 0"
+                  name="status"
+                  (change)="toggle($event, i)"
+                ></mat-slide-toggle>
+              </span>
+            </td>
+            <td class="text-center"><span>{{item.sort_order}}</span></td>
+            <td>
               <span class="action">
                 <a
                   *ngIf="item.readOnly"
-                  (click)="markRead(i, data.itemsPerPage, data.currPage)"
+                  (click)="markRead(i)"
                   class="action_btn golden ng-star-inserted"
                   ><i class="ti-pencil m-r-10"></i
                 ></a>
                 <a
                   *ngIf="!item.readOnly"
-                  (window:keypress)="onKeyPress($event, i, data.itemsPerPage, data.currPage)"
-                  (click)="updateItem(i, data.itemsPerPage, data.currPage)"
+                  (window:keypress)="onKeyPress($event, i)"
+                  (click)="updateItem(i)"
                   class="action_btn golden ng-star-inserted"
                   ><i class="ti-save m-r-10"></i
                 ></a>
               </span>
-              <span class="action" (click)="removeItem(i, data.itemsPerPage, data.currPage)">
+              <span class="action" (click)="removeItem(i)">
                 <a title="Delete" class="action_btn danger ng-star-inserted"
                   ><i class="ti-trash m-r-10"></i
                 ></a>
@@ -126,7 +139,7 @@
           </tr>
         </ng-container>
         <tr *ngIf="!data.tasksListItems.length">
-          <td colspan="2" align="center">No task list items added yet</td>
+          <td colspan="4" align="center">No task list items added yet</td>
         </tr>
       </table>
       <!-- <div *ngIf="data.totalRecords > 10">
@@ -140,7 +153,6 @@
     </div>
   </div>
   <div mat-dialog-actions class="justify-between list">
-    <!-- <i *ngIf="data.list_id" class="fa fa-plus m-r-10" (click)="additemNew(data)">Add Task</i> -->
     <button
       *ngIf="!addTaskInput && data.list_id"
       class="mat-raised-button mat-dc float-right ng-star-inserted"
@@ -155,7 +167,6 @@
     >
       Add Task
     </button>
-    <!-- <i *ngIf="data.list_id" (click)="additemNew(data)">Add Task</i> -->
   </div>
   <div mat-dialog-actions class="justify-between">
     <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">

@@ -90,13 +90,22 @@ export class TasklistService {
   }
 
   // Get tasks item
-  updateTasksItem(id, list_id, task_name, clinic_id): Observable<any> {
+  updateTaskItem(
+    id: number,
+    list_id: number,
+    task_name: string,
+    clinic_id: string,
+    isActive: number = 1,
+  ): Observable<any> {
     var header = this.getHeaders();
     const formData = new FormData();
-    formData.append('id', id);
-    formData.append('list_id', list_id);
+    if (!!id) {
+      formData.append('id', id.toString());
+    }
+    formData.append('list_id', list_id.toString());
     formData.append('task_name', task_name);
     formData.append('clinic_id', clinic_id);
+    formData.append('is_active', isActive.toString());
     return this.http.post(this.apiUrl + '/clinics/clinicAddEndDayTasks', formData, header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;

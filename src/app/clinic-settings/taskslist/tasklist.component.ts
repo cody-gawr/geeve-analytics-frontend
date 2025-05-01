@@ -28,6 +28,7 @@ import { MatSort } from '@angular/material/sort';
 import { CdkDragDrop, CdkDragEnd, CdkDragStart, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatOption } from '@angular/material/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-dialog-overview-example-dialog',
@@ -79,14 +80,10 @@ export class DialogOverviewTasklistDialogComponent {
     this.dialogRef.close();
   }
 
-  onKeyPress(event, index, itemsPerPage, currPage) {
-    if (event.keyCode === 13 || event.charCode === 13) {
-      this.updateItem(index, itemsPerPage, currPage);
+  onKeyPress(event: KeyboardEvent, index: number) {
+    if (event.key === 'Enter') {
+      this.updateItem(index);
     }
-  }
-
-  pageChanged(event) {
-    this.dialogRef.componentInstance.data.currPage = event;
   }
 
   save(data) {
@@ -117,13 +114,13 @@ export class DialogOverviewTasklistDialogComponent {
     return true;
   }
 
-  private initializeSortOrder() {
-    if (this.data.tasksListItems.every(item => item.sort_order === 0)) {
-      this.data.tasksListItems.forEach((item, index) => {
+  private initializeSortOrder<T extends { sort_order: number }>() {
+    if (this.data.tasksListItems.every((item: T) => item.sort_order === 0)) {
+      this.data.tasksListItems.forEach((item: T, index: number) => {
         item.sort_order = index + 1;
       });
     }
-    this.data.tasksListItems.sort((a, b) => a.sort_order - b.sort_order);
+    this.data.tasksListItems.sort((a: T, b: T) => a.sort_order - b.sort_order);
   }
 
   update(data) {
@@ -192,42 +189,44 @@ export class DialogOverviewTasklistDialogComponent {
     }
   }
 
-  markRead(index, itemsPerPage, currPage) {
-    let i = itemsPerPage * (currPage - 1) + index;
-    this.dialogRef.componentInstance.data.tasksListItems[i].readOnly =
-      !this.dialogRef.componentInstance.data.tasksListItems[i].readOnly;
-    this.dialogRef.componentInstance.data.currPage = currPage;
+  public toggle(event: MatCheckboxChange, index: number) {
+    this.dialogRef.componentInstance.data.tasksListItems[index].is_active = event.checked ? 1 : 0;
+    this.updateItem(index);
   }
 
-  updateItem(index, itemsPerPage, currPage) {
-    let i = itemsPerPage * (currPage - 1) + index;
-    let data = this.dialogRef.componentInstance.data.tasksListItems[i];
+  markRead(index: number): void {
+    this.dialogRef.componentInstance.data.tasksListItems[index].readOnly =
+      !this.dialogRef.componentInstance.data.tasksListItems[index].readOnly;
+  }
+
+  updateItem(index: number): void {
+    let data = this.dialogRef.componentInstance.data.tasksListItems[index];
     if (data) {
       this.taskService
-        .updateTasksItem(data.id, data.list_id, data.task_name, data.clinic_id)
-        .subscribe(
-          res => {
+        .updateTaskItem(data.id, data.list_id, data.task_name, data.clinic_id, data.is_active)
+        .pipe(take(1))
+        .subscribe({
+          next: res => {
             if (res.status == 200) {
-              this.dialogRef.componentInstance.data.tasksListItems[i].readOnly = true;
+              this.dialogRef.componentInstance.data.tasksListItems[index].readOnly = true;
             } else if (res.status == 401) {
               this.handleUnAuthorization();
             }
           },
-          error => {
+          error: error => {
             console.log('error', error);
           },
-        );
+        });
     }
   }
 
-  removeItem(index, itemsPerPage, currPage) {
-    let i = itemsPerPage * (currPage - 1) + index;
-    let data = this.dialogRef.componentInstance.data.tasksListItems[i];
+  removeItem(index: number) {
+    let data = this.dialogRef.componentInstance.data.tasksListItems[index];
     if (data) {
       this.taskService.deleteTasksItem(data.id, data.clinic_id).subscribe(
         res => {
           if (res.status == 200) {
-            this.dialogRef.componentInstance.data.tasksListItems.splice(i, 1);
+            this.dialogRef.componentInstance.data.tasksListItems.splice(index, 1);
             this.dialogRef.componentInstance.data.totalRecords =
               this.dialogRef.componentInstance.data.tasksListItems.length;
           } else if (res.status == 401) {
@@ -290,10 +289,10 @@ export class DialogOverviewTasklistDialogComponent {
     }
   }
 
-  additemNew(data) {
+  addItemNew(data) {
     this.dialogRef.componentInstance.data.currPage = 1;
 
-    this.taskService.updateTasksItem('', data.list_id, 'New Task', data.clinic_id).subscribe(
+    this.taskService.updateTaskItem(null, data.list_id, 'New Task', data.clinic_id).subscribe(
       res => {
         if (res.status == 200) {
           let newData = res.body.data;
@@ -457,14 +456,14 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
                   clinic_id: any;
                 }[];
               } = res.body.data;
-              data.end_of_day_tasks.forEach(e => {
-                e.readOnly = true;
-                e.clinic_id = this.clinic_id$.value;
+              data.end_of_day_tasks.forEach(item => {
+                item.readOnly = true;
+                item.clinic_id = this.clinic_id$.value;
               });
               this.dataTaskArray = res.body.data.end_of_day_tasks;
               this.totalRecords = this.dataTaskArray.length;
               const dialogRef = this.dialog.open(DialogOverviewTasklistDialogComponent, {
-                width: '500px',
+                width: '640px',
                 data: {
                   list_id: id,
                   tasksListItems: data.end_of_day_tasks,
@@ -494,7 +493,7 @@ export class TasklistComponent extends BaseComponent implements AfterViewInit {
         });
     } else {
       const dialogRef = this.dialog.open(DialogOverviewTasklistDialogComponent, {
-        width: '500px',
+        width: '640px',
         data: {
           list_id: id,
           tasksListItems: [],
