@@ -51,11 +51,11 @@
     >
       <table class="editTaskList">
         <tr>
+          <th><span>Order</span></th>
           <th fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
             <span>Item</span>
           </th>
-          <th>Order</th>
-          <th><span class="ng-hide">Active</span></th>
+          <th><span>Enable</span></th>
           <th>Action</th>
         </tr>
         <ng-container *ngIf="addTaskInput">
@@ -94,6 +94,7 @@
             (cdkDragEnded)="onDragEnded($event)"
             cdkDrag
           >
+            <td class="text-center"><span>{{item.sort_order}}</span></td>
             <td>
               <!-- {{item.task_name}} -->
               <input
@@ -104,7 +105,6 @@
                 [(ngModel)]="item.task_name"
               />
             </td>
-            <td class="text-center"><span>{{item.sort_order}}</span></td>
             <td>
               <span>
                 <mat-slide-toggle
