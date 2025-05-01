@@ -54,8 +54,8 @@
           <th fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
             <span>Item</span>
           </th>
-          <th><span class="ng-hide">Active</span></th>
           <th>Order</th>
+          <th><span class="ng-hide">Active</span></th>
           <th>Action</th>
         </tr>
         <ng-container *ngIf="addTaskInput">
@@ -104,6 +104,7 @@
                 [(ngModel)]="item.task_name"
               />
             </td>
+            <td class="text-center"><span>{{item.sort_order}}</span></td>
             <td>
               <span>
                 <mat-slide-toggle
@@ -113,7 +114,6 @@
                 ></mat-slide-toggle>
               </span>
             </td>
-            <td class="text-center"><span>{{item.sort_order}}</span></td>
             <td>
               <span class="action">
                 <a

@@ -271,18 +271,27 @@ export class DialogOverviewTasklistDialogComponent {
   addTaskIn(data) {
     let task_name = this.task.nativeElement.value;
     if (task_name) {
-      this.taskService.addTasksItem(data.list_id, task_name, data.clinic_id).subscribe(res => {
-        if (res.status == 200) {
-          this.addTaskInput = false;
-          let newData = res.body.data;
-          newData.readOnly = true;
-          newData.task_name = task_name;
-          this.dialogRef.componentInstance.data.tasksListItems.push(newData);
-          this.initializeSortOrder();
-          this.dialogRef.componentInstance.data.totalRecords =
-            this.dialogRef.componentInstance.data.tasksListItems.length;
-        }
-      });
+      const maxSortOrder = Math.max(
+        ...this.dialogRef.componentInstance.data.tasksListItems.map(item => item.sort_order),
+      );
+      const sortOrder = maxSortOrder + 1;
+      this.taskService
+        .addTasksItem(data.list_id, task_name, data.clinic_id, sortOrder)
+        .subscribe(res => {
+          if (res.status == 200) {
+            this.addTaskInput = false;
+            let newData = res.body.data;
+            newData.readOnly = true;
+            newData.task_name = task_name;
+
+            // newData.sort_order = sortOrder;
+            this.dialogRef.componentInstance.data.tasksListItems.push(newData);
+
+            this.initializeSortOrder();
+            this.dialogRef.componentInstance.data.totalRecords =
+              this.dialogRef.componentInstance.data.tasksListItems.length;
+          }
+        });
       this.taskAddErr = false;
     } else {
       this.taskAddErr = true;

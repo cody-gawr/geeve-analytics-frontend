@@ -56,12 +56,18 @@ export class TasklistService {
   }
 
   // Get tasks item
-  addTasksItem(id, task_name, clinic_id): Observable<any> {
+  addTasksItem(
+    id: number,
+    task_name: string,
+    clinic_id: number,
+    sortOrder: number,
+  ): Observable<any> {
     var header = this.getHeaders();
     const formData = new FormData();
-    formData.append('list_id', id);
+    formData.append('list_id', id.toString());
     formData.append('task_name', task_name);
-    formData.append('clinic_id', clinic_id);
+    formData.append('clinic_id', clinic_id.toString());
+    formData.append('sort_order', sortOrder.toString());
     return this.http.post(this.apiUrl + '/clinics/clinicAddEndDayTasks', formData, header).pipe(
       map((response: HttpResponse<Object>) => {
         return response;
