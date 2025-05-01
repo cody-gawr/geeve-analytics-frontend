@@ -90,7 +90,10 @@
           <!-- <div (click)="$event.preventDefault(); $event.stopPropagation()">
             <mat-icon [matMenuTriggerFor]="menu">more_horiz</mat-icon>
           </div> -->
-
+          <button *ngIf="element.status === 'draft'" style="color: brown" (click)="$event.preventDefault(); $event.stopPropagation();onDelete(element)" mat-menu-item>
+            <mat-icon style="color: red">delete_forever</mat-icon>
+            <span style="color: red">Delete</span>
+          </button>
           <mat-menu #menu="matMenu">
             <button *ngIf="element.status === 'draft'" (click)="goEditPage(element)" mat-menu-item>
               <mat-icon>edit</mat-icon>
