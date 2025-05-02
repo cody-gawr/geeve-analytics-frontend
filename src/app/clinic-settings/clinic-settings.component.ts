@@ -684,7 +684,6 @@ export class ClinicSettingsComponent implements OnInit {
     this.reviewMsgTemplates = [];
     this.clinicSettingsService.getReviewMsgTemplateList(this.id).subscribe({
       next: v => {
-        // if (res.status == 200) {
         if (v.data) {
           this.reviewMsgTemplates = v.data;
         }

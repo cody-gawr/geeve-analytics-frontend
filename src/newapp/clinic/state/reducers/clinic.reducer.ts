@@ -18,7 +18,7 @@ export interface ClinicState {
   currentMultiClinicIds: number[];
   error: string | null;
   hasPrimeClinics: 'yes' | 'no';
-  isMultiSelection: boolean;
+  isMultiSelection: boolean | null;
 
   connectedWith: CONNECT_WITH_PLATFORM;
   connectedClinicId: number;
@@ -365,7 +365,6 @@ export const {
   selectHasPrimeClinics,
   selectIsMultiSelection,
   selectIsLoadingData,
-
   selectConnectedWith,
   selectConnectedClinicId,
 } = clinicFeature;
@@ -388,8 +387,9 @@ export const selectCurrentClinics = createSelector(
   selectCurrentMultiClinicIds,
   selectClinics,
   (isMulti, singleId, multiIds, clinics) => {
-    if (isMulti == null) return clinics?.length > 0 ? [clinics[0]] : [];
-    if (isMulti) {
+    if (isMulti == null) {
+      return clinics?.length > 0 ? [clinics[0]] : [];
+    } else if (isMulti) {
       return clinics.filter(c => multiIds && multiIds.includes(c.id));
     } else {
       return singleId === 'all' ? clinics : clinics.filter(c => c.id == <number>singleId);

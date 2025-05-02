@@ -49,10 +49,10 @@
       <div class="clinic-selector-wrapper">
         <div class="clinic-selector-field">
           <mat-select
+            *ngIf="isMultiClinics$ | async; else singleClinicsSection"
             [disabled]="hideClinicSelectionDropdown$ | async"
             multiple
             class="custom-font"
-            *ngIf="isMultiClinics$ | async; else singleClinicsSection"
             #multiClinicsSelectElem
             (selectionChange)="onChangeMultiClinics($event)"
             (openedChange)="onMultiSelectPanelOpened($event)"

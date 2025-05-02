@@ -8,7 +8,7 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
   return localStorageSync({
     keys: [
       {
-        clinic: ['currentSingleClinicId', 'currentMultiClinicIds'],
+        clinic: ['currentSingleClinicId', 'currentMultiClinicIds', 'clinics', 'isMultiSelection'],
       },
       {
         dentist: ['currentDentistId'],

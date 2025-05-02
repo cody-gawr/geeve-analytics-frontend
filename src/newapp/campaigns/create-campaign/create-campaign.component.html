@@ -213,7 +213,7 @@
                 (change)="toggleHealthFundInclude($event)"
                 >Patients with Health Insurance</mat-checkbox
               >
-              <div class="multi-selection-form">
+              <div class="multi-selection-form" *ngIf="healthFunds.length > 0">
                 <search-multi-select
                   [label]="'All Health Insurance Providers'"
                   [controlData]="selectedHealthInsurances"

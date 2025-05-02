@@ -9,6 +9,7 @@ import {
   distinctUntilChanged,
   filter,
   forkJoin,
+  of,
   Subject,
   switchMap,
   takeUntil,
@@ -120,6 +121,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
   noTreatmentItemCodesMode = new FormControl<'anyof' | 'allof'>('anyof');
 
   patientStatusList = ['all', 'active', 'inactive'];
+  private supportedPMs = ['d4w', 'exact', 'praktika'];
 
   constructor(
     private clinicFacade: ClinicFacade,
@@ -129,7 +131,9 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     private commonDataservice: CommonDataService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.clinicFacade.currentClinics$
       .pipe(
         takeUntil(this.destroy$),
@@ -145,7 +149,9 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           const pms = clinics[0].pms;
           forkJoin([
             this.campaignService.getFilterElements(),
-            this.commonDataservice.getCampaignHealthFunds(this.clinicId),
+            this.supportedPMs.includes(pms)
+              ? this.commonDataservice.getCampaignHealthFunds(this.clinicId)
+              : of({ success: true, data: [] }),
             this.commonDataservice.getCampaignItemCodes(this.clinicId),
           ]).subscribe(([filterElems, healthFundsPayload, itemCodesPayload]) => {
             if (!filterElems.success) {
@@ -154,12 +160,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
             }
             console.log({ filterElems, healthFundsPayload, itemCodesPayload });
             this.filterElements = filterElems.data
-              .filter(fe => {
-                if (fe && fe[pms]) {
-                  return true;
-                }
-                return false;
-              })
+              .filter(fe => fe && fe[pms])
               .map(fe => {
                 const icon = DefaultFilterElements.find(d => d.filterName === fe.name);
                 return {
@@ -457,8 +458,6 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       this.selectedFilterName = v;
     });
   }
-
-  ngOnInit(): void {}
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;

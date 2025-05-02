@@ -155,16 +155,9 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     private toastr: ToastrService,
     private cookieService: CookieService,
     private router: Router,
-  ) {
-    if (router.url === '/newapp/dashboard/unsubscribed') {
-      const clinicStr = localStorage.getItem('unsubscribed_clinic');
-      this.unsubscribedClinic = clinicStr && JSON.parse(clinicStr);
-    } else {
-      this.unsubscribedClinic = null;
-    }
-  }
+  ) {}
 
-  setCookieVal(val: string) {
+  private setCookieVal(val: string) {
     const values = this.cookieService.get('clinic_dentist')?.split('_');
     if (val && values) {
       values[0] = val;
@@ -173,6 +166,12 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+    if (this.router.url === '/newapp/dashboard/unsubscribed') {
+      const clinicStr = localStorage.getItem('unsubscribed_clinic');
+      this.unsubscribedClinic = clinicStr && JSON.parse(clinicStr);
+    } else {
+      this.unsubscribedClinic = null;
+    }
     combineLatest([
       this.authFacade.authUserData$,
       this.authFacade.rolesIndividual$,
@@ -306,6 +305,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
           const clinic = currentClinicIDs.find(
             cu => cu.id === _.min(currentClinicIDs.map(c => c.id)),
           );
+
           this.clinicFacade.loadClinicAccountingPlatform(clinic.id, clinic.connectedwith);
         }
       });
@@ -323,6 +323,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy.next();
+    this.destroy.complete();
   }
 
   getClinicName$(clinicId: Array<number | 'all'>) {
