@@ -33,6 +33,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DateRangePresetComponent } from './components/daterange-preset/daterange-preset.component';
 import { AppCustomSelect } from './components/custom-select/custom-select.component';
 import { StripePaymentDialog } from './components/stripe-payment-modal/stripe-payment-modal.component';
+import { NumericOnlyDirective } from './directives/numeric-only.directive';
 
 const modules = [
   AngularMaterialModule,
@@ -58,6 +59,7 @@ const components = [
   ConfirmDialogComponent,
   CustomTooltipComponent,
   CustomTooltipDirective,
+  NumericOnlyDirective,
   TimeMaskDirective,
   TooltipDirective,
   TooltipContainerDirective,
