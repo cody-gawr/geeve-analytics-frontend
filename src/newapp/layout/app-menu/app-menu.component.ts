@@ -103,6 +103,14 @@ const MENU_DATA: MenuNode[] = [
     badgeText: 'New',
     badgeStyle: 'yellow-bg',
     validatorFn: ({ permissions, userType, userId }: MenuValidatorParams) => {
+      console.log('New App:');
+      console.log('permissions: ' + JSON.stringify(permissions));
+      console.log('validatePermission: ' + validatePermission(permissions, 'campaigns'));
+      console.log('User Type:')
+      console.log(userType);
+      console.log('User ID:');
+      console.log(userId);
+
       return (
         (validatePermission(permissions, 'campaigns') ||
           [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&

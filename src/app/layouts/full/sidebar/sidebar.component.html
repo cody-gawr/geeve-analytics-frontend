@@ -46,10 +46,7 @@
     appAccordionLink
     routerLinkActive="selected"
     group="string"
-    *ngIf="
-      (user_type == 2 || permisions.indexOf('campaigns') >= 0 || user_type == 7) &&
-      (userId == 1 || userId == 30)
-    "
+    *ngIf="validateCampaignMenu()"
   >
     <a appAccordionToggle [routerLink]="['/newapp/campaigns']">
       <i class="fas fa-bullhorn"></i>
