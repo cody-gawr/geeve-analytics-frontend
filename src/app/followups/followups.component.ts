@@ -474,6 +474,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public get isExactOrCoreOrPraktika(): boolean {
     return this.localStorageService.isEachClinicExactOrCoreOrPraktika(this.clinic_id);
   }
+
+  public get isEveryFilteredTickFollowupComplete(): boolean {
+    return this.followupTickFollowupsInCMP.every(tickFollowup => tickFollowup.is_complete);
+  }
+
+  public get isEveryTickFollowupComplete(): boolean {
+    return this.followupTickFollowups.every(tickFollowup => tickFollowup.is_complete);
+  }
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private datepipe: DatePipe,
@@ -543,7 +552,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.tickSearchControl.valueChanges
       .pipe(debounceTime(200), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe(keyword => {
-        console.log(keyword);
         this.followupTickFollowupsInCMP = this.filterFollowups(
           this.followupTickFollowups,
           keyword,
@@ -626,11 +634,11 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
       this.clinicianAnalysisService.getClinicFollowUpSettings(this.clinic_id).subscribe(data => {
         //if (data.status == 200) {
-        this.isEnablePO = data.data.post_op_enable == 1 ? true : false;
-        this.isEnableOR = data.data.recall_enable == 1 ? true : false;
-        this.isEnableTH = data.data.tick_enable == 1 ? true : false;
-        this.isEnableFT = data.data.fta_enable == 1 ? true : false;
-        this.isEnableUT = data.data.uta_enable == 1 ? true : false;
+        this.isEnablePO = data.data.post_op_enable == 1;
+        this.isEnableOR = data.data.recall_enable == 1;
+        this.isEnableTH = data.data.tick_enable == 1;
+        this.isEnableFT = data.data.fta_enable == 1;
+        this.isEnableUT = data.data.uta_enable == 1;
         //}
       });
       $('#title').html('Follow Ups');
@@ -755,11 +763,11 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           if (res.body.data == '204') {
           } else {
             this.followupOverDueRecall = res.body.data;
-            if (this.showCompleteOverdue == true) {
+            if (this.showCompleteOverdue) {
               this.followupOverDueRecallInCMP = this.followupOverDueRecall;
             } else {
               this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
-                p => p.is_complete != true,
+                p => !p.is_complete,
               );
             }
             if (
@@ -836,11 +844,11 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           if (res.body.data == '204') {
           } else {
             this.followupTickFollowups = res.body.data;
-            if (this.showCompleteTick == true) {
+            if (this.showCompleteTick) {
               this.followupTickFollowupsInCMP = this.followupTickFollowups;
             } else {
               this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(
-                p => p.is_complete != true,
+                p => !p.is_complete,
               );
             }
             if (
@@ -1380,7 +1388,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   handlePageChange(goPage: number, type) {
     if (type == 'OR') {
       this.currentORPage = goPage;
-      if (this.showCompleteOverdue == true) {
+      if (this.showCompleteOverdue) {
         this.followupOverDueRecallInCMP = this.followupOverDueRecall;
       } else {
         this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(
@@ -1394,7 +1402,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     }
     if (type == 'TH') {
       this.currentThickPage = goPage;
-      if (this.showCompleteTick == true) {
+      if (this.showCompleteTick) {
         this.followupTickFollowupsInCMP = this.followupTickFollowups;
       } else {
         this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(

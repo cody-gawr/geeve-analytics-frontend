@@ -239,14 +239,17 @@
             </ng-container>
             <ng-container matColumnDef="isDataAvailable1">
               <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns2.length">
-                <span *ngIf="isEnableOR && followupOverDueRecall.length <= 0"
+                <span *ngIf="isEnableOR && followupOverDueRecall.length == 0; else messageBlock"
                   >You have no overdue recalls for
                   {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
-                <span *ngIf="isEnableOR && followupOverDueRecall.length > 0"
-                  >All overdue recalls have been completed for
-                  {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
-                >
+                <ng-container #messageBlock *ngIf="isEnableOR && followupOverDueRecall.length > 0">
+                  <span *ngIf="isEnableOR && followupOverDueRecall.length > 0"
+                    >All overdue recalls have been completed for
+                    {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
+                  >
+                </ng-container>
+
                 <span *ngIf="!isEnableOR"
                   >Overdue Recalls are not enabled - this can be configured in your Jeeve Settings
                   menu</span
@@ -257,7 +260,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
             <mat-footer-row
               *matFooterRowDef="['isDataAvailable1']"
-              [ngClass]="followupOverDueRecallInCMP.length <= 0 ? 'show' : 'hide'"
+              [ngClass]="followupOverDueRecallInCMP.length == 0 ? 'show' : 'hide'"
             ></mat-footer-row>
           </table>
         </div>
@@ -636,7 +639,30 @@
             </ng-container>
             <ng-container matColumnDef="isDataAvailable1">
               <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
-                <span *ngIf="isEnableTH && followupTickFollowups.length <= 0"
+                <span>
+                  <ng-container *ngIf="isEnableTH; else notEnabledTHBlock">
+                    <ng-container *ngIf="followupTickFollowups.length == 0; else completeBlock">
+                      You have no tick followups for
+                      {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}
+                    </ng-container>
+                    <ng-template
+                      #completeBlock
+                      *ngIf="isEveryTickFollowupComplete; else noResultFoundBlock"
+                    >
+                      All tick followups have been completed for
+                      {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}
+                    </ng-template>
+
+                    <ng-template #noResultFoundBlock>
+                      No results found for your search criteria
+                    </ng-template>
+                  </ng-container>
+                  <ng-template #notEnabledTHBlock>
+                    Tick Followup are not enabled - this can be configured in your Jeeve Settings
+                    menu
+                  </ng-template>
+                </span>
+                <!-- <span *ngIf="isEnableTH && followupTickFollowups.length == 0"
                   >You have no tick followups for
                   {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}</span
                 >
@@ -647,14 +673,14 @@
                 <span *ngIf="!isEnableTH"
                   >Tick Followup are not enabled - this can be configured in your Jeeve Settings
                   menu</span
-                >
+                > -->
               </mat-footer-cell>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns3"></tr>
             <mat-footer-row
               *matFooterRowDef="['isDataAvailable1']"
-              [ngClass]="followupTickFollowupsInCMP.length <= 0 ? 'show' : 'hide'"
+              [ngClass]="followupTickFollowupsInCMP.length == 0 ? 'show' : 'hide'"
             ></mat-footer-row>
           </table>
         </div>

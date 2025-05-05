@@ -262,13 +262,6 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   }
 
   validateCampaignMenu() {
-    console.log('Old App:');
-    console.log('permissions: ' + JSON.stringify(this.permisions));
-    console.log('validatePermission: ' + (this.permisions.indexOf('campaigns') >= 0));
-    console.log('User Type:');
-    console.log(this.user_type);
-    console.log('User ID:');
-    console.log(this.userId);
     return (
       (this.user_type == 2 || this.permisions.indexOf('campaigns') >= 0 || this.user_type == 7) &&
       (this.userId == 1 || this.userId == 30)
