@@ -645,17 +645,21 @@
                       You have no tick followups for
                       {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}
                     </ng-container>
-                    <ng-template
+                    <ng-container
                       #completeBlock
-                      *ngIf="isEveryTickFollowupComplete; else noResultFoundBlock"
+                      *ngIf="isEveryTickFollowupComplete && tickSearchControl.value == ''"
                     >
                       All tick followups have been completed for
                       {{ selectedMonthYear | date: 'MMMM y' : 'timezone' }}
-                    </ng-template>
+                    </ng-container>
 
-                    <ng-template #noResultFoundBlock>
+                    <ng-container
+                      *ngIf="
+                        tickSearchControl.value != '' && followupTickFollowupsInCMP.length == 0
+                      "
+                    >
                       No results found for your search criteria
-                    </ng-template>
+                    </ng-container>
                   </ng-container>
                   <ng-template #notEnabledTHBlock>
                     Tick Followup are not enabled - this can be configured in your Jeeve Settings
@@ -678,6 +682,7 @@
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns3"></tr>
+
             <mat-footer-row
               *matFooterRowDef="['isDataAvailable1']"
               [ngClass]="followupTickFollowupsInCMP.length == 0 ? 'show' : 'hide'"
@@ -698,7 +703,7 @@
           </li>
         </ul>
         <!-- follow-ups-card view-->
-        <div class="follow-ups-card" *ngIf="followupTickFollowupsInCMP.length">
+        <div class="follow-ups-card" *ngIf="followupTickFollowupsInCMP.length > 0">
           <mat-card class="huddle-card" *ngFor="let element of followupTickFollowupsInCMP">
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="40">Patient :</div>

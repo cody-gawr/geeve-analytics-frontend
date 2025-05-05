@@ -33,6 +33,7 @@ import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 import { LocalStorageService } from '../shared/local-storage.service';
 import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'export-data-dialog',
@@ -476,11 +477,14 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
   public get isEveryFilteredTickFollowupComplete(): boolean {
-    return this.followupTickFollowupsInCMP.every(tickFollowup => tickFollowup.is_complete);
+    return this.followupTickFollowupsInCMP.every(tickFollowup => tickFollowup.is_complete == 1);
   }
 
   public get isEveryTickFollowupComplete(): boolean {
-    return this.followupTickFollowups.every(tickFollowup => tickFollowup.is_complete);
+    return (
+      this.followupTickFollowups.length > 0 &&
+      this.followupTickFollowups.every(tickFollowup => tickFollowup.is_complete == 1)
+    );
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -1174,7 +1178,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP, 'OR');
   }
 
-  updateToCompleteTF(event) {
+  updateToCompleteTF(event: MatCheckboxChange) {
     this.showCompleteTick = event.checked;
     this.followupTickFollowupsInCMP = this.filterFollowups(
       this.followupTickFollowups,
