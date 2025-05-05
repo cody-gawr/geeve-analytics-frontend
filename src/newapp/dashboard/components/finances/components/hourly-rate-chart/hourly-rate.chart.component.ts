@@ -36,6 +36,7 @@ import { combineLatest, map, Subject, takeUntil } from 'rxjs';
       [gaugeMax]="curr"
       [newLogo]="true"
       [appendCurrency]="false"
+      style="height: 100%;"
     ></app-chart>
   `,
 })

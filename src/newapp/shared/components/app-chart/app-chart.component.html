@@ -29,7 +29,13 @@
     ></mat-icon>
 
     <span>{{ chartTitle }}</span>
-    <img *ngIf="newLogo" width="35px" height="35px" src="assets/jeeve/images/new-release.png" />
+    <img
+      *ngIf="newLogo"
+      width="35px"
+      height="35px"
+      src="assets/jeeve/images/new-release.png"
+      alt="New Release Logo"
+    />
   </div>
   <div class="chart-content">
     <div class="canvas-wrapper chart-box gap-15px" [ngStyle]="{ maxheight: chartBoxHeight }">
