@@ -106,7 +106,7 @@ const MENU_DATA: MenuNode[] = [
       console.log('New App:');
       console.log('permissions: ' + JSON.stringify(permissions));
       console.log('validatePermission: ' + validatePermission(permissions, 'campaigns'));
-      console.log('User Type:')
+      console.log('User Type:');
       console.log(userType);
       console.log('User ID:');
       console.log(userId);

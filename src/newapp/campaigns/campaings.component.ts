@@ -69,11 +69,9 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         }
       });
 
-    this.range.valueChanges
-      .pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe(_ => {
-        this.loadCampaigns();
-      });
+    this.range.valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged()).subscribe(_ => {
+      this.loadCampaigns();
+    });
 
     this.campaigns$
       .pipe(takeUntil(this.destroy$))
