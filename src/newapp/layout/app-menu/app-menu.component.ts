@@ -400,7 +400,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
           userType: Number(result.type),
           userPlan: result.plan,
           hasPrimeClinics: result.hasPrimeClinics,
-          userId: user?.id || user?.parentId,
+          userId: user?.parentId || user?.id,
         };
         this.userType = Number(result.type);
         const menuData: MenuNode[] = [];
