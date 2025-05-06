@@ -11,6 +11,8 @@ import { SpinnerComponent } from './spinner.component';
 import { StripePaymentDialog } from './stripe-payment-modal/stripe-payment-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DemoMaterialModule } from '../demo-material-module';
+import { YoutubePreviewComponent } from './youtube-preview/youtube-preview.component';
+import { SafeUrlPipe } from './pipes/safe-url.pipe';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { DemoMaterialModule } from '../demo-material-module';
     TooltipLayoutComponent,
     SpinnerComponent,
     StripePaymentDialog,
+    YoutubePreviewComponent,
+    SafeUrlPipe,
   ],
   exports: [
     AccordionAnchorDirective,
@@ -32,6 +36,7 @@ import { DemoMaterialModule } from '../demo-material-module';
     TooltipContainerDirective,
     SpinnerComponent,
     StripePaymentDialog,
+    YoutubePreviewComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, DemoMaterialModule],
   providers: [

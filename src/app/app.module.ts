@@ -31,6 +31,7 @@ import { ToastrModule } from 'ngx-toastr';
 import {
   AppHeaderrightComponent,
   FeatureDialogComponent,
+  FeaturePayAppDialogComponent,
 } from './layouts/full/headerright/headerright.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
 import { RewardsComponent } from './rewards/rewards.component';
@@ -122,6 +123,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     StaffMeetingsComponent,
     GraphsComponent,
     AppSwitchMenu,
+    FeaturePayAppDialogComponent,
   ],
   imports: [
     DemoMaterialModule,

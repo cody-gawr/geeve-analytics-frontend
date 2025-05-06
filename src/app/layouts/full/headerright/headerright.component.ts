@@ -94,6 +94,7 @@ export class FeatureDialogComponent {
               Learn more
             </a>
           </div>
+          <app-youtube-preview videoId="rdbcw58q_WM"></app-youtube-preview>
           <div>
             <img width="200" alt="Pay" class="" src="assets/jeeve/images/logo-white-pay.png" />
           </div>
@@ -154,64 +155,11 @@ export class AppHeaderrightComponent implements AfterViewInit, OnInit, OnDestroy
     private toastr: ToastrService,
     public dialog: MatDialog,
   ) {
-    if (this._cookieService.get('user_type')) {
-      this.user_type = this._cookieService.get('user_type');
-    }
-    if (
-      this._cookieService.get('features_dismissed') &&
-      this._cookieService.get('features_dismissed') == '0'
-    ) {
-      this.headerService
-        .getNewFeature()
-        .pipe(takeUntil(this.notifier))
-        .subscribe({
-          next: res => {
-            for (let linkurl of res.body.data) {
-              if (linkurl.link) {
-                if (!linkurl.link.match(/^[a-zA-Z]+:\/\//)) {
-                  linkurl.link = 'http://' + linkurl.link;
-                }
-              }
-            }
-            const dialogRef = this.dialog.open(FeatureDialogComponent, {
-              width: '700px',
-              data: res.body.data,
-            });
-            dialogRef.afterClosed().subscribe(result => {
-              this.headerService.getNewFeatureDisable().subscribe(res => {
-                if (res.status == 200) {
-                  this._cookieService.put('features_dismissed', '1');
-                }
-              });
-            });
-          },
-          error: error => {
-            this.warningMessage = 'Please Provide Valid Inputs!';
-          },
-        });
-    }
-
-    if (
-      sessionStorage.getItem('show_pay_promo') &&
-      sessionStorage.getItem('show_pay_promo') == '1'
-    ) {
-      const dialogRef = this.dialog.open(FeaturePayAppDialogComponent, {
-        width: '700px',
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        sessionStorage.setItem('show_pay_promo', '0');
-      });
-    }
-    if (this._cookieService.get('userid')) {
-      this.userId = Number(this._cookieService.get('userid'));
-    }
-    this.getRolesIndividual();
-    this.user_type_dentist = this._cookieService.get('user_type');
     this._routerSub = this.router.events.subscribe((event: Event) => {
       this.isSwitchingClinic = true;
       if (event instanceof NavigationEnd) {
         this.referFriend = false;
-        this.route = router.url.split('?')[0];
+        this.route = this.router.url.split('?')[0];
         if (
           this.route == '/dashboards/cliniciananalysis'
           // this.route == '/dashboards/cliniciananalysis/multi'
@@ -304,6 +252,62 @@ export class AppHeaderrightComponent implements AfterViewInit, OnInit, OnDestroy
         this._cookieService.removeAll();
         this.router.navigateByUrl('/login');
       });
+
+    if (this._cookieService.get('user_type')) {
+      this.user_type = this._cookieService.get('user_type');
+    }
+    if (
+      this._cookieService.get('features_dismissed') &&
+      this._cookieService.get('features_dismissed') == '0'
+    ) {
+      this.headerService
+        .getNewFeature()
+        .pipe(takeUntil(this.notifier))
+        .subscribe({
+          next: res => {
+            for (let linkurl of res.body.data) {
+              if (linkurl.link) {
+                if (!linkurl.link.match(/^[a-zA-Z]+:\/\//)) {
+                  linkurl.link = 'http://' + linkurl.link;
+                }
+              }
+            }
+
+            // NOTE - Payroll dialog width is set here!
+            const dialogRef = this.dialog.open(FeatureDialogComponent, {
+              width: '700px',
+              data: res.body.data,
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              this.headerService.getNewFeatureDisable().subscribe(res => {
+                if (res.status == 200) {
+                  this._cookieService.put('features_dismissed', '1');
+                }
+              });
+            });
+          },
+          error: error => {
+            this.warningMessage = 'Please Provide Valid Inputs!';
+          },
+        });
+    }
+
+    if (
+      sessionStorage.getItem('show_pay_promo') &&
+      sessionStorage.getItem('show_pay_promo') == '1'
+    ) {
+      const dialogRef = this.dialog.open(FeaturePayAppDialogComponent, {
+        width: '700px',
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        sessionStorage.setItem('show_pay_promo', '0');
+      });
+    }
+    if (this._cookieService.get('userid')) {
+      this.userId = Number(this._cookieService.get('userid'));
+    }
+    this.getRolesIndividual();
+    this.user_type_dentist = this._cookieService.get('user_type');
   }
 
   ngOnDestroy() {
