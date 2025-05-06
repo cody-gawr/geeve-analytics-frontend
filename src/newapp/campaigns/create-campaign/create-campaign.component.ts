@@ -134,6 +134,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
+    // BUG - Initialization of data source does not occur here.
     this.clinicFacade.currentClinics$
       .pipe(
         takeUntil(this.destroy$),
@@ -144,6 +145,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         if (clinics.length > 0) {
           this.todo = [];
           this.done = [];
+          this.dataSource.data = [];
+          this.selection.clear();
           this.currentClinic = clinics[0];
           this.clinicId = clinics[0].id;
           const pms = clinics[0].pms;
@@ -189,8 +192,6 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
           });
         }
       });
-
-    this.dataSource = new MatTableDataSource([]);
 
     this.healthFundIncludeNoneCheckBox.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(v => {
       if (v) {
@@ -498,7 +499,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     'health_fund',
   ];
 
-  dataSource: MatTableDataSource<CampaignElement>;
+  dataSource: MatTableDataSource<CampaignElement> = new MatTableDataSource([]);
 
   todo = [];
 

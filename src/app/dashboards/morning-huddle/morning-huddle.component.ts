@@ -1864,8 +1864,6 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       });
   }
 
-  //TODO - review this code snippet
-  // FIXME- complete tasks are not displayed anymore
   updateToComplete(checked) {
     this.showComplete = checked;
     if (checked) {
