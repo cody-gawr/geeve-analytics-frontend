@@ -3443,7 +3443,7 @@
 
                 <ng-container matColumnDef="isDataAvailable9">
                   <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns9.length">
-                    <span *ngIf="showComplete && endOfDaysTasksInComp.data.length <= 0"
+                    <span *ngIf="showComplete && endOfDaysTasksInComp.data.length == 0"
                       >No data in complete task list.</span
                     >
                     <span *ngIf="!showComplete && isEnabletasks && futureDateDT == ''"

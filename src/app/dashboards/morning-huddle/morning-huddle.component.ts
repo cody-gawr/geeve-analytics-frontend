@@ -518,10 +518,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // this.endOfDaysTasksInComp.sort = this.sort1;
-    // this.lquipmentList.sort = this.sort2;
     this.dentistList.paginator = this.paginator;
-    //$('.dentist_dropdown').parent().hide(); // added
     $('.sa_heading_bar').addClass('filter_single'); // added
   }
 
@@ -1240,9 +1237,15 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       );
   }
 
+  public initializeDailyTasksMap() {
+    this.tasklistArray.forEach((list: any) => {
+      this.dailyTasksMap.set(list.list_id, this.getDailyTasks(list.list_id));
+    });
+  }
+
   public getDailyTasks(listId: number): any[] {
     return this.endOfDaysTasksInComp.data
-      .filter(item => item.list_id == listId && item.type == 'task')
+      .filter(item => item.list_id === listId && item.type === 'task')
       .sort((a, b) => a.sort_order - b.sort_order);
   }
 
@@ -1288,9 +1291,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
             }
           });
 
-          this.tasklistArray.forEach((list: any) => {
-            this.dailyTasksMap.set(list.list_id, this.getDailyTasks(list.list_id));
-          });
+          this.initializeDailyTasksMap();
         } else if (res.status == 401) {
           this.handleUnAuthorization();
         }
@@ -1863,6 +1864,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       });
   }
 
+  //TODO - review this code snippet
+  // FIXME- complete tasks are not displayed anymore
   updateToComplete(checked) {
     this.showComplete = checked;
     if (checked) {
@@ -1870,6 +1873,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     } else {
       this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => !p.is_complete);
     }
+
+    this.initializeDailyTasksMap();
   }
 
   updateToCompleteOP(event) {
