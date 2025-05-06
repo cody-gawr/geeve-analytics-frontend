@@ -76,6 +76,7 @@ export class FeatureDialogComponent {
           <i style="color:#f3d633" class="fas fa-hand-point-right"></i> Available now -- streamline
           your financial workflows in just a few clinics
         </p>
+        <app-youtube-preview videoId="rdbcw58q_WM"></app-youtube-preview>
         <div style="display: flex;justify-content: space-between;">
           <div style="display: flex;gap: 10px;justify-content: center;align-items: center;">
             <a
@@ -94,7 +95,6 @@ export class FeatureDialogComponent {
               Learn more
             </a>
           </div>
-          <app-youtube-preview videoId="rdbcw58q_WM"></app-youtube-preview>
           <div>
             <img width="200" alt="Pay" class="" src="assets/jeeve/images/logo-white-pay.png" />
           </div>
