@@ -294,10 +294,12 @@ export class AppHeaderrightComponent implements AfterViewInit, OnInit, OnDestroy
       sessionStorage.getItem('show_pay_promo') &&
       sessionStorage.getItem('show_pay_promo') == '1'
     ) {
-      // NOTE - Payroll dialog width is set here!
+      // COMPONENT-TODO - Payroll dialog width is set here!
       const dialogRef = this.dialog.open(FeaturePayAppDialogComponent, {
         width: '600px',
       });
+      // SERVICE-TODO - Payroll dialog width is set here!
+      // MODULE-TODO - Payroll dialog width is set here!
       dialogRef.afterClosed().subscribe(result => {
         sessionStorage.setItem('show_pay_promo', '0');
       });

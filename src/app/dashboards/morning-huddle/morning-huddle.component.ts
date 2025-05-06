@@ -2392,8 +2392,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           name: `${call.patients.firstname} ${call.patients.surname}`,
           doctorName: call.dentists.name,
           procedure: call.post_op_codes,
-          clinicName: 'Dental Clinic', // TODO: Get actual clinic name
-          callerName: 'Emma', // TODO: Get actual caller name
+          clinicName: 'Dental Clinic', // TODO : Get actual clinic name
+          callerName: 'Emma', // TODO : Get actual caller name
           originalAppointmentDate: call.original_appt_date,
           treatmentId: call.post_op_codes,
           patientId: call.patients.patient_id,
