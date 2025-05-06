@@ -272,8 +272,6 @@ export class AppHeaderrightComponent implements AfterViewInit, OnInit, OnDestroy
                 }
               }
             }
-
-            // NOTE - Payroll dialog width is set here!
             const dialogRef = this.dialog.open(FeatureDialogComponent, {
               width: '700px',
               data: res.body.data,
@@ -296,8 +294,9 @@ export class AppHeaderrightComponent implements AfterViewInit, OnInit, OnDestroy
       sessionStorage.getItem('show_pay_promo') &&
       sessionStorage.getItem('show_pay_promo') == '1'
     ) {
+      // NOTE - Payroll dialog width is set here!
       const dialogRef = this.dialog.open(FeaturePayAppDialogComponent, {
-        width: '700px',
+        width: '600px',
       });
       dialogRef.afterClosed().subscribe(result => {
         sessionStorage.setItem('show_pay_promo', '0');
