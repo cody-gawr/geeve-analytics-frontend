@@ -1,16 +1,8 @@
-<div class="preview-container" [class.hovered]="isHovered">
-  <ng-container *ngIf="!isHovered; else playingVideo">
-    <img [src]="thumbnailUrl" alt="Video thumbnail" class="thumbnail" />
-  </ng-container>
-
-  <ng-template #playingVideo>
-    <iframe
-      [src]="videoUrl | safeUrl"
-      title="YouTube video player"
-      frameborder="0"
-      allow="autoplay; encrypted-media"
-      allowfullscreen
-      class="video-player"
-    ></iframe>
-  </ng-template>
+<div class="youtube-player">
+  <iframe
+    [src]="videoUrl | safeUrl"
+    frameborder="0"
+    allowfullscreen
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  ></iframe>
 </div>
