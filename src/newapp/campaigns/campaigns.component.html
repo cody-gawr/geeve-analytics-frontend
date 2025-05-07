@@ -32,7 +32,7 @@
   <div>
     <table
       mat-table
-      [dataSource]="dataSource"
+      [dataSource]="transformedCampaigns$ | async"
       matSort
       matSortActive="created"
       matSortDisableClear
@@ -49,23 +49,23 @@
       <ng-container matColumnDef="totalPatientsCount">
         <th mat-header-cell *matHeaderCellDef># Patients</th>
         <td mat-cell *matCellDef="let element" class="clickable-cell">
-          {{ getTotalSmsCount(element) }}
+          {{ element.totalSmsCount }}
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="sentMsgCount">
+      <ng-container matColumnDef="completedMessagesCount">
         <th mat-header-cell *matHeaderCellDef># Messages Sent</th>
         <td mat-cell *matCellDef="let element" class="clickable-cell">
-          {{ element.sentMsgCount + element.completedMsgCount }}
+          {{ element.completedMessagesCount }}
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="pendingCampaignCount">
+      <ng-container matColumnDef="pendingCampaignsCount">
         <th mat-header-cell *matHeaderCellDef class="clickable-cell"># Pending</th>
-        <td mat-cell *matCellDef="let element">{{ getPendingSmsCount(element) }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.pendingSmsCount }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="failedMsgCount">
+      <ng-container matColumnDef="failedMessagesCount">
         <th mat-header-cell *matHeaderCellDef class="clickable-cell"># Failures</th>
         <td mat-cell *matCellDef="let element">{{ element.failedMsgCount }}</td>
       </ng-container>
@@ -73,12 +73,12 @@
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef>Status</th>
         <td mat-cell *matCellDef="let element" class="clickable-cell">
-          <div style="display: flex; gap: 5px" [style.color]="choseColor(element)">
+          <div style="display: flex; gap: 5px" [style.color]="element.statusColor">
             <mat-icon style="font-size: 20px; width: 20px; height: 20px">{{
-              choseStatusIcon(element)
+              element.statusIcon
             }}</mat-icon>
             <div style="text-transform: capitalize; font-weight: 600px">
-              {{ choseStatusLabel(element) }}
+              {{ element.statusLabel }}
             </div>
           </div>
         </td>

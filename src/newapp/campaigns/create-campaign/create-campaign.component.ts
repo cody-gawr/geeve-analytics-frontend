@@ -217,7 +217,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
               .getIndividualCampaign(this.clinicId, this.campaignId)
               .subscribe(campaignData => {
                 this.smsTemplate = campaignData.data.sms_template;
-                this.pendingPatients = campaignData.data.pending_campaign;
+                this.pendingPatients = campaignData.data.pending_campaigns;
                 this.description.setValue(campaignData.data.description);
                 this.campaignFilters = campaignData.data.campaign_filters;
                 this.metadataEvent.next();

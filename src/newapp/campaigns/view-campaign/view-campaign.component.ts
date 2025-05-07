@@ -7,17 +7,7 @@ import {
   IGetPatientsFilterJson,
 } from '../services/campaign.service';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import {
-  combineLatest,
-  distinctUntilChanged,
-  filter,
-  map,
-  Subject,
-  take,
-  takeUntil,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { combineLatest, distinctUntilChanged, filter, map, Subject, take, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '@/newapp/shared/services/notification.service';

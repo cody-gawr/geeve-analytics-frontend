@@ -111,7 +111,7 @@ export interface ICampaignSettings {
   created: string;
   description: string;
   sms_template: string;
-  pending_campaign: ICampaignPending[];
+  pending_campaigns: ICampaignPending[];
   started: string | null;
   status: 'draft' | 'started';
 }
@@ -136,12 +136,12 @@ export interface ICampaign {
   status: 'draft' | 'started';
   created: string;
   started: string;
-  totalMsgCount: number;
-  sentMsgCount: number;
-  pendingCampaignCount: number;
-  inProgressMsgCount: string | number;
+  totalMessagesCount: number;
+  completedMessagesCount: number;
+  pendingCampaignsCount: number;
+  pendingMessagesCount: string | number;
   failedMsgCount: string | number;
-  completedMsgCount: string | number;
+  // completedMsgCount: string | number;
 }
 
 export interface ICampaignMessage {

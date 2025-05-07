@@ -1,6 +1,15 @@
 import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
-import { BehaviorSubject, distinctUntilChanged, Subject, take, takeUntil } from 'rxjs';
+import {
+  BehaviorSubject,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  Subject,
+  take,
+  takeUntil,
+} from 'rxjs';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import moment, { Moment } from 'moment';
 import { ClinicService } from '../clinic/services/clinic.service';
@@ -27,15 +36,82 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     'description',
     'created',
     'totalPatientsCount',
-    'sentMsgCount',
-    'pendingCampaignCount',
-    'failedMsgCount',
+    'completedMessagesCount',
+    'pendingCampaignsCount',
+    'failedMessagesCount',
     'status',
     'actions',
   ];
   dataSource = new MatTableDataSource<ICampaign>([]);
   private campaignsSubject = new BehaviorSubject<ICampaign[]>([]);
   public readonly campaigns$ = this.campaignsSubject.asObservable();
+
+  // COMPONENT-TODO : Map campaigns into a table-friendly data structure.
+  public get transformedCampaigns$(): Observable<
+    (Pick<
+      ICampaign,
+      | 'id'
+      | 'description'
+      | 'created'
+      | 'completedMessagesCount'
+      | 'pendingCampaignsCount'
+      | 'status'
+      | 'failedMsgCount'
+    > & {
+      pendingSmsCount: number;
+      totalSmsCount: number;
+      statusColor: string;
+      statusIcon: string;
+      statusLabel: string;
+    })[]
+  > {
+    return this.campaigns$.pipe(
+      map(campaigns =>
+        campaigns.map(campaign => {
+          const {
+            id,
+            description,
+            created,
+            completedMessagesCount,
+            pendingCampaignsCount,
+            failedMsgCount,
+            status,
+            pendingMessagesCount,
+            totalMessagesCount,
+          } = campaign;
+
+          const statusColor = this.getStatusColor(
+            status,
+            parseInt(<string>campaign.pendingMessagesCount),
+          );
+          const statusIcon = this.getStatusIcon(
+            status,
+            parseInt(<string>campaign.pendingMessagesCount),
+          );
+          const statusLabel = this.getStatusLabel(
+            status,
+            parseInt(<string>campaign.pendingMessagesCount),
+          );
+          const pendingSmsCount = pendingCampaignsCount + parseInt(<string>pendingMessagesCount);
+          const totalSmsCount = totalMessagesCount + pendingCampaignsCount;
+          return {
+            id,
+            description,
+            created,
+            completedMessagesCount,
+            pendingCampaignsCount,
+            pendingSmsCount,
+            totalSmsCount,
+            failedMsgCount: parseInt(<string>failedMsgCount),
+            status,
+            statusColor,
+            statusIcon,
+            statusLabel,
+          };
+        }),
+      ),
+    );
+  }
 
   private clinicId: number = 0;
 
@@ -73,37 +149,30 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
       this.loadCampaigns();
     });
 
-    this.campaigns$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(campaigns => (this.dataSource.data = campaigns));
+    this.campaigns$.pipe(takeUntil(this.destroy$)).subscribe(campaigns => {
+      console.log({ campaigns });
+      this.dataSource.data = campaigns;
+    });
+    this.transformedCampaigns$
+      .pipe(map(campaigns => campaigns.filter(campaign => campaign.id === 89)[0]))
+      .subscribe(campaign => console.log({ campaign }));
   }
 
-  choseColor(element: ICampaign) {
-    if (element.status === 'draft') return 'black';
-    if (parseInt(<any>element.inProgressMsgCount) === 0) return 'green';
+  getStatusColor(status: string, inProgressMsgCount: number) {
+    if (status === 'draft') return 'black';
+    if (inProgressMsgCount === 0) return 'green';
     else return 'black';
-    // switch(status){
-    //     case 'draft':
-    //         return 'black';
-    //     case 'started':
-    //         return 'blue';
-    //     case 'completed':
-    //         return 'green';
-    //     case 'pending':
-    //         return 'yellow';
-    // }
-    // return 'black';
   }
 
-  choseStatusIcon(element: ICampaign) {
-    if (element.status === 'draft') return 'edit_note';
-    if (parseInt(<any>element.inProgressMsgCount) === 0) return 'check_circle';
+  private getStatusIcon(status: string, inProgressMsgCount: number) {
+    if (status === 'draft') return 'edit_note';
+    if (inProgressMsgCount === 0) return 'check_circle';
     else return 'hourglass_top';
   }
 
-  choseStatusLabel(element: ICampaign) {
-    if (element.status === 'draft') return 'Draft';
-    if (parseInt(<any>element.inProgressMsgCount) === 0) return 'Complete';
+  private getStatusLabel(status: string, inProgressMsgCount: number) {
+    if (status === 'draft') return 'Draft';
+    if (inProgressMsgCount === 0) return 'Complete';
     else return 'In Progress';
   }
 
@@ -181,10 +250,12 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
   }
 
   getPendingSmsCount(element: ICampaign) {
-    return parseInt(<any>element.pendingCampaignCount) + parseInt(<any>element.inProgressMsgCount);
+    return (
+      parseInt(<any>element.pendingCampaignsCount) + parseInt(<any>element.pendingMessagesCount)
+    );
   }
 
   getTotalSmsCount(element: ICampaign) {
-    return parseInt(<any>element.totalMsgCount) + parseInt(<any>element.pendingCampaignCount);
+    return parseInt(<any>element.totalMessagesCount) + parseInt(<any>element.pendingCampaignsCount);
   }
 }
