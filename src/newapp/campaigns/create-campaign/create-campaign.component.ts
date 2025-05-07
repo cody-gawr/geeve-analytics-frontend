@@ -143,10 +143,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       )
       .subscribe(clinics => {
         if (clinics.length > 0) {
-          this.todo = [];
-          this.done = [];
-          this.dataSource.data = [];
-          this.selection.clear();
+          // COMPONENT-TODO - Reset and initialize filters upon clinic change.
+          this.initializeFilters();
           this.currentClinic = clinics[0];
           this.clinicId = clinics[0].id;
           const pms = clinics[0].pms;
@@ -161,7 +159,6 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
               this.nofifyService.showError('Failed to load filter elements');
               return;
             }
-            console.log({ filterElems, healthFundsPayload, itemCodesPayload });
             this.filterElements = filterElems.data
               .filter(fe => fe && fe[pms])
               .map(fe => {
@@ -237,7 +234,9 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       });
 
     this.metadataEvent$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      if (this.campaignId && this.campaignFilters) {
+      // NOTE - Figure out why campaignId and campaignFilters are null.
+
+      if (!!this.campaignId && this.campaignFilters.length > 0) {
         this.loadFilterSettings(this.campaignFilters);
         if (this.done?.length > 0) this.eventInput.next();
         else {
@@ -460,6 +459,40 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     });
   }
 
+  private initializeFilters() {
+    this.todo = [];
+    this.done = [];
+    this.dataSource.data = [];
+    this.selection.clear();
+    this.selectedItemCodes.setValue([]);
+    this.selectedItemCodesForNoTreatment.setValue([]);
+    this.selectedHealthInsurances.setValue([]);
+    const today = moment();
+    const initialValueMap: Record<string, number | Date> = {
+      patientAgeMin: 25,
+      patientAgeMax: 75,
+
+      incomplete_tx_planStart: moment().startOf('year').toDate(),
+      incomplete_tx_planEnd: moment().toDate(),
+
+      no_appointmentStart: moment().startOf('year').toDate(),
+      no_appointmentEnd: moment().toDate(),
+
+      appointmentStart: moment().startOf('year').toDate(),
+      appointmentEnd: moment().toDate(),
+
+      treatmentStart: today.clone().startOf('year').toDate(),
+      treatmentEnd: today.clone().toDate(),
+
+      no_treatmentStart: moment().startOf('year').toDate(),
+      no_treatmentEnd: moment().toDate(),
+    };
+
+    Object.entries(initialValueMap).forEach(([formControlName, value]) => {
+      (<FormControl<number | Date>>this.filterFormGroup.controls[formControlName]).setValue(value);
+    });
+  }
+
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -591,6 +624,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       if (setting.filter_name === CAMPAIGN_FILTERS.treatment) {
         if (setting.filter_settings) {
           const filterValues = setting.filter_settings?.split(',');
+          // FIXME
           this.filterFormGroup.controls['treatmentStart'].setValue(new Date(filterValues[0]));
           this.filterFormGroup.controls['treatmentEnd'].setValue(new Date(filterValues[1]));
           const value = <any>filterValues[2]?.toLowerCase();
