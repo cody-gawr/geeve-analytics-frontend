@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { MarkdownModule, MarkdownService } from 'ngx-markdown';
+import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 
 interface TranscriptItem {
   timeElapsed: string;
@@ -62,7 +63,7 @@ interface CallLogData {
           <mat-tab label="Summary">
             <div class="tab-content summary-tab">
               <div class="summary-content">
-                <markdown [lineHighlight]="true">{{data.summary}}</markdown>
+                <markdown [lineHighlight]="true" style="line-height: 2">{{data.summary}}</markdown>
               </div>
             </div>
           </mat-tab>
@@ -70,13 +71,14 @@ interface CallLogData {
           <mat-tab label="Transcript">
             <div class="tab-content transcript-tab">
               <div
-                *ngFor="let item of data.transcript"
+                *ngFor="let item of data.transcript; let i = index"
                 [ngClass]="{
                   'message-item': item.role !== 'system',
                   'system-event': item.role === 'system',
                   'user-message': item.role === 'user',
                   'assistant-message': item.role === 'assistant'
                 }"
+                [@transcriptAnimation]="'in'"
               >
                 <ng-container *ngIf="item.role === 'system'">
                   <div class="system-text">{{ item.transcript }}</div>
@@ -111,6 +113,14 @@ interface CallLogData {
     MatButtonModule,
     MatTabsModule,
     MarkdownModule
+  ],
+  animations: [
+    trigger('transcriptAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(24px)' }),
+        animate('350ms cubic-bezier(.35,0,.25,1)', style({ opacity: 1, transform: 'none' }))
+      ])
+    ])
   ]
 })
 export class CallLogPanelComponent {
