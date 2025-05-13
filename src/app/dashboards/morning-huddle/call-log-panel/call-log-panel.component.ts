@@ -7,6 +7,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MarkdownModule, MarkdownService } from 'ngx-markdown';
 
 interface TranscriptItem {
   timeElapsed: string;
@@ -61,7 +62,7 @@ interface CallLogData {
           <mat-tab label="Summary">
             <div class="tab-content summary-tab">
               <div class="summary-content">
-                <pre>{{ data.summary }}</pre>
+                <markdown [lineHighlight]="true">{{data.summary}}</markdown>
               </div>
             </div>
           </mat-tab>
@@ -101,7 +102,16 @@ interface CallLogData {
   `,
   styleUrls: ['./call-log-panel.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatTabsModule],
+  providers: [
+    MarkdownService
+  ],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTabsModule,
+    MarkdownModule
+  ]
 })
 export class CallLogPanelComponent {
   constructor(

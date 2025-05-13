@@ -81,6 +81,7 @@ import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { layoutFeature } from '@/newapp/layout/state/reducers/layout.reducer';
 import { AppSwitchMenu } from './layouts/app-switch-menu/app-switch-menu.component';
 import { LoginService } from './login/login.service';
+import { MarkdownModule } from 'ngx-markdown';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -136,6 +137,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DropDownListAllModule,
     SharedModule,
     KanbanModule,
+    MarkdownModule.forRoot(),
     NgxDaterangepickerMd.forRoot(),
     SharedMatModule.forRoot(),
     CookieModule.withOptions(),

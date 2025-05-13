@@ -15,21 +15,21 @@ import { CallLogPanelComponent } from './call-log-panel/call-log-panel.component
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [
-    MorningHuddleComponent,
-    DialogOverviewExampleDialogComponent,
-    StatusDialogMHComponent,
-  ],
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTableModule,
-    FormsModule,
-    MatTabsModule,
-    CallLogPanelComponent,
-    ConfirmDialogComponent,
-  ],
+    declarations: [
+        MorningHuddleComponent,
+        DialogOverviewExampleDialogComponent,
+        StatusDialogMHComponent
+    ],
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTableModule,
+        FormsModule,
+        MatTabsModule,
+        CallLogPanelComponent,
+        ConfirmDialogComponent,
+    ]
 })
 export class MorningHuddleModule {}
