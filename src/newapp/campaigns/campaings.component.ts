@@ -56,7 +56,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
       | 'completedMessagesCount'
       | 'pendingCampaignsCount'
       | 'status'
-      | 'failedMsgCount'
+      | 'failedMessagesCount'
     > & {
       pendingSmsCount: number;
       totalSmsCount: number;
@@ -74,25 +74,16 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
             created,
             completedMessagesCount,
             pendingCampaignsCount,
-            failedMsgCount,
+            failedMessagesCount,
             status,
             pendingMessagesCount,
             totalMessagesCount,
           } = campaign;
 
-          const statusColor = this.getStatusColor(
-            status,
-            parseInt(<string>campaign.pendingMessagesCount),
-          );
-          const statusIcon = this.getStatusIcon(
-            status,
-            parseInt(<string>campaign.pendingMessagesCount),
-          );
-          const statusLabel = this.getStatusLabel(
-            status,
-            parseInt(<string>campaign.pendingMessagesCount),
-          );
-          const pendingSmsCount = pendingCampaignsCount + parseInt(<string>pendingMessagesCount);
+          const statusColor = this.getStatusColor(status, <number>pendingMessagesCount);
+          const statusIcon = this.getStatusIcon(status, <number>pendingMessagesCount);
+          const statusLabel = this.getStatusLabel(status, <number>pendingMessagesCount);
+          const pendingSmsCount = pendingCampaignsCount + <number>pendingMessagesCount;
           const totalSmsCount = totalMessagesCount + pendingCampaignsCount;
           return {
             id,
@@ -102,7 +93,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
             pendingCampaignsCount,
             pendingSmsCount,
             totalSmsCount,
-            failedMsgCount: parseInt(<string>failedMsgCount),
+            failedMessagesCount: <number>failedMessagesCount,
             status,
             statusColor,
             statusIcon,
@@ -148,7 +139,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     this.range.valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged()).subscribe(_ => {
       this.loadCampaigns();
     });
-
+    // COMPONENT-TODO : Review properties of campaign
     this.campaigns$.pipe(takeUntil(this.destroy$)).subscribe(campaigns => {
       console.log({ campaigns });
       this.dataSource.data = campaigns;
