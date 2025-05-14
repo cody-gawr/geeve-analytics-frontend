@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
-import { CampaignsComponent } from './campaings.component';
+import { CampaignsComponent } from './campaigns.component';
 import { CampaignsRoutingModule } from './campaigns.routing.module';
 import { AppLayoutModule } from '../layout/app-layout.module';
 import { CreateCampaignComponent } from './create-campaign/create-campaign.component';
