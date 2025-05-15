@@ -38,6 +38,7 @@ export class ReviewMsgTemplateDialog {
   public isWaitingResponse: boolean = false;
   public placeholders: string[] = [];
   public messageCount: number = 0;
+  private dragListeners: (() => void)[] = [];
 
   @ViewChild('textareaMsgTemplate') textareaMsgTemplate!: ElementRef<HTMLTextAreaElement>;
   @ViewChildren('draggableElem') elements!: QueryList<ElementRef>;
@@ -73,22 +74,29 @@ export class ReviewMsgTemplateDialog {
   }
 
   ngAfterViewInit() {
-    this.elements.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.elements.changes.pipe(takeUntil(this.destroy$)).subscribe(res => {
+      console.log({ res });
       this.attachDragListeners();
     });
     this.attachDragListeners();
   }
 
   ngOnDestroy() {
+    this.dragListeners.forEach(disposeFn => disposeFn());
     this.destroy.next();
     this.destroy.complete();
   }
 
+  // COMPONENT-TODO - Attach listener to each component
   private attachDragListeners() {
+    // Remove previous listeners
+    this.dragListeners.forEach(disposeFn => disposeFn());
+    this.dragListeners = [];
     this.elements.forEach(el => {
-      this.renderer.listen(el.nativeElement, 'dragstart', (event: DragEvent) => {
+      const dispose = this.renderer.listen(el.nativeElement, 'dragstart', (event: DragEvent) => {
         this.onDragChip(event);
       });
+      this.dragListeners.push(dispose);
     });
   }
 

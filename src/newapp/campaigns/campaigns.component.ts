@@ -46,7 +46,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
   private campaignsSubject = new BehaviorSubject<ICampaign[]>([]);
   public readonly campaigns$ = this.campaignsSubject.asObservable();
 
-  // COMPONENT-TODO : Map campaigns into a table-friendly data structure.
+  // COMPONENT-TODO - Map campaigns into a table-friendly data structure.
   public get transformedCampaigns$(): Observable<
     (Pick<
       ICampaign,
@@ -139,7 +139,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     this.range.valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged()).subscribe(_ => {
       this.loadCampaigns();
     });
-    // COMPONENT-TODO : Review properties of campaign
+    // COMPONENT-TODO - Review properties of campaign
     this.campaigns$.pipe(takeUntil(this.destroy$)).subscribe(campaigns => {
       console.log({ campaigns });
       this.dataSource.data = campaigns;
