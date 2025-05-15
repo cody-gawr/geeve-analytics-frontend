@@ -57,6 +57,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
       | 'pendingCampaignsCount'
       | 'status'
       | 'failedMessagesCount'
+      | 'failedCampaignsCount'
     > & {
       pendingSmsCount: number;
       totalSmsCount: number;
@@ -75,6 +76,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
             completedMessagesCount,
             pendingCampaignsCount,
             failedMessagesCount,
+            failedCampaignsCount,
             status,
             pendingMessagesCount,
             totalMessagesCount,
@@ -93,7 +95,8 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
             pendingCampaignsCount,
             pendingSmsCount,
             totalSmsCount,
-            failedMessagesCount: <number>failedMessagesCount,
+            failedMessagesCount: failedMessagesCount,
+            failedCampaignsCount: failedCampaignsCount,
             status,
             statusColor,
             statusIcon,
