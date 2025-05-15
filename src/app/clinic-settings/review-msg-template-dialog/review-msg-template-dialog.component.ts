@@ -1,5 +1,13 @@
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
-import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Inject,
+  ViewChild,
+  ElementRef,
+  ViewChildren,
+  QueryList,
+  Renderer2,
+} from '@angular/core';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
   MatLegacyDialogRef as MatDialogRef,
@@ -8,7 +16,6 @@ import { ToastrService } from 'ngx-toastr';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { ReviewMsgTemplateObject } from '../clinic-settings.component';
 import { ClinicSettingsService } from '../clinic-settings.service';
-// import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 export interface DialogData {
   element?: ReviewMsgTemplateObject;
@@ -33,12 +40,10 @@ export class ReviewMsgTemplateDialog {
   public messageCount: number = 0;
 
   @ViewChild('textareaMsgTemplate') textareaMsgTemplate!: ElementRef<HTMLTextAreaElement>;
-  @ViewChild('keyClinicName') clinicNameElem: ElementRef<HTMLElement>;
-  @ViewChild('keyPatientName') patientNameElem: ElementRef<HTMLElement>;
-  // @ViewChild('keyFacebookLink') facebookLinklem: ElementRef<HTMLElement>
-  @ViewChild('keyGoogleLink') googleLinkElem: ElementRef<HTMLElement>;
+  @ViewChildren('draggableElem') elements!: QueryList<ElementRef>;
 
   constructor(
+    private renderer: Renderer2,
     public dialogRef: MatDialogRef<ReviewMsgTemplateDialog>,
     @Inject(MAT_DIALOG_DATA) public dialogData: DialogData,
     private toastr: ToastrService,
@@ -68,12 +73,10 @@ export class ReviewMsgTemplateDialog {
   }
 
   ngAfterViewInit() {
-    this.setupDrag(this.clinicNameElem);
-    this.setupDrag(this.patientNameElem);
-    if (this.googleLinkElem) {
-      this.setupDrag(this.googleLinkElem);
-    }
-    // this.facebookLinklem.nativeElement.ondragstart = this.onDragChip;
+    this.elements.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.attachDragListeners();
+    });
+    this.attachDragListeners();
   }
 
   ngOnDestroy() {
@@ -81,8 +84,12 @@ export class ReviewMsgTemplateDialog {
     this.destroy.complete();
   }
 
-  private setupDrag(elem: ElementRef<HTMLElement>) {
-    elem.nativeElement.ondragstart = e => this.onDragChip(e);
+  private attachDragListeners() {
+    this.elements.forEach(el => {
+      this.renderer.listen(el.nativeElement, 'dragstart', (event: DragEvent) => {
+        this.onDragChip(event);
+      });
+    });
   }
 
   onDragChip(event: DragEvent) {

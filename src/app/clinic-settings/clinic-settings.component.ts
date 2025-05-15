@@ -453,7 +453,6 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService.getMyobLink(this.id).subscribe(
       res => {
         if (res.status == 200) {
-          console.log(`gtt: in getmyoblink, res.body: ${JSON.stringify(res.body)}`);
           this.myob_link = res.body.data;
         } else if (res.status == '401') {
           this._cookieService.put('username', '');
