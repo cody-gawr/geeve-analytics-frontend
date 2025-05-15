@@ -141,6 +141,7 @@ export interface ICampaign {
   pendingCampaignsCount: number;
   pendingMessagesCount: string | number;
   failedMessagesCount: string | number;
+  failedCampaignsCount: string | number;
   // completedMsgCount: string | number;
 }
 
