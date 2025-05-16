@@ -76,7 +76,13 @@ export class FeatureDialogComponent {
           <i style="color:#f3d633" class="fas fa-hand-point-right"></i> Available now -- streamline
           your financial workflows in just a few clinics
         </p>
-        <app-youtube-preview videoId="rdbcw58q_WM"></app-youtube-preview>
+        <div class="center-container">
+          <app-youtube-preview
+            videoId="rdbcw58q_WM"
+            [width]="'100%'"
+            [height]="'100%'"
+          ></app-youtube-preview>
+        </div>
         <div style="display: flex;justify-content: space-between;">
           <div style="display: flex;gap: 10px;justify-content: center;align-items: center;">
             <a

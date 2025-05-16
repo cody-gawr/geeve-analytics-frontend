@@ -1,4 +1,4 @@
-<div class="youtube-player">
+<!-- <div class="youtube-player">
   <iframe
     [src]="videoUrl | safeUrl"
     title="Jeeve Pay Promo - Final"
@@ -6,4 +6,26 @@
     allowfullscreen
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   ></iframe>
+</div> -->
+<div class="video-wrapper" [style.width]="width" [style.height]="height">
+  <ng-container *ngIf="!isPlaying; else videoPlayer">
+    <div
+      class="video-thumbnail"
+      [style.backgroundImage]="'url(' + thumbnailUrl + ')'"
+      (click)="playVideo()"
+    >
+      <div class="play-button"></div>
+    </div>
+  </ng-container>
+
+  <ng-template #videoPlayer>
+    <iframe
+      [src]="embedUrl | safeUrl"
+      title="Jeeve Pay Promo - Final"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+    >
+    </iframe>
+  </ng-template>
 </div>

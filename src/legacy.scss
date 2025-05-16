@@ -8141,6 +8141,17 @@ span.new-feature-popup-close {
   cursor: pointer;
 }
 
+div.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 225px;
+  app-youtube-preview {
+    width: 400px;
+    height: 100%;
+  }
+}
+
 .features-new li {
   list-style: none;
   padding: 10px 0px 10px 20px;
