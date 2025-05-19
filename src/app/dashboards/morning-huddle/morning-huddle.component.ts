@@ -58,6 +58,14 @@ export interface PeriodicElement {
   status: number;
 }
 
+enum CallType {
+  POST_OP_CALLS = 'post_op_call',
+  RECALL_CALLS = 'overdue_recall',
+  TICK_FOLLOW_UP_CALLS = 'tick_followup',
+  FTA_FOLLOW_UP_CALLS = 'fta_followup',
+  UTA_FOLLOW_UP_CALLS = 'uta_followup',
+}
+
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -229,6 +237,15 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     'Daily Tasks',
   ];
 
+  aiCallStatus = {
+    NOT_STARTED: 'not-started',
+    PENDING: 'pending',
+    IN_PROGRESS: 'in-progress',
+    COMPLETED: 'completed',
+    FAILED: 'failed',
+  };
+  
+
   public callStatusSubscriptions: Subscription[] = [];
   public homeUrl = environment.homeUrl;
   //public apiUrl = environment.apiUrl;
@@ -348,6 +365,8 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   private destroy = new Subject<void>();
   private destroy$ = this.destroy.asObservable();
   public dailyTasksMap = new Map<string, any[]>();
+
+  protected CallType = CallType;
 
   public get isHygienist(): boolean {
     return (
@@ -2287,22 +2306,13 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
-  // Add interface for AI Call Status
-  aiCallStatus = {
-    NOT_STARTED: 'not-started',
-    PENDING: 'pending',
-    IN_PROGRESS: 'in-progress',
-    COMPLETED: 'completed',
-    FAILED: 'failed',
-  };
-
-  async initiateAICall(element: any) {
+  async initiateAICall(element: any, callType: CallType) {
     console.log(element);
     let callStatusSubscription: Subscription;
     try {
       this.morningHuddleService
         .initiateCall(
-          'post-op-calls',
+          callType,
           element.post_op_codes,
           element.patients.mobile,
           `${element.patients.firstname} ${element.patients.surname}`,
@@ -2374,7 +2384,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     });
   }
 
-  followUpAll() {
+  followUpAll(callType: CallType) {
     // Get all incomplete post-op calls
     const eligibleCalls = this.followupPostOpCalls
       .filter(
@@ -2384,7 +2394,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
       .map((call, index) => ({
         recordId: call.record_id,
         phoneNumber: call.patients.mobile,
-        callType: 'postop',
+        callType: callType,
         clinicId: parseInt(this.clinic_id),
         treatmentId: call.post_op_codes,
         followUpDate: call.original_appt_date,

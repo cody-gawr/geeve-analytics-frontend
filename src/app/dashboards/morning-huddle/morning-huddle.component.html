@@ -1585,7 +1585,7 @@
                 <button
                   mat-raised-button
                   color="primary"
-                  (click)="followUpAll()"
+                  (click)="followUpAll(CallType.POST_OP_CALLS)"
                   *ngIf="!bulkCallScheduleInProgress"
                 >
                   <mat-icon>phone</mat-icon>
@@ -1717,7 +1717,7 @@
                       mat-raised-button
                       color="primary"
                       [disabled]="element.aiCallStatus === 'in-progress'"
-                      (click)="initiateAICall(element)"
+                      (click)="initiateAICall(element, CallType.POST_OP_CALLS)"
                       class="ai-call-button"
                       *ngIf="element.aiCallStatus !== 'completed' && element.is_complete == 0"
                     >
