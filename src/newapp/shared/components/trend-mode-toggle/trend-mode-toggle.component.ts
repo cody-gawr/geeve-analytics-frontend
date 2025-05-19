@@ -2,6 +2,7 @@ import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { Subject, takeUntil, map, combineLatest } from 'rxjs';
 
 @Component({
@@ -20,7 +21,7 @@ export class TrendModeToggleComponent implements OnInit, OnDestroy {
   ) {}
 
   get trendMode$() {
-    return this.layoutFacade.trend$.pipe(takeUntil(this.destroy$));
+    return this.layoutFacade.trend$;
   }
 
   get isLoading$() {
@@ -39,9 +40,11 @@ export class TrendModeToggleComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy.next();
+    this.destroy.complete();
   }
 
-  onChangeTrendMode(event) {
+  onChangeTrendMode(event: MatButtonToggleChange) {
+    console.log(event.value);
     this.layoutFacade.setTrend(event.value);
   }
 }

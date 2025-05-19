@@ -308,6 +308,7 @@ export class CaRecallRateComponent implements OnInit, OnDestroy {
   get goalCount$(): Observable<number> {
     return this.layoutFacade.dateRange$.pipe(map(v => v.goalCount));
   }
+
   constructor(
     private caFacade: ClinicianAnalysisFacade,
     private layoutFacade: LayoutFacade,

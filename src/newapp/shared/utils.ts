@@ -793,3 +793,24 @@ export function composeCampaignFilterDescription(filterName: string, settings: s
       return '';
   }
 }
+
+export function getChartLabel<T extends { yearMonth: string; year: string; weekEnd: string }>(
+  element: T,
+  trendMode: TREND_MODE,
+): string {
+  let label = null;
+
+  switch (trendMode) {
+    case 'current':
+      label = moment(element.yearMonth).format('MMM YYYY');
+      break;
+    case 'historic':
+      label = moment(element.year).format('YYYY');
+      break;
+    case 'weekly':
+      label = `WE ${moment(element.weekEnd).format('YYYY-MM-DD')}`;
+      break;
+  }
+
+  return label;
+}

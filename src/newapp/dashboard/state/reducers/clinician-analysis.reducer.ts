@@ -2,7 +2,7 @@ import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { ClinicianAnalysisActions } from '../actions';
 import _ from 'lodash';
 import { selectCurrentClinics } from '@/newapp/clinic/state/reducers/clinic.reducer';
-import { dynamicBarBackgroundColor, getSubValForGoal } from '@/newapp/shared/utils';
+import { dynamicBarBackgroundColor, getChartLabel, getSubValForGoal } from '@/newapp/shared/utils';
 import {
   selectAverage,
   selectCompare,
@@ -21,7 +21,7 @@ import {
   selectRolesIndividual,
 } from '@/newapp/auth/state/reducers/auth.reducer';
 import moment from 'moment';
-import { ChartDataset } from 'chart.js';
+import { ChartDataset, elements } from 'chart.js';
 
 const GOAL_THICKNESS = 0.5;
 
@@ -693,6 +693,7 @@ export const selectCaProductionChartData = createSelector(
   },
 );
 
+// TODO - figure out how snake_case properties are converted into camel case ones.
 export const selectCaProductionTrendChartData = createSelector(
   selectResBodyListTrend,
   selectTrend,
@@ -723,6 +724,7 @@ export const selectCaProductionTrendChartData = createSelector(
     }
     const targetData = [],
       tableData = [];
+
     resBody.data.forEach((res, i) => {
       if (chartName === 'Production') {
         chartData.push(Math.round(<number>res.production));
@@ -735,19 +737,27 @@ export const selectCaProductionTrendChartData = createSelector(
       } else {
         targetData.push(res.goals);
       }
-
-      if (trendMode == 'current') {
-        chartLabels.push(moment(res.yearMonth).format('MMM YYYY'));
-      } else if (trendMode === 'historic') {
-        chartLabels.push(res.year);
-      } else {
-        const wDate = moment(res.weekEnd).format('YYYY-MM-DD');
-        chartLabels.push('WE ' + wDate);
+      // TODO - Production Trend Chart
+      chartLabels.push(getChartLabel(res, trendMode));
+      if (trendMode == 'weekly') {
         tableData.push({
-          label: wDate,
+          label: moment(res.weekEnd).format('YYYY-MM-DD'),
           value: chartData[i],
         });
       }
+      // if (trendMode == 'current') {
+      //   chartLabels.push(moment(res.yearMonth).format('MMM YYYY'));
+      // } else if (trendMode === 'historic') {
+      //   chartLabels.push(res.year);
+      // } else {
+      //   const wDate = moment(res.weekEnd).format('YYYY-MM-DD');
+      //   // TODO - Review chart labels.
+      //   tableData.push({
+      //     label: moment(res.weekEnd).format('YYYY-MM-DD'),
+      //     value: chartData[i],
+      //   });
+      //   chartLabels.push('WE ' + wDate);
+      // }
     });
 
     let datasets: ChartDataset<'bar'>[] = [
@@ -1169,11 +1179,13 @@ export const selectCaHourlyRateTrendChartData = createSelector(
         targetData.push(res.goals);
       }
 
-      if (trendMode == 'current') {
-        chartLabels.push(moment(res.yearMonth).format('MMM YYYY'));
-      } else {
-        chartLabels.push(res.year);
-      }
+      // TODO - Improve converting chart label
+      // if (trendMode == 'current') {
+      //   chartLabels.push(moment(res.yearMonth).format('MMM YYYY'));
+      // } else {
+      //   chartLabels.push(res.year);
+      // }
+      chartLabels.push(getChartLabel(res, trendMode));
     });
 
     let datasets: ChartDataset<any>[] = [
@@ -1408,11 +1420,8 @@ export const selectCaNumNewPatientsTrendChartData = createSelector(
         targetData.push(res.goals);
       }
 
-      if (trendMode == 'current') {
-        chartLabels.push(moment(res.yearMonth).format('MMM YYYY'));
-      } else {
-        chartLabels.push(res.year);
-      }
+      // TODO - Improve labels of No. New Patients chart
+      chartLabels.push(getChartLabel(res, trendMode));
     });
 
     let datasets: ChartDataset<any>[] = [
@@ -1684,9 +1693,11 @@ export const selectTxPlanAvgFeesTrendChartData = createSelector(
       const avgFee = Math.round(<number>res.averageFees);
       if (avgFee >= 0) {
         chartData.push(avgFee);
-        chartLabels.push(
-          trendMode === 'current' ? moment(res.yearMonth).format('MMM YYYY') : res.year,
-        );
+        // TODO - Treatment Plan Average Cost Chart Labels
+        chartLabels.push(getChartLabel(res, trendMode));
+        // chartLabels.push(
+        //   trendMode === 'current' ? moment(res.yearMonth).format('MMM YYYY') : res.year,
+        // );
         backgroundColor.push(index % 2 === 0 ? COLORS.odd : COLORS.even);
       }
     });
@@ -1905,9 +1916,11 @@ export const selectTxPlanCompRateTrendChartData = createSelector(
       } else {
         targetData.push(res.goals);
       }
-      chartLabels.push(
-        trendMode === 'current' ? moment(res.yearMonth).format('MMM YYYY') : res.year,
-      );
+      // TODO - Treatment Plan Completion Rate Chart Labels
+      // chartLabels.push(
+      //   trendMode === 'current' ? moment(res.yearMonth).format('MMM YYYY') : res.year,
+      // );
+      chartLabels.push(getChartLabel(res, trendMode));
     });
 
     const sumpercantagevalue = chartData.reduce((acc, cur) => acc + cur, 0);
@@ -2180,9 +2193,11 @@ export const selectRecallRateTrendChartData = createSelector(
           : Math.round(<number>res.reappointRate);
       if (val >= 0) {
         chartData.push(val);
-        chartLabels.push(
-          trendMode === 'current' ? moment(res.yearMonth).format('MMM YYYY') : res.year,
-        );
+        // TODO - Prebooking Rate Chart Labels
+        chartLabels.push(getChartLabel(res, trendMode));
+        // chartLabels.push(
+        //   trendMode === 'current' ? moment(res.yearMonth).format('MMM YYYY') : res.year,
+        // );
         if (res.goals == -1 || res.goals == null || res.goals == '') {
           targetData.push(null);
         } else {
@@ -2636,9 +2651,11 @@ export const selectCaDataTransformationTrend = <K extends CaBaseDataRecord>(
       if (avgFee >= 0) {
         chartData.push(avgFee);
       }
-      chartLabels.push(
-        trendMode === 'current' ? moment(res.yearMonth).format('MMM YYYY') : res.year,
-      );
+      // TODO- No. Patient Complaints Chart Labels
+      chartLabels.push(getChartLabel(res, trendMode));
+      // chartLabels.push(
+      //   trendMode === 'current' ? moment(res.yearMonth).format('MMM YYYY') : res.year,
+      // );
     });
     const datasets: ChartDataset<any>[] = [
       {

@@ -23,8 +23,8 @@ declare global {
     | 'fytd'
     | 'lfytd'
     | 'custom';
-  type TREND_MODE = 'off' | 'current' | 'historic';
-  type API_TREND_MODE = 'c' | 'h';
+  type TREND_MODE = 'off' | 'current' | 'weekly' | 'historic';
+  type API_TREND_MODE = 'c' | 'w' | 'h';
   type T_SP_TYPE = 'Clinic Total' | 'Clinic Monthly' | 'Dentist Total' | 'Dentist Monthly';
   type T_MODE = 'clinic' | 'provider';
   type C_AVG_MODE = 'off' | 'average' | 'goal';
@@ -307,8 +307,9 @@ declare global {
     newPatients: string | number;
     providerId: string | number;
     providerName: string | null;
-    year: unknown;
-    yearMonth: unknown;
+    year: string;
+    yearMonth: string;
+    weekEnd: string;
     goals?: string | number; // trend
   }
 
@@ -333,8 +334,9 @@ declare global {
     providerName: string | null;
     totalFeeAll: string | number;
     totalTreatmentPlans: string | number;
-    year: unknown;
-    yearMonth: unknown;
+    year: string;
+    yearMonth: string;
+    weekEnd: string;
   }
 
   interface CaTxPlanAvgFeeApiResponse {
@@ -361,8 +363,9 @@ declare global {
     providerName: string | null;
     treatmentPerPlanPercentage: string | number;
     treatmentPercentage: string | number;
-    year: unknown;
-    yearMonth: unknown;
+    year: string;
+    yearMonth: string;
+    weekEnd: string;
     goals?: number | string;
   }
 
@@ -432,13 +435,14 @@ declare global {
   interface CaBaseDataRecord {
     clinicId: string | number;
     clinicName: string;
-    day: unknown;
-    month: unknown;
+    day: string;
+    month: string;
+    weekEnd: string;
     // numComplaints: string | number;
     providerId: string | number;
     providerName: string | null;
-    year: unknown;
-    yearMonth: unknown;
+    year: string;
+    yearMonth: string;
   }
 
   interface CaBaseApiResponse<T> {

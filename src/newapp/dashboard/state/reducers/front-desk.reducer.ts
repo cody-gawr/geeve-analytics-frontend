@@ -863,9 +863,12 @@ export const selectFdUtilRateTrendChartData = createSelector(
         const workedHour = _.chain(values)
           .sumBy(item => Number(item.workedHour))
           .value();
-        console.log(_.round((workedHour / plannedHour) * 100, 0));
+
         chartData.push(
-          Math.round(_.sumBy(values, v => (workedHour / plannedHour) * 100) / values.length),
+          Math.round(
+            _.sumBy(values, v => (plannedHour == 0 ? 0 : (workedHour / plannedHour) * 100)) /
+              values.length,
+          ),
         );
         if (values.every(item => item.goals == -1 || item.goals == '' || item.goals == null)) {
           targetData.push([0, 0]);

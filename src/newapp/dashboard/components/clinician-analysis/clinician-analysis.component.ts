@@ -87,9 +87,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
     private router: Router,
     private dentistFacade: DentistFacade,
     private authFacade: AuthFacade,
-  ) {
-    this.layoutFacade.setTrend('off');
-  }
+  ) {}
 
   get queryParams$() {
     return combineLatest([
@@ -109,7 +107,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         const startDate = dateRange.start;
         const endDate = dateRange.end;
         const duration = dateRange.duration;
-        const queryWhEnabled = route && parseInt(route.wh ?? '-1');
+        const queryWhEnabled = trend == 'weekly' ? 1 : route && parseInt(route.wh ?? '-1');
         // const isEachClinicPraktika = clinics.every(c => c.pms === 'praktika');
 
         let queryParams: ChartDescParams<CA_API_ALL_ENDPOINTS> = {
@@ -135,6 +133,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.layoutFacade.setTrend('off');
     this.clinicFacade.currentClinicId$
       .pipe(
         takeUntil(this.destroy$),
@@ -165,8 +164,8 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
         } else {
           const endpoints = [];
           endpoints.push('caNumNewPatientsTrend', 'caNumComplaintsTrend', 'caTotalDiscountsTrend');
-
           endpoints.push('caTxPlanCompRateTrend');
+          // COMPONENT-TODO - Improve trend comparision feature
           endpoints.forEach(api => {
             const params = {
               clinicId: queryParams.clinicId,
@@ -439,6 +438,7 @@ export class ClinicianAnalysisComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy.next();
+    this.destroy.complete();
   }
 
   get txPlanAvgTooltip$() {

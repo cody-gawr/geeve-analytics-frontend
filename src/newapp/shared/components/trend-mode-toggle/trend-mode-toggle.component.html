@@ -9,6 +9,7 @@
   >
     <mat-button-toggle value="off">Off</mat-button-toggle>
     <mat-button-toggle [disabled]="isLoading$ | async" value="current">Monthly</mat-button-toggle>
+    <mat-button-toggle [disabled]="isLoading$ | async" value="weekly">Weekly</mat-button-toggle>
     <mat-button-toggle [disabled]="isLoading$ | async" value="historic">Annual</mat-button-toggle>
   </mat-button-toggle-group>
 </div>
