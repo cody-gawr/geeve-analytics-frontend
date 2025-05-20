@@ -11,7 +11,7 @@
     <a
       *ngIf="!node.linkType || node.linkType == 'route'"
       [routerLink]="'/' + node.path"
-      [ngClass]="{ active: node.title == activedTitle }"
+      [ngClass]="{ active: node.title === (activedTitle$ | async) }"
     >
       <!-- use a disabled button to provide padding for tree leaf -->
       <div *ngIf="node.level == 0" class="menu-icon-btn">

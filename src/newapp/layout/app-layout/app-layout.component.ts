@@ -18,6 +18,12 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   isSidenavVisible = false;
   clinic: Clinic | null;
   activatedUrl: string = '';
+  public hiddenDatePickerMenuItems = [
+    'campaigns',
+    'coversion-tracker',
+    'unsubscribed',
+    'practice-insights',
+  ];
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -35,11 +41,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
       .subscribe(event => {
         const { url } = <NavigationEnd>event;
         this.activatedUrl = url.split('?')[0];
-        if (
-          this.activatedUrl.includes('campaigns') ||
-          this.activatedUrl.includes('unsubscribed') ||
-          this.activatedUrl.includes('practice-insights')
-        ) {
+        if (this.hiddenDatePickerMenuItems.find(item => this.activatedUrl.includes(item))) {
           this.layoutFacade.setHideDatePicker(true);
         } else {
           this.layoutFacade.setHideDatePicker(false);
@@ -90,6 +92,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy.next();
+    this.destroy.complete();
   }
 
   onOpenedChange = (e: boolean) => {};

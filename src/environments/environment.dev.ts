@@ -11,5 +11,5 @@ export const environment = {
   payUrl: 'https://test-pay.jeeve.com.au',
   featureFlags: {
     'jeeve-voice': true,
-  }
+  },
 };

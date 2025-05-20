@@ -1,5 +1,5 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Observable, Subject, combineLatest, distinctUntilChanged } from 'rxjs';
+import { Observable, Subject, combineLatest, distinctUntilChanged, of } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
@@ -24,6 +24,7 @@ import {
   faCaretDown,
   faPhoneFlip,
   faBullhorn,
+  faBullseye,
 } from '@fortawesome/free-solid-svg-icons';
 import { USER_MASTER, CONSULTANT, USER_CLINICIAN } from '@/newapp/constants';
 
@@ -228,6 +229,18 @@ const MENU_DATA: MenuNode[] = [
     },
   },
   {
+    title: 'Conversion Tracker',
+    path: '/newapp/conversion-tracker',
+    icon: faBullseye,
+    validatorFn: ({ permissions, userType, hasPrimeClinics }: MenuValidatorParams) => {
+      return (
+        !environment.production ||
+        ((userType == 2 || permissions?.indexOf('Conversion Tracker') >= 0 || userType == 7) &&
+          !environment.apiUrl.includes('//api.jeeve.com.au'))
+      );
+    },
+  },
+  {
     title: 'Practice Insights',
     path: '/newapp/practice-insights',
     icon: faFile,
@@ -370,12 +383,11 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     node => node.children,
   );
 
-  activedTitle: string = '';
-  activedUrl: string = '';
-  destroy = new Subject<void>();
-  destroy$ = this.destroy.asObservable();
+  public activedUrl: string = '';
+  private destroy = new Subject<void>();
+  public destroy$ = this.destroy.asObservable();
 
-  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  public dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   get isLoadingRolesIndividual$() {
     return this.authFacade.isLoadingRolesIndividual$.pipe(takeUntil(this.destroy$));
@@ -391,7 +403,14 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.data = [];
     this.authFacade.getRolesIndividual();
     this.clinicFacade.loadClinics();
+  }
 
+  get activedTitle$(): Observable<string> {
+    return this.layoutFacade.activatedRouteTitle$;
+  }
+
+  hasChild = (_: number, node: MenuFlatNode) => node.expandable;
+  ngOnInit() {
     combineLatest([this.authFacade.authUserData$, this.authFacade.rolesIndividualAndClinics$])
       .pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe(([user, result]) => {
@@ -434,29 +453,18 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(event => {
         const { url } = <NavigationEnd>event;
         this.activedUrl = url.split('?')[0];
-
         const node = this.findNodeByPath(this.activedUrl, MENU_DATA);
         if (node) {
           this.updateActivateState(node.title);
         }
       });
-
-    this.activedTitle$.subscribe(v => {
-      this.activedTitle = v;
-    });
   }
-
-  get activedTitle$(): Observable<string> {
-    return this.layoutFacade.activatedRouteTitle$;
-  }
-
-  hasChild = (_: number, node: MenuFlatNode) => node.expandable;
-  ngOnInit() {}
 
   ngAfterViewInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy.next();
+    this.destroy.complete();
   }
 
   toggleMenuItem = (node: MenuFlatNode): void => {
@@ -467,13 +475,14 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.layoutFacade.setActivatedRouteTitle(title);
   }
 
-  findNodeByPath(path: string, menuNodes: MenuNode[]): MenuNode | undefined {
+  findNodeByPath(path: string, menuNodes: MenuNode[]): MenuNode | null {
     for (let menuNode of menuNodes) {
-      if (menuNode.path == path) return menuNode;
+      if (menuNode.path === path) return menuNode;
       else if (menuNode.children) {
-        return this.findNodeByPath(path, menuNode.children);
+        const found = this.findNodeByPath(path, menuNode.children);
+        if (found) return found;
       }
     }
-    return undefined;
+    return null;
   }
 }

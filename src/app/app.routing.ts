@@ -162,6 +162,14 @@ export const AppRoutes: Routes = [
           ),
         canActivate: [AuthGuard],
       },
+      {
+        path: 'conversion-tracker',
+        loadChildren: () =>
+          import('../newapp/conversion-tracker/conversion-tracker.module').then(
+            m => m.ConversionTrackerModule,
+          ),
+        canActivate: [AuthGuard],
+      },
     ],
   },
   {
