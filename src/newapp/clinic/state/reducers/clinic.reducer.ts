@@ -258,6 +258,7 @@ export const clinicFeature = createFeature({
         //   clinic.connected = hasPraktikaSync;
         //   clinic.numberOfSuccess = numberOfSuccess;
         // }
+        // TODO - check if this is correct
         const updatedUserClinics = userClinics.map(
           clinic =>
             clinic.id === clinicId && clinic.pms.toLowerCase() === 'praktika'
