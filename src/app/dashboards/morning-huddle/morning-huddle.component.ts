@@ -60,7 +60,7 @@ export interface PeriodicElement {
 
 enum CallType {
   POST_OP_CALLS = 'post_op_call',
-  RECALL_CALLS = 'overdue_recall',
+  OVERDUE_RECALLS = 'overdue_recall',
   TICK_FOLLOW_UP_CALLS = 'tick_followup',
   FTA_FOLLOW_UP_CALLS = 'fta_followup',
   UTA_FOLLOW_UP_CALLS = 'uta_followup',
@@ -398,7 +398,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   displayedColumns4: string[] = ['name', 'phone', 'code', 'status'];
   displayedColumns5: string[] = ['name', 'phone', 'code', 'dentist', 'date', 'status'];
   displayedColumns6: string[] = ['start', 'dentist', 'name', 'card'];
-  displayedColumns7: string[] = ['name', 'phone', 'code', 'provider', 'note', 'book', 'status'];
+  displayedColumns7: string[] = ['name', 'phone', 'code', 'provider', 'note', 'book', 'aiCallAgent', 'status'];
   displayedColumns8: string[] = ['name', 'phone', 'code', 'dentist', 'note', 'book', 'status'];
   displayedColumns9: string[] = ['name', 'completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity', 'am', 'pm'];
@@ -2307,7 +2307,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   }
 
   async initiateAICall(element: any, callType: CallType) {
-    console.log(element);
+    console.log(element, 'Call Type', callType);
     let callStatusSubscription: Subscription;
     try {
       this.morningHuddleService
