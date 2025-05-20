@@ -20,7 +20,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   activatedUrl: string = '';
   public hiddenDatePickerMenuItems = [
     'campaigns',
-    'coversion-tracker',
+    'conversion-tracker',
     'unsubscribed',
     'practice-insights',
   ];
@@ -59,8 +59,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
           if (
             url.includes('campaigns/create?campaign_id=') ||
             this.activatedUrl.includes('campaigns/view')
-          )
+          ) {
             this.layoutFacade.setHideClinicSelectionDropDown(true);
+          }
         } else {
           this.layoutFacade.savePaths([]);
           this.layoutFacade.setHideClinicSelectionDropDown(false);

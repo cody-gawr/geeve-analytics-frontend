@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DateRange } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-conversion-tracker',
@@ -9,4 +10,8 @@ export class ConversionTrackerComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  onRangeSelected(event: DateRange<Date>) {
+    console.log('Selected range:', event);
+  }
 }

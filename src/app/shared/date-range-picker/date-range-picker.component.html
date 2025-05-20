@@ -1,0 +1,20 @@
+<div class="date-range-wrapper" (click)="openCalendar()" tabindex="0">
+  <mat-form-field appearance="outline" class="date-range-field">
+    <mat-icon matPrefix class="calendar-icon">calendar_month</mat-icon>
+
+    <mat-date-range-input
+      [formGroup]="form.get('range')"
+      [rangePicker]="dateRangePicker"
+      [disabled]="false"
+    >
+      <input matStartDate formControlName="start" placeholder="Start date" />
+      <input matEndDate formControlName="end" placeholder="End date" />
+    </mat-date-range-input>
+
+    <mat-icon matSuffix class="clickable-icon" (click)="dateRangePicker.open()"
+      >arrow_drop_down</mat-icon
+    >
+
+    <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
+  </mat-form-field>
+</div>

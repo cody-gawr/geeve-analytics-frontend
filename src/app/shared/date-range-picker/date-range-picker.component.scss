@@ -1,0 +1,31 @@
+.date-range-wrapper {
+  display: inline-block;
+  cursor: pointer;
+
+  .calendar-icon {
+    font-size: 22px;
+    color: rgba(0, 0, 0, 0.54); // optional: match Material's text color
+  }
+
+  mat-form-field {
+    width: 100%;
+    padding: 6px 8px; // general form field padding
+    pointer-events: none; // disables click propagation inside
+  }
+
+  mat-form-field * {
+    pointer-events: auto; // re-enable pointer events for children
+  }
+
+  mat-icon {
+    cursor: pointer;
+  }
+
+  .mat-form-field-flex {
+    padding: 1em 0.75em !important;
+  }
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+  padding: 1em 0.75em 1em 0.75em !important;
+}

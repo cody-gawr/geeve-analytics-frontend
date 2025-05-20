@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DemoMaterialModule } from '../demo-material-module';
 import { YoutubePreviewComponent } from './youtube-preview/youtube-preview.component';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
+import { DateRangePickerComponent } from './date-range-picker/date-range-picker.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe';
     StripePaymentDialog,
     YoutubePreviewComponent,
     SafeUrlPipe,
+    DateRangePickerComponent,
   ],
   exports: [
     AccordionAnchorDirective,
@@ -37,6 +39,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe';
     SpinnerComponent,
     StripePaymentDialog,
     YoutubePreviewComponent,
+    DateRangePickerComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, DemoMaterialModule],
   providers: [
