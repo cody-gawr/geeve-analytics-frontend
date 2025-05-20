@@ -1,14 +1,6 @@
-import {
-  Component,
-  OnInit,
-  forwardRef,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatDateRangePicker } from '@angular/material/datepicker';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { Subscription } from 'rxjs';
 
