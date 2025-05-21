@@ -1,1 +1,29 @@
-<app-date-range-picker (dateRangeChange)="onRangeSelected($event)" />
+<div class="conversion-tracker-container">
+  <mat-card class="conversion-tracker-header">
+    <div class="date-range-picker-wrapper">
+      <app-date-range-picker (dateRangeChange)="onRangeSelected($event)" />
+    </div>
+    <div class="cards-wrapper">
+      <app-conversion-insight-card />
+      <app-conversion-insight-card />
+      <app-conversion-insight-card />
+    </div>
+  </mat-card>
+  <mat-card>
+    <mat-tab-group>
+      <mat-tab label="Unconverted">
+        <app-conversion-table [data]="unconvertedData"></app-conversion-table>
+      </mat-tab>
+      <mat-tab label="Converted">
+        <app-conversion-table [data]="convertedData"></app-conversion-table>
+      </mat-tab>
+      <mat-tab label="Declined">
+        <app-conversion-table [data]="declinedData"></app-conversion-table>
+      </mat-tab>
+    </mat-tab-group>
+    <div class="buttons-wrapper">
+      <button color="primary" mat-stroked-button>Start Campaign</button>
+      <button mat-flat-button color="primary">Export</button>
+    </div>
+  </mat-card>
+</div>

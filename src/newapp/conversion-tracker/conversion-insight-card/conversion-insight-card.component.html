@@ -1,0 +1,19 @@
+<div class="card-container">
+  <div class="icon-wrapper">
+    <button mat-fab color="primary" aria-label="Description icon button">
+      <mat-icon>{{ safeIcon }}</mat-icon>
+    </button>
+  </div>
+  <div class="insight-wrapper">
+    <p class="insight-description">{{ safeDescription }}</p>
+    <div class="insight-value">
+      <div>
+        <span>{{ safeValue | number: '1.0-0' }}</span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-icon>{{ metricDirectionIcon }}</mat-icon>
+        <span class="metric">{{ metricSign }}{{ safeMetric | number: '1.1-2' }}%</span>
+      </div>
+    </div>
+  </div>
+</div>

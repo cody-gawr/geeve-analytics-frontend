@@ -1,0 +1,49 @@
+<table mat-table [dataSource]="data" class="mat-elevation-z1 conversion-table" style="width: 100%">
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <span class="visually-hidden">Select</span>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox></mat-checkbox>
+    </td>
+  </ng-container>
+
+  <!-- Patient Column -->
+  <ng-container matColumnDef="patient">
+    <th mat-header-cell *matHeaderCellDef>Patient</th>
+    <td mat-cell *matCellDef="let row">{{ row.patient }}</td>
+  </ng-container>
+
+  <!-- Visit Date Column -->
+  <ng-container matColumnDef="visitDate">
+    <th mat-header-cell *matHeaderCellDef>Visit Date</th>
+    <td mat-cell *matCellDef="let row">{{ row.visitDate }}</td>
+  </ng-container>
+
+  <!-- Consult Column -->
+  <ng-container matColumnDef="consult">
+    <th mat-header-cell *matHeaderCellDef>Consult</th>
+    <td mat-cell *matCellDef="let row">{{ row.consult }}</td>
+  </ng-container>
+
+  <!-- Status Column -->
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let row">{{ row.status }}</td>
+  </ng-container>
+
+  <!-- Last Campaign Column -->
+  <ng-container matColumnDef="lastCampaign">
+    <th mat-header-cell *matHeaderCellDef>Last Campaign</th>
+    <td mat-cell *matCellDef="let row">{{ row.lastCampaign }}</td>
+  </ng-container>
+
+  <!-- Header and Row Definitions -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; let i = index; columns: displayedColumns"
+    [ngClass]="{ 'row-odd': i % 2 === 1, 'row-even': i % 2 === 0 }"
+  ></tr>
+</table>

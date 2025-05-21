@@ -34,6 +34,7 @@ import { DateRangePresetComponent } from './components/daterange-preset/daterang
 import { AppCustomSelect } from './components/custom-select/custom-select.component';
 import { StripePaymentDialog } from './components/stripe-payment-modal/stripe-payment-modal.component';
 import { NumericOnlyDirective } from './directives/numeric-only.directive';
+import { DateRangePickerComponent } from './date-range-picker/date-range-picker.component';
 
 const modules = [
   AngularMaterialModule,
@@ -68,6 +69,7 @@ const components = [
   DateRangePresetComponent,
   AppCustomSelect,
   StripePaymentDialog,
+  DateRangePickerComponent,
 ];
 
 @NgModule({

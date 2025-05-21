@@ -1,0 +1,36 @@
+.conversion-tracker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  .conversion-tracker-header {
+    display: flex;
+    flex-direction: column;
+    .date-range-picker-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      gap: 15px;
+    }
+    .cards-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 1em;
+      app-conversion-insights-card {
+        flex: 1 1 auto;
+      }
+    }
+  }
+
+  ::ng-deep mat-tab-header {
+    width: 33.33%;
+  }
+
+  .buttons-wrapper {
+    padding: 3em 2em;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+}
