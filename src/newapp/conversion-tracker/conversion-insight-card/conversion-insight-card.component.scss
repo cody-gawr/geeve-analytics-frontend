@@ -4,6 +4,19 @@
   align-items: center;
   padding: 1em;
   gap: 1em;
+  .icon-wrapper {
+    button {
+      &.total-consult {
+        background-color: #02bec9;
+      }
+      &.conversion-rate {
+        background-color: #fc4b6c;
+      }
+      &.avg-time-conversion {
+        background-color: #7460ee;
+      }
+    }
+  }
   .insight-wrapper {
     display: flex;
     flex-direction: column;

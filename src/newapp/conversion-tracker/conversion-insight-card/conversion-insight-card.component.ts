@@ -6,10 +6,27 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./conversion-insight-card.component.scss'],
 })
 export class ConversionInsightCardComponent implements OnInit {
+  @Input() type: 'Total Consult' | 'Conversion Rate' | 'Avg Time to Conversion' | null = null;
   @Input() icon: string | null = null;
   @Input() description: string | null = null;
-  @Input() value: number | null = null;
+  @Input() value: string | null = null;
   @Input() metric: number | null = null;
+
+  get buttonClass(): string {
+    let buttonClass = 'btn btn-outline-primary';
+    switch (this.type) {
+      case 'Total Consult':
+        buttonClass = 'total-consult';
+        break;
+      case 'Conversion Rate':
+        buttonClass = 'conversion-rate';
+        break;
+      case 'Avg Time to Conversion':
+        buttonClass = 'avg-time-to-conversion';
+        break;
+    }
+    return buttonClass;
+  }
 
   get safeIcon(): string {
     return this.icon?.trim() || 'info';
@@ -19,8 +36,8 @@ export class ConversionInsightCardComponent implements OnInit {
     return this.description?.trim() || 'No description available';
   }
 
-  get safeValue(): number {
-    return typeof this.value === 'number' ? this.value : 0;
+  get safeValue(): string {
+    return this.value?.trim() || 'No value available';
   }
 
   get safeMetric(): number {
@@ -32,7 +49,7 @@ export class ConversionInsightCardComponent implements OnInit {
   }
 
   get metricSign(): string {
-    return this.safeMetric >= 0 ? '+' : '-';
+    return this.safeMetric >= 0 ? '+' : '';
   }
 
   constructor() {}

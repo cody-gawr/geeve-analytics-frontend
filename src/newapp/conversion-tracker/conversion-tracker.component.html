@@ -4,9 +4,27 @@
       <app-date-range-picker (dateRangeChange)="onRangeSelected($event)" />
     </div>
     <div class="cards-wrapper">
-      <app-conversion-insight-card />
-      <app-conversion-insight-card />
-      <app-conversion-insight-card />
+      <app-conversion-insight-card
+        type="Total Consult"
+        icon="people"
+        description="Total Consult"
+        value="102"
+        [metric]="8"
+      />
+      <app-conversion-insight-card
+        type="Conversion Rate"
+        icon="trending_up"
+        description="Conversion Rate"
+        value="56%"
+        [metric]="4"
+      />
+      <app-conversion-insight-card
+        type="Avg Time to Conversion"
+        icon="schedule"
+        description="Avg Time to Conversion"
+        value="18 Days"
+        [metric]="-2"
+      />
     </div>
   </mat-card>
   <mat-card>
@@ -22,8 +40,8 @@
       </mat-tab>
     </mat-tab-group>
     <div class="buttons-wrapper">
-      <button color="primary" mat-stroked-button>Start Campaign</button>
-      <button mat-flat-button color="primary">Export</button>
+      <button color="primary" mat-stroked-button>Export</button>
+      <button color="primary" mat-flat-button>Start Campaign</button>
     </div>
   </mat-card>
 </div>
