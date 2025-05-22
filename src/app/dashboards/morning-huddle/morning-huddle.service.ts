@@ -1069,6 +1069,7 @@ export class MorningHuddleService {
   }
 
   initiateCall(
+    recordId: number,
     callType: string,
     callId: number,
     phoneNumber: string,
@@ -1086,6 +1087,7 @@ export class MorningHuddleService {
       .post(
         `${environment.baseApiUrl}/v1/voice/initiate`,
         {
+          recordId: recordId,
           phoneNumber: phoneNumber,
           callType: callType,
           callId: callId,

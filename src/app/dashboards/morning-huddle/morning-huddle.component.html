@@ -1882,7 +1882,7 @@
 
       <mat-card class="table-card post_call_responsive_border followUpsTab4 morngHuddle">
         <mat-card-title>
-          <div class="title-follow-up">
+          <div class="title-follow-up" style="display: flex; justify-content: space-between; align-items: center">
             <div class="TitleCon">
               Overdue Recalls
               <div class="info-icon-container">
@@ -1894,13 +1894,47 @@
                 />
               </div>
             </div>
-            <div *ngIf="followupOverDueRecall.length > 0" class="showComplete">
-              <mat-checkbox
-                name="status"
-                [checked]="showCompleteOverdue"
-                (change)="updateToCompleteOR($event)"
-                >Show Complete</mat-checkbox
-              >
+            <div
+              *ngIf="followupOverDueRecall.length > 0"
+              style="display: flex; flex-direction: row; align-items: center; gap: 1rem"
+            >
+              <div>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="followUpAll(CallType.POST_OP_CALLS)"
+                  *ngIf="!bulkCallScheduleInProgress"
+                >
+                  <mat-icon>phone</mat-icon>
+                  Follow Up All
+                </button>
+                <div style="display: flex; flex-direction: row; align-items: center; gap: 1rem">
+                  <div
+                    class="schedule-progress"
+                    *ngIf="bulkCallScheduleInProgress"
+                    style="display: flex; align-items: center; gap: 1rem"
+                  >
+                    <mat-spinner diameter="20"></mat-spinner>
+                    <span class="progress-text">Schedule in progress...</span>
+                  </div>
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="cancelBulkSchedule()"
+                    *ngIf="bulkCallScheduleInProgress"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="followupOverDueRecall.length > 0" class="showComplete">
+                <mat-checkbox
+                  name="status"
+                  [checked]="showCompleteOverdue"
+                  (change)="updateToCompleteOR($event)"
+                  >Show Complete</mat-checkbox
+                >
+              </div>
             </div>
           </div>
           <div class="chipSets mornHuddle" *ngIf="overdueRecallsScrps.length > 0">

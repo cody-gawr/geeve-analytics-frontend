@@ -66,6 +66,21 @@ enum CallType {
   UTA_FOLLOW_UP_CALLS = 'uta_followup',
 }
 
+const getAPICallType = (callType: CallType) => {
+  switch (callType) {
+    case CallType.POST_OP_CALLS:
+      return 'post-op-calls';
+    case CallType.OVERDUE_RECALLS:
+      return 'recall-overdue';
+    case CallType.TICK_FOLLOW_UP_CALLS:
+      return 'tick-follower';
+    case CallType.FTA_FOLLOW_UP_CALLS:
+      return 'fta-follower';
+    case CallType.UTA_FOLLOW_UP_CALLS:
+      return 'uta-follower';
+  }
+}
+
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -2312,6 +2327,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     try {
       this.morningHuddleService
         .initiateCall(
+          element.id,
           callType,
           element.post_op_codes,
           element.patients.mobile,
@@ -2386,7 +2402,37 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
   followUpAll(callType: CallType) {
     // Get all incomplete post-op calls
-    const eligibleCalls = this.followupPostOpCalls
+    let calls: any[] = [];
+    let callsInComp: any[] = [];
+
+    if (callType === CallType.POST_OP_CALLS) {
+      calls = this.followupPostOpCalls;
+      callsInComp = this.followupPostOpCallsInComp;
+    } else if (callType === CallType.OVERDUE_RECALLS) {
+      calls = this.followupOverDueRecall;
+      callsInComp = this.followupOverDueRecallInCMP;
+    } else if (callType === CallType.TICK_FOLLOW_UP_CALLS) {
+      calls = this.followupTickFollowups;
+      callsInComp = this.followupTickFollowupsInCMP;
+    } else if (callType === CallType.FTA_FOLLOW_UP_CALLS) {
+      calls = this.followupFtaFollowups;
+      callsInComp = this.followupFtaFollowupsInCMP;
+    } else if (callType === CallType.UTA_FOLLOW_UP_CALLS) {
+      calls = this.followupUtaFollowups;
+      callsInComp = this.followupUtaFollowupsInCMP;
+    }
+
+    if (calls.length === 0) {
+      this.toastr.info('No eligible calls found for bulk scheduling');
+      return;
+    }
+
+    if (callsInComp.length === 0) {
+      this.toastr.info('No eligible calls found for bulk scheduling');
+      return;
+    }
+
+    const eligibleCalls = calls
       .filter(
         call =>
           (!call.is_complete && call.patients.patient_id === 12) || call.patients.patient_id === 11,
@@ -2416,11 +2462,11 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
     }
 
     eligibleCalls.forEach(call => {
-      const followupPostOpCallsInCompElement = this.followupPostOpCallsInComp.find(
+      const element = callsInComp.find(
         call => call.record_id === call.recordId,
       );
-      if (followupPostOpCallsInCompElement) {
-        followupPostOpCallsInCompElement.aiCallStatus = this.aiCallStatus.PENDING;
+      if (element) {
+        element.aiCallStatus = this.aiCallStatus.PENDING;
       }
     });
 
@@ -2436,21 +2482,21 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
           (status: BulkSSEMessage) => {
             console.log('Bulk status update:', status);
 
-            const followupPostOpCallsInCompElement = this.followupPostOpCallsInComp.find(
+            const element = callsInComp.find(
               call => call.record_id === status.recordId,
             );
 
-            if (followupPostOpCallsInCompElement) {
-              followupPostOpCallsInCompElement.aiCallStatus = status.status;
+            if (element) {
+              element.aiCallStatus = status.status;
 
               if (status.status === 'completed') {
                 this.toggleUpdate(
                   null,
-                  followupPostOpCallsInCompElement.patients.patient_id,
-                  followupPostOpCallsInCompElement.original_appt_date,
-                  followupPostOpCallsInCompElement.followup_date,
-                  followupPostOpCallsInCompElement.patients.clinic_id,
-                  'post-op-calls',
+                  element.patients.patient_id,
+                  element.original_appt_date,
+                  element.followup_date,
+                  element.patients.clinic_id,
+                  getAPICallType(callType),
                 );
               }
             }
