@@ -28,7 +28,7 @@
     </div>
   </mat-card>
   <mat-card class="tab-group-container">
-    <mat-tab-group class="rounded-tabs" color="transparent">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
       <mat-tab label="Unconverted">
         <app-conversion-table [data]="unconvertedData"></app-conversion-table>
       </mat-tab>
