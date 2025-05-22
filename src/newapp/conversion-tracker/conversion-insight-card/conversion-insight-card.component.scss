@@ -2,10 +2,13 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 1em;
+  padding: 3em 2em;
   gap: 1em;
   .icon-wrapper {
     button {
+      width: 64px; // Default is 56px
+      height: 64px;
+
       &.total-consult {
         background-color: #02bec9;
       }
