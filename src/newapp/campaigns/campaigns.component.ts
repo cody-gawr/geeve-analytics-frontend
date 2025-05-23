@@ -42,7 +42,25 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     'status',
     'actions',
   ];
-  dataSource = new MatTableDataSource<ICampaign>([]);
+  dataSource = new MatTableDataSource<
+    Pick<
+      ICampaign,
+      | 'id'
+      | 'description'
+      | 'created'
+      | 'completedMessagesCount'
+      | 'pendingCampaignsCount'
+      | 'status'
+      | 'failedMessagesCount'
+      | 'failedCampaignsCount'
+    > & {
+      pendingSmsCount: number;
+      totalSmsCount: number;
+      statusColor: string;
+      statusIcon: string;
+      statusLabel: string;
+    }
+  >([]);
   private campaignsSubject = new BehaviorSubject<ICampaign[]>([]);
   public readonly campaigns$ = this.campaignsSubject.asObservable();
 
@@ -143,13 +161,10 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
       this.loadCampaigns();
     });
     // COMPONENT-TODO - Review properties of campaign
-    this.campaigns$.pipe(takeUntil(this.destroy$)).subscribe(campaigns => {
-      console.log({ campaigns });
+
+    this.transformedCampaigns$.pipe(takeUntil(this.destroy$)).subscribe(campaigns => {
       this.dataSource.data = campaigns;
     });
-    this.transformedCampaigns$
-      .pipe(map(campaigns => campaigns.filter(campaign => campaign.id === 89)[0]))
-      .subscribe(campaign => console.log({ campaign }));
   }
 
   getStatusColor(status: string, inProgressMsgCount: number) {
@@ -251,5 +266,9 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
   getTotalSmsCount(element: ICampaign) {
     return parseInt(<any>element.totalMessagesCount) + parseInt(<any>element.pendingCampaignsCount);
+  }
+
+  trackById<T extends { id: number }>(index: number, item: T): number {
+    return item.id;
   }
 }
