@@ -197,12 +197,27 @@
     routerLinkActive="selected"
     group="string"
     *ngIf="
+      (user_type == 2 || permisions.indexOf('conversiontracker') >= 0 || user_type == 7) &&
+      !apiUrl.includes('//api.jeeve.com.au')
+    "
+  >
+    <a appAccordionToggle [routerLink]="['/newapp/conversion-tracker']">
+      <i class="fas fa-bullseye"></i>
+      <span>Conversion Tracker</span>
+      <span fxFlex></span>
+    </a>
+  </mat-list-item>
+  <mat-list-item
+    appAccordionLink
+    routerLinkActive="selected"
+    group="string"
+    *ngIf="
       (user_type == 2 || permisions.indexOf('practiceinsights') >= 0 || user_type == 7) &&
       !apiUrl.includes('//api.jeeve.com.au')
     "
   >
     <a appAccordionToggle [routerLink]="['/newapp/practice-insights']">
-      <i class="fas fa-file"></i>
+      <i class="fas fa-chart-pie"></i>
       <span>Practice Insights</span>
       <span fxFlex></span>
     </a>

@@ -25,6 +25,7 @@ import {
   faPhoneFlip,
   faBullhorn,
   faBullseye,
+  faChartPie,
 } from '@fortawesome/free-solid-svg-icons';
 import { USER_MASTER, CONSULTANT, USER_CLINICIAN } from '@/newapp/constants';
 
@@ -235,7 +236,7 @@ const MENU_DATA: MenuNode[] = [
     validatorFn: ({ permissions, userType, hasPrimeClinics }: MenuValidatorParams) => {
       return (
         !environment.production ||
-        ((userType == 2 || permissions?.indexOf('Conversion Tracker') >= 0 || userType == 7) &&
+        ((userType == 2 || permissions?.indexOf('conversiontracker') >= 0 || userType == 7) &&
           !environment.apiUrl.includes('//api.jeeve.com.au'))
       );
     },
@@ -243,7 +244,7 @@ const MENU_DATA: MenuNode[] = [
   {
     title: 'Practice Insights',
     path: '/newapp/practice-insights',
-    icon: faFile,
+    icon: faChartPie,
     validatorFn: ({ permissions, userType, hasPrimeClinics }: MenuValidatorParams) => {
       return (
         (userType == 2 || permissions?.indexOf('practiceinsights') >= 0 || userType == 7) &&
