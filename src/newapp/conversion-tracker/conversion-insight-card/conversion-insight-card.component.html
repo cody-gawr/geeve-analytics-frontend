@@ -1,4 +1,4 @@
-<div class="card-container">
+<div class="card-container" [ngClass]="cardColorClass">
   <div class="icon-wrapper">
     <button mat-fab [class]="buttonClass" aria-label="Description icon button">
       <mat-icon>{{ safeIcon }}</mat-icon>
@@ -11,8 +11,8 @@
         <span>{{ safeValue }}</span>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between center">
-        <mat-icon>{{ metricDirectionIcon }}</mat-icon>
-        <span class="metric">{{ metricSign }}{{ safeMetric | number: '1.1-2' }}%</span>
+        <mat-icon [ngClass]="fontColorClass">{{ metricDirectionIcon }}</mat-icon>
+        <span class="metric" [ngClass]="fontColorClass">{{ metricSign }} {{ metricValue }}</span>
       </div>
     </div>
   </div>

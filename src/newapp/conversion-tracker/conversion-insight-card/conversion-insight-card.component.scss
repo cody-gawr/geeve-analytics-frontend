@@ -4,6 +4,19 @@
   align-items: center;
   padding: 3em 2em;
   gap: 1em;
+  border-radius: 0.6em;
+  &.card-success {
+    background-color: #ecfae5;
+  }
+
+  &.card-warning {
+    background-color: #ffedfa;
+  }
+
+  &.card-info {
+    background-color: #f5efff;
+  }
+
   .icon-wrapper {
     button {
       width: 64px; // Default is 56px
@@ -32,9 +45,21 @@
       gap: 0.5em;
       font-size: 1.8em;
       font-weight: bold;
-      span.metric {
-        font-weight: 500;
-        font-size: 0.8em;
+      span,
+      mat-icon {
+        &.metric {
+          font-weight: 500;
+          font-size: 0.8em;
+        }
+        &.text-success {
+          color: #67ae6e;
+        }
+        &.text-warning {
+          color: #c95792;
+        }
+        &.text-info {
+          color: #7f55b1;
+        }
       }
     }
   }

@@ -12,6 +12,38 @@ export class ConversionInsightCardComponent implements OnInit {
   @Input() value: string | null = null;
   @Input() metric: number | null = null;
 
+  get cardColorClass(): string {
+    let cardColorClass = '';
+    switch (this.type) {
+      case 'Total Consult':
+        cardColorClass = 'card-success';
+        break;
+      case 'Conversion Rate':
+        cardColorClass = 'card-warning';
+        break;
+      case 'Avg Time to Conversion':
+        cardColorClass = 'card-info';
+        break;
+    }
+    return cardColorClass;
+  }
+
+  get fontColorClass(): string {
+    let fontColorClass = '';
+    switch (this.type) {
+      case 'Total Consult':
+        fontColorClass = 'text-success';
+        break;
+      case 'Conversion Rate':
+        fontColorClass = 'text-warning';
+        break;
+      case 'Avg Time to Conversion':
+        fontColorClass = 'text-info';
+        break;
+    }
+    return fontColorClass;
+  }
+
   get buttonClass(): string {
     let buttonClass = 'btn btn-outline-primary';
     switch (this.type) {
@@ -42,6 +74,21 @@ export class ConversionInsightCardComponent implements OnInit {
 
   get safeMetric(): number {
     return typeof this.metric === 'number' ? this.metric : 0;
+  }
+
+  get metricValue(): string {
+    let value = '';
+    switch (this.type) {
+      case 'Total Consult':
+      case 'Conversion Rate':
+        value = `${this.safeMetric}%`;
+        break;
+      case 'Avg Time to Conversion':
+        value = `${this.safeMetric}d`;
+        break;
+    }
+
+    return value;
   }
 
   get metricDirectionIcon(): string {

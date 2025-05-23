@@ -17,7 +17,7 @@
       flex-direction: row;
       justify-content: space-between;
       gap: 1em;
-      margin: 0 1em;
+      margin: 1em 1em;
       app-conversion-insight-card {
         flex: 1 1 auto;
       }
@@ -41,7 +41,7 @@
       background-color: transparent;
       border-bottom: none;
     }
-    ::ng-deep .mdc-tab-indicator--active  .mdc-tab-indicator {
+    ::ng-deep .mdc-tab-indicator--active .mdc-tab-indicator {
       display: none !important;
     }
   }
