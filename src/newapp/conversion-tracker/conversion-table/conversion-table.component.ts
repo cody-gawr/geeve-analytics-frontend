@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 export interface ConversionRecord {
   patient: string;
@@ -13,7 +13,7 @@ export interface ConversionRecord {
   templateUrl: './conversion-table.component.html',
   styleUrls: ['./conversion-table.component.scss'],
 })
-export class ConversionTableComponent implements OnInit {
+export class ConversionTableComponent implements OnInit, OnDestroy {
   @Input() data: ConversionRecord[] = [];
   displayedColumns: string[] = [
     'select',
@@ -27,4 +27,6 @@ export class ConversionTableComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  ngOnDestroy(): void {}
 }

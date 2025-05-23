@@ -1,0 +1,87 @@
+<div class="dialog-header">
+  <div class="header-title">
+    <h1 mat-dialog-title>Start Campaign</h1>
+  </div>
+
+  <mat-icon class="close-icon" (click)="onNoClick()">close</mat-icon>
+</div>
+<div mat-dialog-content>
+  <div style="display: flex; gap: 15px">
+    <div class="sms-form">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Message Template</mat-label>
+        <mat-select
+          [disabled]="loadingData"
+          [(value)]="selectedTmpMsg"
+          (selectionChange)="onChangeReviewMsg()"
+        >
+          <mat-option value=""> No selected </mat-option>
+          <mat-option *ngFor="let msgT of msgTemplates" [value]="msgT.id">
+            {{ msgT.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field" appearance="outline" *ngIf="phoneNumber.value">
+        <mat-label>Phone Number</mat-label>
+        <input matInput placeholder="" [formControl]="phoneNumber" />
+      </mat-form-field>
+      <mat-form-field
+        appearance="outline"
+        class="form-field"
+        [hintLabel]="'Max 160 Characters Per Credit'"
+      >
+        <mat-label>SMS Text</mat-label>
+        <textarea
+          [disabled]="loadingData"
+          matInput
+          [formControl]="sms_text"
+          rows="7"
+          [maxlength]="800"
+        ></textarea>
+        <mat-hint align="end"
+          >{{ sms_text.value.length }} / 800, {{ numMessage }}
+          {{ numMessage == 0 || numMessage > 1 ? 'messages' : 'message' }}</mat-hint
+        >
+        <mat-error *ngIf="this.remainCredits < this.numTotalMessage">
+          The available credits are not enough.
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div style="width: 350px">
+      <div class="phone-f">
+        <div class="phone-h-box">
+          <div class="phone-h"></div>
+        </div>
+        <div class="phone-s">
+          <div
+            *ngIf="composedTextForFirstPatient && composedTextForFirstPatient.length > 0"
+            class="phone-m"
+          >
+            {{ composedTextForFirstPatient }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div></div>
+
+  <p class="patient-info">Total Patients: {{ data.patients.length }}</p>
+  <p class="patient-info">Required Credits: {{ numTotalMessage }}</p>
+  <p class="patient-info">Available Credits: {{ remainCredits }}</p>
+  <p *ngIf="this.remainCredits < this.numTotalMessage" style="color: orange">
+    You have insufficient credits to run this campaign.
+    <a (click)="openTopUp()" style="color: #0378d5; cursor: pointer">Add more credits</a>
+  </p>
+</div>
+<div mat-dialog-actions class="justify-between">
+  <button mat-button class="mat-raised-button mat-gray" (click)="onNoClick()">Cancel</button>
+  <button
+    mat-button
+    class="mat-raised-button mat-dc"
+    mat-button
+    (click)="onSubmitClick($event)"
+    [disabled]="disabledSubmit()"
+  >
+    {{ 'Send' }} To {{ data.patients.length }} Patients
+  </button>
+</div>

@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-conversion-insight-card',
   templateUrl: './conversion-insight-card.component.html',
   styleUrls: ['./conversion-insight-card.component.scss'],
 })
-export class ConversionInsightCardComponent implements OnInit {
+export class ConversionInsightCardComponent implements OnInit, OnDestroy {
   @Input() type: 'Total Consult' | 'Conversion Rate' | 'Avg Time to Conversion' | null = null;
   @Input() icon: string | null = null;
   @Input() description: string | null = null;
@@ -102,4 +102,6 @@ export class ConversionInsightCardComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  ngOnDestroy(): void {}
 }

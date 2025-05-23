@@ -7,6 +7,8 @@ import {
   ViewChildren,
   QueryList,
   Renderer2,
+  OnInit,
+  OnDestroy,
 } from '@angular/core';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
@@ -27,7 +29,7 @@ export interface DialogData {
   templateUrl: 'review-msg-template-dialog.component.html',
   styleUrls: ['./review-msg-template-dialog.component.scss'],
 })
-export class ReviewMsgTemplateDialog {
+export class ReviewMsgTemplateDialog implements OnInit, OnDestroy {
   private destroy = new Subject<void>();
   private destroy$ = this.destroy.asObservable();
   private typeSubject = new BehaviorSubject<string>('review');

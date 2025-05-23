@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import {
   CampaignService,
@@ -21,23 +21,16 @@ import { isEqual } from 'lodash';
   templateUrl: 'view-campaign.component.html',
   styleUrls: ['view-campaign.component.scss'],
 })
-export class ViewCampaignComponent {
+export class ViewCampaignComponent implements OnInit, OnDestroy {
   private destroy = new Subject<void>();
-  public destroy$ = this.destroy.asObservable();
-  public dataSource = new MatTableDataSource<ICampaignMessage>([]);
-  public displayedColumns = [
-    'created',
-    'patient_name',
-    'phone_number',
-    'sms_text',
-    'status',
-    'actions',
-  ];
-  public clinicId: number = 0;
-  public clinicName: string = '';
-  public campaignId: number = 0;
-  public campaignName: string = '';
-  public isResending = false;
+  destroy$ = this.destroy.asObservable();
+  dataSource = new MatTableDataSource<ICampaignMessage>([]);
+  displayedColumns = ['created', 'patient_name', 'phone_number', 'sms_text', 'status', 'actions'];
+  clinicId: number = 0;
+  clinicName: string = '';
+  campaignId: number = 0;
+  campaignName: string = '';
+  isResending = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(

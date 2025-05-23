@@ -35,6 +35,7 @@ import { AppCustomSelect } from './components/custom-select/custom-select.compon
 import { StripePaymentDialog } from './components/stripe-payment-modal/stripe-payment-modal.component';
 import { NumericOnlyDirective } from './directives/numeric-only.directive';
 import { DateRangePickerComponent } from './date-range-picker/date-range-picker.component';
+import { StartCampaignDialogComponent } from './components/start-campaign-dialog/start-campaign-dialog.component';
 
 const modules = [
   AngularMaterialModule,
@@ -70,6 +71,7 @@ const components = [
   AppCustomSelect,
   StripePaymentDialog,
   DateRangePickerComponent,
+  StartCampaignDialogComponent,
 ];
 
 @NgModule({

@@ -5,6 +5,7 @@ import {
   ElementRef,
   HostListener,
   Input,
+  OnDestroy,
   ReflectiveInjector,
   ViewContainerRef,
 } from '@angular/core';
@@ -18,7 +19,7 @@ export interface ITooltipData {
 @Directive({
   selector: '[tooltip]',
 })
-export class TooltipDirective {
+export class TooltipDirective implements OnDestroy {
   // We can pass string, template or component
   @Input('tooltip') content: ITooltipData;
   private componentRef: ComponentRef<TooltipComponent>;
