@@ -198,7 +198,7 @@
     group="string"
     *ngIf="
       (user_type == 2 || permisions.indexOf('conversiontracker') >= 0 || user_type == 7) &&
-      !apiUrl.includes('//api.jeeve.com.au')
+      featureEnabled('conversion-tracker')
     "
   >
     <a appAccordionToggle [routerLink]="['/newapp/conversion-tracker']">
@@ -213,7 +213,7 @@
     group="string"
     *ngIf="
       (user_type == 2 || permisions.indexOf('practiceinsights') >= 0 || user_type == 7) &&
-      !apiUrl.includes('//api.jeeve.com.au')
+      featureEnabled('practice-insights')
     "
   >
     <a appAccordionToggle [routerLink]="['/newapp/practice-insights']">

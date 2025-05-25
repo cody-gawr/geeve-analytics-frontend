@@ -413,7 +413,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   displayedColumns4: string[] = ['name', 'phone', 'code', 'status'];
   displayedColumns5: string[] = ['name', 'phone', 'code', 'dentist', 'date', 'status'];
   displayedColumns6: string[] = ['start', 'dentist', 'name', 'card'];
-  displayedColumns7: string[] = ['name', 'phone', 'code', 'provider', 'note', 'book', 'aiCallAgent', 'status'];
+  displayedColumns7: string[] = ['name', 'phone', 'code', 'provider', 'note', 'book', 'status'];
   displayedColumns8: string[] = ['name', 'phone', 'code', 'dentist', 'note', 'book', 'status'];
   displayedColumns9: string[] = ['name', 'completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity', 'am', 'pm'];
@@ -527,6 +527,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
 
     if (environment.featureFlags['jeeve-voice']) {
       this.displayedColumns5.splice(this.displayedColumns5.length - 1, 0, 'aiCallAgent');
+      this.displayedColumns7.splice(this.displayedColumns7.length - 1, 0, 'aiCallAgent');
     }
   }
 
@@ -2539,5 +2540,9 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
         this.toastr.error('Failed to cancel schedule. Please try again.');
       },
     });
+  }
+
+  featureEnabled(feature: string) {
+    return environment.featureFlags[feature];
   }
 }

@@ -11,5 +11,7 @@ export const environment = {
   payUrl: 'https://pilot-pay.jeeve.com.au',
   featureFlags: {
     'jeeve-voice': false,
+    'conversion-tracker': false,
+    'practice-insights': false,
   },
 };

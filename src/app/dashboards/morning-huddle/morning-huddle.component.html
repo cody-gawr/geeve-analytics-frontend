@@ -1578,7 +1578,7 @@
               </div>
             </div>
             <div
-              *ngIf="followupPostOpCalls.length > 0"
+              *ngIf="followupPostOpCalls.length > 0 && featureEnabled('jeeve-voice')"
               style="display: flex; flex-direction: row; align-items: center; gap: 1rem"
             >
               <div>
@@ -1712,7 +1712,7 @@
               <ng-container matColumnDef="aiCallAgent">
                 <th mat-header-cell *matHeaderCellDef>AI Call Agent</th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="ai-call-agent-container">
+                  <div class="ai-call-agent-container" *ngIf="featureEnabled('jeeve-voice')">
                     <button
                       mat-raised-button
                       color="primary"
@@ -1903,7 +1903,7 @@
                   mat-raised-button
                   color="primary"
                   (click)="followUpAll(CallType.POST_OP_CALLS)"
-                  *ngIf="!bulkCallScheduleInProgress"
+                  *ngIf="!bulkCallScheduleInProgress && featureEnabled('jeeve-voice')"
                 >
                   <mat-icon>phone</mat-icon>
                   Follow Up All
@@ -2100,7 +2100,7 @@
               <ng-container matColumnDef="aiCallAgent">
                 <th mat-header-cell *matHeaderCellDef>AI Call Agent</th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="ai-call-agent-container">
+                  <div class="ai-call-agent-container" *ngIf="featureEnabled('jeeve-voice')">
                     <button
                       mat-raised-button
                       color="primary"

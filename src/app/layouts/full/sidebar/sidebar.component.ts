@@ -366,4 +366,8 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {});
   }
+
+  featureEnabled(feature: string) {
+    return environment.featureFlags[feature];
+  }
 }

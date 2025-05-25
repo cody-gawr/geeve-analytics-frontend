@@ -20,5 +20,7 @@ export const environment = {
   payUrl: 'http://local-pay.jeeve.com.au',
   featureFlags: {
     'jeeve-voice': true,
+    'conversion-tracker': true,
+    'practice-insights': true,
   },
 };
