@@ -38,7 +38,7 @@ import { combineLatest, map, Subject } from 'rxjs';
       [hasData]="hasData$ | async"
       [chartOptions]="chartOptions$ | async"
       currency="$"
-      noDataAlertMessage="You have no hourly rate in the selected period"
+      noDataAlertMessage="You have no discounts in the selected period"
       [gaugeValue]="gaugeValue"
       [gaugeLabel]="gaugeLabel"
       [gaugeSize]="300"
@@ -54,12 +54,12 @@ import { combineLatest, map, Subject } from 'rxjs';
   `,
 })
 export class CaTotalDiscountComponent implements OnInit, OnDestroy {
-  @Input() toolTip = 'Total Discounts';
+  @Input() toolTip = '';
 
   destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
-  chartTitle = '';
+  chartTitle = 'Total Discounts';
 
   datasets: any[] = [{ data: [] }];
   labels = [];
