@@ -60,6 +60,10 @@ function validatePermission(permissions: string[] | string, per: string) {
     : permissions?.indexOf(per) >= 0;
 }
 
+function featureEnabled(feature: string) {
+  return environment.featureFlags[feature];
+}
+
 const MENU_DATA: MenuNode[] = [
   {
     title: 'Health Screen',
@@ -237,7 +241,7 @@ const MENU_DATA: MenuNode[] = [
       return (
         !environment.production ||
         ((userType == 2 || permissions?.indexOf('conversiontracker') >= 0 || userType == 7) &&
-          !environment.apiUrl.includes('//api.jeeve.com.au'))
+          featureEnabled('conversion-tracker'))
       );
     },
   },
@@ -248,7 +252,7 @@ const MENU_DATA: MenuNode[] = [
     validatorFn: ({ permissions, userType, hasPrimeClinics }: MenuValidatorParams) => {
       return (
         (userType == 2 || permissions?.indexOf('practiceinsights') >= 0 || userType == 7) &&
-        !environment.apiUrl.includes('//api.jeeve.com.au')
+        featureEnabled('practice-insights')
       );
     },
   },
