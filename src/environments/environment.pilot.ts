@@ -1,5 +1,9 @@
 export const environment = {
-  production: true,
+  production: false,
+  development: false,
+  pilot: true,
+  staging: false,
+  test: false,
   commonApiUrl: 'https://pilot-api.jeeve.com.au/pilot/v1/common',
   baseApiUrl: 'https://pilot-api.jeeve.com.au/pilot',
   apiUrl: 'https://pilot-api.jeeve.com.au/pilot/analytics',

@@ -1,5 +1,9 @@
 export const environment = {
   production: true,
+  development: false,
+  pilot: false,
+  staging: false,
+  test: false,
   commonApiUrl: 'https://api.jeeve.com.au/v1/common',
   baseApiUrl: 'https://api.jeeve.com.au',
   // apiUrl : "http://localhost/jeeveanalytics/server/",

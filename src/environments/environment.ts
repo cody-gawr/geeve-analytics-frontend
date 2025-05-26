@@ -5,6 +5,10 @@
 
 export const environment = {
   production: false,
+  development: false,
+  pilot: false,
+  staging: false,
+  test: false,
   // apiUrl : "https://localhost:4005",
   commonApiUrl: 'https://test-api.jeeve.com.au/test/v1/common',
   baseApiUrl: 'https://test-api.jeeve.com.au/test',

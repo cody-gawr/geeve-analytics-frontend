@@ -1,5 +1,9 @@
 export const environment = {
   production: false,
+  development: false,
+  pilot: false,
+  staging: false,
+  test: true,
   commonApiUrl: 'https://test-api.jeeve.com.au/test/v1/common',
   baseApiUrl: 'https://test-api.jeeve.com.au/test',
   apiUrl: 'https://test-api.jeeve.com.au/test/analytics',
@@ -13,5 +17,5 @@ export const environment = {
     'jeeve-voice': true,
     'conversion-tracker': true,
     'practice-insights': true,
-  }
+  },
 };

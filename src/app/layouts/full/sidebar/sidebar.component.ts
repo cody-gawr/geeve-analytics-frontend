@@ -261,6 +261,10 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     // });
   }
 
+  get isProduction(): boolean {
+    return environment.production;
+  }
+
   validateCampaignMenu() {
     return (
       (this.user_type == 2 || this.permisions.indexOf('campaigns') >= 0 || this.user_type == 7) &&

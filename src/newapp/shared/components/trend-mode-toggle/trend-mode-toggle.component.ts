@@ -1,3 +1,4 @@
+import { environment } from '@/environments/environment';
 import { FinanceFacade } from '@/newapp/dashboard/facades/finance.facade';
 import { MarketingFacade } from '@/newapp/dashboard/facades/marketing.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
@@ -19,6 +20,10 @@ export class TrendModeToggleComponent implements OnInit, OnDestroy {
     private financeFacade: FinanceFacade,
     private marketingFacade: MarketingFacade,
   ) {}
+
+  get isTest(): boolean {
+    return environment.test;
+  }
 
   get trendMode$() {
     return this.layoutFacade.trend$;
