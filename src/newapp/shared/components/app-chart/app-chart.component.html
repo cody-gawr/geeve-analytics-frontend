@@ -66,16 +66,21 @@
           </mat-form-field>
         </div>
 
-        <div class="pa-table" *ngIf="showPaTableView && enablePaTableView; else graphElem">
+        <div
+          class="pa-table"
+          *ngIf="showPaTableView && enablePaTableView && paTableData.length > 0; else graphElem"
+        >
           <table>
             <thead>
               <tr>
-                <th *ngFor="let hkey of Object.keys(paTableData[0])">{{ hkey }}</th>
+                <th *ngFor="let hkey of tableHeaders">
+                  {{ hkey }}
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let protbl of paTableData">
-                <td *ngFor="let value of Object.values(protbl)">{{ value }}</td>
+              <tr *ngFor="let row of paTableData">
+                <td *ngFor="let key of tableHeaders">{{ row[key] }}</td>
               </tr>
             </tbody>
           </table>

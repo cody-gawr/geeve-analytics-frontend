@@ -108,21 +108,21 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
 
   datasets: any[] = [{ data: [] }];
   labels = [];
-  public prev: number = 0;
+  prev: number = 0;
 
-  public total: number = 0;
+  total: number = 0;
 
-  public average: number = 0;
+  average: number = 0;
 
-  public goal: number = 0;
-  public maxGoal: number = 0;
-  public gaugeValue: number = 0;
-  public gaugeLabel: string = '';
+  goal: number = 0;
+  maxGoal: number = 0;
+  gaugeValue: number = 0;
+  gaugeLabel: string = '';
 
   showTableInfo = false;
   tableData = [];
 
-  newpColors = [];
+  newColors = [];
 
   legendSettings = {
     visible: false,
@@ -269,7 +269,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
         this.maxGoal = data.maxGoal;
         this.gaugeLabel = data.gaugeLabel;
         this.gaugeValue = data.gaugeValue;
-        this.newpColors = data.chartColors ?? [];
+        this.newColors = data.chartColors ?? [];
       });
   }
 
@@ -335,7 +335,7 @@ export class CaNumNewPatientsComponent implements OnInit, OnDestroy {
             if (data.labels.length && data.datasets.length) {
               return data.labels.map((label: string, i) => ({
                 text: <string>formatXLabel(label),
-                fillStyle: this.newpColors[0].backgroundColor[i] ?? COLORS.even,
+                fillStyle: this.newColors[0].backgroundColor[i] ?? COLORS.even,
                 strokeStyle: '#fff',
                 index: i,
               }));

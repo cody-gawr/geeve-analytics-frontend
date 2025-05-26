@@ -5,10 +5,10 @@ import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 import { formatXLabel, generatingLegend_3 } from '@/newapp/shared/utils';
 import { DecimalPipe } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ChartOptions } from 'chart.js';
 import _ from 'lodash';
-import { combineLatest, map, Subject } from 'rxjs';
+import { combineLatest, distinctUntilChanged, map, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'ca-total-discount',
@@ -39,6 +39,7 @@ import { combineLatest, map, Subject } from 'rxjs';
       [chartOptions]="chartOptions$ | async"
       currency="$"
       noDataAlertMessage="You have no discounts in the selected period"
+      [enableLegend]="chartLegend$ | async"
       [gaugeValue]="gaugeValue"
       [gaugeLabel]="gaugeLabel"
       [gaugeSize]="300"
@@ -56,24 +57,40 @@ import { combineLatest, map, Subject } from 'rxjs';
 export class CaTotalDiscountComponent implements OnInit, OnDestroy {
   @Input() toolTip = '';
 
-  destroy = new Subject<void>();
+  private destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
 
   chartTitle = 'Total Discounts';
 
   datasets: any[] = [{ data: [] }];
-  labels = [];
-  tableData = [];
+  labels: string[] = [];
+  tableData: Record<string, any>[] = [];
 
-  public prev: number = 0;
-  public curr: number = 0;
-  public average: number = 0;
-  public goal: number = 0;
-  public maxGoal: number = 0;
-  public gaugeValue: number = 0;
-  public gaugeLabel: string = '';
+  total: number = 0;
+  prev: number = 0;
+  curr: number = 0;
+  average: number = 0;
+  goal: number = 0;
+  maxGoal: number = 0;
+  gaugeValue: number = 0;
+  gaugeLabel: string = '';
+  showTableInfo = false;
+  newColors = [];
+  legendSettings = {
+    visible: false,
+    position: top,
+    labels: {
+      usePointStyle: true,
+    },
+  };
 
-  public newColors = [];
+  get isDentistMode$() {
+    return this.dentistFacade.isDentistMode$;
+  }
+
+  get isTrend$() {
+    return this.layoutFacade.trend$.pipe(map(v => v && v !== 'off'));
+  }
 
   constructor(
     private caFacade: ClinicianAnalysisFacade,
@@ -81,12 +98,54 @@ export class CaTotalDiscountComponent implements OnInit, OnDestroy {
     private authFacade: AuthFacade,
     private decimalPipe: DecimalPipe,
     private dentistFacade: DentistFacade,
+    private cdr: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    combineLatest([
+      this.isDentistMode$,
+      this.isTrend$,
+      this.caFacade.caTotalDiscountsChartData$,
+      this.caFacade.caTotalDiscountsTrendChartData$,
+    ])
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+      )
+      .subscribe(([isDentistMode, isTrend, data, trendData]) => {
+        if (!(isDentistMode && isTrend)) {
+          this.datasets = data.datasets ?? [];
+          this.labels = data.labels ?? [];
+        } else {
+          this.datasets = trendData.datasets ?? [];
+          this.labels = trendData.labels ?? [];
+        }
+
+        this.total = data.total;
+        this.prev = data.prev;
+        this.average = data.average;
+        this.goal = data.goal;
+        this.tableData = (data.tableData ?? []).map(item => {
+          return {
+            Name: item.label,
+            Discount: item.value,
+          };
+        });
+
+        this.maxGoal = data.maxGoal;
+        this.gaugeLabel = data.gaugeLabel;
+        this.gaugeValue = data.gaugeValue;
+        this.newColors = data.chartColors ?? [];
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy.next();
+    this.destroy.complete();
+  }
+
+  toggleTableInfo() {
+    this.showTableInfo = !this.showTableInfo;
   }
 
   get chartType$() {
@@ -102,17 +161,28 @@ export class CaTotalDiscountComponent implements OnInit, OnDestroy {
     );
   }
 
+  get chartLegend$() {
+    return combineLatest([this.isDentistMode$, this.isTrend$]).pipe(
+      map(([isDentistMode, isTrend]) => {
+        if (!isDentistMode || !isTrend) {
+          return this.legendSettings;
+        } else {
+          return false;
+        }
+      }),
+    );
+  }
+
   get showMaxBarsAlertMsg$() {
     return this.authFacade.chartLimitDesc$;
   }
 
+  get isCompare$() {
+    return this.layoutFacade.compare$;
+  }
+
   get isTableIconVisible$() {
-    return combineLatest([
-      this.dentistFacade.isDentistMode$,
-      this.layoutFacade.compare$,
-      this.hasData$,
-      this.layoutFacade.isTrend$,
-    ]).pipe(
+    return combineLatest([this.isDentistMode$, this.isCompare$, this.hasData$, this.isTrend$]).pipe(
       map(
         ([isDentistMode, isCompare, hasData, isTrend]) =>
           (!(isDentistMode && isTrend) || isCompare) && this.tableData.length > 0 && hasData,

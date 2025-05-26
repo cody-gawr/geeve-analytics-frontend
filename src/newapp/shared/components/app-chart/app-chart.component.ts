@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, Input, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
@@ -27,7 +27,7 @@ export const MY_DATE_FORMATS = {
   styleUrls: ['./app-chart.component.scss'],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }],
 })
-export class AppChartComponent implements OnInit, OnDestroy {
+export class AppChartComponent implements OnInit, OnChanges, OnDestroy {
   @Input() toolTip: ChartTip = null;
   get isComingSoon() {
     return this.toolTip?.info?.toLowerCase() === 'coming-soon';
@@ -69,6 +69,7 @@ export class AppChartComponent implements OnInit, OnDestroy {
 
   @Input() enablePaTableView: boolean = false;
   @Input() paTableData: Record<string, any>[] = [];
+  tableHeaders: string[] = [];
   @Input() maxBarsAlertMsg: string = '';
   @Input() datePicker: FormControl<Moment>;
   @Input() currency = '%';
@@ -87,6 +88,12 @@ export class AppChartComponent implements OnInit, OnDestroy {
   constructor(private decimalPipe: DecimalPipe) {}
 
   ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['paTableData'] && this.paTableData?.length) {
+      this.tableHeaders = Object.keys(this.paTableData[0]);
+    }
+  }
 
   ngOnDestroy(): void {
     this.destroy.next();
