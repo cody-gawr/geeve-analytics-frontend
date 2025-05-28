@@ -25,7 +25,7 @@
       />
 
       <div class="toploader" *ngIf="showProcessingText && checkSuccessApi()">
-        <img class="tableLoader" src="../../../assets/images/logo-icon.gif" />
+        <img class="tableLoader" src="../../../assets/images/logo-icon.gif" alt="Loading icon" />
       </div>
     </div>
   </div>
@@ -389,7 +389,11 @@
             class="loader"
             [ngClass]="dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'"
           >
-            <img class="tableLoader" src="../../../assets/images/logo-icon.gif" />
+            <img
+              class="tableLoader"
+              src="../../../assets/images/logo-icon.gif"
+              alt="Loading icon"
+            />
             <!-- <div class="loader-text">Calculating...</div> -->
           </div>
         </div>
@@ -748,7 +752,7 @@
                   <img
                     [tooltip]="{
                       title: '',
-                      info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick'
+                      info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick',
                     }"
                     src="../assets/images/info-icon.png"
                     alt="info-icon"
@@ -912,7 +916,7 @@
                       <img
                         [tooltip]="{
                           title: '',
-                          info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick'
+                          info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick',
                         }"
                         src="../assets/images/info-icon.png"
                         alt="info-icon"
@@ -1349,7 +1353,7 @@
                   <img
                     [tooltip]="{
                       title: '',
-                      info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick'
+                      info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick',
                     }"
                     src="../assets/images/info-icon.png"
                     alt="info-icon"
@@ -1513,7 +1517,7 @@
                       <img
                         [tooltip]="{
                           title: '',
-                          info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick'
+                          info: 'If the patient rebooks on the day, a green tick is shown. If the patient doesn\'t rebook on the day but has a future appointment scheduled, you will see a grey tick',
                         }"
                         src="../assets/images/info-icon.png"
                         alt="info-icon"
@@ -1625,7 +1629,7 @@
               <mat-chip
                 [tooltip]="{
                   title: chips.script_title,
-                  info: chips.script_text
+                  info: chips.script_text,
                 }"
                 (mouseover)="historyPosChips($event, chips.colour)"
                 class="example-box"
@@ -1882,7 +1886,10 @@
 
       <mat-card class="table-card post_call_responsive_border followUpsTab4 morngHuddle">
         <mat-card-title>
-          <div class="title-follow-up" style="display: flex; justify-content: space-between; align-items: center">
+          <div
+            class="title-follow-up"
+            style="display: flex; justify-content: space-between; align-items: center"
+          >
             <div class="TitleCon">
               Overdue Recalls
               <div class="info-icon-container">
@@ -1947,7 +1954,7 @@
               <mat-chip
                 [tooltip]="{
                   title: chips.script_title,
-                  info: chips.script_text
+                  info: chips.script_text,
                 }"
                 (mouseover)="historyPosChips($event, chips.colour)"
                 class="example-box"
@@ -2031,7 +2038,7 @@
                   >
                     <i
                       [tooltip]="{
-                        title: !element.notes ? 'Add Notes' : 'Edit Notes'
+                        title: !element.notes ? 'Add Notes' : 'Edit Notes',
                       }"
                       [ngClass]="!element.notes ? 'red' : 'green'"
                       class="fas fa-book notes"
@@ -2336,7 +2343,7 @@
               <mat-chip
                 [tooltip]="{
                   title: chips.script_title,
-                  info: chips.script_text
+                  info: chips.script_text,
                 }"
                 (mouseover)="historyPosChips($event, chips.colour)"
                 class="example-box"
@@ -2461,7 +2468,7 @@
                   >
                     <i
                       [tooltip]="{
-                        title: !element.notes ? 'Add Notes' : 'Edit Notes'
+                        title: !element.notes ? 'Add Notes' : 'Edit Notes',
                       }"
                       [ngClass]="!element.notes ? 'red' : 'green'"
                       class="fas fa-book notes"
@@ -2715,7 +2722,7 @@
               <mat-chip
                 [tooltip]="{
                   title: chips.script_title,
-                  info: chips.script_text
+                  info: chips.script_text,
                 }"
                 (mouseover)="historyPosChips($event, chips.colour, 'fta')"
                 class="example-box"
@@ -2834,7 +2841,7 @@
                   >
                     <i
                       [tooltip]="{
-                        title: !element.notes ? 'Add Notes' : 'Edit Notes'
+                        title: !element.notes ? 'Add Notes' : 'Edit Notes',
                       }"
                       [ngClass]="!element.notes ? 'red' : 'green'"
                       class="fas fa-book notes"
@@ -3091,7 +3098,7 @@
               <mat-chip
                 [tooltip]="{
                   title: chips.script_title,
-                  info: chips.script_text
+                  info: chips.script_text,
                 }"
                 (mouseover)="historyPosChips($event, chips.colour, 'fta')"
                 class="example-box"
@@ -3218,7 +3225,7 @@
                   >
                     <i
                       [tooltip]="{
-                        title: !element.notes ? 'Add Notes' : 'Edit Notes'
+                        title: !element.notes ? 'Add Notes' : 'Edit Notes',
                       }"
                       [ngClass]="!element.notes ? 'red' : 'green'"
                       class="fas fa-book notes"
@@ -3519,7 +3526,7 @@
                       [hidden]="element.type == 'list'"
                     >
                       <mat-slide-toggle
-                        [checked]="element.is_complete == 1 ? true : false"
+                        [checked]="element.is_complete === 1"
                         name="status"
                         (change)="
                           updateTask($event, element.task_id, element.history_id, element.clinic_id)
@@ -3760,7 +3767,6 @@
                     src="../../assets/images/logo-icon.gif"
                     alt="Loading animation"
                   />
-                  <!-- <div class="loader-text">Calculating...</div> -->
                 </div>
                 <table
                   [dataSource]="dailyTasksMap.get(list.list_id)"
@@ -3840,7 +3846,7 @@
                   <tr mat-row *matRowDef="let row; columns: displayedColumns9"></tr>
                   <mat-footer-row
                     *matFooterRowDef="['isDataAvailable9']"
-                    [ngClass]="endOfDaysTasksInComp.data.length <= 0 ? 'show' : 'hide'"
+                    [ngClass]="endOfDaysTasksInComp.data.length === 0 ? 'show' : 'hide'"
                   ></mat-footer-row>
                 </table>
                 <!-- responsive table - frontdesk followup (Post op calls)  -->
