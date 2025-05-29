@@ -273,6 +273,7 @@ export class DialogOverviewTasklistDialogComponent {
     if (task_name) {
       const maxSortOrder = Math.max(
         ...this.dialogRef.componentInstance.data.tasksListItems.map(item => item.sort_order),
+        0,
       );
       const sortOrder = maxSortOrder + 1;
       this.taskService
