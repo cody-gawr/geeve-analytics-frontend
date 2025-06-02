@@ -67,6 +67,9 @@
               [filterName]="item.filterName"
               [isOpen]="item.filterName === selectedFilterName"
             >
+              <ng-template cdkDragPlaceholder>
+                <div class="drag-placeholder"></div>
+              </ng-template>
             </drag-drop-button>
           </div>
         </div>
