@@ -267,8 +267,4 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
   getTotalSmsCount(element: ICampaign) {
     return parseInt(<any>element.totalMessagesCount) + parseInt(<any>element.pendingCampaignsCount);
   }
-
-  trackById<T extends { id: number }>(index: number, item: T): number {
-    return item.id;
-  }
 }
