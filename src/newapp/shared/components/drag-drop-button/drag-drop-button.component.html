@@ -22,5 +22,7 @@
       <span>{{ title }}</span>
     </div>
   </div>
-  <div class="desc" *ngIf="isDone" [innerHTML]="desc"></div>
+  <div class="desc" *ngIf="isDone">
+    <span class="multi-line-ellipsis" [innerHTML]="desc"></span>
+  </div>
 </div>

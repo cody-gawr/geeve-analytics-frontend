@@ -52,6 +52,10 @@
       display: inline-block;
       flex: 1 1 40%;
       height: 120px;
+      display: -webkit-box;
+      line-clamp: 3; /* standard property for compatibility */
+      -webkit-line-clamp: 3; /* number of lines to show */
+      -webkit-box-orient: vertical;
     }
 
     .side {
@@ -198,8 +202,14 @@
     0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
-.cdk-drag-placeholder {
-  opacity: 0;
+.drag-placeholder {
+  // opacity: 0;
+  width: 120px;
+  height: 120px;
+  background-color: transparent;
+  border: 2px dashed #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .cdk-drag-animating {

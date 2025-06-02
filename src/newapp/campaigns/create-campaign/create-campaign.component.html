@@ -136,7 +136,7 @@
                     [formControl]="treatmentItemCodesMode"
                     [options]="[
                       { label: 'Any Of', value: 'anyof' },
-                      { label: 'All Of', value: 'allof' }
+                      { label: 'All Of', value: 'allof' },
                     ]"
                   ></app-custom-select>
                   <mat-chip-set aria-label="Selected Treatments">
@@ -169,7 +169,7 @@
                     [formControl]="noTreatmentItemCodesMode"
                     [options]="[
                       { label: 'Any Of', value: 'anyof' },
-                      { label: 'All Of', value: 'allof' }
+                      { label: 'All Of', value: 'allof' },
                     ]"
                   ></app-custom-select>
                   <mat-chip-set aria-label="Selected Treatments">
@@ -268,7 +268,11 @@
             [filterName]="item.filterName"
             [title]="item.title"
             [isOpen]="item.filterName === selectedFilterName"
-          ></drag-drop-button>
+          >
+            <ng-template cdkDragPlaceholder>
+              <div class="drag-placeholder"></div>
+            </ng-template>
+          </drag-drop-button>
         </div>
       </div>
       <div class="c-layout">
