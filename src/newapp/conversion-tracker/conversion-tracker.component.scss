@@ -26,6 +26,11 @@
 
   mat-card.tab-group-container {
     padding: 25px 15px;
+    form {
+      display: flex;
+      flex-direction: row;
+      justify-content: end;
+    }
     ::ng-deep .mat-mdc-tab-labels {
       gap: 5px;
     }
@@ -51,5 +56,22 @@
     display: flex;
     justify-content: flex-end;
     gap: 10px;
+  }
+}
+
+.add-new-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+
+  input {
+    flex: 1;
+    font-size: 14px;
+  }
+
+  button {
+    white-space: nowrap;
+    font-size: 13px;
   }
 }

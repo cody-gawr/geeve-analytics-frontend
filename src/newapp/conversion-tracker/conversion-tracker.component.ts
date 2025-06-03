@@ -1,10 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DateRange } from '@angular/material/datepicker';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ConversionRecord } from './conversion-table/conversion-table.component';
 import { MatDialog } from '@angular/material/dialog';
 import { StartCampaignDialogComponent } from '../shared/components/start-campaign-dialog/start-campaign-dialog.component';
 import { distinctUntilChanged, map, filter, Subject, takeUntil } from 'rxjs';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
+import { FormControl, FormGroup } from '@angular/forms';
+import { NotificationService } from '../shared/services/notification.service';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-conversion-tracker',
@@ -16,7 +18,13 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
   clinicId: number = 0;
   clinicName: string = '';
-  unconvertedData: ConversionRecord[] = [
+  @ViewChild('conversionCodeSelect') conversionCodeSelect!: MatSelect;
+  conversionCodes: string[] = ['Option A', 'Option B', 'Option C'];
+  conversionCodeForm: FormGroup = new FormGroup({
+    selectedConversionCode: new FormControl<string | null>(null),
+    newConversionCode: new FormControl<string | null>(null),
+  });
+  consultsData: ConversionRecord[] = [
     {
       patient: 'John Doe',
       visitDate: '2023-05-10',
@@ -33,7 +41,17 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     },
   ];
 
-  convertedData: ConversionRecord[] = [
+  recommendedData: ConversionRecord[] = [
+    {
+      patient: 'Mike Ross',
+      visitDate: '2023-04-20',
+      consult: 'Completed',
+      status: 'Converted',
+      lastCampaign: 'Winter Promo',
+    },
+  ];
+
+  notSuitableData: ConversionRecord[] = [
     {
       patient: 'Mike Ross',
       visitDate: '2023-04-20',
@@ -56,6 +74,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private clinicFacade: ClinicFacade,
+    private notifier: NotificationService,
   ) {}
 
   ngOnInit() {
@@ -77,10 +96,6 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     this.destroy.complete();
   }
 
-  onRangeSelected(event: DateRange<Date>) {
-    console.log('Selected range:', event);
-  }
-
   onStartCampaign() {
     this.dialog.open(StartCampaignDialogComponent, {
       data: {
@@ -97,5 +112,24 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
         resend: true,
       },
     });
+  }
+
+  addConversionCode() {
+    const newConversionCode = this.conversionCodeForm.get('newConversionCode')?.value;
+    if (!newConversionCode) {
+      return;
+    }
+
+    if (this.conversionCodes.includes(newConversionCode)) {
+      this.notifier.showError('Conversion code already exists!');
+      return;
+    }
+
+    this.conversionCodes.unshift(newConversionCode);
+    this.conversionCodeForm.get('selectedConversionCode')?.setValue(newConversionCode);
+    this.conversionCodeForm.get('newConversionCode')?.reset();
+
+    // ✅ Auto-close dropdown
+    this.conversionCodeSelect.close();
   }
 }

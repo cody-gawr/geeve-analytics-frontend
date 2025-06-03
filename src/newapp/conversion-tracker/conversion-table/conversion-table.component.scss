@@ -5,6 +5,7 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #90caf9 transparent;
+
   .mat-column-select {
     width: 80px;
     max-width: 80px;
@@ -12,6 +13,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
   .header-row {
     background-color: #3876bf;
     th {
@@ -32,8 +34,16 @@
   mat-checkbox {
     margin-left: 8px;
   }
+
+  ::ng-deep .mdc-checkbox__background {
+    border-color: #f2f2f2 !important; /* your desired color */
+  }
+
+  ::ng-deep .mat-mdc-select {
+    font-size: 14px;
+  }
 }
 
-::ng-deep .mdc-checkbox__background {
-  border-color: #f2f2f2 !important; /* your desired color */
+::ng-deep .mat-mdc-option {
+  font-size: 14px;
 }
