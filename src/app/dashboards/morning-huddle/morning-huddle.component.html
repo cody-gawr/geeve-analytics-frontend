@@ -1582,10 +1582,9 @@
               </div>
             </div>
             <div
-              *ngIf="followupPostOpCalls.length > 0 && featureEnabled('jeeve-voice')"
               style="display: flex; flex-direction: row; align-items: center; gap: 1rem"
             >
-              <div>
+              <div *ngIf="followupPostOpCalls.length > 0 && featureEnabled('jeeve-voice')">
                 <button
                   mat-raised-button
                   color="primary"
