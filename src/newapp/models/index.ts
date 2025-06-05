@@ -25,3 +25,8 @@ export class JeeveError {
     this.platform = platform;
   }
 }
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+}

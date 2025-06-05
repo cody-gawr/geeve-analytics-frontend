@@ -65,5 +65,6 @@ export class MatTableResponsiveDirective implements OnInit, AfterViewInit, OnDes
     this.tbodyObserver.disconnect();
 
     this.destroy.next();
+    this.destroy.complete();
   }
 }

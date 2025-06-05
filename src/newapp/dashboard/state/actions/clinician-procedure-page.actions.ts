@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 
 export const loadTrendApiRequest = createAction(
-  '[Clinician Procedure API] load Trend Api Request',
+  '[Clinician Procedure API] Load Trend Api Request',
   props<{
     api: CP_API_TREND_ENDPOINTS;
     params: CaTrendQueryParams;
@@ -9,7 +9,7 @@ export const loadTrendApiRequest = createAction(
 );
 
 export const loadTrendApiRequests = createAction(
-  '[Clinician Procedure API] load Trend Api Request',
+  '[Clinician Procedure API] Load Trend Api Request',
   props<{
     requests: { api: CP_API_TREND_ENDPOINTS; params: CaTrendQueryParams }[];
   }>(),

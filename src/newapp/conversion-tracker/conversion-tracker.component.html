@@ -49,8 +49,11 @@
           </mat-option>
 
           <!-- 🔽 Existing options -->
-          <mat-option *ngFor="let conversionCode of conversionCodes" [value]="conversionCode">
-            {{ conversionCode }}
+          <mat-option
+            *ngFor="let conversionCode of conversionCodes"
+            [value]="conversionCode.recordId"
+          >
+            {{ conversionCode.consultCode }}
           </mat-option>
         </mat-select>
       </mat-form-field>

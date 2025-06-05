@@ -7,6 +7,10 @@ import { AppLayoutModule } from '../layout/app-layout.module';
 import { StoreModule } from '@ngrx/store';
 import { ConversionInsightCardComponent } from './conversion-insight-card/conversion-insight-card.component';
 import { ConversionTableComponent } from './conversion-table/conversion-table.component';
+import { conversionTrackerFeacture } from './state/reducers/conversion-tracker.reducer';
+import { ConversionTrackerFacade } from './facades/conversion-tracker.facade';
+import { EffectsModule } from '@ngrx/effects';
+import { ConversionTrackerEffect } from './state/effects/conversion-tracker.effects';
 
 @NgModule({
   imports: [
@@ -14,12 +18,14 @@ import { ConversionTableComponent } from './conversion-table/conversion-table.co
     SharedModule,
     AppLayoutModule,
     ConversionTrackerRoutingModule,
-    // StoreModule.forFeature(),
+    StoreModule.forFeature(conversionTrackerFeacture),
+    EffectsModule.forFeature([ConversionTrackerEffect]),
   ],
   declarations: [
     ConversionTrackerComponent,
     ConversionInsightCardComponent,
     ConversionTableComponent,
   ],
+  providers: [ConversionTrackerFacade],
 })
 export class ConversionTrackerModule {}

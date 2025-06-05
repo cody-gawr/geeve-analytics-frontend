@@ -1,4 +1,10 @@
-<table mat-table [dataSource]="data" class="mat-elevation-z1 conversion-table" style="width: 100%">
+<table
+  mat-table
+  appMatTableResponsive
+  [dataSource]="data"
+  class="mat-elevation-z1 conversion-table"
+  style="width: 100%"
+>
   <!-- Checkbox Column -->
   <ng-container matColumnDef="select">
     <th mat-header-cell *matHeaderCellDef>

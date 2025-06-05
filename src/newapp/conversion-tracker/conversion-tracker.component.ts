@@ -7,6 +7,8 @@ import { ClinicFacade } from '../clinic/facades/clinic.facade';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationService } from '../shared/services/notification.service';
 import { MatSelect } from '@angular/material/select';
+import { ConversionTrackerFacade } from './facades/conversion-tracker.facade';
+import { ConversionCode } from '../models/conversion-tracker';
 
 @Component({
   selector: 'app-conversion-tracker',
@@ -19,7 +21,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   clinicId: number = 0;
   clinicName: string = '';
   @ViewChild('conversionCodeSelect') conversionCodeSelect!: MatSelect;
-  conversionCodes: string[] = ['Option A', 'Option B', 'Option C'];
+  conversionCodes: ConversionCode[] = [];
   conversionCodeForm: FormGroup = new FormGroup({
     selectedConversionCode: new FormControl<string | null>(null),
     newConversionCode: new FormControl<string | null>(null),
@@ -75,6 +77,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private clinicFacade: ClinicFacade,
     private notifier: NotificationService,
+    private conversionTrackerFacade: ConversionTrackerFacade,
   ) {}
 
   ngOnInit() {
@@ -88,7 +91,11 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
       .subscribe(clinic => {
         this.clinicId = clinic.id;
         this.clinicName = clinic.clinicName;
+        this.conversionTrackerFacade.loadConversionCodes(this.clinicId);
       });
+    this.conversionTrackerFacade.conversionCodes$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(conversionCodes => (this.conversionCodes = conversionCodes));
   }
 
   ngOnDestroy(): void {

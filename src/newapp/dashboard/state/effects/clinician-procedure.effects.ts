@@ -1,19 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  catchError,
-  map,
-  mergeMap,
-  switchMap,
-  of,
-  Observable,
-  withLatestFrom,
-  filter,
-  forkJoin,
-  concat,
-  tap,
-} from 'rxjs';
+import { catchError, map, mergeMap, switchMap, of, withLatestFrom, filter } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ClinicianProcedureService } from '../../services/clinician-procedure.service';
 import {
