@@ -26,10 +26,10 @@ export class ConversionTableComponent implements OnInit, OnDestroy {
   ];
 
   treatmentStatusOptions: { value: string; name: string }[] = [
-    { value: 'consult', name: 'Consult' },
-    { value: 'recommended', name: 'Recommended' },
-    { value: 'notsuitable', name: 'Not Suitable' },
-    { value: 'declined', name: 'Declined' },
+    { value: 'CONSULT', name: 'Consult' },
+    { value: 'RECOMMENDED', name: 'Recommended' },
+    { value: 'NOT_SUITABLE', name: 'Not Suitable' },
+    { value: 'DECLINED', name: 'Declined' },
   ];
 
   constructor() {}

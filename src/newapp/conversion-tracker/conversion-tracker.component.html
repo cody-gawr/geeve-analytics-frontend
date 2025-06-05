@@ -28,7 +28,11 @@
     <form [formGroup]="conversionCodeForm">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Select Conversion Code</mat-label>
-        <mat-select formControlName="selectedConversionCode" #conversionCodeSelect="matSelect">
+        <mat-select
+          formControlName="selectedConversionCode"
+          #conversionCodeSelect="matSelect"
+          (selectionChange)="onConversionCodeSelected($event)"
+        >
           <!-- 🔼 Add new item UI -->
           <mat-option disabled>
             <div class="add-new-option">
@@ -60,16 +64,20 @@
     </form>
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
       <mat-tab label="Consults">
-        <app-conversion-table [data]="consultsData"></app-conversion-table>
+        <app-conversion-table [data]="conversionTrackerCollections.consult"></app-conversion-table>
       </mat-tab>
       <mat-tab label="Recommended">
-        <app-conversion-table [data]="recommendedData"></app-conversion-table>
+        <app-conversion-table
+          [data]="conversionTrackerCollections.recommended"
+        ></app-conversion-table>
       </mat-tab>
       <mat-tab label="Not Suitable">
-        <app-conversion-table [data]="notSuitableData"></app-conversion-table>
+        <app-conversion-table
+          [data]="conversionTrackerCollections.notSuitable"
+        ></app-conversion-table>
       </mat-tab>
       <mat-tab label="Declined">
-        <app-conversion-table [data]="declinedData"></app-conversion-table>
+        <app-conversion-table [data]="conversionTrackerCollections.declined"></app-conversion-table>
       </mat-tab>
     </mat-tab-group>
     <div class="buttons-wrapper">

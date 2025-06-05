@@ -1,5 +1,6 @@
 import { environment } from '@/environments/environment';
 import { ApiResponse } from '@/newapp/models';
+import { ConversionTracker, ConversionTrackerDto } from '@/newapp/models/conversion-tracker';
 import { ConversionCodeDto } from '@/newapp/models/conversion-tracker/conversion-code.dto';
 import { ConversionCode } from '@/newapp/models/conversion-tracker/conversion-code.model';
 import { HttpClient } from '@angular/common/http';
@@ -23,5 +24,26 @@ export class ConversionTrackerService {
         withCredentials: true,
       })
       .pipe(map(res => <ConversionCode[]>camelcaseKeys(res.data, { deep: true })));
+  }
+
+  getConversionTrackers(payload: {
+    clinicId: number;
+    providerId: number;
+    startDate: string;
+    endDate: string;
+    consultCode: string;
+  }): Observable<ConversionTracker[]> {
+    return this.http
+      .get<ApiResponse<ConversionTrackerDto[]>>(`${this.commonApiUrl}/conversion/trackers`, {
+        params: {
+          clinic_id: payload.clinicId,
+          provider_id: payload.providerId,
+          start_date: payload.startDate,
+          end_date: payload.endDate,
+          consult_code: payload.consultCode,
+        },
+        withCredentials: true,
+      })
+      .pipe(map(res => <ConversionTracker[]>camelcaseKeys(res.data, { deep: true })));
   }
 }

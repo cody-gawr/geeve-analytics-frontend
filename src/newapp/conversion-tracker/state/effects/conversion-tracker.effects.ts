@@ -15,7 +15,7 @@ export class ConversionTrackerEffect {
     private conversionTrackerService: ConversionTrackerService,
   ) {}
 
-  readonly loadConversionTrackers$ = createEffect(() => {
+  readonly loadConversionCodes$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ConversionTrackerPageActions.loadConversionCodes),
       mergeMap(({ clinicId }) => {
@@ -27,7 +27,32 @@ export class ConversionTrackerEffect {
             of(
               ConversionTrackerApiActions.loadConversionCodesFailure({
                 error: {
-                  api: `${this.commonApiUrl}/codes`,
+                  api: `${this.commonApiUrl}/conversion/codes`,
+                  message: res.message,
+                  status: res.status,
+                  errors: Array.isArray(res.error) ? res.error : [res.error],
+                },
+              }),
+            ),
+          ),
+        );
+      }),
+    );
+  });
+
+  readonly loadConversionTrackers$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ConversionTrackerPageActions.loadConversionTrackers),
+      mergeMap(payload => {
+        return this.conversionTrackerService.getConversionTrackers(payload).pipe(
+          map(conversionTrackers =>
+            ConversionTrackerApiActions.loadConversionTrackersSuccess({ conversionTrackers }),
+          ),
+          catchError((res: HttpErrorResponse) =>
+            of(
+              ConversionTrackerApiActions.loadConversionTrackersFailure({
+                error: {
+                  api: `${this.commonApiUrl}/conversion/trackers`,
                   message: res.message,
                   status: res.status,
                   errors: Array.isArray(res.error) ? res.error : [res.error],

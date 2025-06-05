@@ -81,6 +81,53 @@ export const conversionTrackerFeacture = createFeature({
         };
       },
     ),
+    on(
+      ConversionTrackerPageActions.selectConversionCode,
+      (state, { id }): ConversionTrackerState => {
+        const { conversionCodes } = state;
+        return {
+          ...state,
+          selectedConversionCode: conversionCodes.find(code => code.recordId === id) || null,
+        };
+      },
+    ),
+
+    on(
+      ConversionTrackerApiActions.loadConversionTrackersSuccess,
+      (state, { conversionTrackers }): ConversionTrackerState => {
+        const { loading, error } = state;
+        return {
+          ...state,
+          loading: {
+            ...loading,
+            conversionTrackers: false,
+          },
+          error: {
+            ...error,
+            conversionTrackers: null,
+          },
+          conversionTrackers,
+        };
+      },
+    ),
+    on(
+      ConversionTrackerApiActions.loadConversionTrackersFailure,
+      (state, { error: conversionTrackersError }): ConversionTrackerState => {
+        const { loading, error } = state;
+        return {
+          ...state,
+          loading: {
+            ...loading,
+            conversionTrackers: false,
+          },
+          error: {
+            ...error,
+            conversionTrackers: conversionTrackersError,
+          },
+          conversionTrackers: [],
+        };
+      },
+    ),
   ),
 });
 

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
 import { JeeveError } from '@/newapp/models';
-import { ConversionTrackerModule } from '../conversion-tracker.module';
 import {
   ConversionTrackerState,
   selectConversionCodes,
@@ -10,6 +9,7 @@ import {
   selectSelectedConversionCode,
 } from '../state/reducers/conversion-tracker.reducer';
 import { ConversionTrackerPageActions } from '../state/actions';
+import { ConversionCode } from '@/newapp/models/conversion-tracker';
 
 @Injectable()
 export class ConversionTrackerFacade {
@@ -21,5 +21,19 @@ export class ConversionTrackerFacade {
 
   loadConversionCodes(clinicId: number) {
     this.store.dispatch(ConversionTrackerPageActions.loadConversionCodes({ clinicId }));
+  }
+
+  loadConversionTrackers(payload: {
+    clinicId: number;
+    providerId: number;
+    startDate: string;
+    endDate: string;
+    consultCode: string;
+  }) {
+    this.store.dispatch(ConversionTrackerPageActions.loadConversionTrackers(payload));
+  }
+
+  selectConversionCode(id: number) {
+    this.store.dispatch(ConversionTrackerPageActions.selectConversionCode({ id }));
   }
 }

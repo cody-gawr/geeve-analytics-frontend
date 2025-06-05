@@ -2,13 +2,24 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ConversionRecord } from './conversion-table/conversion-table.component';
 import { MatDialog } from '@angular/material/dialog';
 import { StartCampaignDialogComponent } from '../shared/components/start-campaign-dialog/start-campaign-dialog.component';
-import { distinctUntilChanged, map, filter, Subject, takeUntil } from 'rxjs';
+import {
+  distinctUntilChanged,
+  map,
+  filter,
+  Subject,
+  takeUntil,
+  Observable,
+  combineLatest,
+} from 'rxjs';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationService } from '../shared/services/notification.service';
-import { MatSelect } from '@angular/material/select';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ConversionTrackerFacade } from './facades/conversion-tracker.facade';
-import { ConversionCode } from '../models/conversion-tracker';
+import { ConversionCode, ConversionTracker } from '../models/conversion-tracker';
+import { LayoutFacade } from '../layout/facades/layout.facade';
+import { DentistFacade } from '../dentist/facades/dentists.facade';
+import moment from 'moment';
 
 @Component({
   selector: 'app-conversion-tracker',
@@ -26,56 +37,28 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     selectedConversionCode: new FormControl<string | null>(null),
     newConversionCode: new FormControl<string | null>(null),
   });
-  consultsData: ConversionRecord[] = [
-    {
-      patient: 'John Doe',
-      visitDate: '2023-05-10',
-      consult: 'Initial',
-      status: 'Pending',
-      lastCampaign: 'Spring Boost',
-    },
-    {
-      patient: 'Jane Smith',
-      visitDate: '2023-05-12',
-      consult: 'Follow-up',
-      status: 'Waiting',
-      lastCampaign: 'April Reach',
-    },
-  ];
 
-  recommendedData: ConversionRecord[] = [
-    {
-      patient: 'Mike Ross',
-      visitDate: '2023-04-20',
-      consult: 'Completed',
-      status: 'Converted',
-      lastCampaign: 'Winter Promo',
-    },
-  ];
+  conversionTrackerCollections: {
+    consult: ConversionTracker[];
+    recommended: ConversionTracker[];
+    notSuitable: ConversionTracker[];
+    declined: ConversionTracker[];
+  } = {
+    consult: [],
+    recommended: [],
+    notSuitable: [],
+    declined: [],
+  };
 
-  notSuitableData: ConversionRecord[] = [
-    {
-      patient: 'Mike Ross',
-      visitDate: '2023-04-20',
-      consult: 'Completed',
-      status: 'Converted',
-      lastCampaign: 'Winter Promo',
-    },
-  ];
-
-  declinedData: ConversionRecord[] = [
-    {
-      patient: 'Rachel Zane',
-      visitDate: '2023-04-01',
-      consult: 'Initial',
-      status: 'Declined',
-      lastCampaign: 'March Madness',
-    },
-  ];
+  get selectedConversionCode$(): Observable<ConversionCode> {
+    return this.conversionTrackerFacade.selectedConversionCode$;
+  }
 
   constructor(
     public dialog: MatDialog,
     private clinicFacade: ClinicFacade,
+    private dentistFacade: DentistFacade,
+    private layoutFacade: LayoutFacade,
     private notifier: NotificationService,
     private conversionTrackerFacade: ConversionTrackerFacade,
   ) {}
@@ -96,6 +79,34 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     this.conversionTrackerFacade.conversionCodes$
       .pipe(takeUntil(this.destroy$))
       .subscribe(conversionCodes => (this.conversionCodes = conversionCodes));
+
+    combineLatest([
+      this.clinicFacade.currentClinicId$,
+      this.dentistFacade.currentDentistId$,
+      this.layoutFacade.dateRange$,
+      this.selectedConversionCode$,
+    ])
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        filter(payload => payload.every(item => !!item)),
+      )
+      .subscribe(payload => {
+        const [clinicId, providerId, { start, end }, { consultCode }] = payload;
+
+        this.conversionTrackerFacade.loadConversionTrackers({
+          clinicId: <number>clinicId,
+          providerId: providerId === 'all' ? 0 : <number>providerId,
+          startDate: moment(start).format('YYYY-MM-DD'),
+          endDate: moment(end).format('YYYY-MM-DD'),
+          consultCode,
+        });
+      });
+
+    this.conversionTrackerFacade.conversionTrackers$.subscribe(conversionTrackers => {
+      console.log(conversionTrackers);
+      this.conversionTrackerCollections.consult = conversionTrackers;
+    });
   }
 
   ngOnDestroy(): void {
@@ -138,5 +149,9 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
 
     // ✅ Auto-close dropdown
     this.conversionCodeSelect.close();
+  }
+
+  onConversionCodeSelected(event: MatSelectChange) {
+    this.conversionTrackerFacade.selectConversionCode(event.value);
   }
 }
