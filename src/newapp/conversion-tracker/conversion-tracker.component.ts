@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ConversionRecord } from './conversion-table/conversion-table.component';
 import { MatDialog } from '@angular/material/dialog';
 import { StartCampaignDialogComponent } from '../shared/components/start-campaign-dialog/start-campaign-dialog.component';
 import {
@@ -41,11 +40,17 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   conversionTrackerCollections: {
     consult: ConversionTracker[];
     recommended: ConversionTracker[];
+    preTreatment: ConversionTracker[];
+    inTreatment: ConversionTracker[];
+    completed: ConversionTracker[];
     notSuitable: ConversionTracker[];
     declined: ConversionTracker[];
   } = {
     consult: [],
     recommended: [],
+    preTreatment: [],
+    inTreatment: [],
+    completed: [],
     notSuitable: [],
     declined: [],
   };
@@ -104,7 +109,6 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
       });
 
     this.conversionTrackerFacade.conversionTrackers$.subscribe(conversionTrackers => {
-      console.log(conversionTrackers);
       this.conversionTrackerCollections.consult = conversionTrackers;
     });
   }

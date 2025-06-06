@@ -5,6 +5,8 @@ export interface ConversionTrackerDto {
   clinic_id: number;
   provider_id: number;
   treatment_id: number;
+  consult: string;
+  consult_date: string;
   patient_name: string;
   patient_phone: string;
   treatment_status: TreatmentStatus;

@@ -71,6 +71,21 @@
           [data]="conversionTrackerCollections.recommended"
         ></app-conversion-table>
       </mat-tab>
+      <mat-tab label="Pre-Treatment">
+        <app-conversion-table
+          [data]="conversionTrackerCollections.preTreatment"
+        ></app-conversion-table>
+      </mat-tab>
+      <mat-tab label="In-Treatment">
+        <app-conversion-table
+          [data]="conversionTrackerCollections.inTreatment"
+        ></app-conversion-table>
+      </mat-tab>
+      <mat-tab label="Completed">
+        <app-conversion-table
+          [data]="conversionTrackerCollections.completed"
+        ></app-conversion-table>
+      </mat-tab>
       <mat-tab label="Not Suitable">
         <app-conversion-table
           [data]="conversionTrackerCollections.notSuitable"

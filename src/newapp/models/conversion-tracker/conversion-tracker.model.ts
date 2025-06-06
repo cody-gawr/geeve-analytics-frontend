@@ -5,6 +5,8 @@ export interface ConversionTracker {
   clinicId: number;
   providerId: number;
   treatmentId: number;
+  consult: string;
+  consultDate: string;
   patientName: string;
   patientPhone: string;
   treatmentStatus: TreatmentStatus;
