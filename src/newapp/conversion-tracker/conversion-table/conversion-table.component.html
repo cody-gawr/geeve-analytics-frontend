@@ -38,7 +38,10 @@
   <ng-container matColumnDef="treatmentStatus">
     <th mat-header-cell *matHeaderCellDef>Treatment Status</th>
     <td mat-cell *matCellDef="let row">
-      <mat-select [value]="row.treatmentStatus" (selectionChange)="onTreatmentStatusChange($event)">
+      <mat-select
+        [value]="row.treatmentStatus"
+        (selectionChange)="onTreatmentStatusChange(row.recordId, $event)"
+      >
         <mat-option [value]="option.value" *ngFor="let option of treatmentStatusOptions">{{
           option.name
         }}</mat-option>

@@ -1,4 +1,5 @@
 import { environment } from '@/environments/environment';
+import { TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
 import { ApiResponse } from '@/newapp/models';
 import { ConversionTracker, ConversionTrackerDto } from '@/newapp/models/conversion-tracker';
 import { ConversionCodeDto } from '@/newapp/models/conversion-tracker/conversion-code.dto';
@@ -45,5 +46,16 @@ export class ConversionTrackerService {
         withCredentials: true,
       })
       .pipe(map(res => <ConversionTracker[]>camelcaseKeys(res.data, { deep: true })));
+  }
+
+  updateConversionTrackerTreatmentStatus(recordId: number, treatmentStatus: TreatmentStatus) {
+    return this.http
+      .patch<ApiResponse<number>>(`${this.commonApiUrl}/conversion/tracker/${recordId}`, null, {
+        params: {
+          treatment_status: treatmentStatus,
+        },
+        withCredentials: true,
+      })
+      .pipe(map(res => res.data));
   }
 }

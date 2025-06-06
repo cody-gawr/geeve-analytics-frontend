@@ -26,3 +26,17 @@ export const loadConversionTrackersFailure = createAction(
     error: JeeveError;
   }>(),
 );
+
+export const updateConversionTrackerTreatmentStatusSuccess = createAction(
+  '[Conversion Tracker API] Update Treatment Status of a Conversion Tracker Success',
+  props<{
+    affectedCount: number;
+  }>(),
+);
+
+export const updateConversionTrackerTreatmentStatusFailure = createAction(
+  '[Conversion Tracker API] Update Treatment Status of a Conversion Tracker Failure',
+  props<{
+    error: JeeveError;
+  }>(),
+);

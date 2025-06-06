@@ -10,6 +10,7 @@ import {
 } from '../state/reducers/conversion-tracker.reducer';
 import { ConversionTrackerPageActions } from '../state/actions';
 import { ConversionCode } from '@/newapp/models/conversion-tracker';
+import { TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
 
 @Injectable()
 export class ConversionTrackerFacade {
@@ -35,5 +36,25 @@ export class ConversionTrackerFacade {
 
   selectConversionCode(id: number) {
     this.store.dispatch(ConversionTrackerPageActions.selectConversionCode({ id }));
+  }
+
+  updateConversionTrackerTreatmentStatus(
+    recordId: number,
+    treatmentStatus: TreatmentStatus,
+    payload: {
+      clinicId: number;
+      providerId: number;
+      startDate: string;
+      endDate: string;
+      consultCode: string;
+    },
+  ) {
+    this.store.dispatch(
+      ConversionTrackerPageActions.updateConversionTrackerTreatmentStatus({
+        recordId,
+        treatmentStatus,
+        payload,
+      }),
+    );
   }
 }

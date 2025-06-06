@@ -1,3 +1,4 @@
+import { TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
 import { ConversionCode } from '@/newapp/models/conversion-tracker/conversion-code.model';
 import { createAction, props } from '@ngrx/store';
 
@@ -19,5 +20,20 @@ export const loadConversionTrackers = createAction(
     startDate: string;
     endDate: string;
     consultCode: string;
+  }>(),
+);
+
+export const updateConversionTrackerTreatmentStatus = createAction(
+  '[Conversion Tracker Page] Update Treatment Status of a Conversion Tracker',
+  props<{
+    recordId: number;
+    treatmentStatus: TreatmentStatus;
+    payload: {
+      clinicId: number;
+      providerId: number;
+      startDate: string;
+      endDate: string;
+      consultCode: string;
+    };
   }>(),
 );

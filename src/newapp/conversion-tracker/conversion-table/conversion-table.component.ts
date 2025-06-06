@@ -1,6 +1,12 @@
-import { ConversionTracker } from '@/newapp/models/conversion-tracker';
+import { ConversionCode, ConversionTracker } from '@/newapp/models/conversion-tracker';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
+import { ConversionTrackerFacade } from '../facades/conversion-tracker.facade';
+import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
+import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
+import { combineLatest, distinctUntilChanged, filter, Observable, Subject, takeUntil } from 'rxjs';
+import moment from 'moment';
 
 @Component({
   selector: 'app-conversion-table',
@@ -9,6 +15,15 @@ import { MatSelectChange } from '@angular/material/select';
 })
 export class ConversionTableComponent implements OnInit, OnDestroy {
   @Input() data: ConversionTracker[] = [];
+  private destroy = new Subject<void>();
+  destroy$ = this.destroy.asObservable();
+  private payload: {
+    clinicId: number;
+    providerId: number;
+    startDate: string;
+    endDate: string;
+    consultCode: string;
+  } | null = null;
   displayedColumns: string[] = [
     'select',
     'patient',
@@ -28,11 +43,48 @@ export class ConversionTableComponent implements OnInit, OnDestroy {
     { value: 'DECLINED', name: 'Declined' },
   ];
 
-  constructor() {}
+  get selectedConversionCode$(): Observable<ConversionCode> {
+    return this.conversionTrackerFacade.selectedConversionCode$;
+  }
 
-  ngOnInit() {}
+  constructor(
+    private clinicFacade: ClinicFacade,
+    private dentistFacade: DentistFacade,
+    private layoutFacade: LayoutFacade,
+    private conversionTrackerFacade: ConversionTrackerFacade,
+  ) {}
+
+  ngOnInit() {
+    combineLatest([
+      this.clinicFacade.currentClinicId$,
+      this.dentistFacade.currentDentistId$,
+      this.layoutFacade.dateRange$,
+      this.selectedConversionCode$,
+    ])
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        filter(payload => payload.every(item => !!item)),
+      )
+      .subscribe(payload => {
+        const [clinicId, providerId, { start, end }, { consultCode }] = payload;
+        this.payload = {
+          clinicId: <number>clinicId,
+          providerId: providerId === 'all' ? 0 : <number>providerId,
+          startDate: moment(start).format('YYYY-MM-DD'),
+          endDate: moment(end).format('YYYY-MM-DD'),
+          consultCode,
+        };
+      });
+  }
 
   ngOnDestroy(): void {}
 
-  onTreatmentStatusChange(event: MatSelectChange) {}
+  onTreatmentStatusChange(recordId: number, event: MatSelectChange) {
+    this.conversionTrackerFacade.updateConversionTrackerTreatmentStatus(
+      recordId,
+      event.value,
+      this.payload,
+    );
+  }
 }

@@ -266,10 +266,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   }
 
   validateCampaignMenu() {
-    return (
-      (this.user_type == 2 || this.permisions.indexOf('campaigns') >= 0 || this.user_type == 7) &&
-      (this.userId == 1 || this.userId == 30)
-    );
+    return this.user_type == 2 || this.permisions.indexOf('campaigns') >= 0 || this.user_type == 7;
   }
 
   ngAfterViewInit() {

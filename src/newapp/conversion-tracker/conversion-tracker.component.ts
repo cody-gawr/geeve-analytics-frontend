@@ -19,6 +19,7 @@ import { ConversionCode, ConversionTracker } from '../models/conversion-tracker'
 import { LayoutFacade } from '../layout/facades/layout.facade';
 import { DentistFacade } from '../dentist/facades/dentists.facade';
 import moment from 'moment';
+import { TreatmentStatus } from '../enums/treatment-status.enum';
 
 @Component({
   selector: 'app-conversion-tracker',
@@ -109,7 +110,27 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
       });
 
     this.conversionTrackerFacade.conversionTrackers$.subscribe(conversionTrackers => {
-      this.conversionTrackerCollections.consult = conversionTrackers;
+      this.conversionTrackerCollections.consult = conversionTrackers.filter(
+        item => item.treatmentStatus === TreatmentStatus.Consult,
+      );
+      this.conversionTrackerCollections.recommended = conversionTrackers.filter(
+        item => item.treatmentStatus === TreatmentStatus.Recommended,
+      );
+      this.conversionTrackerCollections.preTreatment = conversionTrackers.filter(
+        item => item.treatmentStatus === TreatmentStatus.PreTreatment,
+      );
+      this.conversionTrackerCollections.inTreatment = conversionTrackers.filter(
+        item => item.treatmentStatus === TreatmentStatus.InTreatment,
+      );
+      this.conversionTrackerCollections.completed = conversionTrackers.filter(
+        item => item.treatmentStatus === TreatmentStatus.Completed,
+      );
+      this.conversionTrackerCollections.notSuitable = conversionTrackers.filter(
+        item => item.treatmentStatus === TreatmentStatus.NotSuitable,
+      );
+      this.conversionTrackerCollections.declined = conversionTrackers.filter(
+        item => item.treatmentStatus === TreatmentStatus.Declined,
+      );
     });
   }
 

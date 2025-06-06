@@ -118,9 +118,8 @@ const MENU_DATA: MenuNode[] = [
       // console.log(userId);
 
       return (
-        (validatePermission(permissions, 'campaigns') ||
-          [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0) &&
-        (userId == 1 || userId == 30)
+        validatePermission(permissions, 'campaigns') ||
+        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
   },
