@@ -9,6 +9,7 @@ import {
   takeUntil,
   Observable,
   combineLatest,
+  mergeMap,
 } from 'rxjs';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -35,7 +36,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   conversionCodes: ConversionCode[] = [];
   conversionCodeForm: FormGroup = new FormGroup({
     selectedConversionCode: new FormControl<string | null>(null),
-    newConversionCode: new FormControl<string | null>(null),
+    newConsultCode: new FormControl<string | null>(null),
   });
 
   conversionTrackerCollections: {
@@ -58,6 +59,14 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
 
   get selectedConversionCode$(): Observable<ConversionCode> {
     return this.conversionTrackerFacade.selectedConversionCode$;
+  }
+
+  get selectedConsultCode$(): Observable<string> {
+    return this.selectedConversionCode$.pipe(map(c => c?.consultCode ?? ''));
+  }
+
+  get isCreatingConversionCode$(): Observable<boolean> {
+    return this.conversionTrackerFacade.isCreatingConversionCode$;
   }
 
   constructor(
@@ -132,6 +141,17 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
         item => item.treatmentStatus === TreatmentStatus.Declined,
       );
     });
+
+    this.conversionTrackerFacade.createConversionCodeSuccess$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(conversionCode => !!conversionCode),
+      )
+      .subscribe(_ => {
+        this.conversionCodeForm.get('newConsultCode')?.reset();
+        // ✅ Auto-close dropdown
+        this.conversionCodeSelect.close();
+      });
   }
 
   ngOnDestroy(): void {
@@ -157,23 +177,23 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     });
   }
 
-  addConversionCode() {
-    const newConversionCode = this.conversionCodeForm.get('newConversionCode')?.value;
-    if (!newConversionCode) {
+  onAddConversionCode() {
+    const newConsultCode = this.conversionCodeForm.get('newConsultCode')?.value;
+    if (!newConsultCode) {
       return;
     }
 
-    if (this.conversionCodes.includes(newConversionCode)) {
+    if (this.conversionCodes.map(c => c.consultCode).includes(newConsultCode)) {
       this.notifier.showError('Conversion code already exists!');
       return;
     }
 
-    this.conversionCodes.unshift(newConversionCode);
-    this.conversionCodeForm.get('selectedConversionCode')?.setValue(newConversionCode);
-    this.conversionCodeForm.get('newConversionCode')?.reset();
+    this.conversionTrackerFacade.createConversionCode(this.clinicId, newConsultCode);
+  }
 
-    // ✅ Auto-close dropdown
-    this.conversionCodeSelect.close();
+  onDeleteConversionCode(conversionCode: ConversionCode) {
+    const { clinicId, recordId } = conversionCode;
+    this.conversionTrackerFacade.deleteConversionCode(clinicId, recordId);
   }
 
   onConversionCodeSelected(event: MatSelectChange) {

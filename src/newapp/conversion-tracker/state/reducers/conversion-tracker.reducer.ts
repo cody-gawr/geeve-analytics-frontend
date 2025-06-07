@@ -7,10 +7,14 @@ export interface ConversionTrackerState {
   loading: {
     conversionCodes: boolean;
     conversionTrackers: boolean;
+    createConversionCode: boolean;
+    deleteConversionCode: boolean;
   };
   error: {
     conversionCodes: JeeveError | null;
     conversionTrackers: JeeveError | null;
+    createConvesionCode: JeeveError | null;
+    deleteConversionCode: JeeveError | null;
   };
   selectedConversionCode: ConversionCode | null;
   conversionCodes: ConversionCode[];
@@ -21,10 +25,14 @@ const initialState: ConversionTrackerState = {
   loading: {
     conversionCodes: false,
     conversionTrackers: false,
+    createConversionCode: false,
+    deleteConversionCode: false,
   },
   error: {
     conversionCodes: null,
     conversionTrackers: null,
+    createConvesionCode: null,
+    deleteConversionCode: null,
   },
   selectedConversionCode: null,
   conversionCodes: [],
@@ -125,6 +133,91 @@ export const conversionTrackerFeacture = createFeature({
             conversionTrackers: conversionTrackersError,
           },
           conversionTrackers: [],
+        };
+      },
+    ),
+    on(ConversionTrackerPageActions.createConversionCode, (state): ConversionTrackerState => {
+      const { loading } = state;
+      return {
+        ...state,
+        loading: {
+          ...loading,
+          createConversionCode: true,
+        },
+      };
+    }),
+    on(ConversionTrackerApiActions.createConversionCodeSuccess, (state): ConversionTrackerState => {
+      const { loading, error } = state;
+      return {
+        ...state,
+        loading: {
+          ...loading,
+          createConversionCode: false,
+        },
+        error: {
+          ...error,
+          createConvesionCode: null,
+        },
+      };
+    }),
+    on(
+      ConversionTrackerApiActions.createConversionCodeFailure,
+      (state, { error: createConversionCodeError }): ConversionTrackerState => {
+        const { loading, error } = state;
+        return {
+          ...state,
+          loading: {
+            ...loading,
+            createConversionCode: false,
+          },
+          error: {
+            ...error,
+            createConvesionCode: createConversionCodeError,
+          },
+        };
+      },
+    ),
+    on(ConversionTrackerPageActions.deleteConversionCode, (state): ConversionTrackerState => {
+      const { loading } = state;
+      return {
+        ...state,
+        loading: {
+          ...loading,
+          deleteConversionCode: true,
+        },
+      };
+    }),
+    on(
+      ConversionTrackerApiActions.deleteConversionCodeSuccess,
+      (state, { deletedCount }): ConversionTrackerState => {
+        const { loading, error } = state;
+        return {
+          ...state,
+          loading: {
+            ...loading,
+            createConversionCode: false,
+          },
+          error: {
+            ...error,
+            deleteConversionCode: null,
+          },
+        };
+      },
+    ),
+    on(
+      ConversionTrackerApiActions.deleteConversionCodeFailure,
+      (state, { error: deleteConversionCodeError }): ConversionTrackerState => {
+        const { loading, error } = state;
+        return {
+          ...state,
+          loading: {
+            ...loading,
+            deleteConversionCode: false,
+          },
+          error: {
+            ...error,
+            createConvesionCode: deleteConversionCodeError,
+          },
         };
       },
     ),

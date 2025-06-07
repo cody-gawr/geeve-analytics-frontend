@@ -40,3 +40,31 @@ export const updateConversionTrackerTreatmentStatusFailure = createAction(
     error: JeeveError;
   }>(),
 );
+
+export const createConversionCodeSuccess = createAction(
+  '[Conversion Tracker API] Create Conversion Code Success',
+  props<{
+    conversionCode: ConversionCode;
+  }>(),
+);
+
+export const createConversionCodeFailure = createAction(
+  '[Conversion Tracker API] Create Conversion Code Failure',
+  props<{
+    error: JeeveError;
+  }>(),
+);
+
+export const deleteConversionCodeSuccess = createAction(
+  '[Conversion Tracker API] Delete Conversion Code Success',
+  props<{
+    deletedCount: number;
+  }>(),
+);
+
+export const deleteConversionCodeFailure = createAction(
+  '[Conversion Tracker API] Delete Conversion Code Failure',
+  props<{
+    error: JeeveError;
+  }>(),
+);

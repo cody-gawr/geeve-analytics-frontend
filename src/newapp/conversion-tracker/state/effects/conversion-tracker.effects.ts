@@ -94,4 +94,56 @@ export class ConversionTrackerEffect {
       }),
     );
   });
+
+  readonly createConversionCode$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ConversionTrackerPageActions.createConversionCode),
+      mergeMap(({ clinicId, consultCode }) => {
+        return this.conversionTrackerService.createConversionCode(clinicId, consultCode).pipe(
+          mergeMap(conversionCode => [
+            ConversionTrackerApiActions.createConversionCodeSuccess({ conversionCode }),
+            ConversionTrackerPageActions.loadConversionCodes({ clinicId }),
+          ]),
+          catchError((res: HttpErrorResponse) =>
+            of(
+              ConversionTrackerApiActions.createConversionCodeFailure({
+                error: {
+                  api: `${this.commonApiUrl}/conversion/code`,
+                  message: res.message,
+                  status: res.status,
+                  errors: Array.isArray(res.error) ? res.error : [res.error],
+                },
+              }),
+            ),
+          ),
+        );
+      }),
+    );
+  });
+
+  readonly deleteConversionCode$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ConversionTrackerPageActions.deleteConversionCode),
+      mergeMap(({ clinicId, recordId }) => {
+        return this.conversionTrackerService.deleteConversionCode(recordId).pipe(
+          mergeMap(deletedCount => [
+            ConversionTrackerApiActions.deleteConversionCodeSuccess({ deletedCount }),
+            ConversionTrackerPageActions.loadConversionCodes({ clinicId }),
+          ]),
+          catchError((res: HttpErrorResponse) =>
+            of(
+              ConversionTrackerApiActions.deleteConversionCodeFailure({
+                error: {
+                  api: `${this.commonApiUrl}/conversion/code`,
+                  message: res.message,
+                  status: res.status,
+                  errors: Array.isArray(res.error) ? res.error : [res.error],
+                },
+              }),
+            ),
+          ),
+        );
+      }),
+    );
+  });
 }

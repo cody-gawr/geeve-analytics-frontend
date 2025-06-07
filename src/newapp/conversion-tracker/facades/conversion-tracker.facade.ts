@@ -6,19 +6,36 @@ import {
   ConversionTrackerState,
   selectConversionCodes,
   selectConversionTrackers,
+  selectLoading,
   selectSelectedConversionCode,
 } from '../state/reducers/conversion-tracker.reducer';
-import { ConversionTrackerPageActions } from '../state/actions';
-import { ConversionCode } from '@/newapp/models/conversion-tracker';
+import { ConversionTrackerApiActions, ConversionTrackerPageActions } from '../state/actions';
 import { TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Injectable()
 export class ConversionTrackerFacade {
-  constructor(private store: Store<ConversionTrackerState>) {}
+  constructor(
+    private store: Store<ConversionTrackerState>,
+    private actions$: Actions,
+  ) {}
 
   readonly selectedConversionCode$ = this.store.pipe(select(selectSelectedConversionCode));
   readonly conversionCodes$ = this.store.pipe(select(selectConversionCodes));
   readonly conversionTrackers$ = this.store.pipe(select(selectConversionTrackers));
+  readonly isCreatingConversionCode$ = this.store.pipe(
+    select(selectLoading),
+    map(loading => loading.createConversionCode),
+  );
+  readonly isDeletingConversionCode$ = this.store.pipe(
+    select(selectLoading),
+    map(loading => loading.deleteConversionCode),
+  );
+
+  readonly createConversionCodeSuccess$ = this.actions$.pipe(
+    ofType(ConversionTrackerApiActions.createConversionCodeSuccess),
+    map(({ conversionCode }) => conversionCode),
+  );
 
   loadConversionCodes(clinicId: number) {
     this.store.dispatch(ConversionTrackerPageActions.loadConversionCodes({ clinicId }));
@@ -54,6 +71,24 @@ export class ConversionTrackerFacade {
         recordId,
         treatmentStatus,
         payload,
+      }),
+    );
+  }
+
+  createConversionCode(clinicId: number, consultCode: string) {
+    this.store.dispatch(
+      ConversionTrackerPageActions.createConversionCode({
+        clinicId,
+        consultCode,
+      }),
+    );
+  }
+
+  deleteConversionCode(clinicId: number, recordId: number) {
+    this.store.dispatch(
+      ConversionTrackerPageActions.deleteConversionCode({
+        clinicId,
+        recordId,
       }),
     );
   }

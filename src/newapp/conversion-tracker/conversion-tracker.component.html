@@ -26,25 +26,26 @@
   </mat-card>
   <mat-card class="tab-group-container">
     <form [formGroup]="conversionCodeForm">
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Select Conversion Code</mat-label>
         <mat-select
           formControlName="selectedConversionCode"
           #conversionCodeSelect="matSelect"
           (selectionChange)="onConversionCodeSelected($event)"
         >
+          <mat-select-trigger>{{ selectedConsultCode$ | async }}</mat-select-trigger>
           <!-- 🔼 Add new item UI -->
           <mat-option disabled>
             <div class="add-new-option">
               <input
                 matInput
-                [formControl]="conversionCodeForm.get('newConversionCode')"
+                [formControl]="conversionCodeForm.get('newConsultCode')"
                 placeholder="Add new conversion code..."
               />
               <button
                 color="primary"
-                (click)="addConversionCode()"
-                [disabled]="conversionCodeForm.get('newConversionCode')?.invalid"
+                (click)="onAddConversionCode()"
+                [disabled]="conversionCodeForm.get('newConsultCode')?.invalid"
                 mat-flat-button
               >
                 Add
@@ -56,8 +57,21 @@
           <mat-option
             *ngFor="let conversionCode of conversionCodes"
             [value]="conversionCode.recordId"
+            class="deletable-option"
+            (click)="$event.stopPropagation()"
           >
-            {{ conversionCode.consultCode }}
+            <div class="option-content">
+              <span class="option-label">{{ conversionCode.consultCode }}</span>
+              <button
+                mat-icon-button
+                class="delete-btn"
+                color="primary"
+                tabindex="-1"
+                (click)="onDeleteConversionCode(conversionCode); $event.stopPropagation()"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </mat-option>
         </mat-select>
       </mat-form-field>

@@ -30,6 +30,8 @@
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
+      mat-form-field {
+      }
     }
     ::ng-deep .mat-mdc-tab-labels {
       gap: 5px;
@@ -77,4 +79,28 @@
     white-space: nowrap;
     font-size: 13px;
   }
+}
+
+/* hide the pseudo-checkbox that appears in multiple-select mode */
+::ng-deep .mat-mdc-option .mat-pseudo-checkbox-minimal {
+  display: none !important;
+}
+
+.deletable-option {
+  .option-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .option-label {
+    flex: 1;
+  }
+
+  .delete-btn {
+    margin-left: 8px;
+  }
+}
+::ng-deep .mat-mdc-option .mdc-list-item__primary-text {
+  width: 100%;
 }

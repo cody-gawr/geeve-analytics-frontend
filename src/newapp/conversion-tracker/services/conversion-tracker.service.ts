@@ -58,4 +58,30 @@ export class ConversionTrackerService {
       })
       .pipe(map(res => res.data));
   }
+
+  createConversionCode(clinicId: number, consultCode: string): Observable<ConversionCode> {
+    return this.http
+      .post<ApiResponse<ConversionCodeDto>>(
+        `${this.commonApiUrl}/conversion/code`,
+        {
+          clinic_id: clinicId,
+          consult_code: consultCode,
+        },
+        {
+          withCredentials: true,
+        },
+      )
+      .pipe(map(res => <ConversionCode>camelcaseKeys(res.data, { deep: true })));
+  }
+
+  deleteConversionCode(recordId: number): Observable<number> {
+    return this.http
+      .delete<ApiResponse<number>>(`${this.commonApiUrl}/conversion/code`, {
+        params: {
+          record_id: recordId,
+        },
+        withCredentials: true,
+      })
+      .pipe(map(res => res.data));
+  }
 }
