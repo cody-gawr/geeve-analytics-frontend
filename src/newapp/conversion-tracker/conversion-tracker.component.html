@@ -61,16 +61,27 @@
             (click)="$event.stopPropagation()"
           >
             <div class="option-content">
-              <span class="option-label">{{ conversionCode.consultCode }}</span>
-              <button
-                mat-icon-button
-                class="delete-btn"
-                color="primary"
-                tabindex="-1"
-                (click)="onDeleteConversionCode(conversionCode); $event.stopPropagation()"
-              >
-                <mat-icon>delete</mat-icon>
-              </button>
+              <div class="option-label">
+                <span>{{ conversionCode.consultCode }}</span>
+              </div>
+              <div class="control-wrapper">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  tabindex="-1"
+                  (click)="$event.stopPropagation()"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="primary"
+                  tabindex="-1"
+                  (click)="onDeleteConversionCode(conversionCode); $event.stopPropagation()"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
             </div>
           </mat-option>
         </mat-select>

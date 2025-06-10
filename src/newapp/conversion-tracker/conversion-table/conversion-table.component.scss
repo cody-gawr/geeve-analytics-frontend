@@ -66,3 +66,9 @@
 ::ng-deep .mat-mdc-option {
   font-size: 14px;
 }
+
+::ng-deep .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
+  .mdc-evolution-chip__text-label {
+    color: white !important;
+  }
+}
