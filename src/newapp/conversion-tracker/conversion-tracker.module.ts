@@ -11,6 +11,7 @@ import { conversionTrackerFeacture } from './state/reducers/conversion-tracker.r
 import { ConversionTrackerFacade } from './facades/conversion-tracker.facade';
 import { EffectsModule } from '@ngrx/effects';
 import { ConversionTrackerEffect } from './state/effects/conversion-tracker.effects';
+import { UpdateConversionCodeValuesDialogComponent } from './update-conversion-code-values-dialog/update-conversion-code-values-dialog.component';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { ConversionTrackerEffect } from './state/effects/conversion-tracker.effe
     ConversionTrackerComponent,
     ConversionInsightCardComponent,
     ConversionTableComponent,
+    UpdateConversionCodeValuesDialogComponent,
   ],
   providers: [ConversionTrackerFacade],
 })

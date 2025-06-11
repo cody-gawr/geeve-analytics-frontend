@@ -21,6 +21,7 @@ import { LayoutFacade } from '../layout/facades/layout.facade';
 import { DentistFacade } from '../dentist/facades/dentists.facade';
 import moment from 'moment';
 import { TreatmentStatus } from '../enums/treatment-status.enum';
+import { UpdateConversionCodeValuesDialogComponent } from './update-conversion-code-values-dialog/update-conversion-code-values-dialog.component';
 
 @Component({
   selector: 'app-conversion-tracker',
@@ -191,7 +192,13 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     this.conversionTrackerFacade.createConversionCode(this.clinicId, newConsultCode);
   }
 
-  onUpdateConversionCode(conversionCode: ConversionCode) {}
+  onUpdateConversionCode(conversionCode: ConversionCode) {
+    this.dialog.open(UpdateConversionCodeValuesDialogComponent, {
+      data: {
+        conversionCode,
+      },
+    });
+  }
 
   onDeleteConversionCode(conversionCode: ConversionCode) {
     const { clinicId, recordId } = conversionCode;

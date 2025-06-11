@@ -7,3 +7,5 @@ export enum TreatmentStatus {
   NotSuitable = 'NOT_SUITABLE',
   Declined = 'DECLINED',
 }
+
+export type ActiveTreatmentStatus = TreatmentStatus.InTreatment | TreatmentStatus.Completed;
