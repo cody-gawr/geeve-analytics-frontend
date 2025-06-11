@@ -191,6 +191,8 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     this.conversionTrackerFacade.createConversionCode(this.clinicId, newConsultCode);
   }
 
+  onUpdateConversionCode(conversionCode: ConversionCode) {}
+
   onDeleteConversionCode(conversionCode: ConversionCode) {
     const { clinicId, recordId } = conversionCode;
     this.conversionTrackerFacade.deleteConversionCode(clinicId, recordId);
