@@ -25,6 +25,26 @@
       </form>
     </div>
 
+    <!-- jump every 4s -->
+    <button
+      mat-flat-button
+      color="accent"
+      class="bounce-button"
+      (click)="onOpenExplainerVideoDialog()"
+    >
+      New Video! <mat-icon color="white">video_library</mat-icon>
+    </button>
+
+    <!-- blinking badge: no JS needed -->
+    <button
+      mat-icon-button
+      matBadge="!"
+      matBadgeColor="warn"
+      class="bounce-button"
+      (click)="onOpenExplainerVideoDialog()"
+    >
+      <mat-icon color="primary">video_library</mat-icon>
+    </button>
     <button type="button" (click)="openCreateCampaignDialog()" mat-stroked-button color="primary">
       Create Campaign
     </button>

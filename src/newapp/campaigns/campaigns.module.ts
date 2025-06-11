@@ -14,6 +14,7 @@ import { CsvColumnSelectDialog } from './create-campaign/csv-column-select-dialo
 import { StoreModule } from '@ngrx/store';
 import { campaignFeature } from './state/reducers/campaign.reducer';
 import { CampaignFacade } from './facades/campaign.facade';
+import { FeaturePayAppDialogComponent } from '@/app/layouts/full/headerright/headerright.component';
 
 @NgModule({
   imports: [

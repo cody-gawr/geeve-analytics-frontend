@@ -16,6 +16,7 @@ import { ClinicService } from '../clinic/services/clinic.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog } from '@angular/material/legacy-dialog';
 import { Router } from '@angular/router';
 import { CampaignService, ICampaign } from './services/campaign.service';
 import { MatSort } from '@angular/material/sort';
@@ -23,6 +24,7 @@ import { NotificationService } from '../shared/services/notification.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
 import { CampaignFacade } from './facades/campaign.facade';
+import { FeaturePayAppDialogComponent } from '@/app/layouts/full/headerright/headerright.component';
 
 @Component({
   selector: 'app-campaigns',
@@ -141,6 +143,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     private readonly campaignFacade: CampaignFacade,
     private readonly campaignService: CampaignService,
     public dialog: MatDialog,
+    public legacyDialog: MatLegacyDialog,
     private route: Router,
     private readonly nofifyService: NotificationService,
   ) {
@@ -256,6 +259,12 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
   openCreateCampaignDialog() {
     this.route.navigate(['newapp/campaigns/create']);
+  }
+
+  onOpenExplainerVideoDialog() {
+    this.legacyDialog.open<FeaturePayAppDialogComponent>(FeaturePayAppDialogComponent, {
+      width: '600px',
+    });
   }
 
   getPendingSmsCount(element: ICampaign) {
