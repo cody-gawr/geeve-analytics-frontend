@@ -57,6 +57,27 @@
         </div>
       </div>
 
+      <div class="dashboardsRoles">
+        <h2>CRM</h2>
+        <div class="dashboardsRolesCon">
+          <mat-checkbox
+            class="role_permissions"
+            [(ngModel)]="data.selectedRole['campaigns_'+selected_id]"
+            >Campaigns</mat-checkbox
+          >
+          <mat-checkbox
+            class="role_permissions"
+            [(ngModel)]="data.selectedRole['followups_'+selected_id]"
+            >Follow Ups</mat-checkbox
+          >
+          <mat-checkbox
+            class="role_permissions"
+            [(ngModel)]="data.selectedRole['conversionTracker_'+selected_id]"
+            >Conversion Tracker</mat-checkbox
+          >
+        </div>
+      </div>
+
       <mat-checkbox
         class="role_permissions"
         [(ngModel)]="data.selectedRole['healthscreen_'+selected_id]"
@@ -67,16 +88,7 @@
         [(ngModel)]="data.selectedRole['morninghuddle_'+selected_id]"
         >Morning Huddle</mat-checkbox
       >
-      <mat-checkbox
-        class="role_permissions"
-        [(ngModel)]="data.selectedRole['campaigns_'+selected_id]"
-        >Campaigns</mat-checkbox
-      >
-      <mat-checkbox
-        class="role_permissions"
-        [(ngModel)]="data.selectedRole['followups_'+selected_id]"
-        >Follow Ups</mat-checkbox
-      >
+
       <mat-checkbox
         class="role_permissions"
         [(ngModel)]="data.selectedRole['lostopportunity_'+selected_id]"
@@ -121,7 +133,7 @@
     <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">
       Cancel
     </button>
-    <button mat-button [mat-dialog-close]="data" tabindex="2" class="mat-raised-button mat-dc">
+    <button mat-button [mat-dialog-close]="data" tabindex="0" class="mat-raised-button mat-dc">
       Ok
     </button>
   </div>

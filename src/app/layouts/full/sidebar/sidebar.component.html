@@ -198,8 +198,8 @@
     group="string"
     *ngIf="
       !isProduction &&
-      (user_type == 2 || permisions.indexOf('conversiontracker') >= 0 || user_type == 7) &&
-        featureEnabled('conversion-tracker')
+      (user_type == 2 || permisions.indexOf('conversionTracker') >= 0 || user_type == 7) &&
+      featureEnabled('conversion-tracker')
     "
   >
     <a appAccordionToggle [routerLink]="['/newapp/conversion-tracker']">

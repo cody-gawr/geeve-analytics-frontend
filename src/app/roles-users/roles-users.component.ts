@@ -482,6 +482,20 @@ export class RolesUsersComponent implements AfterViewInit {
     });
   }
   openRoleDialog(): void {
+    console.log({
+      data: {
+        display_name: this.display_name,
+        email: this.email,
+        user_type: this.user_type,
+        password: this.password,
+        roles: this.roles,
+        selectedRole: this.selectedRole,
+        selected_id: this.selected_id,
+        dentists: this.dentists,
+        taskVisible: this.taskVisible,
+        hasPrimeClinics: this.hasPrimeClinics,
+      },
+    });
     const rolesRef = this.dialog.open(RolesOverviewExampleDialogComponent, {
       width: '600px',
       data: {
@@ -502,6 +516,7 @@ export class RolesUsersComponent implements AfterViewInit {
     });
     rolesRef.afterClosed().subscribe(result => {
       if (result != undefined) {
+        console.log({ result });
         this.roles.forEach(res1 => {
           var checkedRoles1 = '';
           var checkedRoles = [];
@@ -514,6 +529,8 @@ export class RolesUsersComponent implements AfterViewInit {
           if (result.selectedRole['healthscreen_' + res1.id]) checkedRoles.push('healthscreen');
           if (result.selectedRole['morninghuddle_' + res1.id]) checkedRoles.push('morninghuddle');
           if (result.selectedRole['followups_' + res1.id]) checkedRoles.push('followups');
+          if (result.selectedRole['conversionTracker_' + res1.id])
+            checkedRoles.push('conversionTracker');
           if (result.selectedRole['lostopportunity_' + res1.id])
             checkedRoles.push('lostopportunity');
           if (result.selectedRole['tasks_' + res1.id]) checkedRoles.push('tasks');

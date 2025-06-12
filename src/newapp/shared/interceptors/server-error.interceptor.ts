@@ -28,15 +28,15 @@ export class ServerErrorInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           // refresh token
-          this.store.dispatch(AuthApiActions.loginFailure({ error: error.message }));
-          if (!(error.url && error.url.includes('/login'))) {
-            //this.router.navigateByUrl('/login', );
-            this.router.navigate(['/login'], {
-              // queryParams: this.router.url.includes('/login')
-              //   ? {}
-              //   : { returnUrl: this.router.url },
-            });
-          }
+          // this.store.dispatch(AuthApiActions.loginFailure({ error: error.message }));
+          // if (!(error.url && error.url.includes('/login'))) {
+          //   //this.router.navigateByUrl('/login', );
+          //   this.router.navigate(['/login'], {
+          //     // queryParams: this.router.url.includes('/login')
+          //     //   ? {}
+          //     //   : { returnUrl: this.router.url },
+          //   });
+          // }
         } else if ([403, 400].indexOf(error.status) > -1) {
           // const errMsg = getApiErrorMesssage(error);
           // this.toastr.warning(``, getApiErrorMesssage(error));

@@ -239,7 +239,7 @@ const MENU_DATA: MenuNode[] = [
     validatorFn: ({ permissions, userType, hasPrimeClinics }: MenuValidatorParams) => {
       return (
         !environment.production ||
-        ((userType == 2 || permissions?.indexOf('conversiontracker') >= 0 || userType == 7) &&
+        ((userType == 2 || permissions?.indexOf('conversionTracker') >= 0 || userType == 7) &&
           featureEnabled('conversion-tracker'))
       );
     },
