@@ -10,7 +10,7 @@ import {
   selectSelectedConversionCode,
 } from '../state/reducers/conversion-tracker.reducer';
 import { ConversionTrackerApiActions, ConversionTrackerPageActions } from '../state/actions';
-import { TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
+import { ActiveTreatmentStatus, TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
 import { Actions, ofType } from '@ngrx/effects';
 
 @Injectable()
@@ -35,6 +35,16 @@ export class ConversionTrackerFacade {
   readonly createConversionCodeSuccess$ = this.actions$.pipe(
     ofType(ConversionTrackerApiActions.createConversionCodeSuccess),
     map(({ conversionCode }) => conversionCode),
+  );
+
+  readonly createConversionCodeValueSuccess$ = this.actions$.pipe(
+    ofType(ConversionTrackerApiActions.createConversionCodeValueSuccess),
+    map(({ conversionCodeValue }) => conversionCodeValue),
+  );
+
+  readonly deleteConversionCodeValueSuccess$ = this.actions$.pipe(
+    ofType(ConversionTrackerApiActions.deleteConversionCodeValueSuccess),
+    map(({ deletedCount }) => deletedCount),
   );
 
   loadConversionCodes(clinicId: number) {
@@ -90,6 +100,21 @@ export class ConversionTrackerFacade {
         clinicId,
         recordId,
       }),
+    );
+  }
+
+  createConversionCodeValue(payload: {
+    clinicId: number;
+    conversionCodeId: number;
+    treatmentStatus: ActiveTreatmentStatus;
+    code: string;
+  }) {
+    this.store.dispatch(ConversionTrackerPageActions.createConversionCodeValue(payload));
+  }
+
+  deleteConversionCodeValue(clinicId: number, recordId: number) {
+    this.store.dispatch(
+      ConversionTrackerPageActions.deleteConversionCodeValue({ clinicId, recordId }),
     );
   }
 }

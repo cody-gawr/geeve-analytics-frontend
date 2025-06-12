@@ -1,5 +1,6 @@
+import { ActiveTreatmentStatus } from '@/newapp/enums/treatment-status.enum';
 import { JeeveError } from '@/newapp/models';
-import { ConversionTracker } from '@/newapp/models/conversion-tracker';
+import { ConversionCodeValue, ConversionTracker } from '@/newapp/models/conversion-tracker';
 import { ConversionCode } from '@/newapp/models/conversion-tracker/conversion-code.model';
 import { createAction, props } from '@ngrx/store';
 
@@ -64,6 +65,34 @@ export const deleteConversionCodeSuccess = createAction(
 
 export const deleteConversionCodeFailure = createAction(
   '[Conversion Tracker API] Delete Conversion Code Failure',
+  props<{
+    error: JeeveError;
+  }>(),
+);
+
+export const createConversionCodeValueSuccess = createAction(
+  '[Conversion Tracker API] Create Conversion Code Value Success',
+  props<{
+    conversionCodeValue: ConversionCodeValue;
+  }>(),
+);
+
+export const createConversionCodeValueFailure = createAction(
+  '[Conversion Tracker API] Create Conversion Code Value Failure',
+  props<{
+    error: JeeveError;
+  }>(),
+);
+
+export const deleteConversionCodeValueSuccess = createAction(
+  '[Conversion Tracker API] Delete Conversion Code Value Success',
+  props<{
+    deletedCount: number;
+  }>(),
+);
+
+export const deleteConversionCodeValueFailure = createAction(
+  '[Conversion Tracker API] Delete Conversion Code Value Failure',
   props<{
     error: JeeveError;
   }>(),

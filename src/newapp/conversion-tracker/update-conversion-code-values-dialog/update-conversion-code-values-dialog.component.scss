@@ -1,0 +1,12 @@
+.mdc-dialog__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
+  background-color: #00897b;
+}
+
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__icon--trailing {
+  color: white;
+}

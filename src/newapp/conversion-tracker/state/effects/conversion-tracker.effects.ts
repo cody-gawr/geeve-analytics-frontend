@@ -146,4 +146,58 @@ export class ConversionTrackerEffect {
       }),
     );
   });
+
+  readonly createConversionCodeValue$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ConversionTrackerPageActions.createConversionCodeValue),
+      mergeMap(({ clinicId, conversionCodeId, treatmentStatus, code }) => {
+        return this.conversionTrackerService
+          .createConversionCodeValue(conversionCodeId, treatmentStatus, code)
+          .pipe(
+            mergeMap(conversionCodeValue => [
+              ConversionTrackerApiActions.createConversionCodeValueSuccess({ conversionCodeValue }),
+              ConversionTrackerPageActions.loadConversionCodes({ clinicId }),
+            ]),
+            catchError((res: HttpErrorResponse) =>
+              of(
+                ConversionTrackerApiActions.createConversionCodeValueFailure({
+                  error: {
+                    api: `${this.commonApiUrl}/conversion/code-value`,
+                    message: res.message,
+                    status: res.status,
+                    errors: Array.isArray(res.error) ? res.error : [res.error],
+                  },
+                }),
+              ),
+            ),
+          );
+      }),
+    );
+  });
+
+  readonly deleteConversionCodeValue$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ConversionTrackerPageActions.deleteConversionCodeValue),
+      mergeMap(({ clinicId, recordId }) => {
+        return this.conversionTrackerService.deleteConversionCodeValue(recordId).pipe(
+          mergeMap(deletedCount => [
+            ConversionTrackerApiActions.deleteConversionCodeValueSuccess({ deletedCount }),
+            ConversionTrackerPageActions.loadConversionCodes({ clinicId }),
+          ]),
+          catchError((res: HttpErrorResponse) =>
+            of(
+              ConversionTrackerApiActions.deleteConversionCodeValueFailure({
+                error: {
+                  api: `${this.commonApiUrl}/conversion/code-value`,
+                  message: res.message,
+                  status: res.status,
+                  errors: Array.isArray(res.error) ? res.error : [res.error],
+                },
+              }),
+            ),
+          ),
+        );
+      }),
+    );
+  });
 }

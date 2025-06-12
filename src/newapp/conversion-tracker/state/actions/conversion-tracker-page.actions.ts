@@ -1,4 +1,4 @@
-import { TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
+import { ActiveTreatmentStatus, TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
 import { createAction, props } from '@ngrx/store';
 
 export const loadConversionCodes = createAction(
@@ -47,6 +47,24 @@ export const createConversionCode = createAction(
 
 export const deleteConversionCode = createAction(
   '[Conversion Tracker Page] Delete Conversion Code',
+  props<{
+    clinicId: number;
+    recordId: number;
+  }>(),
+);
+
+export const createConversionCodeValue = createAction(
+  '[Conversion Tracker Page] Create Conversion Code Value',
+  props<{
+    clinicId: number;
+    conversionCodeId: number;
+    treatmentStatus: ActiveTreatmentStatus;
+    code: string;
+  }>(),
+);
+
+export const deleteConversionCodeValue = createAction(
+  '[Conversion Tracker Page] Delete Conversion Code Value',
   props<{
     clinicId: number;
     recordId: number;

@@ -1,7 +1,12 @@
 import { environment } from '@/environments/environment';
-import { TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
+import { ActiveTreatmentStatus, TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
 import { ApiResponse } from '@/newapp/models';
-import { ConversionTracker, ConversionTrackerDto } from '@/newapp/models/conversion-tracker';
+import {
+  ConversionCodeValue,
+  ConversionCodeValueDto,
+  ConversionTracker,
+  ConversionTrackerDto,
+} from '@/newapp/models/conversion-tracker';
 import { ConversionCodeDto } from '@/newapp/models/conversion-tracker/conversion-code.dto';
 import { ConversionCode } from '@/newapp/models/conversion-tracker/conversion-code.model';
 import { HttpClient } from '@angular/common/http';
@@ -77,6 +82,37 @@ export class ConversionTrackerService {
   deleteConversionCode(recordId: number): Observable<number> {
     return this.http
       .delete<ApiResponse<number>>(`${this.commonApiUrl}/conversion/code`, {
+        params: {
+          record_id: recordId,
+        },
+        withCredentials: true,
+      })
+      .pipe(map(res => res.data));
+  }
+
+  createConversionCodeValue(
+    conversionCodeId: number,
+    treatmentStatus: ActiveTreatmentStatus,
+    code: string,
+  ): Observable<ConversionCodeValue> {
+    return this.http
+      .post<ApiResponse<ConversionCodeValueDto>>(
+        `${this.commonApiUrl}/conversion/code-value`,
+        {
+          conversion_code_id: conversionCodeId,
+          type: treatmentStatus,
+          code,
+        },
+        {
+          withCredentials: true,
+        },
+      )
+      .pipe(map(res => <ConversionCodeValue>camelcaseKeys(res.data, { deep: true })));
+  }
+
+  deleteConversionCodeValue(recordId: number): Observable<number> {
+    return this.http
+      .delete<ApiResponse<number>>(`${this.commonApiUrl}/conversion/code-value`, {
         params: {
           record_id: recordId,
         },

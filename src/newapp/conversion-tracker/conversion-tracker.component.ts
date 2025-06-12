@@ -194,9 +194,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
 
   onUpdateConversionCode(conversionCode: ConversionCode) {
     this.dialog.open(UpdateConversionCodeValuesDialogComponent, {
-      data: {
-        conversionCode,
-      },
+      data: conversionCode,
     });
   }
 
