@@ -312,6 +312,7 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
         this.permisions = res.data;
         this._cookieService.put('user_type', res.type + '', this.constants.cookieOpt);
         this._cookieService.put('user_plan', res.plan, this.constants.cookieOpt);
+        this._cookieService.put('permissions', res.data);
         this.userPlan = res.plan;
         //Remove apis calls when user have not permission of any page form FE
         if (res.type != 2 && res.type != 7) {

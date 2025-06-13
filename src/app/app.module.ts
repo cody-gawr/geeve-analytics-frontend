@@ -82,6 +82,7 @@ import { layoutFeature } from '@/newapp/layout/state/reducers/layout.reducer';
 import { AppSwitchMenu } from './layouts/app-switch-menu/app-switch-menu.component';
 import { LoginService } from './login/login.service';
 import { MarkdownModule } from 'ngx-markdown';
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,

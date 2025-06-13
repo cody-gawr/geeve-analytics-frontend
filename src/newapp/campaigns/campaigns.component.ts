@@ -25,6 +25,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
 import { CampaignFacade } from './facades/campaign.facade';
 import { FeaturePayAppDialogComponent } from '@/app/layouts/full/headerright/headerright.component';
+import { AuthFacade } from '../auth/facades/auth.facade';
+import { validatePermission } from '../shared/helpers/validatePermission.helper';
+import { CONSULTANT, USER_MASTER } from '../constants';
 
 @Component({
   selector: 'app-campaigns',
@@ -146,11 +149,15 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     public legacyDialog: MatLegacyDialog,
     private route: Router,
     private readonly nofifyService: NotificationService,
+    private authFacade: AuthFacade,
   ) {
     this.range = this.campaignService.range;
   }
 
   ngOnInit(): void {
+    this.authFacade.rolesIndividual$.pipe(takeUntil(this.destroy$)).subscribe(res => {
+      console.log({ res });
+    });
     this.clinicFacade.currentSingleClinicId$
       .pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe(clinicId => {
@@ -168,6 +175,17 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     this.transformedCampaigns$.pipe(takeUntil(this.destroy$)).subscribe(campaigns => {
       this.dataSource.data = campaigns;
     });
+  }
+
+  get hasPermission$(): Observable<boolean> {
+    return this.authFacade.rolesIndividual$.pipe(
+      takeUntil(this.destroy$),
+      map(
+        ({ data: permissions, type: userType }) =>
+          validatePermission(permissions, 'campaigns') ||
+          [USER_MASTER, CONSULTANT].indexOf(userType) >= 0,
+      ),
+    );
   }
 
   getStatusColor(status: string, inProgressMsgCount: number) {

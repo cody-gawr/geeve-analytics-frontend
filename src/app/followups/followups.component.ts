@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
 import {
   Component,
   HostListener,
@@ -32,8 +32,11 @@ import * as moment from 'moment';
 import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 import { LocalStorageService } from '../shared/local-storage.service';
 import { FormControl } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
+import { validatePermission } from '@/newapp/shared/helpers/validatePermission.helper';
+import { CONSULTANT, USER_MASTER } from '@/newapp/constants';
 
 @Component({
   selector: 'export-data-dialog',
@@ -661,6 +664,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.getUtaFollowups();
     }
   }
+
+  get hasPermission(): boolean {
+    const userType = parseInt(this._cookieService.get('user_type'), 10);
+    return (
+      [USER_MASTER, CONSULTANT].indexOf(userType) >= 0 ||
+      (this._cookieService.get('permissions') || '').indexOf('followups') >= 0
+    );
+  }
+
   changeTab(tabIndex: number) {
     this.selectedTab = tabIndex;
   }

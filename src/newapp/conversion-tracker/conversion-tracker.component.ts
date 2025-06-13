@@ -22,6 +22,9 @@ import { DentistFacade } from '../dentist/facades/dentists.facade';
 import moment from 'moment';
 import { TreatmentStatus } from '../enums/treatment-status.enum';
 import { UpdateConversionCodeValuesDialogComponent } from './update-conversion-code-values-dialog/update-conversion-code-values-dialog.component';
+import { AuthFacade } from '../auth/facades/auth.facade';
+import { validatePermission } from '../shared/helpers/validatePermission.helper';
+import { CONSULTANT, USER_MASTER } from '../constants';
 
 @Component({
   selector: 'app-conversion-tracker',
@@ -77,6 +80,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     private layoutFacade: LayoutFacade,
     private notifier: NotificationService,
     private conversionTrackerFacade: ConversionTrackerFacade,
+    private authFacade: AuthFacade,
   ) {}
 
   ngOnInit() {
@@ -158,6 +162,17 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy.next();
     this.destroy.complete();
+  }
+
+  get hasPermission$(): Observable<boolean> {
+    return this.authFacade.rolesIndividual$.pipe(
+      filter(payload => !!payload),
+      map(
+        ({ data: permissions, type: userType }) =>
+          validatePermission(permissions, 'conversionTracker') ||
+          [USER_MASTER, CONSULTANT].indexOf(userType) >= 0,
+      ),
+    );
   }
 
   onStartCampaign() {

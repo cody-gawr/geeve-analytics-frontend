@@ -56,7 +56,7 @@
       [ngClass]="status ? 'selected' : ''"
     >
       <i class="fa-chart-area fas"></i>
-      <span>Dashboards</span>
+      <span>Dashboard</span>
       <span fxFlex></span>
       <i *ngIf="nav_open != 'dashboards'" class="fas fa-caret-right"></i>
       <i *ngIf="nav_open == 'dashboards'" class="fas fa-caret-down"></i>
@@ -96,7 +96,7 @@
           group="string"
           *ngIf="user_type == 2 || permisions.indexOf('dashboard3') >= 0 || user_type == 7"
         >
-          <a class="" appAccordionToggle href="/newapp/dashboard/frontdesk">
+          <a class="relative" appAccordionToggle href="/newapp/dashboard/frontdesk">
             <i></i>
             <span>Front Desk</span>
             <span fxFlex></span>
@@ -109,7 +109,7 @@
           group="string"
           *ngIf="user_type == 2 || permisions.indexOf('dashboard6') >= 0 || user_type == 7"
         >
-          <a class="" appAccordionToggle [routerLink]="['/newapp/dashboard/followups']">
+          <a class="relative" appAccordionToggle [routerLink]="['/newapp/dashboard/followups']">
             <i></i>
             <span>Follow Ups</span>
             <span fxFlex></span>
@@ -125,7 +125,7 @@
             userPlan != 'lite'
           "
         >
-          <a class="" appAccordionToggle href="/newapp/dashboard/marketing">
+          <a class="relative" appAccordionToggle href="/newapp/dashboard/marketing">
             <i></i>
             <span>Marketing</span>
             <span class="badge badge-new badge-pill"> Updated </span>
@@ -138,7 +138,7 @@
           group="string"
           *ngIf="user_type == 2 || permisions.indexOf('dashboard5') >= 0 || user_type == 7"
         >
-          <a class="" appAccordionToggle href="/newapp/dashboard/finances">
+          <a class="relative" appAccordionToggle href="/newapp/dashboard/finances">
             <i></i>
             <span>Finances</span>
             <span class="badge badge-new badge-pill"> Updated </span>
@@ -150,7 +150,6 @@
   </mat-list-item>
   <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
     <a
-      class=""
       appAccordionToggle
       href="javascript: void(0);"
       (click)="clickEvent('crm')"
@@ -164,43 +163,24 @@
     </a>
     <ng-template [ngIf]="nav_open == 'crm'">
       <mat-nav-list appAccordion>
-        <mat-list-item
-          appAccordionLink
-          routerLinkActive="selected"
-          group="string"
-          *ngIf="validateCampaignMenu()"
-        >
-          <a appAccordionToggle [routerLink]="['/newapp/crm/campaigns']">
-            <i class="fas fa-bullhorn"></i>
+        <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
+          <a class="relative" appAccordionToggle [routerLink]="['/newapp/crm/campaigns']">
+            <i></i>
             <span>Campaigns</span>
             <span class="badge badge-new badge-pill"> New </span>
             <span fxFlex></span>
           </a>
         </mat-list-item>
-        <mat-list-item
-          appAccordionLink
-          routerLinkActive="selected"
-          group="string"
-          *ngIf="user_type == 2 || permisions.indexOf('followups') >= 0 || user_type == 7"
-        >
-          <a class="" appAccordionToggle [routerLink]="['/newapp/crm/followups']">
-            <i class="fa fa-phone"></i>
+        <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
+          <a class="relative" appAccordionToggle [routerLink]="['/newapp/crm/followups']">
+            <i></i>
             <span>Follow Ups</span>
             <span fxFlex></span>
           </a>
         </mat-list-item>
-        <mat-list-item
-          appAccordionLink
-          routerLinkActive="selected"
-          group="string"
-          *ngIf="
-            !isProduction &&
-            (user_type == 2 || permisions.indexOf('conversionTracker') >= 0 || user_type == 7) &&
-            featureEnabled('conversion-tracker')
-          "
-        >
-          <a appAccordionToggle [routerLink]="['/newapp/crm/conversion-tracker']">
-            <i class="fas fa-bullseye"></i>
+        <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
+          <a class="relative" appAccordionToggle [routerLink]="['/newapp/crm/conversion-tracker']">
+            <i></i>
             <span>Conversion Tracker</span>
             <span fxFlex></span>
           </a>

@@ -58,6 +58,9 @@ Main sidebar
         margin: 5px 0 5px 5px;
         height: 16px;
       }
+      &.relative {
+        padding-left: 40px;
+      }
     }
     &.selected > .mat-list-item-content > a {
       background: $themecolor-alt;
