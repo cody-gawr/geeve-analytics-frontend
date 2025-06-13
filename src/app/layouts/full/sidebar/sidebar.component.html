@@ -42,6 +42,47 @@
     </a>
   </mat-list-item>
 
+  <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
+    <a
+      appAccordionToggle
+      href="javascript: void(0);"
+      (click)="clickEvent('crm')"
+      [ngClass]="status ? 'selected' : ''"
+    >
+      <i class="fa-user-tag fas"></i>
+      <span>CRM</span>
+      <span fxFlex></span>
+      <i *ngIf="nav_open != 'crm'" class="fas fa-caret-right"></i>
+      <i *ngIf="nav_open == 'crm'" class="fas fa-caret-down"></i>
+    </a>
+    <ng-template [ngIf]="nav_open == 'crm'">
+      <mat-nav-list appAccordion>
+        <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
+          <a class="relative" appAccordionToggle [routerLink]="['/newapp/crm/campaigns']">
+            <i></i>
+            <span>Campaigns</span>
+            <span class="badge badge-new badge-pill"> New </span>
+            <span fxFlex></span>
+          </a>
+        </mat-list-item>
+        <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
+          <a class="relative" appAccordionToggle [routerLink]="['/newapp/crm/followups']">
+            <i></i>
+            <span>Follow Ups</span>
+            <span fxFlex></span>
+          </a>
+        </mat-list-item>
+        <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
+          <a class="relative" appAccordionToggle [routerLink]="['/newapp/crm/conversion-tracker']">
+            <i></i>
+            <span>Conversion Tracker</span>
+            <span fxFlex></span>
+          </a>
+        </mat-list-item>
+      </mat-nav-list>
+    </ng-template>
+  </mat-list-item>
+
   <mat-list-item
     appAccordionLink
     routerLinkActive="selected"
@@ -148,46 +189,7 @@
       </mat-nav-list>
     </ng-template>
   </mat-list-item>
-  <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
-    <a
-      appAccordionToggle
-      href="javascript: void(0);"
-      (click)="clickEvent('crm')"
-      [ngClass]="status ? 'selected' : ''"
-    >
-      <i class="fa-user-tag fas"></i>
-      <span>CRM</span>
-      <span fxFlex></span>
-      <i *ngIf="nav_open != 'crm'" class="fas fa-caret-right"></i>
-      <i *ngIf="nav_open == 'crm'" class="fas fa-caret-down"></i>
-    </a>
-    <ng-template [ngIf]="nav_open == 'crm'">
-      <mat-nav-list appAccordion>
-        <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
-          <a class="relative" appAccordionToggle [routerLink]="['/newapp/crm/campaigns']">
-            <i></i>
-            <span>Campaigns</span>
-            <span class="badge badge-new badge-pill"> New </span>
-            <span fxFlex></span>
-          </a>
-        </mat-list-item>
-        <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
-          <a class="relative" appAccordionToggle [routerLink]="['/newapp/crm/followups']">
-            <i></i>
-            <span>Follow Ups</span>
-            <span fxFlex></span>
-          </a>
-        </mat-list-item>
-        <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
-          <a class="relative" appAccordionToggle [routerLink]="['/newapp/crm/conversion-tracker']">
-            <i></i>
-            <span>Conversion Tracker</span>
-            <span fxFlex></span>
-          </a>
-        </mat-list-item>
-      </mat-nav-list>
-    </ng-template>
-  </mat-list-item>
+
   <mat-list-item
     appAccordionLink
     routerLinkActive="selected"
