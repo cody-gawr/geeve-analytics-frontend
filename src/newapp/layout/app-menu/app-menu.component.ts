@@ -26,6 +26,7 @@ import {
   faBullhorn,
   faBullseye,
   faChartPie,
+  faUserTag,
 } from '@fortawesome/free-solid-svg-icons';
 import { USER_MASTER, CONSULTANT, USER_CLINICIAN } from '@/newapp/constants';
 
@@ -98,39 +99,6 @@ const MENU_DATA: MenuNode[] = [
       return (
         permissions?.indexOf('morninghuddle') >= 0 ||
         [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
-      );
-    },
-  },
-  // user_type==2 || permissions.contains(campaigns) || user_type==7
-  {
-    title: 'Campaigns',
-    path: '/newapp/campaigns',
-    icon: faBullhorn,
-    badgeText: 'New',
-    badgeStyle: 'yellow-bg',
-    validatorFn: ({ permissions, userType, userId }: MenuValidatorParams) => {
-      // console.log('New App:');
-      // console.log('permissions: ' + JSON.stringify(permissions));
-      // console.log('validatePermission: ' + validatePermission(permissions, 'campaigns'));
-      // console.log('User Type:');
-      // console.log(userType);
-      // console.log('User ID:');
-      // console.log(userId);
-
-      return (
-        validatePermission(permissions, 'campaigns') ||
-        [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
-      );
-    },
-  },
-  // user_type==2 || permissions.contains(followups) || user_type==7
-  {
-    title: 'Follow Ups',
-    path: 'followups',
-    icon: faPhoneFlip,
-    validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
-      return (
-        permissions?.indexOf('followups') >= 0 || [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
       );
     },
   },
@@ -233,17 +201,60 @@ const MENU_DATA: MenuNode[] = [
     },
   },
   {
-    title: 'Conversion Tracker',
-    path: '/newapp/conversion-tracker',
-    icon: faBullseye,
-    validatorFn: ({ permissions, userType, hasPrimeClinics }: MenuValidatorParams) => {
-      return (
-        !environment.production ||
-        ((userType == 2 || permissions?.indexOf('conversionTracker') >= 0 || userType == 7) &&
-          featureEnabled('conversion-tracker'))
-      );
-    },
+    title: 'CRM',
+    path: '/newapp/crm',
+    icon: faUserTag,
+    children: [
+      // user_type==2 || permissions.contains(campaigns) || user_type==7
+      {
+        title: 'Campaigns',
+        path: '/newapp/crm/campaigns',
+        icon: faBullhorn,
+        badgeText: 'New',
+        badgeStyle: 'yellow-bg',
+        validatorFn: ({ permissions, userType, userId }: MenuValidatorParams) => {
+          // console.log('New App:');
+          // console.log('permissions: ' + JSON.stringify(permissions));
+          // console.log('validatePermission: ' + validatePermission(permissions, 'campaigns'));
+          // console.log('User Type:');
+          // console.log(userType);
+          // console.log('User ID:');
+          // console.log(userId);
+
+          return (
+            validatePermission(permissions, 'campaigns') ||
+            [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
+          );
+        },
+      },
+      // user_type==2 || permissions.contains(followups) || user_type==7
+      {
+        title: 'Follow Ups',
+        path: '/newapp/crm/followups',
+        icon: faPhoneFlip,
+        validatorFn: ({ permissions, userType }: MenuValidatorParams) => {
+          return (
+            permissions?.indexOf('followups') >= 0 ||
+            [USER_MASTER, CONSULTANT].indexOf(userType!) >= 0
+          );
+        },
+      },
+      // user_type==2 || permissions.contains(dashboard3) || user_type==7
+      {
+        title: 'Conversion Tracker',
+        path: '/newapp/crm/conversion-tracker',
+        icon: faBullseye,
+        validatorFn: ({ permissions, userType, hasPrimeClinics }: MenuValidatorParams) => {
+          return (
+            !environment.production ||
+            ((userType == 2 || permissions?.indexOf('conversionTracker') >= 0 || userType == 7) &&
+              featureEnabled('conversion-tracker'))
+          );
+        },
+      },
+    ],
   },
+
   {
     title: 'Practice Insights',
     path: '/newapp/practice-insights',

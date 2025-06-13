@@ -98,7 +98,7 @@ export const AppRoutes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'followups',
+        path: 'newapp/crm/followups',
         component: FollowupsComponent,
         canActivate: [AuthGuard],
       },
@@ -149,9 +149,17 @@ export const AppRoutes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'campaigns',
+        path: 'crm/campaigns',
         loadChildren: () =>
           import('../newapp/campaigns/campaigns.module').then(m => m.CampaignsModule),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'crm/conversion-tracker',
+        loadChildren: () =>
+          import('../newapp/conversion-tracker/conversion-tracker.module').then(
+            m => m.ConversionTrackerModule,
+          ),
         canActivate: [AuthGuard],
       },
       {
@@ -159,14 +167,6 @@ export const AppRoutes: Routes = [
         loadChildren: () =>
           import('../newapp/practice-insights/practice-insights.module').then(
             m => m.PracticeInsightModule,
-          ),
-        canActivate: [AuthGuard],
-      },
-      {
-        path: 'conversion-tracker',
-        loadChildren: () =>
-          import('../newapp/conversion-tracker/conversion-tracker.module').then(
-            m => m.ConversionTrackerModule,
           ),
         canActivate: [AuthGuard],
       },

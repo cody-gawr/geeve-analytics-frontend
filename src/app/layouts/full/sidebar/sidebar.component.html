@@ -46,32 +46,6 @@
     appAccordionLink
     routerLinkActive="selected"
     group="string"
-    *ngIf="validateCampaignMenu()"
-  >
-    <a appAccordionToggle [routerLink]="['/newapp/campaigns']">
-      <i class="fas fa-bullhorn"></i>
-      <span>Campaigns</span>
-      <span class="badge badge-new badge-pill"> New </span>
-      <span fxFlex></span>
-    </a>
-  </mat-list-item>
-  <mat-list-item
-    appAccordionLink
-    routerLinkActive="selected"
-    group="string"
-    *ngIf="user_type == 2 || permisions.indexOf('followups') >= 0 || user_type == 7"
-  >
-    <a class="" appAccordionToggle [routerLink]="['/followups']">
-      <i class="fa fa-phone"></i>
-      <span>Follow Ups</span>
-      <span fxFlex></span>
-    </a>
-  </mat-list-item>
-
-  <mat-list-item
-    appAccordionLink
-    routerLinkActive="selected"
-    group="string"
     *ngIf="user_type == 2 || permisions.indexOf('dashboard') >= 0 || user_type == 7"
   >
     <a
@@ -174,7 +148,66 @@
       </mat-nav-list>
     </ng-template>
   </mat-list-item>
-
+  <mat-list-item appAccordionLink routerLinkActive="selected" group="string">
+    <a
+      class=""
+      appAccordionToggle
+      href="javascript: void(0);"
+      (click)="clickEvent('crm')"
+      [ngClass]="status ? 'selected' : ''"
+    >
+      <i class="fa-user-tag fas"></i>
+      <span>CRM</span>
+      <span fxFlex></span>
+      <i *ngIf="nav_open != 'crm'" class="fas fa-caret-right"></i>
+      <i *ngIf="nav_open == 'crm'" class="fas fa-caret-down"></i>
+    </a>
+    <ng-template [ngIf]="nav_open == 'crm'">
+      <mat-nav-list appAccordion>
+        <mat-list-item
+          appAccordionLink
+          routerLinkActive="selected"
+          group="string"
+          *ngIf="validateCampaignMenu()"
+        >
+          <a appAccordionToggle [routerLink]="['/newapp/crm/campaigns']">
+            <i class="fas fa-bullhorn"></i>
+            <span>Campaigns</span>
+            <span class="badge badge-new badge-pill"> New </span>
+            <span fxFlex></span>
+          </a>
+        </mat-list-item>
+        <mat-list-item
+          appAccordionLink
+          routerLinkActive="selected"
+          group="string"
+          *ngIf="user_type == 2 || permisions.indexOf('followups') >= 0 || user_type == 7"
+        >
+          <a class="" appAccordionToggle [routerLink]="['/newapp/crm/followups']">
+            <i class="fa fa-phone"></i>
+            <span>Follow Ups</span>
+            <span fxFlex></span>
+          </a>
+        </mat-list-item>
+        <mat-list-item
+          appAccordionLink
+          routerLinkActive="selected"
+          group="string"
+          *ngIf="
+            !isProduction &&
+            (user_type == 2 || permisions.indexOf('conversionTracker') >= 0 || user_type == 7) &&
+            featureEnabled('conversion-tracker')
+          "
+        >
+          <a appAccordionToggle [routerLink]="['/newapp/crm/conversion-tracker']">
+            <i class="fas fa-bullseye"></i>
+            <span>Conversion Tracker</span>
+            <span fxFlex></span>
+          </a>
+        </mat-list-item>
+      </mat-nav-list>
+    </ng-template>
+  </mat-list-item>
   <mat-list-item
     appAccordionLink
     routerLinkActive="selected"
@@ -192,22 +225,7 @@
       <span fxFlex></span>
     </a>
   </mat-list-item>
-  <mat-list-item
-    appAccordionLink
-    routerLinkActive="selected"
-    group="string"
-    *ngIf="
-      !isProduction &&
-      (user_type == 2 || permisions.indexOf('conversionTracker') >= 0 || user_type == 7) &&
-      featureEnabled('conversion-tracker')
-    "
-  >
-    <a appAccordionToggle [routerLink]="['/newapp/conversion-tracker']">
-      <i class="fas fa-bullseye"></i>
-      <span>Conversion Tracker</span>
-      <span fxFlex></span>
-    </a>
-  </mat-list-item>
+
   <mat-list-item
     appAccordionLink
     routerLinkActive="selected"
