@@ -113,7 +113,7 @@ export class KpiReportComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.titleService.setTitle('Jeeve Analytics');
+    this.titleService.setTitle('Jeeve Engage');
   }
   openLink(link) {
     window.open(link, '_blank');

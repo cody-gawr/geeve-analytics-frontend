@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
 })
 export class RewardsComponent implements OnInit, OnDestroy {
-  title = 'Rewards & Exclusive Partner Offers | Jeeve Analytics';
+  title = 'Rewards & Exclusive Partner Offers | Jeeve Engage';
   public isLoading: boolean = true;
   public rewards: any = [];
   public rewardsCode: any = '';
@@ -29,7 +29,7 @@ export class RewardsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.titleService.setTitle('Jeeve Analytics');
+    this.titleService.setTitle('Jeeve Engage');
   }
   dentistProduction() {
     this.isLoading = true;
