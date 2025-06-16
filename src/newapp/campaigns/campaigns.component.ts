@@ -276,7 +276,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
   }
 
   openCreateCampaignDialog() {
-    this.route.navigate(['newapp/campaigns/create']);
+    this.route.navigate(['newapp/crm/campaigns/create']);
   }
 
   onOpenExplainerVideoDialog() {

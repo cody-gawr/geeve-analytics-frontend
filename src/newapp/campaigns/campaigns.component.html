@@ -165,8 +165,8 @@
         <mat-paginator [pageSizeOptions]="[15, 50, 100]" showFirstLastButtons> </mat-paginator>
       </div>
     </div>
-    <div class="access-denied-container">
-      <div *ngSwitchCase="false" class="message-wrapper">
+    <div class="access-denied-container" *ngSwitchCase="false">
+      <div class="message-wrapper">
         <p>
           You do not have permissions to access <b>campaigns</b> - please speak to your Jeeve admin
           to grant you access
