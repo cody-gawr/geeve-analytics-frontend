@@ -29,7 +29,14 @@ export class YoutubePreviewComponent implements OnInit {
   }
 
   get embedUrl(): string {
-    return `https://www.youtube.com/embed/${this.videoId}?autoplay=1&mute=1&modestbranding=1&rel=0&iv_load_policy=3`;
+    return (
+      `https://www.youtube.com/embed/${this.videoId}` +
+      `?autoplay=1` +
+      `&mute=1` +
+      `&modestbranding=1` +
+      `&rel=0` +
+      `&iv_load_policy=3`
+    );
   }
 
   constructor() {}

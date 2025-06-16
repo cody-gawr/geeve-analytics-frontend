@@ -142,3 +142,8 @@ tr.element-row:hover {
 ::ng-deep .mat-mdc-badge-content {
   animation: blink 1s linear infinite !important;
 }
+
+:host ::ng-deep .mat-mdc-dialog-content {
+  max-height: none;
+  overflow: visible;
+}
