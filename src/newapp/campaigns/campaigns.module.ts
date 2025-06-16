@@ -15,6 +15,7 @@ import { StoreModule } from '@ngrx/store';
 import { campaignFeature } from './state/reducers/campaign.reducer';
 import { CampaignFacade } from './facades/campaign.facade';
 import { FeaturePayAppDialogComponent } from '@/app/layouts/full/headerright/headerright.component';
+import { ExplainerVideoDialogComponent } from './explainer-video-dialog/explainer-video-dialog.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { FeaturePayAppDialogComponent } from '@/app/layouts/full/headerright/hea
     StartCampaignDialog,
     ViewCampaignComponent,
     CsvColumnSelectDialog,
+    ExplainerVideoDialogComponent,
   ],
   providers: [CampaignService, CommonDataService, CampaignFacade],
 })

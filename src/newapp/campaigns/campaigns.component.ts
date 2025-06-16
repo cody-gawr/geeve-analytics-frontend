@@ -30,6 +30,7 @@ import { FeaturePayAppDialogComponent } from '@/app/layouts/full/headerright/hea
 import { AuthFacade } from '../auth/facades/auth.facade';
 import { validatePermission } from '../shared/helpers/validatePermission.helper';
 import { CONSULTANT, USER_MASTER } from '../constants';
+import { ExplainerVideoDialogComponent } from './explainer-video-dialog/explainer-video-dialog.component';
 
 @Component({
   selector: 'app-campaigns',
@@ -280,7 +281,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
   }
 
   onOpenExplainerVideoDialog() {
-    this.legacyDialog.open<FeaturePayAppDialogComponent>(FeaturePayAppDialogComponent, {
+    this.dialog.open(ExplainerVideoDialogComponent, {
       width: '600px',
     });
   }
