@@ -7,12 +7,12 @@
   [treeControl]="treeControl"
 >
   <!-- This is the tree node template for leaf nodes -->
-  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-    <a
-      *ngIf="!node.linkType || node.linkType == 'route'"
-      [routerLink]="'/' + node.path"
-      [ngClass]="{ active: node.title === (activedTitle$ | async) }"
-    >
+  <mat-tree-node
+    *matTreeNodeDef="let node"
+    matTreeNodePadding
+    [ngClass]="{ active: activePathChain.includes(node.path) }"
+  >
+    <a *ngIf="!node.linkType || node.linkType == 'route'" [routerLink]="'/' + node.path">
       <!-- use a disabled button to provide padding for tree leaf -->
       <div *ngIf="node.level == 0" class="menu-icon-btn">
         <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
@@ -23,12 +23,7 @@
         node.badgeText
       }}</span>
     </a>
-    <a
-      *ngIf="node.linkType && node.linkType == 'open'"
-      [href]="node.path"
-      target="_blank"
-      [ngClass]="{ active: node.title == activedTitle }"
-    >
+    <a *ngIf="node.linkType && node.linkType == 'open'" [href]="node.path" target="_blank">
       <!-- use a disabled button to provide padding for tree leaf -->
       <div *ngIf="node.level == 0" class="menu-icon-btn">
         <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
@@ -47,6 +42,7 @@
     *matTreeNodeDef="let node; when: hasChild"
     matTreeNodePadding
     matTreeNodeToggle
+    [ngClass]="{ active: activePathChain.includes(node.path) }"
   >
     <div class="tree-node-title">
       <div *ngIf="node.level == 0" class="menu-icon-btn">

@@ -19,6 +19,8 @@
     cursor: pointer;
     &.active {
       color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
     }
     &:hover {
       color: white;
@@ -67,4 +69,12 @@
   padding: 0px 3px;
   border-radius: 6px;
   font-family: 'Gilroy-Medium';
+}
+
+.mat-tree-node {
+  &.active {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
 }

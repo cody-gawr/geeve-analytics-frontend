@@ -393,7 +393,9 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
     node => node.children,
   );
 
-  public activedUrl: string = '';
+  /** holds each node.path from root → selected leaf */
+  public activePathChain: string[] = [];
+  public activeUrl: string = '';
   private destroy = new Subject<void>();
   public destroy$ = this.destroy.asObservable();
 
@@ -449,7 +451,7 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.dataSource.data = menuData;
         const treeNode = this.treeControl.dataNodes.find(
-          node => this.activedUrl.includes(node.path) && node.level == 0,
+          node => this.activeUrl.includes(node.path) && node.level == 0,
         );
         if (treeNode) this.treeControl.expand(treeNode);
       });
@@ -462,8 +464,12 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe(event => {
         const { url } = <NavigationEnd>event;
-        this.activedUrl = url.split('?')[0];
-        const node = this.findNodeByPath(this.activedUrl, MENU_DATA);
+        this.activeUrl = url.split('?')[0];
+        const node = this.findNodeByPath(this.activeUrl, MENU_DATA);
+
+        const chain = this.findPathChain(this.activeUrl, MENU_DATA);
+        this.activePathChain = chain ? chain.map(n => n.path) : [];
+
         if (node) {
           this.updateActivateState(node.title);
         }
@@ -491,6 +497,28 @@ export class AppMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       else if (menuNode.children) {
         const found = this.findNodeByPath(path, menuNode.children);
         if (found) return found;
+      }
+    }
+    return null;
+  }
+
+  /** recursively walks MENU_DATA to build [ …, parent, leaf ] or null */
+  private findPathChain(
+    target: string,
+    nodes: MenuNode[],
+    chain: MenuNode[] = [],
+  ): MenuNode[] | null {
+    for (const node of nodes) {
+      const nextChain = [...chain, node];
+      // exact match on full path
+      if (node.path === target) {
+        return nextChain;
+      }
+      if (node.children) {
+        const found = this.findPathChain(target, node.children, nextChain);
+        if (found) {
+          return found;
+        }
       }
     }
     return null;
