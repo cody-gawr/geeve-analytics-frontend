@@ -83,6 +83,8 @@ import { AppSwitchMenu } from './layouts/app-switch-menu/app-switch-menu.compone
 import { LoginService } from './login/login.service';
 import { MarkdownModule } from 'ngx-markdown';
 import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
+import { ProductionGuard } from '@/newapp/guards/production.guard.ts';
+import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -91,7 +93,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 };
 
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
     FullComponent,
     AppHeaderComponent,
@@ -126,7 +128,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GraphsComponent,
     AppSwitchMenu,
     FeaturePayAppDialogComponent,
-  ],
+      ComingSoonComponent
+   ],
   imports: [
     DemoMaterialModule,
     BrowserModule,
@@ -167,6 +170,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   providers: [
     AuthGuard,
+    ProductionGuard,
     HeaderService,
     StepperHeaderService,
     ClinicSettingsService,

@@ -12,6 +12,8 @@ import { FollowupsComponent } from './followups/followups.component';
 import { AuthGuard } from './auth/authguard.service';
 import { StaffMeetingsComponent } from './staff-meetings/staff-meetings.component';
 import { NewAppBlankComponent } from './layouts/blank/new-blank.component';
+import { ProductionGuard } from '@/newapp/guards/production.guard.ts';
+import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 
 export const AppRoutes: Routes = [
   {
@@ -139,6 +141,11 @@ export const AppRoutes: Routes = [
     ],
   },
   {
+    path: 'coming-soon',
+    component: ComingSoonComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'newapp',
     component: NewAppBlankComponent,
     children: [
@@ -160,7 +167,7 @@ export const AppRoutes: Routes = [
           import('../newapp/conversion-tracker/conversion-tracker.module').then(
             m => m.ConversionTrackerModule,
           ),
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, ProductionGuard],
       },
       {
         path: 'practice-insights',
