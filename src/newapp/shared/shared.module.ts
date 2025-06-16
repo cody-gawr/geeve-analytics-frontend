@@ -37,6 +37,7 @@ import { NumericOnlyDirective } from './directives/numeric-only.directive';
 import { DateRangePickerComponent } from './date-range-picker/date-range-picker.component';
 import { StartCampaignDialogComponent } from './components/start-campaign-dialog/start-campaign-dialog.component';
 import { YoutubePreviewComponent } from './components/youtube-preview/youtube-preview.component';
+import { SafeUrlPipe } from './pipes/safe-url.pipe';
 
 const modules = [
   AngularMaterialModule,
@@ -50,6 +51,8 @@ const modules = [
   NgChartsModule,
   NgxChartsModule,
 ];
+
+const pipes = [SafeUrlPipe];
 
 const components = [
   StatsCardComponent,
@@ -77,7 +80,7 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [TooltipComponent, ...components],
+  declarations: [TooltipComponent, ...components, ...pipes],
   imports: [CommonModule, ...modules],
   exports: [...modules, ...components],
   providers: [],
