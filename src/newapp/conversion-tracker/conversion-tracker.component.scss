@@ -2,12 +2,18 @@
   display: flex;
   flex-direction: column;
   gap: 25px;
-  .message-wrapper {
-    padding: 10px 20px;
-    background-color: #ff8282;
-    p {
-      color: white;
-      font-size: 20px;
+  .access-denied-container {
+    display: flex;
+    flex-direction: column;
+
+    .message-wrapper {
+      padding: 10px 20px;
+      background-color: #ff8282;
+      p {
+        color: white;
+        font-size: 20px;
+        margin: 0 !important;
+      }
     }
   }
   .conversion-tracker-header {

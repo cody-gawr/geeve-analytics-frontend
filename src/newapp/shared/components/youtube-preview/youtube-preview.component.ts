@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, HostBinding, HostListener, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-youtube-preview',
@@ -11,6 +10,13 @@ export class YoutubePreviewComponent implements OnInit {
   @Input() width: string = '100%';
   @Input() height: string = 'auto';
   @Input() thumbnail?: string;
+
+  @HostBinding('style.width') get hostWidth() {
+    return this.width;
+  }
+  @HostBinding('style.height') get hostHeight() {
+    return this.height;
+  }
 
   public isPlaying: boolean = false;
 

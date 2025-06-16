@@ -24,6 +24,7 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { environment } from '../../../../environments/environment';
 import { LocalStorageService } from '../../../shared/local-storage.service';
 import _ from 'lodash';
+import { YoutubePreviewComponent } from '@/app/shared/youtube-preview/youtube-preview.component';
 
 export interface Dentist {
   providerId: string;
@@ -77,11 +78,7 @@ export class FeatureDialogComponent {
           your financial workflows in just a few clinics
         </p>
         <div class="center-container">
-          <app-youtube-preview
-            videoId="rdbcw58q_WM"
-            [width]="'100%'"
-            [height]="'100%'"
-          ></app-youtube-preview>
+          <app-youtube-preview videoId="rdbcw58q_WM"></app-youtube-preview>
         </div>
         <div style="display: flex;justify-content: space-between;">
           <div style="display: flex;gap: 10px;justify-content: center;align-items: center;">

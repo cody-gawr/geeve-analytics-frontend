@@ -6,6 +6,8 @@ import {
   filter,
   map,
   Observable,
+  shareReplay,
+  startWith,
   Subject,
   take,
   takeUntil,
@@ -155,9 +157,6 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.authFacade.rolesIndividual$.pipe(takeUntil(this.destroy$)).subscribe(res => {
-      console.log({ res });
-    });
     this.clinicFacade.currentSingleClinicId$
       .pipe(takeUntil(this.destroy$), distinctUntilChanged())
       .subscribe(clinicId => {
@@ -177,14 +176,17 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  get hasPermission$(): Observable<boolean> {
+  get hasPermission$(): Observable<boolean | null> {
     return this.authFacade.rolesIndividual$.pipe(
-      takeUntil(this.destroy$),
+      filter(res => !!res),
       map(
         ({ data: permissions, type: userType }) =>
-          validatePermission(permissions, 'campaigns') ||
-          [USER_MASTER, CONSULTANT].indexOf(userType) >= 0,
+          !(
+            validatePermission(permissions, 'campaigns') ||
+            [USER_MASTER, CONSULTANT].indexOf(userType) >= 0
+          ),
       ),
+      startWith<boolean | null>(null),
     );
   }
 

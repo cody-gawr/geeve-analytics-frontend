@@ -10,6 +10,8 @@ import {
   Observable,
   combineLatest,
   mergeMap,
+  startWith,
+  shareReplay,
 } from 'rxjs';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -164,14 +166,18 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     this.destroy.complete();
   }
 
-  get hasPermission$(): Observable<boolean> {
+  get hasPermission$(): Observable<boolean | null> {
     return this.authFacade.rolesIndividual$.pipe(
       filter(payload => !!payload),
       map(
         ({ data: permissions, type: userType }) =>
-          validatePermission(permissions, 'conversionTracker') ||
-          [USER_MASTER, CONSULTANT].indexOf(userType) >= 0,
+          !(
+            validatePermission(permissions, 'conversionTracker') ||
+            [USER_MASTER, CONSULTANT].indexOf(userType) >= 0
+          ),
       ),
+      startWith<boolean | null>(null),
+      shareReplay({ bufferSize: 1, refCount: true }),
     );
   }
 

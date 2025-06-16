@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderrightService } from './headerright.service';
+import { YoutubePreviewComponent } from '@/app/shared/youtube-preview/youtube-preview.component';
 
 @NgModule({
   imports: [

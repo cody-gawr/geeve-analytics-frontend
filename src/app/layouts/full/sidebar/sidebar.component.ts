@@ -1,3 +1,4 @@
+import { filter, map, Subject, takeUntil } from 'rxjs';
 import {
   ChangeDetectorRef,
   Component,
@@ -11,7 +12,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { RolesUsersService } from '../../../roles-users/roles-users.service';
 import { CookieService, CookieOptions } from 'ngx-cookie';
 import { HeaderService } from '../header/header.service';
-import { Router, ActivatedRoute, NavigationEnd, Event } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd, Event, UrlSegment } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { AppConstants } from '../../../app.constants';
 import { ToastrService } from 'ngx-toastr';
@@ -135,6 +136,8 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
   public clinic_id;
   public hasPrimeClinics;
   public userId: number;
+  private destroy = new Subject<void>();
+  public destroy$ = this.destroy.asObservable();
   // public products = [];
 
   clickEvent(val) {
@@ -269,6 +272,24 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
     return this.user_type == 2 || this.permisions.indexOf('campaigns') >= 0 || this.user_type == 7;
   }
 
+  ngOnInit() {
+    this.router.events
+      .pipe(
+        takeUntil(this.destroy$),
+        map((event: any) => event.routerEvent ?? event),
+        filter(event => event instanceof NavigationEnd),
+      )
+      .subscribe(event => {
+        const tree = this.router.parseUrl(this.router.url);
+        const primary = tree.root.children['primary'];
+        const segments: UrlSegment[] = primary ? primary.segments : [];
+
+        if ('/' + segments.map(s => s.path).join('/') === '/newapp/crm/followups') {
+          this.nav_open = 'crm';
+        }
+      });
+  }
+
   ngAfterViewInit() {
     (<any>$('.srh-btn, .cl-srh-btn')).on('click', function () {
       (<any>$('.app-search')).toggle(200);
@@ -277,6 +298,8 @@ export class AppSidebarComponent implements OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+    this.destroy.next();
+    this.destroy.complete();
   }
   goTo(path) {
     window.location.href = path;

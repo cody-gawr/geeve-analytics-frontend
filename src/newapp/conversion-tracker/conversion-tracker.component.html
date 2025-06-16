@@ -1,142 +1,149 @@
 <div class="conversion-tracker-container">
-  <ng-container *ngIf="hasPermission$ | async; else accessDeniedTpl">
-    <mat-card class="conversion-tracker-header">
-      <div class="cards-wrapper">
-        <app-conversion-insight-card
-          type="Total Consult"
-          icon="people"
-          description="Total Consult"
-          value="102"
-          [metric]="8"
-        />
-        <app-conversion-insight-card
-          type="Conversion Rate"
-          icon="trending_up"
-          description="Conversion Rate"
-          value="56%"
-          [metric]="4"
-        />
-        <app-conversion-insight-card
-          type="Avg Time to Conversion"
-          icon="schedule"
-          description="Avg Time to Conversion"
-          value="18 Days"
-          [metric]="-2"
-        />
-      </div>
-    </mat-card>
-    <mat-card class="tab-group-container">
-      <form [formGroup]="conversionCodeForm">
-        <mat-form-field appearance="outline">
-          <mat-label>Select Conversion Code</mat-label>
-          <mat-select
-            formControlName="selectedConversionCode"
-            #conversionCodeSelect="matSelect"
-            (selectionChange)="onConversionCodeSelected($event)"
-          >
-            <mat-select-trigger>{{ selectedConsultCode$ | async }}</mat-select-trigger>
-            <!-- 🔼 Add new item UI -->
-            <mat-option disabled>
-              <div class="add-new-option">
-                <input
-                  matInput
-                  [formControl]="conversionCodeForm.get('newConsultCode')"
-                  placeholder="Add new conversion code..."
-                />
-                <button
-                  color="primary"
-                  (click)="onAddConversionCode()"
-                  [disabled]="conversionCodeForm.get('newConsultCode')?.invalid"
-                  mat-flat-button
-                >
-                  Add
-                </button>
-              </div>
-            </mat-option>
-
-            <!-- 🔽 Existing options -->
-            <mat-option
-              *ngFor="let conversionCode of conversionCodes"
-              [value]="conversionCode.recordId"
-              class="deletable-option"
-              (click)="$event.stopPropagation()"
+  <ng-container [ngSwitch]="hasPermission$ | async">
+    <ng-container *ngSwitchCase="null">
+      <spin-loader></spin-loader>
+    </ng-container>
+    <div *ngSwitchCase="true">
+      <mat-card class="conversion-tracker-header">
+        <div class="cards-wrapper">
+          <app-conversion-insight-card
+            type="Total Consult"
+            icon="people"
+            description="Total Consult"
+            value="102"
+            [metric]="8"
+          />
+          <app-conversion-insight-card
+            type="Conversion Rate"
+            icon="trending_up"
+            description="Conversion Rate"
+            value="56%"
+            [metric]="4"
+          />
+          <app-conversion-insight-card
+            type="Avg Time to Conversion"
+            icon="schedule"
+            description="Avg Time to Conversion"
+            value="18 Days"
+            [metric]="-2"
+          />
+        </div>
+      </mat-card>
+      <mat-card class="tab-group-container">
+        <form [formGroup]="conversionCodeForm">
+          <mat-form-field appearance="outline">
+            <mat-label>Select Conversion Code</mat-label>
+            <mat-select
+              formControlName="selectedConversionCode"
+              #conversionCodeSelect="matSelect"
+              (selectionChange)="onConversionCodeSelected($event)"
             >
-              <div class="option-content">
-                <div class="option-label">
-                  <span>{{ conversionCode.consultCode }}</span>
-                </div>
-                <div class="control-wrapper">
+              <mat-select-trigger>{{ selectedConsultCode$ | async }}</mat-select-trigger>
+              <!-- 🔼 Add new item UI -->
+              <mat-option disabled>
+                <div class="add-new-option">
+                  <input
+                    matInput
+                    [formControl]="conversionCodeForm.get('newConsultCode')"
+                    placeholder="Add new conversion code..."
+                  />
                   <button
-                    mat-icon-button
                     color="primary"
-                    tabindex="-1"
-                    (click)="onUpdateConversionCode(conversionCode); $event.stopPropagation()"
+                    (click)="onAddConversionCode()"
+                    [disabled]="conversionCodeForm.get('newConsultCode')?.invalid"
+                    mat-flat-button
                   >
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button
-                    mat-icon-button
-                    color="primary"
-                    tabindex="-1"
-                    (click)="onDeleteConversionCode(conversionCode); $event.stopPropagation()"
-                  >
-                    <mat-icon>delete</mat-icon>
+                    Add
                   </button>
                 </div>
-              </div>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </form>
-      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-        <mat-tab label="Consults">
-          <app-conversion-table
-            [data]="conversionTrackerCollections.consult"
-          ></app-conversion-table>
-        </mat-tab>
-        <mat-tab label="Recommended">
-          <app-conversion-table
-            [data]="conversionTrackerCollections.recommended"
-          ></app-conversion-table>
-        </mat-tab>
-        <mat-tab label="Pre-Treatment">
-          <app-conversion-table
-            [data]="conversionTrackerCollections.preTreatment"
-          ></app-conversion-table>
-        </mat-tab>
-        <mat-tab label="In-Treatment">
-          <app-conversion-table
-            [data]="conversionTrackerCollections.inTreatment"
-          ></app-conversion-table>
-        </mat-tab>
-        <mat-tab label="Completed">
-          <app-conversion-table
-            [data]="conversionTrackerCollections.completed"
-          ></app-conversion-table>
-        </mat-tab>
-        <mat-tab label="Not Suitable">
-          <app-conversion-table
-            [data]="conversionTrackerCollections.notSuitable"
-          ></app-conversion-table>
-        </mat-tab>
-        <mat-tab label="Declined">
-          <app-conversion-table
-            [data]="conversionTrackerCollections.declined"
-          ></app-conversion-table>
-        </mat-tab>
-      </mat-tab-group>
-      <div class="buttons-wrapper">
-        <button color="primary" mat-stroked-button>Export</button>
-        <button color="primary" mat-flat-button (click)="onStartCampaign()">Start Campaign</button>
-      </div>
-    </mat-card>
-  </ng-container>
-  <ng-template #accessDeniedTpl>
-    <div class="message-wrapper">
-      <p>
-        You do not have permissions to access <b>Conversion Tracker</b> - please speak to your Jeeve
-        admin to grant you access
-      </p>
+              </mat-option>
+
+              <!-- 🔽 Existing options -->
+              <mat-option
+                *ngFor="let conversionCode of conversionCodes"
+                [value]="conversionCode.recordId"
+                class="deletable-option"
+                (click)="$event.stopPropagation()"
+              >
+                <div class="option-content">
+                  <div class="option-label">
+                    <span>{{ conversionCode.consultCode }}</span>
+                  </div>
+                  <div class="control-wrapper">
+                    <button
+                      mat-icon-button
+                      color="primary"
+                      tabindex="-1"
+                      (click)="onUpdateConversionCode(conversionCode); $event.stopPropagation()"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                      mat-icon-button
+                      color="primary"
+                      tabindex="-1"
+                      (click)="onDeleteConversionCode(conversionCode); $event.stopPropagation()"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+          <mat-tab label="Consults">
+            <app-conversion-table
+              [data]="conversionTrackerCollections.consult"
+            ></app-conversion-table>
+          </mat-tab>
+          <mat-tab label="Recommended">
+            <app-conversion-table
+              [data]="conversionTrackerCollections.recommended"
+            ></app-conversion-table>
+          </mat-tab>
+          <mat-tab label="Pre-Treatment">
+            <app-conversion-table
+              [data]="conversionTrackerCollections.preTreatment"
+            ></app-conversion-table>
+          </mat-tab>
+          <mat-tab label="In-Treatment">
+            <app-conversion-table
+              [data]="conversionTrackerCollections.inTreatment"
+            ></app-conversion-table>
+          </mat-tab>
+          <mat-tab label="Completed">
+            <app-conversion-table
+              [data]="conversionTrackerCollections.completed"
+            ></app-conversion-table>
+          </mat-tab>
+          <mat-tab label="Not Suitable">
+            <app-conversion-table
+              [data]="conversionTrackerCollections.notSuitable"
+            ></app-conversion-table>
+          </mat-tab>
+          <mat-tab label="Declined">
+            <app-conversion-table
+              [data]="conversionTrackerCollections.declined"
+            ></app-conversion-table>
+          </mat-tab>
+        </mat-tab-group>
+        <div class="buttons-wrapper">
+          <button color="primary" mat-stroked-button>Export</button>
+          <button color="primary" mat-flat-button (click)="onStartCampaign()">
+            Start Campaign
+          </button>
+        </div>
+      </mat-card>
     </div>
-  </ng-template>
+    <div *ngSwitchCase="false" class="access-denied-container">
+      <div class="message-wrapper">
+        <p>
+          You do not have permissions to access <b>Conversion Tracker</b> - please speak to your
+          Jeeve admin to grant you access
+        </p>
+      </div>
+    </div>
+  </ng-container>
 </div>

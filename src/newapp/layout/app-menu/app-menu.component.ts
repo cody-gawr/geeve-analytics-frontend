@@ -139,6 +139,8 @@ const MENU_DATA: MenuNode[] = [
         title: 'Conversion Tracker',
         path: '/newapp/crm/conversion-tracker',
         icon: faBullseye,
+        badgeText: 'New',
+        badgeStyle: 'yellow-bg',
         // validatorFn: ({ permissions, userType, hasPrimeClinics }: MenuValidatorParams) => {
         //   return (
         //     !environment.production ||

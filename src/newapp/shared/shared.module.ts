@@ -36,6 +36,7 @@ import { StripePaymentDialog } from './components/stripe-payment-modal/stripe-pa
 import { NumericOnlyDirective } from './directives/numeric-only.directive';
 import { DateRangePickerComponent } from './date-range-picker/date-range-picker.component';
 import { StartCampaignDialogComponent } from './components/start-campaign-dialog/start-campaign-dialog.component';
+import { YoutubePreviewComponent } from './components/youtube-preview/youtube-preview.component';
 
 const modules = [
   AngularMaterialModule,
@@ -72,6 +73,7 @@ const components = [
   StripePaymentDialog,
   DateRangePickerComponent,
   StartCampaignDialogComponent,
+  YoutubePreviewComponent,
 ];
 
 @NgModule({

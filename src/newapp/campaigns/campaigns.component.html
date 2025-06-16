@@ -1,165 +1,185 @@
 <div class="campaign-page-container">
-  <ng-container *ngIf="hasPermission$ | async; else accessDeniedTpl">
-    <div class="campaign-header">
-      <div class="date-box">
-        <form [formGroup]="range">
-          <mat-form-field subscriptSizing="dynamic" appearance="outline">
-            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-              <input
-                class="custom-font"
-                matStartDate
-                formControlName="start"
-                (dateChange)="onDateRangeChange('start', $event)"
-                placeholder="Start date"
-              />
-              <input
-                class="custom-font"
-                matEndDate
-                formControlName="end"
-                (dateChange)="onDateRangeChange('end', $event)"
-                placeholder="End date"
-              />
-            </mat-date-range-input>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
-          </mat-form-field>
-        </form>
+  <ng-container [ngSwitch]="hasPermission$ | async">
+    <spin-loader *ngSwitchCase="null"></spin-loader>
+    <div *ngSwitchCase="true">
+      <div class="campaign-header">
+        <div class="date-box">
+          <form [formGroup]="range">
+            <mat-form-field subscriptSizing="dynamic" appearance="outline">
+              <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                <input
+                  class="custom-font"
+                  matStartDate
+                  formControlName="start"
+                  (dateChange)="onDateRangeChange('start', $event)"
+                  placeholder="Start date"
+                />
+                <input
+                  class="custom-font"
+                  matEndDate
+                  formControlName="end"
+                  (dateChange)="onDateRangeChange('end', $event)"
+                  placeholder="End date"
+                />
+              </mat-date-range-input>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </form>
+        </div>
+
+        <!-- jump every 4s -->
+        <button
+          mat-flat-button
+          color="accent"
+          class="bounce-button"
+          (click)="onOpenExplainerVideoDialog()"
+        >
+          Explainer Video <mat-icon color="white">video_library</mat-icon>
+        </button>
+
+        <button
+          type="button"
+          (click)="openCreateCampaignDialog()"
+          mat-stroked-button
+          color="primary"
+        >
+          Create Campaign
+        </button>
       </div>
+      <div>
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          matSort
+          matSortActive="created"
+          matSortDisableClear
+          matSortDirection="desc"
+        >
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let element" class="clickable-cell">
+              {{ element.description }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="created">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+            <td mat-cell *matCellDef="let element" class="clickable-cell">
+              {{ element.created }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="totalPatientsCount">
+            <th mat-header-cell *matHeaderCellDef># Patients</th>
+            <td mat-cell *matCellDef="let element" class="clickable-cell">
+              {{ element.totalSmsCount }}
+            </td>
+          </ng-container>
 
-      <!-- jump every 4s -->
-      <button
-        mat-flat-button
-        color="accent"
-        class="bounce-button"
-        (click)="onOpenExplainerVideoDialog()"
-      >
-        Explainer Video <mat-icon color="white">video_library</mat-icon>
-      </button>
+          <ng-container matColumnDef="completedMessagesCount">
+            <th mat-header-cell *matHeaderCellDef># Messages Sent</th>
+            <td mat-cell *matCellDef="let element" class="clickable-cell">
+              {{ element.completedMessagesCount }}
+            </td>
+          </ng-container>
 
-      <button type="button" (click)="openCreateCampaignDialog()" mat-stroked-button color="primary">
-        Create Campaign
-      </button>
-    </div>
-    <div>
-      <table
-        mat-table
-        [dataSource]="dataSource"
-        matSort
-        matSortActive="created"
-        matSortDisableClear
-        matSortDirection="desc"
-      >
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef>Description</th>
-          <td mat-cell *matCellDef="let element" class="clickable-cell">
-            {{ element.description }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="created">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
-          <td mat-cell *matCellDef="let element" class="clickable-cell">{{ element.created }}</td>
-        </ng-container>
-        <ng-container matColumnDef="totalPatientsCount">
-          <th mat-header-cell *matHeaderCellDef># Patients</th>
-          <td mat-cell *matCellDef="let element" class="clickable-cell">
-            {{ element.totalSmsCount }}
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="pendingCampaignsCount">
+            <th mat-header-cell *matHeaderCellDef class="clickable-cell"># Pending</th>
+            <td mat-cell *matCellDef="let element">{{ element.pendingSmsCount }}</td>
+          </ng-container>
 
-        <ng-container matColumnDef="completedMessagesCount">
-          <th mat-header-cell *matHeaderCellDef># Messages Sent</th>
-          <td mat-cell *matCellDef="let element" class="clickable-cell">
-            {{ element.completedMessagesCount }}
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="failedMessagesCount">
+            <th mat-header-cell *matHeaderCellDef class="clickable-cell"># Failures</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.failedMessagesCount + element.failedCampaignsCount }}
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="pendingCampaignsCount">
-          <th mat-header-cell *matHeaderCellDef class="clickable-cell"># Pending</th>
-          <td mat-cell *matCellDef="let element">{{ element.pendingSmsCount }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="failedMessagesCount">
-          <th mat-header-cell *matHeaderCellDef class="clickable-cell"># Failures</th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.failedMessagesCount + element.failedCampaignsCount }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef>Status</th>
-          <td mat-cell *matCellDef="let element" class="clickable-cell">
-            <div style="display: flex; gap: 5px" [style.color]="element.statusColor">
-              <mat-icon style="font-size: 20px; width: 20px; height: 20px">{{
-                element.statusIcon
-              }}</mat-icon>
-              <div style="text-transform: capitalize; font-weight: 600px">
-                {{ element.statusLabel }}
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element" class="clickable-cell">
+              <div style="display: flex; gap: 5px" [style.color]="element.statusColor">
+                <mat-icon style="font-size: 20px; width: 20px; height: 20px">{{
+                  element.statusIcon
+                }}</mat-icon>
+                <div style="text-transform: capitalize; font-weight: 600px">
+                  {{ element.statusLabel }}
+                </div>
               </div>
-            </div>
-          </td>
-        </ng-container>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef><span class="visually-hidden">Actions</span></th>
-          <td mat-cell *matCellDef="let element">
-            <!-- <div (click)="$event.preventDefault(); $event.stopPropagation()">
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>
+              <span class="visually-hidden">Actions</span>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <!-- <div (click)="$event.preventDefault(); $event.stopPropagation()">
               <mat-icon [matMenuTriggerFor]="menu">more_horiz</mat-icon>
             </div> -->
-            <button
-              *ngIf="element.status === 'draft'"
-              style="color: brown"
-              (click)="$event.preventDefault(); $event.stopPropagation(); onDelete(element)"
-              mat-menu-item
-            >
-              <mat-icon style="color: red">delete_forever</mat-icon>
-              <span style="color: red">Delete</span>
-            </button>
-            <mat-menu #menu="matMenu">
-              <button
-                *ngIf="element.status === 'draft'"
-                (click)="goEditPage(element)"
-                mat-menu-item
-              >
-                <mat-icon>edit</mat-icon>
-                <span>Edit</span>
-              </button>
-              <button (click)="goViewPage(element)" mat-menu-item>
-                <mat-icon>visibility</mat-icon>
-                <span>View</span>
-              </button>
               <button
                 *ngIf="element.status === 'draft'"
                 style="color: brown"
-                (click)="onDelete(element)"
+                (click)="$event.preventDefault(); $event.stopPropagation(); onDelete(element)"
                 mat-menu-item
               >
                 <mat-icon style="color: red">delete_forever</mat-icon>
                 <span style="color: red">Delete</span>
               </button>
-            </mat-menu>
-          </td>
-        </ng-container>
+              <mat-menu #menu="matMenu">
+                <button
+                  *ngIf="element.status === 'draft'"
+                  (click)="goEditPage(element)"
+                  mat-menu-item
+                >
+                  <mat-icon>edit</mat-icon>
+                  <span>Edit</span>
+                </button>
+                <button (click)="goViewPage(element)" mat-menu-item>
+                  <mat-icon>visibility</mat-icon>
+                  <span>View</span>
+                </button>
+                <button
+                  *ngIf="element.status === 'draft'"
+                  style="color: brown"
+                  (click)="onDelete(element)"
+                  mat-menu-item
+                >
+                  <mat-icon style="color: red">delete_forever</mat-icon>
+                  <span style="color: red">Delete</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          (click)="row.status === 'draft' ? goEditPage(row) : goViewPage(row)"
-          class="element-row"
-        ></tr>
-        <!-- <tr mat-row *matNoDataRow>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            (click)="row.status === 'draft' ? goEditPage(row) : goViewPage(row)"
+            class="element-row"
+          ></tr>
+          <!-- <tr mat-row *matNoDataRow>
           <td class="mat-cell" colspan="7">No campaigns</td>
         </tr> -->
-      </table>
-      <mat-paginator [pageSizeOptions]="[15, 50, 100]" showFirstLastButtons> </mat-paginator>
+        </table>
+        <mat-paginator [pageSizeOptions]="[15, 50, 100]" showFirstLastButtons> </mat-paginator>
+      </div>
+    </div>
+    <div class="access-denied-container">
+      <div *ngSwitchCase="false" class="message-wrapper">
+        <p>
+          You do not have permissions to access <b>campaigns</b> - please speak to your Jeeve admin
+          to grant you access
+        </p>
+      </div>
+      <div class="video-container">
+        <app-youtube-preview
+          videoId="2pYD0vIuRpE"
+          width="400px"
+          height="auto"
+          style="aspect-ratio: 16/9"
+        ></app-youtube-preview>
+      </div>
     </div>
   </ng-container>
-  <ng-template #accessDeniedTpl>
-    <div class="message-wrapper">
-      <p>
-        You do not have permissions to access <b>campaigns</b> - please speak to your Jeeve admin to
-        grant you access
-      </p>
-    </div>
-  </ng-template>
 </div>
