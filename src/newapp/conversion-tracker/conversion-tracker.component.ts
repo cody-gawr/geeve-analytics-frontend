@@ -171,10 +171,8 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
       filter(payload => !!payload),
       map(
         ({ data: permissions, type: userType }) =>
-          !(
-            validatePermission(permissions, 'conversionTracker') ||
-            [USER_MASTER, CONSULTANT].indexOf(userType) >= 0
-          ),
+          validatePermission(permissions, 'conversionTracker') ||
+          [USER_MASTER, CONSULTANT].indexOf(userType) >= 0,
       ),
       startWith<boolean | null>(null),
       shareReplay({ bufferSize: 1, refCount: true }),

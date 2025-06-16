@@ -668,9 +668,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   get hasPermission(): boolean {
     const userType = parseInt(this._cookieService.get('user_type'), 10);
     return (
-      false &&
-      ([USER_MASTER, CONSULTANT].indexOf(userType) >= 0 ||
-        (this._cookieService.get('permissions') || '').indexOf('followups') >= 0)
+      [USER_MASTER, CONSULTANT].indexOf(userType) >= 0 ||
+      (this._cookieService.get('permissions') || '').indexOf('followups') >= 0
     );
   }
 
