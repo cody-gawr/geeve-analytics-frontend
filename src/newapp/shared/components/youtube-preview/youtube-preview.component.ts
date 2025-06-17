@@ -35,7 +35,8 @@ export class YoutubePreviewComponent implements OnInit {
       `&mute=1` +
       `&modestbranding=1` +
       `&rel=0` +
-      `&iv_load_policy=3`
+      `&iv_load_policy=3` +
+      `&fs=1`
     );
   }
 
