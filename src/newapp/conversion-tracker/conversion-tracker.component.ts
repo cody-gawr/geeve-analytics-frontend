@@ -102,7 +102,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(conversionCodes => {
         this.conversionCodes = conversionCodes;
-        console.log({ conversionCodes });
+
         if (conversionCodes.length > 0) {
           this.conversionTrackerFacade.selectConversionCode(conversionCodes[0].recordId);
         }
