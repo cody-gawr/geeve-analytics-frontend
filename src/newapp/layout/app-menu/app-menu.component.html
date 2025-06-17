@@ -12,7 +12,11 @@
     matTreeNodePadding
     [ngClass]="{ active: activePathChain.includes(node.path) }"
   >
-    <a *ngIf="!node.linkType || node.linkType == 'route'" [routerLink]="'/' + node.path">
+    <a
+      *ngIf="!node.linkType || node.linkType == 'route'"
+      [routerLink]="'/' + node.path"
+      [ngClass]="{ active: activePathChain.includes(node.path) }"
+    >
       <!-- use a disabled button to provide padding for tree leaf -->
       <div *ngIf="node.level == 0" class="menu-icon-btn">
         <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
@@ -23,7 +27,12 @@
         node.badgeText
       }}</span>
     </a>
-    <a *ngIf="node.linkType && node.linkType == 'open'" [href]="node.path" target="_blank">
+    <a
+      *ngIf="node.linkType && node.linkType == 'open'"
+      [href]="node.path"
+      target="_blank"
+      [ngClass]="{ active: activePathChain.includes(node.path) }"
+    >
       <!-- use a disabled button to provide padding for tree leaf -->
       <div *ngIf="node.level == 0" class="menu-icon-btn">
         <fa-icon *ngIf="!!node.icon" [icon]="node.icon"></fa-icon>
