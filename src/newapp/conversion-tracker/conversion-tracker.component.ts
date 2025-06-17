@@ -41,7 +41,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   @ViewChild('conversionCodeSelect') conversionCodeSelect!: MatSelect;
   conversionCodes: ConversionCode[] = [];
   conversionCodeForm: FormGroup = new FormGroup({
-    selectedConversionCode: new FormControl<string | null>(null),
+    selectedConversionCode: new FormControl<number | null>(null),
     newConsultCode: new FormControl<string | null>(null),
   });
 
@@ -100,7 +100,13 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
       });
     this.conversionTrackerFacade.conversionCodes$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(conversionCodes => (this.conversionCodes = conversionCodes));
+      .subscribe(conversionCodes => {
+        this.conversionCodes = conversionCodes;
+        console.log({ conversionCodes });
+        if (conversionCodes.length > 0) {
+          this.conversionTrackerFacade.selectConversionCode(conversionCodes[0].recordId);
+        }
+      });
 
     combineLatest([
       this.clinicFacade.currentClinicId$,
@@ -124,6 +130,12 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
           consultCode,
         });
       });
+
+    this.selectedConversionCode$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(conversionCode =>
+        this.conversionCodeForm.get('selectedConversionCode').setValue(conversionCode.recordId),
+      );
 
     this.conversionTrackerFacade.conversionTrackers$.subscribe(conversionTrackers => {
       this.conversionTrackerCollections.consult = conversionTrackers.filter(
