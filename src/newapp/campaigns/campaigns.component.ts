@@ -282,8 +282,8 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
 
   onOpenExplainerVideoDialog() {
     this.dialog.open(ExplainerVideoDialogComponent, {
-      width: '850px', // a bit wider than your 800px video
-      height: 'auto', // let the container grow with its content
+      width: '1200px', // a bit wider than your 800px video
+      // height: 'auto', // let the container grow with its content
       maxHeight: '90vh', // but never exceed 90% of the viewport height
       panelClass: 'explainer-video-dialog',
     });

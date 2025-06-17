@@ -2264,6 +2264,7 @@ export class MorningHuddleComponent implements OnInit, OnDestroy {
   openSendReviewBtnDialog(element) {
     if (!this.isAcceptedSMSTerms) {
       const dialog = this.dialog.open(TermsConditionsDialog, {
+        panelClass: 'terms-conditions-dialog',
         data: { clinic_id: this.clinic_id },
       });
       dialog
