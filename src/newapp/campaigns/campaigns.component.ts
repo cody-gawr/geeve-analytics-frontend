@@ -182,10 +182,8 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
       filter(res => !!res),
       map(
         ({ data: permissions, type: userType }) =>
-          !(
-            validatePermission(permissions, 'campaigns') ||
-            [USER_MASTER, CONSULTANT].indexOf(userType) >= 0
-          ),
+          validatePermission(permissions, 'campaigns') ||
+          [USER_MASTER, CONSULTANT].indexOf(userType) >= 0,
       ),
       startWith<boolean | null>(null),
     );
