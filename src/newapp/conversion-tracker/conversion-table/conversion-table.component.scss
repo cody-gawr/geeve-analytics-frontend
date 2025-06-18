@@ -18,6 +18,10 @@
       }
     }
 
+    .no-data-row {
+      padding: 1rem;
+    }
+
     ::ng-deep .mat-mdc-row {
       &.mdc-data-table__row {
         height: 42px;

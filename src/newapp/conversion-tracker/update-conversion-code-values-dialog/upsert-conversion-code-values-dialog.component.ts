@@ -3,32 +3,27 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { enumEntries } from '@/newapp/shared/helpers';
-import { ConversionCode, ConversionCodeValue } from '@/newapp/models/conversion-tracker';
+import { ConversionCodeDialogData, ConversionCodeValue } from '@/newapp/models/conversion-tracker';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ConversionTrackerFacade } from '../facades/conversion-tracker.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
-import {
-  BehaviorSubject,
-  combineLatest,
-  distinctUntilChanged,
-  filter,
-  map,
-  Subject,
-  takeUntil,
-} from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, filter, map, Subject, takeUntil } from 'rxjs';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-update-conversion-code-values-dialog',
-  templateUrl: './update-conversion-code-values-dialog.component.html',
-  styleUrls: ['./update-conversion-code-values-dialog.component.scss'],
+  templateUrl: './upsert-conversion-code-values-dialog.component.html',
+  styleUrls: ['./upsert-conversion-code-values-dialog.component.scss'],
 })
-export class UpdateConversionCodeValuesDialogComponent implements OnInit, OnDestroy {
+export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDestroy {
   // Typed Reactive FormGroup using NonNullableFormBuilder
   conversionCodeValueForm: FormGroup<{
+    codeEditControl: FormControl<string>;
     typeControl: FormControl<ActiveTreatmentStatus>;
     codeControl: FormControl<string>;
   }>;
+
+  public readonly TreatmentStatus = TreatmentStatus;
 
   readonly types: ActiveTreatmentStatus[] = [
     TreatmentStatus.InTreatment,
@@ -41,7 +36,10 @@ export class UpdateConversionCodeValuesDialogComponent implements OnInit, OnDest
 
   private codeValues = new BehaviorSubject<ConversionCodeValue[]>([]);
   public codeValues$ = this.codeValues.asObservable();
-  public codeValuesByType: ConversionCodeValue[] = [];
+  public conversionCodeValuesByStatus: { [key in ActiveTreatmentStatus]: ConversionCodeValue[] } = {
+    [TreatmentStatus.InTreatment]: [],
+    [TreatmentStatus.Completed]: [],
+  };
   private clinicId: number = 0;
 
   private destroy = new Subject<void>();
@@ -49,12 +47,16 @@ export class UpdateConversionCodeValuesDialogComponent implements OnInit, OnDest
 
   constructor(
     private fb: FormBuilder,
-    public dialogRef: MatDialogRef<UpdateConversionCodeValuesDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ConversionCode,
+    public dialogRef: MatDialogRef<UpsertConversionCodeValuesDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: ConversionCodeDialogData,
     private conversionTrackerFacade: ConversionTrackerFacade,
     private clinicFacade: ClinicFacade,
   ) {
     this.conversionCodeValueForm = this.fb.group({
+      codeEditControl: this.fb.control('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.maxLength(15)],
+      }),
       typeControl: this.fb.control<ActiveTreatmentStatus>(TreatmentStatus.InTreatment, {
         nonNullable: true,
         validators: [Validators.required],
@@ -66,6 +68,10 @@ export class UpdateConversionCodeValuesDialogComponent implements OnInit, OnDest
     });
   }
 
+  get title() {
+    return this.data.mode == 'create' ? 'Create Conversion Code' : 'Update Conversion Code';
+  }
+
   get typeConrol() {
     return this.conversionCodeValueForm.controls.typeControl;
   }
@@ -74,8 +80,15 @@ export class UpdateConversionCodeValuesDialogComponent implements OnInit, OnDest
     return this.conversionCodeValueForm.controls.codeControl;
   }
 
+  get codeEditControl() {
+    return this.conversionCodeValueForm.controls.codeEditControl;
+  }
+
   ngOnInit() {
-    this.codeValues.next(this.data.codeValues);
+    if (this.data.mode === 'update') {
+      this.codeEditControl.setValue(this.data.conversionCode.consultCode);
+    }
+    this.codeValues.next(this.data.conversionCode?.codeValues || []);
 
     this.clinicFacade.currentClinics$
       .pipe(
@@ -97,12 +110,21 @@ export class UpdateConversionCodeValuesDialogComponent implements OnInit, OnDest
         this.codeValues.next([...this.codeValues.value, conversionCodeValue]);
       });
     this.codeValues$.pipe(takeUntil(this.destroy$)).subscribe(codeValues => {
-      this.codeValuesByType = this.filterCodeValuesByType(codeValues, this.typeConrol.value);
+      this.conversionCodeValuesByStatus = codeValues.reduce(
+        (acc, curr) => {
+          acc[curr.type].push(curr);
+          return acc;
+        },
+        {
+          [TreatmentStatus.InTreatment]: [],
+          [TreatmentStatus.Completed]: [],
+        },
+      );
     });
 
-    this.typeConrol.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(type => {
-      this.codeValuesByType = this.filterCodeValuesByType(this.codeValues.value, type);
-    });
+    // this.typeConrol.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(type => {
+    //   this.codeValuesByType = this.filterCodeValuesByType(this.codeValues.value, type);
+    // });
   }
 
   ngOnDestroy(): void {
@@ -117,7 +139,7 @@ export class UpdateConversionCodeValuesDialogComponent implements OnInit, OnDest
     if (this.codeControl.valid) {
       this.conversionTrackerFacade.createConversionCodeValue({
         clinicId: this.clinicId,
-        conversionCodeId: this.data.recordId,
+        conversionCodeId: this.data.conversionCode?.recordId,
         treatmentStatus: this.typeConrol.value,
         code: value,
       });

@@ -17,7 +17,7 @@ export class ConversionTableComponent implements OnInit, OnDestroy {
   @Input() data: ConversionTracker[] = [];
   private destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
-  private payload: {
+  public payload: {
     clinicId: number;
     providerId: number;
     startDate: string;

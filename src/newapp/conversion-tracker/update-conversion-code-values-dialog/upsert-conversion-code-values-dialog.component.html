@@ -1,0 +1,65 @@
+<div class="dialog-header">
+  <div class="header-title">
+    <h1 mat-dialog-title>{{ title }}</h1>
+  </div>
+
+  <mat-icon class="close-icon" (click)="onCloseDialog()">close</mat-icon>
+</div>
+<div mat-dialog-content [formGroup]="conversionCodeValueForm">
+  <div class="code-edit-control-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Label</mat-label>
+      <input matInput [formControl]="codeEditControl" />
+    </mat-form-field>
+  </div>
+
+  <div class="code-control-container">
+    <p>In Treatment Codes</p>
+    <div class="new-code-control-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Code</mat-label>
+        <input matInput [formControl]="codeEditControl" placeholder="New code..." />
+      </mat-form-field>
+      <button color="primary" mat-flat-button>Add Treatment Code</button>
+    </div>
+    <p class="text-danger support-text" *ngIf="codeControl.hasError('maxlength')">
+      Code is up to 15 characters.
+    </p>
+    <mat-chip-set>
+      <mat-chip-row
+        *ngFor="let codeValue of conversionCodeValuesByStatus[TreatmentStatus.InTreatment]"
+        (removed)="removeCodeValue(codeValue)"
+      >
+        {{ codeValue.code }}
+        <button matChipRemove aria-label="'remove ' + keyword">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+    </mat-chip-set>
+  </div>
+  <div class="code-control-container">
+    <p>Completed Treatment Codes</p>
+    <div class="new-code-control-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Code</mat-label>
+        <input matInput [formControl]="codeEditControl" placeholder="New code..." />
+      </mat-form-field>
+      <button color="primary" mat-flat-button>Add Treatment Code</button>
+    </div>
+    <p class="text-danger support-text" *ngIf="codeControl.hasError('maxlength')">
+      Code is up to 15 characters.
+    </p>
+    <mat-chip-set>
+      <mat-chip-row
+        *ngFor="let codeValue of conversionCodeValuesByStatus[TreatmentStatus.Completed]"
+        (removed)="removeCodeValue(codeValue)"
+      >
+        {{ codeValue.code }}
+        <button matChipRemove aria-label="'remove ' + keyword">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+    </mat-chip-set>
+  </div>
+  <!-- Select conversion type -->
+</div>

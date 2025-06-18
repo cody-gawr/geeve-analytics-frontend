@@ -1,3 +1,4 @@
+<div></div>
 <div class="table-container">
   <table
     mat-table
@@ -63,5 +64,12 @@
       *matRowDef="let row; let i = index; columns: displayedColumns"
       [ngClass]="{ 'row-odd': i % 2 === 1, 'row-even': i % 2 === 0 }"
     ></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [attr.colspan]="displayedColumns.length" class="no-data-row">
+        There were no <b>{{ payload?.consultCode }}</b> consults performed between
+        <b>{{ payload?.startDate }}</b> and <b>{{ payload?.endDate }}</b
+        >.
+      </td>
+    </tr>
   </table>
 </div>

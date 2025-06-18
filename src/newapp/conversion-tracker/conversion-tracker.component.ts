@@ -18,12 +18,16 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationService } from '../shared/services/notification.service';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ConversionTrackerFacade } from './facades/conversion-tracker.facade';
-import { ConversionCode, ConversionTracker } from '../models/conversion-tracker';
+import {
+  ConversionCode,
+  ConversionCodeDialogData,
+  ConversionTracker,
+} from '../models/conversion-tracker';
 import { LayoutFacade } from '../layout/facades/layout.facade';
 import { DentistFacade } from '../dentist/facades/dentists.facade';
 import moment from 'moment';
 import { TreatmentStatus } from '../enums/treatment-status.enum';
-import { UpdateConversionCodeValuesDialogComponent } from './update-conversion-code-values-dialog/update-conversion-code-values-dialog.component';
+import { UpsertConversionCodeValuesDialogComponent } from './update-conversion-code-values-dialog/upsert-conversion-code-values-dialog.component';
 import { AuthFacade } from '../auth/facades/auth.facade';
 import { validatePermission } from '../shared/helpers/validatePermission.helper';
 import { CONSULTANT, USER_MASTER } from '../constants';
@@ -132,7 +136,10 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
       });
 
     this.selectedConversionCode$
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(conversionCode => !!conversionCode),
+      )
       .subscribe(conversionCode =>
         this.conversionCodeForm.get('selectedConversionCode').setValue(conversionCode.recordId),
       );
@@ -210,22 +217,34 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   }
 
   onAddConversionCode() {
-    const newConsultCode = this.conversionCodeForm.get('newConsultCode')?.value;
-    if (!newConsultCode) {
-      return;
-    }
+    const data: ConversionCodeDialogData = {
+      mode: 'create',
+    };
+    this.dialog.open(UpsertConversionCodeValuesDialogComponent, {
+      width: '600px',
+      data,
+    });
+    // const newConsultCode = this.conversionCodeForm.get('newConsultCode')?.value;
+    // if (!newConsultCode) {
+    //   return;
+    // }
 
-    if (this.conversionCodes.map(c => c.consultCode).includes(newConsultCode)) {
-      this.notifier.showError('Conversion code already exists!');
-      return;
-    }
+    // if (this.conversionCodes.map(c => c.consultCode).includes(newConsultCode)) {
+    //   this.notifier.showError('Conversion code already exists!');
+    //   return;
+    // }
 
-    this.conversionTrackerFacade.createConversionCode(this.clinicId, newConsultCode);
+    // this.conversionTrackerFacade.createConversionCode(this.clinicId, newConsultCode);
   }
 
   onUpdateConversionCode(conversionCode: ConversionCode) {
-    this.dialog.open(UpdateConversionCodeValuesDialogComponent, {
-      data: conversionCode,
+    const data: ConversionCodeDialogData = {
+      mode: 'update',
+      conversionCode,
+    };
+    this.dialog.open(UpsertConversionCodeValuesDialogComponent, {
+      width: '600px',
+      data,
     });
   }
 

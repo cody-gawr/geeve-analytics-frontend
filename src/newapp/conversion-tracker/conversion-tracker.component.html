@@ -31,6 +31,14 @@
       </mat-card>
       <mat-card class="tab-group-container">
         <form [formGroup]="conversionCodeForm">
+          <button
+            color="primary"
+            (click)="onAddConversionCode()"
+            [disabled]="conversionCodeForm.get('newConsultCode')?.invalid"
+            mat-flat-button
+          >
+            Add Code
+          </button>
           <mat-form-field appearance="outline">
             <mat-label>Select Conversion Code</mat-label>
             <mat-select
