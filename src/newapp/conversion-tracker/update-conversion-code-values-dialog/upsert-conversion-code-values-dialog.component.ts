@@ -1,6 +1,14 @@
 import { ActiveTreatmentStatus, TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { enumEntries } from '@/newapp/shared/helpers';
 import { ConversionCodeDialogData, ConversionCodeValue } from '@/newapp/models/conversion-tracker';
@@ -8,7 +16,6 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { ConversionTrackerFacade } from '../facades/conversion-tracker.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { BehaviorSubject, distinctUntilChanged, filter, map, Subject, takeUntil } from 'rxjs';
-import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-update-conversion-code-values-dialog',
@@ -18,9 +25,9 @@ import { MatSelectChange } from '@angular/material/select';
 export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDestroy {
   // Typed Reactive FormGroup using NonNullableFormBuilder
   conversionCodeValueForm: FormGroup<{
-    codeEditControl: FormControl<string>;
-    typeControl: FormControl<ActiveTreatmentStatus>;
-    codeControl: FormControl<string>;
+    updateCodeControl: FormControl<string>;
+    inTreatmentCodeControl: FormControl<string>;
+    completedCodeControl: FormControl<string>;
   }>;
 
   public readonly TreatmentStatus = TreatmentStatus;
@@ -29,6 +36,11 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
     TreatmentStatus.InTreatment,
     TreatmentStatus.Completed,
   ];
+  readonly errorMessages = {
+    required: 'Code is required.',
+    maxlength: 'Code is up to 15 characters.',
+    duplicate: "You can't add a duplicate code.",
+  };
 
   readonly typeOptions = enumEntries(TreatmentStatus).filter(s =>
     [TreatmentStatus.InTreatment, TreatmentStatus.Completed].includes(<TreatmentStatus>s.value),
@@ -53,17 +65,22 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
     private clinicFacade: ClinicFacade,
   ) {
     this.conversionCodeValueForm = this.fb.group({
-      codeEditControl: this.fb.control('', {
-        nonNullable: true,
+      updateCodeControl: this.fb.control(null, {
         validators: [Validators.required, Validators.maxLength(15)],
       }),
-      typeControl: this.fb.control<ActiveTreatmentStatus>(TreatmentStatus.InTreatment, {
-        nonNullable: true,
-        validators: [Validators.required],
+      inTreatmentCodeControl: this.fb.control(null, {
+        validators: [
+          Validators.required,
+          Validators.maxLength(15),
+          this.duplicateCodeValidator(TreatmentStatus.InTreatment),
+        ],
       }),
-      codeControl: this.fb.control('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.maxLength(15)],
+      completedCodeControl: this.fb.control(null, {
+        validators: [
+          Validators.required,
+          Validators.maxLength(15),
+          this.duplicateCodeValidator(TreatmentStatus.Completed),
+        ],
       }),
     });
   }
@@ -72,21 +89,21 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
     return this.data.mode == 'create' ? 'Create Conversion Code' : 'Update Conversion Code';
   }
 
-  get typeConrol() {
-    return this.conversionCodeValueForm.controls.typeControl;
+  get inTreatmentCodeControl() {
+    return this.conversionCodeValueForm.controls.inTreatmentCodeControl;
   }
 
-  get codeControl() {
-    return this.conversionCodeValueForm.controls.codeControl;
+  get completedCodeControl() {
+    return this.conversionCodeValueForm.controls.completedCodeControl;
   }
 
-  get codeEditControl() {
-    return this.conversionCodeValueForm.controls.codeEditControl;
+  get updateCodeControl() {
+    return this.conversionCodeValueForm.controls.updateCodeControl;
   }
 
   ngOnInit() {
     if (this.data.mode === 'update') {
-      this.codeEditControl.setValue(this.data.conversionCode.consultCode);
+      this.updateCodeControl.setValue(this.data.conversionCode.consultCode);
     }
     this.codeValues.next(this.data.conversionCode?.codeValues || []);
 
@@ -136,16 +153,37 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
     const value = (event.value || '').trim();
 
     // Add our keyword
-    if (this.codeControl.valid) {
-      this.conversionTrackerFacade.createConversionCodeValue({
-        clinicId: this.clinicId,
-        conversionCodeId: this.data.conversionCode?.recordId,
-        treatmentStatus: this.typeConrol.value,
-        code: value,
-      });
+    // if (this.codeControl.valid) {
+    // this.conversionTrackerFacade.createConversionCodeValue({
+    //   clinicId: this.clinicId,
+    //   conversionCodeId: this.data.conversionCode?.recordId,
+    //   code: value,
+    // });
 
-      event.chipInput!.clear();
+    event.chipInput!.clear();
+    // }
+  }
+
+  onAddCodeValue(code: string, status: TreatmentStatus) {
+    const control = this.getControlForStatus(status);
+    if (control.invalid) {
+      return;
     }
+
+    // if (
+    //   (<ConversionCodeValue[]>this.conversionCodeValuesByStatus[status])
+    //     .map(conversionCodeValue => conversionCodeValue.code)
+    //     .includes(code)
+    // ) {
+    //   control.setErrors({ duplicate: true });
+    //   control.markAsTouched();
+    //   return;
+    // }
+    let codeValue: ConversionCodeValue = {
+      code,
+      type: status,
+    };
+    this.codeValues.next([...this.codeValues.value, codeValue]);
   }
 
   removeCodeValue(codeValue: ConversionCodeValue) {
@@ -162,5 +200,34 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
     type: ActiveTreatmentStatus,
   ): ConversionCodeValue[] {
     return codeValues.filter(c => c.type === type);
+  }
+
+  private duplicateCodeValidator(status: TreatmentStatus): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const code = <string>control.value;
+      const existingValues = this.conversionCodeValuesByStatus[status] as ConversionCodeValue[];
+
+      const isDuplicate = existingValues.some(v => v.code === code);
+      return isDuplicate ? { duplicate: true } : null;
+    };
+  }
+
+  /** Map each TreatmentStatus to its FormControl */
+  private getControlForStatus(status: TreatmentStatus): FormControl {
+    switch (status) {
+      case TreatmentStatus.InTreatment:
+        return this.inTreatmentCodeControl;
+      case TreatmentStatus.Completed:
+        return this.completedCodeControl;
+      default:
+        throw new Error(`Unsupported TreatmentStatus: ${status}`);
+    }
+  }
+
+  getCodeError(ctrl: FormControl) {
+    const key = Object.keys(this.errorMessages).find(err => ctrl.hasError(err));
+
+    // if we found one, return its message; otherwise empty string
+    return key ? this.errorMessages[key] : '';
   }
 }

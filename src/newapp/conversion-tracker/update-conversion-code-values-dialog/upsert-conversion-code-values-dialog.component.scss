@@ -17,11 +17,11 @@
 .code-control-container {
   display: flex;
   flex-direction: column;
+  margin-bottom: 2rem;
 
   .new-code-control-row {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    margin-bottom: 1rem;
+    gap: 1rem;
   }
 }

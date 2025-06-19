@@ -5,12 +5,17 @@
 
   <mat-icon class="close-icon" (click)="onCloseDialog()">close</mat-icon>
 </div>
-<div mat-dialog-content [formGroup]="conversionCodeValueForm">
+<mat-dialog-content [formGroup]="conversionCodeValueForm">
   <div class="code-edit-control-row">
     <mat-form-field appearance="outline">
       <mat-label>Label</mat-label>
-      <input matInput [formControl]="codeEditControl" />
+      <input matInput [formControl]="updateCodeControl" />
     </mat-form-field>
+    <mat-error
+      *ngIf="updateCodeControl.invalid && (updateCodeControl.touched || updateCodeControl.dirty)"
+    >
+      {{ getCodeError(updateCodeControl) }}
+    </mat-error>
   </div>
 
   <div class="code-control-container">
@@ -18,13 +23,24 @@
     <div class="new-code-control-row">
       <mat-form-field appearance="outline">
         <mat-label>Code</mat-label>
-        <input matInput [formControl]="codeEditControl" placeholder="New code..." />
+        <input matInput [formControl]="inTreatmentCodeControl" placeholder="New code..." />
       </mat-form-field>
-      <button color="primary" mat-flat-button>Add Treatment Code</button>
+      <button
+        color="primary"
+        mat-flat-button
+        (click)="onAddCodeValue(inTreatmentCodeControl.value, TreatmentStatus.InTreatment)"
+      >
+        <mat-icon>add</mat-icon>Add Treatment Code
+      </button>
     </div>
-    <p class="text-danger support-text" *ngIf="codeControl.hasError('maxlength')">
-      Code is up to 15 characters.
-    </p>
+    <mat-error
+      *ngIf="
+        inTreatmentCodeControl.invalid &&
+        (inTreatmentCodeControl.touched || inTreatmentCodeControl.dirty)
+      "
+    >
+      {{ getCodeError(inTreatmentCodeControl) }}
+    </mat-error>
     <mat-chip-set>
       <mat-chip-row
         *ngFor="let codeValue of conversionCodeValuesByStatus[TreatmentStatus.InTreatment]"
@@ -42,13 +58,23 @@
     <div class="new-code-control-row">
       <mat-form-field appearance="outline">
         <mat-label>Code</mat-label>
-        <input matInput [formControl]="codeEditControl" placeholder="New code..." />
+        <input matInput [formControl]="completedCodeControl" placeholder="New code..." />
       </mat-form-field>
-      <button color="primary" mat-flat-button>Add Treatment Code</button>
+      <button
+        color="primary"
+        mat-flat-button
+        (click)="onAddCodeValue(completedCodeControl.value, TreatmentStatus.Completed)"
+      >
+        <mat-icon>add</mat-icon>Add Treatment Code
+      </button>
     </div>
-    <p class="text-danger support-text" *ngIf="codeControl.hasError('maxlength')">
-      Code is up to 15 characters.
-    </p>
+    <mat-error
+      *ngIf="
+        completedCodeControl.invalid && (completedCodeControl.touched || completedCodeControl.dirty)
+      "
+    >
+      {{ getCodeError(completedCodeControl) }}
+    </mat-error>
     <mat-chip-set>
       <mat-chip-row
         *ngFor="let codeValue of conversionCodeValuesByStatus[TreatmentStatus.Completed]"
@@ -61,5 +87,10 @@
       </mat-chip-row>
     </mat-chip-set>
   </div>
+
   <!-- Select conversion type -->
-</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button color="primary" mat-flat-button>Save Changes</button>
+  <button color="primary" mat-stroked-button>Cancel</button>
+</mat-dialog-actions>
