@@ -11,7 +11,14 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { enumEntries } from '@/newapp/shared/helpers';
-import { ConversionCodeDialogData, ConversionCodeValue } from '@/newapp/models/conversion-tracker';
+import {
+  ConversionCode,
+  ConversionCodeDialogData,
+  ConversionCodeUpsertDto,
+  ConversionCodeValue,
+  ConversionCodeValueDto,
+  ConversionCodeValueUpsertDto,
+} from '@/newapp/models/conversion-tracker';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ConversionTrackerFacade } from '../facades/conversion-tracker.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
@@ -25,7 +32,7 @@ import { BehaviorSubject, distinctUntilChanged, filter, map, Subject, takeUntil 
 export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDestroy {
   // Typed Reactive FormGroup using NonNullableFormBuilder
   conversionCodeValueForm: FormGroup<{
-    updateCodeControl: FormControl<string>;
+    consultCodeControl: FormControl<string>;
     inTreatmentCodeControl: FormControl<string>;
     completedCodeControl: FormControl<string>;
   }>;
@@ -46,7 +53,7 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
     [TreatmentStatus.InTreatment, TreatmentStatus.Completed].includes(<TreatmentStatus>s.value),
   );
 
-  private codeValues = new BehaviorSubject<ConversionCodeValue[]>([]);
+  private codeValues = new BehaviorSubject<ConversionCodeValueUpsertDto[]>([]);
   public codeValues$ = this.codeValues.asObservable();
   public conversionCodeValuesByStatus: { [key in ActiveTreatmentStatus]: ConversionCodeValue[] } = {
     [TreatmentStatus.InTreatment]: [],
@@ -65,7 +72,7 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
     private clinicFacade: ClinicFacade,
   ) {
     this.conversionCodeValueForm = this.fb.group({
-      updateCodeControl: this.fb.control(null, {
+      consultCodeControl: this.fb.control(null, {
         validators: [Validators.required, Validators.maxLength(15)],
       }),
       inTreatmentCodeControl: this.fb.control(null, {
@@ -97,13 +104,13 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
     return this.conversionCodeValueForm.controls.completedCodeControl;
   }
 
-  get updateCodeControl() {
-    return this.conversionCodeValueForm.controls.updateCodeControl;
+  get consultCodeControl() {
+    return this.conversionCodeValueForm.controls.consultCodeControl;
   }
 
   ngOnInit() {
     if (this.data.mode === 'update') {
-      this.updateCodeControl.setValue(this.data.conversionCode.consultCode);
+      this.consultCodeControl.setValue(this.data.conversionCode.consultCode);
     }
     this.codeValues.next(this.data.conversionCode?.codeValues || []);
 
@@ -170,29 +177,19 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
       return;
     }
 
-    // if (
-    //   (<ConversionCodeValue[]>this.conversionCodeValuesByStatus[status])
-    //     .map(conversionCodeValue => conversionCodeValue.code)
-    //     .includes(code)
-    // ) {
-    //   control.setErrors({ duplicate: true });
-    //   control.markAsTouched();
-    //   return;
-    // }
-    let codeValue: ConversionCodeValue = {
+    let codeValue: ConversionCodeValueUpsertDto = {
       code,
       type: status,
     };
     this.codeValues.next([...this.codeValues.value, codeValue]);
   }
 
-  removeCodeValue(codeValue: ConversionCodeValue) {
-    this.codeValues.next(this.codeValues.value.filter(c => c.recordId != codeValue.recordId));
-    this.conversionTrackerFacade.deleteConversionCodeValue(this.clinicId, codeValue.recordId);
-  }
-
-  onCloseDialog() {
-    this.dialogRef.close();
+  removeCodeValue(codeValue: ConversionCodeValueUpsertDto, status: ActiveTreatmentStatus) {
+    this.codeValues.next(
+      this.codeValues.value.filter(cv => !(cv.code === codeValue.code && cv.type === status)),
+    );
+    // this.codeValues.next(this.codeValues.value.filter(c => c.recordId != codeValue.recordId));
+    // this.conversionTrackerFacade.deleteConversionCodeValue(this.clinicId, codeValue.recordId);
   }
 
   filterCodeValuesByType(
@@ -229,5 +226,34 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
 
     // if we found one, return its message; otherwise empty string
     return key ? this.errorMessages[key] : '';
+  }
+
+  onSaveChanges() {
+    if (this.consultCodeControl.valid) {
+      let conversionCode: ConversionCodeUpsertDto = {
+        consultCode: this.consultCodeControl.value,
+        codeValues: this.codeValues.value,
+      };
+      if (this.data.mode === 'update') {
+        conversionCode = {
+          ...this.data.conversionCode,
+          ...conversionCode,
+        };
+      }
+
+      this.dialogRef.close({
+        conversionCode,
+      });
+    } else {
+      this.consultCodeControl.markAllAsTouched();
+    }
+  }
+
+  onCancel() {
+    this.dialogRef.close();
+  }
+
+  onCloseDialog() {
+    this.dialogRef.close();
   }
 }

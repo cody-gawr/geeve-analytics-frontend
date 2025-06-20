@@ -56,6 +56,20 @@ export const createConversionCodeFailure = createAction(
   }>(),
 );
 
+export const upsertConversionCodeSuccess = createAction(
+  '[Conversion Tracker API] Upsert Conversion Code Success',
+  props<{
+    conversionCode: ConversionCode;
+  }>(),
+);
+
+export const upsertConversionCodeFailure = createAction(
+  '[Conversion Tracker API] Upsert Conversion Code Failure',
+  props<{
+    error: JeeveError;
+  }>(),
+);
+
 export const deleteConversionCodeSuccess = createAction(
   '[Conversion Tracker API] Delete Conversion Code Success',
   props<{

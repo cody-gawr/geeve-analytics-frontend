@@ -1,3 +1,5 @@
+import { ConversionCodeValueUpsertDto } from './conversion-code-value-upsert.dto';
+import { ConversionCodeUpsertDto } from './conversion-code-upsert.dto';
 import { ConversionCodeDialogData } from './conversion-code-dialog.model';
 import { ConversionCode } from './conversion-code.model';
 import { ConversionCodeDto } from './conversion-code.dto';
@@ -9,9 +11,11 @@ import { ConversionTrackerDto } from './conversion-tracker.dto';
 export {
   ConversionCode,
   ConversionCodeDto,
+  ConversionCodeUpsertDto,
   ConversionCodeDialogData,
   ConversionCodeValue,
   ConversionCodeValueDto,
+  ConversionCodeValueUpsertDto,
   ConversionTracker,
   ConversionTrackerDto,
 };

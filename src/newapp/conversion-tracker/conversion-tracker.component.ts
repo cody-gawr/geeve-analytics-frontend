@@ -12,6 +12,7 @@ import {
   mergeMap,
   startWith,
   shareReplay,
+  take,
 } from 'rxjs';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -220,21 +221,22 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     const data: ConversionCodeDialogData = {
       mode: 'create',
     };
-    this.dialog.open(UpsertConversionCodeValuesDialogComponent, {
+    const dialogRef = this.dialog.open(UpsertConversionCodeValuesDialogComponent, {
       width: '600px',
       data,
     });
-    // const newConsultCode = this.conversionCodeForm.get('newConsultCode')?.value;
-    // if (!newConsultCode) {
-    //   return;
-    // }
 
-    // if (this.conversionCodes.map(c => c.consultCode).includes(newConsultCode)) {
-    //   this.notifier.showError('Conversion code already exists!');
-    //   return;
-    // }
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe(result => {
+        if (!result) {
+          return;
+        }
 
-    // this.conversionTrackerFacade.createConversionCode(this.clinicId, newConsultCode);
+        const { conversionCode } = result;
+        this.conversionTrackerFacade.upsertConversionCode(this.clinicId, conversionCode);
+      });
   }
 
   onUpdateConversionCode(conversionCode: ConversionCode) {
@@ -242,10 +244,22 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
       mode: 'update',
       conversionCode,
     };
-    this.dialog.open(UpsertConversionCodeValuesDialogComponent, {
+    const dialogRef = this.dialog.open(UpsertConversionCodeValuesDialogComponent, {
       width: '600px',
       data,
     });
+
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe(result => {
+        if (!result) {
+          return;
+        }
+
+        const { conversionCode } = result;
+        this.conversionTrackerFacade.upsertConversionCode(this.clinicId, conversionCode);
+      });
   }
 
   onDeleteConversionCode(conversionCode: ConversionCode) {

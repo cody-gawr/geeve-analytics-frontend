@@ -8,6 +8,7 @@ export interface ConversionTrackerState {
     conversionCodes: boolean;
     conversionTrackers: boolean;
     createConversionCode: boolean;
+    upsertConversionCode: boolean;
     deleteConversionCode: boolean;
     createConversionCodeValue: boolean;
     deleteConversionCodeValue: boolean;
@@ -17,6 +18,7 @@ export interface ConversionTrackerState {
     conversionTrackers: JeeveError | null;
     createConvesionCode: JeeveError | null;
     deleteConversionCode: JeeveError | null;
+    upsertConversionCode: JeeveError | null;
     createConversionCodeValue: JeeveError | null;
     deleteConversionCodeValue: JeeveError | null;
   };
@@ -30,6 +32,7 @@ const initialState: ConversionTrackerState = {
     conversionCodes: false,
     conversionTrackers: false,
     createConversionCode: false,
+    upsertConversionCode: false,
     deleteConversionCode: false,
     createConversionCodeValue: false,
     deleteConversionCodeValue: false,
@@ -39,6 +42,7 @@ const initialState: ConversionTrackerState = {
     conversionTrackers: null,
     createConvesionCode: null,
     deleteConversionCode: null,
+    upsertConversionCode: null,
     createConversionCodeValue: null,
     deleteConversionCodeValue: null,
   },
@@ -181,6 +185,47 @@ export const conversionTrackerFeacture = createFeature({
           error: {
             ...error,
             createConvesionCode: createConversionCodeError,
+          },
+        };
+      },
+    ),
+    on(ConversionTrackerPageActions.upsertConversionCode, (state): ConversionTrackerState => {
+      const { loading } = state;
+      return {
+        ...state,
+        loading: {
+          ...loading,
+          createConversionCode: true,
+        },
+      };
+    }),
+    on(ConversionTrackerApiActions.upsertConversionCodeSuccess, (state): ConversionTrackerState => {
+      const { loading, error } = state;
+      return {
+        ...state,
+        loading: {
+          ...loading,
+          upsertConversionCode: false,
+        },
+        error: {
+          ...error,
+          upsertConversionCode: null,
+        },
+      };
+    }),
+    on(
+      ConversionTrackerApiActions.upsertConversionCodeFailure,
+      (state, { error: upsertConversionCodeError }): ConversionTrackerState => {
+        const { loading, error } = state;
+        return {
+          ...state,
+          loading: {
+            ...loading,
+            upsertConversionCode: false,
+          },
+          error: {
+            ...error,
+            upsertConversionCode: upsertConversionCodeError,
           },
         };
       },

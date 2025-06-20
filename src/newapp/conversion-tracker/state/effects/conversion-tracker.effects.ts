@@ -121,6 +121,36 @@ export class ConversionTrackerEffect {
     );
   });
 
+  readonly upsertConversionCode$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ConversionTrackerPageActions.upsertConversionCode),
+      mergeMap(({ clinicId, conversionCodePayload }) => {
+        return this.conversionTrackerService
+          .upsertConversionCode(clinicId, conversionCodePayload)
+          .pipe(
+            mergeMap(conversionCode => [
+              ConversionTrackerApiActions.upsertConversionCodeSuccess({ conversionCode }),
+              ConversionTrackerPageActions.loadConversionCodes({
+                clinicId,
+              }),
+            ]),
+            catchError((res: HttpErrorResponse) =>
+              of(
+                ConversionTrackerApiActions.upsertConversionCodeFailure({
+                  error: {
+                    api: `${this.commonApiUrl}/conversion/code`,
+                    message: res.message,
+                    status: res.status,
+                    errors: Array.isArray(res.error) ? res.error : [res.error],
+                  },
+                }),
+              ),
+            ),
+          );
+      }),
+    );
+  });
+
   readonly deleteConversionCode$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ConversionTrackerPageActions.deleteConversionCode),

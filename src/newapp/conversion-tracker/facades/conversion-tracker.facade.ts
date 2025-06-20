@@ -12,6 +12,7 @@ import {
 import { ConversionTrackerApiActions, ConversionTrackerPageActions } from '../state/actions';
 import { ActiveTreatmentStatus, TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
 import { Actions, ofType } from '@ngrx/effects';
+import { ConversionCodeUpsertDto } from '@/newapp/models/conversion-tracker';
 
 @Injectable()
 export class ConversionTrackerFacade {
@@ -91,6 +92,12 @@ export class ConversionTrackerFacade {
         clinicId,
         consultCode,
       }),
+    );
+  }
+
+  upsertConversionCode(clinicId: number, conversionCodePayload: ConversionCodeUpsertDto) {
+    this.store.dispatch(
+      ConversionTrackerPageActions.upsertConversionCode({ clinicId, conversionCodePayload }),
     );
   }
 

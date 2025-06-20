@@ -9,12 +9,12 @@
   <div class="code-edit-control-row">
     <mat-form-field appearance="outline">
       <mat-label>Label</mat-label>
-      <input matInput [formControl]="updateCodeControl" />
+      <input matInput [formControl]="consultCodeControl" />
     </mat-form-field>
     <mat-error
-      *ngIf="updateCodeControl.invalid && (updateCodeControl.touched || updateCodeControl.dirty)"
+      *ngIf="consultCodeControl.invalid && (consultCodeControl.touched || consultCodeControl.dirty)"
     >
-      {{ getCodeError(updateCodeControl) }}
+      {{ getCodeError(consultCodeControl) }}
     </mat-error>
   </div>
 
@@ -44,7 +44,7 @@
     <mat-chip-set>
       <mat-chip-row
         *ngFor="let codeValue of conversionCodeValuesByStatus[TreatmentStatus.InTreatment]"
-        (removed)="removeCodeValue(codeValue)"
+        (removed)="removeCodeValue(codeValue, TreatmentStatus.InTreatment)"
       >
         {{ codeValue.code }}
         <button matChipRemove aria-label="'remove ' + keyword">
@@ -78,7 +78,7 @@
     <mat-chip-set>
       <mat-chip-row
         *ngFor="let codeValue of conversionCodeValuesByStatus[TreatmentStatus.Completed]"
-        (removed)="removeCodeValue(codeValue)"
+        (removed)="removeCodeValue(codeValue, TreatmentStatus.Completed)"
       >
         {{ codeValue.code }}
         <button matChipRemove aria-label="'remove ' + keyword">
@@ -91,6 +91,13 @@
   <!-- Select conversion type -->
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button color="primary" mat-flat-button>Save Changes</button>
-  <button color="primary" mat-stroked-button>Cancel</button>
+  <button
+    color="primary"
+    mat-flat-button
+    [disabled]="consultCodeControl.invalid"
+    (click)="onSaveChanges()"
+  >
+    Save Changes
+  </button>
+  <button color="primary" mat-stroked-button (click)="onCancel()">Cancel</button>
 </mat-dialog-actions>

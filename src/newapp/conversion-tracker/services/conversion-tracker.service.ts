@@ -2,6 +2,7 @@ import { environment } from '@/environments/environment';
 import { ActiveTreatmentStatus, TreatmentStatus } from '@/newapp/enums/treatment-status.enum';
 import { ApiResponse } from '@/newapp/models';
 import {
+  ConversionCodeUpsertDto,
   ConversionCodeValue,
   ConversionCodeValueDto,
   ConversionTracker,
@@ -9,6 +10,7 @@ import {
 } from '@/newapp/models/conversion-tracker';
 import { ConversionCodeDto } from '@/newapp/models/conversion-tracker/conversion-code.dto';
 import { ConversionCode } from '@/newapp/models/conversion-tracker/conversion-code.model';
+import { snakeCaseKeys } from '@/newapp/shared/helpers';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import camelcaseKeys from 'camelcase-keys';
@@ -71,6 +73,28 @@ export class ConversionTrackerService {
         {
           clinic_id: clinicId,
           consult_code: consultCode,
+        },
+        {
+          withCredentials: true,
+        },
+      )
+      .pipe(map(res => <ConversionCode>camelcaseKeys(res.data, { deep: true })));
+  }
+
+  upsertConversionCode(
+    clinicId: number,
+    conversionCodePayload: ConversionCodeUpsertDto,
+  ): Observable<ConversionCode> {
+    const { recordId, consultCode, codeValues } = conversionCodePayload;
+
+    return this.http
+      .put<ApiResponse<ConversionCodeDto>>(
+        `${this.commonApiUrl}/conversion/code`,
+        {
+          clinic_id: clinicId,
+          record_id: recordId,
+          consult_code: consultCode,
+          code_values: codeValues.map(cv => snakeCaseKeys(cv)),
         },
         {
           withCredentials: true,
