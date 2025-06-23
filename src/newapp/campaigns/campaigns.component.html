@@ -3,31 +3,6 @@
     <spin-loader *ngSwitchCase="null"></spin-loader>
     <div *ngSwitchCase="true">
       <div class="campaign-header">
-        <div class="date-box">
-          <form [formGroup]="range">
-            <mat-form-field subscriptSizing="dynamic" appearance="outline">
-              <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                <input
-                  class="custom-font"
-                  matStartDate
-                  formControlName="start"
-                  (dateChange)="onDateRangeChange('start', $event)"
-                  placeholder="Start date"
-                />
-                <input
-                  class="custom-font"
-                  matEndDate
-                  formControlName="end"
-                  (dateChange)="onDateRangeChange('end', $event)"
-                  placeholder="End date"
-                />
-              </mat-date-range-input>
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
-            </mat-form-field>
-          </form>
-        </div>
-
         <!-- jump every 4s -->
         <button
           mat-flat-button

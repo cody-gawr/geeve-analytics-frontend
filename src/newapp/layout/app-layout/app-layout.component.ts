@@ -18,7 +18,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   isSidenavVisible = false;
   clinic: Clinic | null;
   activatedUrl: string = '';
-  public hiddenDatePickerMenuItems = ['campaigns', 'unsubscribed', 'practice-insights'];
+  public hiddenDatePickerMenuItems = ['unsubscribed', 'practice-insights'];
 
   constructor(
     private breakpointObserver: BreakpointObserver,

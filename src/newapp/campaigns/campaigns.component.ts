@@ -6,7 +6,6 @@ import {
   filter,
   map,
   Observable,
-  shareReplay,
   startWith,
   Subject,
   take,
@@ -31,6 +30,7 @@ import { AuthFacade } from '../auth/facades/auth.facade';
 import { validatePermission } from '../shared/helpers/validatePermission.helper';
 import { CONSULTANT, USER_MASTER } from '../constants';
 import { ExplainerVideoDialogComponent } from './explainer-video-dialog/explainer-video-dialog.component';
+import { LayoutFacade } from '../layout/facades/layout.facade';
 
 @Component({
   selector: 'app-campaigns',
@@ -140,6 +140,9 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     end: new FormControl<Moment | null>(moment()),
   });
 
+  private startDate: string | null;
+  private endDate: string | null;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -153,6 +156,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     private route: Router,
     private readonly nofifyService: NotificationService,
     private authFacade: AuthFacade,
+    private layoutFacade: LayoutFacade,
   ) {
     this.range = this.campaignService.range;
   }
@@ -167,11 +171,15 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
         }
       });
 
-    this.range.valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged()).subscribe(_ => {
-      this.loadCampaigns();
-    });
-    // COMPONENT-TODO - Review properties of campaign
+    this.layoutFacade.dateRange$
+      .pipe(takeUntil(this.destroy$), distinctUntilChanged())
+      .subscribe(({ start, end }) => {
+        this.startDate = moment(start).format('YYYY-MM-DD');
+        this.endDate = moment(end).format('YYYY-MM-DD');
+        this.loadCampaigns();
+      });
 
+    // COMPONENT-TODO - Review properties of campaign
     this.transformedCampaigns$.pipe(takeUntil(this.destroy$)).subscribe(campaigns => {
       this.dataSource.data = campaigns;
     });
@@ -210,11 +218,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
   loadCampaigns() {
     if (this.clinicId) {
       this.campaignService
-        .getCampaigns(
-          this.clinicId,
-          this.range.controls.start.value?.format('YYYY-MM-DD'),
-          this.range.controls.end.value?.format('YYYY-MM-DD'),
-        )
+        .getCampaigns(this.clinicId, this.startDate, this.endDate)
         .pipe(takeUntil(this.destroy$))
         .subscribe(result => {
           this.campaignsSubject.next(result.data);
