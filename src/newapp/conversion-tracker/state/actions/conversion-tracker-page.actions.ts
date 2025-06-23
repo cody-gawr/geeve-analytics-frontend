@@ -79,3 +79,8 @@ export const deleteConversionCodeValue = createAction(
     recordId: number;
   }>(),
 );
+
+export const loadConversionTrackerInsights = createAction(
+  '[Conversion Tracker Page] Load Conversion Tracker Insights',
+  props<{ clinicId: number }>(),
+);

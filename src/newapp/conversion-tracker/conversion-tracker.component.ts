@@ -16,7 +16,6 @@ import {
 } from 'rxjs';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
 import { FormControl, FormGroup } from '@angular/forms';
-import { NotificationService } from '../shared/services/notification.service';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { ConversionTrackerFacade } from './facades/conversion-tracker.facade';
 import {
@@ -85,7 +84,6 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     private clinicFacade: ClinicFacade,
     private dentistFacade: DentistFacade,
     private layoutFacade: LayoutFacade,
-    private notifier: NotificationService,
     private conversionTrackerFacade: ConversionTrackerFacade,
     private authFacade: AuthFacade,
   ) {}

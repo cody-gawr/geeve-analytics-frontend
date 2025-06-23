@@ -144,4 +144,6 @@ export class ConversionTrackerService {
       })
       .pipe(map(res => res.data));
   }
+
+  loadConversionTrackerInsights() {}
 }

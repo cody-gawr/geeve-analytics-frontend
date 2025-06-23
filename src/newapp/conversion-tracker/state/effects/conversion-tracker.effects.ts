@@ -230,4 +230,30 @@ export class ConversionTrackerEffect {
       }),
     );
   });
+
+  readonly loadConversionTrackerInsights$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ConversionTrackerPageActions.deleteConversionCodeValue),
+      mergeMap(({ clinicId, recordId }) => {
+        return this.conversionTrackerService.deleteConversionCodeValue(recordId).pipe(
+          mergeMap(deletedCount => [
+            ConversionTrackerApiActions.deleteConversionCodeValueSuccess({ deletedCount }),
+            ConversionTrackerPageActions.loadConversionCodes({ clinicId }),
+          ]),
+          catchError((res: HttpErrorResponse) =>
+            of(
+              ConversionTrackerApiActions.deleteConversionCodeValueFailure({
+                error: {
+                  api: `${this.commonApiUrl}/conversion/code-value`,
+                  message: res.message,
+                  status: res.status,
+                  errors: Array.isArray(res.error) ? res.error : [res.error],
+                },
+              }),
+            ),
+          ),
+        );
+      }),
+    );
+  });
 }

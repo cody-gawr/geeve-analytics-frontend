@@ -10,22 +10,27 @@
             type="Total Consult"
             icon="people"
             description="Total Consult"
-            value="102"
-            [metric]="8"
+            [currentValue]="102"
+            [deltaValue]="8"
+            [deltaUnit]="'%'"
           />
           <app-conversion-insight-card
             type="Conversion Rate"
             icon="trending_up"
             description="Conversion Rate"
-            value="56%"
-            [metric]="4"
+            [currentValue]="56"
+            [deltaValue]="4"
+            [deltaUnit]="'%'"
           />
           <app-conversion-insight-card
             type="Avg Time to Conversion"
             icon="schedule"
             description="Avg Time to Conversion"
-            value="18 Days"
             [metric]="-2"
+            [currentValue]="18"
+            [currentUnit]="' days'"
+            [deltaValue]="-2"
+            [deltaUnit]="'d'"
           />
         </div>
       </mat-card>

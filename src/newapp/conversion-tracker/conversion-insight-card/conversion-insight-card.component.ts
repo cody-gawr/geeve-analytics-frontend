@@ -1,16 +1,34 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+
+type MetricType = 'Total Consult' | 'Conversion Rate' | 'Avg Time to Conversion';
 
 @Component({
   selector: 'app-conversion-insight-card',
   templateUrl: './conversion-insight-card.component.html',
   styleUrls: ['./conversion-insight-card.component.scss'],
 })
-export class ConversionInsightCardComponent implements OnInit, OnDestroy {
-  @Input() type: 'Total Consult' | 'Conversion Rate' | 'Avg Time to Conversion' | null = null;
+export class ConversionInsightCardComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() type: MetricType | null = null;
   @Input() icon: string | null = null;
   @Input() description: string | null = null;
-  @Input() value: string | null = null;
   @Input() metric: number | null = null;
+
+  @Input() currentValue: number | null = null;
+  @Input() currentUnit: string | null = null;
+  @Input() deltaValue: number | null = null;
+  @Input() deltaUnit: string | null = null;
+
+  /** raw input, never shown directly */
+  private _rawValue: string | null = null;
+  /** what the template actually binds to */
+  public formattedValue: string | null = null;
+
+  /** intercept the input so we can re-format */
+  @Input()
+  set value(v: string | null) {
+    this._rawValue = v;
+    this.updateFormattedValue();
+  }
 
   get cardColorClass(): string {
     let cardColorClass = '';
@@ -69,39 +87,56 @@ export class ConversionInsightCardComponent implements OnInit, OnDestroy {
   }
 
   get safeValue(): string {
-    return this.value?.trim() || 'No value available';
+    return (this.currentValue ?? 0) + (this.currentUnit ?? '');
   }
 
-  get safeMetric(): number {
-    return typeof this.metric === 'number' ? this.metric : 0;
+  get safeDelta(): string {
+    return (this.deltaValue ?? 0) + (this.deltaUnit ?? '');
   }
 
-  get metricValue(): string {
-    let value = '';
-    switch (this.type) {
-      case 'Total Consult':
-      case 'Conversion Rate':
-        value = `${this.safeMetric}%`;
-        break;
-      case 'Avg Time to Conversion':
-        value = `${this.safeMetric}d`;
-        break;
-    }
-
-    return value;
+  get deltaDirectionIcon(): string {
+    return this.deltaValue >= 0 ? 'arrow_drop_up' : 'arrow_drop_down';
   }
 
-  get metricDirectionIcon(): string {
-    return this.safeMetric >= 0 ? 'arrow_drop_up' : 'arrow_drop_down';
-  }
-
-  get metricSign(): string {
-    return this.safeMetric >= 0 ? '+' : '';
+  get deltaSign(): string {
+    return this.deltaValue >= 0 ? '+' : '';
   }
 
   constructor() {}
 
   ngOnInit() {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    // if `type` changes, re-run the formatting
+    if (changes.type) {
+      this.updateFormattedValue();
+    }
+  }
+
   ngOnDestroy(): void {}
+
+  private updateFormattedValue() {
+    const v = this._rawValue;
+    if (v == null || this.type == null) {
+      this.formattedValue = v;
+      return;
+    }
+
+    switch (this.type) {
+      case 'Total Consult':
+        this.formattedValue = v;
+        break;
+
+      case 'Conversion Rate':
+        this.formattedValue = `${v}%`;
+        break;
+
+      case 'Avg Time to Conversion':
+        this.formattedValue = `${v} Days`;
+        break;
+
+      default:
+        this.formattedValue = v;
+    }
+  }
 }

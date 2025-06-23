@@ -11,8 +11,8 @@
         <span>{{ safeValue }}</span>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between center">
-        <mat-icon [ngClass]="fontColorClass">{{ metricDirectionIcon }}</mat-icon>
-        <span class="metric" [ngClass]="fontColorClass">{{ metricSign }} {{ metricValue }}</span>
+        <mat-icon [ngClass]="fontColorClass">{{ deltaDirectionIcon }}</mat-icon>
+        <span class="metric" [ngClass]="fontColorClass">{{ deltaSign }} {{ safeDelta }}</span>
       </div>
     </div>
   </div>
