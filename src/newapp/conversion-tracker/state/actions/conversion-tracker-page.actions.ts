@@ -80,7 +80,7 @@ export const deleteConversionCodeValue = createAction(
   }>(),
 );
 
-export const loadConversionTrackerInsights = createAction(
-  '[Conversion Tracker Page] Load Conversion Tracker Insights',
+export const loadConversionTrackerMetrics = createAction(
+  '[Conversion Tracker Page] Load Conversion Tracker Metrics',
   props<{ clinicId: number }>(),
 );

@@ -49,7 +49,6 @@ export class SetupComponent implements OnInit, OnDestroy {
         ),
       )
       .subscribe(dataSource => {
-        console.log({ dataSource });
         if (
           dataSource.length > 0 &&
           dataSource.every(clinic => clinic.connected && clinic.numberOfSuccess > 0)

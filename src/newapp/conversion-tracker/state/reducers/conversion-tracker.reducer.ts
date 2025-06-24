@@ -1,6 +1,10 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { JeeveError } from '@/newapp/models';
-import { ConversionCode, ConversionTracker } from '@/newapp/models/conversion-tracker';
+import {
+  ConversionCode,
+  ConversionTracker,
+  ConversionTrackerMetrics,
+} from '@/newapp/models/conversion-tracker';
 import { ConversionTrackerApiActions, ConversionTrackerPageActions } from '../actions';
 
 export interface ConversionTrackerState {
@@ -12,6 +16,7 @@ export interface ConversionTrackerState {
     deleteConversionCode: boolean;
     createConversionCodeValue: boolean;
     deleteConversionCodeValue: boolean;
+    conversionTrackerMetrics: boolean;
   };
   error: {
     conversionCodes: JeeveError | null;
@@ -21,10 +26,12 @@ export interface ConversionTrackerState {
     upsertConversionCode: JeeveError | null;
     createConversionCodeValue: JeeveError | null;
     deleteConversionCodeValue: JeeveError | null;
+    conversionTrackerMetrics: JeeveError | null;
   };
   selectedConversionCode: ConversionCode | null;
   conversionCodes: ConversionCode[];
   conversionTrackers: ConversionTracker[];
+  conversionTrackerMetrics: ConversionTrackerMetrics | null;
 }
 
 const initialState: ConversionTrackerState = {
@@ -36,6 +43,7 @@ const initialState: ConversionTrackerState = {
     deleteConversionCode: false,
     createConversionCodeValue: false,
     deleteConversionCodeValue: false,
+    conversionTrackerMetrics: false,
   },
   error: {
     conversionCodes: null,
@@ -45,10 +53,12 @@ const initialState: ConversionTrackerState = {
     upsertConversionCode: null,
     createConversionCodeValue: null,
     deleteConversionCodeValue: null,
+    conversionTrackerMetrics: null,
   },
   selectedConversionCode: null,
   conversionCodes: [],
   conversionTrackers: [],
+  conversionTrackerMetrics: null,
 };
 
 export const conversionTrackerFeacture = createFeature({
@@ -363,6 +373,54 @@ export const conversionTrackerFeacture = createFeature({
         };
       },
     ),
+    on(
+      ConversionTrackerPageActions.loadConversionTrackerMetrics,
+      (state): ConversionTrackerState => {
+        const { loading } = state;
+        return {
+          ...state,
+          loading: {
+            ...loading,
+            conversionTrackerMetrics: true,
+          },
+        };
+      },
+    ),
+    on(
+      ConversionTrackerApiActions.loadConversionTrackerMetricsSuccess,
+      (state, { conversionTrackerMetrics }): ConversionTrackerState => {
+        const { loading, error } = state;
+        return {
+          ...state,
+          conversionTrackerMetrics,
+          loading: {
+            ...loading,
+            conversionTrackerMetrics: false,
+          },
+          error: {
+            ...error,
+            conversionTrackerMetrics: null,
+          },
+        };
+      },
+    ),
+    on(
+      ConversionTrackerApiActions.loadConversionTrackerMetricsFailure,
+      (state, { error: conversionTrackerMetricsError }): ConversionTrackerState => {
+        const { loading, error } = state;
+        return {
+          ...state,
+          loading: {
+            ...loading,
+            conversionTrackerMetrics: false,
+          },
+          error: {
+            ...error,
+            conversionTrackerMetrics: conversionTrackerMetricsError,
+          },
+        };
+      },
+    ),
   ),
 });
 
@@ -372,4 +430,5 @@ export const {
   selectConversionCodes,
   selectConversionTrackers,
   selectSelectedConversionCode,
+  selectConversionTrackerMetrics,
 } = conversionTrackerFeacture;

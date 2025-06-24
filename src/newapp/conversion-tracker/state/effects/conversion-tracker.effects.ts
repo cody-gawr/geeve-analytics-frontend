@@ -231,20 +231,21 @@ export class ConversionTrackerEffect {
     );
   });
 
-  readonly loadConversionTrackerInsights$ = createEffect(() => {
+  readonly loadConversionTrackerMetrics$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(ConversionTrackerPageActions.deleteConversionCodeValue),
-      mergeMap(({ clinicId, recordId }) => {
-        return this.conversionTrackerService.deleteConversionCodeValue(recordId).pipe(
-          mergeMap(deletedCount => [
-            ConversionTrackerApiActions.deleteConversionCodeValueSuccess({ deletedCount }),
-            ConversionTrackerPageActions.loadConversionCodes({ clinicId }),
-          ]),
+      ofType(ConversionTrackerPageActions.loadConversionTrackerMetrics),
+      mergeMap(({ clinicId }) => {
+        return this.conversionTrackerService.loadConversionTrackerMetrics(clinicId).pipe(
+          map(conversionTrackerMetrics =>
+            ConversionTrackerApiActions.loadConversionTrackerMetricsSuccess({
+              conversionTrackerMetrics,
+            }),
+          ),
           catchError((res: HttpErrorResponse) =>
             of(
-              ConversionTrackerApiActions.deleteConversionCodeValueFailure({
+              ConversionTrackerApiActions.loadConversionTrackerMetricsFailure({
                 error: {
-                  api: `${this.commonApiUrl}/conversion/code-value`,
+                  api: `${this.commonApiUrl}/conversion/metrics`,
                   message: res.message,
                   status: res.status,
                   errors: Array.isArray(res.error) ? res.error : [res.error],

@@ -22,6 +22,7 @@ import {
   ConversionCode,
   ConversionCodeDialogData,
   ConversionTracker,
+  ConversionTrackerMetrics,
 } from '../models/conversion-tracker';
 import { LayoutFacade } from '../layout/facades/layout.facade';
 import { DentistFacade } from '../dentist/facades/dentists.facade';
@@ -67,6 +68,21 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     declined: [],
   };
 
+  metricMetadataByType = {
+    totalConsult: {
+      icon: 'people',
+      description: 'Total Consult',
+    },
+    conversionRate: {
+      icon: 'trending_up',
+      description: 'Conversion Rate',
+    },
+    avgTimeToConversion: {
+      icon: 'schedule',
+      description: 'Avg Time to Conversion',
+    },
+  } as const;
+
   get selectedConversionCode$(): Observable<ConversionCode> {
     return this.conversionTrackerFacade.selectedConversionCode$;
   }
@@ -77,6 +93,10 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
 
   get isCreatingConversionCode$(): Observable<boolean> {
     return this.conversionTrackerFacade.isCreatingConversionCode$;
+  }
+
+  get conversionTrackerMetrics$(): Observable<ConversionTrackerMetrics> {
+    return this.conversionTrackerFacade.conversionTrackerMetrics$.pipe(filter(v => !!v));
   }
 
   constructor(
@@ -100,6 +120,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
         this.clinicId = clinic.id;
         this.clinicName = clinic.clinicName;
         this.conversionTrackerFacade.loadConversionCodes(this.clinicId);
+        this.conversionTrackerFacade.loadConversionTrackerMetrics(this.clinicId);
       });
     this.conversionTrackerFacade.conversionCodes$
       .pipe(takeUntil(this.destroy$))

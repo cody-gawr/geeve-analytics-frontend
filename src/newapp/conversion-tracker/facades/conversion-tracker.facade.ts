@@ -5,6 +5,7 @@ import { JeeveError } from '@/newapp/models';
 import {
   ConversionTrackerState,
   selectConversionCodes,
+  selectConversionTrackerMetrics,
   selectConversionTrackers,
   selectLoading,
   selectSelectedConversionCode,
@@ -47,6 +48,8 @@ export class ConversionTrackerFacade {
     ofType(ConversionTrackerApiActions.deleteConversionCodeValueSuccess),
     map(({ deletedCount }) => deletedCount),
   );
+
+  readonly conversionTrackerMetrics$ = this.store.pipe(select(selectConversionTrackerMetrics));
 
   loadConversionCodes(clinicId: number) {
     this.store.dispatch(ConversionTrackerPageActions.loadConversionCodes({ clinicId }));
@@ -123,5 +126,9 @@ export class ConversionTrackerFacade {
     this.store.dispatch(
       ConversionTrackerPageActions.deleteConversionCodeValue({ clinicId, recordId }),
     );
+  }
+
+  loadConversionTrackerMetrics(clinicId: number) {
+    this.store.dispatch(ConversionTrackerPageActions.loadConversionTrackerMetrics({ clinicId }));
   }
 }

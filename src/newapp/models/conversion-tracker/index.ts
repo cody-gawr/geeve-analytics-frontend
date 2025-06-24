@@ -1,3 +1,7 @@
+import { KpiDto } from './kpi.dto';
+import { Kpi } from './kpi.model';
+import { ConversionTrackerMetricsDto } from './conversion-tracker-metrics.dto';
+import { ConversionTrackerMetrics } from './conversion-tracker-metrics.model';
 import { ConversionCodeValueUpsertDto } from './conversion-code-value-upsert.dto';
 import { ConversionCodeUpsertDto } from './conversion-code-upsert.dto';
 import { ConversionCodeDialogData } from './conversion-code-dialog.model';
@@ -18,4 +22,8 @@ export {
   ConversionCodeValueUpsertDto,
   ConversionTracker,
   ConversionTrackerDto,
+  ConversionTrackerMetrics,
+  ConversionTrackerMetricsDto,
+  Kpi,
+  KpiDto,
 };

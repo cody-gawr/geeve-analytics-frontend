@@ -7,6 +7,8 @@ import {
   ConversionCodeValueDto,
   ConversionTracker,
   ConversionTrackerDto,
+  ConversionTrackerMetrics,
+  ConversionTrackerMetricsDto,
 } from '@/newapp/models/conversion-tracker';
 import { ConversionCodeDto } from '@/newapp/models/conversion-tracker/conversion-code.dto';
 import { ConversionCode } from '@/newapp/models/conversion-tracker/conversion-code.model';
@@ -145,5 +147,14 @@ export class ConversionTrackerService {
       .pipe(map(res => res.data));
   }
 
-  loadConversionTrackerInsights() {}
+  loadConversionTrackerMetrics(clinicId: number): Observable<ConversionTrackerMetrics> {
+    return this.http
+      .get<ApiResponse<ConversionTrackerMetricsDto>>(`${this.commonApiUrl}/conversion/metrics`, {
+        params: {
+          clinic_id: clinicId,
+        },
+        withCredentials: true,
+      })
+      .pipe(map(res => <ConversionTrackerMetrics>camelcaseKeys(res.data, { deep: true })));
+  }
 }
