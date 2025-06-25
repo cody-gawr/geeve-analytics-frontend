@@ -1,12 +1,11 @@
 // src/app/guards/prod.guard.ts
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
   Router,
-  CanActivateFn,
 } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
