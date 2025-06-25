@@ -7,30 +7,14 @@
       <mat-card class="conversion-tracker-header">
         <div class="cards-wrapper">
           <app-conversion-insight-card
-            type="Total Consult"
-            icon="people"
-            description="Total Consult"
-            [currentValue]="102"
-            [deltaValue]="8"
-            [deltaUnit]="'%'"
-          />
-          <app-conversion-insight-card
-            type="Conversion Rate"
-            icon="trending_up"
-            description="Conversion Rate"
-            [currentValue]="56"
-            [deltaValue]="4"
-            [deltaUnit]="'%'"
-          />
-          <app-conversion-insight-card
-            type="Avg Time to Conversion"
-            icon="schedule"
-            description="Avg Time to Conversion"
-            [metric]="-2"
-            [currentValue]="18"
-            [currentUnit]="' days'"
-            [deltaValue]="-2"
-            [deltaUnit]="'d'"
+            *ngFor="let metric of conversionTrackerMetrics"
+            [type]="metric.type"
+            [icon]="metric.icon"
+            [description]="metric.description"
+            [currentValue]="metric.currentValue"
+            [currentUnit]="metric.currentUnit"
+            [deltaValue]="metric.deltaValue"
+            [deltaUnit]="metric.deltaUnit"
           />
         </div>
       </mat-card>

@@ -23,6 +23,7 @@ import {
   ConversionCodeDialogData,
   ConversionTracker,
   ConversionTrackerMetrics,
+  Kpi,
 } from '../models/conversion-tracker';
 import { LayoutFacade } from '../layout/facades/layout.facade';
 import { DentistFacade } from '../dentist/facades/dentists.facade';
@@ -68,20 +69,25 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     declined: [],
   };
 
-  metricMetadataByType = {
-    totalConsult: {
+  metricMetadata = [
+    {
+      type: 'Total Consult',
       icon: 'people',
       description: 'Total Consult',
     },
-    conversionRate: {
+    {
+      type: 'Conversion Rate',
       icon: 'trending_up',
       description: 'Conversion Rate',
     },
-    avgTimeToConversion: {
+    {
+      type: 'Avg Time to Conversion',
       icon: 'schedule',
       description: 'Avg Time to Conversion',
     },
-  } as const;
+  ] as const;
+
+  conversionTrackerMetrics: ({ type: string; icon: string; description: string } & Kpi)[] = [];
 
   get selectedConversionCode$(): Observable<ConversionCode> {
     return this.conversionTrackerFacade.selectedConversionCode$;
@@ -95,8 +101,24 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
     return this.conversionTrackerFacade.isCreatingConversionCode$;
   }
 
-  get conversionTrackerMetrics$(): Observable<ConversionTrackerMetrics> {
-    return this.conversionTrackerFacade.conversionTrackerMetrics$.pipe(filter(v => !!v));
+  get conversionTrackerMetrics$() {
+    return this.conversionTrackerFacade.conversionTrackerMetrics$.pipe(
+      filter(v => !!v),
+      map(metrics =>
+        metrics.map(m => {
+          const { type, currentValue, currentUnit, deltaValue, deltaUnit } = m;
+          const meta = this.metricMetadata.find(meta => meta.type === type);
+
+          return {
+            currentValue,
+            currentUnit,
+            deltaValue,
+            deltaUnit,
+            ...meta,
+          };
+        }),
+      ),
+    );
   }
 
   constructor(
@@ -154,6 +176,8 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
           consultCode,
         });
       });
+
+    this.conversionTrackerMetrics$.subscribe(metrics => (this.conversionTrackerMetrics = metrics));
 
     this.selectedConversionCode$
       .pipe(
