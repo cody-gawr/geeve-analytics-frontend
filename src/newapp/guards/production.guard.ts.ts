@@ -17,6 +17,8 @@ export class ProductionGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
-    return environment.production ? this.router.createUrlTree(['/coming-soon']) : true;
+    return environment.production || environment.pilot
+      ? this.router.createUrlTree(['/coming-soon'])
+      : true;
   }
 }
