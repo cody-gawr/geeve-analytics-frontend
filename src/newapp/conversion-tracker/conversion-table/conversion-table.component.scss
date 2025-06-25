@@ -58,11 +58,15 @@
     }
 
     ::ng-deep .mdc-checkbox__background {
-      border-color: #f2f2f2 !important; /* your desired color */
+      border-color: #e0e0e0 !important; /* your desired color */
     }
 
     ::ng-deep .mat-mdc-select {
       font-size: 14px;
+    }
+
+    ::ng-deep .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+      // background-color: transparent;
     }
   }
 }
