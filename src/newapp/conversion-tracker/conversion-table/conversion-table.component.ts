@@ -83,9 +83,9 @@ export class ConversionTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   onTreatmentStatusChange(recordId: number, event: MatSelectChange) {
-    this.conversionTrackerFacade.updateConversionTrackerTreatmentStatus(
+    this.conversionTrackerFacade.updateConversionTracker(
       recordId,
-      event.value,
+      { treatmentStatus: event.value },
       this.payload,
     );
   }

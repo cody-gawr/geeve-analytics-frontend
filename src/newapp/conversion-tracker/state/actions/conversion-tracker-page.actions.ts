@@ -23,11 +23,11 @@ export const loadConversionTrackers = createAction(
   }>(),
 );
 
-export const updateConversionTrackerTreatmentStatus = createAction(
-  '[Conversion Tracker Page] Update Treatment Status of a Conversion Tracker',
+export const updateConversionTracker = createAction(
+  '[Conversion Tracker Page] Update Conversion Tracker',
   props<{
     recordId: number;
-    treatmentStatus: TreatmentStatus;
+    updatePayload: { treatmentStatus?: TreatmentStatus; notes?: string };
     payload: {
       clinicId: number;
       providerId: number;

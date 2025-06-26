@@ -67,30 +67,28 @@ export class ConversionTrackerEffect {
 
   readonly updateConversionTrackerTreatmentStatus$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(ConversionTrackerPageActions.updateConversionTrackerTreatmentStatus),
-      mergeMap(({ recordId, treatmentStatus, payload }) => {
-        return this.conversionTrackerService
-          .updateConversionTrackerTreatmentStatus(recordId, treatmentStatus)
-          .pipe(
-            mergeMap(affectedCount => [
-              ConversionTrackerApiActions.updateConversionTrackerTreatmentStatusSuccess({
-                affectedCount,
+      ofType(ConversionTrackerPageActions.updateConversionTracker),
+      mergeMap(({ recordId, updatePayload, payload }) => {
+        return this.conversionTrackerService.updateConversionTracker(recordId, updatePayload).pipe(
+          mergeMap(affectedCount => [
+            ConversionTrackerApiActions.updateConversionTrackerTreatmentStatusSuccess({
+              affectedCount,
+            }),
+            ConversionTrackerPageActions.loadConversionTrackers(payload),
+          ]),
+          catchError((res: HttpErrorResponse) =>
+            of(
+              ConversionTrackerApiActions.updateConversionTrackerTreatmentStatusFailure({
+                error: {
+                  api: `${this.commonApiUrl}/conversion/tracker/${recordId}`,
+                  message: res.message,
+                  status: res.status,
+                  errors: Array.isArray(res.error) ? res.error : [res.error],
+                },
               }),
-              ConversionTrackerPageActions.loadConversionTrackers(payload),
-            ]),
-            catchError((res: HttpErrorResponse) =>
-              of(
-                ConversionTrackerApiActions.updateConversionTrackerTreatmentStatusFailure({
-                  error: {
-                    api: `${this.commonApiUrl}/conversion/tracker/${recordId}`,
-                    message: res.message,
-                    status: res.status,
-                    errors: Array.isArray(res.error) ? res.error : [res.error],
-                  },
-                }),
-              ),
             ),
-          );
+          ),
+        );
       }),
     );
   });

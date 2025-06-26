@@ -57,12 +57,13 @@ export class ConversionTrackerService {
       .pipe(map(res => <ConversionTracker[]>camelcaseKeys(res.data, { deep: true })));
   }
 
-  updateConversionTrackerTreatmentStatus(recordId: number, treatmentStatus: TreatmentStatus) {
+  updateConversionTracker(
+    recordId: number,
+    updatePayload: { treatmentStatus?: TreatmentStatus; notes?: string },
+  ) {
     return this.http
       .patch<ApiResponse<number>>(`${this.commonApiUrl}/conversion/tracker/${recordId}`, null, {
-        params: {
-          treatment_status: treatmentStatus,
-        },
+        params: snakeCaseKeys(updatePayload),
         withCredentials: true,
       })
       .pipe(map(res => res.data));

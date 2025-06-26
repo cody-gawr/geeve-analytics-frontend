@@ -69,9 +69,9 @@ export class ConversionTrackerFacade {
     this.store.dispatch(ConversionTrackerPageActions.selectConversionCode({ id }));
   }
 
-  updateConversionTrackerTreatmentStatus(
+  updateConversionTracker(
     recordId: number,
-    treatmentStatus: TreatmentStatus,
+    updatePayload: { treatmentStatus?: TreatmentStatus; notes?: string },
     payload: {
       clinicId: number;
       providerId: number;
@@ -80,10 +80,11 @@ export class ConversionTrackerFacade {
       consultCode: string;
     },
   ) {
+    console.log({ updatePayload });
     this.store.dispatch(
-      ConversionTrackerPageActions.updateConversionTrackerTreatmentStatus({
+      ConversionTrackerPageActions.updateConversionTracker({
         recordId,
-        treatmentStatus,
+        updatePayload,
         payload,
       }),
     );
