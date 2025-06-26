@@ -22,7 +22,6 @@ import {
   ConversionCode,
   ConversionCodeDialogData,
   ConversionTracker,
-  ConversionTrackerMetrics,
   Kpi,
 } from '../models/conversion-tracker';
 import { LayoutFacade } from '../layout/facades/layout.facade';
@@ -262,7 +261,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
 
   onAddConversionCode() {
     const data: ConversionCodeDialogData = {
-      mode: 'create',
+      mode: 'Create',
     };
     const dialogRef = this.dialog.open(UpsertConversionCodeValuesDialogComponent, {
       width: '600px',
@@ -284,7 +283,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
 
   onUpdateConversionCode(conversionCode: ConversionCode) {
     const data: ConversionCodeDialogData = {
-      mode: 'update',
+      mode: 'Update',
       conversionCode,
     };
     const dialogRef = this.dialog.open(UpsertConversionCodeValuesDialogComponent, {

@@ -12,11 +12,9 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { enumEntries } from '@/newapp/shared/helpers';
 import {
-  ConversionCode,
   ConversionCodeDialogData,
   ConversionCodeUpsertDto,
   ConversionCodeValue,
-  ConversionCodeValueDto,
   ConversionCodeValueUpsertDto,
 } from '@/newapp/models/conversion-tracker';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -93,7 +91,7 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
   }
 
   get title() {
-    return this.data.mode == 'create' ? 'Create Conversion Code' : 'Update Conversion Code';
+    return this.data.mode == 'Create' ? 'Create Conversion Code' : 'Update Conversion Code';
   }
 
   get inTreatmentCodeControl() {
@@ -109,7 +107,7 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
   }
 
   ngOnInit() {
-    if (this.data.mode === 'update') {
+    if (this.data.mode === 'Update') {
       this.consultCodeControl.setValue(this.data.conversionCode.consultCode);
     }
     this.codeValues.next(this.data.conversionCode?.codeValues || []);
@@ -234,7 +232,7 @@ export class UpsertConversionCodeValuesDialogComponent implements OnInit, OnDest
         consultCode: this.consultCodeControl.value,
         codeValues: this.codeValues.value,
       };
-      if (this.data.mode === 'update') {
+      if (this.data.mode === 'Update') {
         conversionCode = {
           ...this.data.conversionCode,
           ...conversionCode,

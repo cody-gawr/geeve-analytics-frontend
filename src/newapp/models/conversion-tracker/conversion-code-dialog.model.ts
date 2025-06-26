@@ -1,6 +1,6 @@
 import { ConversionCode } from './conversion-code.model';
 
 export interface ConversionCodeDialogData {
-  mode: 'create' | 'update';
+  mode: 'Create' | 'Update';
   conversionCode?: ConversionCode;
 }

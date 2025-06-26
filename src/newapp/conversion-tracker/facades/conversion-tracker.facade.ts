@@ -80,7 +80,6 @@ export class ConversionTrackerFacade {
       consultCode: string;
     },
   ) {
-    console.log({ updatePayload });
     this.store.dispatch(
       ConversionTrackerPageActions.updateConversionTracker({
         recordId,

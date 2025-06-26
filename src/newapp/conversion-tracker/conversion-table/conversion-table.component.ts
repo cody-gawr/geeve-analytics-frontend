@@ -5,8 +5,18 @@ import { ConversionTrackerFacade } from '../facades/conversion-tracker.facade';
 import { ClinicFacade } from '@/newapp/clinic/facades/clinic.facade';
 import { DentistFacade } from '@/newapp/dentist/facades/dentists.facade';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
-import { combineLatest, distinctUntilChanged, filter, Observable, Subject, takeUntil } from 'rxjs';
+import {
+  combineLatest,
+  distinctUntilChanged,
+  filter,
+  Observable,
+  Subject,
+  take,
+  takeUntil,
+} from 'rxjs';
 import moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { NotesDialogComponent } from '../notes-dialog/notes-dialog.component';
 
 @Component({
   selector: 'app-conversion-table',
@@ -50,6 +60,7 @@ export class ConversionTableComponent implements OnInit, OnDestroy {
   }
 
   constructor(
+    public dialog: MatDialog,
     private clinicFacade: ClinicFacade,
     private dentistFacade: DentistFacade,
     private layoutFacade: LayoutFacade,
@@ -88,5 +99,27 @@ export class ConversionTableComponent implements OnInit, OnDestroy {
       { treatmentStatus: event.value },
       this.payload,
     );
+  }
+
+  onOpenNotesDialog(recordId: number, notes: string | null) {
+    const dialogRef = this.dialog.open(NotesDialogComponent, {
+      width: '450px',
+      data: {
+        mode: notes === null ? 'Create' : 'Update',
+        notes,
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe(result => {
+        if (!result) {
+          return;
+        }
+
+        const { notes } = result;
+        this.conversionTrackerFacade.updateConversionTracker(recordId, { notes }, this.payload);
+      });
   }
 }
