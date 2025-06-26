@@ -80,3 +80,13 @@
     color: white !important;
   }
 }
+
+i {
+  &.add {
+    color: #7c0404;
+  }
+
+  &.edit {
+    color: #047c04;
+  }
+}

@@ -30,6 +30,8 @@ export class ConversionTableComponent implements OnInit, OnDestroy {
     'consultDate',
     'consult',
     'treatmentStatus',
+    'convertedDate',
+    'notes',
     'lastCampaign',
   ];
 

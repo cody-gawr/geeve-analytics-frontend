@@ -136,7 +136,7 @@ const MENU_DATA: MenuNode[] = [
       },
       // user_type==2 || permissions.contains(dashboard3) || user_type==7
       {
-        title: 'Conversion',
+        title: 'Conversions',
         path: '/newapp/crm/conversion-tracker',
         icon: faBullseye,
         badgeText: 'Coming soon',

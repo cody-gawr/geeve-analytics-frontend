@@ -10,5 +10,7 @@ export interface ConversionTracker {
   patientName: string;
   patientPhone: string;
   treatmentStatus: TreatmentStatus;
+  convertedDate: string | null;
+  notes: string | null;
   isDeleted: false;
 }
