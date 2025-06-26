@@ -136,10 +136,10 @@ const MENU_DATA: MenuNode[] = [
       },
       // user_type==2 || permissions.contains(dashboard3) || user_type==7
       {
-        title: 'Conversion Tracker',
+        title: 'Conversion',
         path: '/newapp/crm/conversion-tracker',
         icon: faBullseye,
-        badgeText: 'New',
+        badgeText: 'Coming soon',
         badgeStyle: 'yellow-bg',
         // validatorFn: ({ permissions, userType, hasPrimeClinics }: MenuValidatorParams) => {
         //   return (
