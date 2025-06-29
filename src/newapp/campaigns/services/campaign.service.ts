@@ -70,6 +70,12 @@ export const DefaultFilterElements: IFilterElement[] = [
     title: 'Appointment',
     filterName: 'appointment',
   },
+  {
+    iconName: 'marketing_preferences',
+    iconUrl: '/assets/jeeve/images/marketing-preferences.png',
+    title: 'Marketing Preferences',
+    filterName: 'marketing_preferences',
+  },
 ];
 
 export interface ISpResultPatient {

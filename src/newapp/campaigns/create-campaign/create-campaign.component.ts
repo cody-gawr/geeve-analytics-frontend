@@ -123,6 +123,10 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
   patientStatusList = ['all', 'active', 'inactive'];
   private supportedPMs = ['d4w', 'exact', 'praktika'];
 
+  // Marketing Prefreence Filter Dropdown
+  selected_MarketingPreference = new FormControl<string>('');
+  All_MarketingPreferences: string[] = [];
+
   constructor(
     private clinicFacade: ClinicFacade,
     private campaignService: CampaignService,
@@ -154,7 +158,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
               ? this.commonDataservice.getCampaignHealthFunds(this.clinicId)
               : of({ success: true, data: [] }),
             this.commonDataservice.getCampaignItemCodes(this.clinicId),
-          ]).subscribe(([filterElems, healthFundsPayload, itemCodesPayload]) => {
+            this.commonDataservice.getQueryMethods_D4wPatients(this.clinicId), // Load all available marketing preferences
+          ]).subscribe(([filterElems, healthFundsPayload, itemCodesPayload, queryMethodPayload]) => {
             if (!filterElems.success) {
               this.nofifyService.showError('Failed to load filter elements');
               return;
@@ -175,6 +180,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
                       CAMPAIGN_FILTERS.health_insurance,
                       CAMPAIGN_FILTERS.overdues,
                       CAMPAIGN_FILTERS.patient_status,
+                      CAMPAIGN_FILTERS.marketing_preferences // disable if clinic's utility version is under 1.42
                     ].indexOf(fe.name) >= 0 &&
                     !!clinics[0].utilityVer &&
                     clinics[0].utilityVer < '1.42.0.0',
@@ -185,6 +191,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
               label: d.item_display_name,
               value: d.item_code,
             }));
+            this.All_MarketingPreferences = queryMethodPayload.data.map(d => d.query_comm_methods); // Marketing Preference Filter Options
             this.metadataEvent.next();
           });
         }
@@ -404,6 +411,14 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         }
       });
 
+    this.selected_MarketingPreference.valueChanges
+      .pipe(takeUntil(this.destroy$), debounceTime(300))
+      .subscribe(q_method => {
+        if (this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.marketing_preferences) > -1) {
+          this.eventInput.next();
+        }
+      });  // when changing the marketing preference, the filter should be reloaded
+
     this.filterFormGroup.controls.treatmentEnd.valueChanges
       .pipe(takeUntil(this.destroy$), debounceTime(300))
       .subscribe(value => {
@@ -582,6 +597,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         );
       } else if (d.filterName === CAMPAIGN_FILTERS.patient_status) {
         filterSettings.push(this.patientStatus.value);
+      } else if (d.filterName === CAMPAIGN_FILTERS.marketing_preferences) {
+        filterSettings.push(this.selected_MarketingPreference.value);
       } else if (d.filterName === CAMPAIGN_FILTERS.treatment) {
         filterSettings.push(this.treatmentItemCodesMode.value);
         if (
@@ -679,6 +696,12 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         if (status) {
           this.patientStatus.setValue(status);
         } else this.patientStatus.setValue('all');
+        doneFilters.push(setting.filter_name);
+      } else if (setting.filter_name === CAMPAIGN_FILTERS.marketing_preferences) {
+        const q_method = setting.filter_settings;
+        if (q_method) {
+          this.selected_MarketingPreference.setValue(q_method);
+        } else this.selected_MarketingPreference.setValue('');
         doneFilters.push(setting.filter_name);
       } else if (setting.filter_name === 'incomplete_tx_plan') {
         const dates = setting.filter_settings?.split(',');
@@ -908,6 +931,10 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       if (this.patientStatus.value) {
         return true;
       }
+    } else if (filterName === CAMPAIGN_FILTERS.marketing_preferences) {
+      if (this.selected_MarketingPreference.value) {
+        return true;
+      }
     } else if (filterName === CAMPAIGN_FILTERS.treatment) {
       if (
         (this.filterFormGroup.controls.treatmentStart.value &&
@@ -1020,6 +1047,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         return `<p class="campaign-filter-desc">Patient does not have an appointment between <span>${moment(this.filterFormGroup.controls.no_appointmentStart.value).format('DD/MM/YYYY')}</span> and <span>${moment(this.filterFormGroup.controls.no_appointmentEnd.value).format('DD/MM/YYYY')}</span></p>`;
       case CAMPAIGN_FILTERS.patient_status:
         return `<p class="campaign-filter-desc">Patient is of status <span>${this.patientStatus.value}</span></p>`;
+      case CAMPAIGN_FILTERS.marketing_preferences:
+        return `<p class="campaign-filter-desc">Marketing Preference is <span>${this.selected_MarketingPreference.value}</span></p>`;        
       case CAMPAIGN_FILTERS.overdues:
         return `<p class="campaign-filter-desc">Patient has overdue amount at least <span>${this.overdueDays.value}></span> days overdue</p>`;
       case CAMPAIGN_FILTERS.health_insurance:

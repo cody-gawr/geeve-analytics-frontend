@@ -83,6 +83,7 @@ export const CAMPAIGN_FILTERS = {
   health_insurance: 'health_insurance',
   overdues: 'overdues',
   appointment: 'appointment',
+  marketing_preferences: 'marketing_preferences'
 };
 
 export const DEFAULT_TIMEZONE = 'Australia/Brisbane';

@@ -103,6 +103,17 @@
               </mat-form-field>
             </div>
 
+            <div *ngIf="isSelected('marketing_preferences')" class="patient-age-slider">
+              <mat-form-field appearance="outline">
+                <mat-label>Send Queries To</mat-label>
+                <mat-select [formControl]="selected_MarketingPreference">
+                  <mat-option *ngFor="let q_method of All_MarketingPreferences" [value]="q_method">
+                    {{ q_method }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
             <div class="filter-form" *ngIf="isSelected('overdues')">
               <mat-form-field appearance="outline" style="width: 150px; margin-left: 10px">
                 <mat-label>Days Overdue</mat-label>

@@ -8,6 +8,10 @@ export interface ItemCode {
   item_display_name: string;
 }
 
+export interface QueryMethod {
+  query_comm_methods: string
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -18,6 +22,16 @@ export class CommonDataService {
   public getCampaignItemCodes(clinicId: number) {
     return this.http
       .get<JeeveResponse<ItemCode[]>>(`${this.commonUrl}/data/item-codes`, {
+        params: { clinic_id: clinicId },
+        withCredentials: true,
+      })
+      .pipe(body => body);
+  }
+
+
+  public getQueryMethods_D4wPatients(clinicId: number) {
+    return this.http
+      .get<JeeveResponse<QueryMethod[]>>(`${this.commonUrl}/data/d4w-patients-query-methods`, {
         params: { clinic_id: clinicId },
         withCredentials: true,
       })
