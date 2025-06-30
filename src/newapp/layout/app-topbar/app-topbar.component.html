@@ -109,6 +109,7 @@
             </mat-select>
           </ng-template>
         </div>
+
         <div *ngIf="isEnableDentistDropdown$ | async" class="clinic-selector-field">
           <mat-select
             [disabled]="hideClinicSelectionDropdown$ | async"

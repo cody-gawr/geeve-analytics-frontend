@@ -86,7 +86,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
           [
             '/newapp/dashboard/cliniciananalysis',
             '/newapp/dashboard/clinicianproceedures',
-            '/newapp/conversion-tracker',
+            '/newapp/crm/conversion-tracker',
           ].includes(activatedRoute)
         );
       }),
