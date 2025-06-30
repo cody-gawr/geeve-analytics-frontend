@@ -36,17 +36,30 @@ export class ConversionTableComponent implements OnInit, OnDestroy {
     endDate: string;
     consultCode: string;
   } | null = null;
-  displayedColumns: string[] = [
-    'select',
-    'patient',
-    'provider',
-    'consultDate',
-    'consult',
-    'treatmentStatus',
-    'convertedDate',
-    'notes',
-    'lastCampaign',
-  ];
+  get displayedColumns(): string[] {
+    return this.isDentistMode
+      ? [
+          'select',
+          'patient',
+          'consultDate',
+          'consult',
+          'treatmentStatus',
+          'convertedDate',
+          'notes',
+          'lastCampaign',
+        ]
+      : [
+          'select',
+          'patient',
+          'provider',
+          'consultDate',
+          'consult',
+          'treatmentStatus',
+          'convertedDate',
+          'notes',
+          'lastCampaign',
+        ];
+  }
 
   treatmentStatusOptions: { value: string; name: string }[] = [
     { value: 'CONSULT', name: 'Consult' },
@@ -71,28 +84,6 @@ export class ConversionTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.displayedColumns = this.isDentistMode
-      ? [
-          'select',
-          'patient',
-          'consultDate',
-          'consult',
-          'treatmentStatus',
-          'convertedDate',
-          'notes',
-          'lastCampaign',
-        ]
-      : [
-          'select',
-          'patient',
-          'provider',
-          'consultDate',
-          'consult',
-          'treatmentStatus',
-          'convertedDate',
-          'notes',
-          'lastCampaign',
-        ];
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.dentistFacade.currentDentistId$,
