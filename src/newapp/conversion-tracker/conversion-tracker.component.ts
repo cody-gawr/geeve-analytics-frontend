@@ -32,6 +32,7 @@ import { UpsertConversionCodeValuesDialogComponent } from './update-conversion-c
 import { AuthFacade } from '../auth/facades/auth.facade';
 import { validatePermission } from '../shared/helpers/validatePermission.helper';
 import { CONSULTANT, USER_MASTER } from '../constants';
+import { Dentist } from '../models/dentist';
 
 @Component({
   selector: 'app-conversion-tracker',
@@ -43,6 +44,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
   clinicId: number = 0;
   clinicName: string = '';
+  dentists: Dentist[] = [];
   @ViewChild('conversionCodeSelect') conversionCodeSelect!: MatSelect;
   conversionCodes: ConversionCode[] = [];
   conversionCodeForm: FormGroup = new FormGroup({
@@ -51,13 +53,13 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   });
 
   conversionTrackerCollections: {
-    consult: ConversionTracker[];
-    recommended: ConversionTracker[];
-    preTreatment: ConversionTracker[];
-    inTreatment: ConversionTracker[];
-    completed: ConversionTracker[];
-    notSuitable: ConversionTracker[];
-    declined: ConversionTracker[];
+    consult: (ConversionTracker & { providerName: string })[];
+    recommended: (ConversionTracker & { providerName: string })[];
+    preTreatment: (ConversionTracker & { providerName: string })[];
+    inTreatment: (ConversionTracker & { providerName: string })[];
+    completed: (ConversionTracker & { providerName: string })[];
+    notSuitable: (ConversionTracker & { providerName: string })[];
+    declined: (ConversionTracker & { providerName: string })[];
   } = {
     consult: [],
     recommended: [],
@@ -130,6 +132,9 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.dentistFacade.dentists$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(dentists => (this.dentists = dentists));
     this.clinicFacade.currentClinics$
       .pipe(
         takeUntil(this.destroy$),
@@ -187,7 +192,12 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
         this.conversionCodeForm.get('selectedConversionCode').setValue(conversionCode.recordId),
       );
 
-    this.conversionTrackerFacade.conversionTrackers$.subscribe(conversionTrackers => {
+    this.conversionTrackerFacade.conversionTrackers$.subscribe(_conversionTrackers => {
+      const conversionTrackers = _conversionTrackers.map(ct => ({
+        ...ct,
+        providerName: this.dentists.find(d => d.providerId === ct.providerId)?.name ?? '',
+      }));
+
       this.conversionTrackerCollections.consult = conversionTrackers.filter(
         item => item.treatmentStatus === TreatmentStatus.Consult,
       );

@@ -24,7 +24,8 @@ import { NotesDialogComponent } from '../notes-dialog/notes-dialog.component';
   styleUrls: ['./conversion-table.component.scss'],
 })
 export class ConversionTableComponent implements OnInit, OnDestroy {
-  @Input() data: ConversionTracker[] = [];
+  @Input() data: (ConversionTracker & { providerName: string })[] = [];
+
   private destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
   public payload: {
@@ -37,6 +38,7 @@ export class ConversionTableComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'select',
     'patient',
+    'provider',
     'consultDate',
     'consult',
     'treatmentStatus',
