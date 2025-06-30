@@ -1,4 +1,4 @@
-import { ConversionCode, ConversionTracker } from '@/newapp/models/conversion-tracker';
+import { ConversionCode, ConversionTrackerRecord } from '@/newapp/models/conversion-tracker';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { ConversionTrackerFacade } from '../facades/conversion-tracker.facade';
@@ -24,7 +24,8 @@ import { NotesDialogComponent } from '../notes-dialog/notes-dialog.component';
   styleUrls: ['./conversion-table.component.scss'],
 })
 export class ConversionTableComponent implements OnInit, OnDestroy {
-  @Input() data: (ConversionTracker & { providerName: string })[] = [];
+  @Input() data: ConversionTrackerRecord[] = [];
+  @Input() isDentistMode: boolean;
 
   private destroy = new Subject<void>();
   destroy$ = this.destroy.asObservable();
@@ -70,6 +71,28 @@ export class ConversionTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.displayedColumns = this.isDentistMode
+      ? [
+          'select',
+          'patient',
+          'consultDate',
+          'consult',
+          'treatmentStatus',
+          'convertedDate',
+          'notes',
+          'lastCampaign',
+        ]
+      : [
+          'select',
+          'patient',
+          'provider',
+          'consultDate',
+          'consult',
+          'treatmentStatus',
+          'convertedDate',
+          'notes',
+          'lastCampaign',
+        ];
     combineLatest([
       this.clinicFacade.currentClinicId$,
       this.dentistFacade.currentDentistId$,

@@ -92,36 +92,43 @@
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
           <mat-tab label="Consults">
             <app-conversion-table
+              [isDentistMode]="isDentistMode"
               [data]="conversionTrackerCollections.consult"
             ></app-conversion-table>
           </mat-tab>
           <mat-tab label="Recommended">
             <app-conversion-table
+              [isDentistMode]="isDentistMode"
               [data]="conversionTrackerCollections.recommended"
             ></app-conversion-table>
           </mat-tab>
           <mat-tab label="Pre-Treatment">
             <app-conversion-table
+              [isDentistMode]="isDentistMode"
               [data]="conversionTrackerCollections.preTreatment"
             ></app-conversion-table>
           </mat-tab>
           <mat-tab label="In-Treatment">
             <app-conversion-table
+              [isDentistMode]="isDentistMode"
               [data]="conversionTrackerCollections.inTreatment"
             ></app-conversion-table>
           </mat-tab>
           <mat-tab label="Completed">
             <app-conversion-table
+              [isDentistMode]="isDentistMode"
               [data]="conversionTrackerCollections.completed"
             ></app-conversion-table>
           </mat-tab>
           <mat-tab label="Not Suitable">
             <app-conversion-table
+              [isDentistMode]="isDentistMode"
               [data]="conversionTrackerCollections.notSuitable"
             ></app-conversion-table>
           </mat-tab>
           <mat-tab label="Declined">
             <app-conversion-table
+              [isDentistMode]="isDentistMode"
               [data]="conversionTrackerCollections.declined"
             ></app-conversion-table>
           </mat-tab>

@@ -9,10 +9,10 @@ import {
   takeUntil,
   Observable,
   combineLatest,
-  mergeMap,
   startWith,
   shareReplay,
   take,
+  withLatestFrom,
 } from 'rxjs';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -21,7 +21,7 @@ import { ConversionTrackerFacade } from './facades/conversion-tracker.facade';
 import {
   ConversionCode,
   ConversionCodeDialogData,
-  ConversionTracker,
+  ConversionTrackerRecord,
   Kpi,
 } from '../models/conversion-tracker';
 import { LayoutFacade } from '../layout/facades/layout.facade';
@@ -44,6 +44,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   destroy$ = this.destroy.asObservable();
   clinicId: number = 0;
   clinicName: string = '';
+  isDentistMode: boolean;
   dentists: Dentist[] = [];
   @ViewChild('conversionCodeSelect') conversionCodeSelect!: MatSelect;
   conversionCodes: ConversionCode[] = [];
@@ -53,13 +54,13 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   });
 
   conversionTrackerCollections: {
-    consult: (ConversionTracker & { providerName: string })[];
-    recommended: (ConversionTracker & { providerName: string })[];
-    preTreatment: (ConversionTracker & { providerName: string })[];
-    inTreatment: (ConversionTracker & { providerName: string })[];
-    completed: (ConversionTracker & { providerName: string })[];
-    notSuitable: (ConversionTracker & { providerName: string })[];
-    declined: (ConversionTracker & { providerName: string })[];
+    consult: ConversionTrackerRecord[];
+    recommended: ConversionTrackerRecord[];
+    preTreatment: ConversionTrackerRecord[];
+    inTreatment: ConversionTrackerRecord[];
+    completed: ConversionTrackerRecord[];
+    notSuitable: ConversionTrackerRecord[];
+    declined: ConversionTrackerRecord[];
   } = {
     consult: [],
     recommended: [],
@@ -132,9 +133,15 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.dentistFacade.dentists$
+    combineLatest([this.dentistFacade.isDentistMode$, this.dentistFacade.dentists$])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(dentists => (this.dentists = dentists));
+      .subscribe(([isDentistMode, dentists]) => {
+        this.isDentistMode = isDentistMode;
+        if (!isDentistMode) {
+          this.dentists = dentists;
+        }
+        console.log(this.dentists);
+      });
     this.clinicFacade.currentClinics$
       .pipe(
         takeUntil(this.destroy$),
@@ -193,10 +200,17 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
       );
 
     this.conversionTrackerFacade.conversionTrackers$.subscribe(_conversionTrackers => {
-      const conversionTrackers = _conversionTrackers.map(ct => ({
-        ...ct,
-        providerName: this.dentists.find(d => d.providerId === ct.providerId)?.name ?? '',
-      }));
+      const conversionTrackers = _conversionTrackers.map(ct => {
+        let record: ConversionTrackerRecord = ct;
+        if (!this.isDentistMode) {
+          record = {
+            ...record,
+            providerName: this.dentists.find(d => d.providerId === ct.providerId)?.name ?? '',
+          };
+        }
+
+        return record;
+      });
 
       this.conversionTrackerCollections.consult = conversionTrackers.filter(
         item => item.treatmentStatus === TreatmentStatus.Consult,

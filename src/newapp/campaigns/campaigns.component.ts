@@ -25,7 +25,6 @@ import { NotificationService } from '../shared/services/notification.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ConfirmDialogComponent } from '../shared/components/confirm-dialog/confirm-dialog.component';
 import { CampaignFacade } from './facades/campaign.facade';
-import { FeaturePayAppDialogComponent } from '@/app/layouts/full/headerright/headerright.component';
 import { AuthFacade } from '../auth/facades/auth.facade';
 import { validatePermission } from '../shared/helpers/validatePermission.helper';
 import { CONSULTANT, USER_MASTER } from '../constants';

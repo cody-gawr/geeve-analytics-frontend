@@ -1,3 +1,4 @@
+import { ConversionTrackerRecord } from './conversion-tracker-record.model';
 import { NotesDialogData } from './notes-dialog.model';
 import { KpiDto } from './kpi.dto';
 import { Kpi } from './kpi.model';
@@ -25,6 +26,7 @@ export {
   ConversionTrackerDto,
   ConversionTrackerMetrics,
   ConversionTrackerMetricsDto,
+  ConversionTrackerRecord,
   NotesDialogData,
   Kpi,
   KpiDto,
