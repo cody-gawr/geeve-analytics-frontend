@@ -36,25 +36,6 @@
               (selectionChange)="onConversionCodeSelected($event)"
             >
               <mat-select-trigger>{{ selectedConsultCode$ | async }}</mat-select-trigger>
-              <!-- 🔼 Add new item UI -->
-              <mat-option disabled>
-                <div class="add-new-option">
-                  <input
-                    matInput
-                    [formControl]="conversionCodeForm.get('newConsultCode')"
-                    placeholder="Add new conversion code..."
-                  />
-                  <button
-                    color="primary"
-                    (click)="onAddConversionCode()"
-                    [disabled]="conversionCodeForm.get('newConsultCode')?.invalid"
-                    mat-flat-button
-                  >
-                    Add
-                  </button>
-                </div>
-              </mat-option>
-
               <!-- 🔽 Existing options -->
               <mat-option
                 *ngFor="let conversionCode of conversionCodes"
