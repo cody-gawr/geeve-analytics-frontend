@@ -140,7 +140,6 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
         if (!isDentistMode) {
           this.dentists = dentists;
         }
-        console.log(this.dentists);
       });
     this.clinicFacade.currentClinics$
       .pipe(
