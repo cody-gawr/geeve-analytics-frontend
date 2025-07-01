@@ -32,7 +32,6 @@ import { MatSelectChange } from '@angular/material/select';
 import { Clinic } from '@/newapp/models/clinic';
 import { Router } from '@angular/router';
 import { CampaignFacade } from '@/newapp/campaigns/facades/campaign.facade';
-import { ICampaign } from '@/newapp/campaigns/services/campaign.service';
 
 @Component({
   selector: 'app-topbar',

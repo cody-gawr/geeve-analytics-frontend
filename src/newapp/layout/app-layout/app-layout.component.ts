@@ -47,7 +47,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
           this.activatedUrl.includes('campaigns/view')
         ) {
           this.layoutFacade.savePaths([
-            { name: 'Campaigns', path: '/newapp/campaigns' },
+            { name: 'Campaigns', path: '/newapp/crm/campaigns' },
             { name: '[Campaign]' },
           ]);
 
