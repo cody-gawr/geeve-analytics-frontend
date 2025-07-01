@@ -16,6 +16,8 @@ import {
   selectPaths,
   selectHideClinicSelectionDropdown,
   selectIsFullSingleMonthOrYearOrCurrentMonthDateRange,
+  selectIsClinicSelectionVisible,
+  selectIsDentistSelectionVisible,
 } from '../state/reducers/layout.reducer';
 import { Moment } from 'moment';
 import { layoutPageActions } from '../state/actions';
@@ -47,6 +49,13 @@ export class LayoutFacade {
 
   public readonly selectIsFullSingleMonthOrYearOrCurrentMonthDateRange$ = this.store.pipe(
     select(selectIsFullSingleMonthOrYearOrCurrentMonthDateRange),
+  );
+
+  public readonly selectIsClinicSelectionVisible$ = this.store.pipe(
+    select(selectIsClinicSelectionVisible),
+  );
+  public readonly selectIsDentistSelectionVisible$ = this.store.pipe(
+    select(selectIsDentistSelectionVisible),
   );
 
   public readonly paths$ = this.store.pipe(select(selectPaths));
@@ -100,6 +109,14 @@ export class LayoutFacade {
 
   public setHideClinicSelectionDropDown(hide: boolean) {
     this.store.dispatch(layoutPageActions.setHideClinicSelectionDropDown({ hide }));
+  }
+
+  public showClinicSelection(isClinicSelectionVisible: boolean) {
+    this.store.dispatch(layoutPageActions.showClinicSelection({ isClinicSelectionVisible }));
+  }
+
+  public showDentistSelection(isDentistSelectionVisible: boolean) {
+    this.store.dispatch(layoutPageActions.showDentistSelection({ isDentistSelectionVisible }));
   }
 
   public savePaths(paths: { name: string; path?: string }[]) {

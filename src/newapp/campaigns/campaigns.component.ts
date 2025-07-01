@@ -179,8 +179,8 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit, AfterViewCh
           this.endDate = moment(end).format('YYYY-MM-DD');
           this.loadCampaigns();
         } else {
-          this.layoutFacade.setHideClinicSelectionDropDown(true);
-          this.layoutFacade.setHideDatePicker(true);
+          this.layoutFacade.showClinicSelection(false);
+          this.layoutFacade.showDentistSelection(false);
         }
       });
 

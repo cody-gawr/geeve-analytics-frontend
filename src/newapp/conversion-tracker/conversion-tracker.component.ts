@@ -185,6 +185,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
       )
       .subscribe(payload => {
         const [clinicId, providerId, { start, end }, { consultCode }, hasPermission] = payload;
+        console.log(hasPermission);
         if (hasPermission) {
           this.conversionTrackerFacade.loadConversionTrackers({
             clinicId: <number>clinicId,
@@ -194,8 +195,8 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
             consultCode,
           });
         } else {
-          this.layoutFacade.setHideClinicSelectionDropDown(true);
-          this.layoutFacade.setHideDatePicker(true);
+          this.layoutFacade.showClinicSelection(false);
+          this.layoutFacade.showDentistSelection(false);
         }
       });
 
