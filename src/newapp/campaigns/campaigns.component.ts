@@ -2,6 +2,7 @@ import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
 import {
   BehaviorSubject,
+  combineLatest,
   distinctUntilChanged,
   filter,
   map,
@@ -159,22 +160,42 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit, AfterViewCh
   }
 
   ngOnInit(): void {
-    this.clinicFacade.currentSingleClinicId$
-      .pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe(clinicId => {
-        if (typeof clinicId === 'number') {
-          this.clinicId = clinicId;
-          this.loadCampaigns();
-        }
-      });
-
-    this.layoutFacade.dateRange$
-      .pipe(takeUntil(this.destroy$), distinctUntilChanged())
-      .subscribe(({ start, end }) => {
+    combineLatest([
+      this.clinicFacade.currentSingleClinicId$.pipe(distinctUntilChanged()),
+      this.layoutFacade.dateRange$.pipe(
+        distinctUntilChanged((a, b) => a.start === b.start && a.end === b.end),
+      ),
+      this.hasPermission$.pipe(distinctUntilChanged()),
+    ])
+      .pipe(
+        takeUntil(this.destroy$),
+        // only proceed once we have a real clinicId and permission === true
+        filter(
+          ([clinicId, _range, hasPermission]) => typeof clinicId === 'number' && hasPermission,
+        ),
+      )
+      .subscribe(([clinicId, { start, end }]) => {
+        this.clinicId = <number>clinicId;
         this.startDate = moment(start).format('YYYY-MM-DD');
         this.endDate = moment(end).format('YYYY-MM-DD');
         this.loadCampaigns();
       });
+    // this.clinicFacade.currentSingleClinicId$
+    //   .pipe(takeUntil(this.destroy$), distinctUntilChanged())
+    //   .subscribe(clinicId => {
+    //     if (typeof clinicId === 'number') {
+    //       this.clinicId = clinicId;
+    //       this.loadCampaigns();
+    //     }
+    //   });
+
+    // this.layoutFacade.dateRange$
+    //   .pipe(takeUntil(this.destroy$), distinctUntilChanged())
+    //   .subscribe(({ start, end }) => {
+    //     this.startDate = moment(start).format('YYYY-MM-DD');
+    //     this.endDate = moment(end).format('YYYY-MM-DD');
+    //     this.loadCampaigns();
+    //   });
 
     // COMPONENT-TODO - Review properties of campaign
     this.transformedCampaigns$.pipe(takeUntil(this.destroy$)).subscribe(campaigns => {
@@ -216,7 +237,7 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit, AfterViewCh
     if (this.clinicId) {
       this.campaignService
         .getCampaigns(this.clinicId, this.startDate, this.endDate)
-        .pipe(takeUntil(this.destroy$))
+        .pipe(take(1))
         .subscribe(result => {
           this.campaignsSubject.next(result.data);
         });
