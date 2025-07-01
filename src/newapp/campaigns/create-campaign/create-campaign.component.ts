@@ -1,5 +1,10 @@
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  CdkDropList,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -62,6 +67,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
   destroy$ = this.destroy.asObservable();
   closeEvent = new Subject<string>();
   closeEvent$ = this.closeEvent.asObservable();
+  @ViewChild('doneList', { read: CdkDropList }) doneList!: CdkDropList<IFilterElement[]>;
 
   metadataEvent = new Subject<void>();
   metadataEvent$ = this.metadataEvent.asObservable();
@@ -124,8 +130,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
   private supportedPMs = ['d4w', 'exact', 'praktika'];
 
   // Marketing Prefreence Filter Dropdown
-  selected_MarketingPreference = new FormControl<string>('');
-  All_MarketingPreferences: string[] = [];
+  selectedMarketingPreference = new FormControl<string>('');
+  allMarketingPreferences: string[] = [];
 
   constructor(
     private clinicFacade: ClinicFacade,
@@ -170,6 +176,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
                 .map(fe => {
                   const icon = DefaultFilterElements.find(d => d.filterName === fe.name);
                   return {
+                    id: fe.id,
                     iconName: icon?.iconName,
                     iconUrl: icon?.iconUrl,
                     title: icon?.title,
@@ -192,9 +199,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
                 label: d.item_display_name,
                 value: d.item_code,
               }));
-              this.All_MarketingPreferences = queryMethodPayload.data.map(
-                d => d.query_comm_methods,
-              ); // Marketing Preference Filter Options
+              this.allMarketingPreferences = queryMethodPayload.data.map(d => d.query_comm_methods); // Marketing Preference Filter Options
               this.metadataEvent.next();
             },
           );
@@ -415,7 +420,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         }
       });
 
-    this.selected_MarketingPreference.valueChanges
+    this.selectedMarketingPreference.valueChanges
       .pipe(takeUntil(this.destroy$), debounceTime(300))
       .subscribe(q_method => {
         if (
@@ -560,23 +565,112 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
 
   done = [];
 
-  drop(event: CdkDragDrop<string[]>, type = '') {
+  drop(event: CdkDragDrop<IFilterElement[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
+      // get the mouse X coordinate when the drop happened
+      const pointerX = (event as any).pointerPosition?.x ?? (event as any).dropPoint?.x ?? 0;
+
+      // grab all the rendered .drag-item elements
+      const elems = Array.from(
+        this.doneList.element.nativeElement.querySelectorAll<HTMLElement>('.drag-item'),
       );
-      if (this.done.length > 0) {
-        this.eventInput.next();
-      } else {
-        this.selection.clear();
-        this.dataSource.data = [];
+
+      // find the index whose midpoint is just after where you dropped
+      let targetIndex = elems.findIndex(el => {
+        const { left, width } = el.getBoundingClientRect();
+        return pointerX < left + width / 2;
+      });
+
+      if (targetIndex === -1) {
+        // you dropped past all items → append
+        targetIndex = elems.length;
       }
+
+      // splice your cloned model into the array at the computed index
+      const moved = event.previousContainer.data[event.previousIndex];
+      event.previousContainer.data.splice(event.previousIndex, 1);
+
+      // if you want a deep‐clone:
+      const clone = { ...moved };
+      event.container.data.splice(targetIndex, 0, clone);
+      this.todo.sort(
+        (a: IFilterElement, b: IFilterElement) => Number(a.disabled) - Number(b.disabled),
+      );
+      this.eventInput.next();
+
+      // insert into target
+      // console.log(event);
+      // transferArrayItem(
+      //   event.previousContainer.data,
+      //   event.container.data,
+      //   event.previousIndex,
+      //   event.currentIndex,
+      // );
+      // setTimeout(() => {
+      //   if (this.done.length > 0) {
+      //     this.eventInput.next();
+      //   } else {
+      //     this.selection.clear();
+      //     this.dataSource.data = [];
+      //   }
+      // }, 0);
     }
+
+    this.eventInput.next();
+
+    console.log('DROP EVENT:', {
+      from: event.previousIndex,
+      to: event.currentIndex,
+      prevList: event.previousContainer.id,
+      nextList: event.container.id,
+      dataBefore: {
+        todo: this.todo.map(i => i.filterName),
+        done: this.done.map(i => i.filterName),
+      },
+    });
+
+    // const fromId = event.previousContainer.id;
+    // const toId = event.container.id;
+
+    // const previous = [...event.previousContainer.data];
+    // const current = [...event.container.data];
+
+    // if (fromId === toId) {
+    //   moveItemInArray(current, event.previousIndex, event.currentIndex);
+
+    //   if (toId === 'todoList') {
+    //     this.todo = current;
+    //   } else if (toId === 'doneList') {
+    //     this.done = current;
+    //   }
+    // } else {
+    //   const [movedItem] = previous.splice(event.previousIndex, 1);
+
+    //   // Deep clone the moved item to break reference
+    //   const clonedItem = { ...movedItem };
+
+    //   current.splice(event.currentIndex, 0, clonedItem);
+
+    //   if (event.previousContainer.id === 'todoList' && event.container.id === 'doneList') {
+    //     this.todo = previous;
+    //     this.done = current;
+    //   } else if (event.previousContainer.id === 'doneList' && event.container.id === 'todoList') {
+    //     this.done = previous;
+    //     this.todo = current;
+    //   }
+
+    //   // Let the DOM stabilize before triggering data load
+    //   setTimeout(() => {
+    //     if (this.done.length > 0) {
+    //       this.eventInput.next(); // triggers filter refresh
+    //     } else {
+    //       this.selection.clear(); // clear selected patients
+    //       this.dataSource.data = []; // empty table
+    //     }
+    //   }, 0);
+    // }
   }
 
   getFilterSettings(): IGetPatientsFilterJson[] {
@@ -605,7 +699,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       } else if (d.filterName === CAMPAIGN_FILTERS.patient_status) {
         filterSettings.push(this.patientStatus.value);
       } else if (d.filterName === CAMPAIGN_FILTERS.marketing_preferences) {
-        filterSettings.push(this.selected_MarketingPreference.value);
+        filterSettings.push(this.selectedMarketingPreference.value);
       } else if (d.filterName === CAMPAIGN_FILTERS.treatment) {
         filterSettings.push(this.treatmentItemCodesMode.value);
         if (
@@ -707,8 +801,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       } else if (setting.filter_name === CAMPAIGN_FILTERS.marketing_preferences) {
         const q_method = setting.filter_settings;
         if (q_method) {
-          this.selected_MarketingPreference.setValue(q_method);
-        } else this.selected_MarketingPreference.setValue('');
+          this.selectedMarketingPreference.setValue(q_method);
+        } else this.selectedMarketingPreference.setValue('');
         doneFilters.push(setting.filter_name);
       } else if (setting.filter_name === 'incomplete_tx_plan') {
         const dates = setting.filter_settings?.split(',');
@@ -917,8 +1011,8 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     }
   }
 
-  get getTodoList() {
-    return this.todo.sort((a, b) => a.disabled - b.disabled);
+  get sortedTodoList() {
+    return [...this.todo].sort((a, b) => a.disabled - b.disabled);
   }
 
   isValidForm(item: string | IFilterElement) {
@@ -939,7 +1033,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
         return true;
       }
     } else if (filterName === CAMPAIGN_FILTERS.marketing_preferences) {
-      if (this.selected_MarketingPreference.value) {
+      if (this.selectedMarketingPreference.value) {
         return true;
       }
     } else if (filterName === CAMPAIGN_FILTERS.treatment) {
@@ -1055,7 +1149,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       case CAMPAIGN_FILTERS.patient_status:
         return `<p class="campaign-filter-desc">Patient is of status <span>${this.patientStatus.value}</span></p>`;
       case CAMPAIGN_FILTERS.marketing_preferences:
-        return `<p class="campaign-filter-desc">Marketing Preference is <span>${this.selected_MarketingPreference.value}</span></p>`;
+        return `<p class="campaign-filter-desc">Marketing Preference is <span>${this.selectedMarketingPreference.value}</span></p>`;
       case CAMPAIGN_FILTERS.overdues:
         return `<p class="campaign-filter-desc">Patient has overdue amount at least <span>${this.overdueDays.value}></span> days overdue</p>`;
       case CAMPAIGN_FILTERS.health_insurance:
@@ -1071,5 +1165,9 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       default:
         return '';
     }
+  }
+
+  trackByItem(index: number, item: IFilterElement) {
+    return item.id || item.filterName || index;
   }
 }

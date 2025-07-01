@@ -44,9 +44,9 @@
           </div>
           <div
             cdkDropList
-            #todoList="cdkDropList"
+            id="todoList"
             [cdkDropListData]="todo"
-            [cdkDropListConnectedTo]="[doneList]"
+            [cdkDropListConnectedTo]="['doneList']"
             (cdkDropListDropped)="drop($event)"
             cdkDropListSortingDisabled
             cdkDropListOrientation="vertical"
@@ -55,8 +55,9 @@
             <drag-drop-button
               class="drag-item"
               cdkDragPreviewClass="drag-preview"
-              *ngFor="let item of getTodoList"
+              *ngFor="let item of todo; trackBy: trackByItem"
               cdkDrag
+              [cdkDragData]="item"
               [cdkDragDisabled]="!isValidForm(item)"
               [disabled]="item.disabled"
               [iconName]="item.iconName"
@@ -259,20 +260,22 @@
       <div class="c-layout">
         <span class="title">Applied Filters</span>
         <div
-          cdkDropList
           #doneList="cdkDropList"
+          cdkDropList
+          id="doneList"
           [cdkDropListData]="done"
-          [cdkDropListConnectedTo]="[todoList]"
-          (cdkDropListDropped)="drop($event, 'done')"
+          [cdkDropListConnectedTo]="['todoList']"
+          (cdkDropListDropped)="drop($event)"
           cdkDropListSortingDisabled
           cdkDropListOrientation="horizontal"
           class="drop-container"
         >
           <drag-drop-button
             class="drag-item"
-            *ngFor="let item of done"
+            *ngFor="let item of done; trackBy: trackByItem"
             cdkDrag
             cdkDragPreviewClass="drag-preview"
+            [cdkDragData]="item"
             [desc]="getDesc(item.filterName)"
             [iconName]="item.iconName"
             [iconUrlWhite]="item.iconUrlWhite"
