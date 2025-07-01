@@ -7,6 +7,7 @@ import moment, { Moment } from 'moment';
 import { Observable, Subject, map } from 'rxjs';
 
 export interface IFilterElement {
+  id?: number;
   iconName: string;
   iconUrl: string;
   title: string;
@@ -175,7 +176,8 @@ export class CampaignService {
   private apiUrl = environment.apiUrl;
   private commonUrl = environment.commonApiUrl;
 
-  selectedIconObserver = new Subject<string>();
+  selectedIcon = new Subject<string>();
+  selectedIcon$ = this.selectedIcon.asObservable();
   selectedFilterName = '';
 
   range = new FormGroup({
@@ -183,12 +185,9 @@ export class CampaignService {
     end: new FormControl<Moment | null>(moment()),
   });
 
-  public get selectedIcon$(): Observable<string> {
-    return this.selectedIconObserver.asObservable().pipe(map(v => v));
-  }
   public setSelectedIcon(value: string) {
     this.selectedFilterName = value;
-    this.selectedIconObserver.next(value);
+    this.selectedIcon.next(value);
   }
   constructor(private http: HttpClient) {}
 
