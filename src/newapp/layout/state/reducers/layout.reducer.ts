@@ -18,6 +18,8 @@ export interface LayoutState {
   average: C_AVG_MODE;
   activatedRouteTitle: string;
   compare: boolean;
+  isClinicSelectionVisible: boolean;
+  isDentistSelectionVisible: boolean;
   hideDatePicker: boolean;
   hideClinicSelectionDropdown: boolean;
   paths: { name: string; path?: string }[];
@@ -36,6 +38,8 @@ const initialState: LayoutState = {
   average: 'off',
   compare: false,
   activatedRouteTitle: '',
+  isClinicSelectionVisible: true,
+  isDentistSelectionVisible: true,
   hideDatePicker: false,
   hideClinicSelectionDropdown: false,
   paths: [],
@@ -72,6 +76,24 @@ export const layoutFeature = createFeature({
         hideClinicSelectionDropdown: hide,
       };
     }),
+    on(
+      layoutPageActions.showClinicSelection,
+      (state, { isClinicSelectionVisible }): LayoutState => {
+        return {
+          ...state,
+          isClinicSelectionVisible,
+        };
+      },
+    ),
+    on(
+      layoutPageActions.showDentistSelection,
+      (state, { isDentistSelectionVisible }): LayoutState => {
+        return {
+          ...state,
+          isDentistSelectionVisible,
+        };
+      },
+    ),
     on(layoutPageActions.setTrend, (state, { trend }): LayoutState => {
       return {
         ...state,
@@ -115,6 +137,8 @@ export const {
   selectAverage,
   selectActivatedRouteTitle,
   selectCompare,
+  selectIsClinicSelectionVisible,
+  selectIsDentistSelectionVisible,
   selectHideDatePicker,
   selectHideClinicSelectionDropdown,
   selectPaths,

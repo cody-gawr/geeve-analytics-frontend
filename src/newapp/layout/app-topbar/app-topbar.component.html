@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="clinic-selector-wrapper">
-        <div class="clinic-selector-field">
+        <div class="clinic-selector-field" *ngIf="isClinicSelectionVisible$ | async">
           <mat-select
             *ngIf="isMultiClinics$ | async; else singleClinicsSection"
             [disabled]="hideClinicSelectionDropdown$ | async"
@@ -110,7 +110,10 @@
           </ng-template>
         </div>
 
-        <div *ngIf="isEnableDentistDropdown$ | async" class="clinic-selector-field">
+        <div
+          *ngIf="(isEnableDentistDropdown$ | async) && (isDentistSelectionVisible$ | async)"
+          class="clinic-selector-field"
+        >
           <mat-select
             [disabled]="hideClinicSelectionDropdown$ | async"
             class="custom-font"

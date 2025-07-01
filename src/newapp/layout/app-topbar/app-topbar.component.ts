@@ -115,6 +115,14 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return this.clinicFacade.isMultiSelection$;
   }
 
+  get isClinicSelectionVisible$() {
+    return this.layoutFacade.selectIsClinicSelectionVisible$;
+  }
+
+  get isDentistSelectionVisible$() {
+    return this.layoutFacade.selectIsDentistSelectionVisible$;
+  }
+
   // Following variables should be public.
   selectedClinic: Clinic | null = null;
   selectedClinicId: 'all' | number | null = null;

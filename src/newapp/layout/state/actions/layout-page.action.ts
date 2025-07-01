@@ -43,6 +43,16 @@ export const setHideClinicSelectionDropDown = createAction(
   props<{ hide: boolean }>(),
 );
 
+export const showClinicSelection = createAction(
+  '[Layout Pages] Show Clinic Selection Drop down',
+  props<{ isClinicSelectionVisible: boolean }>(),
+);
+
+export const showDentistSelection = createAction(
+  '[Layout Pages] Show Dentist Selection Drop down',
+  props<{ isDentistSelectionVisible: boolean }>(),
+);
+
 export const setPaths = createAction(
   '[Layout Pages] Set Paths',
   props<{
