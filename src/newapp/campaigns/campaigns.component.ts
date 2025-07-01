@@ -239,12 +239,12 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit, AfterViewCh
 
   goViewPage(campaign: ICampaign) {
     this.campaignFacade.setCampaign(campaign);
-    this.route.navigateByUrl('/newapp/campaigns/view?campaign_id=' + campaign.id);
+    this.route.navigateByUrl('/newapp/crm/campaigns/view?campaign_id=' + campaign.id);
   }
 
   goEditPage(campaign: ICampaign) {
     this.campaignFacade.setCampaign(campaign);
-    this.route.navigateByUrl('/newapp/campaigns/create?campaign_id=' + campaign.id);
+    this.route.navigateByUrl('/newapp/crm/campaigns/create?campaign_id=' + campaign.id);
   }
 
   Campaigns: any[] = [];

@@ -159,41 +159,45 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
               : of({ success: true, data: [] }),
             this.commonDataservice.getCampaignItemCodes(this.clinicId),
             this.commonDataservice.getQueryMethods_D4wPatients(this.clinicId), // Load all available marketing preferences
-          ]).subscribe(([filterElems, healthFundsPayload, itemCodesPayload, queryMethodPayload]) => {
-            if (!filterElems.success) {
-              this.nofifyService.showError('Failed to load filter elements');
-              return;
-            }
-            this.filterElements = filterElems.data
-              .filter(fe => fe && fe[pms])
-              .map(fe => {
-                const icon = DefaultFilterElements.find(d => d.filterName === fe.name);
-                return {
-                  iconName: icon?.iconName,
-                  iconUrl: icon?.iconUrl,
-                  title: icon?.title,
-                  filterName: fe.name,
-                  description: fe.description,
-                  disabled:
-                    pms === 'd4w' &&
-                    [
-                      CAMPAIGN_FILTERS.health_insurance,
-                      CAMPAIGN_FILTERS.overdues,
-                      CAMPAIGN_FILTERS.patient_status,
-                      CAMPAIGN_FILTERS.marketing_preferences // disable if clinic's utility version is under 1.42
-                    ].indexOf(fe.name) >= 0 &&
-                    !!clinics[0].utilityVer &&
-                    clinics[0].utilityVer < '1.42.0.0',
-                };
-              });
-            this.healthFunds = healthFundsPayload.data.map(v => ({ value: v }));
-            this.itemCodes = itemCodesPayload.data.map(d => ({
-              label: d.item_display_name,
-              value: d.item_code,
-            }));
-            this.All_MarketingPreferences = queryMethodPayload.data.map(d => d.query_comm_methods); // Marketing Preference Filter Options
-            this.metadataEvent.next();
-          });
+          ]).subscribe(
+            ([filterElems, healthFundsPayload, itemCodesPayload, queryMethodPayload]) => {
+              if (!filterElems.success) {
+                this.nofifyService.showError('Failed to load filter elements');
+                return;
+              }
+              this.filterElements = filterElems.data
+                .filter(fe => fe && fe[pms])
+                .map(fe => {
+                  const icon = DefaultFilterElements.find(d => d.filterName === fe.name);
+                  return {
+                    iconName: icon?.iconName,
+                    iconUrl: icon?.iconUrl,
+                    title: icon?.title,
+                    filterName: fe.name,
+                    description: fe.description,
+                    disabled:
+                      pms === 'd4w' &&
+                      [
+                        CAMPAIGN_FILTERS.health_insurance,
+                        CAMPAIGN_FILTERS.overdues,
+                        CAMPAIGN_FILTERS.patient_status,
+                        CAMPAIGN_FILTERS.marketing_preferences, // disable if clinic's utility version is under 1.42
+                      ].indexOf(fe.name) >= 0 &&
+                      !!clinics[0].utilityVer &&
+                      clinics[0].utilityVer < '1.42.0.0',
+                  };
+                });
+              this.healthFunds = healthFundsPayload.data.map(v => ({ value: v }));
+              this.itemCodes = itemCodesPayload.data.map(d => ({
+                label: d.item_display_name,
+                value: d.item_code,
+              }));
+              this.All_MarketingPreferences = queryMethodPayload.data.map(
+                d => d.query_comm_methods,
+              ); // Marketing Preference Filter Options
+              this.metadataEvent.next();
+            },
+          );
         }
       });
 
@@ -414,10 +418,13 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
     this.selected_MarketingPreference.valueChanges
       .pipe(takeUntil(this.destroy$), debounceTime(300))
       .subscribe(q_method => {
-        if (this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.marketing_preferences) > -1) {
+        if (
+          this.done.findIndex(item => item.filterName === CAMPAIGN_FILTERS.marketing_preferences) >
+          -1
+        ) {
           this.eventInput.next();
         }
-      });  // when changing the marketing preference, the filter should be reloaded
+      }); // when changing the marketing preference, the filter should be reloaded
 
     this.filterFormGroup.controls.treatmentEnd.valueChanges
       .pipe(takeUntil(this.destroy$), debounceTime(300))
@@ -848,7 +855,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
                 );
               }
               this.isSendingSms = false;
-              this.router.navigateByUrl('/newapp/campaigns');
+              this.router.navigateByUrl('/newapp/crm/campaigns');
             },
             error: err => {
               console.log('Error - [createCampaign]:', err);
@@ -894,7 +901,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
                   );
                 }
                 this.isSendingSms = false;
-                this.router.navigateByUrl('/newapp/campaigns');
+                this.router.navigateByUrl('/newapp/crm/campaigns');
               },
               error: err => {
                 console.log('Error - [createCampaign]:', err);
@@ -1048,7 +1055,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       case CAMPAIGN_FILTERS.patient_status:
         return `<p class="campaign-filter-desc">Patient is of status <span>${this.patientStatus.value}</span></p>`;
       case CAMPAIGN_FILTERS.marketing_preferences:
-        return `<p class="campaign-filter-desc">Marketing Preference is <span>${this.selected_MarketingPreference.value}</span></p>`;        
+        return `<p class="campaign-filter-desc">Marketing Preference is <span>${this.selected_MarketingPreference.value}</span></p>`;
       case CAMPAIGN_FILTERS.overdues:
         return `<p class="campaign-filter-desc">Patient has overdue amount at least <span>${this.overdueDays.value}></span> days overdue</p>`;
       case CAMPAIGN_FILTERS.health_insurance:
