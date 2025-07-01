@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { ClinicFacade } from '../clinic/facades/clinic.facade';
 import {
   BehaviorSubject,
@@ -13,7 +13,6 @@ import {
 } from 'rxjs';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import moment, { Moment } from 'moment';
-import { ClinicService } from '../clinic/services/clinic.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -36,7 +35,7 @@ import { LayoutFacade } from '../layout/facades/layout.facade';
   templateUrl: './campaigns.component.html',
   styleUrls: ['./campaigns.component.scss'],
 })
-export class CampaignsComponent implements OnDestroy, AfterViewInit {
+export class CampaignsComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
   private destroy = new Subject<void>();
   private readonly destroy$ = this.destroy.asObservable();
   displayedColumns: string[] = [
@@ -143,11 +142,10 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
   private endDate: string | null;
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private readonly clinicFacade: ClinicFacade,
-    private readonly clinicService: ClinicService,
     private readonly campaignFacade: CampaignFacade,
     private readonly campaignService: CampaignService,
     public dialog: MatDialog,
@@ -230,9 +228,13 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit {
     this.destroy.complete();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  ngAfterViewInit() {}
+
+  ngAfterViewChecked() {
+    if (this.paginator && this.dataSource.paginator !== this.paginator) {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
   }
 
   goViewPage(campaign: ICampaign) {
