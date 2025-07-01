@@ -91,7 +91,7 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
 
   conversionTrackerMetrics: ({ type: string; icon: string; description: string } & Kpi)[] = [];
 
-  get selectedConversionCode$(): Observable<ConversionCode> {
+  get selectedConversionCode$(): Observable<ConversionCode | null> {
     return this.conversionTrackerFacade.selectedConversionCode$;
   }
 
@@ -169,22 +169,34 @@ export class ConversionTrackerComponent implements OnInit, OnDestroy {
       this.dentistFacade.currentDentistId$,
       this.layoutFacade.dateRange$,
       this.selectedConversionCode$,
+      this.hasPermission$,
     ])
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-        filter(payload => payload.every(item => !!item)),
+        filter(
+          ([clinicId, providerId, { start, end }, conversionCode]) =>
+            typeof clinicId === 'number' &&
+            (typeof providerId === 'number' || providerId === 'all') &&
+            !!start &&
+            !!end &&
+            !!conversionCode,
+        ),
       )
       .subscribe(payload => {
-        const [clinicId, providerId, { start, end }, { consultCode }] = payload;
-
-        this.conversionTrackerFacade.loadConversionTrackers({
-          clinicId: <number>clinicId,
-          providerId: providerId === 'all' ? 0 : <number>providerId,
-          startDate: moment(start).format('YYYY-MM-DD'),
-          endDate: moment(end).format('YYYY-MM-DD'),
-          consultCode,
-        });
+        const [clinicId, providerId, { start, end }, { consultCode }, hasPermission] = payload;
+        if (hasPermission) {
+          this.conversionTrackerFacade.loadConversionTrackers({
+            clinicId: <number>clinicId,
+            providerId: providerId === 'all' ? 0 : <number>providerId,
+            startDate: moment(start).format('YYYY-MM-DD'),
+            endDate: moment(end).format('YYYY-MM-DD'),
+            consultCode,
+          });
+        } else {
+          this.layoutFacade.setHideClinicSelectionDropDown(true);
+          this.layoutFacade.setHideDatePicker(true);
+        }
       });
 
     this.conversionTrackerMetrics$.subscribe(metrics => (this.conversionTrackerMetrics = metrics));

@@ -170,32 +170,19 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit, AfterViewCh
       .pipe(
         takeUntil(this.destroy$),
         // only proceed once we have a real clinicId and permission === true
-        filter(
-          ([clinicId, _range, hasPermission]) => typeof clinicId === 'number' && hasPermission,
-        ),
+        filter(([clinicId, _range]) => typeof clinicId === 'number'),
       )
-      .subscribe(([clinicId, { start, end }]) => {
-        this.clinicId = <number>clinicId;
-        this.startDate = moment(start).format('YYYY-MM-DD');
-        this.endDate = moment(end).format('YYYY-MM-DD');
-        this.loadCampaigns();
+      .subscribe(([clinicId, { start, end }, hasPermission]) => {
+        if (hasPermission) {
+          this.clinicId = <number>clinicId;
+          this.startDate = moment(start).format('YYYY-MM-DD');
+          this.endDate = moment(end).format('YYYY-MM-DD');
+          this.loadCampaigns();
+        } else {
+          this.layoutFacade.setHideClinicSelectionDropDown(true);
+          this.layoutFacade.setHideDatePicker(true);
+        }
       });
-    // this.clinicFacade.currentSingleClinicId$
-    //   .pipe(takeUntil(this.destroy$), distinctUntilChanged())
-    //   .subscribe(clinicId => {
-    //     if (typeof clinicId === 'number') {
-    //       this.clinicId = clinicId;
-    //       this.loadCampaigns();
-    //     }
-    //   });
-
-    // this.layoutFacade.dateRange$
-    //   .pipe(takeUntil(this.destroy$), distinctUntilChanged())
-    //   .subscribe(({ start, end }) => {
-    //     this.startDate = moment(start).format('YYYY-MM-DD');
-    //     this.endDate = moment(end).format('YYYY-MM-DD');
-    //     this.loadCampaigns();
-    //   });
 
     // COMPONENT-TODO - Review properties of campaign
     this.transformedCampaigns$.pipe(takeUntil(this.destroy$)).subscribe(campaigns => {
