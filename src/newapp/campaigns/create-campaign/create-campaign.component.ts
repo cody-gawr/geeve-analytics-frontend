@@ -632,6 +632,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
       },
     });
 
+    // TODO - Need fine tunning
     // const fromId = event.previousContainer.id;
     // const toId = event.container.id;
 
