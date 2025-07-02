@@ -24,7 +24,6 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { environment } from '../../../../environments/environment';
 import { LocalStorageService } from '../../../shared/local-storage.service';
 import _ from 'lodash';
-import { YoutubePreviewComponent } from '@/app/shared/youtube-preview/youtube-preview.component';
 import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 
 export interface Dentist {

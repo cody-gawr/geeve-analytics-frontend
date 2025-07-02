@@ -30,7 +30,7 @@ import { CookieService } from 'ngx-cookie';
 import _ from 'lodash';
 import { MatSelectChange } from '@angular/material/select';
 import { Clinic } from '@/newapp/models/clinic';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { CampaignFacade } from '@/newapp/campaigns/facades/campaign.facade';
 
 @Component({
@@ -49,6 +49,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
   public activatedRoute = new BehaviorSubject<string>('');
   public activatedRoute$: Observable<string> = this.activatedRoute.asObservable();
   public unsubscribedClinic: Clinic = null;
+  private hiddenDatePickerMenuItems = ['unsubscribed', 'practice-insights'];
 
   range = new FormGroup({
     start: new FormControl<Moment | null>(null),
@@ -321,6 +322,20 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     this.dentistFacade.currentDentistId$.pipe(takeUntil(this.destroy$)).subscribe(dentistId => {
       this.selectedDentist = dentistId;
     });
+
+    this.router.events
+      .pipe(
+        takeUntil(this.destroy$),
+        map((event: any) => event.routerEvent ?? event),
+        filter(event => event instanceof NavigationEnd),
+      )
+      .subscribe(event => {
+        const { url } = <NavigationEnd>event;
+        this.activatedUrl = url.split('?')[0];
+
+        const shouldShow = !this.hiddenDatePickerMenuItems.some(item => url.includes(item));
+        this.layoutFacade.setIsDateRangePickerVisibleRoute(shouldShow);
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

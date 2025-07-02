@@ -18,7 +18,6 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   isSidenavVisible = false;
   clinic: Clinic | null;
   activatedUrl: string = '';
-  public hiddenDatePickerMenuItems = ['unsubscribed', 'practice-insights'];
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -36,11 +35,6 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
       .subscribe(event => {
         const { url } = <NavigationEnd>event;
         this.activatedUrl = url.split('?')[0];
-        if (this.hiddenDatePickerMenuItems.find(item => this.activatedUrl.includes(item))) {
-          this.layoutFacade.toggleDateRangePicker(false);
-        } else {
-          this.layoutFacade.toggleDateRangePicker(true);
-        }
 
         if (
           this.activatedUrl.includes('campaigns/create') ||

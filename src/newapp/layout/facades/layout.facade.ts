@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable } from 'rxjs';
 import {
   LayoutState,
   selectActivatedRouteTitle,
@@ -60,6 +60,10 @@ export class LayoutFacade {
 
   public readonly paths$ = this.store.pipe(select(selectPaths));
 
+  private isDateRangePickerVisibleRoute = new BehaviorSubject<boolean>(true);
+  public readonly isDateRangePickerVisibleRoute$ =
+    this.isDateRangePickerVisibleRoute.asObservable();
+
   public saveDateRange(
     start: Moment | null,
     end: Moment | null,
@@ -98,12 +102,23 @@ export class LayoutFacade {
 
   public readonly durationPrevLabel$ = this.store.pipe(select(selectDurationPrevLabel));
 
-  public readonly isDateRangePickerVisible$ = this.store.pipe(
-    select(selectIsDateRangePickerVisible),
+  public readonly isDateRangePickerVisible$ = combineLatest([
+    this.isDateRangePickerVisibleRoute$.pipe(distinctUntilChanged()),
+    this.store.pipe(select(selectIsDateRangePickerVisible)),
+  ]).pipe(
+    map(
+      ([isDateRangePickerVisibleRoute, isDateRangePickerVisible]) =>
+        isDateRangePickerVisibleRoute && isDateRangePickerVisible,
+    ),
   );
+
   public readonly isClinicSelectionEnabled$ = this.store.pipe(
     select(selectIsClinicSelectionEnabled),
   );
+
+  public setIsDateRangePickerVisibleRoute(isVisible: boolean) {
+    this.isDateRangePickerVisibleRoute.next(isVisible);
+  }
 
   public toggleDateRangePicker(isVisible: boolean) {
     this.store.dispatch(layoutPageActions.toggleDateRangePicker({ isVisible }));
