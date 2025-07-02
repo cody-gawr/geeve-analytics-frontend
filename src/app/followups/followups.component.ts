@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import {
   Component,
   HostListener,
@@ -18,7 +18,6 @@ import { Router } from '@angular/router';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { HeaderService } from '../layouts/full/header/header.service';
 import { MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
-import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../app.constants';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
@@ -29,14 +28,12 @@ import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepic
 import { ChartstipsService } from '../shared/chartstips.service';
 import { environment } from '../../environments/environment';
 import * as moment from 'moment';
-import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 import { LocalStorageService } from '../shared/local-storage.service';
 import { FormControl } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { AuthFacade } from '@/newapp/auth/facades/auth.facade';
-import { validatePermission } from '@/newapp/shared/helpers/validatePermission.helper';
 import { CONSULTANT, USER_MASTER } from '@/newapp/constants';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 
 @Component({
   selector: 'export-data-dialog',
@@ -503,6 +500,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public chartstipsService: ChartstipsService,
     public clinicianAnalysisService: ClinicianAnalysisService,
+    private layoutFacade: LayoutFacade,
   ) {
     // this.getChartsTips();
   }
@@ -619,6 +617,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           'UT',
         );
       });
+
+    this.layoutFacade.toggleClinicSelection(this.hasPermission);
   }
   ngAfterViewInit(): void {
     this.dentistList.paginator = this.paginator;

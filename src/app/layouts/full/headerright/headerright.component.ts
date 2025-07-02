@@ -25,6 +25,7 @@ import { environment } from '../../../../environments/environment';
 import { LocalStorageService } from '../../../shared/local-storage.service';
 import _ from 'lodash';
 import { YoutubePreviewComponent } from '@/app/shared/youtube-preview/youtube-preview.component';
+import { LayoutFacade } from '@/newapp/layout/facades/layout.facade';
 
 export interface Dentist {
   providerId: string;
@@ -157,6 +158,7 @@ export class AppHeaderrightComponent implements AfterViewInit, OnInit, OnDestroy
     public constants: AppConstants,
     private toastr: ToastrService,
     public dialog: MatDialog,
+    private layoutFacade: LayoutFacade,
   ) {
     this._routerSub = this.router.events.subscribe((event: Event) => {
       this.isSwitchingClinic = true;
@@ -238,6 +240,10 @@ export class AppHeaderrightComponent implements AfterViewInit, OnInit, OnDestroy
         this._cookieService.put('user_type', this.user_type_dentist, opts);
       }
     });
+  }
+
+  get isClinicSelectionVisible$() {
+    return this.layoutFacade.selectIsClinicSelectionVisible$;
   }
 
   ngOnInit(): void {
