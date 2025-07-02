@@ -33,24 +33,24 @@ export const setActivatedRouteTitle = createAction(
   props<{ title: string }>(),
 );
 
-export const setHideDatePicker = createAction(
-  '[Layout Pages] Set Hide Date Picker',
-  props<{ hide: boolean }>(),
+export const toggleDateRangePicker = createAction(
+  '[Layout Pages] Toggle Date Range Picker',
+  props<{ isVisible: boolean }>(),
 );
 
-export const setHideClinicSelectionDropDown = createAction(
-  '[Layout Pages] Set Hide Clinic Selection Dropdown',
-  props<{ hide: boolean }>(),
+export const setClinicSelectionEnabled = createAction(
+  '[Layout Pages] Update Clinic Selection Enabled State',
+  props<{ isEnabled: boolean }>(),
 );
 
-export const showClinicSelection = createAction(
-  '[Layout Pages] Show Clinic Selection Drop down',
-  props<{ isClinicSelectionVisible: boolean }>(),
+export const toggleClinicSelection = createAction(
+  '[Layout Pages] Toggle Clinic Selection Visibility',
+  props<{ isVisible: boolean }>(),
 );
 
-export const showDentistSelection = createAction(
-  '[Layout Pages] Show Dentist Selection Drop down',
-  props<{ isDentistSelectionVisible: boolean }>(),
+export const toggleDentistSelection = createAction(
+  '[Layout Pages] Toggle Dentist Selection Visibility',
+  props<{ isVisible: boolean }>(),
 );
 
 export const setPaths = createAction(

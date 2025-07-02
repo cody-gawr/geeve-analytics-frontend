@@ -12,9 +12,9 @@ import {
   selectTrend,
   selectCompareEnabled,
   selectIsFullSingleMonthDateRange,
-  selectHideDatePicker,
+  selectIsDateRangePickerVisible,
   selectPaths,
-  selectHideClinicSelectionDropdown,
+  selectIsClinicSelectionEnabled,
   selectIsFullSingleMonthOrYearOrCurrentMonthDateRange,
   selectIsClinicSelectionVisible,
   selectIsDentistSelectionVisible,
@@ -98,25 +98,27 @@ export class LayoutFacade {
 
   public readonly durationPrevLabel$ = this.store.pipe(select(selectDurationPrevLabel));
 
-  public readonly hideDatePicker$ = this.store.pipe(select(selectHideDatePicker));
-  public readonly hideClinicSelectionDropdown$ = this.store.pipe(
-    select(selectHideClinicSelectionDropdown),
+  public readonly isDateRangePickerVisible$ = this.store.pipe(
+    select(selectIsDateRangePickerVisible),
+  );
+  public readonly isClinicSelectionEnabled$ = this.store.pipe(
+    select(selectIsClinicSelectionEnabled),
   );
 
-  public setHideDatePicker(hide: boolean) {
-    this.store.dispatch(layoutPageActions.setHideDatePicker({ hide }));
+  public toggleDateRangePicker(isVisible: boolean) {
+    this.store.dispatch(layoutPageActions.toggleDateRangePicker({ isVisible }));
   }
 
-  public setHideClinicSelectionDropDown(hide: boolean) {
-    this.store.dispatch(layoutPageActions.setHideClinicSelectionDropDown({ hide }));
+  public setClinicSelectionEnabled(isEnabled: boolean) {
+    this.store.dispatch(layoutPageActions.setClinicSelectionEnabled({ isEnabled }));
   }
 
-  public showClinicSelection(isClinicSelectionVisible: boolean) {
-    this.store.dispatch(layoutPageActions.showClinicSelection({ isClinicSelectionVisible }));
+  public toggleClinicSelection(isVisible: boolean) {
+    this.store.dispatch(layoutPageActions.toggleClinicSelection({ isVisible }));
   }
 
-  public showDentistSelection(isDentistSelectionVisible: boolean) {
-    this.store.dispatch(layoutPageActions.showDentistSelection({ isDentistSelectionVisible }));
+  public toggleDentistSelection(isVisible: boolean) {
+    this.store.dispatch(layoutPageActions.toggleDentistSelection({ isVisible }));
   }
 
   public savePaths(paths: { name: string; path?: string }[]) {
