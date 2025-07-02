@@ -37,9 +37,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
         const { url } = <NavigationEnd>event;
         this.activatedUrl = url.split('?')[0];
         if (this.hiddenDatePickerMenuItems.find(item => this.activatedUrl.includes(item))) {
-          this.layoutFacade.toggleDateRangePicker(true);
-        } else {
           this.layoutFacade.toggleDateRangePicker(false);
+        } else {
+          this.layoutFacade.toggleDateRangePicker(true);
         }
 
         if (
