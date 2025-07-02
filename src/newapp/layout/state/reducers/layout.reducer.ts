@@ -20,8 +20,8 @@ export interface LayoutState {
   compare: boolean;
   isClinicSelectionVisible: boolean;
   isDentistSelectionVisible: boolean;
-  hideDatePicker: boolean;
-  hideClinicSelectionDropdown: boolean;
+  isDateRangePickerVisible: boolean;
+  isClinicSelectionEnabled: boolean;
   paths: { name: string; path?: string }[];
 }
 
@@ -40,8 +40,8 @@ const initialState: LayoutState = {
   activatedRouteTitle: '',
   isClinicSelectionVisible: true,
   isDentistSelectionVisible: true,
-  hideDatePicker: false,
-  hideClinicSelectionDropdown: false,
+  isDateRangePickerVisible: true,
+  isClinicSelectionEnabled: true,
   paths: [],
 };
 
@@ -64,36 +64,30 @@ export const layoutFeature = createFeature({
         };
       },
     ),
-    on(layoutPageActions.setHideDatePicker, (state, { hide }): LayoutState => {
+    on(layoutPageActions.toggleDateRangePicker, (state, { isVisible }): LayoutState => {
       return {
         ...state,
-        hideDatePicker: hide,
+        isDateRangePickerVisible: isVisible,
       };
     }),
-    on(layoutPageActions.setHideClinicSelectionDropDown, (state, { hide }): LayoutState => {
+    on(layoutPageActions.setClinicSelectionEnabled, (state, { isEnabled }): LayoutState => {
       return {
         ...state,
-        hideClinicSelectionDropdown: hide,
+        isClinicSelectionEnabled: isEnabled,
       };
     }),
-    on(
-      layoutPageActions.showClinicSelection,
-      (state, { isClinicSelectionVisible }): LayoutState => {
-        return {
-          ...state,
-          isClinicSelectionVisible,
-        };
-      },
-    ),
-    on(
-      layoutPageActions.showDentistSelection,
-      (state, { isDentistSelectionVisible }): LayoutState => {
-        return {
-          ...state,
-          isDentistSelectionVisible,
-        };
-      },
-    ),
+    on(layoutPageActions.toggleClinicSelection, (state, { isVisible }): LayoutState => {
+      return {
+        ...state,
+        isClinicSelectionVisible: isVisible,
+      };
+    }),
+    on(layoutPageActions.toggleDentistSelection, (state, { isVisible }): LayoutState => {
+      return {
+        ...state,
+        isDentistSelectionVisible: isVisible,
+      };
+    }),
     on(layoutPageActions.setTrend, (state, { trend }): LayoutState => {
       return {
         ...state,
@@ -139,8 +133,8 @@ export const {
   selectCompare,
   selectIsClinicSelectionVisible,
   selectIsDentistSelectionVisible,
-  selectHideDatePicker,
-  selectHideClinicSelectionDropdown,
+  selectIsDateRangePickerVisible,
+  selectIsClinicSelectionEnabled,
   selectPaths,
 } = layoutFeature;
 

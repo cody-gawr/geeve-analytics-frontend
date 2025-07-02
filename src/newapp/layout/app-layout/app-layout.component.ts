@@ -37,9 +37,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
         const { url } = <NavigationEnd>event;
         this.activatedUrl = url.split('?')[0];
         if (this.hiddenDatePickerMenuItems.find(item => this.activatedUrl.includes(item))) {
-          this.layoutFacade.setHideDatePicker(true);
+          this.layoutFacade.toggleDateRangePicker(true);
         } else {
-          this.layoutFacade.setHideDatePicker(false);
+          this.layoutFacade.toggleDateRangePicker(false);
         }
 
         if (
@@ -55,11 +55,11 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
             url.includes('campaigns/create?campaign_id=') ||
             this.activatedUrl.includes('campaigns/view')
           ) {
-            this.layoutFacade.setHideClinicSelectionDropDown(true);
+            this.layoutFacade.setClinicSelectionEnabled(false);
           }
         } else {
           this.layoutFacade.savePaths([]);
-          this.layoutFacade.setHideClinicSelectionDropDown(false);
+          this.layoutFacade.setClinicSelectionEnabled(true);
         }
       });
 

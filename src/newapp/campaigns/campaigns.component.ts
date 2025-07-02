@@ -173,14 +173,15 @@ export class CampaignsComponent implements OnDestroy, AfterViewInit, AfterViewCh
         filter(([clinicId, _range]) => typeof clinicId === 'number'),
       )
       .subscribe(([clinicId, { start, end }, hasPermission]) => {
+        this.layoutFacade.toggleDateRangePicker(hasPermission);
+        this.layoutFacade.toggleClinicSelection(hasPermission);
+        this.layoutFacade.toggleDentistSelection(hasPermission);
+
         if (hasPermission) {
           this.clinicId = <number>clinicId;
           this.startDate = moment(start).format('YYYY-MM-DD');
           this.endDate = moment(end).format('YYYY-MM-DD');
           this.loadCampaigns();
-        } else {
-          this.layoutFacade.showClinicSelection(false);
-          this.layoutFacade.showDentistSelection(false);
         }
       });
 

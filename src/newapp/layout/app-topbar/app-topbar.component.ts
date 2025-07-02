@@ -72,7 +72,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  get isEnableDentistDropdown$() {
+  get isDentistSelectionVisibleLocal$() {
     return combineLatest([
       this.clinicFacade.currentClinics$,
       this.authFacade.rolesIndividual$,
@@ -138,12 +138,12 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
     return this.dentistFacade.dentists$;
   }
 
-  get hideDatePicker$() {
-    return this.layoutFacade.hideDatePicker$;
+  get isDateRangePickerVisible$() {
+    return this.layoutFacade.isDateRangePickerVisible$;
   }
 
-  get hideClinicSelectionDropdown$() {
-    return this.layoutFacade.hideClinicSelectionDropdown$;
+  get isClinicSelectionEnabled$() {
+    return this.layoutFacade.isClinicSelectionEnabled$;
   }
 
   get campaignName$(): Observable<string | null> {
@@ -225,7 +225,7 @@ export class AppTopbarComponent implements OnInit, OnChanges, OnDestroy {
       });
 
     combineLatest([
-      this.isEnableDentistDropdown$,
+      this.isDentistSelectionVisibleLocal$,
       this.clinicFacade.currentClinics$,
       this.isDentistUser$,
     ])
