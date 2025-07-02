@@ -565,6 +565,7 @@ export class CreateCampaignComponent implements AfterViewInit, OnInit {
 
   done = [];
 
+  // COMPONENT-TODO : Take a look at why drag-and-drop isn’t quite respecting what the user actually picked—something feels off there.
   drop(event: CdkDragDrop<IFilterElement[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
